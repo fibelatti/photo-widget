@@ -1,0 +1,22 @@
+name: "Setup Android Build"
+description: "Common steps before running a Gradle command"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup JDK
+      uses: actions/setup-java@v3.12.0
+      with:
+        distribution: 'corretto'
+        java-version: 17
+
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2.7.0
+      with:
+        generate-job-summary: false
+        gradle-home-cache-strict-match: true
+        gradle-home-cache-cleanup: true
+
+    - name: Optimize for Gradle build
+      shell: bash
+      run: ${{ github.action_path }}/setup-gradle-properties.sh

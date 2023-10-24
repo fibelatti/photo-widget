@@ -1,0 +1,19 @@
+<b>Photo Widget</b> is as simple as it can be: a home screen widget to display a photo or collection of
+photos. It is a free, no-ads, open source alternative for people who want to customise their home
+screen in a simple way.
+
+<b>FEATURES</b>
+
+TBD
+
+<b>PERMISSIONS</b>
+
+TBD
+
+---------------
+
+<b>Photo Widget</b> is an open-source project, find the code and submit feedback at https://github.com/fibelatti/photo-widget
+
+---------------
+
+Screenshots were generated with https://screenshots.pro
