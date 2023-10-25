@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.room)
 }
 
 object AppInfo {
@@ -52,12 +53,6 @@ android {
         resourceConfigurations.add("en")
 
         vectorDrawables.useSupportLibrary = true
-
-        ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
-            arg("room.incremental", "true")
-            arg("room.generateKotlin", "true")
-        }
     }
 
     signingConfigs {
@@ -110,6 +105,15 @@ android {
         resources.excludes.add("META-INF/LICENSE.md")
         resources.excludes.add("META-INF/LICENSE-notice.md")
     }
+}
+
+ksp {
+    arg("room.incremental", "true")
+    arg("room.generateKotlin", "true")
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
