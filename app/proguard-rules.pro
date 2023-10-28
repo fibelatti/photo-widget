@@ -44,3 +44,9 @@
 # Material
 -dontnote com.google.android.material.**
 -dontnote android.widget.**
+
+# UCrop
+
+-dontwarn com.yalantis.ucrop**
+-keep class com.yalantis.ucrop** { *; }
+-keep interface com.yalantis.ucrop** { *; }

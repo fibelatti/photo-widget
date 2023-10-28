@@ -131,6 +131,7 @@ dependencies {
     implementation(libs.constraint.layout)
     implementation(libs.constraint.layout.compose)
     implementation(libs.window)
+    implementation(libs.graphics.shapes)
 
     implementation(libs.lifecycle.java8)
     implementation(libs.lifecycle.runtime.ktx)
@@ -157,6 +158,8 @@ dependencies {
 
     implementation(libs.moshi)
     ksp(libs.moshi.codegen)
+
+    implementation(libs.ucrop)
 
     debugImplementation(libs.leakcanary)
 }

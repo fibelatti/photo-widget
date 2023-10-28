@@ -30,6 +30,7 @@ room-runtime = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version = "2.8.1" }
 window = { module = "androidx.window:window", version = "1.1.0" }
+graphics-shapes = { module = "androidx.graphics:graphics-shapes", version = "1.0.0-alpha03" }
 
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "composeCompiler" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
@@ -46,6 +47,8 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 
 moshi = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
 moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
+
+ucrop = { module = "com.github.yalantis:ucrop", version = "2.2.8" }
 
 leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.12" }
 
