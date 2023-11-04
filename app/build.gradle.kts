@@ -106,6 +106,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":ui"))
+
     // Kotlin
     implementation(libs.kotlin)
 

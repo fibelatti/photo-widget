@@ -2,6 +2,7 @@ rootProject.name = "Photo Widget"
 rootProject.buildFileName = "build.gradle.kts"
 
 include(":app")
+include(":ui")
 
 pluginManagement {
     repositories {
