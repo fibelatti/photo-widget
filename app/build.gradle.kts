@@ -1,10 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.room)
 }
 
 object AppInfo {
@@ -107,57 +105,29 @@ android {
     }
 }
 
-ksp {
-    arg("room.incremental", "true")
-    arg("room.generateKotlin", "true")
-}
-
-room {
-    schemaDirectory("$projectDir/schemas")
-}
-
 dependencies {
     // Kotlin
     implementation(libs.kotlin)
-    implementation(libs.coroutines.core)
-    implementation(libs.coroutines.android)
 
-    // Android
+    // Android Platform
     implementation(libs.appcompat)
-    implementation(libs.core.ktx)
-    implementation(libs.activity.ktx)
-    implementation(libs.fragment.ktx)
     implementation(libs.material)
-    implementation(libs.constraint.layout)
-    implementation(libs.constraint.layout.compose)
-    implementation(libs.window)
     implementation(libs.graphics.shapes)
-
-    implementation(libs.lifecycle.java8)
-    implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)
-
-    implementation(libs.room.runtime)
-    ksp(libs.room.compiler)
-
     implementation(libs.work.runtime.ktx)
 
+    // Compose
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.runtime)
-    implementation(libs.compose.material)
     implementation(libs.compose.material3)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.compose.ui.tooling)
-    debugImplementation(libs.compose.ui.test.manifest)
+    debugImplementation(libs.compose.ui.tooling)
 
     // Misc
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
-
-    implementation(libs.moshi)
-    ksp(libs.moshi.codegen)
 
     implementation(libs.ucrop)
 
