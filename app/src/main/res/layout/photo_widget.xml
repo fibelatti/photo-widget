@@ -1,0 +1,20 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@android:id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    tools:layout_height="400dp"
+    tools:layout_width="400dp"
+    tools:targetApi="s">
+
+    <ImageView
+        android:id="@+id/iv_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/photo_widget_cd_host"
+        tools:background="@drawable/background_rounded_rectangle"
+        tools:clipToOutline="true"
+        tools:scaleType="centerCrop"
+        tools:src="@drawable/widget_preview_photo" />
+</FrameLayout>

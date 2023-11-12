@@ -1,3 +1,55 @@
 <resources>
-    <string name="app_name">Photo Widget</string>
+    <!-- Widget Host -->
+    <string name="photo_widget_host_label">Shaped Photos</string>
+    <string name="photo_widget_host_description">Decorate your home screen with your favorite photos</string>
+
+    <!-- Home -->
+    <string name="photo_widget_home_title">Decorate your home screen with your favorite photos</string>
+    <string name="photo_widget_home_aspect_ratio">Select the widget aspect ratio and tap the button to begin</string>
+    <string name="photo_widget_home_new_widget">Create a new widget</string>
+    <string name="photo_widget_home_appearance">Appearance</string>
+    <string name="photo_widget_home_dynamic_colors">App colors</string>
+    <string name="photo_widget_home_share">Share</string>
+    <string name="photo_widget_home_rate">Rate</string>
+    <string name="photo_widget_home_developer">Developed with ❤ by Filipe Belatti</string>
+    <string name="photo_widget_home_version">App version: %s</string>
+
+    <!-- Preferences -->
+    <string name="preferences_appearance_follow_system">Follow system</string>
+    <string name="preferences_appearance_light">Light</string>
+    <string name="preferences_appearance_dark">Dark</string>
+
+    <string name="preferences_dynamic_colors_enabled">Dynamic colors</string>
+    <string name="preferences_dynamic_colors_disabled">Default colors</string>
+
+    <!-- Share -->
+    <string name="share_title">Spread the word</string>
+    <string name="share_text">Add your favorite photos to your home screen with Material Photo Widget. Download for free at %s</string>
+
+    <!-- Aspect Ratio -->
+    <string name="photo_widget_aspect_ratio_square">Square</string>
+    <string name="photo_widget_aspect_ratio_tall">Tall</string>
+    <string name="photo_widget_aspect_ratio_wide">Wide</string>
+
+    <!-- Configure -->
+    <string name="photo_widget_configure_select_photo">Select a photo</string>
+    <string name="photo_widget_configure_selected_photos">Selected photos</string>
+
+    <string name="photo_widget_configure_delete_photo_title">Remove this photo from the widget?</string>
+    <string name="photo_widget_configure_delete_photo_yes">Yes</string>
+    <string name="photo_widget_configure_delete_photo_no">No</string>
+
+    <string name="photo_widget_configure_select_interval">Flipping interval</string>
+    <string name="photo_widget_configure_interval_one_day">Every day</string>
+    <string name="photo_widget_configure_interval_twelve_hours">Every twelve hours</string>
+    <string name="photo_widget_configure_interval_six_hours">Every six hours</string>
+    <string name="photo_widget_configure_interval_one_hour">Every hour</string>
+    <string name="photo_widget_configure_interval_thirty_minutes">Every thirty minutes</string>
+
+    <string name="photo_widget_configure_applied_shape">Applied shape</string>
+    <string name="photo_widget_configure_add_to_home">Add to home screen</string>
+
+    <!-- Content Description -->
+    <string name="photo_widget_cd_host">Material Photo home screen widget</string>
+    <string name="photo_widget_cd_open_photo_picker">Open photo picker</string>
 </resources>
