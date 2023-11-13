@@ -68,6 +68,7 @@ fun HomeScreen(
     onColorsClick: () -> Unit,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
+    onViewLicensesClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -120,10 +121,9 @@ fun HomeScreen(
                 onColorsClick = onColorsClick,
                 onRateClick = onRateClick,
                 onShareClick = onShareClick,
+                onViewLicensesClick = onViewLicensesClick,
                 modifier = Modifier.padding(all = 16.dp),
             )
-
-            // TODO: OSS licenses
         }
     }
 }
@@ -290,6 +290,7 @@ private fun HomeScreenFooter(
     onColorsClick: () -> Unit,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
+    onViewLicensesClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -346,11 +347,34 @@ private fun HomeScreenFooter(
             style = MaterialTheme.typography.labelSmall,
         )
 
-        Text(
-            text = stringResource(R.string.photo_widget_home_version, BuildConfig.VERSION_NAME),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.labelSmall,
-        )
+        Row(
+            modifier = Modifier
+                .clickable(
+                    onClick = onViewLicensesClick,
+                    role = Role.Button,
+                )
+                .padding(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(R.string.photo_widget_home_version, BuildConfig.VERSION_NAME),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.labelSmall,
+            )
+
+            Text(
+                text = "—",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.labelSmall,
+            )
+
+            Text(
+                text = stringResource(id = R.string.photo_widget_home_view_licenses),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.labelSmall,
+            )
+        }
     }
 }
 
@@ -396,6 +420,7 @@ private fun HomeScreenPreview() {
             onColorsClick = {},
             onRateClick = {},
             onShareClick = {},
+            onViewLicensesClick = {},
         )
     }
 }

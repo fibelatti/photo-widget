@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
 object AppInfo {
@@ -132,6 +133,8 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
 
     implementation(libs.ucrop)
+
+    implementation(libs.oss.licenses.library)
 
     debugImplementation(libs.leakcanary)
 }

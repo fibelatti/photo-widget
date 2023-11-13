@@ -17,6 +17,7 @@ import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.ui.foundation.stableListOf
 import com.fibelatti.ui.foundation.toStableList
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -38,6 +39,7 @@ class HomeActivity : AppCompatActivity() {
                     onColorsClick = ::showAppColorsPicker,
                     onShareClick = ::shareApp,
                     onRateClick = ::rateApp,
+                    onViewLicensesClick = ::viewOpenSourceLicenses,
                 )
             }
         }
@@ -115,6 +117,11 @@ class HomeActivity : AppCompatActivity() {
         }
 
         startActivity(intent)
+    }
+
+    private fun viewOpenSourceLicenses() {
+        OssLicensesMenuActivity.setActivityTitle(getString(R.string.photo_widget_licenses_title))
+        startActivity(Intent(this, OssLicensesMenuActivity::class.java))
     }
 
     private companion object {
