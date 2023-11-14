@@ -40,6 +40,10 @@ android {
         viewBinding = true
     }
 
+    androidResources {
+        generateLocaleConfig = true
+    }
+
     defaultConfig {
         applicationId = AppInfo.applicationId
         versionCode = AppInfo.versionCode
@@ -48,8 +52,6 @@ android {
         minSdk = minSdkVersion
 
         base.archivesName = "$applicationId-v$versionName-$versionCode"
-
-        resourceConfigurations.addAll(listOf("en", "pt"))
 
         vectorDrawables.useSupportLibrary = true
     }
