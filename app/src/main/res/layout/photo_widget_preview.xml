@@ -11,8 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/photo_widget_cd_host"
-        android:background="@drawable/background_rounded_rectangle"
-        android:clipToOutline="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/widget_preview_photo" />
+        android:src="@drawable/widget_preview" />
 </FrameLayout>
