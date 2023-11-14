@@ -8,7 +8,7 @@ plugins {
 
 object AppInfo {
 
-    const val appName = "Photo Widget"
+    const val appName = "Material Photo Widget"
     const val applicationId = "com.fibelatti.photowidget"
 
     private const val versionMajor = 1
