@@ -1,0 +1,58 @@
+<resources>
+    <!-- Widget Host -->
+    <string name="photo_widget_host_label">Fotos com forma</string>
+    <string name="photo_widget_host_description">Enfeite sua tela inicial com as suas fotos favoritas</string>
+
+    <!-- Home -->
+    <string name="photo_widget_home_title">Enfeite sua tela inicial com as suas fotos favoritas</string>
+    <string name="photo_widget_home_aspect_ratio">Escolha o formato do widget e clique no botão para começar</string>
+    <string name="photo_widget_home_new_widget">Criar novo widget</string>
+    <string name="photo_widget_home_appearance">Tema do app</string>
+    <string name="photo_widget_home_dynamic_colors">Cores do app</string>
+    <string name="photo_widget_home_share">Compartilhar</string>
+    <string name="photo_widget_home_rate">Avaliar</string>
+    <string name="photo_widget_home_developer">Feito com ❤ por Filipe Belatti</string>
+    <string name="photo_widget_home_version">Versão: %s</string>
+    <string name="photo_widget_home_view_licenses">Licenças de Software</string>
+
+    <string name="photo_widget_licenses_title">Licenças de Software Livre</string>
+
+    <!-- Preferences -->
+    <string name="preferences_appearance_follow_system">Mesmo do sistema</string>
+    <string name="preferences_appearance_light">Claro</string>
+    <string name="preferences_appearance_dark">Escuro</string>
+
+    <string name="preferences_dynamic_colors_enabled">Cores dinâmicas</string>
+    <string name="preferences_dynamic_colors_disabled">Cores padrão</string>
+
+    <!-- Share -->
+    <string name="share_title">Compartilhe</string>
+    <string name="share_text">Enfeite sua tela inicial com suas fotos favoritas usando o Material Photo Widget. Baixe de graça em %s</string>
+
+    <!-- Aspect Ratio -->
+    <string name="photo_widget_aspect_ratio_square">Quadrado</string>
+    <string name="photo_widget_aspect_ratio_tall">Alto</string>
+    <string name="photo_widget_aspect_ratio_wide">Largo</string>
+
+    <!-- Configure -->
+    <string name="photo_widget_configure_select_photo">Escolha uma foto</string>
+    <string name="photo_widget_configure_selected_photos">Fotos escolhidas</string>
+
+    <string name="photo_widget_configure_delete_photo_title">Confirma a remoção desta foto do widget?</string>
+    <string name="photo_widget_configure_delete_photo_yes">Sim</string>
+    <string name="photo_widget_configure_delete_photo_no">Não</string>
+
+    <string name="photo_widget_configure_select_interval">Intervalo de troca</string>
+    <string name="photo_widget_configure_interval_one_day">A cada dia</string>
+    <string name="photo_widget_configure_interval_twelve_hours">A cada 12 horas</string>
+    <string name="photo_widget_configure_interval_six_hours">A cada 6 horas</string>
+    <string name="photo_widget_configure_interval_one_hour">A cada hora</string>
+    <string name="photo_widget_configure_interval_thirty_minutes">A cada 30 minutos</string>
+
+    <string name="photo_widget_configure_applied_shape">Forma</string>
+    <string name="photo_widget_configure_add_to_home">Adicionar à tela inicial</string>
+
+    <!-- Content Description -->
+    <string name="photo_widget_cd_host">Widget de fotos da tela inicial</string>
+    <string name="photo_widget_cd_open_photo_picker">Abrir a galeria</string>
+</resources>

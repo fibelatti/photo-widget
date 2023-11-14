@@ -217,6 +217,7 @@ private fun AspectRatioPicker(
         Text(
             text = stringResource(id = R.string.photo_widget_home_aspect_ratio),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyMedium,
         )
     }

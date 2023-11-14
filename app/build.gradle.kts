@@ -49,7 +49,7 @@ android {
 
         base.archivesName = "$applicationId-v$versionName-$versionCode"
 
-        resourceConfigurations.add("en")
+        resourceConfigurations.addAll(listOf("en", "pt"))
 
         vectorDrawables.useSupportLibrary = true
     }
