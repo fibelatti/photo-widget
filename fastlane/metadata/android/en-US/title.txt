@@ -1,1 +1,1 @@
-Photo Widget
+Material Photo Widget
