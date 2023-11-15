@@ -5,9 +5,19 @@ Photo Widget
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Android CI](https://github.com/fibelatti/photo-widget/workflows/Android%20CI/badge.svg)](https://github.com/fibelatti/photo-widget/actions?query=workflow%3A%22Android+CI%22)
 
-Photo Widget is as simple as it can be: a home screen widget to display a photo or collection of
-photos. It is a free, no-ads, open source alternative for people who want to customise their home
-screen in a simple way.
+Photo Widget is as simple as it can be: an Android home screen widget to display a photo or
+collection of photos. It is a free, no-ads, open source alternative for people who want to customize
+their home screen with their favorite photos.
+
+About the project
+--------
+
+Photo Widget is a playground to study and explore modern Android development.
+
+Explored topics:
+- Material Design, including Material 3
+- Android Jetpack, including Jetpack Compose
+- Home screen widgets
 
 License
 --------
@@ -29,3 +39,5 @@ License
 Attributions
 --------
 Vectors and icons by <a href="https://dazzleui.gumroad.com/l/dazzleiconsfree?ref=svgrepo.com" target="_blank">Dazzle Ui</a> in CC Attribution License via <a href="https://www.svgrepo.com/" target="_blank">SVG Repo</a>
+
+Screenshots were generated with <a href="https://screenshots.pro" target="_blank">App Store Screenshots Generator</a>.
