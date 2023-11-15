@@ -1,1 +1,3 @@
-Initial release of Photo Widget 🎉
+The first release of Material Photo Widget brings 3 different aspect ratios and 8 different shapes for you to customize your home screen with your favorite photos.
+
+Feedback and suggestions are always welcome, visit the project page to contribute!
