@@ -72,7 +72,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 PhotoWidgetConfigureScreen(
                     photos = state.photos.toStableList(),
                     onPhotoPickerClick = ::launchPhotoPicker,
-                    onPhotoClick = ::showRemovePhotoDialog,
+                    onPhotoLongClick = ::showRemovePhotoDialog,
                     loopingInterval = state.loopingInterval,
                     onLoopingIntervalPickerClick = ::showIntervalPicker,
                     aspectRatio = state.aspectRatio,
