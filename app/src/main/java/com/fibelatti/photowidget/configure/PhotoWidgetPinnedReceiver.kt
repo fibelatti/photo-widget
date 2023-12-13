@@ -16,9 +16,17 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val widgetId = intent.appWidgetId
+            .takeUnless { it == AppWidgetManager.INVALID_APPWIDGET_ID }
+            // Workaround Samsung devices that fail to update the intent with the actual ID
+            ?: PhotoWidgetProvider.ids(context = context).lastOrNull()
+            // Exit early if the widget was not placed
+            ?: return
 
-        // Exit early if the widget was not placed
-        if (widgetId == AppWidgetManager.INVALID_APPWIDGET_ID) return
+        // A callback intent is required as it carries the widget data
+        val callbackIntent = PhotoWidgetPinnedReceiver.callbackIntent ?: return
+
+        // Reset the static field once it's been consumed
+        PhotoWidgetPinnedReceiver.callbackIntent = null
 
         val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
         val saveUseCase = entryPoint.savePhotoWidgetUseCase()
@@ -27,10 +35,10 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
         // Persist the widget data since it was placed on the home screen
         saveUseCase(
             appWidgetId = widgetId,
-            enableLooping = intent.enableLooping,
-            loopingInterval = intent.loopingInterval,
-            aspectRatio = intent.aspectRatio,
-            shapeId = intent.shapeId,
+            enableLooping = callbackIntent.enableLooping,
+            loopingInterval = callbackIntent.loopingInterval,
+            aspectRatio = callbackIntent.aspectRatio,
+            shapeId = callbackIntent.shapeId,
         )
 
         // Update the widget UI using the updated storage data
@@ -38,8 +46,8 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
             context = context,
             appWidgetId = widgetId,
             photoPath = storage.getWidgetPhotos(widgetId).first(),
-            aspectRatio = intent.aspectRatio,
-            shapeId = intent.shapeId,
+            aspectRatio = callbackIntent.aspectRatio,
+            shapeId = callbackIntent.shapeId,
         )
 
         // Finally finish the configure activity since it's no longer needed
@@ -47,5 +55,15 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
             this.appWidgetId = widgetId
         }
         LocalBroadcastManager.getInstance(context).sendBroadcast(finishIntent)
+    }
+
+    companion object {
+
+        /**
+         * Workaround Samsung devices that fail to deliver the callback Intent provided to
+         * `PendingIntent.getBroadcast`. Any caller that depends on this receiver should also
+         * set this field, which will be used to retrieve the widget data.
+         */
+        var callbackIntent: Intent? = null
     }
 }

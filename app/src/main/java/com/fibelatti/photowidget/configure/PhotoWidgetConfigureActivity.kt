@@ -232,12 +232,16 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             AppWidgetManager.EXTRA_APPWIDGET_PREVIEW to remoteViews,
         )
 
-        val callbackIntent = Intent(this, PhotoWidgetPinnedReceiver::class.java).apply {
-            this.enableLooping = enableLooping
-            this.loopingInterval = loopingInterval
-            this.aspectRatio = aspectRatio
-            this.shapeId = shapeId
-        }
+        val callbackIntent = Intent(this, PhotoWidgetPinnedReceiver::class.java)
+            .apply {
+                this.enableLooping = enableLooping
+                this.loopingInterval = loopingInterval
+                this.aspectRatio = aspectRatio
+                this.shapeId = shapeId
+            }
+            .also {
+                PhotoWidgetPinnedReceiver.callbackIntent = it
+            }
 
         val successCallback = PendingIntent.getBroadcast(
             this,
