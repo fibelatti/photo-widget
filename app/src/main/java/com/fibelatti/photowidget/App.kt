@@ -25,6 +25,12 @@ class App : Application(), Configuration.Provider {
     @Inject
     lateinit var injectingWorkerFactory: InjectingWorkerFactory
 
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setMinimumLoggingLevel(android.util.Log.INFO)
+            .setWorkerFactory(injectingWorkerFactory)
+            .build()
+
     override fun onCreate() {
         super.onCreate()
 
@@ -57,9 +63,4 @@ class App : Application(), Configuration.Provider {
             existingWidgetIds = PhotoWidgetProvider.ids(context = this),
         )
     }
-
-    override fun getWorkManagerConfiguration(): Configuration = Configuration.Builder()
-        .setMinimumLoggingLevel(android.util.Log.INFO)
-        .setWorkerFactory(injectingWorkerFactory)
-        .build()
 }
