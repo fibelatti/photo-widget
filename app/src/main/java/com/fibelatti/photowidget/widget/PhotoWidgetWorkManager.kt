@@ -54,7 +54,7 @@ class LoopingPhotoWidgetWorker(
         return try {
             val currentIndex = photoWidgetStorage.getWidgetIndex(appWidgetId)
             val nextIndex = if (currentIndex == appWidgetPhotos.size - 1) 0 else currentIndex + 1
-            val nextPhotoPath = appWidgetPhotos[nextIndex]
+            val nextPhotoPath = appWidgetPhotos[nextIndex].path
 
             photoWidgetStorage.saveWidgetIndex(appWidgetId = appWidgetId, index = nextIndex)
 

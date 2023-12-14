@@ -45,7 +45,7 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
         PhotoWidgetProvider.update(
             context = context,
             appWidgetId = widgetId,
-            photoPath = storage.getWidgetPhotos(widgetId).first(),
+            photoPath = storage.getWidgetPhotos(widgetId).first().path,
             aspectRatio = callbackIntent.aspectRatio,
             shapeId = callbackIntent.shapeId,
         )

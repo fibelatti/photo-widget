@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.platform.savedState
@@ -44,7 +45,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
         _state.update { current ->
             current.copy(
-                photos = savedPhotos,
+                photos = savedPhotos.map { (name, path) -> LocalPhoto(name = name, path = path) },
                 loopingInterval = savedInterval ?: current.loopingInterval,
                 aspectRatio = aspectRatio ?: savedAspectRatio,
                 shapeId = savedShapeId ?: current.shapeId,
@@ -52,15 +53,28 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun photoSelected(source: Uri?) {
+    fun photoPicked(source: Uri?) {
         if (source == null) return
+
+        val photo = photoWidgetStorage.newWidgetPhoto(
+            appWidgetId = appWidgetId,
+            source = source,
+        )
+
+        _state.update { current -> current.copy(photos = current.photos + photo) }
+    }
+
+    fun requestCrop(photo: LocalPhoto) {
+        val (source, destination) = photoWidgetStorage.getCropSources(
+            appWidgetId = appWidgetId,
+            photoName = photo.name,
+        )
 
         _state.update { current ->
             current.copy(
                 message = PhotoWidgetConfigureState.Message.LaunchCrop(
-                    source = source,
-                    destination = photoWidgetStorage.newWidgetPhoto(appWidgetId = appWidgetId)
-                        .let(Uri::fromFile),
+                    source = Uri.fromFile(source),
+                    destination = Uri.fromFile(destination),
                     aspectRatio = current.aspectRatio,
                 ),
             )
@@ -68,12 +82,25 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     }
 
     fun photoCropped(path: String) {
-        _state.update { current -> current.copy(photos = current.photos + path) }
+        _state.update { current ->
+            current.copy(
+                photos = current.photos.map { photo ->
+                    if (photo.path == path) {
+                        photo.copy(timestamp = System.currentTimeMillis())
+                    } else {
+                        photo
+                    }
+                },
+            )
+        }
     }
 
-    fun photoRemoved(path: String) {
-        photoWidgetStorage.deleteWidgetPhoto(path)
-        _state.update { current -> current.copy(photos = current.photos - path) }
+    fun photoRemoved(photo: LocalPhoto) {
+        photoWidgetStorage.deleteWidgetPhoto(
+            appWidgetId = appWidgetId,
+            photoName = photo.name,
+        )
+        _state.update { current -> current.copy(photos = current.photos - photo) }
     }
 
     fun intervalSelected(interval: PhotoWidgetLoopingInterval) {
@@ -100,7 +127,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 _state.update { current ->
                     current.copy(
                         message = PhotoWidgetConfigureState.Message.RequestPin(
-                            photoPath = currentState.photos.first(),
+                            photoPath = currentState.photos.first().path,
                             enableLooping = currentState.photos.size > 1,
                             loopingInterval = currentState.loopingInterval,
                             aspectRatio = current.aspectRatio,
@@ -124,7 +151,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     current.copy(
                         message = PhotoWidgetConfigureState.Message.AddWidget(
                             appWidgetId = appWidgetId,
-                            photoPath = currentState.photos.first(),
+                            photoPath = currentState.photos.first().path,
                             aspectRatio = current.aspectRatio,
                             shapeId = currentState.shapeId,
                         ),

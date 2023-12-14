@@ -27,7 +27,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         for (appWidgetId in appWidgetIds) {
             val photos = storage.getWidgetPhotos(appWidgetId = appWidgetId)
             val currentIndex = storage.getWidgetIndex(appWidgetId = appWidgetId)
-            val photoPath = photos.getOrNull(currentIndex) ?: continue
+            val photoPath = photos.getOrNull(currentIndex)?.path ?: continue
             val aspectRatio = storage.getWidgetAspectRatio(appWidgetId = appWidgetId)
             val shapeId = storage.getWidgetShapeId(appWidgetId = appWidgetId)
 

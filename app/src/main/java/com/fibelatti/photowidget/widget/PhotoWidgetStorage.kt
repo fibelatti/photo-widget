@@ -1,11 +1,15 @@
 package com.fibelatti.photowidget.widget
 
 import android.content.Context
+import android.net.Uri
 import androidx.core.content.edit
+import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,18 +28,59 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         Context.MODE_PRIVATE,
     )
 
-    fun newWidgetPhoto(appWidgetId: Int): File {
-        return File("${getWidgetDir(appWidgetId)}/${UUID.randomUUID()}.png")
+    private val contentResolver = context.contentResolver
+
+    fun newWidgetPhoto(appWidgetId: Int, source: Uri): LocalPhoto {
+        val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
+        val originalPhotosDir = File("$widgetDir/original").apply { mkdirs() }
+        val newPhotoName = "${UUID.randomUUID()}.png"
+
+        val originalPhoto = File("$originalPhotosDir/$newPhotoName")
+        val croppedPhoto = File("$widgetDir/$newPhotoName")
+
+        contentResolver.openInputStream(source)?.use { inputStream ->
+            inputStream.copyTo(FileOutputStream(originalPhoto))
+        }
+
+        FileInputStream(originalPhoto).use { fileInputStream ->
+            fileInputStream.copyTo(FileOutputStream(croppedPhoto))
+        }
+
+        return LocalPhoto(name = newPhotoName, path = croppedPhoto.path)
     }
 
-    fun getWidgetPhotos(appWidgetId: Int): List<String> {
+    fun getWidgetPhotos(appWidgetId: Int): List<LocalPhoto> {
         return getWidgetDir(appWidgetId = appWidgetId).let { dir ->
-            dir.list().orEmpty().map { file -> "$dir/$file" }
+            dir.list { _, name -> name != "original" }
+                .orEmpty()
+                .map { file -> LocalPhoto(name = file, path = "$dir/$file") }
         }
     }
 
-    fun deleteWidgetPhoto(photoPath: String) {
-        with(File(photoPath)) {
+    fun getCropSources(appWidgetId: Int, photoName: String): Pair<File, File> {
+        val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
+        val originalPhotosDir = File("$widgetDir/original")
+
+        val originalPhoto = File("$originalPhotosDir/$photoName")
+        val croppedPhoto = File("$widgetDir/$photoName")
+
+        if (!originalPhoto.exists()) {
+            FileInputStream(croppedPhoto).use { fileInputStream ->
+                fileInputStream.copyTo(FileOutputStream(originalPhoto))
+            }
+        }
+
+        return originalPhoto to croppedPhoto
+    }
+
+    fun deleteWidgetPhoto(appWidgetId: Int, photoName: String) {
+        val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
+        val originalPhotosDir = File("$widgetDir/original")
+
+        with(File("$originalPhotosDir/$photoName")) {
+            if (exists()) delete()
+        }
+        with(File("$widgetDir/$photoName")) {
             if (exists()) delete()
         }
     }

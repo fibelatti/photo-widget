@@ -56,6 +56,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.RoundedPolygon
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
@@ -68,9 +69,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun PhotoWidgetConfigureScreen(
-    photos: StableList<String>,
+    photos: StableList<LocalPhoto>,
     onPhotoPickerClick: () -> Unit,
-    onPhotoLongClick: (String) -> Unit,
+    onPhotoLongClick: (LocalPhoto) -> Unit,
     loopingInterval: PhotoWidgetLoopingInterval,
     onLoopingIntervalPickerClick: () -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
@@ -87,13 +88,13 @@ fun PhotoWidgetConfigureScreen(
                 .fillMaxSize()
                 .padding(paddingValues),
         ) {
-            val firstPhotoPath = photos.value.firstOrNull()
-            var selectedPhotoPath: String? by remember(firstPhotoPath) {
-                mutableStateOf(firstPhotoPath)
+            val firstPhoto = photos.value.firstOrNull()
+            var selectedPhoto: LocalPhoto? by remember(firstPhoto) {
+                mutableStateOf(firstPhoto)
             }
 
             PhotoWidgetViewer(
-                photoPath = selectedPhotoPath,
+                photo = selectedPhoto,
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
                 modifier = Modifier
@@ -104,7 +105,7 @@ fun PhotoWidgetConfigureScreen(
             PhotoPicker(
                 photos = photos,
                 onPhotoPickerClick = onPhotoPickerClick,
-                onPhotoClick = { photoPath -> selectedPhotoPath = photoPath },
+                onPhotoClick = { photo -> selectedPhoto = photo },
                 onPhotoLongClick = onPhotoLongClick,
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
@@ -141,7 +142,7 @@ fun PhotoWidgetConfigureScreen(
 
 @Composable
 private fun PhotoWidgetViewer(
-    photoPath: String?,
+    photo: LocalPhoto?,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     modifier: Modifier = Modifier,
@@ -170,9 +171,9 @@ private fun PhotoWidgetViewer(
                 .blur(10.dp),
         )
 
-        if (photoPath != null) {
+        if (photo != null) {
             ShapedPhoto(
-                photoPath = photoPath,
+                photo = photo,
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
                 modifier = Modifier
@@ -186,10 +187,10 @@ private fun PhotoWidgetViewer(
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 private fun PhotoPicker(
-    photos: StableList<String>,
+    photos: StableList<LocalPhoto>,
     onPhotoPickerClick: () -> Unit,
-    onPhotoClick: (String) -> Unit,
-    onPhotoLongClick: (String) -> Unit,
+    onPhotoClick: (LocalPhoto) -> Unit,
+    onPhotoLongClick: (LocalPhoto) -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     modifier: Modifier = Modifier,
@@ -251,7 +252,7 @@ private fun PhotoPicker(
 
             items(photos.value) { photo ->
                 ShapedPhoto(
-                    photoPath = photo,
+                    photo = photo,
                     aspectRatio = aspectRatio,
                     shapeId = shapeId,
                     modifier = Modifier
@@ -372,16 +373,16 @@ private fun ShapePicker(
 
 @Composable
 private fun ShapedPhoto(
-    photoPath: String,
+    photo: LocalPhoto,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     modifier: Modifier = Modifier,
 ) {
-    val photoBitmap = remember(photoPath) {
-        BitmapFactory.decodeFile(photoPath)
+    val photoBitmap = remember(photo) {
+        BitmapFactory.decodeFile(photo.path)
     }
     val transformedBitmap = if (aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
-        remember(photoPath, shapeId) {
+        remember(photo, shapeId) {
             val shape = PhotoWidgetShapeBuilder.buildShape(
                 shapeId = shapeId,
                 width = photoBitmap.width,
@@ -391,7 +392,7 @@ private fun ShapedPhoto(
             photoBitmap.withPolygonalShape(shape).asImageBitmap()
         }
     } else {
-        remember(photoPath, aspectRatio) {
+        remember(photo, aspectRatio) {
             photoBitmap.withRoundedCorners().asImageBitmap()
         }
     }

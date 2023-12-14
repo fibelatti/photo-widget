@@ -22,6 +22,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.platform.AppTheme
@@ -72,7 +73,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 PhotoWidgetConfigureScreen(
                     photos = state.photos.toStableList(),
                     onPhotoPickerClick = ::launchPhotoPicker,
-                    onPhotoLongClick = ::showRemovePhotoDialog,
+                    onPhotoLongClick = ::showPhotoMenu,
                     loopingInterval = state.loopingInterval,
                     onLoopingIntervalPickerClick = ::showIntervalPicker,
                     aspectRatio = state.aspectRatio,
@@ -142,7 +143,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     }
 
     private fun onPhotoPicked(uri: Uri?) {
-        viewModel.photoSelected(uri)
+        viewModel.photoPicked(uri)
     }
 
     private fun launchPhotoCrop(
@@ -168,11 +169,31 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         result.data?.let(UCrop::getOutput)?.path?.let(viewModel::photoCropped)
     }
 
-    private fun showRemovePhotoDialog(photoPath: String) {
+    private fun showPhotoMenu(photo: LocalPhoto) {
+        SelectionDialog.show(
+            context = this,
+            title = getString(R.string.photo_widget_configure_menu_title),
+            options = PhotoMenuOptions.entries.toStableList(),
+            optionName = { option ->
+                when (option) {
+                    PhotoMenuOptions.CROP_PHOTO -> getString(R.string.photo_widget_configure_menu_crop)
+                    PhotoMenuOptions.REMOVE_PHOTO -> getString(R.string.photo_widget_configure_menu_remote)
+                }
+            },
+            onOptionSelected = { option ->
+                when (option) {
+                    PhotoMenuOptions.CROP_PHOTO -> viewModel.requestCrop(photo = photo)
+                    PhotoMenuOptions.REMOVE_PHOTO -> showRemovePhotoDialog(photo = photo)
+                }
+            },
+        )
+    }
+
+    private fun showRemovePhotoDialog(photo: LocalPhoto) {
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.photo_widget_configure_delete_photo_title)
             .setPositiveButton(R.string.photo_widget_configure_delete_photo_yes) { _, _ ->
-                viewModel.photoRemoved(photoPath)
+                viewModel.photoRemoved(photo)
             }
             .setNegativeButton(R.string.photo_widget_configure_delete_photo_no) { _, _ -> }
             .show()
@@ -255,6 +276,11 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             previewBundle,
             successCallback,
         )
+    }
+
+    enum class PhotoMenuOptions {
+        CROP_PHOTO,
+        REMOVE_PHOTO,
     }
 
     companion object {

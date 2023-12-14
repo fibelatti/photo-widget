@@ -1,12 +1,13 @@
 package com.fibelatti.photowidget.configure
 
 import android.net.Uri
+import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 
 data class PhotoWidgetConfigureState(
-    val photos: List<String> = emptyList(),
+    val photos: List<LocalPhoto> = emptyList(),
     val loopingInterval: PhotoWidgetLoopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
     val shapeId: String = PhotoWidgetShapeBuilder.defaultShapeId(),
