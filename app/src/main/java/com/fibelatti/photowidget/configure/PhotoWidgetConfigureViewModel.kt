@@ -53,15 +53,17 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun photoPicked(source: Uri?) {
-        if (source == null) return
+    fun photoPicked(source: List<Uri>) {
+        if (source.isEmpty()) return
 
-        val photo = photoWidgetStorage.newWidgetPhoto(
-            appWidgetId = appWidgetId,
-            source = source,
-        )
+        val newPhotos = source.map { uri ->
+            photoWidgetStorage.newWidgetPhoto(
+                appWidgetId = appWidgetId,
+                source = uri,
+            )
+        }
 
-        _state.update { current -> current.copy(photos = current.photos + photo) }
+        _state.update { current -> current.copy(photos = current.photos + newPhotos) }
     }
 
     fun requestCrop(photo: LocalPhoto) {

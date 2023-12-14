@@ -40,7 +40,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     private val viewModel by viewModels<PhotoWidgetConfigureViewModel>()
 
     private val photoPickerLauncher = registerForActivityResult(
-        ActivityResultContracts.GetContent(),
+        ActivityResultContracts.GetMultipleContents(),
         ::onPhotoPicked,
     )
 
@@ -142,8 +142,8 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         photoPickerLauncher.launch("image/*")
     }
 
-    private fun onPhotoPicked(uri: Uri?) {
-        viewModel.photoPicked(uri)
+    private fun onPhotoPicked(source: List<Uri>) {
+        viewModel.photoPicked(source = source)
     }
 
     private fun launchPhotoCrop(
