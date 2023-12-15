@@ -10,6 +10,7 @@ import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
@@ -92,11 +93,30 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             finishReceiver,
             IntentFilter(ACTION_FINISH),
         )
+
+        checkIntent()
     }
 
     override fun onDestroy() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(finishReceiver)
         super.onDestroy()
+    }
+
+    @Suppress("DEPRECATION")
+    private fun checkIntent() {
+        if (!intent.hasExtra(Intent.EXTRA_STREAM)) return
+
+        when {
+            Intent.ACTION_SEND == intent.action -> {
+                val photo = intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) ?: return
+                viewModel.photoPicked(source = listOf(photo as Uri))
+            }
+
+            Intent.ACTION_SEND_MULTIPLE == intent.action -> {
+                val photos = intent.getParcelableArrayListExtra<Parcelable>(Intent.EXTRA_STREAM) ?: return
+                viewModel.photoPicked(source = photos.map { it as Uri })
+            }
+        }
     }
 
     private fun handleMessage(message: PhotoWidgetConfigureState.Message?) {
