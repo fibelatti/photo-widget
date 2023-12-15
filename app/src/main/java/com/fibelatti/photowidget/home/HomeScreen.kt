@@ -52,6 +52,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.fibelatti.photowidget.BuildConfig
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.ColoredShape
@@ -59,6 +60,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
@@ -89,9 +91,10 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Text(
+            AutoSizeText(
                 text = stringResource(id = R.string.photo_widget_home_title),
                 modifier = Modifier.padding(horizontal = 32.dp),
+                maxLines = 3,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge,
             )
@@ -302,6 +305,7 @@ private fun HomeScreenFooter(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             val footerActionModifier = Modifier.weight(1f)
 
@@ -403,10 +407,13 @@ private fun FooterAction(
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        Text(
+        AutoSizeText(
             text = stringResource(id = label),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.labelSmall,
+            maxLines = 1,
+            minTextSize = 8.sp,
+            style = MaterialTheme.typography.labelSmall.copy(
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            ),
         )
     }
 }
