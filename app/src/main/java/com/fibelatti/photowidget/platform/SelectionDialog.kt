@@ -70,7 +70,7 @@ private fun <T> SelectionDialogContent(
             )
         }
 
-        items(options.value) { option ->
+        items(options) { option ->
             FilledTonalButton(
                 onClick = { onOptionSelected(option) },
                 modifier = Modifier.fillMaxWidth(),

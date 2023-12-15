@@ -63,6 +63,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.ui.foundation.StableList
+import com.fibelatti.ui.foundation.stableListOf
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 import kotlinx.coroutines.launch
@@ -88,7 +89,7 @@ fun PhotoWidgetConfigureScreen(
                 .fillMaxSize()
                 .padding(paddingValues),
         ) {
-            val firstPhoto = photos.value.firstOrNull()
+            val firstPhoto = photos.firstOrNull()
             var selectedPhoto: LocalPhoto? by remember(firstPhoto) {
                 mutableStateOf(firstPhoto)
             }
@@ -112,7 +113,7 @@ fun PhotoWidgetConfigureScreen(
                 modifier = Modifier.padding(top = 16.dp),
             )
 
-            AnimatedVisibility(visible = photos.value.size > 1) {
+            AnimatedVisibility(visible = photos.size > 1) {
                 PhotoIntervalPicker(
                     loopingInterval = loopingInterval,
                     onLoopingIntervalPickerClick = onLoopingIntervalPickerClick,
@@ -201,7 +202,7 @@ private fun PhotoPicker(
     ) {
         Text(
             text = stringResource(
-                id = if (photos.value.isEmpty()) {
+                id = if (photos.isEmpty()) {
                     R.string.photo_widget_configure_select_photo
                 } else {
                     R.string.photo_widget_configure_selected_photos
@@ -250,7 +251,7 @@ private fun PhotoPicker(
                 }
             }
 
-            items(photos.value) { photo ->
+            items(photos) { photo ->
                 ShapedPhoto(
                     photo = photo,
                     aspectRatio = aspectRatio,
@@ -438,7 +439,7 @@ fun ColoredShape(
 private fun PhotoWidgetConfigureScreenPreview() {
     ExtendedTheme {
         PhotoWidgetConfigureScreen(
-            photos = StableList(),
+            photos = stableListOf(),
             onPhotoPickerClick = {},
             onPhotoLongClick = {},
             loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,

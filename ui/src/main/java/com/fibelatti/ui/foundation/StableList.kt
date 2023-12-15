@@ -3,17 +3,25 @@
 package com.fibelatti.ui.foundation
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
+import java.util.Collections
 
 /**
- * An [Immutable] class that wraps a [List] of [T] in order to provide stability to a composable
- * when needed. The given [value] is assumed to be immutable.
+ * An [Immutable] wrapper class that delegates to a [List] of [T] in order to provide stability to
+ * a composable when needed.
  */
-@Stable
-data class StableList<T>(val value: List<T> = emptyList())
+@Immutable
+class StableList<T> private constructor(items: List<T>) : List<T> by items {
 
-fun <T> stableListOf(vararg items: T): StableList<T> = StableList(items.toList())
+    companion object {
 
-fun <T> List<T>.toStableList(): StableList<T> = StableList(value = toList())
+        operator fun <T> invoke(
+            value: List<T>,
+        ): StableList<T> = StableList(items = Collections.unmodifiableList(value))
+    }
+}
 
-fun <T> Array<T>.toStableList(): StableList<T> = toList().toStableList()
+fun <T> stableListOf(vararg items: T): StableList<T> = StableList(value = items.toList())
+
+fun <T> List<T>.toStableList(): StableList<T> = StableList(value = this)
+
+fun <T> Array<T>.toStableList(): StableList<T> = StableList(value = this.toList())
