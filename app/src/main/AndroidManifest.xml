@@ -36,15 +36,12 @@
         </activity>
 
         <activity
-            android:name="com.yalantis.ucrop.UCropActivity"
+            android:name=".licenses.OssLicensesActivity"
             android:exported="false" />
 
         <activity
-            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-            android:theme="@style/AppTheme.WithActionBar" />
-        <activity
-            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-            android:theme="@style/AppTheme.WithActionBar" />
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:exported="false" />
 
         <receiver
             android:name=".widget.PhotoWidgetProvider"

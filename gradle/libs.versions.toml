@@ -5,6 +5,7 @@ composeBom = "2023.10.01"
 hilt = "2.49"
 kotlin = "1.9.21"
 lifecycle = "2.6.2"
+aboutLibraries = "10.9.2"
 
 [libraries]
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
@@ -30,8 +31,7 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 
 ucrop = { module = "com.github.yalantis:ucrop", version = "2.2.8" }
 
-oss-licenses-plugin = { module = "com.google.android.gms:oss-licenses-plugin", version = "0.10.6" }
-oss-licenses-library = { module = "com.google.android.gms:play-services-oss-licenses", version = "17.0.1" }
+about-libraries = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "aboutLibraries" }
 
 leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.12" }
 
@@ -43,3 +43,4 @@ ksp = { id = "com.google.devtools.ksp", version = "1.9.21-1.0.15" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 spotless = { id = "com.diffplug.spotless", version = "6.21.0" }
 cache-fix = { id = "org.gradle.android.cache-fix", version = "3.0" }
+about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }

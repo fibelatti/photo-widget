@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
-    id("com.google.android.gms.oss-licenses-plugin")
+    alias(libs.plugins.about.libraries)
 }
 
 object AppInfo {
@@ -136,7 +136,7 @@ dependencies {
 
     implementation(libs.ucrop)
 
-    implementation(libs.oss.licenses.library)
+    implementation(libs.about.libraries)
 
     debugImplementation(libs.leakcanary)
 }

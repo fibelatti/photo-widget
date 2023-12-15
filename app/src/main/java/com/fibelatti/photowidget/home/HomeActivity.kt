@@ -12,12 +12,12 @@ import androidx.core.app.ShareCompat
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.configure.aspectRatio
+import com.fibelatti.photowidget.licenses.OssLicensesActivity
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.ui.foundation.stableListOf
 import com.fibelatti.ui.foundation.toStableList
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -120,8 +120,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun viewOpenSourceLicenses() {
-        OssLicensesMenuActivity.setActivityTitle(getString(R.string.photo_widget_licenses_title))
-        startActivity(Intent(this, OssLicensesMenuActivity::class.java))
+        startActivity(Intent(this, OssLicensesActivity::class.java))
     }
 
     private companion object {

@@ -10,8 +10,6 @@
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialDialog</item>
     </style>
 
-    <style name="AppTheme.WithActionBar" parent="Theme.Material3.DayNight" />
-
     <style name="AppTheme.Overlay" parent="ThemeOverlay.Material3.DynamicColors.DayNight">
         <item name="android:colorBackground">@color/color_background</item>
     </style>

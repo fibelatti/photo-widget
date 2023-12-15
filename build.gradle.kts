@@ -11,16 +11,13 @@ plugins {
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.spotless) apply false
     alias(libs.plugins.cache.fix) apply false
+    alias(libs.plugins.about.libraries) apply false
 }
 
 buildscript {
     extra["compileSdkVersion"] = 34
     extra["targetSdkVersion"] = 34
     extra["minSdkVersion"] = 26
-
-    dependencies {
-        classpath(libs.oss.licenses.plugin)
-    }
 }
 
 allprojects {
