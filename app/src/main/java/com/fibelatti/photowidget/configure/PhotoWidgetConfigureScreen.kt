@@ -10,7 +10,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,7 +36,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -52,9 +50,7 @@ import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -76,8 +72,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun PhotoWidgetConfigureScreen(
     photos: StableList<LocalPhoto>,
+    selectedPhoto: LocalPhoto?,
     onPhotoPickerClick: () -> Unit,
-    onPhotoLongClick: (LocalPhoto) -> Unit,
+    onPhotoClick: (LocalPhoto) -> Unit,
     loopingInterval: PhotoWidgetLoopingInterval,
     onLoopingIntervalPickerClick: () -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
@@ -100,10 +97,11 @@ fun PhotoWidgetConfigureScreen(
 
             PhotoWidgetConfigureContent(
                 photos = photos,
+                selectedPhoto = selectedPhoto,
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
                 onPhotoPickerClick = onPhotoPickerClick,
-                onPhotoLongClick = onPhotoLongClick,
+                onPhotoClick = onPhotoClick,
                 loopingInterval = loopingInterval,
                 onLoopingIntervalPickerClick = onLoopingIntervalPickerClick,
                 onShapeClick = onShapeClick,
@@ -133,10 +131,11 @@ fun PhotoWidgetConfigureScreen(
 @Composable
 private fun PhotoWidgetConfigureContent(
     photos: StableList<LocalPhoto>,
+    selectedPhoto: LocalPhoto?,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     onPhotoPickerClick: () -> Unit,
-    onPhotoLongClick: (LocalPhoto) -> Unit,
+    onPhotoClick: (LocalPhoto) -> Unit,
     loopingInterval: PhotoWidgetLoopingInterval,
     onLoopingIntervalPickerClick: () -> Unit,
     onShapeClick: (String) -> Unit,
@@ -144,11 +143,6 @@ private fun PhotoWidgetConfigureContent(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        val firstPhoto = photos.firstOrNull()
-        var selectedPhoto: LocalPhoto? by remember(firstPhoto) {
-            mutableStateOf(firstPhoto)
-        }
-
         PhotoWidgetViewer(
             photo = selectedPhoto,
             aspectRatio = aspectRatio,
@@ -161,8 +155,7 @@ private fun PhotoWidgetConfigureContent(
         PhotoPicker(
             photos = photos,
             onPhotoPickerClick = onPhotoPickerClick,
-            onPhotoClick = { photo -> selectedPhoto = photo },
-            onPhotoLongClick = onPhotoLongClick,
+            onPhotoClick = onPhotoClick,
             aspectRatio = aspectRatio,
             shapeId = shapeId,
             modifier = Modifier.padding(top = 16.dp),
@@ -245,7 +238,6 @@ private fun PhotoPicker(
     photos: StableList<LocalPhoto>,
     onPhotoPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
-    onPhotoLongClick: (LocalPhoto) -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     modifier: Modifier = Modifier,
@@ -266,7 +258,6 @@ private fun PhotoPicker(
             style = MaterialTheme.typography.titleMedium,
         )
 
-        val haptic = LocalHapticFeedback.current
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
@@ -274,7 +265,7 @@ private fun PhotoPicker(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            stickyHeader {
+            item {
                 val shape = remember(shapeId) {
                     PhotoWidgetShapeBuilder.buildShape(
                         shapeId = shapeId,
@@ -313,15 +304,11 @@ private fun PhotoPicker(
                     modifier = Modifier
                         .fillMaxHeight()
                         .aspectRatio(ratio = aspectRatio.aspectRatio)
-                        .combinedClickable(
+                        .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
                             role = Role.Image,
                             onClick = { onPhotoClick(photo) },
-                            onLongClick = {
-                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                                onPhotoLongClick(photo)
-                            },
                         ),
                 )
             }
@@ -499,8 +486,9 @@ private fun PhotoWidgetConfigureScreenPreview() {
     ExtendedTheme {
         PhotoWidgetConfigureScreen(
             photos = stableListOf(),
+            selectedPhoto = null,
             onPhotoPickerClick = {},
-            onPhotoLongClick = {},
+            onPhotoClick = {},
             loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
             onLoopingIntervalPickerClick = {},
             aspectRatio = PhotoWidgetAspectRatio.SQUARE,

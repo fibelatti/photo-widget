@@ -8,6 +8,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 
 data class PhotoWidgetConfigureState(
     val photos: List<LocalPhoto> = emptyList(),
+    val selectedPhoto: LocalPhoto? = null,
     val loopingInterval: PhotoWidgetLoopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
     val shapeId: String = PhotoWidgetShapeBuilder.defaultShapeId(),

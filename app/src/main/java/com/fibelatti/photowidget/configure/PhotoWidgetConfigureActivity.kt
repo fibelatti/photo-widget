@@ -73,8 +73,9 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
                 PhotoWidgetConfigureScreen(
                     photos = state.photos.toStableList(),
+                    selectedPhoto = state.selectedPhoto,
                     onPhotoPickerClick = ::launchPhotoPicker,
-                    onPhotoLongClick = ::showPhotoMenu,
+                    onPhotoClick = ::showPhotoMenu,
                     loopingInterval = state.loopingInterval,
                     onLoopingIntervalPickerClick = ::showIntervalPicker,
                     aspectRatio = state.aspectRatio,
@@ -197,12 +198,14 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             options = PhotoMenuOptions.entries.toStableList(),
             optionName = { option ->
                 when (option) {
+                    PhotoMenuOptions.PREVIEW_PHOTO -> getString(R.string.photo_widget_configure_menu_preview)
                     PhotoMenuOptions.CROP_PHOTO -> getString(R.string.photo_widget_configure_menu_crop)
                     PhotoMenuOptions.REMOVE_PHOTO -> getString(R.string.photo_widget_configure_menu_remote)
                 }
             },
             onOptionSelected = { option ->
                 when (option) {
+                    PhotoMenuOptions.PREVIEW_PHOTO -> viewModel.photoSelected(photo = photo)
                     PhotoMenuOptions.CROP_PHOTO -> viewModel.requestCrop(photo = photo)
                     PhotoMenuOptions.REMOVE_PHOTO -> showRemovePhotoDialog(photo = photo)
                 }
@@ -300,6 +303,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     }
 
     enum class PhotoMenuOptions {
+        PREVIEW_PHOTO,
         CROP_PHOTO,
         REMOVE_PHOTO,
     }

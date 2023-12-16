@@ -48,8 +48,11 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         val savedShapeId = photoWidgetStorage.getWidgetShapeId(appWidgetId = appWidgetId)
 
         _state.update { current ->
+            val photos = savedPhotos.map { (name, path) -> LocalPhoto(name = name, path = path) }
+
             current.copy(
-                photos = savedPhotos.map { (name, path) -> LocalPhoto(name = name, path = path) },
+                photos = photos,
+                selectedPhoto = photos.firstOrNull(),
                 loopingInterval = savedInterval ?: current.loopingInterval,
                 aspectRatio = aspectRatio ?: savedAspectRatio,
                 shapeId = savedShapeId ?: current.shapeId,
@@ -73,12 +76,19 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             }.awaitAll().filterNotNull()
 
             _state.update { current ->
+                val updatedPhotos = current.photos + newPhotos
+
                 current.copy(
-                    photos = current.photos + newPhotos,
+                    photos = updatedPhotos,
+                    selectedPhoto = current.selectedPhoto ?: updatedPhotos.firstOrNull(),
                     isProcessing = false,
                 )
             }
         }
+    }
+
+    fun photoSelected(photo: LocalPhoto) {
+        _state.update { current -> current.copy(selectedPhoto = photo) }
     }
 
     fun requestCrop(photo: LocalPhoto) {
@@ -119,7 +129,17 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             appWidgetId = appWidgetId,
             photoName = photo.name,
         )
-        _state.update { current -> current.copy(photos = current.photos - photo) }
+        _state.update { current ->
+            val updatedPhotos = current.photos - photo
+            current.copy(
+                photos = updatedPhotos,
+                selectedPhoto = if (current.selectedPhoto?.name == photo.name) {
+                    updatedPhotos.firstOrNull()
+                } else {
+                    current.selectedPhoto
+                },
+            )
+        }
     }
 
     fun intervalSelected(interval: PhotoWidgetLoopingInterval) {

@@ -39,8 +39,9 @@
     <string name="photo_widget_configure_selected_photos">Selected photos</string>
 
     <string name="photo_widget_configure_menu_title">Photo options</string>
-    <string name="photo_widget_configure_menu_crop">Crop photo</string>
-    <string name="photo_widget_configure_menu_remote">Remove photo</string>
+    <string name="photo_widget_configure_menu_preview">Preview</string>
+    <string name="photo_widget_configure_menu_crop">Crop</string>
+    <string name="photo_widget_configure_menu_remote">Remove</string>
 
     <string name="photo_widget_configure_delete_photo_title">Remove this photo from the widget?</string>
     <string name="photo_widget_configure_delete_photo_yes">Yes</string>

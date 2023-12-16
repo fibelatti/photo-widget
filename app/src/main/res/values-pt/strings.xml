@@ -39,8 +39,9 @@
     <string name="photo_widget_configure_selected_photos">Fotos escolhidas</string>
 
     <string name="photo_widget_configure_menu_title">Selecione a opção</string>
-    <string name="photo_widget_configure_menu_crop">Recortar foto</string>
-    <string name="photo_widget_configure_menu_remote">Remover foto</string>
+    <string name="photo_widget_configure_menu_preview">Visualizar</string>
+    <string name="photo_widget_configure_menu_crop">Recortar</string>
+    <string name="photo_widget_configure_menu_remote">Remover</string>
 
     <string name="photo_widget_configure_delete_photo_title">Confirma a remoção desta foto do widget?</string>
     <string name="photo_widget_configure_delete_photo_yes">Sim</string>
