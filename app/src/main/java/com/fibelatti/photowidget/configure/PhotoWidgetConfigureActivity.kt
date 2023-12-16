@@ -81,6 +81,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     shapeId = state.shapeId,
                     onShapeClick = viewModel::shapeSelected,
                     onAddToHomeClick = viewModel::addNewWidget,
+                    isProcessing = state.isProcessing,
                 )
 
                 LaunchedEffect(state.message) {

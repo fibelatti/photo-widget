@@ -113,6 +113,8 @@ dependencies {
 
     // Kotlin
     implementation(libs.kotlin)
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
 
     // Android Platform
     implementation(libs.appcompat)

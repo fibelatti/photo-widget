@@ -11,6 +11,7 @@ data class PhotoWidgetConfigureState(
     val loopingInterval: PhotoWidgetLoopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
     val shapeId: String = PhotoWidgetShapeBuilder.defaultShapeId(),
+    val isProcessing: Boolean = false,
     val message: Message? = null,
 ) {
 

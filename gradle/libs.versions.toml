@@ -2,6 +2,7 @@
 agp = "8.2.0"
 composeCompiler = "1.5.6"
 composeBom = "2023.10.01"
+coroutines = "1.7.3"
 hilt = "2.49"
 kotlin = "1.9.21"
 lifecycle = "2.6.2"
@@ -9,6 +10,8 @@ aboutLibraries = "10.9.2"
 
 [libraries]
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 
 appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
 core-ktx = { module = "androidx.core:core-ktx", version = "1.12.0" }

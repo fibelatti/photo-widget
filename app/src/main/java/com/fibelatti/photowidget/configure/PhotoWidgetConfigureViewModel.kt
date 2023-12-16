@@ -4,16 +4,20 @@ import android.appwidget.AppWidgetManager
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.platform.savedState
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -56,30 +60,43 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     fun photoPicked(source: List<Uri>) {
         if (source.isEmpty()) return
 
-        val newPhotos = source.map { uri ->
-            photoWidgetStorage.newWidgetPhoto(
-                appWidgetId = appWidgetId,
-                source = uri,
-            )
-        }
+        _state.update { current -> current.copy(isProcessing = true) }
 
-        _state.update { current -> current.copy(photos = current.photos + newPhotos) }
+        viewModelScope.launch {
+            val newPhotos = source.map { uri ->
+                async {
+                    photoWidgetStorage.newWidgetPhoto(
+                        appWidgetId = appWidgetId,
+                        source = uri,
+                    )
+                }
+            }.awaitAll().filterNotNull()
+
+            _state.update { current ->
+                current.copy(
+                    photos = current.photos + newPhotos,
+                    isProcessing = false,
+                )
+            }
+        }
     }
 
     fun requestCrop(photo: LocalPhoto) {
-        val (source, destination) = photoWidgetStorage.getCropSources(
-            appWidgetId = appWidgetId,
-            photoName = photo.name,
-        )
-
-        _state.update { current ->
-            current.copy(
-                message = PhotoWidgetConfigureState.Message.LaunchCrop(
-                    source = Uri.fromFile(source),
-                    destination = Uri.fromFile(destination),
-                    aspectRatio = current.aspectRatio,
-                ),
+        viewModelScope.launch {
+            val (source, destination) = photoWidgetStorage.getCropSources(
+                appWidgetId = appWidgetId,
+                photoName = photo.name,
             )
+
+            _state.update { current ->
+                current.copy(
+                    message = PhotoWidgetConfigureState.Message.LaunchCrop(
+                        source = Uri.fromFile(source),
+                        destination = Uri.fromFile(destination),
+                        aspectRatio = current.aspectRatio,
+                    ),
+                )
+            }
         }
     }
 

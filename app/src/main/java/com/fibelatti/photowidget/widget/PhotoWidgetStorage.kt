@@ -1,12 +1,19 @@
 package com.fibelatti.photowidget.widget
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.BitmapFactory.Options
 import android.net.Uri
 import androidx.core.content.edit
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -30,7 +37,10 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
 
     private val contentResolver = context.contentResolver
 
-    fun newWidgetPhoto(appWidgetId: Int, source: Uri): LocalPhoto {
+    suspend fun newWidgetPhoto(
+        appWidgetId: Int,
+        source: Uri,
+    ): LocalPhoto? = withContext(Dispatchers.IO) {
         val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
         val originalPhotosDir = File("$widgetDir/original").apply { mkdirs() }
         val newPhotoName = "${UUID.randomUUID()}.png"
@@ -38,15 +48,46 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         val originalPhoto = File("$originalPhotosDir/$newPhotoName")
         val croppedPhoto = File("$widgetDir/$newPhotoName")
 
-        contentResolver.openInputStream(source)?.use { inputStream ->
-            inputStream.copyTo(FileOutputStream(originalPhoto))
+        val newFiles = listOf(originalPhoto, croppedPhoto)
+
+        val (originalHeight, originalWidth) = contentResolver.openInputStream(source)
+            ?.use { inputStream ->
+                val options = Options().apply { inJustDecodeBounds = true }
+
+                BitmapFactory.decodeStream(inputStream, null, options)
+
+                options.outHeight to options.outWidth
+            }
+            ?: return@withContext null // Exit early if the content can't be resolved
+
+        contentResolver.openInputStream(source).use { inputStream ->
+            val bitmapOptions = Options().apply {
+                if (originalWidth > 1_000 || originalHeight > 1_000) {
+                    if (originalWidth > originalHeight) {
+                        inTargetDensity = 1_000
+                        inDensity = originalWidth
+                    } else {
+                        inTargetDensity = 1_000
+                        inDensity = originalHeight
+                    }
+                }
+            }
+            val importedPhoto = BitmapFactory.decodeStream(inputStream, null, bitmapOptions)
+                ?: return@withContext null // Exit early if the bitmap can't be decoded
+
+            newFiles.map { file ->
+                async {
+                    FileOutputStream(file).use { fos ->
+                        importedPhoto.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                    }
+                }
+            }.awaitAll()
         }
 
-        FileInputStream(originalPhoto).use { fileInputStream ->
-            fileInputStream.copyTo(FileOutputStream(croppedPhoto))
-        }
-
-        return LocalPhoto(name = newPhotoName, path = croppedPhoto.path)
+        return@withContext LocalPhoto(
+            name = newPhotoName,
+            path = croppedPhoto.path,
+        )
     }
 
     fun getWidgetPhotos(appWidgetId: Int): List<LocalPhoto> {
@@ -57,7 +98,7 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         }
     }
 
-    fun getCropSources(appWidgetId: Int, photoName: String): Pair<File, File> {
+    suspend fun getCropSources(appWidgetId: Int, photoName: String): Pair<File, File> {
         val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
         val originalPhotosDir = File("$widgetDir/original")
 
@@ -65,8 +106,10 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         val croppedPhoto = File("$widgetDir/$photoName")
 
         if (!originalPhoto.exists()) {
-            FileInputStream(croppedPhoto).use { fileInputStream ->
-                fileInputStream.copyTo(FileOutputStream(originalPhoto))
+            withContext(Dispatchers.IO) {
+                FileInputStream(croppedPhoto).use { fileInputStream ->
+                    fileInputStream.copyTo(FileOutputStream(originalPhoto))
+                }
             }
         }
 

@@ -3,6 +3,9 @@ package com.fibelatti.photowidget.configure
 import android.graphics.BitmapFactory
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,6 +27,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +53,7 @@ import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -79,64 +84,113 @@ fun PhotoWidgetConfigureScreen(
     shapeId: String,
     onShapeClick: (String) -> Unit,
     onAddToHomeClick: () -> Unit,
+    isProcessing: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
         modifier = modifier,
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
+        Box(
+            contentAlignment = Alignment.Center,
         ) {
-            val firstPhoto = photos.firstOrNull()
-            var selectedPhoto: LocalPhoto? by remember(firstPhoto) {
-                mutableStateOf(firstPhoto)
-            }
-
-            PhotoWidgetViewer(
-                photo = selectedPhoto,
-                aspectRatio = aspectRatio,
-                shapeId = shapeId,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
+            val blurRadius by animateDpAsState(
+                targetValue = if (isProcessing) 10.dp else 0.dp,
+                label = "ProcessingBlur",
             )
 
-            PhotoPicker(
+            PhotoWidgetConfigureContent(
                 photos = photos,
-                onPhotoPickerClick = onPhotoPickerClick,
-                onPhotoClick = { photo -> selectedPhoto = photo },
-                onPhotoLongClick = onPhotoLongClick,
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
+                onPhotoPickerClick = onPhotoPickerClick,
+                onPhotoLongClick = onPhotoLongClick,
+                loopingInterval = loopingInterval,
+                onLoopingIntervalPickerClick = onLoopingIntervalPickerClick,
+                onShapeClick = onShapeClick,
+                onAddToHomeClick = onAddToHomeClick,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .blur(radius = blurRadius)
+                    .padding(paddingValues),
+            )
+
+            AnimatedVisibility(
+                visible = isProcessing,
+                enter = fadeIn(),
+                exit = fadeOut(),
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PhotoWidgetConfigureContent(
+    photos: StableList<LocalPhoto>,
+    aspectRatio: PhotoWidgetAspectRatio,
+    shapeId: String,
+    onPhotoPickerClick: () -> Unit,
+    onPhotoLongClick: (LocalPhoto) -> Unit,
+    loopingInterval: PhotoWidgetLoopingInterval,
+    onLoopingIntervalPickerClick: () -> Unit,
+    onShapeClick: (String) -> Unit,
+    onAddToHomeClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        val firstPhoto = photos.firstOrNull()
+        var selectedPhoto: LocalPhoto? by remember(firstPhoto) {
+            mutableStateOf(firstPhoto)
+        }
+
+        PhotoWidgetViewer(
+            photo = selectedPhoto,
+            aspectRatio = aspectRatio,
+            shapeId = shapeId,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+        )
+
+        PhotoPicker(
+            photos = photos,
+            onPhotoPickerClick = onPhotoPickerClick,
+            onPhotoClick = { photo -> selectedPhoto = photo },
+            onPhotoLongClick = onPhotoLongClick,
+            aspectRatio = aspectRatio,
+            shapeId = shapeId,
+            modifier = Modifier.padding(top = 16.dp),
+        )
+
+        AnimatedVisibility(visible = photos.size > 1) {
+            PhotoIntervalPicker(
+                loopingInterval = loopingInterval,
+                onLoopingIntervalPickerClick = onLoopingIntervalPickerClick,
                 modifier = Modifier.padding(top = 16.dp),
             )
+        }
 
-            AnimatedVisibility(visible = photos.size > 1) {
-                PhotoIntervalPicker(
-                    loopingInterval = loopingInterval,
-                    onLoopingIntervalPickerClick = onLoopingIntervalPickerClick,
-                    modifier = Modifier.padding(top = 16.dp),
-                )
-            }
+        if (aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
+            ShapePicker(
+                shapeId = shapeId,
+                onShapeClick = onShapeClick,
+                modifier = Modifier.padding(top = 16.dp),
+            )
+        }
 
-            if (aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
-                ShapePicker(
-                    shapeId = shapeId,
-                    onShapeClick = onShapeClick,
-                    modifier = modifier.padding(top = 16.dp),
-                )
-            }
-
-            FilledTonalButton(
-                onClick = onAddToHomeClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 32.dp),
-            ) {
-                Text(text = stringResource(id = R.string.photo_widget_configure_add_to_home))
-            }
+        FilledTonalButton(
+            onClick = onAddToHomeClick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 32.dp),
+        ) {
+            Text(text = stringResource(id = R.string.photo_widget_configure_add_to_home))
         }
     }
 }
@@ -402,6 +456,11 @@ private fun ShapedPhoto(
         bitmap = transformedBitmap,
         contentDescription = "",
         modifier = modifier,
+        contentScale = when (aspectRatio) {
+            PhotoWidgetAspectRatio.SQUARE -> ContentScale.FillWidth
+            PhotoWidgetAspectRatio.TALL -> ContentScale.Fit
+            PhotoWidgetAspectRatio.WIDE -> ContentScale.Fit
+        },
     )
 }
 
@@ -448,6 +507,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             shapeId = PhotoWidgetShapeBuilder.defaultShapeId(),
             onShapeClick = {},
             onAddToHomeClick = {},
+            isProcessing = false,
         )
     }
 }
