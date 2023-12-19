@@ -82,10 +82,14 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     isProcessing = false,
                 )
             }
+
+            if (newPhotos.size == 1) {
+                requestCrop(photo = newPhotos.first())
+            }
         }
     }
 
-    fun photoSelected(photo: LocalPhoto) {
+    fun previewPhoto(photo: LocalPhoto) {
         _state.update { current -> current.copy(selectedPhoto = photo) }
     }
 

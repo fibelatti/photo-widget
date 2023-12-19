@@ -205,7 +205,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             },
             onOptionSelected = { option ->
                 when (option) {
-                    PhotoMenuOptions.PREVIEW_PHOTO -> viewModel.photoSelected(photo = photo)
+                    PhotoMenuOptions.PREVIEW_PHOTO -> viewModel.previewPhoto(photo = photo)
                     PhotoMenuOptions.CROP_PHOTO -> viewModel.requestCrop(photo = photo)
                     PhotoMenuOptions.REMOVE_PHOTO -> showRemovePhotoDialog(photo = photo)
                 }
