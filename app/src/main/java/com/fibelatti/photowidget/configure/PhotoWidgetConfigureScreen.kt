@@ -6,7 +6,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,6 +15,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -37,7 +38,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -45,6 +45,7 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
@@ -54,6 +55,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.RoundedPolygon
 import com.fibelatti.photowidget.R
@@ -177,14 +179,29 @@ private fun PhotoWidgetConfigureContent(
             )
         }
 
+        val allPhotosCropped = remember(photos) { photos.all { it.isCropped } }
+
         FilledTonalButton(
             onClick = onAddToHomeClick,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 32.dp),
+                .padding(start = 16.dp, top = 32.dp, end = 16.dp),
+            enabled = allPhotosCropped,
         ) {
             Text(text = stringResource(id = R.string.photo_widget_configure_add_to_home))
         }
+
+        AnimatedVisibility(visible = !allPhotosCropped) {
+            Text(
+                text = stringResource(id = R.string.photo_widget_configure_cropping_required),
+                modifier = Modifier.padding(start = 72.dp, top = 8.dp, end = 72.dp),
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.labelSmall,
+            )
+        }
+
+        Spacer(modifier = Modifier.size(32.dp))
     }
 }
 
@@ -233,7 +250,6 @@ private fun PhotoWidgetViewer(
 }
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 private fun PhotoPicker(
     photos: StableList<LocalPhoto>,
     onPhotoPickerClick: () -> Unit,
@@ -246,6 +262,8 @@ private fun PhotoPicker(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
+        val croppedPhotos = photos.count { it.isCropped }
+
         Text(
             text = stringResource(
                 id = if (photos.isEmpty()) {
@@ -253,6 +271,8 @@ private fun PhotoPicker(
                 } else {
                     R.string.photo_widget_configure_selected_photos
                 },
+                croppedPhotos,
+                photos.size,
             ),
             modifier = Modifier.padding(horizontal = 16.dp),
             style = MaterialTheme.typography.titleMedium,
@@ -310,6 +330,24 @@ private fun PhotoPicker(
                             role = Role.Image,
                             onClick = { onPhotoClick(photo) },
                         ),
+                    badge = {
+                        if (!photo.isCropped) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_crop),
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .padding(all = 8.dp)
+                                    .background(
+                                        color = MaterialTheme.colorScheme.errorContainer,
+                                        shape = CircleShape,
+                                    )
+                                    .padding(all = 4.dp)
+                                    .size(size = 12.dp)
+                                    .align(Alignment.BottomEnd),
+                                colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onErrorContainer),
+                            )
+                        }
+                    },
                 )
             }
         }
@@ -419,6 +457,7 @@ private fun ShapedPhoto(
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     modifier: Modifier = Modifier,
+    badge: @Composable BoxScope.() -> Unit = {},
 ) {
     val photoBitmap = remember(photo) {
         BitmapFactory.decodeFile(photo.path)
@@ -439,16 +478,21 @@ private fun ShapedPhoto(
         }
     }
 
-    Image(
-        bitmap = transformedBitmap,
-        contentDescription = "",
+    Box(
         modifier = modifier,
-        contentScale = when (aspectRatio) {
-            PhotoWidgetAspectRatio.SQUARE -> ContentScale.FillWidth
-            PhotoWidgetAspectRatio.TALL -> ContentScale.Fit
-            PhotoWidgetAspectRatio.WIDE -> ContentScale.Fit
-        },
-    )
+        contentAlignment = Alignment.Center,
+    ) {
+        Image(
+            bitmap = transformedBitmap,
+            contentDescription = "",
+            modifier = Modifier
+                .fillMaxSize()
+                .aspectRatio(ratio = aspectRatio.aspectRatio),
+            contentScale = ContentScale.FillWidth,
+        )
+
+        badge()
+    }
 }
 
 @Composable

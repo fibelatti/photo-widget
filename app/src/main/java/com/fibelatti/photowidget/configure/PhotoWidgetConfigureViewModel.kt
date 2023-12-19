@@ -48,11 +48,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         val savedShapeId = photoWidgetStorage.getWidgetShapeId(appWidgetId = appWidgetId)
 
         _state.update { current ->
-            val photos = savedPhotos.map { (name, path) -> LocalPhoto(name = name, path = path) }
-
             current.copy(
-                photos = photos,
-                selectedPhoto = photos.firstOrNull(),
+                photos = savedPhotos,
+                selectedPhoto = savedPhotos.firstOrNull(),
                 loopingInterval = savedInterval ?: current.loopingInterval,
                 aspectRatio = aspectRatio ?: savedAspectRatio,
                 shapeId = savedShapeId ?: current.shapeId,
@@ -115,7 +113,10 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             current.copy(
                 photos = current.photos.map { photo ->
                     if (photo.path == path) {
-                        photo.copy(timestamp = System.currentTimeMillis())
+                        photo.copy(
+                            isCropped = true,
+                            timestamp = System.currentTimeMillis(),
+                        )
                     } else {
                         photo
                     }

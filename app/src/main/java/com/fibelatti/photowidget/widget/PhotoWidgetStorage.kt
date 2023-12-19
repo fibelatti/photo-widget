@@ -87,6 +87,7 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         return@withContext LocalPhoto(
             name = newPhotoName,
             path = croppedPhoto.path,
+            isCropped = false,
         )
     }
 
@@ -94,7 +95,14 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         return getWidgetDir(appWidgetId = appWidgetId).let { dir ->
             dir.list { _, name -> name != "original" }
                 .orEmpty()
-                .map { file -> LocalPhoto(name = file, path = "$dir/$file") }
+                .map { file ->
+                    // If a widget was previously saved it's safe to assume all images were cropped
+                    LocalPhoto(
+                        name = file,
+                        path = "$dir/$file",
+                        isCropped = true,
+                    )
+                }
         }
     }
 

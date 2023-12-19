@@ -36,7 +36,7 @@
 
     <!-- Configure -->
     <string name="photo_widget_configure_select_photo">Escolha uma foto</string>
-    <string name="photo_widget_configure_selected_photos">Fotos escolhidas</string>
+    <string name="photo_widget_configure_selected_photos">Fotos escolhidas (%1$d/%2$d recortadas)</string>
 
     <string name="photo_widget_configure_menu_title">Selecione a opção</string>
     <string name="photo_widget_configure_menu_preview">Visualizar</string>
@@ -56,6 +56,7 @@
 
     <string name="photo_widget_configure_applied_shape">Forma</string>
     <string name="photo_widget_configure_add_to_home">Adicionar à tela inicial</string>
+    <string name="photo_widget_configure_cropping_required">Você deve recortar todas as fotos antes de adicionar este widget à sua tela inicial</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de fotos da tela inicial</string>
