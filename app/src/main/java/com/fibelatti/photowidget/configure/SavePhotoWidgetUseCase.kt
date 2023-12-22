@@ -13,12 +13,15 @@ class SavePhotoWidgetUseCase @Inject constructor(
 
     operator fun invoke(
         appWidgetId: Int,
+        order: List<String>,
         enableLooping: Boolean,
         loopingInterval: PhotoWidgetLoopingInterval,
         aspectRatio: PhotoWidgetAspectRatio,
         shapeId: String,
     ) {
         photoWidgetStorage.renameTemporaryWidgetDir(appWidgetId = appWidgetId)
+
+        photoWidgetStorage.saveWidgetOrder(appWidgetId = appWidgetId, order = order)
 
         if (enableLooping) {
             photoWidgetWorkManager.enqueueLoopingPhotoWidgetWork(

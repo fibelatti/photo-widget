@@ -147,6 +147,44 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
+    fun moveToFirst(photo: LocalPhoto) {
+        move {
+            add(0, removeAt(indexOf(photo)))
+        }
+    }
+
+    fun moveLeft(photo: LocalPhoto) {
+        move {
+            val currentIndex = indexOf(photo)
+            val newIndex = currentIndex.minus(1).coerceAtLeast(0)
+
+            add(newIndex, removeAt(currentIndex))
+        }
+    }
+
+    fun moveRight(photo: LocalPhoto) {
+        move {
+            val currentIndex = indexOf(photo)
+            val newIndex = currentIndex.plus(1).coerceAtMost(size - 1)
+
+            add(newIndex, removeAt(currentIndex))
+        }
+    }
+
+    fun moveToLast(photo: LocalPhoto) {
+        move {
+            add(size - 1, removeAt(indexOf(photo)))
+        }
+    }
+
+    private fun move(moveOp: MutableList<LocalPhoto>.() -> Unit) {
+        _state.update { current ->
+            current.copy(
+                photos = current.photos.toMutableList().apply(moveOp),
+            )
+        }
+    }
+
     fun intervalSelected(interval: PhotoWidgetLoopingInterval) {
         _state.update { current -> current.copy(loopingInterval = interval) }
     }
@@ -172,6 +210,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     current.copy(
                         message = PhotoWidgetConfigureState.Message.RequestPin(
                             photoPath = currentState.photos.first().path,
+                            order = currentState.photos.map { it.name },
                             enableLooping = currentState.photos.size > 1,
                             loopingInterval = currentState.loopingInterval,
                             aspectRatio = current.aspectRatio,
@@ -185,6 +224,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             else -> {
                 savePhotoWidgetUseCase(
                     appWidgetId = appWidgetId,
+                    order = currentState.photos.map { it.name },
                     enableLooping = currentState.photos.size > 1,
                     loopingInterval = currentState.loopingInterval,
                     aspectRatio = currentState.aspectRatio,

@@ -41,7 +41,11 @@
     <string name="photo_widget_configure_menu_title">Photo options</string>
     <string name="photo_widget_configure_menu_preview">Preview</string>
     <string name="photo_widget_configure_menu_crop">Crop</string>
-    <string name="photo_widget_configure_menu_remote">Remove</string>
+    <string name="photo_widget_configure_menu_remove">Remove</string>
+    <string name="photo_widget_configure_menu_move_to_first">Move to first</string>
+    <string name="photo_widget_configure_menu_move_left">Move left</string>
+    <string name="photo_widget_configure_menu_move_right">Move right</string>
+    <string name="photo_widget_configure_menu_move_to_last">Move to last</string>
 
     <string name="photo_widget_configure_delete_photo_title">Remove this photo from the widget?</string>
     <string name="photo_widget_configure_delete_photo_yes">Yes</string>

@@ -35,6 +35,7 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
         // Persist the widget data since it was placed on the home screen
         saveUseCase(
             appWidgetId = widgetId,
+            order = callbackIntent.order,
             enableLooping = callbackIntent.enableLooping,
             loopingInterval = callbackIntent.loopingInterval,
             aspectRatio = callbackIntent.aspectRatio,

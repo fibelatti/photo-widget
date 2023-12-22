@@ -11,6 +11,8 @@ var Intent.appWidgetId: Int by intentExtras(
     default = AppWidgetManager.INVALID_APPWIDGET_ID,
 )
 
+var Intent.order: List<String> by intentExtras()
+
 var Intent.enableLooping: Boolean by intentExtras()
 
 var Intent.loopingInterval: PhotoWidgetLoopingInterval by intentExtras()

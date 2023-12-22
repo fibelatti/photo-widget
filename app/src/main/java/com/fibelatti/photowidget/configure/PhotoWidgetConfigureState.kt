@@ -26,6 +26,7 @@ data class PhotoWidgetConfigureState(
 
         data class RequestPin(
             val photoPath: String,
+            val order: List<String>,
             val enableLooping: Boolean,
             val loopingInterval: PhotoWidgetLoopingInterval,
             val aspectRatio: PhotoWidgetAspectRatio,

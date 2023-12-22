@@ -134,6 +134,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             is PhotoWidgetConfigureState.Message.RequestPin -> {
                 requestPin(
                     photoPath = message.photoPath,
+                    order = message.order,
                     enableLooping = message.enableLooping,
                     loopingInterval = message.loopingInterval,
                     aspectRatio = message.aspectRatio,
@@ -200,7 +201,11 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 when (option) {
                     PhotoMenuOptions.PREVIEW_PHOTO -> getString(R.string.photo_widget_configure_menu_preview)
                     PhotoMenuOptions.CROP_PHOTO -> getString(R.string.photo_widget_configure_menu_crop)
-                    PhotoMenuOptions.REMOVE_PHOTO -> getString(R.string.photo_widget_configure_menu_remote)
+                    PhotoMenuOptions.REMOVE_PHOTO -> getString(R.string.photo_widget_configure_menu_remove)
+                    PhotoMenuOptions.MOVE_TO_FIRST -> getString(R.string.photo_widget_configure_menu_move_to_first)
+                    PhotoMenuOptions.MOVE_LEFT -> getString(R.string.photo_widget_configure_menu_move_left)
+                    PhotoMenuOptions.MOVE_RIGHT -> getString(R.string.photo_widget_configure_menu_move_right)
+                    PhotoMenuOptions.MOVE_TO_LAST -> getString(R.string.photo_widget_configure_menu_move_to_last)
                 }
             },
             onOptionSelected = { option ->
@@ -208,6 +213,10 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     PhotoMenuOptions.PREVIEW_PHOTO -> viewModel.previewPhoto(photo = photo)
                     PhotoMenuOptions.CROP_PHOTO -> viewModel.requestCrop(photo = photo)
                     PhotoMenuOptions.REMOVE_PHOTO -> showRemovePhotoDialog(photo = photo)
+                    PhotoMenuOptions.MOVE_TO_FIRST -> viewModel.moveToFirst(photo = photo)
+                    PhotoMenuOptions.MOVE_LEFT -> viewModel.moveLeft(photo = photo)
+                    PhotoMenuOptions.MOVE_RIGHT -> viewModel.moveRight(photo = photo)
+                    PhotoMenuOptions.MOVE_TO_LAST -> viewModel.moveToLast(photo = photo)
                 }
             },
         )
@@ -262,6 +271,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
     private fun requestPin(
         photoPath: String,
+        order: List<String>,
         enableLooping: Boolean,
         loopingInterval: PhotoWidgetLoopingInterval,
         aspectRatio: PhotoWidgetAspectRatio,
@@ -279,6 +289,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
         val callbackIntent = Intent(this, PhotoWidgetPinnedReceiver::class.java)
             .apply {
+                this.order = order
                 this.enableLooping = enableLooping
                 this.loopingInterval = loopingInterval
                 this.aspectRatio = aspectRatio
@@ -306,6 +317,10 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         PREVIEW_PHOTO,
         CROP_PHOTO,
         REMOVE_PHOTO,
+        MOVE_TO_FIRST,
+        MOVE_LEFT,
+        MOVE_RIGHT,
+        MOVE_TO_LAST,
     }
 
     companion object {

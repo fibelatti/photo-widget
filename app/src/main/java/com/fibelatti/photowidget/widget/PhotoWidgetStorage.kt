@@ -92,7 +92,7 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
     }
 
     fun getWidgetPhotos(appWidgetId: Int): List<LocalPhoto> {
-        return getWidgetDir(appWidgetId = appWidgetId).let { dir ->
+        val photos = getWidgetDir(appWidgetId = appWidgetId).let { dir ->
             dir.list { _, name -> name != "original" }
                 .orEmpty()
                 .map { file ->
@@ -104,6 +104,11 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
                     )
                 }
         }
+
+        val order = getWidgetOrder(appWidgetId).ifEmpty { photos.map { it.name } }
+        val dict = photos.associateBy { it.name }
+
+        return order.mapNotNull { dict[it] }
     }
 
     suspend fun getCropSources(appWidgetId: Int, photoName: String): Pair<File, File> {
@@ -136,55 +141,69 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         }
     }
 
+    fun saveWidgetOrder(appWidgetId: Int, order: List<String>) {
+        val value = if (order.isEmpty()) "" else order.joinToString(separator = ",")
+
+        sharedPreferences.edit {
+            putString("${PreferencePrefix.ORDER}$appWidgetId", value)
+        }
+    }
+
+    fun getWidgetOrder(appWidgetId: Int): List<String> {
+        val value = sharedPreferences.getString("${PreferencePrefix.ORDER}$appWidgetId", null)
+
+        return value?.split(",").orEmpty()
+    }
+
     fun saveWidgetInterval(appWidgetId: Int, interval: PhotoWidgetLoopingInterval) {
         sharedPreferences.edit {
-            putString("$PREFERENCE_KEY_PREFIX_INTERVAL$appWidgetId", interval.name)
+            putString("${PreferencePrefix.INTERVAL}$appWidgetId", interval.name)
         }
     }
 
     fun getWidgetInterval(appWidgetId: Int): PhotoWidgetLoopingInterval? {
-        val name = sharedPreferences.getString("$PREFERENCE_KEY_PREFIX_INTERVAL$appWidgetId", null)
+        val name = sharedPreferences.getString("${PreferencePrefix.INTERVAL}$appWidgetId", null)
 
         return name?.let(PhotoWidgetLoopingInterval::valueOf)
     }
 
     fun saveWidgetIndex(appWidgetId: Int, index: Int) {
         sharedPreferences.edit {
-            putInt("$PREFERENCE_KEY_PREFIX_INDEX$appWidgetId", index)
+            putInt("${PreferencePrefix.INDEX}$appWidgetId", index)
         }
     }
 
     fun getWidgetIndex(appWidgetId: Int): Int {
-        return sharedPreferences.getInt("$PREFERENCE_KEY_PREFIX_INDEX$appWidgetId", 0)
+        return sharedPreferences.getInt("${PreferencePrefix.INDEX}$appWidgetId", 0)
     }
 
     fun saveWidgetAspectRatio(appWidgetId: Int, aspectRatio: PhotoWidgetAspectRatio) {
         sharedPreferences.edit {
-            putString("$PREFERENCE_KEY_ASPECT_RATIO$appWidgetId", aspectRatio.name)
+            putString("${PreferencePrefix.RATIO}$appWidgetId", aspectRatio.name)
         }
     }
 
     fun getWidgetAspectRatio(appWidgetId: Int): PhotoWidgetAspectRatio {
-        val name = sharedPreferences.getString("$PREFERENCE_KEY_ASPECT_RATIO$appWidgetId", null)
+        val name = sharedPreferences.getString("${PreferencePrefix.RATIO}$appWidgetId", null)
 
         return name?.let(PhotoWidgetAspectRatio::valueOf) ?: PhotoWidgetAspectRatio.SQUARE
     }
 
     fun saveWidgetShapeId(appWidgetId: Int, shapeId: String) {
         sharedPreferences.edit {
-            putString("$PREFERENCE_KEY_PREFIX_SHAPE$appWidgetId", shapeId)
+            putString("${PreferencePrefix.SHAPE}$appWidgetId", shapeId)
         }
     }
 
     fun getWidgetShapeId(appWidgetId: Int): String? {
-        return sharedPreferences.getString("$PREFERENCE_KEY_PREFIX_SHAPE$appWidgetId", null)
+        return sharedPreferences.getString("${PreferencePrefix.SHAPE}$appWidgetId", null)
     }
 
     fun deleteWidgetData(appWidgetId: Int) {
         getWidgetDir(appWidgetId).deleteRecursively()
 
         sharedPreferences.edit {
-            allPreferenceKeyPrefixes.forEach { prefix ->
+            PreferencePrefix.entries.forEach { prefix ->
                 remove("$prefix$appWidgetId")
             }
         }
@@ -214,19 +233,18 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         }
     }
 
+    private enum class PreferencePrefix(val value: String) {
+        ORDER(value = "appwidget_order_"),
+        INTERVAL(value = "appwidget_interval_"),
+        INDEX(value = "appwidget_index_"),
+        RATIO(value = "appwidget_aspect_ratio_"),
+        SHAPE(value = "appwidget_shape_"),
+        ;
+
+        override fun toString(): String = value
+    }
+
     private companion object {
         const val SHARED_PREFERENCES_NAME = "com.fibelatti.photowidget.PhotoWidget"
-
-        const val PREFERENCE_KEY_PREFIX_INTERVAL = "appwidget_interval_"
-        const val PREFERENCE_KEY_PREFIX_INDEX = "appwidget_index_"
-        const val PREFERENCE_KEY_ASPECT_RATIO = "appwidget_aspect_ratio_"
-        const val PREFERENCE_KEY_PREFIX_SHAPE = "appwidget_shape_"
-
-        val allPreferenceKeyPrefixes: List<String> = listOf(
-            PREFERENCE_KEY_PREFIX_INTERVAL,
-            PREFERENCE_KEY_PREFIX_INDEX,
-            PREFERENCE_KEY_ASPECT_RATIO,
-            PREFERENCE_KEY_PREFIX_SHAPE,
-        )
     }
 }
