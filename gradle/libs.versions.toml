@@ -33,7 +33,7 @@ ucrop = { module = "com.github.yalantis:ucrop", version = "2.2.8" }
 oss-licenses-plugin = { module = "com.google.android.gms:oss-licenses-plugin", version = "0.10.6" }
 oss-licenses-library = { module = "com.google.android.gms:play-services-oss-licenses", version = "17.0.1" }
 
-leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.12" }
+leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.13" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
