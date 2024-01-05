@@ -48,6 +48,11 @@
         </activity>
 
         <activity
+            android:name=".widget.PhotoWidgetClickActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.TransparentActivity" />
+
+        <activity
             android:name=".licenses.OssLicensesActivity"
             android:exported="false" />
 

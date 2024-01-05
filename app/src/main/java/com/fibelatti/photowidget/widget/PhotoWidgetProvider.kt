@@ -1,12 +1,15 @@
 package com.fibelatti.photowidget.widget
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.widget.RemoteViews
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -75,6 +78,18 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             )
 
             if (views != null) {
+                val clickIntent = Intent(context, PhotoWidgetClickActivity::class.java).apply {
+                    this.appWidgetId = appWidgetId
+                }
+                val pendingIntent = PendingIntent.getActivity(
+                    context,
+                    appWidgetId,
+                    clickIntent,
+                    PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                )
+
+                views.setOnClickPendingIntent(R.id.iv_widget, pendingIntent)
+
                 appWidgetManager.updateAppWidget(appWidgetId, views)
             }
         }

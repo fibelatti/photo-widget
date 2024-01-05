@@ -14,6 +14,13 @@
         <item name="android:colorBackground">@color/color_background</item>
     </style>
 
+    <style name="AppTheme.TransparentActivity">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <style name="AppTheme.MaterialDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="android:windowBlurBehindEnabled" tools:targetApi="s">true</item>
         <item name="android:windowBlurBehindRadius" tools:targetApi="s">10dp</item>

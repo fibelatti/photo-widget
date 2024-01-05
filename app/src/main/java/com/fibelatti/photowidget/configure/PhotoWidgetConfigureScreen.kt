@@ -548,7 +548,7 @@ private fun ShapePicker(
 }
 
 @Composable
-private fun ShapedPhoto(
+fun ShapedPhoto(
     photo: LocalPhoto,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
