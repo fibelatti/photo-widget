@@ -211,7 +211,9 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     }
 
     private fun onPhotoCropped(result: ActivityResult) {
-        result.data?.let(UCrop::getOutput)?.path?.let(viewModel::photoCropped)
+        result.data?.let(UCrop::getOutput)?.path
+            ?.let(viewModel::photoCropped)
+            ?: run { viewModel.cropCancelled() }
     }
 
     private fun showRemovePhotoDialog(photo: LocalPhoto) {

@@ -80,10 +80,11 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     photos = updatedPhotos,
                     selectedPhoto = current.selectedPhoto ?: updatedPhotos.firstOrNull(),
                     isProcessing = false,
+                    cropQueue = newPhotos,
                 )
             }
 
-            if (newPhotos.size == 1) {
+            if (newPhotos.isNotEmpty()) {
                 requestCrop(photo = newPhotos.first())
             }
         }
@@ -125,8 +126,18 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                         photo
                     }
                 },
+                cropQueue = current.cropQueue.filterNot { it.path == path },
             )
         }
+
+        val cropQueue = _state.value.cropQueue
+        if (cropQueue.isNotEmpty()) {
+            requestCrop(photo = cropQueue.first())
+        }
+    }
+
+    fun cropCancelled() {
+        _state.update { current -> current.copy(cropQueue = emptyList()) }
     }
 
     fun photoRemoved(photo: LocalPhoto) {

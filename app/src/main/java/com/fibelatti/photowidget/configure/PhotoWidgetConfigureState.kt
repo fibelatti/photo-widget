@@ -13,6 +13,7 @@ data class PhotoWidgetConfigureState(
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
     val shapeId: String = PhotoWidgetShapeBuilder.defaultShapeId(),
     val isProcessing: Boolean = false,
+    val cropQueue: List<LocalPhoto> = emptyList(),
     val message: Message? = null,
 ) {
 
