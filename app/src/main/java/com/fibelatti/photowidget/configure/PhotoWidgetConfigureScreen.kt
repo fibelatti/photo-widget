@@ -179,7 +179,9 @@ private fun PhotoWidgetConfigureContent(
                     onCropClick = { onCropClick(selectedPhoto) },
                     onRemoveClick = { onRemoveClick(selectedPhoto) },
                     showMoveControls = photos.size > 1,
+                    moveLeftEnabled = photos.indexOf(selectedPhoto) != 0,
                     onMoveLeftClick = { onMoveLeftClick(selectedPhoto) },
+                    moveRightEnabled = photos.indexOf(selectedPhoto) < photos.size - 1,
                     onMoveRightClick = { onMoveRightClick(selectedPhoto) },
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
@@ -288,7 +290,9 @@ private fun EditingControls(
     onCropClick: () -> Unit,
     onRemoveClick: () -> Unit,
     showMoveControls: Boolean,
+    moveLeftEnabled: Boolean,
     onMoveLeftClick: () -> Unit,
+    moveRightEnabled: Boolean,
     onMoveRightClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -302,7 +306,10 @@ private fun EditingControls(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         if (showMoveControls) {
-            IconButton(onClick = onMoveLeftClick) {
+            IconButton(
+                onClick = onMoveLeftClick,
+                enabled = moveLeftEnabled,
+            ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_chevron_left),
                     contentDescription = stringResource(id = R.string.photo_widget_configure_menu_move_left),
@@ -325,7 +332,10 @@ private fun EditingControls(
         }
 
         if (showMoveControls) {
-            IconButton(onClick = onMoveRightClick) {
+            IconButton(
+                onClick = onMoveRightClick,
+                enabled = moveRightEnabled,
+            ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_chevron_right),
                     contentDescription = stringResource(id = R.string.photo_widget_configure_menu_move_right),
