@@ -35,6 +35,8 @@
     <string name="photo_widget_aspect_ratio_wide">Largo</string>
 
     <!-- Configure -->
+    <string name="photo_widget_configure_navigate_back_warning">As alterações serão perdidas, voltar mesmo assim?</string>
+
     <string name="photo_widget_configure_select_photo">Escolha uma foto</string>
     <string name="photo_widget_configure_selected_photos">Fotos escolhidas (%1$d/%2$d recortadas)</string>
 

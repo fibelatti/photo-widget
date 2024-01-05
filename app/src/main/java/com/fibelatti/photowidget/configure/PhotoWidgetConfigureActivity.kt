@@ -11,6 +11,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
@@ -50,6 +51,19 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         ::onPhotoCropped,
     )
 
+    private val onBackPressedCallback = object : OnBackPressedCallback(enabled = false) {
+
+        override fun handleOnBackPressed() {
+            MaterialAlertDialogBuilder(this@PhotoWidgetConfigureActivity)
+                .setMessage(R.string.photo_widget_configure_navigate_back_warning)
+                .setPositiveButton(R.string.photo_widget_configure_delete_photo_yes) { _, _ ->
+                    finish()
+                }
+                .setNegativeButton(R.string.photo_widget_configure_delete_photo_no) { _, _ -> }
+                .show()
+        }
+    }
+
     private val finishReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
@@ -70,6 +84,8 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         setContent {
             AppTheme {
                 val state by viewModel.state.collectAsStateWithLifecycle()
+
+                onBackPressedCallback.isEnabled = state.photos.isNotEmpty()
 
                 PhotoWidgetConfigureScreen(
                     photos = state.photos.toStableList(),
@@ -94,6 +110,8 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 }
             }
         }
+
+        onBackPressedDispatcher.addCallback(onBackPressedCallback)
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
             finishReceiver,
@@ -198,7 +216,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
     private fun showRemovePhotoDialog(photo: LocalPhoto) {
         MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.photo_widget_configure_delete_photo_title)
+            .setMessage(R.string.photo_widget_configure_delete_photo_title)
             .setPositiveButton(R.string.photo_widget_configure_delete_photo_yes) { _, _ ->
                 viewModel.photoRemoved(photo)
             }
