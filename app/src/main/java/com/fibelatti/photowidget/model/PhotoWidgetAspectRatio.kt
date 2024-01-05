@@ -15,13 +15,13 @@ enum class PhotoWidgetAspectRatio(
         label = R.string.photo_widget_aspect_ratio_square,
     ),
     TALL(
-        x = 9f,
+        x = 10f,
         y = 16f,
         label = R.string.photo_widget_aspect_ratio_tall,
     ),
     WIDE(
         x = 16f,
-        y = 9f,
+        y = 10f,
         label = R.string.photo_widget_aspect_ratio_wide,
     ),
     ;
