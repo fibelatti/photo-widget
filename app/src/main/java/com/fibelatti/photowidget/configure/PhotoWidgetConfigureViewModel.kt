@@ -147,12 +147,6 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun moveToFirst(photo: LocalPhoto) {
-        move {
-            add(0, removeAt(indexOf(photo)))
-        }
-    }
-
     fun moveLeft(photo: LocalPhoto) {
         move {
             val currentIndex = indexOf(photo)
@@ -168,12 +162,6 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             val newIndex = currentIndex.plus(1).coerceAtMost(size - 1)
 
             add(newIndex, removeAt(currentIndex))
-        }
-    }
-
-    fun moveToLast(photo: LocalPhoto) {
-        move {
-            add(size - 1, removeAt(indexOf(photo)))
         }
     }
 

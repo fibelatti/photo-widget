@@ -38,14 +38,10 @@
     <string name="photo_widget_configure_select_photo">Escolha uma foto</string>
     <string name="photo_widget_configure_selected_photos">Fotos escolhidas (%1$d/%2$d recortadas)</string>
 
-    <string name="photo_widget_configure_menu_title">Selecione a opção</string>
-    <string name="photo_widget_configure_menu_preview">Visualizar</string>
     <string name="photo_widget_configure_menu_crop">Recortar</string>
     <string name="photo_widget_configure_menu_remove">Remover</string>
-    <string name="photo_widget_configure_menu_move_to_first">Mover para primeira</string>
     <string name="photo_widget_configure_menu_move_left">Mover à esquerda</string>
     <string name="photo_widget_configure_menu_move_right">Mover à direita</string>
-    <string name="photo_widget_configure_menu_move_to_last">Mover para última</string>
 
     <string name="photo_widget_configure_delete_photo_title">Confirma a remoção desta foto do widget?</string>
     <string name="photo_widget_configure_delete_photo_yes">Sim</string>

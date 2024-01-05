@@ -74,8 +74,12 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 PhotoWidgetConfigureScreen(
                     photos = state.photos.toStableList(),
                     selectedPhoto = state.selectedPhoto,
+                    onCropClick = viewModel::requestCrop,
+                    onRemoveClick = ::showRemovePhotoDialog,
+                    onMoveLeftClick = viewModel::moveLeft,
+                    onMoveRightClick = viewModel::moveRight,
                     onPhotoPickerClick = ::launchPhotoPicker,
-                    onPhotoClick = ::showPhotoMenu,
+                    onPhotoClick = viewModel::previewPhoto,
                     loopingInterval = state.loopingInterval,
                     onLoopingIntervalPickerClick = ::showIntervalPicker,
                     aspectRatio = state.aspectRatio,
@@ -192,36 +196,6 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         result.data?.let(UCrop::getOutput)?.path?.let(viewModel::photoCropped)
     }
 
-    private fun showPhotoMenu(photo: LocalPhoto) {
-        SelectionDialog.show(
-            context = this,
-            title = getString(R.string.photo_widget_configure_menu_title),
-            options = PhotoMenuOptions.entries.toStableList(),
-            optionName = { option ->
-                when (option) {
-                    PhotoMenuOptions.PREVIEW_PHOTO -> getString(R.string.photo_widget_configure_menu_preview)
-                    PhotoMenuOptions.CROP_PHOTO -> getString(R.string.photo_widget_configure_menu_crop)
-                    PhotoMenuOptions.REMOVE_PHOTO -> getString(R.string.photo_widget_configure_menu_remove)
-                    PhotoMenuOptions.MOVE_TO_FIRST -> getString(R.string.photo_widget_configure_menu_move_to_first)
-                    PhotoMenuOptions.MOVE_LEFT -> getString(R.string.photo_widget_configure_menu_move_left)
-                    PhotoMenuOptions.MOVE_RIGHT -> getString(R.string.photo_widget_configure_menu_move_right)
-                    PhotoMenuOptions.MOVE_TO_LAST -> getString(R.string.photo_widget_configure_menu_move_to_last)
-                }
-            },
-            onOptionSelected = { option ->
-                when (option) {
-                    PhotoMenuOptions.PREVIEW_PHOTO -> viewModel.previewPhoto(photo = photo)
-                    PhotoMenuOptions.CROP_PHOTO -> viewModel.requestCrop(photo = photo)
-                    PhotoMenuOptions.REMOVE_PHOTO -> showRemovePhotoDialog(photo = photo)
-                    PhotoMenuOptions.MOVE_TO_FIRST -> viewModel.moveToFirst(photo = photo)
-                    PhotoMenuOptions.MOVE_LEFT -> viewModel.moveLeft(photo = photo)
-                    PhotoMenuOptions.MOVE_RIGHT -> viewModel.moveRight(photo = photo)
-                    PhotoMenuOptions.MOVE_TO_LAST -> viewModel.moveToLast(photo = photo)
-                }
-            },
-        )
-    }
-
     private fun showRemovePhotoDialog(photo: LocalPhoto) {
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.photo_widget_configure_delete_photo_title)
@@ -311,16 +285,6 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             previewBundle,
             successCallback,
         )
-    }
-
-    enum class PhotoMenuOptions {
-        PREVIEW_PHOTO,
-        CROP_PHOTO,
-        REMOVE_PHOTO,
-        MOVE_TO_FIRST,
-        MOVE_LEFT,
-        MOVE_RIGHT,
-        MOVE_TO_LAST,
     }
 
     companion object {

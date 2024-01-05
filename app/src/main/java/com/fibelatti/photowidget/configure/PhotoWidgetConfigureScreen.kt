@@ -3,6 +3,7 @@ package com.fibelatti.photowidget.configure
 import android.graphics.BitmapFactory
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -27,9 +29,11 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -75,6 +79,10 @@ import kotlinx.coroutines.launch
 fun PhotoWidgetConfigureScreen(
     photos: StableList<LocalPhoto>,
     selectedPhoto: LocalPhoto?,
+    onCropClick: (LocalPhoto) -> Unit,
+    onRemoveClick: (LocalPhoto) -> Unit,
+    onMoveLeftClick: (LocalPhoto) -> Unit,
+    onMoveRightClick: (LocalPhoto) -> Unit,
     onPhotoPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     loopingInterval: PhotoWidgetLoopingInterval,
@@ -102,6 +110,10 @@ fun PhotoWidgetConfigureScreen(
                 selectedPhoto = selectedPhoto,
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
+                onMoveLeftClick = onMoveLeftClick,
+                onMoveRightClick = onMoveRightClick,
+                onCropClick = onCropClick,
+                onRemoveClick = onRemoveClick,
                 onPhotoPickerClick = onPhotoPickerClick,
                 onPhotoClick = onPhotoClick,
                 loopingInterval = loopingInterval,
@@ -136,6 +148,10 @@ private fun PhotoWidgetConfigureContent(
     selectedPhoto: LocalPhoto?,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
+    onCropClick: (LocalPhoto) -> Unit,
+    onRemoveClick: (LocalPhoto) -> Unit,
+    onMoveLeftClick: (LocalPhoto) -> Unit,
+    onMoveRightClick: (LocalPhoto) -> Unit,
     onPhotoPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     loopingInterval: PhotoWidgetLoopingInterval,
@@ -145,14 +161,32 @@ private fun PhotoWidgetConfigureContent(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        PhotoWidgetViewer(
-            photo = selectedPhoto,
-            aspectRatio = aspectRatio,
-            shapeId = shapeId,
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-        )
+            contentAlignment = Alignment.Center,
+        ) {
+            PhotoWidgetViewer(
+                photo = selectedPhoto,
+                aspectRatio = aspectRatio,
+                shapeId = shapeId,
+                modifier = Modifier.fillMaxSize(),
+            )
+
+            if (selectedPhoto != null) {
+                EditingControls(
+                    onCropClick = { onCropClick(selectedPhoto) },
+                    onRemoveClick = { onRemoveClick(selectedPhoto) },
+                    showMoveControls = photos.size > 1,
+                    onMoveLeftClick = { onMoveLeftClick(selectedPhoto) },
+                    onMoveRightClick = { onMoveRightClick(selectedPhoto) },
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 8.dp),
+                )
+            }
+        }
 
         PhotoPicker(
             photos = photos,
@@ -242,9 +276,61 @@ private fun PhotoWidgetViewer(
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(all = 32.dp),
+                    .padding(all = 32.dp)
+                    .fillMaxSize(),
             )
+        }
+    }
+}
+
+@Composable
+private fun EditingControls(
+    onCropClick: () -> Unit,
+    onRemoveClick: () -> Unit,
+    showMoveControls: Boolean,
+    onMoveLeftClick: () -> Unit,
+    onMoveRightClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .background(
+                color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f),
+                shape = RoundedCornerShape(size = 24.dp),
+            )
+            .animateContentSize(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        if (showMoveControls) {
+            IconButton(onClick = onMoveLeftClick) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_chevron_left),
+                    contentDescription = stringResource(id = R.string.photo_widget_configure_menu_move_left),
+                )
+            }
+        }
+
+        IconButton(onClick = onCropClick) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_crop),
+                contentDescription = stringResource(id = R.string.photo_widget_configure_menu_crop),
+            )
+        }
+
+        IconButton(onClick = onRemoveClick) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_trash),
+                contentDescription = stringResource(id = R.string.photo_widget_configure_menu_remove),
+            )
+        }
+
+        if (showMoveControls) {
+            IconButton(onClick = onMoveRightClick) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_chevron_right),
+                    contentDescription = stringResource(id = R.string.photo_widget_configure_menu_move_right),
+                )
+            }
         }
     }
 }
@@ -486,8 +572,8 @@ private fun ShapedPhoto(
             bitmap = transformedBitmap,
             contentDescription = "",
             modifier = Modifier
-                .fillMaxSize()
-                .aspectRatio(ratio = aspectRatio.aspectRatio),
+                .aspectRatio(ratio = aspectRatio.aspectRatio)
+                .fillMaxSize(),
             contentScale = ContentScale.FillWidth,
         )
 
@@ -531,6 +617,10 @@ private fun PhotoWidgetConfigureScreenPreview() {
         PhotoWidgetConfigureScreen(
             photos = stableListOf(),
             selectedPhoto = null,
+            onMoveLeftClick = {},
+            onMoveRightClick = {},
+            onCropClick = {},
+            onRemoveClick = {},
             onPhotoPickerClick = {},
             onPhotoClick = {},
             loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
