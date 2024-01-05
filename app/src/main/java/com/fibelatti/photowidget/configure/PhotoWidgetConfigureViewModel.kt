@@ -126,6 +126,14 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                         photo
                     }
                 },
+                selectedPhoto = if (current.selectedPhoto?.path == path) {
+                    current.selectedPhoto.copy(
+                        isCropped = true,
+                        timestamp = System.currentTimeMillis(),
+                    )
+                } else {
+                    current.selectedPhoto
+                },
                 cropQueue = current.cropQueue.filterNot { it.path == path },
             )
         }
