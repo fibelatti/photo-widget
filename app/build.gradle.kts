@@ -7,23 +7,24 @@ plugins {
 }
 
 object AppInfo {
+    const val APP_NAME = "Material Photo Widget"
+    const val APPLICATION_ID = "com.fibelatti.photowidget"
 
-    const val appName = "Material Photo Widget"
-    const val applicationId = "com.fibelatti.photowidget"
+    private const val VERSION_MAJOR = 1
+    private const val VERSION_MINOR = 0
+    private const val VERSION_PATCH = 0
+    private const val VERSION_BUILD = 0
 
-    private const val versionMajor = 1
-    private const val versionMinor = 0
-    private const val versionPatch = 0
-    private const val versionBuild = 0
-
-    val versionCode: Int = (versionMajor * 1_000_000 + versionMinor * 10_000 + versionPatch * 100 + versionBuild)
-        .also { println("versionCode: $it") }
+    val versionCode: Int =
+        (VERSION_MAJOR * 1_000_000 + VERSION_MINOR * 10_000 + VERSION_PATCH * 100 + VERSION_BUILD)
+            .also { println("versionCode: $it") }
 
     @Suppress("KotlinConstantConditions")
-    val versionName: String = StringBuilder("$versionMajor.$versionMinor")
-        .apply { if (versionPatch != 0) append(".$versionPatch") }
-        .toString()
-        .also { println("versionName: $it") }
+    val versionName: String =
+        StringBuilder("$VERSION_MAJOR.$VERSION_MINOR")
+            .apply { if (VERSION_PATCH != 0) append(".$VERSION_PATCH") }
+            .toString()
+            .also { println("versionName: $it") }
 }
 
 android {
@@ -45,7 +46,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = AppInfo.applicationId
+        applicationId = AppInfo.APPLICATION_ID
         versionCode = AppInfo.versionCode
         versionName = AppInfo.versionName
         targetSdk = targetSdkVersion
@@ -75,17 +76,21 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             setProguardFiles(
-                listOf(getDefaultProguardFile("proguard-android-optimize.txt"), File("proguard-rules.pro")),
+                listOf(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    File("proguard-rules.pro"),
+                ),
             )
         }
     }
 
     androidComponents {
         onVariants { variant ->
-            val appName = StringBuilder().apply {
-                append(AppInfo.appName)
-                if (variant.name.contains("debug", ignoreCase = true)) append(" Dev")
-            }.toString()
+            val appName =
+                StringBuilder().apply {
+                    append(AppInfo.APP_NAME)
+                    if (variant.name.contains("debug", ignoreCase = true)) append(" Dev")
+                }.toString()
 
             variant.resValues.put(
                 variant.makeResValueKey("string", "app_name"),

@@ -27,8 +27,6 @@ allprojects {
         kotlin {
             target("**/*.kt")
             targetExclude("**/build/**/*.kt")
-
-            ktlint().userData(mapOf("android" to "true"))
         }
         kotlinGradle {
             target("**/*.kts")
