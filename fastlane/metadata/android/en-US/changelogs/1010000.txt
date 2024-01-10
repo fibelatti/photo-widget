@@ -1,0 +1,10 @@
+Version 1.1 is released with the following updates:
+
+New: Pick multiple photos at once when configuring a widget
+New: Share photos directly from your gallery to create a new widget
+New: Editing tools when configuring a widget to move, remove and crop photos
+New: Click a widget on the home screen to enlarge the current photo
+
+Fix: Adding widgets via the app not working correctly on some Samsung devices
+
+Feedback and suggestions are always welcome, visit the project page to contribute!
