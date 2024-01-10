@@ -45,10 +45,6 @@
     <string name="photo_widget_configure_menu_move_left">Move left</string>
     <string name="photo_widget_configure_menu_move_right">Move right</string>
 
-    <string name="photo_widget_configure_delete_photo_title">Remove this photo from the widget?</string>
-    <string name="photo_widget_configure_delete_photo_yes">Yes</string>
-    <string name="photo_widget_configure_delete_photo_no">No</string>
-
     <string name="photo_widget_configure_select_interval">Flipping interval</string>
     <string name="photo_widget_configure_interval_one_day">Every day</string>
     <string name="photo_widget_configure_interval_twelve_hours">Every twelve hours</string>
@@ -60,6 +56,10 @@
     <string name="photo_widget_configure_applied_shape">Applied shape</string>
     <string name="photo_widget_configure_add_to_home">Add to home screen</string>
     <string name="photo_widget_configure_cropping_required">You must crop all photos before adding this widget to your home screen</string>
+
+    <!-- Common Actions -->
+    <string name="photo_widget_action_yes">Yes</string>
+    <string name="photo_widget_action_no">No</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo home screen widget</string>

@@ -24,7 +24,6 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.R
-import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.platform.AppTheme
@@ -56,10 +55,10 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         override fun handleOnBackPressed() {
             MaterialAlertDialogBuilder(this@PhotoWidgetConfigureActivity)
                 .setMessage(R.string.photo_widget_configure_navigate_back_warning)
-                .setPositiveButton(R.string.photo_widget_configure_delete_photo_yes) { _, _ ->
+                .setPositiveButton(R.string.photo_widget_action_yes) { _, _ ->
                     finish()
                 }
-                .setNegativeButton(R.string.photo_widget_configure_delete_photo_no) { _, _ -> }
+                .setNegativeButton(R.string.photo_widget_action_no) { _, _ -> }
                 .show()
         }
     }
@@ -91,7 +90,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     photos = state.photos.toStableList(),
                     selectedPhoto = state.selectedPhoto,
                     onCropClick = viewModel::requestCrop,
-                    onRemoveClick = ::showRemovePhotoDialog,
+                    onRemoveClick = viewModel::photoRemoved,
                     onMoveLeftClick = viewModel::moveLeft,
                     onMoveRightClick = viewModel::moveRight,
                     onPhotoPickerClick = ::launchPhotoPicker,
@@ -214,16 +213,6 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         result.data?.let(UCrop::getOutput)?.path
             ?.let(viewModel::photoCropped)
             ?: run { viewModel.cropCancelled() }
-    }
-
-    private fun showRemovePhotoDialog(photo: LocalPhoto) {
-        MaterialAlertDialogBuilder(this)
-            .setMessage(R.string.photo_widget_configure_delete_photo_title)
-            .setPositiveButton(R.string.photo_widget_configure_delete_photo_yes) { _, _ ->
-                viewModel.photoRemoved(photo)
-            }
-            .setNegativeButton(R.string.photo_widget_configure_delete_photo_no) { _, _ -> }
-            .show()
     }
 
     private fun showIntervalPicker() {
