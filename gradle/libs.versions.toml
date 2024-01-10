@@ -42,7 +42,7 @@ leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version = 
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version = "1.9.21-1.0.15" }
+ksp = { id = "com.google.devtools.ksp", version = "1.9.22-1.0.16" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 spotless = { id = "com.diffplug.spotless", version = "6.21.0" }
 cache-fix = { id = "org.gradle.android.cache-fix", version = "3.0" }
