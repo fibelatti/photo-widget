@@ -35,4 +35,9 @@ enum class PhotoWidgetLoopingInterval(
         timeUnit = TimeUnit.MINUTES,
         title = R.string.photo_widget_configure_interval_thirty_minutes,
     ),
+    FIFTEEN_MINUTES(
+        repeatInterval = 15,
+        timeUnit = TimeUnit.MINUTES,
+        title = R.string.photo_widget_configure_interval_thirty_minutes,
+    ),
 }

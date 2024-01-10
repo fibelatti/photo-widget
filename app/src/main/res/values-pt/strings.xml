@@ -55,6 +55,7 @@
     <string name="photo_widget_configure_interval_six_hours">A cada 6 horas</string>
     <string name="photo_widget_configure_interval_one_hour">A cada hora</string>
     <string name="photo_widget_configure_interval_thirty_minutes">A cada 30 minutos</string>
+    <string name="photo_widget_configure_interval_fifteen_minutes">A cada 15 minutos</string>
 
     <string name="photo_widget_configure_applied_shape">Forma</string>
     <string name="photo_widget_configure_add_to_home">Adicionar à tela inicial</string>
