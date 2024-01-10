@@ -4,7 +4,7 @@ composeCompiler = "1.5.7"
 composeBom = "2023.10.01"
 coroutines = "1.7.3"
 hilt = "2.50"
-kotlin = "1.9.21"
+kotlin = "1.9.22"
 lifecycle = "2.6.2"
 aboutLibraries = "10.9.2"
 
