@@ -6,7 +6,7 @@ coroutines = "1.7.3"
 hilt = "2.50"
 kotlin = "1.9.22"
 lifecycle = "2.7.0"
-aboutLibraries = "10.9.2"
+aboutLibraries = "10.10.0"
 
 [libraries]
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
