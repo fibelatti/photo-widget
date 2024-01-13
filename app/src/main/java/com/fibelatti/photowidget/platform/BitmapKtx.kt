@@ -2,7 +2,6 @@ package com.fibelatti.photowidget.platform
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
@@ -58,7 +57,7 @@ private inline fun Bitmap.withTransformation(
 
             val scaledWidth = baseWidth.roundToInt().coerceAtMost(width)
             val scaledHeight = if (baseWidth > width) {
-                (width / baseWidth.roundToInt()) * height
+                ((width / baseWidth) * height).roundToInt()
             } else {
                 height
             }
@@ -74,7 +73,7 @@ private inline fun Bitmap.withTransformation(
 
             val scaledHeight = baseHeight.roundToInt().coerceAtMost(height)
             val scaledWidth = if (baseHeight > height) {
-                (height / baseHeight.roundToInt()) * width
+                ((height / baseHeight) * width).roundToInt()
             } else {
                 width
             }
