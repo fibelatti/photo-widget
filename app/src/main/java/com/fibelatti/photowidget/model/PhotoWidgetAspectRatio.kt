@@ -2,6 +2,8 @@ package com.fibelatti.photowidget.model
 
 import androidx.annotation.StringRes
 import com.fibelatti.photowidget.R
+import kotlin.math.max
+import kotlin.math.min
 
 enum class PhotoWidgetAspectRatio(
     val x: Float,
@@ -26,5 +28,9 @@ enum class PhotoWidgetAspectRatio(
     ),
     ;
 
-    val aspectRatio: Float get(): Float = x / y
+    val aspectRatio: Float
+        get() = x / y
+
+    val scale: Float
+        get() = min(x, y) / max(x, y)
 }

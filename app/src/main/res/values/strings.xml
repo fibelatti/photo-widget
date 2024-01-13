@@ -38,7 +38,7 @@
     <string name="photo_widget_configure_navigate_back_warning">Any changes will be lost, go back anyway?</string>
 
     <string name="photo_widget_configure_select_photo">Select a photo</string>
-    <string name="photo_widget_configure_selected_photos">Selected photos (%1$d/%2$d cropped)</string>
+    <string name="photo_widget_configure_selected_photos">Selected photos</string>
 
     <string name="photo_widget_configure_menu_crop">Crop</string>
     <string name="photo_widget_configure_menu_remove">Remove</string>
@@ -55,7 +55,6 @@
 
     <string name="photo_widget_configure_applied_shape">Applied shape</string>
     <string name="photo_widget_configure_add_to_home">Add to home screen</string>
-    <string name="photo_widget_configure_cropping_required">You must crop all photos before adding this widget to your home screen</string>
 
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Yes</string>

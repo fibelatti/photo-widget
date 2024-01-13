@@ -118,19 +118,13 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             current.copy(
                 photos = current.photos.map { photo ->
                     if (photo.path == path) {
-                        photo.copy(
-                            isCropped = true,
-                            timestamp = System.currentTimeMillis(),
-                        )
+                        photo.copy(timestamp = System.currentTimeMillis())
                     } else {
                         photo
                     }
                 },
                 selectedPhoto = if (current.selectedPhoto?.path == path) {
-                    current.selectedPhoto.copy(
-                        isCropped = true,
-                        timestamp = System.currentTimeMillis(),
-                    )
+                    current.selectedPhoto.copy(timestamp = System.currentTimeMillis())
                 } else {
                     current.selectedPhoto
                 },

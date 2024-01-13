@@ -215,26 +215,13 @@ private fun PhotoWidgetConfigureContent(
             )
         }
 
-        val allPhotosCropped = remember(photos) { photos.all { it.isCropped } }
-
         FilledTonalButton(
             onClick = onAddToHomeClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, top = 32.dp, end = 16.dp),
-            enabled = allPhotosCropped,
         ) {
             Text(text = stringResource(id = R.string.photo_widget_configure_add_to_home))
-        }
-
-        AnimatedVisibility(visible = !allPhotosCropped) {
-            Text(
-                text = stringResource(id = R.string.photo_widget_configure_cropping_required),
-                modifier = Modifier.padding(start = 72.dp, top = 8.dp, end = 72.dp),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.labelSmall,
-            )
         }
 
         Spacer(modifier = Modifier.size(32.dp))
@@ -358,8 +345,6 @@ private fun PhotoPicker(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        val croppedPhotos = photos.count { it.isCropped }
-
         Text(
             text = stringResource(
                 id = if (photos.isEmpty()) {
@@ -367,8 +352,6 @@ private fun PhotoPicker(
                 } else {
                     R.string.photo_widget_configure_selected_photos
                 },
-                croppedPhotos,
-                photos.size,
             ),
             modifier = Modifier.padding(horizontal = 16.dp),
             style = MaterialTheme.typography.titleMedium,
@@ -426,24 +409,6 @@ private fun PhotoPicker(
                             role = Role.Image,
                             onClick = { onPhotoClick(photo) },
                         ),
-                    badge = {
-                        if (!photo.isCropped) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_crop),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .padding(all = 8.dp)
-                                    .background(
-                                        color = MaterialTheme.colorScheme.errorContainer,
-                                        shape = CircleShape,
-                                    )
-                                    .padding(all = 4.dp)
-                                    .size(size = 12.dp)
-                                    .align(Alignment.BottomEnd),
-                                colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onErrorContainer),
-                            )
-                        }
-                    },
                 )
             }
         }
@@ -566,11 +531,11 @@ fun ShapedPhoto(
                 height = photoBitmap.height,
             )
 
-            photoBitmap.withPolygonalShape(shape).asImageBitmap()
+            photoBitmap.withPolygonalShape(roundedPolygon = shape).asImageBitmap()
         }
     } else {
         remember(photo, aspectRatio) {
-            photoBitmap.withRoundedCorners().asImageBitmap()
+            photoBitmap.withRoundedCorners(desiredAspectRatio = aspectRatio).asImageBitmap()
         }
     }
 

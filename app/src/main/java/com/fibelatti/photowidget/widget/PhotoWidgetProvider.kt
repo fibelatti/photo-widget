@@ -112,9 +112,9 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     height = bitmap.height,
                 )
 
-                bitmap.withPolygonalShape(shape)
+                bitmap.withPolygonalShape(roundedPolygon = shape)
             } else {
-                bitmap.withRoundedCorners()
+                bitmap.withRoundedCorners(desiredAspectRatio = aspectRatio)
             }
 
             return RemoteViews(context.packageName, R.layout.photo_widget).apply {

@@ -87,7 +87,6 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         return@withContext LocalPhoto(
             name = newPhotoName,
             path = croppedPhoto.path,
-            isCropped = false,
         )
     }
 
@@ -100,7 +99,6 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
                     LocalPhoto(
                         name = file,
                         path = "$dir/$file",
-                        isCropped = true,
                     )
                 }
         }

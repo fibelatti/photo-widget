@@ -38,7 +38,7 @@
     <string name="photo_widget_configure_navigate_back_warning">As alterações serão perdidas, voltar mesmo assim?</string>
 
     <string name="photo_widget_configure_select_photo">Escolha uma foto</string>
-    <string name="photo_widget_configure_selected_photos">Fotos escolhidas (%1$d/%2$d recortadas)</string>
+    <string name="photo_widget_configure_selected_photos">Fotos escolhidas</string>
 
     <string name="photo_widget_configure_menu_crop">Recortar</string>
     <string name="photo_widget_configure_menu_remove">Remover</string>
@@ -55,7 +55,6 @@
 
     <string name="photo_widget_configure_applied_shape">Forma</string>
     <string name="photo_widget_configure_add_to_home">Adicionar à tela inicial</string>
-    <string name="photo_widget_configure_cropping_required">Você deve recortar todas as fotos antes de adicionar este widget à sua tela inicial</string>
 
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Sim</string>

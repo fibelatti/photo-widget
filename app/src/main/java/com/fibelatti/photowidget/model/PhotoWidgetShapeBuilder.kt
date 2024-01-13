@@ -139,7 +139,7 @@ object PhotoWidgetShapeBuilder {
         }
     }
 
-    private fun calculateMatrix(bounds: RectF, width: Int, height: Int): Matrix {
+    fun calculateMatrix(bounds: RectF, width: Int, height: Int): Matrix {
         val scale = calculateScale(bounds = bounds, width = width, height = height)
         val scaledLeft = scale * bounds.left
         val scaledTop = scale * bounds.top
