@@ -11,9 +11,9 @@ object AppInfo {
     const val APPLICATION_ID = "com.fibelatti.photowidget"
 
     private const val VERSION_MAJOR = 1
-    private const val VERSION_MINOR = 0
+    private const val VERSION_MINOR = 1
     private const val VERSION_PATCH = 0
-    private const val VERSION_BUILD = 0
+    private const val VERSION_BUILD = 1
 
     val versionCode: Int =
         (VERSION_MAJOR * 1_000_000 + VERSION_MINOR * 10_000 + VERSION_PATCH * 100 + VERSION_BUILD)
