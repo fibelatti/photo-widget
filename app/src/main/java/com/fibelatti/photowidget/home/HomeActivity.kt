@@ -3,6 +3,7 @@ package com.fibelatti.photowidget.home
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import androidx.core.app.ShareCompat
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.configure.aspectRatio
+import com.fibelatti.photowidget.configure.sharedPhotos
 import com.fibelatti.photowidget.licenses.OssLicensesActivity
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
@@ -26,6 +28,8 @@ class HomeActivity : AppCompatActivity() {
 
     @Inject
     lateinit var userPreferencesStorage: UserPreferencesStorage
+
+    private var preparedIntent: Intent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -43,12 +47,36 @@ class HomeActivity : AppCompatActivity() {
                 )
             }
         }
+
+        checkIntent()
+    }
+
+    @Suppress("DEPRECATION")
+    private fun checkIntent() {
+        if (!intent.hasExtra(Intent.EXTRA_STREAM)) return
+
+        preparedIntent = Intent(this, PhotoWidgetConfigureActivity::class.java).apply {
+            sharedPhotos = when {
+                Intent.ACTION_SEND == intent.action -> {
+                    (intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let(::listOf)
+                }
+
+                Intent.ACTION_SEND_MULTIPLE == intent.action -> {
+                    intent.getParcelableArrayListExtra<Parcelable>(Intent.EXTRA_STREAM)?.mapNotNull { it as? Uri }
+                }
+
+                else -> null
+            }
+        }
     }
 
     private fun createNewWidget(aspectRatio: PhotoWidgetAspectRatio) {
-        val intent = Intent(this, PhotoWidgetConfigureActivity::class.java).apply {
+        val intent = (preparedIntent ?: Intent(this, PhotoWidgetConfigureActivity::class.java)).apply {
             this.aspectRatio = aspectRatio
         }
+
+        preparedIntent = null
+
         startActivity(intent)
     }
 
