@@ -4,13 +4,22 @@ package com.fibelatti.ui.foundation
 
 import androidx.compose.runtime.Immutable
 import java.util.Collections
+import java.util.Objects
 
 /**
  * An [Immutable] wrapper class that delegates to a [List] of [T] in order to provide stability to
  * a composable when needed.
  */
 @Immutable
-class StableList<T> private constructor(items: List<T>) : List<T> by items {
+class StableList<T> private constructor(private val items: List<T>) : List<T> by items {
+
+    override fun equals(other: Any?): Boolean = when {
+        this === other -> true
+        other !is StableList<*> -> false
+        else -> items == other.items
+    }
+
+    override fun hashCode(): Int = Objects.hashCode(items)
 
     companion object {
 
