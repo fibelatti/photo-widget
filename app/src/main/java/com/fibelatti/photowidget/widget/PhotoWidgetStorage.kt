@@ -118,6 +118,8 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
 
         if (!originalPhoto.exists()) {
             withContext(Dispatchers.IO) {
+                originalPhoto.createNewFile()
+
                 FileInputStream(croppedPhoto).use { fileInputStream ->
                     fileInputStream.copyTo(FileOutputStream(originalPhoto))
                 }
