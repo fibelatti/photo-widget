@@ -4,37 +4,8 @@ package com.fibelatti.ui.theme
 
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-// region Extended Colors
-@Immutable
-data class ExtendedColors(
-    val backgroundNoOverlay: Color,
-    val statusBar: Color,
-    val navigationBar: Color,
-    val icon: Color,
-)
-
-internal val ExtendedLightColorScheme = ExtendedColors(
-    backgroundNoOverlay = Color(0xFFFFFFFF),
-    statusBar = Color(0xFFC2C2C2),
-    navigationBar = Color(0xFF9E9E9E),
-    icon = Color(0xFF424242),
-)
-
-internal val ExtendedDarkColorScheme = ExtendedColors(
-    backgroundNoOverlay = Color(0xFF000000),
-    statusBar = Color(0x00000000),
-    navigationBar = Color(0xFF000000),
-    icon = Color(0xFFF5F5F5),
-)
-
-internal val LocalExtendedColors = staticCompositionLocalOf { ExtendedLightColorScheme }
-// endregion Extended Colors
-
-// region Material Colors
 internal val LightColorScheme = lightColorScheme(
     primary = Color(0xFF186D28),
     onPrimary = Color(0xFFFFFFFF),
@@ -108,4 +79,3 @@ internal val DarkColorScheme = darkColorScheme(
     inverseOnSurface = Color(0xFF1A1C19),
     inversePrimary = Color(0xFF186D28),
 )
-// endregion Material Colors
