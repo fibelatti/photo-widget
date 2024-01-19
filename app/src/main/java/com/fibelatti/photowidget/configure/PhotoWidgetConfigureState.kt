@@ -14,10 +14,12 @@ data class PhotoWidgetConfigureState(
     val shapeId: String = PhotoWidgetShapeBuilder.defaultShapeId(),
     val isProcessing: Boolean = false,
     val cropQueue: List<LocalPhoto> = emptyList(),
-    val message: Message? = null,
+    val messages: List<Message> = emptyList(),
 ) {
 
     sealed class Message {
+
+        data object ImportFailed : Message()
 
         data class LaunchCrop(
             val source: Uri,

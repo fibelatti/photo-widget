@@ -103,8 +103,8 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     isProcessing = state.isProcessing,
                 )
 
-                LaunchedEffect(state.message) {
-                    handleMessage(state.message)
+                LaunchedEffect(state.messages) {
+                    state.messages.firstOrNull()?.let(::handleMessage)
                 }
             }
         }
@@ -128,9 +128,18 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         intent.sharedPhotos?.let(viewModel::photoPicked)
     }
 
-    private fun handleMessage(message: PhotoWidgetConfigureState.Message?) {
+    private fun handleMessage(message: PhotoWidgetConfigureState.Message) {
         when (message) {
+            is PhotoWidgetConfigureState.Message.ImportFailed -> {
+                MaterialAlertDialogBuilder(this)
+                    .setMessage(R.string.photo_widget_configure_import_error)
+                    .setPositiveButton(R.string.photo_widget_action_continue) { _, _ -> }
+                    .setOnDismissListener { viewModel.messageHandled(message = message) }
+                    .show()
+            }
+
             is PhotoWidgetConfigureState.Message.LaunchCrop -> {
+                viewModel.messageHandled(message = message)
                 launchPhotoCrop(
                     sourceUri = message.source,
                     destinationUri = message.destination,
@@ -139,6 +148,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             }
 
             is PhotoWidgetConfigureState.Message.RequestPin -> {
+                viewModel.messageHandled(message = message)
                 requestPin(
                     photoPath = message.photoPath,
                     order = message.order,
@@ -150,6 +160,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             }
 
             is PhotoWidgetConfigureState.Message.AddWidget -> {
+                viewModel.messageHandled(message = message)
                 addNewWidget(
                     appWidgetId = message.appWidgetId,
                     photoPath = message.photoPath,
@@ -159,13 +170,10 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             }
 
             is PhotoWidgetConfigureState.Message.CancelWidget -> {
+                viewModel.messageHandled(message = message)
                 finish()
             }
-
-            null -> return
         }
-
-        viewModel.messageHandled()
     }
 
     private fun launchPhotoPicker() {

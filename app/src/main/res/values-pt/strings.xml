@@ -37,6 +37,8 @@
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">As alterações serão perdidas, voltar mesmo assim?</string>
 
+    <string name="photo_widget_configure_import_error">Não foi possível importar todas as fotos escolhidas</string>
+
     <string name="photo_widget_configure_select_photo">Escolha uma foto</string>
     <string name="photo_widget_configure_selected_photos">Fotos escolhidas</string>
 
@@ -59,6 +61,7 @@
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Sim</string>
     <string name="photo_widget_action_no">Não</string>
+    <string name="photo_widget_action_continue">Continuar</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de fotos da tela inicial</string>

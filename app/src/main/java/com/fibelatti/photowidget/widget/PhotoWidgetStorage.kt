@@ -50,44 +50,53 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
 
         val newFiles = listOf(originalPhoto, croppedPhoto)
 
-        val (originalHeight, originalWidth) = contentResolver.openInputStream(source)
-            ?.use { inputStream ->
-                val options = Options().apply { inJustDecodeBounds = true }
+        runCatching {
+            val (originalHeight, originalWidth) = contentResolver.openInputStream(source)
+                ?.use { inputStream ->
+                    val options = Options().apply { inJustDecodeBounds = true }
 
-                BitmapFactory.decodeStream(inputStream, null, options)
+                    BitmapFactory.decodeStream(inputStream, null, options)
 
-                options.outHeight to options.outWidth
-            }
-            ?: return@withContext null // Exit early if the content can't be resolved
+                    options.outHeight to options.outWidth
+                }
+                ?: return@withContext null // Exit early if the content can't be resolved
 
-        contentResolver.openInputStream(source).use { inputStream ->
-            val bitmapOptions = Options().apply {
-                if (originalWidth > 1_000 || originalHeight > 1_000) {
-                    if (originalWidth > originalHeight) {
-                        inTargetDensity = 1_000
-                        inDensity = originalWidth
-                    } else {
-                        inTargetDensity = 1_000
-                        inDensity = originalHeight
+            contentResolver.openInputStream(source).use { inputStream ->
+                val bitmapOptions = Options().apply {
+                    if (originalWidth > 1_000 || originalHeight > 1_000) {
+                        if (originalWidth > originalHeight) {
+                            inTargetDensity = 1_000
+                            inDensity = originalWidth
+                        } else {
+                            inTargetDensity = 1_000
+                            inDensity = originalHeight
+                        }
                     }
                 }
-            }
-            val importedPhoto = BitmapFactory.decodeStream(inputStream, null, bitmapOptions)
-                ?: return@withContext null // Exit early if the bitmap can't be decoded
+                val importedPhoto = BitmapFactory.decodeStream(inputStream, null, bitmapOptions)
+                    ?: return@withContext null // Exit early if the bitmap can't be decoded
 
-            newFiles.map { file ->
-                async {
-                    FileOutputStream(file).use { fos ->
-                        importedPhoto.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                newFiles.map { file ->
+                    file.createNewFile()
+
+                    async {
+                        FileOutputStream(file).use { fos ->
+                            importedPhoto.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                        }
                     }
-                }
-            }.awaitAll()
-        }
+                }.awaitAll()
+            }
 
-        return@withContext LocalPhoto(
-            name = newPhotoName,
-            path = croppedPhoto.path,
-        )
+            // Safety check to ensure the photos were copied correctly
+            return@withContext if (newFiles.all { it.exists() }) {
+                LocalPhoto(
+                    name = newPhotoName,
+                    path = croppedPhoto.path,
+                )
+            } else {
+                null
+            }
+        }.getOrNull()
     }
 
     fun getWidgetPhotos(appWidgetId: Int): List<LocalPhoto> {

@@ -73,6 +73,12 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 }
             }.awaitAll().filterNotNull()
 
+            val message = if (newPhotos.size < source.size) {
+                PhotoWidgetConfigureState.Message.ImportFailed
+            } else {
+                null
+            }
+
             _state.update { current ->
                 val updatedPhotos = current.photos + newPhotos
 
@@ -81,6 +87,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     selectedPhoto = current.selectedPhoto ?: updatedPhotos.firstOrNull(),
                     isProcessing = false,
                     cropQueue = newPhotos,
+                    messages = current.messages.plus(message).filterNotNull(),
                 )
             }
 
@@ -103,7 +110,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
             _state.update { current ->
                 current.copy(
-                    message = PhotoWidgetConfigureState.Message.LaunchCrop(
+                    messages = current.messages + PhotoWidgetConfigureState.Message.LaunchCrop(
                         source = Uri.fromFile(source),
                         destination = Uri.fromFile(destination),
                         aspectRatio = current.aspectRatio,
@@ -201,7 +208,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             // Without photos there's no widget
             currentState.photos.isEmpty() -> {
                 _state.update { current ->
-                    current.copy(message = PhotoWidgetConfigureState.Message.CancelWidget)
+                    current.copy(messages = current.messages + PhotoWidgetConfigureState.Message.CancelWidget)
                 }
             }
 
@@ -209,7 +216,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             AppWidgetManager.INVALID_APPWIDGET_ID == appWidgetId -> {
                 _state.update { current ->
                     current.copy(
-                        message = PhotoWidgetConfigureState.Message.RequestPin(
+                        messages = current.messages + PhotoWidgetConfigureState.Message.RequestPin(
                             photoPath = currentState.photos.first().path,
                             order = currentState.photos.map { it.name },
                             enableLooping = currentState.photos.size > 1,
@@ -234,7 +241,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
                 _state.update { current ->
                     current.copy(
-                        message = PhotoWidgetConfigureState.Message.AddWidget(
+                        messages = current.messages + PhotoWidgetConfigureState.Message.AddWidget(
                             appWidgetId = appWidgetId,
                             photoPath = currentState.photos.first().path,
                             aspectRatio = current.aspectRatio,
@@ -246,7 +253,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun messageHandled() {
-        _state.update { current -> current.copy(message = null) }
+    fun messageHandled(message: PhotoWidgetConfigureState.Message) {
+        _state.update { current -> current.copy(messages = current.messages - message) }
     }
 }

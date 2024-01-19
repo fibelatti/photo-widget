@@ -37,6 +37,8 @@
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Any changes will be lost, go back anyway?</string>
 
+    <string name="photo_widget_configure_import_error">Unable to import all selected photos</string>
+
     <string name="photo_widget_configure_select_photo">Select a photo</string>
     <string name="photo_widget_configure_selected_photos">Selected photos</string>
 
@@ -59,6 +61,7 @@
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Yes</string>
     <string name="photo_widget_action_no">No</string>
+    <string name="photo_widget_action_continue">Continue</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo home screen widget</string>
