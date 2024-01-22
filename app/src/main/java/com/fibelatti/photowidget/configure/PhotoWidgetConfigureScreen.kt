@@ -32,6 +32,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -79,6 +80,7 @@ import kotlinx.coroutines.launch
 fun PhotoWidgetConfigureScreen(
     photos: StableList<LocalPhoto>,
     selectedPhoto: LocalPhoto?,
+    onAspectRatioClick: () -> Unit,
     onCropClick: (LocalPhoto) -> Unit,
     onRemoveClick: (LocalPhoto) -> Unit,
     onMoveLeftClick: (LocalPhoto) -> Unit,
@@ -112,6 +114,7 @@ fun PhotoWidgetConfigureScreen(
                 shapeId = shapeId,
                 onMoveLeftClick = onMoveLeftClick,
                 onMoveRightClick = onMoveRightClick,
+                onAspectRatioClick = onAspectRatioClick,
                 onCropClick = onCropClick,
                 onRemoveClick = onRemoveClick,
                 onPhotoPickerClick = onPhotoPickerClick,
@@ -148,6 +151,7 @@ private fun PhotoWidgetConfigureContent(
     selectedPhoto: LocalPhoto?,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
+    onAspectRatioClick: () -> Unit,
     onCropClick: (LocalPhoto) -> Unit,
     onRemoveClick: (LocalPhoto) -> Unit,
     onMoveLeftClick: (LocalPhoto) -> Unit,
@@ -173,6 +177,18 @@ private fun PhotoWidgetConfigureContent(
                 shapeId = shapeId,
                 modifier = Modifier.fillMaxSize(),
             )
+
+            FilledTonalIconButton(
+                onClick = onAspectRatioClick,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(all = 8.dp),
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_aspect_ratio),
+                    contentDescription = stringResource(id = R.string.photo_widget_aspect_ratio_title),
+                )
+            }
 
             if (selectedPhoto != null) {
                 EditingControls(
@@ -207,7 +223,7 @@ private fun PhotoWidgetConfigureContent(
             )
         }
 
-        if (aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
+        AnimatedVisibility(visible = aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
             ShapePicker(
                 shapeId = shapeId,
                 onShapeClick = onShapeClick,
@@ -594,6 +610,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             selectedPhoto = null,
             onMoveLeftClick = {},
             onMoveRightClick = {},
+            onAspectRatioClick = {},
             onCropClick = {},
             onRemoveClick = {},
             onPhotoPickerClick = {},

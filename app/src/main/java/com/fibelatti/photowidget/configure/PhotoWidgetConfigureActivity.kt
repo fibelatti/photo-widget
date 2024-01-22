@@ -88,6 +88,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 PhotoWidgetConfigureScreen(
                     photos = state.photos.toStableList(),
                     selectedPhoto = state.selectedPhoto,
+                    onAspectRatioClick = ::showAspectRatioPicker,
                     onCropClick = viewModel::requestCrop,
                     onRemoveClick = viewModel::photoRemoved,
                     onMoveLeftClick = viewModel::moveLeft,
@@ -174,6 +175,16 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    private fun showAspectRatioPicker() {
+        SelectionDialog.show(
+            context = this,
+            title = getString(R.string.photo_widget_aspect_ratio_title),
+            options = PhotoWidgetAspectRatio.entries.toStableList(),
+            optionName = { option -> getString(option.label) },
+            onOptionSelected = viewModel::setAspectRatio,
+        )
     }
 
     private fun launchPhotoPicker() {

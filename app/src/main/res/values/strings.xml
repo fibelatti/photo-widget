@@ -5,7 +5,7 @@
 
     <!-- Home -->
     <string name="photo_widget_home_title">Decorate your home screen with your favorite photos</string>
-    <string name="photo_widget_home_aspect_ratio">Select the widget aspect ratio and tap the button to begin</string>
+    <string name="photo_widget_home_aspect_ratio">Select the widget aspect ratio and tap the button to begin. Don\'t worry, you can change this at any time!</string>
     <string name="photo_widget_home_new_widget">Create a new widget</string>
     <string name="photo_widget_home_appearance">Appearance</string>
     <string name="photo_widget_home_dynamic_colors">App colors</string>
@@ -30,6 +30,7 @@
     <string name="share_text">Add your favorite photos to your home screen with Material Photo Widget. Download for free at %s</string>
 
     <!-- Aspect Ratio -->
+    <string name="photo_widget_aspect_ratio_title">Select the aspect ratio</string>
     <string name="photo_widget_aspect_ratio_square">Square</string>
     <string name="photo_widget_aspect_ratio_tall">Tall</string>
     <string name="photo_widget_aspect_ratio_wide">Wide</string>

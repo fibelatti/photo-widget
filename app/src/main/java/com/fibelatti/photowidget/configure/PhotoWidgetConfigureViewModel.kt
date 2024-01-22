@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.platform.savedState
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,6 +55,19 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 loopingInterval = savedInterval ?: current.loopingInterval,
                 aspectRatio = aspectRatio ?: savedAspectRatio,
                 shapeId = savedShapeId ?: current.shapeId,
+            )
+        }
+    }
+
+    fun setAspectRatio(photoWidgetAspectRatio: PhotoWidgetAspectRatio) {
+        _state.update { current ->
+            current.copy(
+                aspectRatio = photoWidgetAspectRatio,
+                shapeId = if (photoWidgetAspectRatio == PhotoWidgetAspectRatio.SQUARE) {
+                    current.shapeId
+                } else {
+                    PhotoWidgetShapeBuilder.defaultShapeId()
+                },
             )
         }
     }
