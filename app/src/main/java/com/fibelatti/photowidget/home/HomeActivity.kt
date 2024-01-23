@@ -17,6 +17,7 @@ import com.fibelatti.photowidget.configure.sharedPhotos
 import com.fibelatti.photowidget.licenses.OssLicensesActivity
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
+import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.ui.foundation.stableListOf
 import com.fibelatti.ui.foundation.toStableList
@@ -39,6 +40,7 @@ class HomeActivity : AppCompatActivity() {
             AppTheme {
                 HomeScreen(
                     onCreateNewWidgetClick = ::createNewWidget,
+                    onHelpClick = ::showHelp,
                     onAppearanceClick = ::showAppearancePicker,
                     onColorsClick = ::showAppColorsPicker,
                     onShareClick = ::shareApp,
@@ -78,6 +80,12 @@ class HomeActivity : AppCompatActivity() {
         preparedIntent = null
 
         startActivity(intent)
+    }
+
+    private fun showHelp() {
+        ComposeBottomSheetDialog(context = this) {
+            HelpScreen()
+        }.show()
     }
 
     private fun showAppearancePicker() {

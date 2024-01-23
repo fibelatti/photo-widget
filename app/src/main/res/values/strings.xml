@@ -11,6 +11,7 @@
     <string name="photo_widget_home_dynamic_colors">App colors</string>
     <string name="photo_widget_home_share">Share</string>
     <string name="photo_widget_home_rate">Rate</string>
+    <string name="photo_widget_home_help">Help</string>
     <string name="photo_widget_home_developer">Developed with ❤ by Filipe Belatti</string>
     <string name="photo_widget_home_version">App version: %s</string>
     <string name="photo_widget_home_view_licenses">OSS Licenses</string>
@@ -58,6 +59,13 @@
 
     <string name="photo_widget_configure_applied_shape">Applied shape</string>
     <string name="photo_widget_configure_add_to_home">Add to home screen</string>
+
+    <!-- Help -->
+    <string name="help_article_title_1">Adding a widget to the home screen is not working</string>
+    <string name="help_article_body_1">If nothing happens when you tap to add a widget or it is added but does not show the selected photos, you can try adding it directly from your home screen.\n\nInstructions vary depending on your Android version, device manufacturer and home screen launcher but are generally the following:\n\n1. Long press on an empty space on your home screen until a pop-up menu appears\n2. Locate the widget option\n3. Search for Material Photo Widget within the available widgets\n4. Drag it to your home screen and configure it as usual</string>
+
+    <string name="help_article_title_2">Widget photos are not changing automatically</string>
+    <string name="help_article_body_2">The selected interval is an approximation of how soon the photo will change to the next. Actual times are determined by Android considering multiple factors.\n\nEach device manufacturer can also impose stricter restrictions to things running on the background, which could interfere with how the app works. Unfortunately nothing much can be done about it as the system has greater control for reasons such as battery life optimization.</string>
 
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Yes</string>

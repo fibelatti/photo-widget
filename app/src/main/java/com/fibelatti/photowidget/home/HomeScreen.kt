@@ -36,6 +36,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,6 +60,7 @@ import com.fibelatti.photowidget.configure.ColoredShape
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.ui.foundation.dpToPx
+import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
@@ -66,6 +68,7 @@ import com.fibelatti.ui.theme.ExtendedTheme
 @Composable
 fun HomeScreen(
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
+    onHelpClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onRateClick: () -> Unit,
@@ -115,6 +118,15 @@ fun HomeScreen(
                 onClick = { onCreateNewWidgetClick(selectedAspectRatio) },
             ) {
                 Text(text = stringResource(id = R.string.photo_widget_home_new_widget))
+            }
+
+            TextButton(
+                onClick = onHelpClick,
+            ) {
+                Text(
+                    text = stringResource(id = R.string.photo_widget_home_help),
+                    style = MaterialTheme.typography.labelMedium,
+                )
             }
 
             Spacer(modifier = Modifier.weight(1f))
@@ -420,10 +432,12 @@ private fun FooterAction(
 
 @Composable
 @ThemePreviews
+@LocalePreviews
 private fun HomeScreenPreview() {
     ExtendedTheme {
         HomeScreen(
             onCreateNewWidgetClick = {},
+            onHelpClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
             onRateClick = {},
