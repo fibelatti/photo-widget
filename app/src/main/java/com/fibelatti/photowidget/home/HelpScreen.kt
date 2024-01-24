@@ -5,14 +5,14 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
@@ -25,7 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
@@ -70,7 +70,7 @@ private fun HelpCard(
     cardText: String,
     modifier: Modifier = Modifier,
 ) {
-    var expanded by remember { mutableStateOf(true) }
+    var expanded by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -80,8 +80,12 @@ private fun HelpCard(
                 color = MaterialTheme.colorScheme.surfaceVariant,
                 shape = RoundedCornerShape(size = 8.dp),
             )
-            .clickable { expanded = !expanded }
-            .padding(all = 8.dp),
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = { expanded = !expanded },
+            )
+            .padding(all = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -100,8 +104,11 @@ private fun HelpCard(
             Icon(
                 painter = painterResource(id = R.drawable.ic_chevron_down),
                 contentDescription = "",
-                modifier = Modifier.graphicsLayer { rotationX = rotation },
-                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier
+                    .rotate(rotation)
+                    .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
+                    .padding(all = 2.dp),
+                tint = MaterialTheme.colorScheme.onPrimary,
             )
         }
 
