@@ -1,0 +1,5 @@
+Version 1.2 is released with the following updates:
+
+New: You can now modify the aspect ratio of existing widgets
+
+Feedback and suggestions are always welcome, visit the project page to contribute!
