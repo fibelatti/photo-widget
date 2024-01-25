@@ -4,7 +4,12 @@ import android.graphics.BitmapFactory
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
@@ -28,8 +33,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
@@ -46,6 +51,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Color
@@ -133,10 +139,40 @@ fun PhotoWidgetConfigureScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CircularProgressIndicator()
+                    LoadingIndicator()
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun LoadingIndicator(
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier = modifier) {
+        val infiniteTransition = rememberInfiniteTransition(label = "LoadingIndicator_Transition")
+
+        val rotation by infiniteTransition.animateFloat(
+            initialValue = 0f,
+            targetValue = 180f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(1_000),
+                repeatMode = RepeatMode.Restart,
+            ),
+            label = "LoadingIndicator_Rotation",
+        )
+
+        Icon(
+            painter = painterResource(id = R.drawable.ic_hourglass),
+            contentDescription = "",
+            modifier = Modifier
+                .size(72.dp)
+                .background(color = MaterialTheme.colorScheme.primaryContainer, shape = CircleShape)
+                .padding(all = 16.dp)
+                .rotate(rotation),
+            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+        )
     }
 }
 
