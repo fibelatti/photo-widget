@@ -113,7 +113,10 @@ private fun HelpCard(
         }
 
         if (expanded) {
-            Divider(modifier = Modifier.fillMaxWidth())
+            Divider(
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
 
             Text(
                 text = cardText,
