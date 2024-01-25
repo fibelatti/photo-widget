@@ -72,8 +72,11 @@ subprojects {
 
                     add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
 
+                    add("-P")
+                    add("plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=$rootDir/compose_compiler_config.conf")
+
                     if (project.findProperty("composeCompilerReports") == "true") {
-                        val composeCompilerPath = "${project.buildDir.absolutePath}/compose_compiler"
+                        val composeCompilerPath = "${project.layout.buildDirectory.asFile.get()}/compose_compiler"
                         add("-P")
                         add("plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=$composeCompilerPath")
                         add("-P")

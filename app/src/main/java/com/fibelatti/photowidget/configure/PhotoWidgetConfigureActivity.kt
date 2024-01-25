@@ -29,7 +29,6 @@ import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.platform.getAttributeColor
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
-import com.fibelatti.ui.foundation.toStableList
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yalantis.ucrop.UCrop
 import dagger.hilt.android.AndroidEntryPoint
@@ -86,7 +85,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 onBackPressedCallback.isEnabled = state.photos.isNotEmpty()
 
                 PhotoWidgetConfigureScreen(
-                    photos = state.photos.toStableList(),
+                    photos = state.photos,
                     selectedPhoto = state.selectedPhoto,
                     onAspectRatioClick = ::showAspectRatioPicker,
                     onCropClick = viewModel::requestCrop,
@@ -181,7 +180,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         SelectionDialog.show(
             context = this,
             title = getString(R.string.photo_widget_aspect_ratio_title),
-            options = PhotoWidgetAspectRatio.entries.toStableList(),
+            options = PhotoWidgetAspectRatio.entries,
             optionName = { option -> getString(option.label) },
             onOptionSelected = viewModel::setAspectRatio,
         )
@@ -224,7 +223,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         SelectionDialog.show(
             context = this,
             title = getString(R.string.photo_widget_configure_select_interval),
-            options = PhotoWidgetLoopingInterval.entries.toStableList(),
+            options = PhotoWidgetLoopingInterval.entries,
             optionName = { option -> getString(option.title) },
             onOptionSelected = viewModel::intervalSelected,
         )

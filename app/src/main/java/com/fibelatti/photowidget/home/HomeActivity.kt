@@ -19,8 +19,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
-import com.fibelatti.ui.foundation.stableListOf
-import com.fibelatti.ui.foundation.toStableList
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -92,7 +90,7 @@ class HomeActivity : AppCompatActivity() {
         SelectionDialog.show(
             context = this,
             title = getString(R.string.photo_widget_home_appearance),
-            options = Appearance.entries.toStableList(),
+            options = Appearance.entries,
             optionName = { appearance ->
                 getString(
                     when (appearance) {
@@ -120,7 +118,7 @@ class HomeActivity : AppCompatActivity() {
         SelectionDialog.show(
             context = this,
             title = getString(R.string.photo_widget_home_dynamic_colors),
-            options = stableListOf(true, false),
+            options = listOf(true, false),
             optionName = { value ->
                 getString(
                     if (value) {

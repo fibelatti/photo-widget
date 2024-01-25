@@ -28,7 +28,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
@@ -50,7 +49,6 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
@@ -60,7 +58,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.RoundedPolygon
 import com.fibelatti.photowidget.R
@@ -70,15 +67,13 @@ import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
-import com.fibelatti.ui.foundation.StableList
-import com.fibelatti.ui.foundation.stableListOf
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 import kotlinx.coroutines.launch
 
 @Composable
 fun PhotoWidgetConfigureScreen(
-    photos: StableList<LocalPhoto>,
+    photos: List<LocalPhoto>,
     selectedPhoto: LocalPhoto?,
     onAspectRatioClick: () -> Unit,
     onCropClick: (LocalPhoto) -> Unit,
@@ -147,7 +142,7 @@ fun PhotoWidgetConfigureScreen(
 
 @Composable
 private fun PhotoWidgetConfigureContent(
-    photos: StableList<LocalPhoto>,
+    photos: List<LocalPhoto>,
     selectedPhoto: LocalPhoto?,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
@@ -350,7 +345,7 @@ private fun EditingControls(
 
 @Composable
 private fun PhotoPicker(
-    photos: StableList<LocalPhoto>,
+    photos: List<LocalPhoto>,
     onPhotoPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
@@ -606,7 +601,7 @@ fun ColoredShape(
 private fun PhotoWidgetConfigureScreenPreview() {
     ExtendedTheme {
         PhotoWidgetConfigureScreen(
-            photos = stableListOf(),
+            photos = emptyList(),
             selectedPhoto = null,
             onMoveLeftClick = {},
             onMoveRightClick = {},

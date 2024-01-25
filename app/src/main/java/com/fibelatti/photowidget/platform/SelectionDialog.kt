@@ -18,14 +18,13 @@ import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.fibelatti.ui.foundation.StableList
 
 object SelectionDialog {
 
     fun <T> show(
         context: Context,
         title: String,
-        options: StableList<T>,
+        options: List<T>,
         optionName: (T) -> String,
         optionIcon: (T) -> Int? = { null },
         onOptionSelected: (T) -> Unit,
@@ -48,7 +47,7 @@ object SelectionDialog {
 @Composable
 private fun <T> SelectionDialogContent(
     title: String,
-    options: StableList<T>,
+    options: List<T>,
     optionName: (T) -> String,
     optionIcon: (T) -> Int? = { null },
     onOptionSelected: (T) -> Unit,
