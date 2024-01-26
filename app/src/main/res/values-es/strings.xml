@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Widget Host -->
+    <string name="photo_widget_host_label">Fotos con Forma</string>
+    <string name="photo_widget_host_description">Decora tu pantalla principal con tus fotos favoritas</string>
+
+    <!-- Home -->
+    <string name="photo_widget_home_title">Decora tu pantalla principal con tus fotos favoritas</string>
+    <string name="photo_widget_home_aspect_ratio">Selecciona la proporción del widget y toca el botón para comenzar. ¡No te preocupes, puedes cambiar esto en cualquier momento!</string>
+    <string name="photo_widget_home_new_widget">Crear un nuevo widget</string>
+    <string name="photo_widget_home_appearance">Apariencia</string>
+    <string name="photo_widget_home_dynamic_colors">Colores</string>
+    <string name="photo_widget_home_share">Compartir</string>
+    <string name="photo_widget_home_rate">Calificar</string>
+    <string name="photo_widget_home_help">Ayuda</string>
+    <string name="photo_widget_home_developer">Desarrollado con ❤ por Filipe Belatti</string>
+    <string name="photo_widget_home_version">Versión: %s</string>
+    <string name="photo_widget_home_view_licenses">Licencias de OSS</string>
+
+    <string name="photo_widget_licenses_title">Licencias de Código Abierto</string>
+
+    <!-- Preferences -->
+    <string name="preferences_appearance_follow_system">Seguir el sistema</string>
+    <string name="preferences_appearance_light">Claro</string>
+    <string name="preferences_appearance_dark">Oscuro</string>
+
+    <string name="preferences_dynamic_colors_enabled">Colores dinámicos</string>
+    <string name="preferences_dynamic_colors_disabled">Colores predeterminados</string>
+
+    <!-- Share -->
+    <string name="share_title">Corre la voz</string>
+    <string name="share_text">Añade tus fotos favoritas a tu pantalla principal con Material Photo Widget. Descárgalo gratis en %s</string>
+
+    <!-- Aspect Ratio -->
+    <string name="photo_widget_aspect_ratio_title">Selecciona la proporción</string>
+    <string name="photo_widget_aspect_ratio_square">Cuadrada</string>
+    <string name="photo_widget_aspect_ratio_tall">Alta</string>
+    <string name="photo_widget_aspect_ratio_wide">Ancha</string>
+
+    <!-- Configure -->
+    <string name="photo_widget_configure_navigate_back_warning">¿Se perderán los cambios, volver de todos modos?</string>
+
+    <string name="photo_widget_configure_import_error">No se pueden importar todas las fotos seleccionadas</string>
+
+    <string name="photo_widget_configure_select_photo">Selecciona una foto</string>
+    <string name="photo_widget_configure_selected_photos">Fotos seleccionadas</string>
+
+    <string name="photo_widget_configure_menu_crop">Recortar</string>
+    <string name="photo_widget_configure_menu_remove">Eliminar</string>
+    <string name="photo_widget_configure_menu_move_left">Mover a la izquierda</string>
+    <string name="photo_widget_configure_menu_move_right">Mover a la derecha</string>
+
+    <string name="photo_widget_configure_select_interval">Intervalo de cambio</string>
+    <string name="photo_widget_configure_interval_one_day">Cada día</string>
+    <string name="photo_widget_configure_interval_twelve_hours">Cada doce horas</string>
+    <string name="photo_widget_configure_interval_six_hours">Cada seis horas</string>
+    <string name="photo_widget_configure_interval_one_hour">Cada hora</string>
+    <string name="photo_widget_configure_interval_thirty_minutes">Cada treinta minutos</string>
+    <string name="photo_widget_configure_interval_fifteen_minutes">Cada quince minutos</string>
+
+    <string name="photo_widget_configure_applied_shape">Forma aplicada</string>
+    <string name="photo_widget_configure_add_to_home">Agregar a la pantalla principal</string>
+
+    <!-- Help -->
+    <string name="help_article_title_1">Agregar un widget a la pantalla principal no funciona</string>
+    <string name="help_article_body_1">Si nada sucede cuando tocas para agregar un widget o se agrega pero no muestra las fotos seleccionadas, puedes intentar agregarlo directamente desde tu pantalla principal.\n\nLas instrucciones varían según la versión de Android, el fabricante del dispositivo y el lanzador de la pantalla principal, pero generalmente son las siguientes:\n\n1. Mantén presionado en un espacio vacío de tu pantalla principal hasta que aparezca un menú emergente.\n2. Localiza la opción de widget.\n3. Busca Material Photo Widget entre los widgets disponibles.\n4. Arrástralo a tu pantalla principal y configúralo como de costumbre.</string>
+
+    <string name="help_article_title_2">Las fotos del widget no cambian automáticamente</string>
+    <string name="help_article_body_2">El intervalo seleccionado es una aproximación de cuánto tiempo pasará hasta que la foto cambie a la siguiente. Los tiempos reales son determinados por Android considerando múltiples factores.\n\nCada fabricante de dispositivos también puede imponer restricciones más estrictas a las cosas que se ejecutan en segundo plano, lo que podría interferir con el funcionamiento de la aplicación. Desafortunadamente, no se puede hacer mucho al respecto ya que el sistema tiene un mayor control por razones como la optimización de la vida útil de la batería.</string>
+
+    <!-- Common Actions -->
+    <string name="photo_widget_action_yes">Sí</string>
+    <string name="photo_widget_action_no">No</string>
+    <string name="photo_widget_action_continue">Continuar</string>
+
+    <!-- Content Description -->
+    <string name="photo_widget_cd_host">Widget de pantalla principal de Material Photo</string>
+    <string name="photo_widget_cd_open_photo_picker">Abrir selector de fotos</string>
+</resources>

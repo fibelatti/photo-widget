@@ -9,4 +9,11 @@ import androidx.compose.ui.tooling.preview.Preview
     showBackground = true,
     locale = "pt",
 )
+@Preview(
+    name = "Locale Preview - ES",
+    group = "Localization",
+    showSystemUi = true,
+    showBackground = true,
+    locale = "es",
+)
 annotation class LocalePreviews

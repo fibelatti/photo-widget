@@ -73,6 +73,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 import kotlinx.coroutines.launch
@@ -634,6 +635,7 @@ fun ColoredShape(
 
 @Composable
 @ThemePreviews
+@LocalePreviews
 private fun PhotoWidgetConfigureScreenPreview() {
     ExtendedTheme {
         PhotoWidgetConfigureScreen(
