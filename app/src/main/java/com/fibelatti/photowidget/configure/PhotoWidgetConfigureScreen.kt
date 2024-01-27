@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.configure
 
 import android.graphics.BitmapFactory
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
@@ -12,6 +13,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,9 +44,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -76,7 +78,6 @@ import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.theme.ExtendedTheme
-import kotlinx.coroutines.launch
 
 @Composable
 fun PhotoWidgetConfigureScreen(
@@ -94,6 +95,8 @@ fun PhotoWidgetConfigureScreen(
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     onShapeClick: (String) -> Unit,
+    cornerRadius: Float,
+    onCornerRadiusChange: (Float) -> Unit,
     onAddToHomeClick: () -> Unit,
     isProcessing: Boolean,
     modifier: Modifier = Modifier,
@@ -114,6 +117,7 @@ fun PhotoWidgetConfigureScreen(
                 selectedPhoto = selectedPhoto,
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
+                cornerRadius = cornerRadius,
                 onMoveLeftClick = onMoveLeftClick,
                 onMoveRightClick = onMoveRightClick,
                 onAspectRatioClick = onAspectRatioClick,
@@ -124,6 +128,7 @@ fun PhotoWidgetConfigureScreen(
                 loopingInterval = loopingInterval,
                 onLoopingIntervalPickerClick = onLoopingIntervalPickerClick,
                 onShapeClick = onShapeClick,
+                onCornerRadiusChange = onCornerRadiusChange,
                 onAddToHomeClick = onAddToHomeClick,
                 modifier = Modifier
                     .fillMaxSize()
@@ -183,6 +188,7 @@ private fun PhotoWidgetConfigureContent(
     selectedPhoto: LocalPhoto?,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
+    cornerRadius: Float,
     onAspectRatioClick: () -> Unit,
     onCropClick: (LocalPhoto) -> Unit,
     onRemoveClick: (LocalPhoto) -> Unit,
@@ -193,6 +199,7 @@ private fun PhotoWidgetConfigureContent(
     loopingInterval: PhotoWidgetLoopingInterval,
     onLoopingIntervalPickerClick: () -> Unit,
     onShapeClick: (String) -> Unit,
+    onCornerRadiusChange: (Float) -> Unit,
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -208,6 +215,7 @@ private fun PhotoWidgetConfigureContent(
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
                 modifier = Modifier.fillMaxSize(),
+                cornerRadius = cornerRadius,
             )
 
             FilledTonalIconButton(
@@ -245,6 +253,7 @@ private fun PhotoWidgetConfigureContent(
             aspectRatio = aspectRatio,
             shapeId = shapeId,
             modifier = Modifier.padding(top = 16.dp),
+            cornerRadius = cornerRadius,
         )
 
         AnimatedVisibility(visible = photos.size > 1) {
@@ -255,12 +264,28 @@ private fun PhotoWidgetConfigureContent(
             )
         }
 
-        AnimatedVisibility(visible = aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
-            ShapePicker(
-                shapeId = shapeId,
-                onShapeClick = onShapeClick,
-                modifier = Modifier.padding(top = 16.dp),
-            )
+        AnimatedContent(
+            targetState = aspectRatio,
+            transitionSpec = { fadeIn() togetherWith fadeOut() },
+            label = "Customization_Picker",
+        ) {
+            if (it == PhotoWidgetAspectRatio.SQUARE) {
+                ShapePicker(
+                    shapeId = shapeId,
+                    onShapeClick = onShapeClick,
+                    modifier = Modifier.padding(top = 16.dp),
+                )
+            } else {
+                CornerRadiusPicker(
+                    value = cornerRadius,
+                    onValueChange = onCornerRadiusChange,
+                    modifier = Modifier.padding(
+                        start = 16.dp,
+                        top = 16.dp,
+                        end = 16.dp,
+                    ),
+                )
+            }
         }
 
         FilledTonalButton(
@@ -281,6 +306,7 @@ private fun PhotoWidgetViewer(
     photo: LocalPhoto?,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
+    cornerRadius: Float,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -312,6 +338,7 @@ private fun PhotoWidgetViewer(
                 photo = photo,
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
+                cornerRadius = cornerRadius,
                 modifier = Modifier
                     .padding(all = 32.dp)
                     .fillMaxSize(),
@@ -387,6 +414,7 @@ private fun PhotoPicker(
     onPhotoClick: (LocalPhoto) -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
+    cornerRadius: Float,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -448,6 +476,7 @@ private fun PhotoPicker(
                     photo = photo,
                     aspectRatio = aspectRatio,
                     shapeId = shapeId,
+                    cornerRadius = cornerRadius,
                     modifier = Modifier
                         .fillMaxHeight()
                         .aspectRatio(ratio = aspectRatio.aspectRatio)
@@ -548,15 +577,30 @@ private fun ShapePicker(
                 )
             }
         }
+    }
+}
 
-        LaunchedEffect(shapeId) {
-            val index = shapesToPolygons.indexOfFirst { it.first.id == shapeId }
-                .coerceAtLeast(minimumValue = 0)
+@Composable
+private fun CornerRadiusPicker(
+    value: Float,
+    onValueChange: (Float) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Text(
+            text = stringResource(id = R.string.photo_widget_configure_corner_radius),
+            style = MaterialTheme.typography.titleMedium,
+        )
 
-            launch {
-                state.animateScrollToItem(index)
-            }
-        }
+        Slider(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier.padding(horizontal = 4.dp),
+            valueRange = 0f..100f,
+        )
     }
 }
 
@@ -565,6 +609,7 @@ fun ShapedPhoto(
     photo: LocalPhoto,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
+    cornerRadius: Float,
     modifier: Modifier = Modifier,
     badge: @Composable BoxScope.() -> Unit = {},
 ) {
@@ -582,8 +627,11 @@ fun ShapedPhoto(
             photoBitmap.withPolygonalShape(roundedPolygon = shape).asImageBitmap()
         }
     } else {
-        remember(photo, aspectRatio) {
-            photoBitmap.withRoundedCorners(desiredAspectRatio = aspectRatio).asImageBitmap()
+        remember(photo, aspectRatio, cornerRadius) {
+            photoBitmap.withRoundedCorners(
+                desiredAspectRatio = aspectRatio,
+                radius = cornerRadius,
+            ).asImageBitmap()
         }
     }
 
@@ -653,6 +701,8 @@ private fun PhotoWidgetConfigureScreenPreview() {
             aspectRatio = PhotoWidgetAspectRatio.SQUARE,
             shapeId = PhotoWidgetShapeBuilder.defaultShapeId(),
             onShapeClick = {},
+            cornerRadius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
+            onCornerRadiusChange = {},
             onAddToHomeClick = {},
             isProcessing = false,
         )

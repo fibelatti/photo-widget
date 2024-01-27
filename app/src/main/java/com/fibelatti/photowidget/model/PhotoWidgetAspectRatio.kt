@@ -33,4 +33,9 @@ enum class PhotoWidgetAspectRatio(
 
     val scale: Float
         get() = min(x, y) / max(x, y)
+
+    companion object {
+
+        const val DEFAULT_CORNER_RADIUS: Float = 64f
+    }
 }

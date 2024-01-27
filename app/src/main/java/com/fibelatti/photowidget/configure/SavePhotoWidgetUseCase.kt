@@ -18,6 +18,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
         loopingInterval: PhotoWidgetLoopingInterval,
         aspectRatio: PhotoWidgetAspectRatio,
         shapeId: String,
+        cornerRadius: Float,
     ) {
         photoWidgetStorage.renameTemporaryWidgetDir(appWidgetId = appWidgetId)
 
@@ -46,6 +47,11 @@ class SavePhotoWidgetUseCase @Inject constructor(
         photoWidgetStorage.saveWidgetShapeId(
             appWidgetId = appWidgetId,
             shapeId = shapeId,
+        )
+
+        photoWidgetStorage.saveWidgetCornerRadius(
+            appWidgetId = appWidgetId,
+            cornerRadius = cornerRadius,
         )
     }
 }

@@ -11,6 +11,13 @@ object PhotoWidgetShapeBuilder {
 
     private val shapes: List<PhotoWidgetShape> = listOf(
         PhotoWidgetShape(
+            id = "square",
+            type = PhotoWidgetShape.Type.POLYGON,
+            numVertices = 4,
+            roundness = 0.05f,
+            rotation = 45f,
+        ),
+        PhotoWidgetShape(
             id = "rounded-square",
             type = PhotoWidgetShape.Type.POLYGON,
             numVertices = 4,
@@ -66,7 +73,7 @@ object PhotoWidgetShapeBuilder {
         ),
     )
 
-    fun defaultShapeId(): String = shapes.first().id
+    fun defaultShapeId(): String = "rounded-square"
 
     fun buildAllShapes(
         width: Int,

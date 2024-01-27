@@ -208,6 +208,19 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         return sharedPreferences.getString("${PreferencePrefix.SHAPE}$appWidgetId", null)
     }
 
+    fun saveWidgetCornerRadius(appWidgetId: Int, cornerRadius: Float) {
+        sharedPreferences.edit {
+            putFloat("${PreferencePrefix.CORNER_RADIUS}$appWidgetId", cornerRadius)
+        }
+    }
+
+    fun getWidgetCornerRadius(appWidgetId: Int): Float {
+        return sharedPreferences.getFloat(
+            "${PreferencePrefix.CORNER_RADIUS}$appWidgetId",
+            PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
+        )
+    }
+
     fun deleteWidgetData(appWidgetId: Int) {
         getWidgetDir(appWidgetId).deleteRecursively()
 
@@ -248,6 +261,7 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         INDEX(value = "appwidget_index_"),
         RATIO(value = "appwidget_aspect_ratio_"),
         SHAPE(value = "appwidget_shape_"),
+        CORNER_RADIUS(value = "appwidget_corner_radius_"),
         ;
 
         override fun toString(): String = value

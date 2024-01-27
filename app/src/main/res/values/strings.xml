@@ -58,6 +58,8 @@
     <string name="photo_widget_configure_interval_fifteen_minutes">Every fifteen minutes</string>
 
     <string name="photo_widget_configure_applied_shape">Applied shape</string>
+    <string name="photo_widget_configure_corner_radius">Roundness</string>
+
     <string name="photo_widget_configure_add_to_home">Add to home screen</string>
 
     <!-- Help -->

@@ -22,4 +22,6 @@ var Intent.shapeId: String by intentExtras()
 
 var Intent.aspectRatio: PhotoWidgetAspectRatio by intentExtras()
 
+var Intent.cornerRadius: Float by intentExtras()
+
 var Intent.sharedPhotos: List<Uri>? by intentExtras()

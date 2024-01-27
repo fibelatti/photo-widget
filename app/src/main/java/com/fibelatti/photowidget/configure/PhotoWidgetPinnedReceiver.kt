@@ -40,6 +40,7 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
             loopingInterval = callbackIntent.loopingInterval,
             aspectRatio = callbackIntent.aspectRatio,
             shapeId = callbackIntent.shapeId,
+            cornerRadius = callbackIntent.cornerRadius,
         )
 
         // Update the widget UI using the updated storage data
@@ -49,6 +50,7 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
             photoPath = storage.getWidgetPhotos(widgetId).first().path,
             aspectRatio = callbackIntent.aspectRatio,
             shapeId = callbackIntent.shapeId,
+            cornerRadius = callbackIntent.cornerRadius,
         )
 
         // Finally finish the configure activity since it's no longer needed

@@ -99,6 +99,8 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     aspectRatio = state.aspectRatio,
                     shapeId = state.shapeId,
                     onShapeClick = viewModel::shapeSelected,
+                    cornerRadius = state.cornerRadius,
+                    onCornerRadiusChange = viewModel::cornerRadiusSelected,
                     onAddToHomeClick = viewModel::addNewWidget,
                     isProcessing = state.isProcessing,
                 )
@@ -156,6 +158,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     loopingInterval = message.loopingInterval,
                     aspectRatio = message.aspectRatio,
                     shapeId = message.shapeId,
+                    cornerRadius = message.cornerRadius,
                 )
             }
 
@@ -166,6 +169,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     photoPath = message.photoPath,
                     aspectRatio = message.aspectRatio,
                     shapeId = message.shapeId,
+                    cornerRadius = message.cornerRadius,
                 )
             }
 
@@ -234,6 +238,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         photoPath: String,
         aspectRatio: PhotoWidgetAspectRatio,
         shapeId: String,
+        cornerRadius: Float,
     ) {
         PhotoWidgetProvider.update(
             context = this,
@@ -241,6 +246,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             photoPath = photoPath,
             aspectRatio = aspectRatio,
             shapeId = shapeId,
+            cornerRadius = cornerRadius,
         )
 
         widgetAdded(appWidgetId = appWidgetId)
@@ -263,12 +269,14 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         loopingInterval: PhotoWidgetLoopingInterval,
         aspectRatio: PhotoWidgetAspectRatio,
         shapeId: String,
+        cornerRadius: Float,
     ) {
         val remoteViews = PhotoWidgetProvider.createRemoteViews(
             context = this,
             photoPath = photoPath,
             aspectRatio = aspectRatio,
             shapeId = shapeId,
+            cornerRadius = cornerRadius,
         )
         val previewBundle = bundleOf(
             AppWidgetManager.EXTRA_APPWIDGET_PREVIEW to remoteViews,
@@ -281,6 +289,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 this.loopingInterval = loopingInterval
                 this.aspectRatio = aspectRatio
                 this.shapeId = shapeId
+                this.cornerRadius = cornerRadius
             }
             .also {
                 PhotoWidgetPinnedReceiver.callbackIntent = it

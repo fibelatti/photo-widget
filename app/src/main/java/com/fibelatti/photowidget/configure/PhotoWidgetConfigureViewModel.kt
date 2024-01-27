@@ -47,6 +47,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         val savedInterval = photoWidgetStorage.getWidgetInterval(appWidgetId = appWidgetId)
         val savedAspectRatio = photoWidgetStorage.getWidgetAspectRatio(appWidgetId = appWidgetId)
         val savedShapeId = photoWidgetStorage.getWidgetShapeId(appWidgetId = appWidgetId)
+        val savedCornerRadius = photoWidgetStorage.getWidgetCornerRadius(appWidgetId = appWidgetId)
 
         _state.update { current ->
             current.copy(
@@ -55,6 +56,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 loopingInterval = savedInterval ?: current.loopingInterval,
                 aspectRatio = aspectRatio ?: savedAspectRatio,
                 shapeId = savedShapeId ?: current.shapeId,
+                cornerRadius = savedCornerRadius,
             )
         }
     }
@@ -215,6 +217,10 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         _state.update { current -> current.copy(shapeId = shapeId) }
     }
 
+    fun cornerRadiusSelected(cornerRadius: Float) {
+        _state.update { current -> current.copy(cornerRadius = cornerRadius) }
+    }
+
     fun addNewWidget() {
         val currentState = _state.value
 
@@ -237,6 +243,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                             loopingInterval = currentState.loopingInterval,
                             aspectRatio = current.aspectRatio,
                             shapeId = currentState.shapeId,
+                            cornerRadius = current.cornerRadius,
                         ),
                     )
                 }
@@ -251,6 +258,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     loopingInterval = currentState.loopingInterval,
                     aspectRatio = currentState.aspectRatio,
                     shapeId = currentState.shapeId,
+                    cornerRadius = currentState.cornerRadius,
                 )
 
                 _state.update { current ->
@@ -260,6 +268,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                             photoPath = currentState.photos.first().path,
                             aspectRatio = current.aspectRatio,
                             shapeId = currentState.shapeId,
+                            cornerRadius = current.cornerRadius,
                         ),
                     )
                 }

@@ -12,6 +12,7 @@ data class PhotoWidgetConfigureState(
     val loopingInterval: PhotoWidgetLoopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
     val shapeId: String = PhotoWidgetShapeBuilder.defaultShapeId(),
+    val cornerRadius: Float = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
     val isProcessing: Boolean = false,
     val cropQueue: List<LocalPhoto> = emptyList(),
     val messages: List<Message> = emptyList(),
@@ -34,6 +35,7 @@ data class PhotoWidgetConfigureState(
             val loopingInterval: PhotoWidgetLoopingInterval,
             val aspectRatio: PhotoWidgetAspectRatio,
             val shapeId: String,
+            val cornerRadius: Float,
         ) : Message()
 
         data class AddWidget(
@@ -41,6 +43,7 @@ data class PhotoWidgetConfigureState(
             val photoPath: String,
             val aspectRatio: PhotoWidgetAspectRatio,
             val shapeId: String,
+            val cornerRadius: Float,
         ) : Message()
 
         data object CancelWidget : Message()

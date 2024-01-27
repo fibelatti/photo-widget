@@ -16,7 +16,7 @@ import kotlin.math.roundToInt
 
 fun Bitmap.withRoundedCorners(
     desiredAspectRatio: PhotoWidgetAspectRatio,
-    radius: Float = 64f,
+    radius: Float = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
 ): Bitmap = withTransformation(desiredAspectRatio = desiredAspectRatio) { canvas, rect, paint ->
     canvas.drawRoundRect(rect.toRectF(), radius, radius, paint)
 }

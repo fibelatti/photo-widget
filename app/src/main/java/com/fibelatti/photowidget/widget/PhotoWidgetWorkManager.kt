@@ -64,6 +64,7 @@ class LoopingPhotoWidgetWorker(
                 photoPath = nextPhotoPath,
                 aspectRatio = photoWidgetStorage.getWidgetAspectRatio(appWidgetId = appWidgetId),
                 shapeId = photoWidgetStorage.getWidgetShapeId(appWidgetId = appWidgetId),
+                cornerRadius = photoWidgetStorage.getWidgetCornerRadius(appWidgetId = appWidgetId),
             )
 
             Result.success()

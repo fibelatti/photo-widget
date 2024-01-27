@@ -33,6 +33,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val photoPath = photos.getOrNull(currentIndex)?.path ?: continue
             val aspectRatio = storage.getWidgetAspectRatio(appWidgetId = appWidgetId)
             val shapeId = storage.getWidgetShapeId(appWidgetId = appWidgetId)
+            val cornerRadius = storage.getWidgetCornerRadius(appWidgetId = appWidgetId)
 
             update(
                 context = context,
@@ -40,6 +41,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 photoPath = photoPath,
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
+                cornerRadius = cornerRadius,
                 appWidgetManager = appWidgetManager,
             )
         }
@@ -68,6 +70,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             photoPath: String,
             aspectRatio: PhotoWidgetAspectRatio,
             shapeId: String?,
+            cornerRadius: Float,
             appWidgetManager: AppWidgetManager = AppWidgetManager.getInstance(context),
         ) {
             val views = createRemoteViews(
@@ -75,6 +78,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 photoPath = photoPath,
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
+                cornerRadius = cornerRadius,
             )
 
             if (views != null) {
@@ -99,6 +103,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             photoPath: String,
             aspectRatio: PhotoWidgetAspectRatio,
             shapeId: String?,
+            cornerRadius: Float,
         ): RemoteViews? {
             val bitmap = try {
                 requireNotNull(BitmapFactory.decodeFile(photoPath))
@@ -114,7 +119,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
                 bitmap.withPolygonalShape(roundedPolygon = shape)
             } else {
-                bitmap.withRoundedCorners(desiredAspectRatio = aspectRatio)
+                bitmap.withRoundedCorners(desiredAspectRatio = aspectRatio, radius = cornerRadius)
             }
 
             return RemoteViews(context.packageName, R.layout.photo_widget).apply {

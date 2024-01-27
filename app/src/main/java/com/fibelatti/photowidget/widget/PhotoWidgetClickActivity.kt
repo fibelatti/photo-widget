@@ -42,6 +42,7 @@ class PhotoWidgetClickActivity : AppCompatActivity() {
         val index = photoWidgetStorage.getWidgetIndex(appWidgetId)
         val aspectRatio = photoWidgetStorage.getWidgetAspectRatio(appWidgetId)
         val shapeId = photoWidgetStorage.getWidgetShapeId(appWidgetId)
+        val cornerRadius = photoWidgetStorage.getWidgetCornerRadius(appWidgetId)
 
         setContent {
             AppTheme {
@@ -56,6 +57,7 @@ class PhotoWidgetClickActivity : AppCompatActivity() {
                         photo = photos[index],
                         aspectRatio = aspectRatio,
                         shapeId = shapeId ?: PhotoWidgetShapeBuilder.defaultShapeId(),
+                        cornerRadius = cornerRadius,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(all = 16.dp),
