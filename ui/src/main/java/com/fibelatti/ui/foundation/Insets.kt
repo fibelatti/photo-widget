@@ -72,7 +72,7 @@ fun WindowInsets.asHorizontalPaddingDp(
 @Composable
 fun Modifier.imePaddingCompat(): Modifier {
     return this then if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        imePadding()
+        Modifier.imePadding()
     } else {
         var insetValue by remember { mutableIntStateOf(0) }
 
@@ -81,19 +81,19 @@ fun Modifier.imePaddingCompat(): Modifier {
             insets
         }
 
-        padding(bottom = insetValue.pxToDp())
+        Modifier.padding(bottom = insetValue.pxToDp())
     }
 }
 
 @Composable
 fun Modifier.navigationBarsPaddingCompat(): Modifier {
     return this then if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        navigationBarsPadding()
+        Modifier.navigationBarsPadding()
     } else {
         val inset = ViewCompat.getRootWindowInsets(LocalView.current)
             ?.getInsets(WindowInsetsCompat.Type.navigationBars())
 
-        padding(
+        Modifier.padding(
             start = (inset?.left ?: 0).pxToDp(),
             top = (inset?.top ?: 0).pxToDp(),
             end = (inset?.right ?: 0).pxToDp(),
@@ -107,7 +107,7 @@ fun Modifier.topSystemBarsPaddingCompat(): Modifier {
     val inset = ViewCompat.getRootWindowInsets(LocalView.current)
         ?.getInsets(WindowInsetsCompat.Type.systemBars())
 
-    return this then padding(
+    return this then Modifier.padding(
         start = (inset?.left ?: 0).pxToDp(),
         top = (inset?.top ?: 0).pxToDp(),
         end = (inset?.right ?: 0).pxToDp(),
