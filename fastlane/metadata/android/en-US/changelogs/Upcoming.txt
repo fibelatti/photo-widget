@@ -1,0 +1,7 @@
+Version N is released with the following updates:
+
+New: A fully square shape for those who don't like rounded corners
+New: You can now customize the rounded corners of tall and wide widgets
+New: The app is now localized to spanish
+
+Feedback and suggestions are always welcome, visit the project page to contribute!
