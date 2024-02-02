@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4
 
       - name: Setup Android Build
         uses: ./.github/actions/setup-android-build
@@ -23,6 +23,6 @@ jobs:
 
       - name: Upload APK
         if: success()
-        uses: actions/upload-artifact@v4.3.0
+        uses: actions/upload-artifact@v4
         with:
           path: app/build/outputs/apk/debug/*.apk
