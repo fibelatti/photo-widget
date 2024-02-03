@@ -154,7 +154,7 @@ private fun ShapesBanner(
             .height(polygonSize),
     ) {
         val polygons = remember {
-            PhotoWidgetShapeBuilder.buildAllShapes(width = 1, height = 1).values.drop(3)
+            PhotoWidgetShapeBuilder.buildAllShapes(width = 1, height = 1).values.drop(4)
         }
 
         val screenWidth = LocalConfiguration.current.screenWidthDp.dp.dpToPx()
