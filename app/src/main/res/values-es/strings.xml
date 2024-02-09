@@ -52,11 +52,13 @@
 
     <string name="photo_widget_configure_select_interval">Intervalo de cambio</string>
     <string name="photo_widget_configure_interval_one_day">Cada día</string>
-    <string name="photo_widget_configure_interval_twelve_hours">Cada doce horas</string>
-    <string name="photo_widget_configure_interval_six_hours">Cada seis horas</string>
+    <string name="photo_widget_configure_interval_twelve_hours">Cada 12 horas</string>
+    <string name="photo_widget_configure_interval_eight_hours">Cada 8 horas</string>
+    <string name="photo_widget_configure_interval_six_hours">Cada 6 horas</string>
+    <string name="photo_widget_configure_interval_two_hours">Cada 2 horas</string>
     <string name="photo_widget_configure_interval_one_hour">Cada hora</string>
-    <string name="photo_widget_configure_interval_thirty_minutes">Cada treinta minutos</string>
-    <string name="photo_widget_configure_interval_fifteen_minutes">Cada quince minutos</string>
+    <string name="photo_widget_configure_interval_thirty_minutes">Cada 30 minutos</string>
+    <string name="photo_widget_configure_interval_fifteen_minutes">Cada 15 minutos</string>
 
     <string name="photo_widget_configure_applied_shape">Forma aplicada</string>
     <string name="photo_widget_configure_corner_radius">Redondez</string>

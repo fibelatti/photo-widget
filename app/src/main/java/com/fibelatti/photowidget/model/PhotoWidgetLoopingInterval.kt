@@ -20,10 +20,20 @@ enum class PhotoWidgetLoopingInterval(
         timeUnit = TimeUnit.HOURS,
         title = R.string.photo_widget_configure_interval_twelve_hours,
     ),
+    EIGHT_HOURS(
+        repeatInterval = 8,
+        timeUnit = TimeUnit.HOURS,
+        title = R.string.photo_widget_configure_interval_eight_hours,
+    ),
     SIX_HOURS(
         repeatInterval = 6,
         timeUnit = TimeUnit.HOURS,
         title = R.string.photo_widget_configure_interval_six_hours,
+    ),
+    TWO_HOURS(
+        repeatInterval = 2,
+        timeUnit = TimeUnit.HOURS,
+        title = R.string.photo_widget_configure_interval_two_hours,
     ),
     ONE_HOUR(
         repeatInterval = 1,

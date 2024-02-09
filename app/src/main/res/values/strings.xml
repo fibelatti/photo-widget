@@ -51,11 +51,13 @@
 
     <string name="photo_widget_configure_select_interval">Flipping interval</string>
     <string name="photo_widget_configure_interval_one_day">Every day</string>
-    <string name="photo_widget_configure_interval_twelve_hours">Every twelve hours</string>
-    <string name="photo_widget_configure_interval_six_hours">Every six hours</string>
+    <string name="photo_widget_configure_interval_twelve_hours">Every 12 hours</string>
+    <string name="photo_widget_configure_interval_eight_hours">Every 8 hours</string>
+    <string name="photo_widget_configure_interval_six_hours">Every 6 hours</string>
+    <string name="photo_widget_configure_interval_two_hours">Every 2 hours</string>
     <string name="photo_widget_configure_interval_one_hour">Every hour</string>
-    <string name="photo_widget_configure_interval_thirty_minutes">Every thirty minutes</string>
-    <string name="photo_widget_configure_interval_fifteen_minutes">Every fifteen minutes</string>
+    <string name="photo_widget_configure_interval_thirty_minutes">Every 30 minutes</string>
+    <string name="photo_widget_configure_interval_fifteen_minutes">Every 15 minutes</string>
 
     <string name="photo_widget_configure_applied_shape">Applied shape</string>
     <string name="photo_widget_configure_corner_radius">Roundness</string>
