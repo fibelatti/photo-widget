@@ -4,12 +4,13 @@ import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
+import com.fibelatti.photowidget.widget.FlipPhotoUseCase
 import com.fibelatti.photowidget.widget.LoopingPhotoWidgetWorker
-import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import javax.inject.Inject
+import javax.inject.Provider
 
 class InjectingWorkerFactory @Inject constructor(
-    private val photoWidgetStorage: PhotoWidgetStorage,
+    private val flipPhotoUseCase: Provider<FlipPhotoUseCase>,
 ) : WorkerFactory() {
 
     override fun createWorker(
@@ -20,7 +21,7 @@ class InjectingWorkerFactory @Inject constructor(
         LoopingPhotoWidgetWorker::class.java.name -> LoopingPhotoWidgetWorker(
             context = appContext,
             workerParams = workerParameters,
-            photoWidgetStorage = photoWidgetStorage,
+            flipPhotoUseCase = flipPhotoUseCase.get(),
         )
 
         else -> null

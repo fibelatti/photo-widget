@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.di
 
 import com.fibelatti.photowidget.configure.SavePhotoWidgetUseCase
+import com.fibelatti.photowidget.widget.FlipPhotoUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import com.fibelatti.photowidget.widget.PhotoWidgetWorkManager
 import dagger.hilt.EntryPoint
@@ -16,4 +17,6 @@ interface PhotoWidgetEntryPoint {
     fun photoWidgetWorkManager(): PhotoWidgetWorkManager
 
     fun savePhotoWidgetUseCase(): SavePhotoWidgetUseCase
+
+    fun flipPhotoUseCase(): FlipPhotoUseCase
 }

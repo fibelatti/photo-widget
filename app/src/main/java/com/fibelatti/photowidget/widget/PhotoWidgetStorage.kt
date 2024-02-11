@@ -9,6 +9,8 @@ import androidx.core.content.edit
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -173,7 +175,7 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
     fun getWidgetInterval(appWidgetId: Int): PhotoWidgetLoopingInterval? {
         val name = sharedPreferences.getString("${PreferencePrefix.INTERVAL}$appWidgetId", null)
 
-        return name?.let(PhotoWidgetLoopingInterval::valueOf)
+        return enumValueOfOrNull<PhotoWidgetLoopingInterval>(name)
     }
 
     fun saveWidgetIndex(appWidgetId: Int, index: Int) {
@@ -195,7 +197,7 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
     fun getWidgetAspectRatio(appWidgetId: Int): PhotoWidgetAspectRatio {
         val name = sharedPreferences.getString("${PreferencePrefix.RATIO}$appWidgetId", null)
 
-        return name?.let(PhotoWidgetAspectRatio::valueOf) ?: PhotoWidgetAspectRatio.SQUARE
+        return enumValueOfOrNull<PhotoWidgetAspectRatio>(name) ?: PhotoWidgetAspectRatio.SQUARE
     }
 
     fun saveWidgetShapeId(appWidgetId: Int, shapeId: String) {
@@ -219,6 +221,18 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
             "${PreferencePrefix.CORNER_RADIUS}$appWidgetId",
             PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
         )
+    }
+
+    fun saveWidgetTapAction(appWidgetId: Int, tapAction: PhotoWidgetTapAction) {
+        sharedPreferences.edit {
+            putString("${PreferencePrefix.TAP_ACTION}$appWidgetId", tapAction.name)
+        }
+    }
+
+    fun getWidgetTapAction(appWidgetId: Int): PhotoWidgetTapAction {
+        val name = sharedPreferences.getString("${PreferencePrefix.TAP_ACTION}$appWidgetId", null)
+
+        return enumValueOfOrNull<PhotoWidgetTapAction>(name) ?: PhotoWidgetTapAction.VIEW_FULL_SCREEN
     }
 
     fun deleteWidgetData(appWidgetId: Int) {
@@ -262,6 +276,7 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         RATIO(value = "appwidget_aspect_ratio_"),
         SHAPE(value = "appwidget_shape_"),
         CORNER_RADIUS(value = "appwidget_corner_radius_"),
+        TAP_ACTION(value = "appwidget_tap_action_"),
         ;
 
         override fun toString(): String = value

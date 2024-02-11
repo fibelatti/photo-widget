@@ -59,6 +59,10 @@
     <string name="photo_widget_configure_interval_thirty_minutes">A cada 30 minutos</string>
     <string name="photo_widget_configure_interval_fifteen_minutes">A cada 15 minutos</string>
 
+    <string name="photo_widget_configure_tap_action">Ação ao tocar</string>
+    <string name="photo_widget_configure_tap_action_view_full_screen">Ver em tela cheia</string>
+    <string name="photo_widget_configure_tap_action_next_photo">Ver próxima foto</string>
+
     <string name="photo_widget_configure_applied_shape">Forma</string>
     <string name="photo_widget_configure_corner_radius">Arredondamento</string>
 

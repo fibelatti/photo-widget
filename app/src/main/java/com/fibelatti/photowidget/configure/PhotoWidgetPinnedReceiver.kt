@@ -38,6 +38,7 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
             order = callbackIntent.order,
             enableLooping = callbackIntent.enableLooping,
             loopingInterval = callbackIntent.loopingInterval,
+            tapAction = callbackIntent.tapAction,
             aspectRatio = callbackIntent.aspectRatio,
             shapeId = callbackIntent.shapeId,
             cornerRadius = callbackIntent.cornerRadius,
@@ -51,6 +52,7 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
             aspectRatio = callbackIntent.aspectRatio,
             shapeId = callbackIntent.shapeId,
             cornerRadius = callbackIntent.cornerRadius,
+            tapAction = callbackIntent.tapAction,
         )
 
         // Finally finish the configure activity since it's no longer needed

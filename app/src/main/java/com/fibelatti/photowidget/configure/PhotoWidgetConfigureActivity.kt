@@ -25,6 +25,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.platform.getAttributeColor
@@ -96,6 +97,8 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     onPhotoClick = viewModel::previewPhoto,
                     loopingInterval = state.loopingInterval,
                     onLoopingIntervalPickerClick = ::showIntervalPicker,
+                    tapAction = state.tapAction,
+                    onTapActionPickerClick = ::showTapActionPicker,
                     aspectRatio = state.aspectRatio,
                     shapeId = state.shapeId,
                     onShapeClick = viewModel::shapeSelected,
@@ -156,6 +159,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     order = message.order,
                     enableLooping = message.enableLooping,
                     loopingInterval = message.loopingInterval,
+                    tapAction = message.tapAction,
                     aspectRatio = message.aspectRatio,
                     shapeId = message.shapeId,
                     cornerRadius = message.cornerRadius,
@@ -170,6 +174,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     aspectRatio = message.aspectRatio,
                     shapeId = message.shapeId,
                     cornerRadius = message.cornerRadius,
+                    tapAction = message.tapAction,
                 )
             }
 
@@ -233,12 +238,23 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         )
     }
 
+    private fun showTapActionPicker() {
+        SelectionDialog.show(
+            context = this,
+            title = getString(R.string.photo_widget_configure_tap_action),
+            options = PhotoWidgetTapAction.entries,
+            optionName = { option -> getString(option.title) },
+            onOptionSelected = viewModel::tapActionSelected,
+        )
+    }
+
     private fun addNewWidget(
         appWidgetId: Int,
         photoPath: String,
         aspectRatio: PhotoWidgetAspectRatio,
         shapeId: String,
         cornerRadius: Float,
+        tapAction: PhotoWidgetTapAction,
     ) {
         PhotoWidgetProvider.update(
             context = this,
@@ -247,6 +263,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             aspectRatio = aspectRatio,
             shapeId = shapeId,
             cornerRadius = cornerRadius,
+            tapAction = tapAction,
         )
 
         widgetAdded(appWidgetId = appWidgetId)
@@ -267,6 +284,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         order: List<String>,
         enableLooping: Boolean,
         loopingInterval: PhotoWidgetLoopingInterval,
+        tapAction: PhotoWidgetTapAction,
         aspectRatio: PhotoWidgetAspectRatio,
         shapeId: String,
         cornerRadius: Float,
@@ -287,6 +305,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 this.order = order
                 this.enableLooping = enableLooping
                 this.loopingInterval = loopingInterval
+                this.tapAction = tapAction
                 this.aspectRatio = aspectRatio
                 this.shapeId = shapeId
                 this.cornerRadius = cornerRadius

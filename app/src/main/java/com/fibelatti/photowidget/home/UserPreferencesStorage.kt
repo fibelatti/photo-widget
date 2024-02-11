@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.home
 
 import android.content.Context
 import androidx.core.content.edit
+import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,7 +31,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         get() {
             val name = sharedPreferences.getString(PREFERENCES_KEY_APPEARANCE, null)
 
-            return name?.let(Appearance::valueOf) ?: Appearance.FOLLOW_SYSTEM
+            return enumValueOfOrNull<Appearance>(name) ?: Appearance.FOLLOW_SYSTEM
         }
         set(value) {
             sharedPreferences.edit { putString(PREFERENCES_KEY_APPEARANCE, value.name) }

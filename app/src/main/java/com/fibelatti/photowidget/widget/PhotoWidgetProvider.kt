@@ -14,6 +14,7 @@ import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
+import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 
@@ -34,6 +35,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val aspectRatio = storage.getWidgetAspectRatio(appWidgetId = appWidgetId)
             val shapeId = storage.getWidgetShapeId(appWidgetId = appWidgetId)
             val cornerRadius = storage.getWidgetCornerRadius(appWidgetId = appWidgetId)
+            val tapAction = storage.getWidgetTapAction(appWidgetId = appWidgetId)
 
             update(
                 context = context,
@@ -42,6 +44,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
                 cornerRadius = cornerRadius,
+                tapAction = tapAction,
                 appWidgetManager = appWidgetManager,
             )
         }
@@ -58,7 +61,22 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         }
     }
 
+    override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
+
+        if (TAP_TO_FLIP_ACTION == intent.action) {
+            runCatching {
+                val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
+                val flipPhotoUseCase = entryPoint.flipPhotoUseCase()
+
+                flipPhotoUseCase(appWidgetId = intent.appWidgetId)
+            }
+        }
+    }
+
     companion object {
+
+        private const val TAP_TO_FLIP_ACTION = "TAP_TO_FLIP_ACTION"
 
         fun ids(context: Context): List<Int> = AppWidgetManager.getInstance(context)
             .getAppWidgetIds(ComponentName(context, PhotoWidgetProvider::class.java))
@@ -71,6 +89,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             aspectRatio: PhotoWidgetAspectRatio,
             shapeId: String?,
             cornerRadius: Float,
+            tapAction: PhotoWidgetTapAction,
             appWidgetManager: AppWidgetManager = AppWidgetManager.getInstance(context),
         ) {
             val views = createRemoteViews(
@@ -79,23 +98,38 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
                 cornerRadius = cornerRadius,
-            )
+            ) ?: return
 
-            if (views != null) {
-                val clickIntent = Intent(context, PhotoWidgetClickActivity::class.java).apply {
-                    this.appWidgetId = appWidgetId
+            val clickPendingIntent = when (tapAction) {
+                PhotoWidgetTapAction.VIEW_FULL_SCREEN -> {
+                    val clickIntent = Intent(context, PhotoWidgetClickActivity::class.java).apply {
+                        this.appWidgetId = appWidgetId
+                    }
+                    PendingIntent.getActivity(
+                        context,
+                        appWidgetId,
+                        clickIntent,
+                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                    )
                 }
-                val pendingIntent = PendingIntent.getActivity(
-                    context,
-                    appWidgetId,
-                    clickIntent,
-                    PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-                )
 
-                views.setOnClickPendingIntent(R.id.iv_widget, pendingIntent)
-
-                appWidgetManager.updateAppWidget(appWidgetId, views)
+                PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> {
+                    val clickIntent = Intent(context, PhotoWidgetProvider::class.java).apply {
+                        this.appWidgetId = appWidgetId
+                        this.action = TAP_TO_FLIP_ACTION
+                    }
+                    PendingIntent.getBroadcast(
+                        context,
+                        appWidgetId,
+                        clickIntent,
+                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                    )
+                }
             }
+
+            views.setOnClickPendingIntent(R.id.iv_widget, clickPendingIntent)
+
+            appWidgetManager.updateAppWidget(appWidgetId, views)
         }
 
         fun createRemoteViews(

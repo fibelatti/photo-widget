@@ -9,6 +9,7 @@ import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
+import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.savedState
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,6 +46,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
         val savedPhotos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
         val savedInterval = photoWidgetStorage.getWidgetInterval(appWidgetId = appWidgetId)
+        val savedTapAction = photoWidgetStorage.getWidgetTapAction(appWidgetId = appWidgetId)
         val savedAspectRatio = photoWidgetStorage.getWidgetAspectRatio(appWidgetId = appWidgetId)
         val savedShapeId = photoWidgetStorage.getWidgetShapeId(appWidgetId = appWidgetId)
         val savedCornerRadius = photoWidgetStorage.getWidgetCornerRadius(appWidgetId = appWidgetId)
@@ -54,6 +56,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 photos = savedPhotos,
                 selectedPhoto = savedPhotos.firstOrNull(),
                 loopingInterval = savedInterval ?: current.loopingInterval,
+                tapAction = savedTapAction,
                 aspectRatio = aspectRatio ?: savedAspectRatio,
                 shapeId = savedShapeId ?: current.shapeId,
                 cornerRadius = savedCornerRadius,
@@ -213,6 +216,10 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         _state.update { current -> current.copy(loopingInterval = interval) }
     }
 
+    fun tapActionSelected(tapAction: PhotoWidgetTapAction) {
+        _state.update { current -> current.copy(tapAction = tapAction) }
+    }
+
     fun shapeSelected(shapeId: String) {
         _state.update { current -> current.copy(shapeId = shapeId) }
     }
@@ -241,6 +248,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                             order = currentState.photos.map { it.name },
                             enableLooping = currentState.photos.size > 1,
                             loopingInterval = currentState.loopingInterval,
+                            tapAction = current.tapAction,
                             aspectRatio = current.aspectRatio,
                             shapeId = currentState.shapeId,
                             cornerRadius = current.cornerRadius,
@@ -251,11 +259,14 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
             // The user start configuring from the home screen, it will be added automatically
             else -> {
+                val enableLooping = currentState.photos.size > 1
+
                 savePhotoWidgetUseCase(
                     appWidgetId = appWidgetId,
                     order = currentState.photos.map { it.name },
-                    enableLooping = currentState.photos.size > 1,
+                    enableLooping = enableLooping,
                     loopingInterval = currentState.loopingInterval,
+                    tapAction = if (enableLooping) currentState.tapAction else PhotoWidgetTapAction.VIEW_FULL_SCREEN,
                     aspectRatio = currentState.aspectRatio,
                     shapeId = currentState.shapeId,
                     cornerRadius = currentState.cornerRadius,
@@ -269,6 +280,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                             aspectRatio = current.aspectRatio,
                             shapeId = currentState.shapeId,
                             cornerRadius = current.cornerRadius,
+                            tapAction = current.tapAction,
                         ),
                     )
                 }

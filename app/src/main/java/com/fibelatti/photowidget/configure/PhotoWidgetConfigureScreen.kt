@@ -73,6 +73,7 @@ import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
+import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.ui.preview.LocalePreviews
@@ -92,6 +93,8 @@ fun PhotoWidgetConfigureScreen(
     onPhotoClick: (LocalPhoto) -> Unit,
     loopingInterval: PhotoWidgetLoopingInterval,
     onLoopingIntervalPickerClick: () -> Unit,
+    tapAction: PhotoWidgetTapAction,
+    onTapActionPickerClick: () -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     onShapeClick: (String) -> Unit,
@@ -127,6 +130,8 @@ fun PhotoWidgetConfigureScreen(
                 onPhotoClick = onPhotoClick,
                 loopingInterval = loopingInterval,
                 onLoopingIntervalPickerClick = onLoopingIntervalPickerClick,
+                tapAction = tapAction,
+                onTapActionPickerClick = onTapActionPickerClick,
                 onShapeClick = onShapeClick,
                 onCornerRadiusChange = onCornerRadiusChange,
                 onAddToHomeClick = onAddToHomeClick,
@@ -198,6 +203,8 @@ private fun PhotoWidgetConfigureContent(
     onPhotoClick: (LocalPhoto) -> Unit,
     loopingInterval: PhotoWidgetLoopingInterval,
     onLoopingIntervalPickerClick: () -> Unit,
+    tapAction: PhotoWidgetTapAction,
+    onTapActionPickerClick: () -> Unit,
     onShapeClick: (String) -> Unit,
     onCornerRadiusChange: (Float) -> Unit,
     onAddToHomeClick: () -> Unit,
@@ -257,11 +264,22 @@ private fun PhotoWidgetConfigureContent(
         )
 
         AnimatedVisibility(visible = photos.size > 1) {
-            PhotoIntervalPicker(
-                loopingInterval = loopingInterval,
-                onLoopingIntervalPickerClick = onLoopingIntervalPickerClick,
-                modifier = Modifier.padding(top = 16.dp),
-            )
+            Row(
+                modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                PhotoIntervalPicker(
+                    loopingInterval = loopingInterval,
+                    onLoopingIntervalPickerClick = onLoopingIntervalPickerClick,
+                    modifier = Modifier.weight(1f),
+                )
+
+                TapActionPicker(
+                    tapAction = tapAction,
+                    onTapActionPickerClick = onTapActionPickerClick,
+                    modifier = Modifier.weight(1f),
+                )
+            }
         }
 
         AnimatedContent(
@@ -499,9 +517,7 @@ private fun PhotoIntervalPicker(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+        modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
@@ -514,6 +530,30 @@ private fun PhotoIntervalPicker(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(text = stringResource(id = loopingInterval.title))
+        }
+    }
+}
+
+@Composable
+private fun TapActionPicker(
+    tapAction: PhotoWidgetTapAction,
+    onTapActionPickerClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Text(
+            text = stringResource(id = R.string.photo_widget_configure_tap_action),
+            style = MaterialTheme.typography.titleMedium,
+        )
+
+        OutlinedButton(
+            onClick = onTapActionPickerClick,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text(text = stringResource(id = tapAction.title))
         }
     }
 }
@@ -698,6 +738,8 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onPhotoClick = {},
             loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
             onLoopingIntervalPickerClick = {},
+            tapAction = PhotoWidgetTapAction.VIEW_FULL_SCREEN,
+            onTapActionPickerClick = {},
             aspectRatio = PhotoWidgetAspectRatio.SQUARE,
             shapeId = PhotoWidgetShapeBuilder.defaultShapeId(),
             onShapeClick = {},

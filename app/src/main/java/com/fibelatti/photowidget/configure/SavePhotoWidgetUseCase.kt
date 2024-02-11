@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.configure
 
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import com.fibelatti.photowidget.widget.PhotoWidgetWorkManager
 import javax.inject.Inject
@@ -16,6 +17,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
         order: List<String>,
         enableLooping: Boolean,
         loopingInterval: PhotoWidgetLoopingInterval,
+        tapAction: PhotoWidgetTapAction,
         aspectRatio: PhotoWidgetAspectRatio,
         shapeId: String,
         cornerRadius: Float,
@@ -37,6 +39,11 @@ class SavePhotoWidgetUseCase @Inject constructor(
         photoWidgetStorage.saveWidgetInterval(
             appWidgetId = appWidgetId,
             interval = loopingInterval,
+        )
+
+        photoWidgetStorage.saveWidgetTapAction(
+            appWidgetId = appWidgetId,
+            tapAction = tapAction,
         )
 
         photoWidgetStorage.saveWidgetAspectRatio(

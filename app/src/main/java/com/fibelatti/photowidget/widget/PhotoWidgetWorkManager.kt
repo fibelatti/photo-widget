@@ -39,34 +39,17 @@ class PhotoWidgetWorkManager @Inject constructor(@ApplicationContext context: Co
 }
 
 class LoopingPhotoWidgetWorker(
-    private val context: Context,
+    context: Context,
     private val workerParams: WorkerParameters,
-    private val photoWidgetStorage: PhotoWidgetStorage,
+    private val flipPhotoUseCase: FlipPhotoUseCase,
 ) : Worker(context, workerParams) {
 
     override fun doWork(): Result {
         val appWidgetId = workerParams.inputData.getInt(INPUT_DATA_WIDGET_ID, -1)
         if (appWidgetId == -1) return Result.failure()
 
-        val appWidgetPhotos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
-        if (appWidgetPhotos.size < 2) return Result.failure()
-
         return try {
-            val currentIndex = photoWidgetStorage.getWidgetIndex(appWidgetId)
-            val nextIndex = if (currentIndex == appWidgetPhotos.size - 1) 0 else currentIndex + 1
-            val nextPhotoPath = appWidgetPhotos[nextIndex].path
-
-            photoWidgetStorage.saveWidgetIndex(appWidgetId = appWidgetId, index = nextIndex)
-
-            PhotoWidgetProvider.update(
-                context = context,
-                appWidgetId = appWidgetId,
-                photoPath = nextPhotoPath,
-                aspectRatio = photoWidgetStorage.getWidgetAspectRatio(appWidgetId = appWidgetId),
-                shapeId = photoWidgetStorage.getWidgetShapeId(appWidgetId = appWidgetId),
-                cornerRadius = photoWidgetStorage.getWidgetCornerRadius(appWidgetId = appWidgetId),
-            )
-
+            flipPhotoUseCase(appWidgetId = appWidgetId)
             Result.success()
         } catch (_: Exception) {
             Result.failure()
