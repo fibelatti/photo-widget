@@ -29,23 +29,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         val storage = entryPoint.photoWidgetStorage()
 
         for (appWidgetId in appWidgetIds) {
-            val photos = storage.getWidgetPhotos(appWidgetId = appWidgetId)
-            val currentIndex = storage.getWidgetIndex(appWidgetId = appWidgetId)
-            val photoPath = photos.getOrNull(currentIndex)?.path ?: continue
-            val aspectRatio = storage.getWidgetAspectRatio(appWidgetId = appWidgetId)
-            val shapeId = storage.getWidgetShapeId(appWidgetId = appWidgetId)
-            val cornerRadius = storage.getWidgetCornerRadius(appWidgetId = appWidgetId)
-            val tapAction = storage.getWidgetTapAction(appWidgetId = appWidgetId)
-
             update(
                 context = context,
                 appWidgetId = appWidgetId,
-                photoPath = photoPath,
-                aspectRatio = aspectRatio,
-                shapeId = shapeId,
-                cornerRadius = cornerRadius,
-                tapAction = tapAction,
                 appWidgetManager = appWidgetManager,
+                photoWidgetStorage = storage,
             )
         }
     }
@@ -85,13 +73,17 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         fun update(
             context: Context,
             appWidgetId: Int,
-            photoPath: String,
-            aspectRatio: PhotoWidgetAspectRatio,
-            shapeId: String?,
-            cornerRadius: Float,
-            tapAction: PhotoWidgetTapAction,
             appWidgetManager: AppWidgetManager = AppWidgetManager.getInstance(context),
+            photoWidgetStorage: PhotoWidgetStorage = entryPoint<PhotoWidgetEntryPoint>(context).photoWidgetStorage(),
         ) {
+            val photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+            val currentIndex = photoWidgetStorage.getWidgetIndex(appWidgetId = appWidgetId)
+            val photoPath = photos.getOrNull(currentIndex)?.path ?: return
+            val aspectRatio = photoWidgetStorage.getWidgetAspectRatio(appWidgetId = appWidgetId)
+            val shapeId = photoWidgetStorage.getWidgetShapeId(appWidgetId = appWidgetId)
+            val cornerRadius = photoWidgetStorage.getWidgetCornerRadius(appWidgetId = appWidgetId)
+            val tapAction = photoWidgetStorage.getWidgetTapAction(appWidgetId = appWidgetId)
+
             val views = createRemoteViews(
                 context = context,
                 photoPath = photoPath,

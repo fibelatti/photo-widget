@@ -30,7 +30,6 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
 
         val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
         val saveUseCase = entryPoint.savePhotoWidgetUseCase()
-        val storage = entryPoint.photoWidgetStorage()
 
         // Persist the widget data since it was placed on the home screen
         saveUseCase(
@@ -48,11 +47,6 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
         PhotoWidgetProvider.update(
             context = context,
             appWidgetId = widgetId,
-            photoPath = storage.getWidgetPhotos(widgetId).first().path,
-            aspectRatio = callbackIntent.aspectRatio,
-            shapeId = callbackIntent.shapeId,
-            cornerRadius = callbackIntent.cornerRadius,
-            tapAction = callbackIntent.tapAction,
         )
 
         // Finally finish the configure activity since it's no longer needed

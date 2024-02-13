@@ -276,11 +276,6 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     current.copy(
                         messages = current.messages + PhotoWidgetConfigureState.Message.AddWidget(
                             appWidgetId = appWidgetId,
-                            photoPath = currentState.photos.first().path,
-                            aspectRatio = current.aspectRatio,
-                            shapeId = currentState.shapeId,
-                            cornerRadius = current.cornerRadius,
-                            tapAction = current.tapAction,
                         ),
                     )
                 }

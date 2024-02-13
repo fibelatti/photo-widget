@@ -168,14 +168,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
             is PhotoWidgetConfigureState.Message.AddWidget -> {
                 viewModel.messageHandled(message = message)
-                addNewWidget(
-                    appWidgetId = message.appWidgetId,
-                    photoPath = message.photoPath,
-                    aspectRatio = message.aspectRatio,
-                    shapeId = message.shapeId,
-                    cornerRadius = message.cornerRadius,
-                    tapAction = message.tapAction,
-                )
+                addNewWidget(appWidgetId = message.appWidgetId)
             }
 
             is PhotoWidgetConfigureState.Message.CancelWidget -> {
@@ -248,22 +241,10 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         )
     }
 
-    private fun addNewWidget(
-        appWidgetId: Int,
-        photoPath: String,
-        aspectRatio: PhotoWidgetAspectRatio,
-        shapeId: String,
-        cornerRadius: Float,
-        tapAction: PhotoWidgetTapAction,
-    ) {
+    private fun addNewWidget(appWidgetId: Int) {
         PhotoWidgetProvider.update(
             context = this,
             appWidgetId = appWidgetId,
-            photoPath = photoPath,
-            aspectRatio = aspectRatio,
-            shapeId = shapeId,
-            cornerRadius = cornerRadius,
-            tapAction = tapAction,
         )
 
         widgetAdded(appWidgetId = appWidgetId)

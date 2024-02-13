@@ -41,14 +41,7 @@ data class PhotoWidgetConfigureState(
             val cornerRadius: Float,
         ) : Message()
 
-        data class AddWidget(
-            val appWidgetId: Int,
-            val photoPath: String,
-            val aspectRatio: PhotoWidgetAspectRatio,
-            val shapeId: String,
-            val cornerRadius: Float,
-            val tapAction: PhotoWidgetTapAction,
-        ) : Message()
+        data class AddWidget(val appWidgetId: Int) : Message()
 
         data object CancelWidget : Message()
     }
