@@ -31,7 +31,7 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version = "1.1.0" }
 
-ucrop = { module = "com.github.yalantis:ucrop", version = "2.2.8" }
+ucrop = { module = "com.github.yalantis:ucrop", version = "2.2.8-native" }
 
 about-libraries = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "aboutLibraries" }
 
