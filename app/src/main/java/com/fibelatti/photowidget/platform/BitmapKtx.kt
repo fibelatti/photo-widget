@@ -8,9 +8,9 @@ import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import androidx.core.graphics.toRectF
 import androidx.graphics.shapes.RoundedPolygon
-import androidx.graphics.shapes.drawPolygon
+import androidx.graphics.shapes.toPath
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
+import com.fibelatti.photowidget.model.transformed
 import kotlin.math.min
 import kotlin.math.roundToInt
 
@@ -24,17 +24,9 @@ fun Bitmap.withRoundedCorners(
 fun Bitmap.withPolygonalShape(
     roundedPolygon: RoundedPolygon,
 ): Bitmap = withTransformation(desiredAspectRatio = PhotoWidgetAspectRatio.SQUARE) { canvas, rect, paint ->
-    canvas.drawPolygon(
-        polygon = roundedPolygon.also {
-            it.transform(
-                matrix = PhotoWidgetShapeBuilder.calculateMatrix(
-                    bounds = rect.toRectF(),
-                    width = rect.width(),
-                    height = rect.height(),
-                ),
-            )
-        },
-        paint = paint,
+    canvas.drawPath(
+        roundedPolygon.transformed(bounds = rect.toRectF()).toPath(),
+        paint,
     )
 }
 

@@ -5,6 +5,7 @@ import android.graphics.RectF
 import androidx.graphics.shapes.CornerRounding
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.star
+import androidx.graphics.shapes.transformed
 import kotlin.math.min
 
 object PhotoWidgetShapeBuilder {
@@ -76,52 +77,40 @@ object PhotoWidgetShapeBuilder {
     fun defaultShapeId(): String = "rounded-square"
 
     fun buildAllShapes(
-        width: Int,
-        height: Int,
         bounds: RectF? = null,
+        width: Float = 1f,
+        height: Float = 1f,
     ): Map<PhotoWidgetShape, RoundedPolygon> = shapes.associateWith { shape ->
-        buildShape(photoWidgetShape = shape).also {
-            it.transform(
-                matrix = calculateMatrix(
-                    bounds = bounds ?: it.bounds,
-                    width = width,
-                    height = height,
-                ),
-            )
-        }
+        buildShape(photoWidgetShape = shape).transformed(
+            bounds = bounds,
+            width = width,
+            height = height,
+        )
     }
 
     fun buildShape(
         shapeId: String?,
-        width: Int,
-        height: Int,
         bounds: RectF? = null,
+        width: Float = 1f,
+        height: Float = 1f,
     ): RoundedPolygon = buildShape(
         photoWidgetShape = shapes.firstOrNull { it.id == shapeId } ?: shapes.first(),
-    ).also {
-        it.transform(
-            matrix = calculateMatrix(
-                bounds = bounds ?: it.bounds,
-                width = width,
-                height = height,
-            ),
-        )
-    }
+    ).transformed(
+        bounds = bounds,
+        width = width,
+        height = height,
+    )
 
     fun resizeShape(
         roundedPolygon: RoundedPolygon,
-        width: Int,
-        height: Int,
+        width: Float,
+        height: Float,
         bounds: RectF = RectF(0f, 0f, 1f, 1f),
-    ): RoundedPolygon = RoundedPolygon(source = roundedPolygon).also {
-        it.transform(
-            matrix = calculateMatrix(
-                bounds = bounds,
-                width = width,
-                height = height,
-            ),
-        )
-    }
+    ): RoundedPolygon = RoundedPolygon(source = roundedPolygon).transformed(
+        bounds = bounds,
+        width = width,
+        height = height,
+    )
 
     private fun buildShape(photoWidgetShape: PhotoWidgetShape): RoundedPolygon {
         val polygon = when (photoWidgetShape.type) {
@@ -137,34 +126,43 @@ object PhotoWidgetShapeBuilder {
             )
         }
 
-        return polygon.also {
-            it.transform(
-                Matrix().apply {
-                    postRotate(photoWidgetShape.rotation)
-                },
-            )
-        }
+        return polygon.transformed(
+            matrix = Matrix().apply {
+                postRotate(photoWidgetShape.rotation)
+            },
+        )
     }
+}
 
-    fun calculateMatrix(bounds: RectF, width: Int, height: Int): Matrix {
-        val scale = calculateScale(bounds = bounds, width = width, height = height)
-        val scaledLeft = scale * bounds.left
-        val scaledTop = scale * bounds.top
-        val scaledWidth = (scale * bounds.right) - scaledLeft
-        val scaledHeight = (scale * bounds.bottom) - scaledTop
-        val newLeft = scaledLeft - (width - scaledWidth) / 2
-        val newTop = scaledTop - (height - scaledHeight) / 2
+fun RoundedPolygon.transformed(
+    bounds: RectF? = null,
+    width: Float? = null,
+    height: Float? = null,
+): RoundedPolygon {
+    val actualBounds = bounds ?: calculateBounds().let { RectF(it[0], it[1], it[2], it[3]) }
 
-        return Matrix().apply {
-            preTranslate(-newLeft, -newTop)
-            preScale(scale, scale)
-        }
-    }
+    return transformed(
+        matrix = calculateMatrix(
+            bounds = actualBounds,
+            width = width ?: actualBounds.width(),
+            height = height ?: actualBounds.height(),
+        ),
+    )
+}
 
-    private fun calculateScale(bounds: RectF, width: Int, height: Int): Float {
-        val scaleX = width / (bounds.right - bounds.left)
-        val scaleY = height / (bounds.bottom - bounds.top)
+private fun calculateMatrix(bounds: RectF, width: Float, height: Float): Matrix {
+    val scaleX = width / (bounds.right - bounds.left)
+    val scaleY = height / (bounds.bottom - bounds.top)
+    val scale = min(scaleX, scaleY)
+    val scaledLeft = scale * bounds.left
+    val scaledTop = scale * bounds.top
+    val scaledWidth = (scale * bounds.right) - scaledLeft
+    val scaledHeight = (scale * bounds.bottom) - scaledTop
+    val newLeft = scaledLeft - (width - scaledWidth) / 2
+    val newTop = scaledTop - (height - scaledHeight) / 2
 
-        return min(scaleX, scaleY)
+    return Matrix().apply {
+        preTranslate(-newLeft, -newTop)
+        preScale(scale, scale)
     }
 }

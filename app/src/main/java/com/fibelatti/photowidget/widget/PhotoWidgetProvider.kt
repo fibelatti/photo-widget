@@ -147,8 +147,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val transformedBitmap = if (aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
                 val shape = PhotoWidgetShapeBuilder.buildShape(
                     shapeId = shapeId,
-                    width = bitmap.width,
-                    height = bitmap.height,
+                    width = bitmap.width.toFloat(),
+                    height = bitmap.height.toFloat(),
                 )
 
                 bitmap.withPolygonalShape(roundedPolygon = shape)

@@ -68,6 +68,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.RoundedPolygon
+import androidx.graphics.shapes.toPath
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -460,11 +461,7 @@ private fun PhotoPicker(
         ) {
             item {
                 val shape = remember(shapeId) {
-                    PhotoWidgetShapeBuilder.buildShape(
-                        shapeId = shapeId,
-                        width = 1,
-                        height = 1,
-                    )
+                    PhotoWidgetShapeBuilder.buildShape(shapeId = shapeId)
                 }
 
                 ColoredShape(
@@ -575,10 +572,7 @@ private fun ShapePicker(
         )
 
         val shapesToPolygons = remember {
-            PhotoWidgetShapeBuilder.buildAllShapes(
-                width = 1,
-                height = 1,
-            ).toList()
+            PhotoWidgetShapeBuilder.buildAllShapes().toList()
         }
 
         val state = rememberLazyListState()
@@ -660,8 +654,8 @@ fun ShapedPhoto(
         remember(photo, shapeId) {
             val shape = PhotoWidgetShapeBuilder.buildShape(
                 shapeId = shapeId,
-                width = photoBitmap.width,
-                height = photoBitmap.height,
+                width = photoBitmap.width.toFloat(),
+                height = photoBitmap.height.toFloat(),
             )
 
             photoBitmap.withPolygonalShape(roundedPolygon = shape).asImageBitmap()
@@ -703,8 +697,8 @@ fun ColoredShape(
         modifier = modifier.drawWithContent {
             val sizedPolygon = PhotoWidgetShapeBuilder.resizeShape(
                 roundedPolygon = polygon,
-                width = size.width.toInt(),
-                height = size.height.toInt(),
+                width = size.width,
+                height = size.height,
             )
 
             drawPath(
