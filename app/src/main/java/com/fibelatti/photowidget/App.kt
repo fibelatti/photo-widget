@@ -2,8 +2,8 @@ package com.fibelatti.photowidget
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.fibelatti.photowidget.di.InjectingWorkerFactory
 import com.fibelatti.photowidget.home.Appearance
 import com.fibelatti.photowidget.home.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
@@ -23,12 +23,12 @@ class App : Application(), Configuration.Provider {
     lateinit var photoWidgetStorage: PhotoWidgetStorage
 
     @Inject
-    lateinit var injectingWorkerFactory: InjectingWorkerFactory
+    lateinit var hiltWorkerFactory: HiltWorkerFactory
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setMinimumLoggingLevel(android.util.Log.INFO)
-            .setWorkerFactory(injectingWorkerFactory)
+            .setWorkerFactory(hiltWorkerFactory)
             .build()
 
     override fun onCreate() {

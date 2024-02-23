@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.widget
 
 import android.content.Context
+import androidx.hilt.work.HiltWorker
 import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
@@ -8,6 +9,8 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -38,9 +41,10 @@ class PhotoWidgetWorkManager @Inject constructor(@ApplicationContext context: Co
     }
 }
 
-class LoopingPhotoWidgetWorker(
-    context: Context,
-    private val workerParams: WorkerParameters,
+@HiltWorker
+class LoopingPhotoWidgetWorker @AssistedInject constructor(
+    @Assisted context: Context,
+    @Assisted private val workerParams: WorkerParameters,
     private val flipPhotoUseCase: FlipPhotoUseCase,
 ) : Worker(context, workerParams) {
 
