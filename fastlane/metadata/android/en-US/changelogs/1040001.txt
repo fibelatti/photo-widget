@@ -1,0 +1,7 @@
+Version 1.4 is released with the following updates:
+
+New: Choose the tap action of each widget — View in full screen or switch to the next photo
+New: You can now zoom and pan photos when tapping to view a widget in full screen
+New: More flipping intervals — every 2 and 8 hours added to the options
+
+Feedback and suggestions are always welcome, visit the project page to contribute!
