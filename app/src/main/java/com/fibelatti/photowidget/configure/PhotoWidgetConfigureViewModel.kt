@@ -11,6 +11,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.savedState
+import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -26,6 +27,7 @@ import javax.inject.Inject
 class PhotoWidgetConfigureViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val photoWidgetStorage: PhotoWidgetStorage,
+    loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
     private val savePhotoWidgetUseCase: SavePhotoWidgetUseCase,
 ) : ViewModel() {
 
@@ -44,22 +46,12 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             photoWidgetStorage.deleteWidgetData(appWidgetId = appWidgetId)
         }
 
-        val savedPhotos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
-        val savedInterval = photoWidgetStorage.getWidgetInterval(appWidgetId = appWidgetId)
-        val savedTapAction = photoWidgetStorage.getWidgetTapAction(appWidgetId = appWidgetId)
-        val savedAspectRatio = photoWidgetStorage.getWidgetAspectRatio(appWidgetId = appWidgetId)
-        val savedShapeId = photoWidgetStorage.getWidgetShapeId(appWidgetId = appWidgetId)
-        val savedCornerRadius = photoWidgetStorage.getWidgetCornerRadius(appWidgetId = appWidgetId)
+        val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
 
         _state.update { current ->
             current.copy(
-                photos = savedPhotos,
-                selectedPhoto = savedPhotos.firstOrNull(),
-                loopingInterval = savedInterval ?: current.loopingInterval,
-                tapAction = savedTapAction,
-                aspectRatio = aspectRatio ?: savedAspectRatio,
-                shapeId = savedShapeId ?: current.shapeId,
-                cornerRadius = savedCornerRadius,
+                photoWidget = photoWidget.copy(aspectRatio = aspectRatio ?: photoWidget.aspectRatio),
+                selectedPhoto = photoWidget.photos.firstOrNull(),
             )
         }
     }
@@ -67,12 +59,14 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     fun setAspectRatio(photoWidgetAspectRatio: PhotoWidgetAspectRatio) {
         _state.update { current ->
             current.copy(
-                aspectRatio = photoWidgetAspectRatio,
-                shapeId = if (photoWidgetAspectRatio == PhotoWidgetAspectRatio.SQUARE) {
-                    current.shapeId
-                } else {
-                    PhotoWidgetShapeBuilder.defaultShapeId()
-                },
+                photoWidget = current.photoWidget.copy(
+                    aspectRatio = photoWidgetAspectRatio,
+                    shapeId = if (photoWidgetAspectRatio == PhotoWidgetAspectRatio.SQUARE) {
+                        current.photoWidget.shapeId
+                    } else {
+                        PhotoWidgetShapeBuilder.defaultShapeId()
+                    },
+                ),
             )
         }
     }
@@ -99,10 +93,10 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             }
 
             _state.update { current ->
-                val updatedPhotos = current.photos + newPhotos
+                val updatedPhotos = current.photoWidget.photos + newPhotos
 
                 current.copy(
-                    photos = updatedPhotos,
+                    photoWidget = current.photoWidget.copy(photos = updatedPhotos),
                     selectedPhoto = current.selectedPhoto ?: updatedPhotos.firstOrNull(),
                     isProcessing = false,
                     cropQueue = newPhotos,
@@ -132,7 +126,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     messages = current.messages + PhotoWidgetConfigureState.Message.LaunchCrop(
                         source = Uri.fromFile(source),
                         destination = Uri.fromFile(destination),
-                        aspectRatio = current.aspectRatio,
+                        aspectRatio = current.photoWidget.aspectRatio,
                     ),
                 )
             }
@@ -142,13 +136,15 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     fun photoCropped(path: String) {
         _state.update { current ->
             current.copy(
-                photos = current.photos.map { photo ->
-                    if (photo.path == path) {
-                        photo.copy(timestamp = System.currentTimeMillis())
-                    } else {
-                        photo
-                    }
-                },
+                photoWidget = current.photoWidget.copy(
+                    photos = current.photoWidget.photos.map { photo ->
+                        if (photo.path == path) {
+                            photo.copy(timestamp = System.currentTimeMillis())
+                        } else {
+                            photo
+                        }
+                    },
+                ),
                 selectedPhoto = if (current.selectedPhoto?.path == path) {
                     current.selectedPhoto.copy(timestamp = System.currentTimeMillis())
                 } else {
@@ -174,9 +170,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             photoName = photo.name,
         )
         _state.update { current ->
-            val updatedPhotos = current.photos - photo
+            val updatedPhotos = current.photoWidget.photos - photo
             current.copy(
-                photos = updatedPhotos,
+                photoWidget = current.photoWidget.copy(photos = updatedPhotos),
                 selectedPhoto = if (current.selectedPhoto?.name == photo.name) {
                     updatedPhotos.firstOrNull()
                 } else {
@@ -207,25 +203,43 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     private fun move(moveOp: MutableList<LocalPhoto>.() -> Unit) {
         _state.update { current ->
             current.copy(
-                photos = current.photos.toMutableList().apply(moveOp),
+                photoWidget = current.photoWidget.copy(
+                    photos = current.photoWidget.photos.toMutableList().apply(moveOp),
+                ),
             )
         }
     }
 
     fun intervalSelected(interval: PhotoWidgetLoopingInterval) {
-        _state.update { current -> current.copy(loopingInterval = interval) }
+        _state.update { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(loopingInterval = interval),
+            )
+        }
     }
 
     fun tapActionSelected(tapAction: PhotoWidgetTapAction) {
-        _state.update { current -> current.copy(tapAction = tapAction) }
+        _state.update { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(tapAction = tapAction),
+            )
+        }
     }
 
     fun shapeSelected(shapeId: String) {
-        _state.update { current -> current.copy(shapeId = shapeId) }
+        _state.update { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(shapeId = shapeId),
+            )
+        }
     }
 
     fun cornerRadiusSelected(cornerRadius: Float) {
-        _state.update { current -> current.copy(cornerRadius = cornerRadius) }
+        _state.update { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(cornerRadius = cornerRadius),
+            )
+        }
     }
 
     fun addNewWidget() {
@@ -233,7 +247,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
         when {
             // Without photos there's no widget
-            currentState.photos.isEmpty() -> {
+            currentState.photoWidget.photos.isEmpty() -> {
                 _state.update { current ->
                     current.copy(messages = current.messages + PhotoWidgetConfigureState.Message.CancelWidget)
                 }
@@ -244,14 +258,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 _state.update { current ->
                     current.copy(
                         messages = current.messages + PhotoWidgetConfigureState.Message.RequestPin(
-                            photoPath = currentState.photos.first().path,
-                            order = currentState.photos.map { it.name },
-                            enableLooping = currentState.photos.size > 1,
-                            loopingInterval = currentState.loopingInterval,
-                            tapAction = current.tapAction,
-                            aspectRatio = current.aspectRatio,
-                            shapeId = currentState.shapeId,
-                            cornerRadius = current.cornerRadius,
+                            photoWidget = currentState.photoWidget,
                         ),
                     )
                 }
@@ -259,17 +266,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
             // The user start configuring from the home screen, it will be added automatically
             else -> {
-                val enableLooping = currentState.photos.size > 1
-
                 savePhotoWidgetUseCase(
                     appWidgetId = appWidgetId,
-                    order = currentState.photos.map { it.name },
-                    enableLooping = enableLooping,
-                    loopingInterval = currentState.loopingInterval,
-                    tapAction = if (enableLooping) currentState.tapAction else PhotoWidgetTapAction.VIEW_FULL_SCREEN,
-                    aspectRatio = currentState.aspectRatio,
-                    shapeId = currentState.shapeId,
-                    cornerRadius = currentState.cornerRadius,
+                    photoWidget = currentState.photoWidget,
                 )
 
                 _state.update { current ->

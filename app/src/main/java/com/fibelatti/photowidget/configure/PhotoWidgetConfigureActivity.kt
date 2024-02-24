@@ -23,6 +23,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
@@ -83,10 +84,10 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             AppTheme {
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
-                onBackPressedCallback.isEnabled = state.photos.isNotEmpty()
+                onBackPressedCallback.isEnabled = state.photoWidget.photos.isNotEmpty()
 
                 PhotoWidgetConfigureScreen(
-                    photos = state.photos,
+                    photos = state.photoWidget.photos,
                     selectedPhoto = state.selectedPhoto,
                     onAspectRatioClick = ::showAspectRatioPicker,
                     onCropClick = viewModel::requestCrop,
@@ -95,14 +96,14 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     onMoveRightClick = viewModel::moveRight,
                     onPhotoPickerClick = ::launchPhotoPicker,
                     onPhotoClick = viewModel::previewPhoto,
-                    loopingInterval = state.loopingInterval,
+                    loopingInterval = state.photoWidget.loopingInterval,
                     onLoopingIntervalPickerClick = ::showIntervalPicker,
-                    tapAction = state.tapAction,
+                    tapAction = state.photoWidget.tapAction,
                     onTapActionPickerClick = ::showTapActionPicker,
-                    aspectRatio = state.aspectRatio,
-                    shapeId = state.shapeId,
+                    aspectRatio = state.photoWidget.aspectRatio,
+                    shapeId = state.photoWidget.shapeId,
                     onShapeClick = viewModel::shapeSelected,
-                    cornerRadius = state.cornerRadius,
+                    cornerRadius = state.photoWidget.cornerRadius,
                     onCornerRadiusChange = viewModel::cornerRadiusSelected,
                     onAddToHomeClick = viewModel::addNewWidget,
                     isProcessing = state.isProcessing,
@@ -154,16 +155,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
             is PhotoWidgetConfigureState.Message.RequestPin -> {
                 viewModel.messageHandled(message = message)
-                requestPin(
-                    photoPath = message.photoPath,
-                    order = message.order,
-                    enableLooping = message.enableLooping,
-                    loopingInterval = message.loopingInterval,
-                    tapAction = message.tapAction,
-                    aspectRatio = message.aspectRatio,
-                    shapeId = message.shapeId,
-                    cornerRadius = message.cornerRadius,
-                )
+                requestPin(photoWidget = message.photoWidget)
             }
 
             is PhotoWidgetConfigureState.Message.AddWidget -> {
@@ -260,22 +252,10 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun requestPin(
-        photoPath: String,
-        order: List<String>,
-        enableLooping: Boolean,
-        loopingInterval: PhotoWidgetLoopingInterval,
-        tapAction: PhotoWidgetTapAction,
-        aspectRatio: PhotoWidgetAspectRatio,
-        shapeId: String,
-        cornerRadius: Float,
-    ) {
+    private fun requestPin(photoWidget: PhotoWidget) {
         val remoteViews = PhotoWidgetProvider.createRemoteViews(
             context = this,
-            photoPath = photoPath,
-            aspectRatio = aspectRatio,
-            shapeId = shapeId,
-            cornerRadius = cornerRadius,
+            photoWidget = photoWidget,
         )
         val previewBundle = bundleOf(
             AppWidgetManager.EXTRA_APPWIDGET_PREVIEW to remoteViews,
@@ -283,13 +263,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
         val callbackIntent = Intent(this, PhotoWidgetPinnedReceiver::class.java)
             .apply {
-                this.order = order
-                this.enableLooping = enableLooping
-                this.loopingInterval = loopingInterval
-                this.tapAction = tapAction
-                this.aspectRatio = aspectRatio
-                this.shapeId = shapeId
-                this.cornerRadius = cornerRadius
+                this.photoWidget = photoWidget
             }
             .also {
                 PhotoWidgetPinnedReceiver.callbackIntent = it

@@ -12,6 +12,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
@@ -26,14 +27,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         appWidgetIds: IntArray,
     ) {
         val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
-        val storage = entryPoint.photoWidgetStorage()
+        val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
 
         for (appWidgetId in appWidgetIds) {
             update(
                 context = context,
                 appWidgetId = appWidgetId,
                 appWidgetManager = appWidgetManager,
-                photoWidgetStorage = storage,
+                loadPhotoWidgetUseCase = loadPhotoWidgetUseCase,
             )
         }
     }
@@ -74,25 +75,17 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             context: Context,
             appWidgetId: Int,
             appWidgetManager: AppWidgetManager = AppWidgetManager.getInstance(context),
-            photoWidgetStorage: PhotoWidgetStorage = entryPoint<PhotoWidgetEntryPoint>(context).photoWidgetStorage(),
+            loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase = entryPoint<PhotoWidgetEntryPoint>(context)
+                .loadPhotoWidgetUseCase(),
         ) {
-            val photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
-            val currentIndex = photoWidgetStorage.getWidgetIndex(appWidgetId = appWidgetId)
-            val photoPath = photos.getOrNull(currentIndex)?.path ?: return
-            val aspectRatio = photoWidgetStorage.getWidgetAspectRatio(appWidgetId = appWidgetId)
-            val shapeId = photoWidgetStorage.getWidgetShapeId(appWidgetId = appWidgetId)
-            val cornerRadius = photoWidgetStorage.getWidgetCornerRadius(appWidgetId = appWidgetId)
-            val tapAction = photoWidgetStorage.getWidgetTapAction(appWidgetId = appWidgetId)
+            val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
 
             val views = createRemoteViews(
                 context = context,
-                photoPath = photoPath,
-                aspectRatio = aspectRatio,
-                shapeId = shapeId,
-                cornerRadius = cornerRadius,
+                photoWidget = photoWidget,
             ) ?: return
 
-            val clickPendingIntent = when (tapAction) {
+            val clickPendingIntent = when (photoWidget.tapAction) {
                 PhotoWidgetTapAction.VIEW_FULL_SCREEN -> {
                     val clickIntent = Intent(context, PhotoWidgetClickActivity::class.java).apply {
                         this.appWidgetId = appWidgetId
@@ -126,26 +119,28 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
         fun createRemoteViews(
             context: Context,
-            photoPath: String,
-            aspectRatio: PhotoWidgetAspectRatio,
-            shapeId: String?,
-            cornerRadius: Float,
+            photoWidget: PhotoWidget,
         ): RemoteViews? {
             val bitmap = try {
-                requireNotNull(BitmapFactory.decodeFile(photoPath))
+                requireNotNull(BitmapFactory.decodeFile(photoWidget.currentPhoto.path))
             } catch (_: Exception) {
                 return null
             }
-            val transformedBitmap = if (aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
+            val transformedBitmap = if (photoWidget.aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
                 val shape = PhotoWidgetShapeBuilder.buildShape(
-                    shapeId = shapeId,
+                    shapeId = photoWidget.shapeId,
                     width = bitmap.width.toFloat(),
                     height = bitmap.height.toFloat(),
                 )
 
-                bitmap.withPolygonalShape(roundedPolygon = shape)
+                bitmap.withPolygonalShape(
+                    roundedPolygon = shape,
+                )
             } else {
-                bitmap.withRoundedCorners(desiredAspectRatio = aspectRatio, radius = cornerRadius)
+                bitmap.withRoundedCorners(
+                    desiredAspectRatio = photoWidget.aspectRatio,
+                    radius = photoWidget.cornerRadius,
+                )
             }
 
             return RemoteViews(context.packageName, R.layout.photo_widget).apply {

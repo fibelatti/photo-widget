@@ -3,9 +3,8 @@ package com.fibelatti.photowidget.configure
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.net.Uri
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
-import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.intentExtras
 
 var Intent.appWidgetId: Int by intentExtras(
@@ -13,18 +12,8 @@ var Intent.appWidgetId: Int by intentExtras(
     default = AppWidgetManager.INVALID_APPWIDGET_ID,
 )
 
-var Intent.order: List<String> by intentExtras()
-
-var Intent.enableLooping: Boolean by intentExtras()
-
-var Intent.loopingInterval: PhotoWidgetLoopingInterval by intentExtras()
-
-var Intent.shapeId: String by intentExtras()
+var Intent.photoWidget: PhotoWidget by intentExtras()
 
 var Intent.aspectRatio: PhotoWidgetAspectRatio by intentExtras()
-
-var Intent.cornerRadius: Float by intentExtras()
-
-var Intent.tapAction: PhotoWidgetTapAction by intentExtras()
 
 var Intent.sharedPhotos: List<Uri>? by intentExtras()

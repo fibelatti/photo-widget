@@ -194,10 +194,10 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         }
     }
 
-    fun getWidgetAspectRatio(appWidgetId: Int): PhotoWidgetAspectRatio {
+    fun getWidgetAspectRatio(appWidgetId: Int): PhotoWidgetAspectRatio? {
         val name = sharedPreferences.getString("${PreferencePrefix.RATIO}$appWidgetId", null)
 
-        return enumValueOfOrNull<PhotoWidgetAspectRatio>(name) ?: PhotoWidgetAspectRatio.SQUARE
+        return enumValueOfOrNull<PhotoWidgetAspectRatio>(name)
     }
 
     fun saveWidgetShapeId(appWidgetId: Int, shapeId: String) {
@@ -229,10 +229,10 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         }
     }
 
-    fun getWidgetTapAction(appWidgetId: Int): PhotoWidgetTapAction {
+    fun getWidgetTapAction(appWidgetId: Int): PhotoWidgetTapAction? {
         val name = sharedPreferences.getString("${PreferencePrefix.TAP_ACTION}$appWidgetId", null)
 
-        return enumValueOfOrNull<PhotoWidgetTapAction>(name) ?: PhotoWidgetTapAction.VIEW_FULL_SCREEN
+        return enumValueOfOrNull<PhotoWidgetTapAction>(name)
     }
 
     fun deleteWidgetData(appWidgetId: Int) {

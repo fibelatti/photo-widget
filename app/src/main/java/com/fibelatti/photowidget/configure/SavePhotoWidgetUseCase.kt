@@ -1,7 +1,6 @@
 package com.fibelatti.photowidget.configure
 
-import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import com.fibelatti.photowidget.widget.PhotoWidgetWorkManager
@@ -14,23 +13,17 @@ class SavePhotoWidgetUseCase @Inject constructor(
 
     operator fun invoke(
         appWidgetId: Int,
-        order: List<String>,
-        enableLooping: Boolean,
-        loopingInterval: PhotoWidgetLoopingInterval,
-        tapAction: PhotoWidgetTapAction,
-        aspectRatio: PhotoWidgetAspectRatio,
-        shapeId: String,
-        cornerRadius: Float,
+        photoWidget: PhotoWidget,
     ) {
         photoWidgetStorage.renameTemporaryWidgetDir(appWidgetId = appWidgetId)
 
-        photoWidgetStorage.saveWidgetOrder(appWidgetId = appWidgetId, order = order)
+        photoWidgetStorage.saveWidgetOrder(appWidgetId = appWidgetId, order = photoWidget.order)
 
-        if (enableLooping) {
+        if (photoWidget.loopingEnabled) {
             photoWidgetWorkManager.enqueueLoopingPhotoWidgetWork(
                 appWidgetId = appWidgetId,
-                repeatInterval = loopingInterval.repeatInterval,
-                timeUnit = loopingInterval.timeUnit,
+                repeatInterval = photoWidget.loopingInterval.repeatInterval,
+                timeUnit = photoWidget.loopingInterval.timeUnit,
             )
         } else {
             photoWidgetWorkManager.cancelWidgetWork(appWidgetId = appWidgetId)
@@ -38,27 +31,31 @@ class SavePhotoWidgetUseCase @Inject constructor(
 
         photoWidgetStorage.saveWidgetInterval(
             appWidgetId = appWidgetId,
-            interval = loopingInterval,
+            interval = photoWidget.loopingInterval,
         )
 
         photoWidgetStorage.saveWidgetTapAction(
             appWidgetId = appWidgetId,
-            tapAction = tapAction,
+            tapAction = if (photoWidget.loopingEnabled) {
+                photoWidget.tapAction
+            } else {
+                PhotoWidgetTapAction.VIEW_FULL_SCREEN
+            },
         )
 
         photoWidgetStorage.saveWidgetAspectRatio(
             appWidgetId = appWidgetId,
-            aspectRatio = aspectRatio,
+            aspectRatio = photoWidget.aspectRatio,
         )
 
         photoWidgetStorage.saveWidgetShapeId(
             appWidgetId = appWidgetId,
-            shapeId = shapeId,
+            shapeId = photoWidget.shapeId,
         )
 
         photoWidgetStorage.saveWidgetCornerRadius(
             appWidgetId = appWidgetId,
-            cornerRadius = cornerRadius,
+            cornerRadius = photoWidget.cornerRadius,
         )
     }
 }

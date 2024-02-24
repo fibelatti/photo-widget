@@ -32,7 +32,6 @@ import com.fibelatti.photowidget.configure.ShapedPhoto
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.platform.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -42,7 +41,7 @@ import javax.inject.Inject
 class PhotoWidgetClickActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var photoWidgetStorage: PhotoWidgetStorage
+    lateinit var loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -55,19 +54,15 @@ class PhotoWidgetClickActivity : AppCompatActivity() {
             return
         }
 
-        val photos = photoWidgetStorage.getWidgetPhotos(appWidgetId)
-        val index = photoWidgetStorage.getWidgetIndex(appWidgetId)
-        val aspectRatio = photoWidgetStorage.getWidgetAspectRatio(appWidgetId)
-        val shapeId = photoWidgetStorage.getWidgetShapeId(appWidgetId)
-        val cornerRadius = photoWidgetStorage.getWidgetCornerRadius(appWidgetId)
+        val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
 
         setContent {
             AppTheme {
                 ScreenContent(
-                    photo = photos[index],
-                    aspectRatio = aspectRatio,
-                    shapeId = shapeId ?: PhotoWidgetShapeBuilder.defaultShapeId(),
-                    cornerRadius = cornerRadius,
+                    photo = photoWidget.currentPhoto,
+                    aspectRatio = photoWidget.aspectRatio,
+                    shapeId = photoWidget.shapeId,
+                    cornerRadius = photoWidget.cornerRadius,
                 )
             }
         }
