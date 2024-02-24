@@ -74,7 +74,7 @@ object PhotoWidgetShapeBuilder {
         ),
     )
 
-    fun defaultShapeId(): String = "rounded-square"
+    const val DEFAULT_SHAPE_ID = "rounded-square"
 
     fun buildAllShapes(
         bounds: RectF? = null,

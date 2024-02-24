@@ -64,7 +64,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     shapeId = if (photoWidgetAspectRatio == PhotoWidgetAspectRatio.SQUARE) {
                         current.photoWidget.shapeId
                     } else {
-                        PhotoWidgetShapeBuilder.defaultShapeId()
+                        PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID
                     },
                 ),
             )

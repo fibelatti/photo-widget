@@ -735,7 +735,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             tapAction = PhotoWidgetTapAction.VIEW_FULL_SCREEN,
             onTapActionPickerClick = {},
             aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-            shapeId = PhotoWidgetShapeBuilder.defaultShapeId(),
+            shapeId = PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID,
             onShapeClick = {},
             cornerRadius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
             onCornerRadiusChange = {},

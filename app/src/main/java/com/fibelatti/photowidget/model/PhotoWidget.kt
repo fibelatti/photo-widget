@@ -10,7 +10,7 @@ data class PhotoWidget(
     val loopingInterval: PhotoWidgetLoopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
     val tapAction: PhotoWidgetTapAction = PhotoWidgetTapAction.VIEW_FULL_SCREEN,
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
-    val shapeId: String = PhotoWidgetShapeBuilder.defaultShapeId(),
+    val shapeId: String = PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID,
     val cornerRadius: Float = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
 ) : Parcelable {
 
