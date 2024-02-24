@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.OutOfQuotaPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -78,6 +79,7 @@ class LoopingPhotoWidgetWorker @AssistedInject constructor(
                 repeatIntervalTimeUnit = timeUnit,
             ).setInputData(inputData = workData)
                 .setInitialDelay(duration = repeatInterval, timeUnit = timeUnit)
+                .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
                 .build()
         }
     }
