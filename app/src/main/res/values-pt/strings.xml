@@ -16,8 +16,6 @@
     <string name="photo_widget_home_version">Versão: %s</string>
     <string name="photo_widget_home_view_licenses">Licenças de Software</string>
 
-    <string name="photo_widget_licenses_title">Licenças de Software Livre</string>
-
     <!-- Preferences -->
     <string name="preferences_appearance_follow_system">Mesmo do sistema</string>
     <string name="preferences_appearance_light">Claro</string>
