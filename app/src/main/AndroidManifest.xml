@@ -12,6 +12,7 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        tools:ignore="DiscouragedApi"
         tools:targetApi="tiramisu">
 
         <activity
