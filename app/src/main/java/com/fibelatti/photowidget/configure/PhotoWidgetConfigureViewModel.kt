@@ -92,6 +92,8 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 null
             }
 
+            val shouldTriggerCrop = newPhotos.isNotEmpty() && newPhotos.size <= 5
+
             _state.update { current ->
                 val updatedPhotos = current.photoWidget.photos + newPhotos
 
@@ -99,12 +101,12 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     photoWidget = current.photoWidget.copy(photos = updatedPhotos),
                     selectedPhoto = current.selectedPhoto ?: updatedPhotos.firstOrNull(),
                     isProcessing = false,
-                    cropQueue = newPhotos,
+                    cropQueue = if (shouldTriggerCrop) newPhotos else emptyList(),
                     messages = current.messages.plus(message).filterNotNull(),
                 )
             }
 
-            if (newPhotos.isNotEmpty()) {
+            if (shouldTriggerCrop) {
                 requestCrop(photo = newPhotos.first())
             }
         }
