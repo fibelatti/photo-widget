@@ -2,8 +2,7 @@ package com.fibelatti.photowidget
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.hilt.work.HiltWorkerFactory
-import androidx.work.Configuration
+import androidx.work.WorkManager
 import com.fibelatti.photowidget.home.Appearance
 import com.fibelatti.photowidget.home.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
@@ -14,7 +13,7 @@ import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
 @HiltAndroidApp
-class App : Application(), Configuration.Provider {
+class App : Application() {
 
     @Inject
     lateinit var userPreferencesStorage: UserPreferencesStorage
@@ -22,21 +21,15 @@ class App : Application(), Configuration.Provider {
     @Inject
     lateinit var photoWidgetStorage: PhotoWidgetStorage
 
-    @Inject
-    lateinit var hiltWorkerFactory: HiltWorkerFactory
-
-    override val workManagerConfiguration: Configuration
-        get() = Configuration.Builder()
-            .setMinimumLoggingLevel(android.util.Log.INFO)
-            .setWorkerFactory(hiltWorkerFactory)
-            .build()
-
     override fun onCreate() {
         super.onCreate()
 
         setupNightMode()
         setupDynamicColors()
-        deleteUnusedWidgetData()
+
+        val widgetIds = PhotoWidgetProvider.ids(context = this).ifEmpty { return }
+        deleteUnusedWidgetData(widgetIds)
+        cancelLegacyWork(widgetIds)
     }
 
     private fun setupNightMode() {
@@ -58,9 +51,18 @@ class App : Application(), Configuration.Provider {
         DynamicColors.applyToActivitiesIfAvailable(this, dynamicColorsOptions)
     }
 
-    private fun deleteUnusedWidgetData() {
-        photoWidgetStorage.deleteUnusedWidgetData(
-            existingWidgetIds = PhotoWidgetProvider.ids(context = this),
-        )
+    private fun deleteUnusedWidgetData(widgetIds: List<Int>) {
+        photoWidgetStorage.deleteUnusedWidgetData(existingWidgetIds = widgetIds)
+    }
+
+    /**
+     * Flipping widgets used to be controlled by [WorkManager] but have been migrated to `AlarmManager` instead
+     * to support shorter intervals. This function cancels any work that was scheduled before the update.
+     */
+    private fun cancelLegacyWork(widgetIds: List<Int>) {
+        val workManager = WorkManager.getInstance(this)
+        for (id in widgetIds) {
+            workManager.cancelUniqueWork("LoopingPhotoWidgetWorker_$id")
+        }
     }
 }

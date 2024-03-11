@@ -30,9 +30,7 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltExtensions" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltExtensions" }
-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltExtensions" }
 
 ucrop = { module = "com.github.yalantis:ucrop", version = "2.2.8" }
 

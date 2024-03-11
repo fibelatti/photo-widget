@@ -66,9 +66,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
 import com.fibelatti.photowidget.R
@@ -81,7 +83,9 @@ import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun PhotoWidgetConfigureScreen(
@@ -95,7 +99,7 @@ fun PhotoWidgetConfigureScreen(
     onPhotoPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     loopingInterval: PhotoWidgetLoopingInterval,
-    onLoopingIntervalPickerClick: () -> Unit,
+    onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval) -> Unit,
     tapAction: PhotoWidgetTapAction,
     onTapActionPickerClick: () -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
@@ -205,7 +209,7 @@ private fun PhotoWidgetConfigureContent(
     onPhotoPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     loopingInterval: PhotoWidgetLoopingInterval,
-    onLoopingIntervalPickerClick: () -> Unit,
+    onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval) -> Unit,
     tapAction: PhotoWidgetTapAction,
     onTapActionPickerClick: () -> Unit,
     onShapeClick: (String) -> Unit,
@@ -273,7 +277,7 @@ private fun PhotoWidgetConfigureContent(
             ) {
                 PhotoIntervalPicker(
                     loopingInterval = loopingInterval,
-                    onLoopingIntervalPickerClick = onLoopingIntervalPickerClick,
+                    onLoopingIntervalPickerClick = { onLoopingIntervalPickerClick(loopingInterval) },
                     modifier = Modifier.weight(1f),
                 )
 
@@ -528,7 +532,25 @@ private fun PhotoIntervalPicker(
             onClick = onLoopingIntervalPickerClick,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text(text = stringResource(id = loopingInterval.title))
+            val intervalString = if (TimeUnit.HOURS == loopingInterval.timeUnit) {
+                pluralStringResource(
+                    id = R.plurals.photo_widget_configure_interval_current_hours,
+                    count = loopingInterval.repeatInterval.toInt(),
+                    loopingInterval.repeatInterval,
+                )
+            } else {
+                pluralStringResource(
+                    id = R.plurals.photo_widget_configure_interval_current_minutes,
+                    count = loopingInterval.repeatInterval.toInt(),
+                    loopingInterval.repeatInterval,
+                )
+            }
+
+            AutoSizeText(
+                text = stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString),
+                maxLines = 1,
+                minTextSize = 8.sp,
+            )
         }
     }
 }
@@ -552,7 +574,11 @@ private fun TapActionPicker(
             onClick = onTapActionPickerClick,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text(text = stringResource(id = tapAction.title))
+            AutoSizeText(
+                text = stringResource(id = tapAction.title),
+                maxLines = 1,
+                minTextSize = 8.sp,
+            )
         }
     }
 }

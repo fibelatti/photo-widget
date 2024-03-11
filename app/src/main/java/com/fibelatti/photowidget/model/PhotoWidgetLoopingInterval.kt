@@ -1,53 +1,91 @@
 package com.fibelatti.photowidget.model
 
-import androidx.annotation.StringRes
-import com.fibelatti.photowidget.R
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.util.concurrent.TimeUnit
 
-enum class PhotoWidgetLoopingInterval(
+@Parcelize
+data class PhotoWidgetLoopingInterval(
     val repeatInterval: Long,
     val timeUnit: TimeUnit,
-    @StringRes val title: Int,
+) : Parcelable {
+
+    init {
+        require(repeatInterval in MIN_VALUE..MAX_VALUE)
+        require(TimeUnit.MINUTES == timeUnit || TimeUnit.HOURS == timeUnit)
+    }
+
+    fun toMinutes(): Long = timeUnit.toMinutes(repeatInterval)
+
+    companion object {
+
+        private const val MAX_VALUE = 30
+        private const val MIN_VALUE = 1
+
+        val RANGE = MIN_VALUE.toFloat()..MAX_VALUE.toFloat()
+
+        val ONE_DAY = PhotoWidgetLoopingInterval(
+            repeatInterval = 24,
+            timeUnit = TimeUnit.HOURS,
+        )
+
+        fun Long.toLoopingInterval(): PhotoWidgetLoopingInterval {
+            return if (this > MAX_VALUE) {
+                PhotoWidgetLoopingInterval(
+                    repeatInterval = TimeUnit.MINUTES.toHours(this),
+                    timeUnit = TimeUnit.HOURS,
+                )
+            } else {
+                PhotoWidgetLoopingInterval(
+                    repeatInterval = TimeUnit.MINUTES.toMinutes(this),
+                    timeUnit = TimeUnit.MINUTES,
+                )
+            }
+        }
+    }
+}
+
+/**
+ * This enum used to act as a set of pre-defined intervals for flipping widgets. This has been migrated for a more
+ * customizable approach where users can pick their intervals instead. This class is kept to allow migrating the
+ * persisted data of any widgets that has been configured with it.
+ */
+@Suppress("Unused")
+enum class LegacyPhotoWidgetLoopingInterval(
+    val repeatInterval: Long,
+    val timeUnit: TimeUnit,
 ) {
 
     ONE_DAY(
         repeatInterval = 24,
         timeUnit = TimeUnit.HOURS,
-        title = R.string.photo_widget_configure_interval_one_day,
     ),
     TWELVE_HOURS(
         repeatInterval = 12,
         timeUnit = TimeUnit.HOURS,
-        title = R.string.photo_widget_configure_interval_twelve_hours,
     ),
     EIGHT_HOURS(
         repeatInterval = 8,
         timeUnit = TimeUnit.HOURS,
-        title = R.string.photo_widget_configure_interval_eight_hours,
     ),
     SIX_HOURS(
         repeatInterval = 6,
         timeUnit = TimeUnit.HOURS,
-        title = R.string.photo_widget_configure_interval_six_hours,
     ),
     TWO_HOURS(
         repeatInterval = 2,
         timeUnit = TimeUnit.HOURS,
-        title = R.string.photo_widget_configure_interval_two_hours,
     ),
     ONE_HOUR(
         repeatInterval = 1,
         timeUnit = TimeUnit.HOURS,
-        title = R.string.photo_widget_configure_interval_one_hour,
     ),
     THIRTY_MINUTES(
         repeatInterval = 30,
         timeUnit = TimeUnit.MINUTES,
-        title = R.string.photo_widget_configure_interval_thirty_minutes,
     ),
     FIFTEEN_MINUTES(
         repeatInterval = 15,
         timeUnit = TimeUnit.MINUTES,
-        title = R.string.photo_widget_configure_interval_fifteen_minutes,
     ),
 }

@@ -213,13 +213,11 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             ?: run { viewModel.cropCancelled() }
     }
 
-    private fun showIntervalPicker() {
-        SelectionDialog.show(
+    private fun showIntervalPicker(loopingInterval: PhotoWidgetLoopingInterval) {
+        PhotoWidgetIntervalPicker.show(
             context = this,
-            title = getString(R.string.photo_widget_configure_select_interval),
-            options = PhotoWidgetLoopingInterval.entries,
-            optionName = { option -> getString(option.title) },
-            onOptionSelected = viewModel::intervalSelected,
+            currentInterval = loopingInterval,
+            onApplyClick = viewModel::intervalSelected,
         )
     }
 

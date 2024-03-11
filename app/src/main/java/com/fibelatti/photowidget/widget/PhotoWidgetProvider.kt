@@ -42,11 +42,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
         val storage = entryPoint.photoWidgetStorage()
-        val workManager = entryPoint.photoWidgetWorkManager()
+        val alarmManager = entryPoint.photoWidgetAlarmManager()
 
         for (appWidgetId in appWidgetIds) {
             storage.deleteWidgetData(appWidgetId = appWidgetId)
-            workManager.cancelWidgetWork(appWidgetId = appWidgetId)
+            alarmManager.cancel(appWidgetId = appWidgetId)
         }
     }
 
@@ -98,18 +98,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     )
                 }
 
-                PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> {
-                    val clickIntent = Intent(context, PhotoWidgetProvider::class.java).apply {
-                        this.appWidgetId = appWidgetId
-                        this.action = TAP_TO_FLIP_ACTION
-                    }
-                    PendingIntent.getBroadcast(
-                        context,
-                        appWidgetId,
-                        clickIntent,
-                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-                    )
-                }
+                PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> flipPhotoPendingIntent(context, appWidgetId)
             }
 
             views.setOnClickPendingIntent(R.id.iv_widget, clickPendingIntent)
@@ -146,6 +135,22 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             return RemoteViews(context.packageName, R.layout.photo_widget).apply {
                 setImageViewBitmap(R.id.iv_widget, transformedBitmap)
             }
+        }
+
+        fun flipPhotoPendingIntent(
+            context: Context,
+            appWidgetId: Int,
+        ): PendingIntent {
+            val clickIntent = Intent(context, PhotoWidgetProvider::class.java).apply {
+                this.appWidgetId = appWidgetId
+                this.action = TAP_TO_FLIP_ACTION
+            }
+            return PendingIntent.getBroadcast(
+                /* context = */ context,
+                /* requestCode = */ appWidgetId,
+                /* intent = */ clickIntent,
+                /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
         }
     }
 }

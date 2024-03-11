@@ -6,9 +6,11 @@ import android.graphics.BitmapFactory
 import android.graphics.BitmapFactory.Options
 import android.net.Uri
 import androidx.core.content.edit
+import com.fibelatti.photowidget.model.LegacyPhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.toLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -168,14 +170,28 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
 
     fun saveWidgetInterval(appWidgetId: Int, interval: PhotoWidgetLoopingInterval) {
         sharedPreferences.edit {
-            putString("${PreferencePrefix.INTERVAL}$appWidgetId", interval.name)
+            remove("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId")
+            putLong("${PreferencePrefix.INTERVAL}$appWidgetId", interval.toMinutes())
         }
     }
 
     fun getWidgetInterval(appWidgetId: Int): PhotoWidgetLoopingInterval? {
-        val name = sharedPreferences.getString("${PreferencePrefix.INTERVAL}$appWidgetId", null)
+        val legacyName = sharedPreferences.getString("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId", null)
+        val legacyValue = enumValueOfOrNull<LegacyPhotoWidgetLoopingInterval>(legacyName)
+        val value = sharedPreferences.getLong("${PreferencePrefix.INTERVAL}$appWidgetId", 0)
 
-        return enumValueOfOrNull<PhotoWidgetLoopingInterval>(name)
+        return when {
+            legacyValue != null -> {
+                PhotoWidgetLoopingInterval(
+                    repeatInterval = legacyValue.repeatInterval,
+                    timeUnit = legacyValue.timeUnit,
+                )
+            }
+
+            value > 0 -> value.toLoopingInterval()
+
+            else -> null
+        }
     }
 
     fun saveWidgetIndex(appWidgetId: Int, index: Int) {
@@ -271,7 +287,16 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
 
     private enum class PreferencePrefix(val value: String) {
         ORDER(value = "appwidget_order_"),
-        INTERVAL(value = "appwidget_interval_"),
+
+        /**
+         * Key from when the interval was persisted as [LegacyPhotoWidgetLoopingInterval].
+         */
+        LEGACY_INTERVAL(value = "appwidget_interval_"),
+
+        /**
+         * Key from when the interval was migrated to [PhotoWidgetLoopingInterval].
+         */
+        INTERVAL(value = "appwidget_interval_minutes_"),
         INDEX(value = "appwidget_index_"),
         RATIO(value = "appwidget_aspect_ratio_"),
         SHAPE(value = "appwidget_shape_"),

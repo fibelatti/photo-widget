@@ -2,13 +2,13 @@ package com.fibelatti.photowidget.configure
 
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
-import com.fibelatti.photowidget.widget.PhotoWidgetWorkManager
 import javax.inject.Inject
 
 class SavePhotoWidgetUseCase @Inject constructor(
     private val photoWidgetStorage: PhotoWidgetStorage,
-    private val photoWidgetWorkManager: PhotoWidgetWorkManager,
+    private val photoWidgetAlarmManager: PhotoWidgetAlarmManager,
 ) {
 
     operator fun invoke(
@@ -20,13 +20,13 @@ class SavePhotoWidgetUseCase @Inject constructor(
         photoWidgetStorage.saveWidgetOrder(appWidgetId = appWidgetId, order = photoWidget.order)
 
         if (photoWidget.loopingEnabled) {
-            photoWidgetWorkManager.enqueueLoopingPhotoWidgetWork(
+            photoWidgetAlarmManager.setup(
                 appWidgetId = appWidgetId,
                 repeatInterval = photoWidget.loopingInterval.repeatInterval,
                 timeUnit = photoWidget.loopingInterval.timeUnit,
             )
         } else {
-            photoWidgetWorkManager.cancelWidgetWork(appWidgetId = appWidgetId)
+            photoWidgetAlarmManager.cancel(appWidgetId = appWidgetId)
         }
 
         photoWidgetStorage.saveWidgetInterval(

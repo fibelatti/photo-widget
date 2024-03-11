@@ -48,14 +48,20 @@
     <string name="photo_widget_configure_menu_move_right">Mover à direita</string>
 
     <string name="photo_widget_configure_select_interval">Intervalo de troca</string>
-    <string name="photo_widget_configure_interval_one_day">A cada dia</string>
-    <string name="photo_widget_configure_interval_twelve_hours">A cada 12 horas</string>
-    <string name="photo_widget_configure_interval_eight_hours">A cada 8 horas</string>
-    <string name="photo_widget_configure_interval_six_hours">A cada 6 horas</string>
-    <string name="photo_widget_configure_interval_two_hours">A cada 2 horas</string>
-    <string name="photo_widget_configure_interval_one_hour">A cada hora</string>
-    <string name="photo_widget_configure_interval_thirty_minutes">A cada 30 minutos</string>
-    <string name="photo_widget_configure_interval_fifteen_minutes">A cada 15 minutos</string>
+    <string name="photo_widget_configure_interval_current_label">A cada %s</string>
+    <plurals name="photo_widget_configure_interval_current_minutes">
+        <item quantity="one">%d minuto</item>
+        <item quantity="many">%d minutos</item>
+        <item quantity="other">%d minutos</item>
+    </plurals>
+    <plurals name="photo_widget_configure_interval_current_hours">
+        <item quantity="one">%d hora</item>
+        <item quantity="many">%d horas</item>
+        <item quantity="other">%d horas</item>
+    </plurals>
+    <string name="photo_widget_configure_interval_minutes_label">Minutos</string>
+    <string name="photo_widget_configure_interval_hours_label">Horas</string>
+    <string name="photo_widget_configure_interval_warning">O intervalo real pode ser mais longo às vezes devido a restrições impostas pelo Android para otimizar a duração da bateria</string>
 
     <string name="photo_widget_configure_tap_action">Ação ao tocar</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Ver em tela cheia</string>
@@ -77,6 +83,7 @@
     <string name="photo_widget_action_yes">Sim</string>
     <string name="photo_widget_action_no">Não</string>
     <string name="photo_widget_action_continue">Continuar</string>
+    <string name="photo_widget_action_apply">Aplicar</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de fotos da tela inicial</string>
