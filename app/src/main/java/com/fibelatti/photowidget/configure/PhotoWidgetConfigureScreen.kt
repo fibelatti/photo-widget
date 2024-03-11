@@ -63,6 +63,8 @@ import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -647,9 +649,17 @@ fun ShapedPhoto(
     modifier: Modifier = Modifier,
     badge: @Composable BoxScope.() -> Unit = {},
 ) {
+    val localInspectionMode = LocalInspectionMode.current
+    val localContext = LocalContext.current
+
     val photoBitmap = remember(photo) {
-        BitmapFactory.decodeFile(photo.path)
+        if (localInspectionMode) {
+            BitmapFactory.decodeResource(localContext.resources, R.drawable.widget_preview)
+        } else {
+            BitmapFactory.decodeFile(photo.path)
+        }
     }
+
     val transformedBitmap = if (aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
         remember(photo, shapeId) {
             val shape = PhotoWidgetShapeBuilder.buildShape(
@@ -721,8 +731,11 @@ fun ColoredShape(
 private fun PhotoWidgetConfigureScreenPreview() {
     ExtendedTheme {
         PhotoWidgetConfigureScreen(
-            photos = emptyList(),
-            selectedPhoto = null,
+            photos = listOf(
+                LocalPhoto(name = "photo-1", path = ""),
+                LocalPhoto(name = "photo-2", path = ""),
+            ),
+            selectedPhoto = LocalPhoto(name = "photo-1", path = ""),
             onMoveLeftClick = {},
             onMoveRightClick = {},
             onAspectRatioClick = {},
