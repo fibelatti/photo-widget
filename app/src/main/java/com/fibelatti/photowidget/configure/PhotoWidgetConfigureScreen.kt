@@ -270,20 +270,20 @@ private fun PhotoWidgetConfigureContent(
             cornerRadius = cornerRadius,
         )
 
-        AnimatedVisibility(visible = photos.size > 1) {
-            Row(
-                modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
+        Row(
+            modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            TapActionPicker(
+                tapAction = tapAction,
+                onTapActionPickerClick = onTapActionPickerClick,
+                modifier = Modifier.weight(1f),
+            )
+
+            if (photos.size > 1) {
                 PhotoIntervalPicker(
                     loopingInterval = loopingInterval,
                     onLoopingIntervalPickerClick = { onLoopingIntervalPickerClick(loopingInterval) },
-                    modifier = Modifier.weight(1f),
-                )
-
-                TapActionPicker(
-                    tapAction = tapAction,
-                    onTapActionPickerClick = onTapActionPickerClick,
                     modifier = Modifier.weight(1f),
                 )
             }

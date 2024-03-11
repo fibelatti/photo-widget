@@ -62,6 +62,7 @@
     <string name="photo_widget_configure_interval_warning">The actual interval can be longer at times due to restrictions imposed by Android to optimize battery life</string>
 
     <string name="photo_widget_configure_tap_action">Tap action</string>
+    <string name="photo_widget_configure_tap_action_none">None</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">View in full screen</string>
     <string name="photo_widget_configure_tap_action_next_photo">View next photo</string>
 

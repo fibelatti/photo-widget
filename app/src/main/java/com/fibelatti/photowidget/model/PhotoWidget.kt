@@ -8,7 +8,7 @@ data class PhotoWidget(
     val photos: List<LocalPhoto> = emptyList(),
     val currentIndex: Int = 0,
     val loopingInterval: PhotoWidgetLoopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
-    val tapAction: PhotoWidgetTapAction = PhotoWidgetTapAction.VIEW_FULL_SCREEN,
+    val tapAction: PhotoWidgetTapAction = PhotoWidgetTapAction.NONE,
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
     val shapeId: String = PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID,
     val cornerRadius: Float = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,

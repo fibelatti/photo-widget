@@ -86,6 +86,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             ) ?: return
 
             val clickPendingIntent = when (photoWidget.tapAction) {
+                PhotoWidgetTapAction.NONE -> null
+
                 PhotoWidgetTapAction.VIEW_FULL_SCREEN -> {
                     val clickIntent = Intent(context, PhotoWidgetClickActivity::class.java).apply {
                         this.appWidgetId = appWidgetId

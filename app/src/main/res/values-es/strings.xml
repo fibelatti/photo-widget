@@ -65,6 +65,7 @@
     <string name="photo_widget_configure_interval_warning">El intervalo real puede ser más largo a veces debido a restricciones impuestas por Android para optimizar la duración de la batería</string>
 
     <string name="photo_widget_configure_tap_action">Acción de toque</string>
+    <string name="photo_widget_configure_tap_action_none">Ninguna</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Ver en pantalla completa</string>
     <string name="photo_widget_configure_tap_action_next_photo">Ver siguiente foto</string>
 

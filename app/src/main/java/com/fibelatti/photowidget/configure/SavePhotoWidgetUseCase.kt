@@ -1,7 +1,6 @@
 package com.fibelatti.photowidget.configure
 
 import com.fibelatti.photowidget.model.PhotoWidget
-import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import javax.inject.Inject
@@ -36,11 +35,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
 
         photoWidgetStorage.saveWidgetTapAction(
             appWidgetId = appWidgetId,
-            tapAction = if (photoWidget.loopingEnabled) {
-                photoWidget.tapAction
-            } else {
-                PhotoWidgetTapAction.VIEW_FULL_SCREEN
-            },
+            tapAction = photoWidget.tapAction,
         )
 
         photoWidgetStorage.saveWidgetAspectRatio(
