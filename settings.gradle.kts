@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 rootProject.name = "Photo Widget"
 rootProject.buildFileName = "build.gradle.kts"
 
@@ -6,23 +8,22 @@ include(":ui")
 
 pluginManagement {
     repositories {
-        gradlePluginPortal()
         mavenCentral {
             content {
                 excludeGroupByRegex("com\\.android.*")
             }
         }
         google()
+        gradlePluginPortal()
     }
 }
 
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        maven(url = "https://jitpack.io") {
-            content {
-                includeGroup("com.github.yalantis")
-            }
+        exclusiveContent {
+            forRepository { maven(url = "https://jitpack.io") }
+            filter { includeGroup("com.github.yalantis") }
         }
         mavenCentral {
             content {
