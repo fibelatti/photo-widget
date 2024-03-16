@@ -18,6 +18,8 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -27,6 +29,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -97,7 +100,7 @@ fun HomeScreen(
             AutoSizeText(
                 text = stringResource(id = R.string.photo_widget_home_title),
                 modifier = Modifier.padding(horizontal = 32.dp),
-                maxLines = 3,
+                maxLines = 2,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge,
             )
@@ -202,6 +205,7 @@ private fun ShapesBanner(
 }
 
 @Composable
+@OptIn(ExperimentalLayoutApi::class)
 private fun AspectRatioPicker(
     selectedAspectRatio: PhotoWidgetAspectRatio,
     onAspectRatioSelected: (PhotoWidgetAspectRatio) -> Unit,
@@ -212,11 +216,11 @@ private fun AspectRatioPicker(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(120.dp),
+        FlowRow(
+            modifier = Modifier.widthIn(max = 240.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            maxItemsInEachRow = 2,
         ) {
             PhotoWidgetAspectRatio.entries.forEach {
                 AspectRatioItem(
@@ -260,7 +264,6 @@ private fun AspectRatioItem(
 
     ElevatedCard(
         modifier = modifier
-            .fillMaxHeight()
             .aspectRatio(ratio = 1f)
             .clip(shape = CardDefaults.elevatedShape)
             .clickable(onClick = onClick),
@@ -268,7 +271,7 @@ private fun AspectRatioItem(
     ) {
         Column(
             modifier = Modifier
-                .padding(all = 16.dp)
+                .padding(all = 12.dp)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -287,7 +290,7 @@ private fun AspectRatioItem(
                     .aspectRatio(ratio = ratio)
                     .background(
                         color = aspectRatioColor,
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(8.dp),
                     ),
             )
 

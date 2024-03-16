@@ -81,6 +81,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import com.fibelatti.ui.foundation.conditional
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.text.AutoSizeText
@@ -500,7 +501,10 @@ private fun PhotoPicker(
                     cornerRadius = cornerRadius,
                     modifier = Modifier
                         .fillMaxHeight()
-                        .aspectRatio(ratio = aspectRatio.aspectRatio)
+                        .conditional(
+                            predicate = PhotoWidgetAspectRatio.ORIGINAL != aspectRatio,
+                            ifTrue = { aspectRatio(ratio = aspectRatio.aspectRatio) },
+                        )
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
@@ -686,7 +690,7 @@ fun ShapedPhoto(
         }
     }
 
-    val transformedBitmap = if (aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
+    val transformedBitmap = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
         remember(photo, shapeId) {
             val shape = PhotoWidgetShapeBuilder.buildShape(
                 shapeId = shapeId,
@@ -713,9 +717,16 @@ fun ShapedPhoto(
             bitmap = transformedBitmap,
             contentDescription = "",
             modifier = Modifier
-                .aspectRatio(ratio = aspectRatio.aspectRatio)
+                .conditional(
+                    predicate = PhotoWidgetAspectRatio.ORIGINAL != aspectRatio,
+                    ifTrue = { aspectRatio(ratio = aspectRatio.aspectRatio) },
+                )
                 .fillMaxSize(),
-            contentScale = ContentScale.FillWidth,
+            contentScale = if (PhotoWidgetAspectRatio.ORIGINAL != aspectRatio) {
+                ContentScale.FillWidth
+            } else {
+                ContentScale.Fit
+            },
         )
 
         badge()

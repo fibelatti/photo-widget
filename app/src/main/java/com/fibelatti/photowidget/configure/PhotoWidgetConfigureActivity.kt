@@ -194,7 +194,11 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         aspectRatio: PhotoWidgetAspectRatio,
     ) {
         val intent = UCrop.of(sourceUri, destinationUri)
-            .withAspectRatio(aspectRatio.x, aspectRatio.y)
+            .apply {
+                if (PhotoWidgetAspectRatio.ORIGINAL != aspectRatio) {
+                    withAspectRatio(aspectRatio.x, aspectRatio.y)
+                }
+            }
             .withMaxResultSize(1_000, 1_000)
             .withOptions(
                 UCrop.Options().apply {

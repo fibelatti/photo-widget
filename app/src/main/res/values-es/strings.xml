@@ -34,6 +34,7 @@
     <string name="photo_widget_aspect_ratio_square">Cuadrada</string>
     <string name="photo_widget_aspect_ratio_tall">Alta</string>
     <string name="photo_widget_aspect_ratio_wide">Ancha</string>
+    <string name="photo_widget_aspect_ratio_original">Original</string>
 
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">¿Se perderán los cambios, volver de todos modos?</string>

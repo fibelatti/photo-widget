@@ -26,6 +26,11 @@ enum class PhotoWidgetAspectRatio(
         y = 10f,
         label = R.string.photo_widget_aspect_ratio_wide,
     ),
+    ORIGINAL(
+        x = 4f,
+        y = 5f,
+        label = R.string.photo_widget_aspect_ratio_original,
+    ),
     ;
 
     val aspectRatio: Float
