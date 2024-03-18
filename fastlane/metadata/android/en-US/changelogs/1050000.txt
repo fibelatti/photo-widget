@@ -1,0 +1,7 @@
+Version 1.5 is released with the following updates:
+
+New: Flexible intervals — you can finally configure widgets to change photos every 1 minute!
+New: Original aspect ratio — configure a widget to respect the original aspect ratio of the photo
+New: No tap action — for those who just want static widgets, with no actions
+
+Feedback and suggestions are always welcome, visit the project page to contribute!
