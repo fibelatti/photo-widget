@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.configure
 
 import android.content.Context
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -74,10 +75,25 @@ private fun IntervalPickerContent(
             style = MaterialTheme.typography.titleLarge,
         )
 
+        AnimatedVisibility(
+            visible = interval.toMinutes() < 5,
+        ) {
+            Text(
+                text = stringResource(id = R.string.photo_widget_configure_interval_warning),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 32.dp, top = 8.dp, end = 32.dp),
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 10.sp,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.labelSmall,
+            )
+        }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 8.dp, top = 16.dp, end = 8.dp),
+                .padding(start = 8.dp, top = 8.dp, end = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
@@ -124,17 +140,6 @@ private fun IntervalPickerContent(
                 },
             )
         }
-
-        Text(
-            text = stringResource(id = R.string.photo_widget_configure_interval_warning),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 8.dp),
-            color = MaterialTheme.colorScheme.onSurface,
-            fontSize = 10.sp,
-            textAlign = TextAlign.Justify,
-            style = MaterialTheme.typography.labelSmall,
-        )
 
         FilledTonalButton(
             onClick = { onApplyClick(interval) },
