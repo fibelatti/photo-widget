@@ -318,12 +318,12 @@ private fun PhotoWidgetConfigureContent(
             onClick = onAddToHomeClick,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, top = 32.dp, end = 16.dp),
+                .padding(start = 16.dp, top = 24.dp, end = 16.dp),
         ) {
             Text(text = stringResource(id = R.string.photo_widget_configure_add_to_home))
         }
 
-        Spacer(modifier = Modifier.size(32.dp))
+        Spacer(modifier = Modifier.size(24.dp))
     }
 }
 
@@ -445,7 +445,7 @@ private fun PhotoPicker(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
             text = stringResource(
@@ -525,7 +525,7 @@ private fun PhotoIntervalPicker(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
             text = stringResource(id = R.string.photo_widget_configure_select_interval),
@@ -567,7 +567,7 @@ private fun TapActionPicker(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
             text = stringResource(id = R.string.photo_widget_configure_tap_action),
@@ -595,7 +595,7 @@ private fun ShapePicker(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
             text = stringResource(id = R.string.photo_widget_configure_applied_shape),
