@@ -28,6 +28,11 @@ class SavePhotoWidgetUseCase @Inject constructor(
             photoWidgetAlarmManager.cancel(appWidgetId = appWidgetId)
         }
 
+        photoWidgetStorage.saveWidgetIntervalEnabled(
+            appWidgetId = appWidgetId,
+            value = photoWidget.loopingEnabled,
+        )
+
         photoWidgetStorage.saveWidgetInterval(
             appWidgetId = appWidgetId,
             interval = photoWidget.loopingInterval,

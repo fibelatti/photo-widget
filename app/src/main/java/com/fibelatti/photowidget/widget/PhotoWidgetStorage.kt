@@ -194,6 +194,16 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         }
     }
 
+    fun saveWidgetIntervalEnabled(appWidgetId: Int, value: Boolean) {
+        sharedPreferences.edit {
+            putBoolean("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId", value)
+        }
+    }
+
+    fun getWidgetIntervalEnabled(appWidgetId: Int): Boolean {
+        return sharedPreferences.getBoolean("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId", true)
+    }
+
     fun saveWidgetIndex(appWidgetId: Int, index: Int) {
         sharedPreferences.edit {
             putInt("${PreferencePrefix.INDEX}$appWidgetId", index)
@@ -297,6 +307,7 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
          * Key from when the interval was migrated to [PhotoWidgetLoopingInterval].
          */
         INTERVAL(value = "appwidget_interval_minutes_"),
+        INTERVAL_ENABLED(value = "appwidget_interval_enabled_"),
         INDEX(value = "appwidget_index_"),
         RATIO(value = "appwidget_aspect_ratio_"),
         SHAPE(value = "appwidget_shape_"),

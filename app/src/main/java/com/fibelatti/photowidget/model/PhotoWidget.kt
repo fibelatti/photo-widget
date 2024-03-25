@@ -8,6 +8,7 @@ data class PhotoWidget(
     val photos: List<LocalPhoto> = emptyList(),
     val currentIndex: Int = 0,
     val loopingInterval: PhotoWidgetLoopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
+    val intervalBasedLoopingEnabled: Boolean = true,
     val tapAction: PhotoWidgetTapAction = PhotoWidgetTapAction.NONE,
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
     val shapeId: String = PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID,
@@ -16,7 +17,7 @@ data class PhotoWidget(
 
     val currentPhoto: LocalPhoto get() = photos[currentIndex]
 
-    val loopingEnabled: Boolean get() = photos.size > 1
+    val loopingEnabled: Boolean get() = photos.size > 1 && intervalBasedLoopingEnabled
 
     val order: List<String> get() = photos.map { it.name }
 }

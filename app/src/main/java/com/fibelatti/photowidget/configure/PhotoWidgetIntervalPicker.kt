@@ -13,8 +13,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,13 +42,15 @@ object PhotoWidgetIntervalPicker {
     fun show(
         context: Context,
         currentInterval: PhotoWidgetLoopingInterval,
-        onApplyClick: (newInterval: PhotoWidgetLoopingInterval) -> Unit,
+        currentIntervalBasedLoopingEnabled: Boolean,
+        onApplyClick: (newInterval: PhotoWidgetLoopingInterval, intervalBasedLoopingEnabled: Boolean) -> Unit,
     ) {
         ComposeBottomSheetDialog(context) {
             IntervalPickerContent(
                 currentInterval = currentInterval,
-                onApplyClick = { newInterval ->
-                    onApplyClick(newInterval)
+                intervalBasedLoopingEnabled = currentIntervalBasedLoopingEnabled,
+                onApplyClick = { newInterval, intervalBasedLoopingEnabled ->
+                    onApplyClick(newInterval, intervalBasedLoopingEnabled)
                     dismiss()
                 },
             )
@@ -58,9 +62,11 @@ object PhotoWidgetIntervalPicker {
 @OptIn(ExperimentalMaterial3Api::class)
 private fun IntervalPickerContent(
     currentInterval: PhotoWidgetLoopingInterval,
-    onApplyClick: (newInterval: PhotoWidgetLoopingInterval) -> Unit,
+    intervalBasedLoopingEnabled: Boolean,
+    onApplyClick: (newInterval: PhotoWidgetLoopingInterval, intervalBasedLoopingEnabled: Boolean) -> Unit,
 ) {
     var interval by remember { mutableStateOf(currentInterval) }
+    var enabled by remember(intervalBasedLoopingEnabled) { mutableStateOf(intervalBasedLoopingEnabled) }
 
     Column(
         modifier = Modifier
@@ -82,7 +88,7 @@ private fun IntervalPickerContent(
                 text = stringResource(id = R.string.photo_widget_configure_interval_warning),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 32.dp, top = 8.dp, end = 32.dp),
+                    .padding(start = 16.dp, top = 8.dp, end = 16.dp),
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 10.sp,
                 textAlign = TextAlign.Center,
@@ -101,6 +107,7 @@ private fun IntervalPickerContent(
                 value = interval.repeatInterval.toFloat(),
                 onValueChange = { newValue -> interval = interval.copy(repeatInterval = newValue.toLong()) },
                 modifier = Modifier.weight(1f),
+                enabled = enabled,
                 valueRange = PhotoWidgetLoopingInterval.RANGE,
             )
 
@@ -116,10 +123,14 @@ private fun IntervalPickerContent(
         SingleChoiceSegmentedButtonRow(
             modifier = Modifier.fillMaxWidth(),
         ) {
+            val borderColor = SegmentedButtonDefaults.borderStroke(SegmentedButtonDefaults.colors().activeBorderColor)
+
             SegmentedButton(
                 selected = TimeUnit.MINUTES == interval.timeUnit,
                 onClick = { interval = interval.copy(timeUnit = TimeUnit.MINUTES) },
                 shape = RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp),
+                enabled = enabled,
+                border = borderColor,
                 label = {
                     Text(
                         text = stringResource(id = R.string.photo_widget_configure_interval_minutes_label),
@@ -132,6 +143,8 @@ private fun IntervalPickerContent(
                 selected = TimeUnit.HOURS == interval.timeUnit,
                 onClick = { interval = interval.copy(timeUnit = TimeUnit.HOURS) },
                 shape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
+                enabled = enabled,
+                border = borderColor,
                 label = {
                     Text(
                         text = stringResource(id = R.string.photo_widget_configure_interval_hours_label),
@@ -141,8 +154,25 @@ private fun IntervalPickerContent(
             )
         }
 
+        Row(
+            modifier = Modifier.padding(top = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Switch(
+                checked = enabled,
+                onCheckedChange = { enabled = it },
+            )
+
+            Text(
+                text = stringResource(id = R.string.photo_widget_configure_interval_enabled),
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.labelLarge,
+            )
+        }
+
         FilledTonalButton(
-            onClick = { onApplyClick(interval) },
+            onClick = { onApplyClick(interval, enabled) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 24.dp),
@@ -162,8 +192,25 @@ private fun IntervalPickerContent(
 private fun IntervalPickerContentPreview() {
     ExtendedTheme {
         IntervalPickerContent(
+            currentInterval = PhotoWidgetLoopingInterval(
+                repeatInterval = 1,
+                timeUnit = TimeUnit.MINUTES,
+            ),
+            intervalBasedLoopingEnabled = true,
+            onApplyClick = { _, _ -> },
+        )
+    }
+}
+
+@Composable
+@ThemePreviews
+@LocalePreviews
+private fun IntervalPickerContentDisabledPreview() {
+    ExtendedTheme {
+        IntervalPickerContent(
             currentInterval = PhotoWidgetLoopingInterval.ONE_DAY,
-            onApplyClick = {},
+            intervalBasedLoopingEnabled = false,
+            onApplyClick = { _, _ -> },
         )
     }
 }

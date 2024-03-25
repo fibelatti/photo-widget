@@ -61,9 +61,11 @@
         <item quantity="many">%d horas</item>
         <item quantity="other">%d horas</item>
     </plurals>
+    <string name="photo_widget_configure_interval_current_disabled">Desactivado</string>
     <string name="photo_widget_configure_interval_minutes_label">Minutos</string>
     <string name="photo_widget_configure_interval_hours_label">Horas</string>
     <string name="photo_widget_configure_interval_warning">El intervalo real puede ser más largo a veces debido a restricciones impuestas por Android para optimizar la duración de la batería</string>
+    <string name="photo_widget_configure_interval_enabled">Cambiar fotos automáticamente según el intervalo seleccionado</string>
 
     <string name="photo_widget_configure_tap_action">Acción de toque</string>
     <string name="photo_widget_configure_tap_action_none">Ninguna</string>

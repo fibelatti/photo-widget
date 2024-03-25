@@ -75,6 +75,7 @@ import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
@@ -90,7 +91,7 @@ import java.util.concurrent.TimeUnit
 
 @Composable
 fun PhotoWidgetConfigureScreen(
-    photos: List<LocalPhoto>,
+    photoWidget: PhotoWidget,
     selectedPhoto: LocalPhoto?,
     onAspectRatioClick: () -> Unit,
     onCropClick: (LocalPhoto) -> Unit,
@@ -99,14 +100,9 @@ fun PhotoWidgetConfigureScreen(
     onMoveRightClick: (LocalPhoto) -> Unit,
     onPhotoPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
-    loopingInterval: PhotoWidgetLoopingInterval,
-    onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval) -> Unit,
-    tapAction: PhotoWidgetTapAction,
+    onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval, intervalBasedLoopingEnabled: Boolean) -> Unit,
     onTapActionPickerClick: () -> Unit,
-    aspectRatio: PhotoWidgetAspectRatio,
-    shapeId: String,
     onShapeClick: (String) -> Unit,
-    cornerRadius: Float,
     onCornerRadiusChange: (Float) -> Unit,
     onAddToHomeClick: () -> Unit,
     isProcessing: Boolean,
@@ -124,11 +120,8 @@ fun PhotoWidgetConfigureScreen(
             )
 
             PhotoWidgetConfigureContent(
-                photos = photos,
+                photoWidget = photoWidget,
                 selectedPhoto = selectedPhoto,
-                aspectRatio = aspectRatio,
-                shapeId = shapeId,
-                cornerRadius = cornerRadius,
                 onMoveLeftClick = onMoveLeftClick,
                 onMoveRightClick = onMoveRightClick,
                 onAspectRatioClick = onAspectRatioClick,
@@ -136,9 +129,7 @@ fun PhotoWidgetConfigureScreen(
                 onRemoveClick = onRemoveClick,
                 onPhotoPickerClick = onPhotoPickerClick,
                 onPhotoClick = onPhotoClick,
-                loopingInterval = loopingInterval,
                 onLoopingIntervalPickerClick = onLoopingIntervalPickerClick,
-                tapAction = tapAction,
                 onTapActionPickerClick = onTapActionPickerClick,
                 onShapeClick = onShapeClick,
                 onCornerRadiusChange = onCornerRadiusChange,
@@ -197,11 +188,8 @@ private fun LoadingIndicator(
 
 @Composable
 private fun PhotoWidgetConfigureContent(
-    photos: List<LocalPhoto>,
+    photoWidget: PhotoWidget,
     selectedPhoto: LocalPhoto?,
-    aspectRatio: PhotoWidgetAspectRatio,
-    shapeId: String,
-    cornerRadius: Float,
     onAspectRatioClick: () -> Unit,
     onCropClick: (LocalPhoto) -> Unit,
     onRemoveClick: (LocalPhoto) -> Unit,
@@ -209,9 +197,7 @@ private fun PhotoWidgetConfigureContent(
     onMoveRightClick: (LocalPhoto) -> Unit,
     onPhotoPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
-    loopingInterval: PhotoWidgetLoopingInterval,
-    onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval) -> Unit,
-    tapAction: PhotoWidgetTapAction,
+    onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval, intervalBasedLoopingEnabled: Boolean) -> Unit,
     onTapActionPickerClick: () -> Unit,
     onShapeClick: (String) -> Unit,
     onCornerRadiusChange: (Float) -> Unit,
@@ -227,10 +213,10 @@ private fun PhotoWidgetConfigureContent(
         ) {
             PhotoWidgetViewer(
                 photo = selectedPhoto,
-                aspectRatio = aspectRatio,
-                shapeId = shapeId,
+                aspectRatio = photoWidget.aspectRatio,
+                shapeId = photoWidget.shapeId,
                 modifier = Modifier.fillMaxSize(),
-                cornerRadius = cornerRadius,
+                cornerRadius = photoWidget.cornerRadius,
             )
 
             FilledTonalIconButton(
@@ -249,10 +235,10 @@ private fun PhotoWidgetConfigureContent(
                 EditingControls(
                     onCropClick = { onCropClick(selectedPhoto) },
                     onRemoveClick = { onRemoveClick(selectedPhoto) },
-                    showMoveControls = photos.size > 1,
-                    moveLeftEnabled = photos.indexOf(selectedPhoto) != 0,
+                    showMoveControls = photoWidget.photos.size > 1,
+                    moveLeftEnabled = photoWidget.photos.indexOf(selectedPhoto) != 0,
                     onMoveLeftClick = { onMoveLeftClick(selectedPhoto) },
-                    moveRightEnabled = photos.indexOf(selectedPhoto) < photos.size - 1,
+                    moveRightEnabled = photoWidget.photos.indexOf(selectedPhoto) < photoWidget.photos.size - 1,
                     onMoveRightClick = { onMoveRightClick(selectedPhoto) },
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
@@ -262,13 +248,13 @@ private fun PhotoWidgetConfigureContent(
         }
 
         PhotoPicker(
-            photos = photos,
+            photos = photoWidget.photos,
             onPhotoPickerClick = onPhotoPickerClick,
             onPhotoClick = onPhotoClick,
-            aspectRatio = aspectRatio,
-            shapeId = shapeId,
+            aspectRatio = photoWidget.aspectRatio,
+            shapeId = photoWidget.shapeId,
             modifier = Modifier.padding(top = 16.dp),
-            cornerRadius = cornerRadius,
+            cornerRadius = photoWidget.cornerRadius,
         )
 
         Row(
@@ -276,34 +262,40 @@ private fun PhotoWidgetConfigureContent(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             TapActionPicker(
-                tapAction = tapAction,
+                tapAction = photoWidget.tapAction,
                 onTapActionPickerClick = onTapActionPickerClick,
                 modifier = Modifier.weight(1f),
             )
 
-            if (photos.size > 1) {
+            if (photoWidget.photos.size > 1) {
                 PhotoIntervalPicker(
-                    loopingInterval = loopingInterval,
-                    onLoopingIntervalPickerClick = { onLoopingIntervalPickerClick(loopingInterval) },
+                    loopingInterval = photoWidget.loopingInterval,
+                    intervalBasedLoopingEnabled = photoWidget.intervalBasedLoopingEnabled,
+                    onLoopingIntervalPickerClick = {
+                        onLoopingIntervalPickerClick(
+                            photoWidget.loopingInterval,
+                            photoWidget.intervalBasedLoopingEnabled,
+                        )
+                    },
                     modifier = Modifier.weight(1f),
                 )
             }
         }
 
         AnimatedContent(
-            targetState = aspectRatio,
+            targetState = photoWidget.aspectRatio,
             transitionSpec = { fadeIn() togetherWith fadeOut() },
             label = "Customization_Picker",
         ) {
             if (it == PhotoWidgetAspectRatio.SQUARE) {
                 ShapePicker(
-                    shapeId = shapeId,
+                    shapeId = photoWidget.shapeId,
                     onShapeClick = onShapeClick,
                     modifier = Modifier.padding(top = 16.dp),
                 )
             } else {
                 CornerRadiusPicker(
-                    value = cornerRadius,
+                    value = photoWidget.cornerRadius,
                     onValueChange = onCornerRadiusChange,
                     modifier = Modifier.padding(
                         start = 16.dp,
@@ -520,6 +512,7 @@ private fun PhotoPicker(
 @Composable
 private fun PhotoIntervalPicker(
     loopingInterval: PhotoWidgetLoopingInterval,
+    intervalBasedLoopingEnabled: Boolean,
     onLoopingIntervalPickerClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -551,7 +544,11 @@ private fun PhotoIntervalPicker(
             }
 
             AutoSizeText(
-                text = stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString),
+                text = if (intervalBasedLoopingEnabled) {
+                    stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
+                } else {
+                    stringResource(id = R.string.photo_widget_configure_interval_current_disabled)
+                },
                 maxLines = 1,
                 minTextSize = 8.sp,
             )
@@ -768,9 +765,16 @@ fun ColoredShape(
 private fun PhotoWidgetConfigureScreenPreview() {
     ExtendedTheme {
         PhotoWidgetConfigureScreen(
-            photos = listOf(
-                LocalPhoto(name = "photo-1", path = ""),
-                LocalPhoto(name = "photo-2", path = ""),
+            photoWidget = PhotoWidget(
+                photos = listOf(
+                    LocalPhoto(name = "photo-1", path = ""),
+                    LocalPhoto(name = "photo-2", path = ""),
+                ),
+                loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
+                tapAction = PhotoWidgetTapAction.VIEW_FULL_SCREEN,
+                aspectRatio = PhotoWidgetAspectRatio.SQUARE,
+                shapeId = PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID,
+                cornerRadius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
             ),
             selectedPhoto = LocalPhoto(name = "photo-1", path = ""),
             onMoveLeftClick = {},
@@ -780,14 +784,9 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onRemoveClick = {},
             onPhotoPickerClick = {},
             onPhotoClick = {},
-            loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
-            onLoopingIntervalPickerClick = {},
-            tapAction = PhotoWidgetTapAction.VIEW_FULL_SCREEN,
+            onLoopingIntervalPickerClick = { _, _ -> },
             onTapActionPickerClick = {},
-            aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-            shapeId = PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID,
             onShapeClick = {},
-            cornerRadius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
             onCornerRadiusChange = {},
             onAddToHomeClick = {},
             isProcessing = false,

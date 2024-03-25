@@ -87,7 +87,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 onBackPressedCallback.isEnabled = state.photoWidget.photos.isNotEmpty()
 
                 PhotoWidgetConfigureScreen(
-                    photos = state.photoWidget.photos,
+                    photoWidget = state.photoWidget,
                     selectedPhoto = state.selectedPhoto,
                     onAspectRatioClick = ::showAspectRatioPicker,
                     onCropClick = viewModel::requestCrop,
@@ -96,14 +96,9 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     onMoveRightClick = viewModel::moveRight,
                     onPhotoPickerClick = ::launchPhotoPicker,
                     onPhotoClick = viewModel::previewPhoto,
-                    loopingInterval = state.photoWidget.loopingInterval,
                     onLoopingIntervalPickerClick = ::showIntervalPicker,
-                    tapAction = state.photoWidget.tapAction,
                     onTapActionPickerClick = ::showTapActionPicker,
-                    aspectRatio = state.photoWidget.aspectRatio,
-                    shapeId = state.photoWidget.shapeId,
                     onShapeClick = viewModel::shapeSelected,
-                    cornerRadius = state.photoWidget.cornerRadius,
                     onCornerRadiusChange = viewModel::cornerRadiusSelected,
                     onAddToHomeClick = viewModel::addNewWidget,
                     isProcessing = state.isProcessing,
@@ -217,10 +212,14 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             ?: run { viewModel.cropCancelled() }
     }
 
-    private fun showIntervalPicker(loopingInterval: PhotoWidgetLoopingInterval) {
+    private fun showIntervalPicker(
+        loopingInterval: PhotoWidgetLoopingInterval,
+        intervalBasedLoopingEnabled: Boolean,
+    ) {
         PhotoWidgetIntervalPicker.show(
             context = this,
             currentInterval = loopingInterval,
+            currentIntervalBasedLoopingEnabled = intervalBasedLoopingEnabled,
             onApplyClick = viewModel::intervalSelected,
         )
     }

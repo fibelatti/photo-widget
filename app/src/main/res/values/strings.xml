@@ -58,9 +58,11 @@
         <item quantity="one">%d hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
+    <string name="photo_widget_configure_interval_current_disabled">Disabled</string>
     <string name="photo_widget_configure_interval_minutes_label">Minutes</string>
     <string name="photo_widget_configure_interval_hours_label">Hours</string>
     <string name="photo_widget_configure_interval_warning">The actual interval can be longer at times due to restrictions imposed by Android to optimize battery life</string>
+    <string name="photo_widget_configure_interval_enabled">Flip photos automatically based on the selected interval</string>
 
     <string name="photo_widget_configure_tap_action">Tap action</string>
     <string name="photo_widget_configure_tap_action_none">None</string>

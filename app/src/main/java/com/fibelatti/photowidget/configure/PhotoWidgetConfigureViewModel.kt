@@ -212,10 +212,16 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun intervalSelected(interval: PhotoWidgetLoopingInterval) {
+    fun intervalSelected(
+        interval: PhotoWidgetLoopingInterval,
+        intervalBasedLoopingEnabled: Boolean,
+    ) {
         _state.update { current ->
             current.copy(
-                photoWidget = current.photoWidget.copy(loopingInterval = interval),
+                photoWidget = current.photoWidget.copy(
+                    loopingInterval = interval,
+                    intervalBasedLoopingEnabled = intervalBasedLoopingEnabled,
+                ),
             )
         }
     }
