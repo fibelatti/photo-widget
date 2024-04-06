@@ -26,7 +26,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Context) {
+class PhotoWidgetStorage @Inject constructor(
+    @ApplicationContext context: Context,
+    private val photoWidgetOrderDao: PhotoWidgetOrderDao,
+) {
 
     private val rootDir by lazy {
         File("${context.filesDir}/widgets").apply {
@@ -103,7 +106,7 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         }.getOrNull()
     }
 
-    fun getWidgetPhotos(appWidgetId: Int): List<LocalPhoto> {
+    suspend fun getWidgetPhotos(appWidgetId: Int): List<LocalPhoto> {
         val photos = getWidgetDir(appWidgetId = appWidgetId).let { dir ->
             dir.list { _, name -> name != "original" }
                 .orEmpty()
@@ -154,18 +157,32 @@ class PhotoWidgetStorage @Inject constructor(@ApplicationContext context: Contex
         }
     }
 
-    fun saveWidgetOrder(appWidgetId: Int, order: List<String>) {
-        val value = if (order.isEmpty()) "" else order.joinToString(separator = ",")
-
-        sharedPreferences.edit {
-            putString("${PreferencePrefix.ORDER}$appWidgetId", value)
-        }
+    suspend fun saveWidgetOrder(appWidgetId: Int, order: List<String>) {
+        photoWidgetOrderDao.replaceWidgetOrder(
+            widgetId = appWidgetId,
+            order = order.mapIndexed { index, photoId ->
+                PhotoWidgetOrderDto(
+                    widgetId = appWidgetId,
+                    photoIndex = index,
+                    photoId = photoId,
+                )
+            },
+        )
     }
 
-    fun getWidgetOrder(appWidgetId: Int): List<String> {
+    suspend fun getWidgetOrder(appWidgetId: Int): List<String> {
+        // Check for legacy storage value
         val value = sharedPreferences.getString("${PreferencePrefix.ORDER}$appWidgetId", null)
+            ?.split(",")
 
-        return value?.split(",").orEmpty()
+        if (value != null) {
+            // Migrate found value to the new storage
+            saveWidgetOrder(appWidgetId, value)
+            sharedPreferences.edit { remove("${PreferencePrefix.ORDER}$appWidgetId") }
+        }
+
+        // Return it to the caller, or retrieve it from the new storage if not found
+        return value ?: photoWidgetOrderDao.getWidgetOrder(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetInterval(appWidgetId: Int, interval: PhotoWidgetLoopingInterval) {

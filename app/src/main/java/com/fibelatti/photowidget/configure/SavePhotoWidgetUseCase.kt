@@ -10,7 +10,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
     private val photoWidgetAlarmManager: PhotoWidgetAlarmManager,
 ) {
 
-    operator fun invoke(
+    suspend operator fun invoke(
         appWidgetId: Int,
         photoWidget: PhotoWidget,
     ) {

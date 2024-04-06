@@ -11,7 +11,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
     private val photoWidgetStorage: PhotoWidgetStorage,
 ) {
 
-    operator fun invoke(appWidgetId: Int): PhotoWidget = with(photoWidgetStorage) {
+    suspend operator fun invoke(appWidgetId: Int): PhotoWidget = with(photoWidgetStorage) {
         return PhotoWidget(
             photos = getWidgetPhotos(appWidgetId = appWidgetId),
             currentIndex = getWidgetIndex(appWidgetId = appWidgetId),

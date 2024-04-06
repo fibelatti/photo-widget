@@ -18,24 +18,14 @@ import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 class PhotoWidgetProvider : AppWidgetProvider() {
 
-    override fun onUpdate(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray,
-    ) {
-        val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
-        val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
-
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         for (appWidgetId in appWidgetIds) {
-            update(
-                context = context,
-                appWidgetId = appWidgetId,
-                appWidgetManager = appWidgetManager,
-                loadPhotoWidgetUseCase = loadPhotoWidgetUseCase,
-            )
+            update(context = context, appWidgetId = appWidgetId)
         }
     }
 
@@ -71,41 +61,42 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             .getAppWidgetIds(ComponentName(context, PhotoWidgetProvider::class.java))
             .toList()
 
-        fun update(
-            context: Context,
-            appWidgetId: Int,
-            appWidgetManager: AppWidgetManager = AppWidgetManager.getInstance(context),
-            loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase = entryPoint<PhotoWidgetEntryPoint>(context)
-                .loadPhotoWidgetUseCase(),
-        ) {
-            val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+        fun update(context: Context, appWidgetId: Int) {
+            val appWidgetManager: AppWidgetManager = AppWidgetManager.getInstance(context)
+            val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
+            val coroutineScope = entryPoint.coroutineScope()
+            val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
 
-            val views = createRemoteViews(
-                context = context,
-                photoWidget = photoWidget,
-            ) ?: return
+            coroutineScope.launch {
+                val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
 
-            val clickPendingIntent = when (photoWidget.tapAction) {
-                PhotoWidgetTapAction.NONE -> null
+                val views = createRemoteViews(
+                    context = context,
+                    photoWidget = photoWidget,
+                ) ?: return@launch
 
-                PhotoWidgetTapAction.VIEW_FULL_SCREEN -> {
-                    val clickIntent = Intent(context, PhotoWidgetClickActivity::class.java).apply {
-                        this.appWidgetId = appWidgetId
+                val clickPendingIntent = when (photoWidget.tapAction) {
+                    PhotoWidgetTapAction.NONE -> null
+
+                    PhotoWidgetTapAction.VIEW_FULL_SCREEN -> {
+                        val clickIntent = Intent(context, PhotoWidgetClickActivity::class.java).apply {
+                            this.appWidgetId = appWidgetId
+                        }
+                        PendingIntent.getActivity(
+                            context,
+                            appWidgetId,
+                            clickIntent,
+                            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        )
                     }
-                    PendingIntent.getActivity(
-                        context,
-                        appWidgetId,
-                        clickIntent,
-                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-                    )
+
+                    PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> flipPhotoPendingIntent(context, appWidgetId)
                 }
 
-                PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> flipPhotoPendingIntent(context, appWidgetId)
+                views.setOnClickPendingIntent(R.id.iv_widget, clickPendingIntent)
+
+                appWidgetManager.updateAppWidget(appWidgetId, views)
             }
-
-            views.setOnClickPendingIntent(R.id.iv_widget, clickPendingIntent)
-
-            appWidgetManager.updateAppWidget(appWidgetId, views)
         }
 
         fun createRemoteViews(

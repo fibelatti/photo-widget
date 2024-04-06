@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
+import kotlinx.coroutines.launch
 
 class PhotoWidgetRescheduleReceiver : BroadcastReceiver() {
 
@@ -20,15 +21,18 @@ class PhotoWidgetRescheduleReceiver : BroadcastReceiver() {
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
             val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
             val photoWidgetAlarmManager = entryPoint.photoWidgetAlarmManager()
+            val coroutineScope = entryPoint.coroutineScope()
 
-            for (id in ids) {
-                val widget = loadPhotoWidgetUseCase(appWidgetId = id)
-                if (widget.loopingEnabled) {
-                    photoWidgetAlarmManager.setup(
-                        appWidgetId = id,
-                        repeatInterval = widget.loopingInterval.repeatInterval,
-                        timeUnit = widget.loopingInterval.timeUnit,
-                    )
+            coroutineScope.launch {
+                for (id in ids) {
+                    val widget = loadPhotoWidgetUseCase(appWidgetId = id)
+                    if (widget.loopingEnabled) {
+                        photoWidgetAlarmManager.setup(
+                            appWidgetId = id,
+                            repeatInterval = widget.loopingInterval.repeatInterval,
+                            timeUnit = widget.loopingInterval.timeUnit,
+                        )
+                    }
                 }
             }
         }

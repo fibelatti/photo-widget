@@ -46,13 +46,15 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             photoWidgetStorage.deleteWidgetData(appWidgetId = appWidgetId)
         }
 
-        val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+        viewModelScope.launch {
+            val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
 
-        _state.update { current ->
-            current.copy(
-                photoWidget = photoWidget.copy(aspectRatio = aspectRatio ?: photoWidget.aspectRatio),
-                selectedPhoto = photoWidget.photos.firstOrNull(),
-            )
+            _state.update { current ->
+                current.copy(
+                    photoWidget = photoWidget.copy(aspectRatio = aspectRatio ?: photoWidget.aspectRatio),
+                    selectedPhoto = photoWidget.photos.firstOrNull(),
+                )
+            }
         }
     }
 
@@ -274,17 +276,19 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
             // The user start configuring from the home screen, it will be added automatically
             else -> {
-                savePhotoWidgetUseCase(
-                    appWidgetId = appWidgetId,
-                    photoWidget = currentState.photoWidget,
-                )
-
-                _state.update { current ->
-                    current.copy(
-                        messages = current.messages + PhotoWidgetConfigureState.Message.AddWidget(
-                            appWidgetId = appWidgetId,
-                        ),
+                viewModelScope.launch {
+                    savePhotoWidgetUseCase(
+                        appWidgetId = appWidgetId,
+                        photoWidget = currentState.photoWidget,
                     )
+
+                    _state.update { current ->
+                        current.copy(
+                            messages = current.messages + PhotoWidgetConfigureState.Message.AddWidget(
+                                appWidgetId = appWidgetId,
+                            ),
+                        )
+                    }
                 }
             }
         }

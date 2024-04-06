@@ -28,6 +28,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import com.fibelatti.photowidget.configure.ShapedPhoto
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.model.LocalPhoto
@@ -54,16 +55,18 @@ class PhotoWidgetClickActivity : AppCompatActivity() {
             return
         }
 
-        val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+        lifecycleScope.launch {
+            val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
 
-        setContent {
-            AppTheme {
-                ScreenContent(
-                    photo = photoWidget.currentPhoto,
-                    aspectRatio = photoWidget.aspectRatio,
-                    shapeId = photoWidget.shapeId,
-                    cornerRadius = photoWidget.cornerRadius,
-                )
+            setContent {
+                AppTheme {
+                    ScreenContent(
+                        photo = photoWidget.currentPhoto,
+                        aspectRatio = photoWidget.aspectRatio,
+                        shapeId = photoWidget.shapeId,
+                        cornerRadius = photoWidget.cornerRadius,
+                    )
+                }
             }
         }
     }

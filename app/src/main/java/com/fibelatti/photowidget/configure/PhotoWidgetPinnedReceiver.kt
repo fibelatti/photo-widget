@@ -8,6 +8,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
+import kotlinx.coroutines.launch
 
 /**
  * [BroadcastReceiver] to handle the callback from [AppWidgetManager.requestPinAppWidget].
@@ -30,24 +31,27 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
 
         val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
         val saveUseCase = entryPoint.savePhotoWidgetUseCase()
+        val coroutineScope = entryPoint.coroutineScope()
 
-        // Persist the widget data since it was placed on the home screen
-        saveUseCase(
-            appWidgetId = widgetId,
-            photoWidget = callbackIntent.photoWidget,
-        )
+        coroutineScope.launch {
+            // Persist the widget data since it was placed on the home screen
+            saveUseCase(
+                appWidgetId = widgetId,
+                photoWidget = callbackIntent.photoWidget,
+            )
 
-        // Update the widget UI using the updated storage data
-        PhotoWidgetProvider.update(
-            context = context,
-            appWidgetId = widgetId,
-        )
+            // Update the widget UI using the updated storage data
+            PhotoWidgetProvider.update(
+                context = context,
+                appWidgetId = widgetId,
+            )
 
-        // Finally finish the configure activity since it's no longer needed
-        val finishIntent = Intent(PhotoWidgetConfigureActivity.ACTION_FINISH).apply {
-            this.appWidgetId = widgetId
+            // Finally finish the configure activity since it's no longer needed
+            val finishIntent = Intent(PhotoWidgetConfigureActivity.ACTION_FINISH).apply {
+                this.appWidgetId = widgetId
+            }
+            LocalBroadcastManager.getInstance(context).sendBroadcast(finishIntent)
         }
-        LocalBroadcastManager.getInstance(context).sendBroadcast(finishIntent)
     }
 
     companion object {

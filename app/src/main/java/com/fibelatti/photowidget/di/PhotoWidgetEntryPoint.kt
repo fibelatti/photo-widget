@@ -8,6 +8,7 @@ import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
 
 @EntryPoint
 @InstallIn(SingletonComponent::class)
@@ -22,4 +23,6 @@ interface PhotoWidgetEntryPoint {
     fun savePhotoWidgetUseCase(): SavePhotoWidgetUseCase
 
     fun flipPhotoUseCase(): FlipPhotoUseCase
+
+    fun coroutineScope(): CoroutineScope
 }

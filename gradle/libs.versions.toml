@@ -6,6 +6,7 @@ hilt = "2.50"
 hiltExtensions = "1.2.0"
 kotlin = "1.9.23"
 lifecycle = "2.7.0"
+room = "2.6.1"
 aboutLibraries = "10.10.0"
 
 [libraries]
@@ -32,6 +33,9 @@ dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref =
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltExtensions" }
 
+room-runtime = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+
 ucrop = { module = "com.github.yalantis:ucrop", version = "2.2.8" }
 
 about-libraries = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "aboutLibraries" }
@@ -45,6 +49,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version = "1.9.23-1.0.20" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+room = { id = "androidx.room", version.ref = "room" }
 spotless = { id = "com.diffplug.spotless", version = "6.25.0" }
 cache-fix = { id = "org.gradle.android.cache-fix", version = "3.0.1" }
 about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }

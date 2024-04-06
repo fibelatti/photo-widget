@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.room)
     alias(libs.plugins.about.libraries)
 }
 
@@ -114,6 +115,15 @@ android {
     }
 }
 
+ksp {
+    arg("room.incremental", "true")
+    arg("room.generateKotlin", "true")
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
 dependencies {
     implementation(project(":ui"))
 
@@ -141,6 +151,9 @@ dependencies {
     ksp(libs.dagger.hilt.compiler)
     implementation(libs.dagger.hilt.android)
     implementation(libs.hilt.navigation.compose)
+
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
 
     implementation(libs.ucrop)
 
