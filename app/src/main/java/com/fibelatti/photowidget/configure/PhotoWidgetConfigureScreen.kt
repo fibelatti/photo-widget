@@ -1,6 +1,9 @@
 package com.fibelatti.photowidget.configure
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -37,8 +40,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -46,9 +49,14 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -57,6 +65,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
@@ -74,11 +83,14 @@ import androidx.compose.ui.unit.sp
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
+import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
+import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
@@ -87,25 +99,28 @@ import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
+import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit
 
 @Composable
 fun PhotoWidgetConfigureScreen(
     photoWidget: PhotoWidget,
     selectedPhoto: LocalPhoto?,
+    isProcessing: Boolean,
     onAspectRatioClick: () -> Unit,
     onCropClick: (LocalPhoto) -> Unit,
     onRemoveClick: (LocalPhoto) -> Unit,
     onMoveLeftClick: (LocalPhoto) -> Unit,
     onMoveRightClick: (LocalPhoto) -> Unit,
+    onChangeSource: () -> Unit,
     onPhotoPickerClick: () -> Unit,
+    onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval, intervalBasedLoopingEnabled: Boolean) -> Unit,
     onTapActionPickerClick: () -> Unit,
     onShapeClick: (String) -> Unit,
     onCornerRadiusChange: (Float) -> Unit,
     onAddToHomeClick: () -> Unit,
-    isProcessing: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -127,7 +142,9 @@ fun PhotoWidgetConfigureScreen(
                 onAspectRatioClick = onAspectRatioClick,
                 onCropClick = onCropClick,
                 onRemoveClick = onRemoveClick,
+                onChangeSource = onChangeSource,
                 onPhotoPickerClick = onPhotoPickerClick,
+                onDirPickerClick = onDirPickerClick,
                 onPhotoClick = onPhotoClick,
                 onLoopingIntervalPickerClick = onLoopingIntervalPickerClick,
                 onTapActionPickerClick = onTapActionPickerClick,
@@ -149,7 +166,9 @@ fun PhotoWidgetConfigureScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center,
                 ) {
-                    LoadingIndicator()
+                    LoadingIndicator(
+                        modifier = Modifier.size(72.dp),
+                    )
                 }
             }
         }
@@ -177,7 +196,7 @@ private fun LoadingIndicator(
             painter = painterResource(id = R.drawable.ic_hourglass),
             contentDescription = "",
             modifier = Modifier
-                .size(72.dp)
+                .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.primaryContainer, shape = CircleShape)
                 .padding(all = 16.dp)
                 .rotate(rotation),
@@ -195,7 +214,9 @@ private fun PhotoWidgetConfigureContent(
     onRemoveClick: (LocalPhoto) -> Unit,
     onMoveLeftClick: (LocalPhoto) -> Unit,
     onMoveRightClick: (LocalPhoto) -> Unit,
+    onChangeSource: () -> Unit,
     onPhotoPickerClick: () -> Unit,
+    onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval, intervalBasedLoopingEnabled: Boolean) -> Unit,
     onTapActionPickerClick: () -> Unit,
@@ -219,23 +240,45 @@ private fun PhotoWidgetConfigureContent(
                 cornerRadius = photoWidget.cornerRadius,
             )
 
-            FilledTonalIconButton(
-                onClick = onAspectRatioClick,
+            var dialogVisible by remember { mutableStateOf(false) }
+
+            if (dialogVisible) {
+                ChangeSourceWarningDialog(
+                    onDismiss = { dialogVisible = false },
+                    onConfirm = {
+                        dialogVisible = false
+                        onChangeSource()
+                    },
+                )
+            }
+
+            Row(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(all = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_aspect_ratio),
-                    contentDescription = stringResource(id = R.string.photo_widget_aspect_ratio_title),
+                ConfigurationControl(
+                    label = R.string.photo_widget_configure_menu_source,
+                    icon = R.drawable.ic_pick_folder,
+                    contentDescription = R.string.photo_widget_cd_change_source,
+                    onClick = { dialogVisible = true },
+                )
+
+                ConfigurationControl(
+                    label = photoWidget.aspectRatio.label,
+                    icon = R.drawable.ic_aspect_ratio,
+                    contentDescription = R.string.photo_widget_aspect_ratio_title,
+                    onClick = onAspectRatioClick,
                 )
             }
 
             if (selectedPhoto != null) {
                 EditingControls(
                     onCropClick = { onCropClick(selectedPhoto) },
+                    showRemove = PhotoWidgetSource.PHOTOS == photoWidget.source,
                     onRemoveClick = { onRemoveClick(selectedPhoto) },
-                    showMoveControls = photoWidget.photos.size > 1,
+                    showMoveControls = PhotoWidgetSource.PHOTOS == photoWidget.source && photoWidget.photos.size > 1,
                     moveLeftEnabled = photoWidget.photos.indexOf(selectedPhoto) != 0,
                     onMoveLeftClick = { onMoveLeftClick(selectedPhoto) },
                     moveRightEnabled = photoWidget.photos.indexOf(selectedPhoto) < photoWidget.photos.size - 1,
@@ -248,8 +291,10 @@ private fun PhotoWidgetConfigureContent(
         }
 
         PhotoPicker(
+            source = photoWidget.source,
             photos = photoWidget.photos,
             onPhotoPickerClick = onPhotoPickerClick,
+            onDirPickerClick = onDirPickerClick,
             onPhotoClick = onPhotoClick,
             aspectRatio = photoWidget.aspectRatio,
             shapeId = photoWidget.shapeId,
@@ -286,8 +331,8 @@ private fun PhotoWidgetConfigureContent(
             targetState = photoWidget.aspectRatio,
             transitionSpec = { fadeIn() togetherWith fadeOut() },
             label = "Customization_Picker",
-        ) {
-            if (it == PhotoWidgetAspectRatio.SQUARE) {
+        ) { aspectRatio ->
+            if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
                 ShapePicker(
                     shapeId = photoWidget.shapeId,
                     onShapeClick = onShapeClick,
@@ -317,6 +362,29 @@ private fun PhotoWidgetConfigureContent(
 
         Spacer(modifier = Modifier.size(24.dp))
     }
+}
+
+@Composable
+private fun ChangeSourceWarningDialog(
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text(text = stringResource(id = R.string.photo_widget_action_continue))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = stringResource(id = R.string.photo_widget_action_cancel))
+            }
+        },
+        text = {
+            Text(text = stringResource(id = R.string.photo_widget_configure_change_source_warning))
+        },
+    )
 }
 
 @Composable
@@ -366,8 +434,41 @@ private fun PhotoWidgetViewer(
 }
 
 @Composable
+private fun ConfigurationControl(
+    @StringRes label: Int,
+    @DrawableRes icon: Int,
+    @StringRes contentDescription: Int,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .background(
+                color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f),
+                shape = RoundedCornerShape(size = 24.dp),
+            )
+            .clickable(onClick = onClick)
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = stringResource(id = label),
+            style = MaterialTheme.typography.labelMedium,
+        )
+
+        Icon(
+            painter = painterResource(id = icon),
+            contentDescription = stringResource(id = contentDescription),
+            modifier = Modifier.size(20.dp),
+        )
+    }
+}
+
+@Composable
 private fun EditingControls(
     onCropClick: () -> Unit,
+    showRemove: Boolean,
     onRemoveClick: () -> Unit,
     showMoveControls: Boolean,
     moveLeftEnabled: Boolean,
@@ -404,11 +505,13 @@ private fun EditingControls(
             )
         }
 
-        IconButton(onClick = onRemoveClick) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_trash),
-                contentDescription = stringResource(id = R.string.photo_widget_configure_menu_remove),
-            )
+        if (showRemove) {
+            IconButton(onClick = onRemoveClick) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_trash),
+                    contentDescription = stringResource(id = R.string.photo_widget_configure_menu_remove),
+                )
+            }
         }
 
         if (showMoveControls) {
@@ -425,10 +528,13 @@ private fun EditingControls(
     }
 }
 
+// region Pickers
 @Composable
 private fun PhotoPicker(
+    source: PhotoWidgetSource,
     photos: List<LocalPhoto>,
     onPhotoPickerClick: () -> Unit,
+    onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
@@ -441,10 +547,9 @@ private fun PhotoPicker(
     ) {
         Text(
             text = stringResource(
-                id = if (photos.isEmpty()) {
-                    R.string.photo_widget_configure_select_photo
-                } else {
-                    R.string.photo_widget_configure_selected_photos
+                id = when (source) {
+                    PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_photos
+                    PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_photos_from_dir
                 },
             ),
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -472,13 +577,28 @@ private fun PhotoPicker(
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
-                            onClick = onPhotoPickerClick,
+                            onClick = {
+                                when (source) {
+                                    PhotoWidgetSource.PHOTOS -> onPhotoPickerClick()
+                                    PhotoWidgetSource.DIRECTORY -> onDirPickerClick()
+                                }
+                            },
                             role = Role.Button,
                         ),
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_pick_image),
-                        contentDescription = stringResource(id = R.string.photo_widget_cd_open_photo_picker),
+                        painter = painterResource(
+                            id = when (source) {
+                                PhotoWidgetSource.PHOTOS -> R.drawable.ic_pick_image
+                                PhotoWidgetSource.DIRECTORY -> R.drawable.ic_pick_folder
+                            },
+                        ),
+                        contentDescription = stringResource(
+                            id = when (source) {
+                                PhotoWidgetSource.PHOTOS -> R.string.photo_widget_cd_open_photo_picker
+                                PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_cd_open_folder_picker
+                            },
+                        ),
                         modifier = Modifier.size(32.dp),
                         tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
@@ -666,6 +786,7 @@ private fun CornerRadiusPicker(
         )
     }
 }
+// endregion Pickers
 
 @Composable
 fun ShapedPhoto(
@@ -679,30 +800,50 @@ fun ShapedPhoto(
     val localInspectionMode = LocalInspectionMode.current
     val localContext = LocalContext.current
 
-    val photoBitmap = remember(photo) {
-        if (localInspectionMode) {
-            BitmapFactory.decodeResource(localContext.resources, R.drawable.widget_preview)
-        } else {
-            BitmapFactory.decodeFile(photo.path)
+    var photoBitmap: Bitmap? by remember(photo) {
+        mutableStateOf(
+            when {
+                localInspectionMode -> BitmapFactory.decodeResource(localContext.resources, R.drawable.widget_preview)
+                !photo.path.isNullOrEmpty() -> BitmapFactory.decodeFile(photo.path)
+                else -> null
+            },
+        )
+    }
+    var showLoading: Boolean by remember(photo) { mutableStateOf(false) }
+
+    if (photo.externalUri != null) {
+        val decoder = remember { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
+
+        LaunchedEffect(key1 = photo.externalUri) {
+            photoBitmap = decoder.decode(source = photo.externalUri, maxDimension = 500)
+            showLoading = false
         }
     }
 
-    val transformedBitmap = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
-        remember(photo, shapeId) {
-            val shape = PhotoWidgetShapeBuilder.buildShape(
-                shapeId = shapeId,
-                width = photoBitmap.width.toFloat(),
-                height = photoBitmap.height.toFloat(),
-            )
+    LaunchedEffect(key1 = photo) {
+        // Avoid flickering the indicator, only show if the photos takes a while to load
+        delay(timeMillis = 300)
+        showLoading = photoBitmap == null
+    }
 
-            photoBitmap.withPolygonalShape(roundedPolygon = shape).asImageBitmap()
-        }
-    } else {
-        remember(photo, aspectRatio, cornerRadius) {
-            photoBitmap.withRoundedCorners(
-                desiredAspectRatio = aspectRatio,
-                radius = cornerRadius,
-            ).asImageBitmap()
+    val transformedBitmap: ImageBitmap? by remember(photo, shapeId, aspectRatio, cornerRadius) {
+        derivedStateOf {
+            photoBitmap?.run {
+                if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
+                    withPolygonalShape(
+                        roundedPolygon = PhotoWidgetShapeBuilder.buildShape(
+                            shapeId = shapeId,
+                            width = width.toFloat(),
+                            height = height.toFloat(),
+                        ),
+                    )
+                } else {
+                    withRoundedCorners(
+                        desiredAspectRatio = aspectRatio,
+                        radius = cornerRadius,
+                    )
+                }.asImageBitmap()
+            }
         }
     }
 
@@ -710,23 +851,31 @@ fun ShapedPhoto(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
-        Image(
-            bitmap = transformedBitmap,
-            contentDescription = "",
-            modifier = Modifier
-                .conditional(
-                    predicate = PhotoWidgetAspectRatio.ORIGINAL != aspectRatio,
-                    ifTrue = { aspectRatio(ratio = aspectRatio.aspectRatio) },
-                )
-                .fillMaxSize(),
-            contentScale = if (PhotoWidgetAspectRatio.ORIGINAL != aspectRatio) {
-                ContentScale.FillWidth
-            } else {
-                ContentScale.Fit
-            },
-        )
+        transformedBitmap?.let { bitmap ->
+            Image(
+                bitmap = bitmap,
+                contentDescription = "",
+                modifier = Modifier
+                    .conditional(
+                        predicate = PhotoWidgetAspectRatio.ORIGINAL != aspectRatio,
+                        ifTrue = { aspectRatio(ratio = aspectRatio.aspectRatio) },
+                    )
+                    .fillMaxSize(),
+                contentScale = if (PhotoWidgetAspectRatio.ORIGINAL != aspectRatio) {
+                    ContentScale.FillWidth
+                } else {
+                    ContentScale.Fit
+                },
+            )
 
-        badge()
+            badge()
+        } ?: run {
+            if (showLoading) {
+                LoadingIndicator(
+                    modifier = Modifier.padding(all = 4.dp),
+                )
+            }
+        }
     }
 }
 
@@ -766,9 +915,10 @@ private fun PhotoWidgetConfigureScreenPreview() {
     ExtendedTheme {
         PhotoWidgetConfigureScreen(
             photoWidget = PhotoWidget(
+                source = PhotoWidgetSource.PHOTOS,
                 photos = listOf(
-                    LocalPhoto(name = "photo-1", path = ""),
-                    LocalPhoto(name = "photo-2", path = ""),
+                    LocalPhoto(name = "photo-1"),
+                    LocalPhoto(name = "photo-2"),
                 ),
                 loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
                 tapAction = PhotoWidgetTapAction.VIEW_FULL_SCREEN,
@@ -776,20 +926,22 @@ private fun PhotoWidgetConfigureScreenPreview() {
                 shapeId = PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID,
                 cornerRadius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
             ),
-            selectedPhoto = LocalPhoto(name = "photo-1", path = ""),
+            selectedPhoto = LocalPhoto(name = "photo-1"),
+            isProcessing = false,
             onMoveLeftClick = {},
             onMoveRightClick = {},
             onAspectRatioClick = {},
             onCropClick = {},
             onRemoveClick = {},
+            onChangeSource = {},
             onPhotoPickerClick = {},
+            onDirPickerClick = {},
             onPhotoClick = {},
             onLoopingIntervalPickerClick = { _, _ -> },
             onTapActionPickerClick = {},
             onShapeClick = {},
             onCornerRadiusChange = {},
             onAddToHomeClick = {},
-            isProcessing = false,
         )
     }
 }

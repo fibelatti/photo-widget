@@ -50,6 +50,11 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         ::onPhotoCropped,
     )
 
+    private val photoDirPickerLauncher = registerForActivityResult(
+        ActivityResultContracts.OpenDocumentTree(),
+        ::onDirPicked,
+    )
+
     private val onBackPressedCallback = object : OnBackPressedCallback(enabled = false) {
 
         override fun handleOnBackPressed() {
@@ -89,19 +94,21 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 PhotoWidgetConfigureScreen(
                     photoWidget = state.photoWidget,
                     selectedPhoto = state.selectedPhoto,
+                    isProcessing = state.isProcessing,
                     onAspectRatioClick = ::showAspectRatioPicker,
                     onCropClick = viewModel::requestCrop,
                     onRemoveClick = viewModel::photoRemoved,
                     onMoveLeftClick = viewModel::moveLeft,
                     onMoveRightClick = viewModel::moveRight,
+                    onChangeSource = viewModel::changeSource,
                     onPhotoPickerClick = ::launchPhotoPicker,
+                    onDirPickerClick = ::launchFolderPicker,
                     onPhotoClick = viewModel::previewPhoto,
                     onLoopingIntervalPickerClick = ::showIntervalPicker,
                     onTapActionPickerClick = ::showTapActionPicker,
                     onShapeClick = viewModel::shapeSelected,
                     onCornerRadiusChange = viewModel::cornerRadiusSelected,
                     onAddToHomeClick = viewModel::addNewWidget,
-                    isProcessing = state.isProcessing,
                 )
 
                 LaunchedEffect(state.messages) {
@@ -179,8 +186,16 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         photoPickerLauncher.launch("image/*")
     }
 
+    private fun launchFolderPicker() {
+        photoDirPickerLauncher.launch(null)
+    }
+
     private fun onPhotoPicked(source: List<Uri>) {
         viewModel.photoPicked(source = source)
+    }
+
+    private fun onDirPicked(uri: Uri?) {
+        viewModel.dirPicked(source = uri)
     }
 
     private fun launchPhotoCrop(

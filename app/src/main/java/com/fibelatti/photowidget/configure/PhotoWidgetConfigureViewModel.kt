@@ -9,6 +9,7 @@ import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
+import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.savedState
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
@@ -53,6 +54,30 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 current.copy(
                     photoWidget = photoWidget.copy(aspectRatio = aspectRatio ?: photoWidget.aspectRatio),
                     selectedPhoto = photoWidget.photos.firstOrNull(),
+                )
+            }
+        }
+    }
+
+    fun changeSource() {
+        val newSource = when (_state.value.photoWidget.source) {
+            PhotoWidgetSource.PHOTOS -> PhotoWidgetSource.DIRECTORY
+            PhotoWidgetSource.DIRECTORY -> PhotoWidgetSource.PHOTOS
+        }
+
+        photoWidgetStorage.saveWidgetSource(appWidgetId = appWidgetId, source = newSource)
+
+        viewModelScope.launch {
+            val photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+
+            _state.update { current ->
+                current.copy(
+                    photoWidget = current.photoWidget.copy(
+                        source = newSource,
+                        photos = photos,
+                    ),
+                    selectedPhoto = photos.firstOrNull(),
+                    cropQueue = emptyList(),
                 )
             }
         }
@@ -114,6 +139,30 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
+    fun dirPicked(source: Uri?) {
+        if (source == null) return
+
+        photoWidgetStorage.saveWidgetSyncedDir(
+            appWidgetId = appWidgetId,
+            dirUri = source,
+        )
+
+        viewModelScope.launch {
+            val photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+
+            _state.update { current ->
+                current.copy(
+                    photoWidget = current.photoWidget.copy(
+                        photos = photos,
+                        syncedDir = source,
+                    ),
+                    selectedPhoto = photos.firstOrNull(),
+                    cropQueue = emptyList(),
+                )
+            }
+        }
+    }
+
     fun previewPhoto(photo: LocalPhoto) {
         _state.update { current -> current.copy(selectedPhoto = photo) }
     }
@@ -122,14 +171,17 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         viewModelScope.launch {
             val (source, destination) = photoWidgetStorage.getCropSources(
                 appWidgetId = appWidgetId,
-                photoName = photo.name,
+                localPhoto = photo,
             )
 
             _state.update { current ->
                 current.copy(
+                    photoWidget = current.photoWidget.copy(
+                        photos = current.photoWidget.photos.map { it.copy(cropping = it.name == photo.name) },
+                    ),
                     messages = current.messages + PhotoWidgetConfigureState.Message.LaunchCrop(
-                        source = Uri.fromFile(source),
-                        destination = Uri.fromFile(destination),
+                        source = source,
+                        destination = destination,
                         aspectRatio = current.photoWidget.aspectRatio,
                     ),
                 )
@@ -138,23 +190,32 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     }
 
     fun photoCropped(path: String) {
+        val cropping = _state.value.photoWidget.photos.firstOrNull { it.cropping } ?: return
+
         _state.update { current ->
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     photos = current.photoWidget.photos.map { photo ->
-                        if (photo.path == path) {
-                            photo.copy(timestamp = System.currentTimeMillis())
+                        if (photo.name == cropping.name) {
+                            photo.copy(
+                                path = path,
+                                cropping = false,
+                                timestamp = System.currentTimeMillis(),
+                            )
                         } else {
                             photo
                         }
                     },
                 ),
-                selectedPhoto = if (current.selectedPhoto?.path == path) {
-                    current.selectedPhoto.copy(timestamp = System.currentTimeMillis())
+                selectedPhoto = if (current.selectedPhoto?.name == cropping.name) {
+                    current.selectedPhoto.copy(
+                        path = path,
+                        timestamp = System.currentTimeMillis(),
+                    )
                 } else {
                     current.selectedPhoto
                 },
-                cropQueue = current.cropQueue.filterNot { it.path == path },
+                cropQueue = current.cropQueue.filterNot { it.name == cropping.name },
             )
         }
 
@@ -174,7 +235,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             photoName = photo.name,
         )
         _state.update { current ->
-            val updatedPhotos = current.photoWidget.photos - photo
+            val updatedPhotos = current.photoWidget.photos.filterNot { it.name == photo.name }
             current.copy(
                 photoWidget = current.photoWidget.copy(photos = updatedPhotos),
                 selectedPhoto = if (current.selectedPhoto?.name == photo.name) {
@@ -188,7 +249,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
     fun moveLeft(photo: LocalPhoto) {
         move {
-            val currentIndex = indexOf(photo)
+            val currentIndex = indexOfFirst { it.name == photo.name }
             val newIndex = currentIndex.minus(1).coerceAtLeast(0)
 
             add(newIndex, removeAt(currentIndex))
@@ -197,7 +258,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
     fun moveRight(photo: LocalPhoto) {
         move {
-            val currentIndex = indexOf(photo)
+            val currentIndex = indexOfFirst { it.name == photo.name }
             val newIndex = currentIndex.plus(1).coerceAtMost(size - 1)
 
             add(newIndex, removeAt(currentIndex))

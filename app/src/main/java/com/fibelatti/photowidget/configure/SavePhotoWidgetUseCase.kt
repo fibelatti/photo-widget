@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.configure
 
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import javax.inject.Inject
@@ -16,7 +17,19 @@ class SavePhotoWidgetUseCase @Inject constructor(
     ) {
         photoWidgetStorage.renameTemporaryWidgetDir(appWidgetId = appWidgetId)
 
-        photoWidgetStorage.saveWidgetOrder(appWidgetId = appWidgetId, order = photoWidget.order)
+        photoWidgetStorage.saveWidgetSource(appWidgetId = appWidgetId, source = photoWidget.source)
+
+        when (photoWidget.source) {
+            PhotoWidgetSource.PHOTOS -> {
+                photoWidgetStorage.saveWidgetOrder(appWidgetId = appWidgetId, order = photoWidget.order)
+            }
+
+            PhotoWidgetSource.DIRECTORY -> {
+                photoWidget.syncedDir?.let {
+                    photoWidgetStorage.saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = photoWidget.syncedDir)
+                }
+            }
+        }
 
         if (photoWidget.loopingEnabled) {
             photoWidgetAlarmManager.setup(

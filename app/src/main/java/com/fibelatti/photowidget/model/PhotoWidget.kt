@@ -1,10 +1,13 @@
 package com.fibelatti.photowidget.model
 
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PhotoWidget(
+    val source: PhotoWidgetSource = PhotoWidgetSource.PHOTOS,
+    val syncedDir: Uri? = null,
     val photos: List<LocalPhoto> = emptyList(),
     val currentIndex: Int = 0,
     val loopingInterval: PhotoWidgetLoopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,

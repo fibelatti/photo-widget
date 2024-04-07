@@ -4,6 +4,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
+import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import javax.inject.Inject
 
@@ -13,6 +14,8 @@ class LoadPhotoWidgetUseCase @Inject constructor(
 
     suspend operator fun invoke(appWidgetId: Int): PhotoWidget = with(photoWidgetStorage) {
         return PhotoWidget(
+            source = getWidgetSource(appWidgetId = appWidgetId) ?: PhotoWidgetSource.PHOTOS,
+            syncedDir = getWidgetSyncDir(appWidgetId = appWidgetId),
             photos = getWidgetPhotos(appWidgetId = appWidgetId),
             currentIndex = getWidgetIndex(appWidgetId = appWidgetId),
             loopingInterval = getWidgetInterval(appWidgetId = appWidgetId) ?: PhotoWidgetLoopingInterval.ONE_DAY,

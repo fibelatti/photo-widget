@@ -40,13 +40,16 @@
 
     <string name="photo_widget_configure_import_error">Unable to import all selected photos</string>
 
-    <string name="photo_widget_configure_select_photo">Select a photo</string>
-    <string name="photo_widget_configure_selected_photos">Selected photos</string>
+    <string name="photo_widget_configure_menu_source">Source</string>
+    <string name="photo_widget_configure_change_source_warning">You can select each photo or sync a widget with a folder. When syncing, all current and future photos will be added automatically.\n\nChanging the source will replace the current photos from this widget. Do you wish to continue?</string>
 
     <string name="photo_widget_configure_menu_crop">Crop</string>
     <string name="photo_widget_configure_menu_remove">Remove</string>
     <string name="photo_widget_configure_menu_move_left">Move left</string>
     <string name="photo_widget_configure_menu_move_right">Move right</string>
+
+    <string name="photo_widget_configure_photos">Photos</string>
+    <string name="photo_widget_configure_photos_from_dir">Folder photos</string>
 
     <string name="photo_widget_configure_select_interval">Flipping interval</string>
     <string name="photo_widget_configure_interval_current_label">Every %s</string>
@@ -69,7 +72,7 @@
     <string name="photo_widget_configure_tap_action_view_full_screen">View in full screen</string>
     <string name="photo_widget_configure_tap_action_next_photo">View next photo</string>
 
-    <string name="photo_widget_configure_applied_shape">Applied shape</string>
+    <string name="photo_widget_configure_applied_shape">Shape</string>
     <string name="photo_widget_configure_corner_radius">Roundness</string>
 
     <string name="photo_widget_configure_add_to_home">Add to home screen</string>
@@ -85,9 +88,12 @@
     <string name="photo_widget_action_yes">Yes</string>
     <string name="photo_widget_action_no">No</string>
     <string name="photo_widget_action_continue">Continue</string>
+    <string name="photo_widget_action_cancel">Cancel</string>
     <string name="photo_widget_action_apply">Apply</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo home screen widget</string>
+    <string name="photo_widget_cd_change_source">Change widget source</string>
     <string name="photo_widget_cd_open_photo_picker">Open photo picker</string>
+    <string name="photo_widget_cd_open_folder_picker">Open folder picker</string>
 </resources>

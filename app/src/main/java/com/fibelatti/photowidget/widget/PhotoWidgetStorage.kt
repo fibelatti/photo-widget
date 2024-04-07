@@ -1,17 +1,19 @@
 package com.fibelatti.photowidget.widget
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.BitmapFactory.Options
 import android.net.Uri
 import androidx.core.content.edit
+import androidx.documentfile.provider.DocumentFile
 import com.fibelatti.photowidget.model.LegacyPhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.toLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -27,8 +29,9 @@ import javax.inject.Singleton
 
 @Singleton
 class PhotoWidgetStorage @Inject constructor(
-    @ApplicationContext context: Context,
+    @ApplicationContext private val context: Context,
     private val photoWidgetOrderDao: PhotoWidgetOrderDao,
+    private val decoder: PhotoDecoder,
 ) {
 
     private val rootDir by lazy {
@@ -44,6 +47,31 @@ class PhotoWidgetStorage @Inject constructor(
 
     private val contentResolver = context.contentResolver
 
+    fun saveWidgetSource(appWidgetId: Int, source: PhotoWidgetSource) {
+        sharedPreferences.edit {
+            putString("${PreferencePrefix.SOURCE}$appWidgetId", source.name)
+        }
+    }
+
+    fun getWidgetSource(appWidgetId: Int): PhotoWidgetSource? {
+        val name = sharedPreferences.getString("${PreferencePrefix.SOURCE}$appWidgetId", null)
+
+        return enumValueOfOrNull<PhotoWidgetSource>(name)
+    }
+
+    fun saveWidgetSyncedDir(appWidgetId: Int, dirUri: Uri) {
+        contentResolver.takePersistableUriPermission(dirUri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        sharedPreferences.edit {
+            putString("${PreferencePrefix.SYNCED_DIR}$appWidgetId", dirUri.toString())
+        }
+    }
+
+    fun getWidgetSyncDir(appWidgetId: Int): Uri? {
+        val uriString = sharedPreferences.getString("${PreferencePrefix.SYNCED_DIR}$appWidgetId", null)
+
+        return uriString?.let(Uri::parse)
+    }
+
     suspend fun newWidgetPhoto(
         appWidgetId: Int,
         source: Uri,
@@ -58,31 +86,7 @@ class PhotoWidgetStorage @Inject constructor(
         val newFiles = listOf(originalPhoto, croppedPhoto)
 
         runCatching {
-            val (originalHeight, originalWidth) = contentResolver.openInputStream(source)
-                ?.use { inputStream ->
-                    val options = Options().apply { inJustDecodeBounds = true }
-
-                    BitmapFactory.decodeStream(inputStream, null, options)
-
-                    options.outHeight to options.outWidth
-                }
-                ?: return@withContext null // Exit early if the content can't be resolved
-
-            contentResolver.openInputStream(source).use { inputStream ->
-                val bitmapOptions = Options().apply {
-                    if (originalWidth > 1_000 || originalHeight > 1_000) {
-                        if (originalWidth > originalHeight) {
-                            inTargetDensity = 1_000
-                            inDensity = originalWidth
-                        } else {
-                            inTargetDensity = 1_000
-                            inDensity = originalHeight
-                        }
-                    }
-                }
-                val importedPhoto = BitmapFactory.decodeStream(inputStream, null, bitmapOptions)
-                    ?: return@withContext null // Exit early if the bitmap can't be decoded
-
+            decoder.decode(source = source)?.let { importedPhoto ->
                 newFiles.map { file ->
                     file.createNewFile()
 
@@ -92,7 +96,7 @@ class PhotoWidgetStorage @Inject constructor(
                         }
                     }
                 }.awaitAll()
-            }
+            } ?: return@withContext null // Exit early if the bitmap can't be decoded
 
             // Safety check to ensure the photos were copied correctly
             return@withContext if (newFiles.all { it.exists() }) {
@@ -107,42 +111,60 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     suspend fun getWidgetPhotos(appWidgetId: Int): List<LocalPhoto> {
-        val photos = getWidgetDir(appWidgetId = appWidgetId).let { dir ->
+        val croppedPhotos = getWidgetDir(appWidgetId = appWidgetId).let { dir ->
             dir.list { _, name -> name != "original" }
                 .orEmpty()
                 .map { file ->
-                    // If a widget was previously saved it's safe to assume all images were cropped
                     LocalPhoto(
                         name = file,
                         path = "$dir/$file",
                     )
                 }
         }
+        val dict = croppedPhotos.associateBy { it.name }
 
-        val order = getWidgetOrder(appWidgetId).ifEmpty { photos.map { it.name } }
-        val dict = photos.associateBy { it.name }
+        if (PhotoWidgetSource.DIRECTORY == getWidgetSource(appWidgetId = appWidgetId)) {
+            val syncedDir = getWidgetSyncDir(appWidgetId = appWidgetId) ?: return emptyList()
+            val documentFile = DocumentFile.fromTreeUri(context, syncedDir) ?: return emptyList()
 
-        return order.mapNotNull { dict[it] }
+            return documentFile.listFiles()
+                .filter { it.type == "image/jpeg" || it.type == "image/png" }
+                .mapNotNull { file ->
+                    LocalPhoto(
+                        name = file.name ?: return@mapNotNull null,
+                        path = file.name?.let(dict::get)?.path,
+                        externalUri = file.uri,
+                    )
+                }
+        } else {
+            return getWidgetOrder(appWidgetId)
+                .mapNotNull(dict::get)
+                .ifEmpty { croppedPhotos }
+        }
     }
 
-    suspend fun getCropSources(appWidgetId: Int, photoName: String): Pair<File, File> {
+    suspend fun getCropSources(appWidgetId: Int, localPhoto: LocalPhoto): Pair<Uri, Uri> {
         val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
-        val originalPhotosDir = File("$widgetDir/original")
+        val croppedPhoto = File("$widgetDir/${localPhoto.name}")
 
-        val originalPhoto = File("$originalPhotosDir/$photoName")
-        val croppedPhoto = File("$widgetDir/$photoName")
+        if (localPhoto.externalUri != null) {
+            return localPhoto.externalUri to Uri.fromFile(croppedPhoto)
+        } else {
+            val originalPhotosDir = File("$widgetDir/original")
+            val originalPhoto = File("$originalPhotosDir/${localPhoto.name}")
 
-        if (!originalPhoto.exists()) {
-            withContext(Dispatchers.IO) {
-                originalPhoto.createNewFile()
+            if (!originalPhoto.exists()) {
+                withContext(Dispatchers.IO) {
+                    originalPhoto.createNewFile()
 
-                FileInputStream(croppedPhoto).use { fileInputStream ->
-                    fileInputStream.copyTo(FileOutputStream(originalPhoto))
+                    FileInputStream(croppedPhoto).use { fileInputStream ->
+                        fileInputStream.copyTo(FileOutputStream(originalPhoto))
+                    }
                 }
             }
-        }
 
-        return originalPhoto to croppedPhoto
+            return Uri.fromFile(originalPhoto) to Uri.fromFile(croppedPhoto)
+        }
     }
 
     fun deleteWidgetPhoto(appWidgetId: Int, photoName: String) {
@@ -313,6 +335,9 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     private enum class PreferencePrefix(val value: String) {
+        SOURCE(value = "appwidget_source_"),
+        SYNCED_DIR(value = "appwidget_synced_dir_"),
+
         ORDER(value = "appwidget_order_"),
 
         /**

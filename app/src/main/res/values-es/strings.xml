@@ -41,13 +41,16 @@
 
     <string name="photo_widget_configure_import_error">No se pueden importar todas las fotos seleccionadas</string>
 
-    <string name="photo_widget_configure_select_photo">Selecciona una foto</string>
-    <string name="photo_widget_configure_selected_photos">Fotos seleccionadas</string>
+    <string name="photo_widget_configure_menu_source">Origen</string>
+    <string name="photo_widget_configure_change_source_warning">Puede seleccionar cada foto o sincronizar un widget con un directorio. Al sincronizar, todas las fotos actuales y futuras se agregarán automáticamente.\n\nCambiar la origen reemplazará las fotos actuales de este widget. ¿Desea continuar?</string>
 
     <string name="photo_widget_configure_menu_crop">Recortar</string>
     <string name="photo_widget_configure_menu_remove">Eliminar</string>
     <string name="photo_widget_configure_menu_move_left">Mover a la izquierda</string>
     <string name="photo_widget_configure_menu_move_right">Mover a la derecha</string>
+
+    <string name="photo_widget_configure_photos">Fotos</string>
+    <string name="photo_widget_configure_photos_from_dir">Fotos del directorio</string>
 
     <string name="photo_widget_configure_select_interval">Intervalo de cambio</string>
     <string name="photo_widget_configure_interval_current_label">Cada %s</string>
@@ -72,7 +75,7 @@
     <string name="photo_widget_configure_tap_action_view_full_screen">Ver en pantalla completa</string>
     <string name="photo_widget_configure_tap_action_next_photo">Ver siguiente foto</string>
 
-    <string name="photo_widget_configure_applied_shape">Forma aplicada</string>
+    <string name="photo_widget_configure_applied_shape">Forma</string>
     <string name="photo_widget_configure_corner_radius">Redondez</string>
 
     <string name="photo_widget_configure_add_to_home">Agregar a la pantalla principal</string>
@@ -88,9 +91,12 @@
     <string name="photo_widget_action_yes">Sí</string>
     <string name="photo_widget_action_no">No</string>
     <string name="photo_widget_action_continue">Continuar</string>
+    <string name="photo_widget_action_cancel">Cancelar</string>
     <string name="photo_widget_action_apply">Aplicar</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de pantalla principal de Material Photo</string>
+    <string name="photo_widget_cd_change_source">Cambiar origen del widget</string>
     <string name="photo_widget_cd_open_photo_picker">Abrir selector de fotos</string>
+    <string name="photo_widget_cd_open_folder_picker">Abrir selector de directorio</string>
 </resources>

@@ -40,13 +40,16 @@
 
     <string name="photo_widget_configure_import_error">Não foi possível importar todas as fotos escolhidas</string>
 
-    <string name="photo_widget_configure_select_photo">Escolha uma foto</string>
-    <string name="photo_widget_configure_selected_photos">Fotos escolhidas</string>
+    <string name="photo_widget_configure_menu_source">Origem</string>
+    <string name="photo_widget_configure_change_source_warning">Você pode escolher cada foto ou parear o widget com uma pasta. Ao parear, todas as fotos atuais e futuras serão incluídas automaticamente.\n\nAlterar a origem irá substituir as fotos atuais deste widget. Deseja continuar?</string>
 
     <string name="photo_widget_configure_menu_crop">Recortar</string>
     <string name="photo_widget_configure_menu_remove">Remover</string>
     <string name="photo_widget_configure_menu_move_left">Mover à esquerda</string>
     <string name="photo_widget_configure_menu_move_right">Mover à direita</string>
+
+    <string name="photo_widget_configure_photos">Fotos</string>
+    <string name="photo_widget_configure_photos_from_dir">Fotos da pasta</string>
 
     <string name="photo_widget_configure_select_interval">Intervalo de troca</string>
     <string name="photo_widget_configure_interval_current_label">A cada %s</string>
@@ -87,9 +90,12 @@
     <string name="photo_widget_action_yes">Sim</string>
     <string name="photo_widget_action_no">Não</string>
     <string name="photo_widget_action_continue">Continuar</string>
+    <string name="photo_widget_action_cancel">Cancelar</string>
     <string name="photo_widget_action_apply">Aplicar</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de fotos da tela inicial</string>
+    <string name="photo_widget_cd_change_source">Alterar origem das fotos</string>
     <string name="photo_widget_cd_open_photo_picker">Abrir a galeria</string>
+    <string name="photo_widget_cd_open_folder_picker">Escolher a pasta</string>
 </resources>

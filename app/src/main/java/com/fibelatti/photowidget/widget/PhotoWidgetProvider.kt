@@ -16,10 +16,13 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class PhotoWidgetProvider : AppWidgetProvider() {
 
@@ -103,8 +106,19 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             context: Context,
             photoWidget: PhotoWidget,
         ): RemoteViews? {
+            val decoder = PhotoDecoder(context = context, coroutineScope = CoroutineScope(Dispatchers.Main.immediate))
             val bitmap = try {
-                requireNotNull(BitmapFactory.decodeFile(photoWidget.currentPhoto.path))
+                when {
+                    !photoWidget.currentPhoto.path.isNullOrEmpty() -> {
+                        requireNotNull(BitmapFactory.decodeFile(photoWidget.currentPhoto.path))
+                    }
+
+                    photoWidget.currentPhoto.externalUri != null -> runBlocking {
+                        requireNotNull(photoWidget.currentPhoto.externalUri?.let { decoder.decode(it) })
+                    }
+
+                    else -> return null
+                }
             } catch (_: Exception) {
                 return null
             }
