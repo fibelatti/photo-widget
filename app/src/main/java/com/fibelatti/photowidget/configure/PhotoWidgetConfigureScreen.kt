@@ -16,6 +16,8 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -33,6 +35,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -240,38 +243,15 @@ private fun PhotoWidgetConfigureContent(
                 cornerRadius = photoWidget.cornerRadius,
             )
 
-            var dialogVisible by remember { mutableStateOf(false) }
-
-            if (dialogVisible) {
-                ChangeSourceWarningDialog(
-                    onDismiss = { dialogVisible = false },
-                    onConfirm = {
-                        dialogVisible = false
-                        onChangeSource()
-                    },
-                )
-            }
-
-            Row(
+            ConfigurationControl(
+                label = photoWidget.aspectRatio.label,
+                icon = R.drawable.ic_aspect_ratio,
+                contentDescription = R.string.photo_widget_aspect_ratio_title,
+                onClick = onAspectRatioClick,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(all = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                ConfigurationControl(
-                    label = R.string.photo_widget_configure_menu_source,
-                    icon = R.drawable.ic_pick_folder,
-                    contentDescription = R.string.photo_widget_cd_change_source,
-                    onClick = { dialogVisible = true },
-                )
-
-                ConfigurationControl(
-                    label = photoWidget.aspectRatio.label,
-                    icon = R.drawable.ic_aspect_ratio,
-                    contentDescription = R.string.photo_widget_aspect_ratio_title,
-                    onClick = onAspectRatioClick,
-                )
-            }
+            )
 
             if (selectedPhoto != null) {
                 EditingControls(
@@ -292,6 +272,7 @@ private fun PhotoWidgetConfigureContent(
 
         PhotoPicker(
             source = photoWidget.source,
+            onChangeSource = onChangeSource,
             photos = photoWidget.photos,
             onPhotoPickerClick = onPhotoPickerClick,
             onDirPickerClick = onDirPickerClick,
@@ -532,6 +513,7 @@ private fun EditingControls(
 @Composable
 private fun PhotoPicker(
     source: PhotoWidgetSource,
+    onChangeSource: () -> Unit,
     photos: List<LocalPhoto>,
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
@@ -541,20 +523,47 @@ private fun PhotoPicker(
     cornerRadius: Float,
     modifier: Modifier = Modifier,
 ) {
+    var dialogVisible by remember { mutableStateOf(false) }
+
+    if (dialogVisible) {
+        ChangeSourceWarningDialog(
+            onDismiss = { dialogVisible = false },
+            onConfirm = {
+                dialogVisible = false
+                onChangeSource()
+            },
+        )
+    }
+
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Text(
-            text = stringResource(
-                id = when (source) {
-                    PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_photos
-                    PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_photos_from_dir
-                },
-            ),
-            modifier = Modifier.padding(horizontal = 16.dp),
-            style = MaterialTheme.typography.titleMedium,
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 40.dp)
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(
+                    id = when (source) {
+                        PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_photos
+                        PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_photos_from_dir
+                    },
+                ),
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.titleMedium,
+            )
+
+            ConfigurationControl(
+                label = R.string.photo_widget_configure_menu_source,
+                icon = R.drawable.ic_pick_folder,
+                contentDescription = R.string.photo_widget_cd_change_source,
+                onClick = { dialogVisible = true },
+            )
+        }
 
         LazyRow(
             modifier = Modifier
