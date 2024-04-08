@@ -2,7 +2,6 @@ package com.fibelatti.photowidget
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.work.WorkManager
 import com.fibelatti.photowidget.home.Appearance
 import com.fibelatti.photowidget.home.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
@@ -29,7 +28,6 @@ class App : Application() {
 
         val widgetIds = PhotoWidgetProvider.ids(context = this).ifEmpty { return }
         deleteUnusedWidgetData(widgetIds)
-        cancelLegacyWork(widgetIds)
     }
 
     private fun setupNightMode() {
@@ -53,16 +51,5 @@ class App : Application() {
 
     private fun deleteUnusedWidgetData(widgetIds: List<Int>) {
         photoWidgetStorage.deleteUnusedWidgetData(existingWidgetIds = widgetIds)
-    }
-
-    /**
-     * Flipping widgets used to be controlled by [WorkManager] but have been migrated to `AlarmManager` instead
-     * to support shorter intervals. This function cancels any work that was scheduled before the update.
-     */
-    private fun cancelLegacyWork(widgetIds: List<Int>) {
-        val workManager = WorkManager.getInstance(this)
-        for (id in widgetIds) {
-            workManager.cancelUniqueWork("LoopingPhotoWidgetWorker_$id")
-        }
     }
 }

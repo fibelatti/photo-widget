@@ -137,7 +137,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.graphics.shapes)
     implementation(libs.lifecycle.runtime.compose)
-    implementation(libs.work.runtime.ktx)
 
     // Compose
     implementation(platform(libs.compose.bom))
