@@ -16,8 +16,6 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,13 +27,11 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -228,7 +224,10 @@ private fun PhotoWidgetConfigureContent(
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier.padding(bottom = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -279,13 +278,31 @@ private fun PhotoWidgetConfigureContent(
             onPhotoClick = onPhotoClick,
             aspectRatio = photoWidget.aspectRatio,
             shapeId = photoWidget.shapeId,
-            modifier = Modifier.padding(top = 16.dp),
             cornerRadius = photoWidget.cornerRadius,
         )
 
+        AnimatedContent(
+            targetState = photoWidget.aspectRatio,
+            transitionSpec = { fadeIn() togetherWith fadeOut() },
+            label = "Customization_Picker",
+        ) { aspectRatio ->
+            if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
+                ShapePicker(
+                    shapeId = photoWidget.shapeId,
+                    onShapeClick = onShapeClick,
+                )
+            } else {
+                CornerRadiusPicker(
+                    value = photoWidget.cornerRadius,
+                    onValueChange = onCornerRadiusChange,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
+            }
+        }
+
         Row(
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             TapActionPicker(
                 tapAction = photoWidget.tapAction,
@@ -308,40 +325,14 @@ private fun PhotoWidgetConfigureContent(
             }
         }
 
-        AnimatedContent(
-            targetState = photoWidget.aspectRatio,
-            transitionSpec = { fadeIn() togetherWith fadeOut() },
-            label = "Customization_Picker",
-        ) { aspectRatio ->
-            if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
-                ShapePicker(
-                    shapeId = photoWidget.shapeId,
-                    onShapeClick = onShapeClick,
-                    modifier = Modifier.padding(top = 16.dp),
-                )
-            } else {
-                CornerRadiusPicker(
-                    value = photoWidget.cornerRadius,
-                    onValueChange = onCornerRadiusChange,
-                    modifier = Modifier.padding(
-                        start = 16.dp,
-                        top = 16.dp,
-                        end = 16.dp,
-                    ),
-                )
-            }
-        }
-
         FilledTonalButton(
             onClick = onAddToHomeClick,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, top = 24.dp, end = 16.dp),
+                .padding(horizontal = 16.dp),
         ) {
             Text(text = stringResource(id = R.string.photo_widget_configure_add_to_home))
         }
-
-        Spacer(modifier = Modifier.size(24.dp))
     }
 }
 
@@ -542,9 +533,7 @@ private fun PhotoPicker(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 40.dp)
                 .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = stringResource(
@@ -553,7 +542,9 @@ private fun PhotoPicker(
                         PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_photos_from_dir
                     },
                 ),
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .alignByBaseline(),
                 style = MaterialTheme.typography.titleMedium,
             )
 
@@ -562,6 +553,7 @@ private fun PhotoPicker(
                 icon = R.drawable.ic_pick_folder,
                 contentDescription = R.string.photo_widget_cd_change_source,
                 onClick = { dialogVisible = true },
+                modifier = Modifier.alignByBaseline(),
             )
         }
 
