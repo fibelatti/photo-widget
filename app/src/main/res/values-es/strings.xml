@@ -31,9 +31,9 @@
 
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Selecciona la proporción</string>
-    <string name="photo_widget_aspect_ratio_square">Cuadrada</string>
-    <string name="photo_widget_aspect_ratio_tall">Alta</string>
-    <string name="photo_widget_aspect_ratio_wide">Ancha</string>
+    <string name="photo_widget_aspect_ratio_square">Cuadrado</string>
+    <string name="photo_widget_aspect_ratio_tall">Alto</string>
+    <string name="photo_widget_aspect_ratio_wide">Ancho</string>
     <string name="photo_widget_aspect_ratio_original">Original</string>
 
     <!-- Configure -->
