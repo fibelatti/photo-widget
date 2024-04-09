@@ -3,6 +3,7 @@
 package com.fibelatti.ui.preview
 
 import android.content.res.Configuration
+import android.os.Build
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 
@@ -23,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Wallpapers
 @Preview(
     name = "Light Theme - Red wallpaper",
     group = "Dynamic Colors",
+    apiLevel = Build.VERSION_CODES.S,
     showSystemUi = true,
     showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_NO,
@@ -31,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Wallpapers
 @Preview(
     name = "Dark Theme - Green wallpaper",
     group = "Dynamic Colors",
+    apiLevel = Build.VERSION_CODES.S,
     showSystemUi = true,
     showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_YES,
