@@ -63,6 +63,7 @@ import com.fibelatti.photowidget.configure.ColoredShape
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.ui.foundation.dpToPx
+import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.text.AutoSizeText
@@ -436,6 +437,7 @@ private fun FooterAction(
 @Composable
 @ThemePreviews
 @LocalePreviews
+@DevicePreviews
 private fun HomeScreenPreview() {
     ExtendedTheme {
         HomeScreen(

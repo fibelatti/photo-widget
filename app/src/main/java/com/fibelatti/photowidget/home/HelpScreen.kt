@@ -32,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
+import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.theme.ExtendedTheme
@@ -131,6 +132,7 @@ private fun HelpCard(
 @Composable
 @ThemePreviews
 @LocalePreviews
+@DevicePreviews
 private fun HelpScreenPreview() {
     ExtendedTheme {
         HelpScreen()

@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
+import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.theme.ExtendedTheme
@@ -189,6 +190,7 @@ private fun IntervalPickerContent(
 @Composable
 @ThemePreviews
 @LocalePreviews
+@DevicePreviews
 private fun IntervalPickerContentPreview() {
     ExtendedTheme {
         IntervalPickerContent(
@@ -205,6 +207,7 @@ private fun IntervalPickerContentPreview() {
 @Composable
 @ThemePreviews
 @LocalePreviews
+@DevicePreviews
 private fun IntervalPickerContentDisabledPreview() {
     ExtendedTheme {
         IntervalPickerContent(
