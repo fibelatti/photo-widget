@@ -17,9 +17,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -30,6 +32,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -83,66 +87,84 @@ fun HomeScreen(
     Scaffold(
         modifier = modifier,
     ) { paddingValues ->
-        Column(
+        BoxWithConstraints(
             modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.background)
                 .fillMaxSize()
-                .padding(paddingValues)
-                .background(color = MaterialTheme.colorScheme.background),
-            horizontalAlignment = Alignment.CenterHorizontally,
+                .padding(paddingValues),
+            contentAlignment = Alignment.Center,
         ) {
-            ShapesBanner(
+            val maxHeight = maxHeight
+
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 32.dp),
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            AutoSizeText(
-                text = stringResource(id = R.string.photo_widget_home_title),
-                modifier = Modifier.padding(horizontal = 32.dp),
-                maxLines = 2,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge,
-            )
-
-            var selectedAspectRatio by remember {
-                mutableStateOf(PhotoWidgetAspectRatio.SQUARE)
-            }
-
-            AspectRatioPicker(
-                selectedAspectRatio = selectedAspectRatio,
-                onAspectRatioSelected = { selectedAspectRatio = it },
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 32.dp)
-                    .fillMaxWidth(),
-            )
-
-            FilledTonalButton(
-                onClick = { onCreateNewWidgetClick(selectedAspectRatio) },
+                    .widthIn(max = 600.dp)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text(text = stringResource(id = R.string.photo_widget_home_new_widget))
-            }
+                ShapesBanner(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                )
 
-            TextButton(
-                onClick = onHelpClick,
-            ) {
+                Spacer(modifier = Modifier.weight(0.25f))
+
+                AutoSizeText(
+                    text = stringResource(id = R.string.photo_widget_home_title),
+                    modifier = Modifier.padding(horizontal = 40.dp),
+                    maxLines = 2,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleMedium,
+                )
+
+                var selectedAspectRatio by remember {
+                    mutableStateOf(PhotoWidgetAspectRatio.SQUARE)
+                }
+
+                AspectRatioPicker(
+                    selectedAspectRatio = selectedAspectRatio,
+                    onAspectRatioSelected = { selectedAspectRatio = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    useGridLayout = maxHeight > 600.dp,
+                )
+
                 Text(
-                    text = stringResource(id = R.string.photo_widget_home_help),
-                    style = MaterialTheme.typography.labelMedium,
+                    text = stringResource(id = R.string.photo_widget_home_aspect_ratio),
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodySmall,
+                )
+
+                FilledTonalButton(
+                    onClick = { onCreateNewWidgetClick(selectedAspectRatio) },
+                ) {
+                    Text(text = stringResource(id = R.string.photo_widget_home_new_widget))
+                }
+
+                TextButton(
+                    onClick = onHelpClick,
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.photo_widget_home_help),
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
+
+                Spacer(modifier = Modifier.weight(0.25f))
+
+                HomeScreenFooter(
+                    onAppearanceClick = onAppearanceClick,
+                    onColorsClick = onColorsClick,
+                    onRateClick = onRateClick,
+                    onShareClick = onShareClick,
+                    onViewLicensesClick = onViewLicensesClick,
+                    modifier = Modifier.padding(all = 16.dp),
                 )
             }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            HomeScreenFooter(
-                onAppearanceClick = onAppearanceClick,
-                onColorsClick = onColorsClick,
-                onRateClick = onRateClick,
-                onShareClick = onShareClick,
-                onViewLicensesClick = onViewLicensesClick,
-                modifier = Modifier.padding(all = 16.dp),
-            )
         }
     }
 }
@@ -211,35 +233,45 @@ private fun AspectRatioPicker(
     selectedAspectRatio: PhotoWidgetAspectRatio,
     onAspectRatioSelected: (PhotoWidgetAspectRatio) -> Unit,
     modifier: Modifier = Modifier,
+    useGridLayout: Boolean = true,
 ) {
-    Column(
+    Box(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        contentAlignment = Alignment.Center,
     ) {
-        FlowRow(
-            modifier = Modifier.widthIn(max = 240.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            maxItemsInEachRow = 2,
-        ) {
-            PhotoWidgetAspectRatio.entries.forEach {
-                AspectRatioItem(
-                    ratio = it.aspectRatio,
-                    label = stringResource(id = it.label),
-                    isSelected = it == selectedAspectRatio,
-                    onClick = { onAspectRatioSelected(it) },
-                    modifier = Modifier.weight(1f),
-                )
+        if (useGridLayout) {
+            FlowRow(
+                modifier = Modifier.widthIn(max = 240.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                maxItemsInEachRow = 2,
+            ) {
+                PhotoWidgetAspectRatio.entries.forEach {
+                    AspectRatioItem(
+                        ratio = it.aspectRatio,
+                        label = stringResource(id = it.label),
+                        isSelected = it == selectedAspectRatio,
+                        onClick = { onAspectRatioSelected(it) },
+                        modifier = Modifier.weight(1f),
+                    )
+                }
+            }
+        } else {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp),
+            ) {
+                items(PhotoWidgetAspectRatio.entries) {
+                    AspectRatioItem(
+                        ratio = it.aspectRatio,
+                        label = stringResource(id = it.label),
+                        isSelected = it == selectedAspectRatio,
+                        onClick = { onAspectRatioSelected(it) },
+                        modifier = Modifier.height(120.dp),
+                    )
+                }
             }
         }
-
-        Text(
-            text = stringResource(id = R.string.photo_widget_home_aspect_ratio),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyMedium,
-        )
     }
 }
 
@@ -318,9 +350,7 @@ private fun HomeScreenFooter(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             val footerActionModifier = Modifier.weight(1f)
@@ -357,7 +387,7 @@ private fun HomeScreenFooter(
         }
 
         HorizontalDivider(
-            modifier = Modifier.padding(bottom = 16.dp),
+            modifier = Modifier.padding(vertical = 12.dp),
             color = MaterialTheme.colorScheme.surfaceVariant,
         )
 
