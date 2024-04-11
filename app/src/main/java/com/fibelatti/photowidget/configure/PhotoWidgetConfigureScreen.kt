@@ -16,6 +16,8 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -113,6 +115,7 @@ fun PhotoWidgetConfigureScreen(
     onMoveLeftClick: (LocalPhoto) -> Unit,
     onMoveRightClick: (LocalPhoto) -> Unit,
     onChangeSource: () -> Unit,
+    onShuffleClick: () -> Unit,
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
@@ -143,6 +146,7 @@ fun PhotoWidgetConfigureScreen(
                 onCropClick = onCropClick,
                 onRemoveClick = onRemoveClick,
                 onChangeSource = onChangeSource,
+                onShuffleClick = onShuffleClick,
                 onPhotoPickerClick = onPhotoPickerClick,
                 onDirPickerClick = onDirPickerClick,
                 onPhotoClick = onPhotoClick,
@@ -215,6 +219,7 @@ private fun PhotoWidgetConfigureContent(
     onMoveLeftClick: (LocalPhoto) -> Unit,
     onMoveRightClick: (LocalPhoto) -> Unit,
     onChangeSource: () -> Unit,
+    onShuffleClick: () -> Unit,
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
@@ -258,7 +263,7 @@ private fun PhotoWidgetConfigureContent(
                     onCropClick = { onCropClick(selectedPhoto) },
                     showRemove = PhotoWidgetSource.PHOTOS == photoWidget.source,
                     onRemoveClick = { onRemoveClick(selectedPhoto) },
-                    showMoveControls = PhotoWidgetSource.PHOTOS == photoWidget.source && photoWidget.photos.size > 1,
+                    showMoveControls = photoWidget.canSort,
                     moveLeftEnabled = photoWidget.photos.indexOf(selectedPhoto) != 0,
                     onMoveLeftClick = { onMoveLeftClick(selectedPhoto) },
                     moveRightEnabled = photoWidget.photos.indexOf(selectedPhoto) < photoWidget.photos.size - 1,
@@ -274,6 +279,9 @@ private fun PhotoWidgetConfigureContent(
             source = photoWidget.source,
             onChangeSource = onChangeSource,
             photos = photoWidget.photos,
+            shuffleVisible = photoWidget.canShuffle,
+            shuffle = photoWidget.shuffle,
+            onShuffleClick = onShuffleClick,
             onPhotoPickerClick = onPhotoPickerClick,
             onDirPickerClick = onDirPickerClick,
             onPhotoClick = onPhotoClick,
@@ -399,7 +407,7 @@ private fun PhotoWidgetViewer(
                 shapeId = shapeId,
                 cornerRadius = cornerRadius,
                 modifier = Modifier
-                    .padding(all = 32.dp)
+                    .padding(start = 32.dp, top = 32.dp, end = 32.dp, bottom = 48.dp)
                     .fillMaxSize(),
             )
         }
@@ -420,13 +428,19 @@ private fun ConfigurationControl(
                 color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f),
                 shape = RoundedCornerShape(size = 24.dp),
             )
-            .clickable(onClick = onClick)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onClick,
+                role = Role.Button,
+            )
             .padding(horizontal = 8.dp, vertical = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = stringResource(id = label),
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
             style = MaterialTheme.typography.labelMedium,
         )
 
@@ -434,6 +448,7 @@ private fun ConfigurationControl(
             painter = painterResource(id = icon),
             contentDescription = stringResource(id = contentDescription),
             modifier = Modifier.size(20.dp),
+            tint = MaterialTheme.colorScheme.onSecondaryContainer,
         )
     }
 }
@@ -507,6 +522,9 @@ private fun PhotoPicker(
     source: PhotoWidgetSource,
     onChangeSource: () -> Unit,
     photos: List<LocalPhoto>,
+    shuffleVisible: Boolean,
+    shuffle: Boolean,
+    onShuffleClick: () -> Unit,
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
@@ -535,6 +553,7 @@ private fun PhotoPicker(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
                 text = stringResource(
@@ -549,6 +568,24 @@ private fun PhotoPicker(
                 style = MaterialTheme.typography.titleMedium,
             )
 
+            AnimatedVisibility(
+                visible = shuffleVisible,
+                enter = scaleIn(),
+                exit = scaleOut(),
+                modifier = Modifier.alignByBaseline(),
+            ) {
+                ConfigurationControl(
+                    label = if (shuffle) {
+                        R.string.photo_widget_configure_shuffle_on
+                    } else {
+                        R.string.photo_widget_configure_shuffle_off
+                    },
+                    icon = R.drawable.ic_shuffle,
+                    contentDescription = R.string.photo_widget_cd_toggle_shuffle,
+                    onClick = onShuffleClick,
+                )
+            }
+
             ConfigurationControl(
                 label = R.string.photo_widget_configure_menu_source,
                 icon = R.drawable.ic_pick_folder,
@@ -561,7 +598,7 @@ private fun PhotoPicker(
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp),
+                .height(56.dp),
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
@@ -731,7 +768,7 @@ private fun ShapePicker(
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp),
+                .height(56.dp),
             state = state,
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -923,6 +960,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
                     LocalPhoto(name = "photo-1"),
                     LocalPhoto(name = "photo-2"),
                 ),
+                shuffle = false,
                 loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
                 tapAction = PhotoWidgetTapAction.VIEW_FULL_SCREEN,
                 aspectRatio = PhotoWidgetAspectRatio.SQUARE,
@@ -937,6 +975,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onCropClick = {},
             onRemoveClick = {},
             onChangeSource = {},
+            onShuffleClick = {},
             onPhotoPickerClick = {},
             onDirPickerClick = {},
             onPhotoClick = {},

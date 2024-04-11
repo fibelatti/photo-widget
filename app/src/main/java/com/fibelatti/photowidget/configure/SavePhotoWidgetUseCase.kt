@@ -41,6 +41,11 @@ class SavePhotoWidgetUseCase @Inject constructor(
             photoWidgetAlarmManager.cancel(appWidgetId = appWidgetId)
         }
 
+        photoWidgetStorage.saveWidgetShuffle(
+            appWidgetId = appWidgetId,
+            value = photoWidget.canShuffle && photoWidget.shuffle,
+        )
+
         photoWidgetStorage.saveWidgetIntervalEnabled(
             appWidgetId = appWidgetId,
             value = photoWidget.loopingEnabled,

@@ -19,14 +19,38 @@ class FlipPhotoUseCase @Inject constructor(
             if (appWidgetPhotos.size < 2) return@launch
 
             val currentIndex = photoWidgetStorage.getWidgetIndex(appWidgetId)
-            val nextIndex = if (currentIndex == appWidgetPhotos.size - 1) 0 else currentIndex + 1
+            val shuffle = photoWidgetStorage.getWidgetShuffle(appWidgetId = appWidgetId)
+            val nextIndex = when {
+                shuffle -> {
+                    val indices = appWidgetPhotos.indices
+                    val pastIndices = photoWidgetStorage.getWidgetPastIndices(appWidgetId = appWidgetId)
+                    val remaining = indices - pastIndices
+
+                    if (remaining.isEmpty()) {
+                        indices.minus(currentIndex).random().also {
+                            photoWidgetStorage.saveWidgetPastIndices(
+                                appWidgetId = appWidgetId,
+                                pastIndices = setOf(it),
+                            )
+                        }
+                    } else {
+                        remaining.random().also {
+                            photoWidgetStorage.saveWidgetPastIndices(
+                                appWidgetId = appWidgetId,
+                                pastIndices = pastIndices + it,
+                            )
+                        }
+                    }
+                }
+
+                currentIndex == appWidgetPhotos.size - 1 -> 0
+
+                else -> currentIndex + 1
+            }
 
             photoWidgetStorage.saveWidgetIndex(appWidgetId = appWidgetId, index = nextIndex)
 
-            PhotoWidgetProvider.update(
-                context = context,
-                appWidgetId = appWidgetId,
-            )
+            PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
         }
     }
 }

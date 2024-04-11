@@ -18,6 +18,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             syncedDir = getWidgetSyncDir(appWidgetId = appWidgetId),
             photos = getWidgetPhotos(appWidgetId = appWidgetId),
             currentIndex = getWidgetIndex(appWidgetId = appWidgetId),
+            shuffle = getWidgetShuffle(appWidgetId = appWidgetId),
             loopingInterval = getWidgetInterval(appWidgetId = appWidgetId) ?: PhotoWidgetLoopingInterval.ONE_DAY,
             intervalBasedLoopingEnabled = getWidgetIntervalEnabled(appWidgetId = appWidgetId),
             tapAction = getWidgetTapAction(appWidgetId = appWidgetId) ?: PhotoWidgetTapAction.NONE,

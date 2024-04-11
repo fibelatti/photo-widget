@@ -51,6 +51,9 @@
     <string name="photo_widget_configure_photos">Fotos</string>
     <string name="photo_widget_configure_photos_from_dir">Fotos da pasta</string>
 
+    <string name="photo_widget_configure_shuffle_on">Ligado</string>
+    <string name="photo_widget_configure_shuffle_off">Desligado</string>
+
     <string name="photo_widget_configure_select_interval">Intervalo de troca</string>
     <string name="photo_widget_configure_interval_current_label">A cada %s</string>
     <plurals name="photo_widget_configure_interval_current_minutes">
@@ -96,6 +99,7 @@
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de fotos da tela inicial</string>
     <string name="photo_widget_cd_change_source">Alterar origem das fotos</string>
+    <string name="photo_widget_cd_toggle_shuffle">Alterar modo aleatório</string>
     <string name="photo_widget_cd_open_photo_picker">Abrir a galeria</string>
     <string name="photo_widget_cd_open_folder_picker">Escolher a pasta</string>
 </resources>

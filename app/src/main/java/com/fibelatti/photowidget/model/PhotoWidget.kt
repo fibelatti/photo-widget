@@ -10,6 +10,7 @@ data class PhotoWidget(
     val syncedDir: Uri? = null,
     val photos: List<LocalPhoto> = emptyList(),
     val currentIndex: Int = 0,
+    val shuffle: Boolean = false,
     val loopingInterval: PhotoWidgetLoopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
     val intervalBasedLoopingEnabled: Boolean = true,
     val tapAction: PhotoWidgetTapAction = PhotoWidgetTapAction.NONE,
@@ -23,4 +24,9 @@ data class PhotoWidget(
     val loopingEnabled: Boolean get() = photos.size > 1 && intervalBasedLoopingEnabled
 
     val order: List<String> get() = photos.map { it.name }
+
+    val canSort: Boolean get() = PhotoWidgetSource.PHOTOS == source && photos.size > 1 && !shuffle
+
+    val canShuffle: Boolean
+        get() = photos.size > 1 && (intervalBasedLoopingEnabled || PhotoWidgetTapAction.VIEW_NEXT_PHOTO == tapAction)
 }

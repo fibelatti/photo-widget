@@ -207,6 +207,16 @@ class PhotoWidgetStorage @Inject constructor(
         return value ?: photoWidgetOrderDao.getWidgetOrder(appWidgetId = appWidgetId)
     }
 
+    fun saveWidgetShuffle(appWidgetId: Int, value: Boolean) {
+        sharedPreferences.edit {
+            putBoolean("${PreferencePrefix.SHUFFLE}$appWidgetId", value)
+        }
+    }
+
+    fun getWidgetShuffle(appWidgetId: Int): Boolean {
+        return sharedPreferences.getBoolean("${PreferencePrefix.SHUFFLE}$appWidgetId", false)
+    }
+
     fun saveWidgetInterval(appWidgetId: Int, interval: PhotoWidgetLoopingInterval) {
         sharedPreferences.edit {
             remove("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId")
@@ -251,6 +261,19 @@ class PhotoWidgetStorage @Inject constructor(
 
     fun getWidgetIndex(appWidgetId: Int): Int {
         return sharedPreferences.getInt("${PreferencePrefix.INDEX}$appWidgetId", 0)
+    }
+
+    fun saveWidgetPastIndices(appWidgetId: Int, pastIndices: Set<Int>) {
+        sharedPreferences.edit {
+            putStringSet("${PreferencePrefix.PAST_INDICES}$appWidgetId", pastIndices.map { "$it" }.toSet())
+        }
+    }
+
+    fun getWidgetPastIndices(appWidgetId: Int): Set<Int> {
+        return sharedPreferences.getStringSet("${PreferencePrefix.PAST_INDICES}$appWidgetId", null)
+            .orEmpty()
+            .mapNotNull { it.toIntOrNull() }
+            .toSet()
     }
 
     fun saveWidgetAspectRatio(appWidgetId: Int, aspectRatio: PhotoWidgetAspectRatio) {
@@ -339,6 +362,7 @@ class PhotoWidgetStorage @Inject constructor(
         SYNCED_DIR(value = "appwidget_synced_dir_"),
 
         ORDER(value = "appwidget_order_"),
+        SHUFFLE(value = "appwidget_shuffle_"),
 
         /**
          * Key from when the interval was persisted as [LegacyPhotoWidgetLoopingInterval].
@@ -351,6 +375,7 @@ class PhotoWidgetStorage @Inject constructor(
         INTERVAL(value = "appwidget_interval_minutes_"),
         INTERVAL_ENABLED(value = "appwidget_interval_enabled_"),
         INDEX(value = "appwidget_index_"),
+        PAST_INDICES(value = "appwidget_past_indices_"),
         RATIO(value = "appwidget_aspect_ratio_"),
         SHAPE(value = "appwidget_shape_"),
         CORNER_RADIUS(value = "appwidget_corner_radius_"),

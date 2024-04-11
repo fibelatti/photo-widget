@@ -52,6 +52,9 @@
     <string name="photo_widget_configure_photos">Fotos</string>
     <string name="photo_widget_configure_photos_from_dir">Fotos del directorio</string>
 
+    <string name="photo_widget_configure_shuffle_on">Activado</string>
+    <string name="photo_widget_configure_shuffle_off">Desactivado</string>
+
     <string name="photo_widget_configure_select_interval">Intervalo de cambio</string>
     <string name="photo_widget_configure_interval_current_label">Cada %s</string>
     <plurals name="photo_widget_configure_interval_current_minutes">
@@ -97,6 +100,7 @@
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de pantalla principal de Material Photo</string>
     <string name="photo_widget_cd_change_source">Cambiar origen del widget</string>
+    <string name="photo_widget_cd_toggle_shuffle">Cambiar modo aleatorio</string>
     <string name="photo_widget_cd_open_photo_picker">Abrir selector de fotos</string>
     <string name="photo_widget_cd_open_folder_picker">Abrir selector de directorio</string>
 </resources>

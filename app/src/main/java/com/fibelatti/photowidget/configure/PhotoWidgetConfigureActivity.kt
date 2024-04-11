@@ -101,6 +101,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     onMoveLeftClick = viewModel::moveLeft,
                     onMoveRightClick = viewModel::moveRight,
                     onChangeSource = viewModel::changeSource,
+                    onShuffleClick = viewModel::toggleShuffle,
                     onPhotoPickerClick = ::launchPhotoPicker,
                     onDirPickerClick = ::launchFolderPicker,
                     onPhotoClick = viewModel::previewPhoto,
