@@ -56,7 +56,7 @@ class PhotoWidgetClickActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+            val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId, currentPhotoOnly = true)
 
             setContent {
                 AppTheme {

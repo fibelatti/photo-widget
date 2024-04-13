@@ -9,20 +9,19 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.widget.RemoteViews
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.configure.PhotoWidgetPinnedReceiver
 import com.fibelatti.photowidget.configure.appWidgetId
+import com.fibelatti.photowidget.configure.photoWidget
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
-import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 
 class PhotoWidgetProvider : AppWidgetProvider() {
 
@@ -34,11 +33,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
+        val coroutineScope = entryPoint.coroutineScope()
         val storage = entryPoint.photoWidgetStorage()
         val alarmManager = entryPoint.photoWidgetAlarmManager()
 
         for (appWidgetId in appWidgetIds) {
-            storage.deleteWidgetData(appWidgetId = appWidgetId)
+            coroutineScope.launch {
+                storage.deleteWidgetData(appWidgetId = appWidgetId)
+            }
             alarmManager.cancel(appWidgetId = appWidgetId)
         }
     }
@@ -65,55 +67,55 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             .toList()
 
         fun update(context: Context, appWidgetId: Int) {
-            val appWidgetManager: AppWidgetManager = AppWidgetManager.getInstance(context)
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
             val coroutineScope = entryPoint.coroutineScope()
             val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
 
             coroutineScope.launch {
-                val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+                Timber.d("Updating widget (appWidgetId=$appWidgetId)")
 
-                val views = createRemoteViews(
+                val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId, currentPhotoOnly = true)
+                val tempViews = PhotoWidgetPinnedReceiver.preview?.get()
+                    ?.takeIf { photoWidget.photos.isEmpty() }
+                    ?.also { PhotoWidgetPinnedReceiver.preview = null }
+                val tapAction = PhotoWidgetPinnedReceiver.callbackIntent?.get()?.photoWidget?.tapAction
+                    ?.takeIf { tempViews != null }
+                    ?: photoWidget.tapAction
+
+                val views = tempViews
+                    ?: createRemoteViews(context = context, photoWidget = photoWidget)
+                    ?: return@launch
+
+                val clickPendingIntent = getClickPendingIntent(
                     context = context,
-                    photoWidget = photoWidget,
-                ) ?: return@launch
-
-                val clickPendingIntent = when (photoWidget.tapAction) {
-                    PhotoWidgetTapAction.NONE -> null
-
-                    PhotoWidgetTapAction.VIEW_FULL_SCREEN -> {
-                        val clickIntent = Intent(context, PhotoWidgetClickActivity::class.java).apply {
-                            this.appWidgetId = appWidgetId
-                        }
-                        PendingIntent.getActivity(
-                            context,
-                            appWidgetId,
-                            clickIntent,
-                            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-                        )
-                    }
-
-                    PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> flipPhotoPendingIntent(context, appWidgetId)
-                }
+                    appWidgetId = appWidgetId,
+                    tapAction = tapAction,
+                )
 
                 views.setOnClickPendingIntent(R.id.iv_widget, clickPendingIntent)
 
-                appWidgetManager.updateAppWidget(appWidgetId, views)
+                Timber.d("Dispatching update to AppWidgetManager")
+                AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, views)
             }
         }
 
-        fun createRemoteViews(
+        suspend fun createRemoteViews(
             context: Context,
             photoWidget: PhotoWidget,
         ): RemoteViews? {
-            val decoder = PhotoDecoder(context = context, coroutineScope = CoroutineScope(Dispatchers.Main.immediate))
+            Timber.d("Creating remote views")
+
+            val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
+            val decoder = entryPoint.photoDecoder()
+
+            Timber.d("Decoding the bitmap")
             val bitmap = try {
                 when {
                     !photoWidget.currentPhoto.path.isNullOrEmpty() -> {
                         requireNotNull(BitmapFactory.decodeFile(photoWidget.currentPhoto.path))
                     }
 
-                    photoWidget.currentPhoto.externalUri != null -> runBlocking {
+                    photoWidget.currentPhoto.externalUri != null -> {
                         requireNotNull(photoWidget.currentPhoto.externalUri?.let { decoder.decode(it) })
                     }
 
@@ -122,6 +124,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             } catch (_: Exception) {
                 return null
             }
+
+            Timber.d("Transforming the bitmap")
             val transformedBitmap = if (photoWidget.aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
                 val shape = PhotoWidgetShapeBuilder.buildShape(
                     shapeId = photoWidget.shapeId,
@@ -142,6 +146,28 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             return RemoteViews(context.packageName, R.layout.photo_widget).apply {
                 setImageViewBitmap(R.id.iv_widget, transformedBitmap)
             }
+        }
+
+        private fun getClickPendingIntent(
+            context: Context,
+            appWidgetId: Int,
+            tapAction: PhotoWidgetTapAction,
+        ): PendingIntent? = when (tapAction) {
+            PhotoWidgetTapAction.NONE -> null
+
+            PhotoWidgetTapAction.VIEW_FULL_SCREEN -> {
+                val clickIntent = Intent(context, PhotoWidgetClickActivity::class.java).apply {
+                    this.appWidgetId = appWidgetId
+                }
+                PendingIntent.getActivity(
+                    context,
+                    appWidgetId,
+                    clickIntent,
+                    PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                )
+            }
+
+            PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> flipPhotoPendingIntent(context, appWidgetId)
         }
 
         fun flipPhotoPendingIntent(

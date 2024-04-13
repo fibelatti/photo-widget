@@ -19,7 +19,12 @@ data class PhotoWidget(
     val cornerRadius: Float = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
 ) : Parcelable {
 
-    val currentPhoto: LocalPhoto get() = photos[currentIndex]
+    val currentPhoto: LocalPhoto
+        get() = try {
+            photos[currentIndex]
+        } catch (_: Exception) {
+            photos.first()
+        }
 
     val loopingEnabled: Boolean get() = photos.size > 1 && intervalBasedLoopingEnabled
 

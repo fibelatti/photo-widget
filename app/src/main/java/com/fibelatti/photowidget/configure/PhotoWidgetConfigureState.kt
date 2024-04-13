@@ -8,7 +8,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 data class PhotoWidgetConfigureState(
     val photoWidget: PhotoWidget = PhotoWidget(),
     val selectedPhoto: LocalPhoto? = null,
-    val isProcessing: Boolean = false,
+    val isProcessing: Boolean = true,
     val cropQueue: List<LocalPhoto> = emptyList(),
     val messages: List<Message> = emptyList(),
 ) {

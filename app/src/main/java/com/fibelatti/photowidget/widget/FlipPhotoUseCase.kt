@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class FlipPhotoUseCase @Inject constructor(
@@ -14,15 +15,17 @@ class FlipPhotoUseCase @Inject constructor(
 
     operator fun invoke(appWidgetId: Int) {
         coroutineScope.launch {
-            val appWidgetPhotos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+            Timber.d("Flipping widget (appWidgetId=$appWidgetId)")
 
-            if (appWidgetPhotos.size < 2) return@launch
+            val count = photoWidgetStorage.getWidgetPhotoCount(appWidgetId = appWidgetId)
+
+            if (count < 2) return@launch
 
             val currentIndex = photoWidgetStorage.getWidgetIndex(appWidgetId)
             val shuffle = photoWidgetStorage.getWidgetShuffle(appWidgetId = appWidgetId)
             val nextIndex = when {
                 shuffle -> {
-                    val indices = appWidgetPhotos.indices
+                    val indices = 0..count
                     val pastIndices = photoWidgetStorage.getWidgetPastIndices(appWidgetId = appWidgetId)
                     val remaining = indices - pastIndices
 
@@ -43,11 +46,12 @@ class FlipPhotoUseCase @Inject constructor(
                     }
                 }
 
-                currentIndex == appWidgetPhotos.size - 1 -> 0
+                currentIndex == count - 1 -> 0
 
                 else -> currentIndex + 1
             }
 
+            Timber.d("Updating index from $currentIndex to $nextIndex")
             photoWidgetStorage.saveWidgetIndex(appWidgetId = appWidgetId, index = nextIndex)
 
             PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)

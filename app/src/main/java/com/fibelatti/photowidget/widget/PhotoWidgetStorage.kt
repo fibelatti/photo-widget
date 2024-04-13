@@ -2,10 +2,11 @@ package com.fibelatti.photowidget.widget
 
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.net.Uri
+import android.provider.DocumentsContract
 import androidx.core.content.edit
-import androidx.documentfile.provider.DocumentFile
 import com.fibelatti.photowidget.model.LegacyPhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -20,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -110,36 +112,120 @@ class PhotoWidgetStorage @Inject constructor(
         }.getOrNull()
     }
 
-    suspend fun getWidgetPhotos(appWidgetId: Int): List<LocalPhoto> {
+    suspend fun getWidgetPhotoCount(appWidgetId: Int): Int = withContext(Dispatchers.IO) {
+        if (PhotoWidgetSource.DIRECTORY == getWidgetSource(appWidgetId = appWidgetId)) {
+            withDirectoryPhotosCursor(appWidgetId = appWidgetId) { _, cursor ->
+                var count = 0
+
+                while (cursor.moveToNext()) {
+                    val mimeType = cursor.getString(1)
+                    if (mimeType in ALLOWED_TYPES) count += 1
+                }
+
+                count
+            }
+        } else {
+            getWidgetDir(appWidgetId = appWidgetId).list { _, name -> name != "original" }?.size
+        } ?: 0
+    }
+
+    suspend fun getWidgetPhotos(appWidgetId: Int, index: Int? = null): List<LocalPhoto> = withContext(Dispatchers.IO) {
+        Timber.d("Retrieving photos (appWidgetId=$appWidgetId)")
+
         val croppedPhotos = getWidgetDir(appWidgetId = appWidgetId).let { dir ->
             dir.list { _, name -> name != "original" }
                 .orEmpty()
-                .map { file ->
-                    LocalPhoto(
-                        name = file,
-                        path = "$dir/$file",
-                    )
-                }
+                .map { file -> LocalPhoto(name = file, path = "$dir/$file") }
         }
-        val dict = croppedPhotos.associateBy { it.name }
+        val dict: Map<String, LocalPhoto> = croppedPhotos.associateBy { it.name }
 
-        if (PhotoWidgetSource.DIRECTORY == getWidgetSource(appWidgetId = appWidgetId)) {
-            val syncedDir = getWidgetSyncDir(appWidgetId = appWidgetId) ?: return emptyList()
-            val documentFile = DocumentFile.fromTreeUri(context, syncedDir) ?: return emptyList()
+        Timber.d("Cropped photos found: ${dict.size}")
 
-            return documentFile.listFiles()
-                .filter { it.type == "image/jpeg" || it.type == "image/png" }
-                .mapNotNull { file ->
-                    LocalPhoto(
-                        name = file.name ?: return@mapNotNull null,
-                        path = file.name?.let(dict::get)?.path,
-                        externalUri = file.uri,
-                    )
-                }
+        val source = getWidgetSource(appWidgetId = appWidgetId).also {
+            Timber.d("Widget source: $it")
+        }
+
+        return@withContext if (PhotoWidgetSource.DIRECTORY == source) {
+            getDirectoryPhotos(appWidgetId = appWidgetId, croppedPhotos = dict, index = index)
         } else {
-            return getWidgetOrder(appWidgetId)
-                .mapNotNull(dict::get)
-                .ifEmpty { croppedPhotos }
+            getWidgetOrder(appWidgetId = appWidgetId)
+                .ifEmpty { dict.keys }
+                .withIndex()
+                .let { indexedItems ->
+                    if (index == null) {
+                        indexedItems.mapNotNull { dict[it.value] }
+                    } else {
+                        listOfNotNull(indexedItems.elementAtOrNull(index)?.value?.let { dict[it] })
+                    }
+                }
+        }.also { Timber.d("Total photos found: ${it.size}") }
+    }
+
+    private suspend fun getDirectoryPhotos(
+        appWidgetId: Int,
+        croppedPhotos: Map<String, LocalPhoto>,
+        index: Int?,
+    ): List<LocalPhoto> = withDirectoryPhotosCursor(appWidgetId = appWidgetId) { documentUri, cursor ->
+        val toLocalPhoto: Cursor.() -> LocalPhoto? = {
+            val documentId = getString(0)
+            val mimeType = getString(1)
+            val documentName = getString(2)
+            val documentLastModified = getLong(3)
+
+            val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
+
+            if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
+                LocalPhoto(
+                    name = documentName,
+                    path = croppedPhotos[documentName]?.path,
+                    externalUri = fileUri,
+                    timestamp = documentLastModified,
+                )
+            } else {
+                null
+            }
+        }
+
+        buildList {
+            if (index == null) {
+                while (cursor.moveToNext()) {
+                    cursor.toLocalPhoto()?.let { add(it) }
+                }
+            } else if (cursor.moveToPosition(index)) {
+                cursor.toLocalPhoto()?.let { add(it) }
+            }
+        }.sortedBy { it.timestamp }
+    }.orEmpty()
+
+    private suspend inline fun <T> withDirectoryPhotosCursor(
+        appWidgetId: Int,
+        crossinline block: (documentUri: Uri, Cursor) -> T,
+    ): T? = withContext(Dispatchers.IO) {
+        getWidgetSyncDir(appWidgetId = appWidgetId)?.let { uri ->
+            val documentUri = DocumentsContract.buildDocumentUriUsingTree(
+                /* treeUri = */ uri,
+                /* documentId = */ DocumentsContract.getTreeDocumentId(uri),
+            )
+
+            val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
+                /* treeUri = */ documentUri,
+                /* parentDocumentId = */ DocumentsContract.getDocumentId(documentUri),
+            )
+
+            val projection = arrayOf(
+                DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                DocumentsContract.Document.COLUMN_MIME_TYPE,
+                DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+                DocumentsContract.Document.COLUMN_LAST_MODIFIED,
+            )
+
+            contentResolver.query(
+                /* uri = */ childrenUri,
+                /* projection = */ projection,
+                /* selection = */ null,
+                /* selectionArgs = */ null,
+                /* sortOrder = */ null,
+            )?.use { cursor -> block(documentUri, cursor) }
         }
     }
 
@@ -323,23 +409,28 @@ class PhotoWidgetStorage @Inject constructor(
         return enumValueOfOrNull<PhotoWidgetTapAction>(name)
     }
 
-    fun deleteWidgetData(appWidgetId: Int) {
+    suspend fun deleteWidgetData(appWidgetId: Int) {
+        Timber.d("Deleting data (appWidgetId=$appWidgetId)")
         getWidgetDir(appWidgetId).deleteRecursively()
 
         sharedPreferences.edit {
-            PreferencePrefix.entries.forEach { prefix ->
-                remove("$prefix$appWidgetId")
-            }
+            PreferencePrefix.entries.forEach { prefix -> remove("$prefix$appWidgetId") }
         }
+
+        photoWidgetOrderDao.deleteWidgetOrder(appWidgetId = appWidgetId)
     }
 
-    fun deleteUnusedWidgetData(existingWidgetIds: List<Int>) {
+    suspend fun deleteUnusedWidgetData(existingWidgetIds: List<Int>) {
         val existingWidgetsAsDirName = existingWidgetIds.map { "$it" }.toSet()
         val unusedWidgetIds = rootDir.listFiles().orEmpty()
             .filter { it.isDirectory && it.name !in existingWidgetsAsDirName }
             .map { it.name.toInt() }
 
+        Timber.d("Deleting temp widget data")
+        deleteWidgetData(appWidgetId = 0)
+
         for (id in unusedWidgetIds) {
+            Timber.d("Unused data found (appWidgetId=$id)")
             deleteWidgetData(appWidgetId = id)
         }
     }
@@ -387,5 +478,7 @@ class PhotoWidgetStorage @Inject constructor(
 
     private companion object {
         const val SHARED_PREFERENCES_NAME = "com.fibelatti.photowidget.PhotoWidget"
+
+        private val ALLOWED_TYPES = arrayOf("image/jpeg", "image/png")
     }
 }

@@ -34,6 +34,7 @@ import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yalantis.ucrop.UCrop
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.ref.WeakReference
 
 @AndroidEntryPoint
 class PhotoWidgetConfigureActivity : AppCompatActivity() {
@@ -113,7 +114,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 )
 
                 LaunchedEffect(state.messages) {
-                    state.messages.firstOrNull()?.let(::handleMessage)
+                    state.messages.firstOrNull()?.let { handleMessage(it) }
                 }
             }
         }
@@ -137,7 +138,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         intent.sharedPhotos?.let(viewModel::photoPicked)
     }
 
-    private fun handleMessage(message: PhotoWidgetConfigureState.Message) {
+    private suspend fun handleMessage(message: PhotoWidgetConfigureState.Message) {
         when (message) {
             is PhotoWidgetConfigureState.Message.ImportFailed -> {
                 MaterialAlertDialogBuilder(this)
@@ -148,27 +149,27 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             }
 
             is PhotoWidgetConfigureState.Message.LaunchCrop -> {
-                viewModel.messageHandled(message = message)
                 launchPhotoCrop(
                     sourceUri = message.source,
                     destinationUri = message.destination,
                     aspectRatio = message.aspectRatio,
                 )
+                viewModel.messageHandled(message = message)
             }
 
             is PhotoWidgetConfigureState.Message.RequestPin -> {
-                viewModel.messageHandled(message = message)
                 requestPin(photoWidget = message.photoWidget)
+                viewModel.messageHandled(message = message)
             }
 
             is PhotoWidgetConfigureState.Message.AddWidget -> {
-                viewModel.messageHandled(message = message)
                 addNewWidget(appWidgetId = message.appWidgetId)
+                viewModel.messageHandled(message = message)
             }
 
             is PhotoWidgetConfigureState.Message.CancelWidget -> {
-                viewModel.messageHandled(message = message)
                 finish()
+                viewModel.messageHandled(message = message)
             }
         }
     }
@@ -269,7 +270,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun requestPin(photoWidget: PhotoWidget) {
+    private suspend fun requestPin(photoWidget: PhotoWidget) {
         val remoteViews = PhotoWidgetProvider.createRemoteViews(
             context = this,
             photoWidget = photoWidget,
@@ -279,24 +280,21 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         )
 
         val callbackIntent = Intent(this, PhotoWidgetPinnedReceiver::class.java)
-            .apply {
-                this.photoWidget = photoWidget
-            }
-            .also {
-                PhotoWidgetPinnedReceiver.callbackIntent = it
-            }
-
+            .apply { this.photoWidget = photoWidget }
         val successCallback = PendingIntent.getBroadcast(
-            this,
-            0,
-            callbackIntent,
-            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            /* context = */ this,
+            /* requestCode = */ 0,
+            /* intent = */ callbackIntent,
+            /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
 
+        PhotoWidgetPinnedReceiver.preview = WeakReference(remoteViews)
+        PhotoWidgetPinnedReceiver.callbackIntent = WeakReference(callbackIntent)
+
         AppWidgetManager.getInstance(this).requestPinAppWidget(
-            ComponentName(this, PhotoWidgetProvider::class.java),
-            previewBundle,
-            successCallback,
+            /* provider = */ ComponentName(this, PhotoWidgetProvider::class.java),
+            /* extras = */ previewBundle,
+            /* successCallback = */ successCallback,
         )
     }
 

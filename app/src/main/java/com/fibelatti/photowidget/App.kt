@@ -4,11 +4,13 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.fibelatti.photowidget.home.Appearance
 import com.fibelatti.photowidget.home.UserPreferencesStorage
-import com.fibelatti.photowidget.widget.PhotoWidgetProvider
-import com.fibelatti.photowidget.widget.PhotoWidgetStorage
+import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -18,16 +20,24 @@ class App : Application() {
     lateinit var userPreferencesStorage: UserPreferencesStorage
 
     @Inject
-    lateinit var photoWidgetStorage: PhotoWidgetStorage
+    lateinit var coroutineScope: CoroutineScope
+
+    @Inject
+    lateinit var deleteStaleDataUseCase: DeleteStaleDataUseCase
 
     override fun onCreate() {
         super.onCreate()
 
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
+
         setupNightMode()
         setupDynamicColors()
 
-        val widgetIds = PhotoWidgetProvider.ids(context = this).ifEmpty { return }
-        deleteUnusedWidgetData(widgetIds)
+        coroutineScope.launch {
+            deleteStaleDataUseCase()
+        }
     }
 
     private fun setupNightMode() {
@@ -47,9 +57,5 @@ class App : Application() {
             .build()
 
         DynamicColors.applyToActivitiesIfAvailable(this, dynamicColorsOptions)
-    }
-
-    private fun deleteUnusedWidgetData(widgetIds: List<Int>) {
-        photoWidgetStorage.deleteUnusedWidgetData(existingWidgetIds = widgetIds)
     }
 }

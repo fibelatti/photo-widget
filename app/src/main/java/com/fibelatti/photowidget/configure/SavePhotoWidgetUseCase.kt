@@ -4,6 +4,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
+import timber.log.Timber
 import javax.inject.Inject
 
 class SavePhotoWidgetUseCase @Inject constructor(
@@ -15,6 +16,8 @@ class SavePhotoWidgetUseCase @Inject constructor(
         appWidgetId: Int,
         photoWidget: PhotoWidget,
     ) {
+        Timber.d("Saving widget data (appWidgetId=$appWidgetId)")
+
         photoWidgetStorage.renameTemporaryWidgetDir(appWidgetId = appWidgetId)
 
         photoWidgetStorage.saveWidgetSource(appWidgetId = appWidgetId, source = photoWidget.source)

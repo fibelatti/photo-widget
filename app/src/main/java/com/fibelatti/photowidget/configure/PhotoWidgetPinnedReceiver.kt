@@ -4,11 +4,13 @@ import android.appwidget.AppWidgetManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.widget.RemoteViews
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 
 /**
  * [BroadcastReceiver] to handle the callback from [AppWidgetManager.requestPinAppWidget].
@@ -24,10 +26,11 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
             ?: return
 
         // A callback intent is required as it carries the widget data
-        val callbackIntent = PhotoWidgetPinnedReceiver.callbackIntent ?: return
+        val callbackIntent = PhotoWidgetPinnedReceiver.callbackIntent?.get() ?: return
 
-        // Reset the static field once it's been consumed
+        // Reset the static fields once they have been consumed
         PhotoWidgetPinnedReceiver.callbackIntent = null
+        preview = null
 
         val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
         val saveUseCase = entryPoint.savePhotoWidgetUseCase()
@@ -61,6 +64,13 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
          * `PendingIntent.getBroadcast`. Any caller that depends on this receiver should also
          * set this field, which will be used to retrieve the widget data.
          */
-        var callbackIntent: Intent? = null
+        var callbackIntent: WeakReference<Intent>? = null
+
+        /**
+         * Workaround to `AppWidgetProvider#onUpdate` being called with the new widget ID as the
+         * user begins pinning the widget, but `PhotoWidgetPinnedReceiver` haven't being called
+         * yet to move the content to the new directory.
+         */
+        var preview: WeakReference<RemoteViews>? = null
     }
 }

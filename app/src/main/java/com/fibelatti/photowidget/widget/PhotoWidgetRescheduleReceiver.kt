@@ -25,7 +25,7 @@ class PhotoWidgetRescheduleReceiver : BroadcastReceiver() {
 
             coroutineScope.launch {
                 for (id in ids) {
-                    val widget = loadPhotoWidgetUseCase(appWidgetId = id)
+                    val widget = loadPhotoWidgetUseCase(appWidgetId = id, currentPhotoOnly = true)
                     if (widget.loopingEnabled) {
                         photoWidgetAlarmManager.setup(
                             appWidgetId = id,

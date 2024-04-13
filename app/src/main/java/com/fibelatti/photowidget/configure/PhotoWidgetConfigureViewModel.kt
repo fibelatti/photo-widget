@@ -12,6 +12,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.savedState
+import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,6 +32,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     private val photoWidgetStorage: PhotoWidgetStorage,
     loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
     private val savePhotoWidgetUseCase: SavePhotoWidgetUseCase,
+    deleteStaleDataUseCase: DeleteStaleDataUseCase,
 ) : ViewModel() {
 
     private val appWidgetId: Int by savedStateHandle.savedState(
@@ -42,18 +45,18 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     val state: StateFlow<PhotoWidgetConfigureState> = _state.asStateFlow()
 
     init {
-        if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-            // Delete stale data from a widget that wasn't placed
-            photoWidgetStorage.deleteWidgetData(appWidgetId = appWidgetId)
-        }
+        Timber.d("Configuring widget (appWidgetId=$appWidgetId)")
 
         viewModelScope.launch {
+            deleteStaleDataUseCase()
+
             val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
 
             _state.update { current ->
                 current.copy(
                     photoWidget = photoWidget.copy(aspectRatio = aspectRatio ?: photoWidget.aspectRatio),
                     selectedPhoto = photoWidget.photos.firstOrNull(),
+                    isProcessing = false,
                 )
             }
         }
@@ -148,6 +151,8 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
+            _state.update { current -> current.copy(isProcessing = true) }
+
             val photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
 
             _state.update { current ->
@@ -157,6 +162,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                         syncedDir = source,
                     ),
                     selectedPhoto = photos.firstOrNull(),
+                    isProcessing = false,
                     cropQueue = emptyList(),
                 )
             }

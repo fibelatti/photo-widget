@@ -39,6 +39,7 @@ ucrop = { module = "com.github.yalantis:ucrop", version = "2.2.8" }
 
 about-libraries = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "aboutLibraries" }
 
+timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.13" }
 
 [plugins]

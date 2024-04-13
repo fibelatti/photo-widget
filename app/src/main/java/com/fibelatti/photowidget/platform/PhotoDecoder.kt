@@ -5,13 +5,12 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class PhotoDecoder @Inject constructor(
     @ApplicationContext context: Context,
-    private val coroutineScope: CoroutineScope,
 ) {
 
     private val contentResolver = context.contentResolver
@@ -19,7 +18,7 @@ class PhotoDecoder @Inject constructor(
     suspend fun decode(
         source: Uri,
         maxDimension: Int = 1_000,
-    ): Bitmap? = withContext(coroutineScope.coroutineContext) {
+    ): Bitmap? = withContext(Dispatchers.IO) {
         val output = contentResolver.openInputStream(source)
             ?.use { inputStream ->
                 val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }

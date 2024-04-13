@@ -26,6 +26,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -74,6 +75,7 @@ import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
@@ -95,7 +97,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
-import com.fibelatti.ui.foundation.conditional
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
@@ -552,7 +553,8 @@ private fun PhotoPicker(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
@@ -652,10 +654,7 @@ private fun PhotoPicker(
                     cornerRadius = cornerRadius,
                     modifier = Modifier
                         .fillMaxHeight()
-                        .conditional(
-                            predicate = PhotoWidgetAspectRatio.ORIGINAL != aspectRatio,
-                            ifTrue = { aspectRatio(ratio = aspectRatio.aspectRatio) },
-                        )
+                        .aspectRatio(ratio = aspectRatio.aspectRatio)
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
@@ -836,74 +835,77 @@ fun ShapedPhoto(
     modifier: Modifier = Modifier,
     badge: @Composable BoxScope.() -> Unit = {},
 ) {
-    val localInspectionMode = LocalInspectionMode.current
-    val localContext = LocalContext.current
-
-    var photoBitmap: Bitmap? by remember(photo) {
-        mutableStateOf(
-            when {
-                localInspectionMode -> BitmapFactory.decodeResource(localContext.resources, R.drawable.widget_preview)
-                !photo.path.isNullOrEmpty() -> BitmapFactory.decodeFile(photo.path)
-                else -> null
-            },
-        )
-    }
-    var showLoading: Boolean by remember(photo) { mutableStateOf(false) }
-
-    if (photo.externalUri != null) {
-        val decoder = remember { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
-
-        LaunchedEffect(key1 = photo.externalUri) {
-            photoBitmap = decoder.decode(source = photo.externalUri, maxDimension = 500)
-            showLoading = false
-        }
-    }
-
-    LaunchedEffect(key1 = photo) {
-        // Avoid flickering the indicator, only show if the photos takes a while to load
-        delay(timeMillis = 300)
-        showLoading = photoBitmap == null
-    }
-
-    val transformedBitmap: ImageBitmap? by remember(photo, shapeId, aspectRatio, cornerRadius) {
-        derivedStateOf {
-            photoBitmap?.run {
-                if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
-                    withPolygonalShape(
-                        roundedPolygon = PhotoWidgetShapeBuilder.buildShape(
-                            shapeId = shapeId,
-                            width = width.toFloat(),
-                            height = height.toFloat(),
-                        ),
-                    )
-                } else {
-                    withRoundedCorners(
-                        desiredAspectRatio = aspectRatio,
-                        radius = cornerRadius,
-                    )
-                }.asImageBitmap()
-            }
-        }
-    }
-
-    Box(
+    BoxWithConstraints(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
+        val localInspectionMode = LocalInspectionMode.current
+        val localContext = LocalContext.current
+
+        var photoBitmap: Bitmap? by remember(photo) {
+            mutableStateOf(
+                when {
+                    localInspectionMode -> BitmapFactory.decodeResource(
+                        localContext.resources,
+                        R.drawable.widget_preview,
+                    )
+
+                    !photo.path.isNullOrEmpty() -> BitmapFactory.decodeFile(photo.path)
+
+                    else -> null
+                },
+            )
+        }
+        var showLoading: Boolean by remember(photo) { mutableStateOf(false) }
+
+        if (photo.path.isNullOrEmpty() && photo.externalUri != null) {
+            val decoder = remember { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
+            val maxWidth = with(LocalDensity.current) { maxWidth.toPx().toInt() }
+
+            LaunchedEffect(key1 = photo.externalUri) {
+                photoBitmap = decoder.decode(source = photo.externalUri, maxDimension = maxWidth)
+                showLoading = false
+            }
+        }
+
+        LaunchedEffect(key1 = photo) {
+            // Avoid flickering the indicator, only show if the photos takes a while to load
+            delay(timeMillis = 300)
+            showLoading = photoBitmap == null
+        }
+
+        val transformedBitmap: ImageBitmap? by remember(photo, shapeId, aspectRatio, cornerRadius) {
+            derivedStateOf {
+                photoBitmap?.run {
+                    if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
+                        withPolygonalShape(
+                            roundedPolygon = PhotoWidgetShapeBuilder.buildShape(
+                                shapeId = shapeId,
+                                width = width.toFloat(),
+                                height = height.toFloat(),
+                            ),
+                        )
+                    } else {
+                        withRoundedCorners(
+                            desiredAspectRatio = aspectRatio,
+                            radius = cornerRadius,
+                        )
+                    }.asImageBitmap()
+                }
+            }
+        }
+
         transformedBitmap?.let { bitmap ->
             Image(
                 bitmap = bitmap,
                 contentDescription = "",
                 modifier = Modifier
-                    .conditional(
-                        predicate = PhotoWidgetAspectRatio.ORIGINAL != aspectRatio,
-                        ifTrue = { aspectRatio(ratio = aspectRatio.aspectRatio) },
-                    )
+                    .aspectRatio(ratio = aspectRatio.aspectRatio)
                     .fillMaxSize(),
                 contentScale = if (PhotoWidgetAspectRatio.ORIGINAL != aspectRatio) {
                     ContentScale.FillWidth
                 } else {
-                    ContentScale.Fit
+                    ContentScale.Inside
                 },
             )
 

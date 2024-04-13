@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.SystemClock
 import androidx.core.content.getSystemService
 import dagger.hilt.android.qualifiers.ApplicationContext
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,6 +18,8 @@ class PhotoWidgetAlarmManager @Inject constructor(
     private val alarmManager: AlarmManager by lazy { requireNotNull(context.getSystemService()) }
 
     fun setup(appWidgetId: Int, repeatInterval: Long, timeUnit: TimeUnit) {
+        Timber.d("Setting alarm for widget (appWidgetId=$appWidgetId)")
+
         val interval = timeUnit.toMillis(repeatInterval)
 
         alarmManager.setRepeating(
@@ -28,6 +31,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
     }
 
     fun cancel(appWidgetId: Int) {
+        Timber.d("Cancelling alarm for widget (appWidgetId=$appWidgetId)")
         alarmManager.cancel(
             /* operation = */ PhotoWidgetProvider.flipPhotoPendingIntent(context, appWidgetId),
         )
