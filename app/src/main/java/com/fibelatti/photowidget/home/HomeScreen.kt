@@ -311,7 +311,7 @@ private fun AspectRatioItem(
         ) {
             val aspectRatioColor by transition.animateColor(label = "AspectRatioColor") { selected ->
                 if (selected) {
-                    MaterialTheme.colorScheme.primary
+                    MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
                     MaterialTheme.colorScheme.secondary
                 }
@@ -327,9 +327,17 @@ private fun AspectRatioItem(
                     ),
             )
 
+            val textColor by transition.animateColor(label = "LabelColor") { selected ->
+                if (selected) {
+                    MaterialTheme.colorScheme.onPrimaryContainer
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                }
+            }
+
             Text(
                 text = label,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = textColor,
                 style = MaterialTheme.typography.labelSmall,
             )
         }
