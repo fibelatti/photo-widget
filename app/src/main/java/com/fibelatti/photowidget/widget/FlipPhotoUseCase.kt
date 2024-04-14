@@ -25,7 +25,7 @@ class FlipPhotoUseCase @Inject constructor(
             val shuffle = photoWidgetStorage.getWidgetShuffle(appWidgetId = appWidgetId)
             val nextIndex = when {
                 shuffle -> {
-                    val indices = 0..count
+                    val indices = 0 until count
                     val pastIndices = photoWidgetStorage.getWidgetPastIndices(appWidgetId = appWidgetId)
                     val remaining = indices - pastIndices
 
