@@ -10,6 +10,7 @@ import androidx.core.graphics.toRectF
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.transformed
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -22,10 +23,16 @@ fun Bitmap.withRoundedCorners(
 }
 
 fun Bitmap.withPolygonalShape(
-    roundedPolygon: RoundedPolygon,
+    shapeId: String,
 ): Bitmap = withTransformation(desiredAspectRatio = PhotoWidgetAspectRatio.SQUARE) { canvas, rect, paint ->
+    val shape = PhotoWidgetShapeBuilder.buildShape(
+        shapeId = shapeId,
+        width = width.toFloat(),
+        height = height.toFloat(),
+    )
+
     canvas.drawPath(
-        roundedPolygon.transformed(bounds = rect.toRectF()).toPath(),
+        shape.transformed(bounds = rect.toRectF()).toPath(),
         paint,
     )
 }

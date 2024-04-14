@@ -4,10 +4,13 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import com.fibelatti.photowidget.model.PhotoWidget
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.math.max
+import kotlin.math.min
 
 class PhotoDecoder @Inject constructor(
     @ApplicationContext context: Context,
@@ -17,7 +20,7 @@ class PhotoDecoder @Inject constructor(
 
     suspend fun decode(
         source: Uri,
-        maxDimension: Int = 1_000,
+        maxDimension: Int = PhotoWidget.MAX_DIMENSION,
     ): Bitmap? = withContext(Dispatchers.IO) {
         val output = contentResolver.openInputStream(source)
             ?.use { inputStream ->
@@ -34,10 +37,8 @@ class PhotoDecoder @Inject constructor(
 
         contentResolver.openInputStream(source).use { inputStream ->
             val bitmapOptions = BitmapFactory.Options().apply {
-                if (originalWidth > maxDimension || originalHeight > maxDimension) {
-                    inTargetDensity = maxDimension
-                    inDensity = if (originalWidth > originalHeight) originalWidth else originalHeight
-                }
+                inDensity = max(originalWidth, originalHeight)
+                inTargetDensity = min(maxDimension, inDensity)
             }
 
             return@withContext BitmapFactory.decodeStream(inputStream, null, bitmapOptions)

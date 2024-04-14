@@ -878,13 +878,7 @@ fun ShapedPhoto(
             derivedStateOf {
                 photoBitmap?.run {
                     if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
-                        withPolygonalShape(
-                            roundedPolygon = PhotoWidgetShapeBuilder.buildShape(
-                                shapeId = shapeId,
-                                width = width.toFloat(),
-                                height = height.toFloat(),
-                            ),
-                        )
+                        withPolygonalShape(shapeId = shapeId)
                     } else {
                         withRoundedCorners(
                             desiredAspectRatio = aspectRatio,

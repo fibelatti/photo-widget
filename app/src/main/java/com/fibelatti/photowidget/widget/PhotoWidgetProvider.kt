@@ -127,15 +127,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
             Timber.d("Transforming the bitmap")
             val transformedBitmap = if (photoWidget.aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
-                val shape = PhotoWidgetShapeBuilder.buildShape(
-                    shapeId = photoWidget.shapeId,
-                    width = bitmap.width.toFloat(),
-                    height = bitmap.height.toFloat(),
-                )
-
-                bitmap.withPolygonalShape(
-                    roundedPolygon = shape,
-                )
+                bitmap.withPolygonalShape(shapeId = photoWidget.shapeId)
             } else {
                 bitmap.withRoundedCorners(
                     desiredAspectRatio = photoWidget.aspectRatio,

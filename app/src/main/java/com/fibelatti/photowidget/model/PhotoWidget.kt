@@ -34,4 +34,9 @@ data class PhotoWidget(
 
     val canShuffle: Boolean
         get() = photos.size > 1 && (intervalBasedLoopingEnabled || PhotoWidgetTapAction.VIEW_NEXT_PHOTO == tapAction)
+
+    companion object {
+
+        const val MAX_DIMENSION: Int = 1_000
+    }
 }
