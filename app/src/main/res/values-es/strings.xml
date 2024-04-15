@@ -40,6 +40,7 @@
     <string name="photo_widget_configure_navigate_back_warning">¿Se perderán los cambios, volver de todos modos?</string>
 
     <string name="photo_widget_configure_import_error">No se pueden importar todas las fotos seleccionadas</string>
+    <string name="photo_widget_configure_too_many_photos_error">Los widgets sincronizados con directorio pueden tener como máximo 500 fotos. Seleccione un directorio diferente.</string>
 
     <string name="photo_widget_configure_menu_source">Origen</string>
     <string name="photo_widget_configure_change_source_warning">Puede seleccionar cada foto o sincronizar un widget con un directorio. Al sincronizar, todas las fotos actuales y futuras se agregarán automáticamente.\n\nCambiar la origen reemplazará las fotos actuales de este widget. ¿Desea continuar?</string>

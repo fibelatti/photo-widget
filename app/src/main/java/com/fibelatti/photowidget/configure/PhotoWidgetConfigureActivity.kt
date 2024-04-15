@@ -148,6 +148,14 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     .show()
             }
 
+            is PhotoWidgetConfigureState.Message.TooManyPhotos -> {
+                MaterialAlertDialogBuilder(this)
+                    .setMessage(R.string.photo_widget_configure_too_many_photos_error)
+                    .setPositiveButton(R.string.photo_widget_action_continue) { _, _ -> }
+                    .setOnDismissListener { viewModel.messageHandled(message = message) }
+                    .show()
+            }
+
             is PhotoWidgetConfigureState.Message.LaunchCrop -> {
                 launchPhotoCrop(
                     sourceUri = message.source,

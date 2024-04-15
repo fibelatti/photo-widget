@@ -39,6 +39,7 @@
     <string name="photo_widget_configure_navigate_back_warning">As alterações serão perdidas, voltar mesmo assim?</string>
 
     <string name="photo_widget_configure_import_error">Não foi possível importar todas as fotos escolhidas</string>
+    <string name="photo_widget_configure_too_many_photos_error">Widgets pareados com uma pasta podem ter no máximos 500 fotos. Por favor escolha outra pasta.</string>
 
     <string name="photo_widget_configure_menu_source">Origem</string>
     <string name="photo_widget_configure_change_source_warning">Você pode escolher cada foto ou parear o widget com uma pasta. Ao parear, todas as fotos atuais e futuras serão incluídas automaticamente.\n\nAlterar a origem irá substituir as fotos atuais deste widget. Deseja continuar?</string>

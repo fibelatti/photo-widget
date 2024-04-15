@@ -112,9 +112,14 @@ class PhotoWidgetStorage @Inject constructor(
         }.getOrNull()
     }
 
+    suspend fun isValidDir(dirUri: Uri): Boolean {
+        return withDirectoryPhotosCursor(dirUri = dirUri) { _, cursor -> cursor.count <= 500 } ?: true
+    }
+
     suspend fun getWidgetPhotoCount(appWidgetId: Int): Int = withContext(Dispatchers.IO) {
         if (PhotoWidgetSource.DIRECTORY == getWidgetSource(appWidgetId = appWidgetId)) {
-            withDirectoryPhotosCursor(appWidgetId = appWidgetId) { _, cursor ->
+            val dirUri = getWidgetSyncDir(appWidgetId = appWidgetId) ?: return@withContext 0
+            withDirectoryPhotosCursor(dirUri = dirUri) { _, cursor ->
                 var count = 0
 
                 while (cursor.moveToNext()) {
@@ -146,16 +151,21 @@ class PhotoWidgetStorage @Inject constructor(
         }
 
         return@withContext if (PhotoWidgetSource.DIRECTORY == source) {
-            getDirectoryPhotos(appWidgetId = appWidgetId, croppedPhotos = dict, index = index)
+            getDirectoryPhotos(appWidgetId = appWidgetId, croppedPhotos = dict).let { items ->
+                if (index == null) {
+                    items
+                } else {
+                    listOfNotNull(items.elementAtOrNull(index))
+                }
+            }
         } else {
             getWidgetOrder(appWidgetId = appWidgetId)
                 .ifEmpty { dict.keys }
-                .withIndex()
-                .let { indexedItems ->
+                .let { items ->
                     if (index == null) {
-                        indexedItems.mapNotNull { dict[it.value] }
+                        items.mapNotNull { dict[it] }
                     } else {
-                        listOfNotNull(indexedItems.elementAtOrNull(index)?.value?.let { dict[it] })
+                        listOfNotNull(items.elementAtOrNull(index)?.let { dict[it] })
                     }
                 }
         }.also { Timber.d("Total photos found: ${it.size}") }
@@ -164,69 +174,66 @@ class PhotoWidgetStorage @Inject constructor(
     private suspend fun getDirectoryPhotos(
         appWidgetId: Int,
         croppedPhotos: Map<String, LocalPhoto>,
-        index: Int?,
-    ): List<LocalPhoto> = withDirectoryPhotosCursor(appWidgetId = appWidgetId) { documentUri, cursor ->
-        val toLocalPhoto: Cursor.() -> LocalPhoto? = {
-            val documentId = getString(0)
-            val mimeType = getString(1)
-            val documentName = getString(2)
-            val documentLastModified = getLong(3)
+    ): List<LocalPhoto> {
+        val dirUri = getWidgetSyncDir(appWidgetId = appWidgetId) ?: return emptyList()
 
-            val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
+        return withDirectoryPhotosCursor(dirUri = dirUri) { documentUri, cursor ->
+            val toLocalPhoto: Cursor.() -> LocalPhoto? = {
+                val documentId = getString(0)
+                val mimeType = getString(1)
+                val documentName = getString(2).takeUnless { it.startsWith(".trashed") }
+                val documentLastModified = getLong(3)
 
-            if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
-                LocalPhoto(
-                    name = documentName,
-                    path = croppedPhotos[documentName]?.path,
-                    externalUri = fileUri,
-                    timestamp = documentLastModified,
-                )
-            } else {
-                null
+                val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
+
+                if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
+                    LocalPhoto(
+                        name = documentName,
+                        path = croppedPhotos[documentName]?.path,
+                        externalUri = fileUri,
+                        timestamp = documentLastModified,
+                    )
+                } else {
+                    null
+                }
             }
-        }
 
-        buildList {
-            if (index == null) {
+            buildList {
                 while (cursor.moveToNext()) {
                     cursor.toLocalPhoto()?.let { add(it) }
                 }
-            } else if (cursor.moveToPosition(index)) {
-                cursor.toLocalPhoto()?.let { add(it) }
-            }
-        }.sortedBy { it.timestamp }
-    }.orEmpty()
+            }.sortedByDescending { it.timestamp }
+        }.orEmpty()
+    }
 
     private suspend inline fun <T> withDirectoryPhotosCursor(
-        appWidgetId: Int,
+        dirUri: Uri,
         crossinline block: (documentUri: Uri, Cursor) -> T,
     ): T? = withContext(Dispatchers.IO) {
-        getWidgetSyncDir(appWidgetId = appWidgetId)?.let { uri ->
-            val documentUri = DocumentsContract.buildDocumentUriUsingTree(
-                /* treeUri = */ uri,
-                /* documentId = */ DocumentsContract.getTreeDocumentId(uri),
-            )
+        val documentUri = DocumentsContract.buildDocumentUriUsingTree(
+            /* treeUri = */ dirUri,
+            /* documentId = */ DocumentsContract.getTreeDocumentId(dirUri),
+        )
 
-            val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
-                /* treeUri = */ documentUri,
-                /* parentDocumentId = */ DocumentsContract.getDocumentId(documentUri),
-            )
+        val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
+            /* treeUri = */ documentUri,
+            /* parentDocumentId = */ DocumentsContract.getDocumentId(documentUri),
+        )
 
-            val projection = arrayOf(
-                DocumentsContract.Document.COLUMN_DOCUMENT_ID,
-                DocumentsContract.Document.COLUMN_MIME_TYPE,
-                DocumentsContract.Document.COLUMN_DISPLAY_NAME,
-                DocumentsContract.Document.COLUMN_LAST_MODIFIED,
-            )
+        val projection = arrayOf(
+            DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+            DocumentsContract.Document.COLUMN_MIME_TYPE,
+            DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+            DocumentsContract.Document.COLUMN_LAST_MODIFIED,
+        )
 
-            contentResolver.query(
-                /* uri = */ childrenUri,
-                /* projection = */ projection,
-                /* selection = */ null,
-                /* selectionArgs = */ null,
-                /* sortOrder = */ null,
-            )?.use { cursor -> block(documentUri, cursor) }
-        }
+        contentResolver.query(
+            /* uri = */ childrenUri,
+            /* projection = */ projection,
+            /* selection = */ null,
+            /* selectionArgs = */ null,
+            /* sortOrder = */ null,
+        )?.use { cursor -> block(documentUri, cursor) }
     }
 
     suspend fun getCropSources(appWidgetId: Int, localPhoto: LocalPhoto): Pair<Uri, Uri> {

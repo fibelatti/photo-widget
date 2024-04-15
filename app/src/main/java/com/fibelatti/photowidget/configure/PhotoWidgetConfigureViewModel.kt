@@ -145,13 +145,21 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     fun dirPicked(source: Uri?) {
         if (source == null) return
 
-        photoWidgetStorage.saveWidgetSyncedDir(
-            appWidgetId = appWidgetId,
-            dirUri = source,
-        )
-
         viewModelScope.launch {
             _state.update { current -> current.copy(isProcessing = true) }
+
+            if (!photoWidgetStorage.isValidDir(dirUri = source)) {
+                _state.update { current ->
+                    current.copy(
+                        isProcessing = false,
+                        messages = current.messages + PhotoWidgetConfigureState.Message.TooManyPhotos,
+                    )
+                }
+
+                return@launch
+            }
+
+            photoWidgetStorage.saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = source)
 
             val photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
 
