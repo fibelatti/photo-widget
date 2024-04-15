@@ -9,6 +9,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.StartOffset
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -102,7 +103,6 @@ import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
-import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit
 
 @Composable
@@ -193,6 +193,7 @@ private fun LoadingIndicator(
             animationSpec = infiniteRepeatable(
                 animation = tween(1_000),
                 repeatMode = RepeatMode.Restart,
+                initialStartOffset = StartOffset(offsetMillis = 300),
             ),
             label = "LoadingIndicator_Rotation",
         )
@@ -863,15 +864,10 @@ fun ShapedPhoto(
             val maxWidth = with(LocalDensity.current) { maxWidth.toPx().toInt() }
 
             LaunchedEffect(key1 = photo.externalUri) {
+                showLoading = true
                 photoBitmap = decoder.decode(source = photo.externalUri, maxDimension = maxWidth)
                 showLoading = false
             }
-        }
-
-        LaunchedEffect(key1 = photo) {
-            // Avoid flickering the indicator, only show if the photos takes a while to load
-            delay(timeMillis = 300)
-            showLoading = photoBitmap == null
         }
 
         val transformedBitmap: ImageBitmap? by remember(photo, shapeId, aspectRatio, cornerRadius) {
