@@ -3,7 +3,9 @@ package com.fibelatti.photowidget.platform
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.net.Uri
+import android.provider.MediaStore
 import com.fibelatti.photowidget.model.PhotoWidget
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -40,8 +42,38 @@ class PhotoDecoder @Inject constructor(
                 inDensity = max(originalWidth, originalHeight)
                 inTargetDensity = min(maxDimension, inDensity)
             }
+            val bitmap = BitmapFactory.decodeStream(inputStream, null, bitmapOptions)
+            val orientation = getOrientation(uri = source)
 
-            return@withContext BitmapFactory.decodeStream(inputStream, null, bitmapOptions)
+            if (bitmap != null && orientation != null) {
+                runCatching {
+                    val matrix = Matrix().apply { setRotate(orientation.toFloat()) }
+                    val rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+
+                    return@withContext rotated
+                }
+            }
+
+            return@withContext bitmap
+        }
+    }
+
+    private fun getOrientation(uri: Uri): Int? {
+        return try {
+            contentResolver.query(
+                /* uri = */ uri,
+                /* projection = */ arrayOf(MediaStore.Images.ImageColumns.ORIENTATION),
+                /* selection = */ null,
+                /* selectionArgs = */ null,
+                /* sortOrder = */ null,
+            )?.use { cursor ->
+                cursor.takeIf { it.count == 1 }?.run {
+                    moveToFirst()
+                    getInt(0)
+                }
+            }
+        } catch (_: Exception) {
+            null
         }
     }
 }
