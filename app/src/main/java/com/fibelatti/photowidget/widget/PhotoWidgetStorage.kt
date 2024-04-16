@@ -78,6 +78,7 @@ class PhotoWidgetStorage @Inject constructor(
         appWidgetId: Int,
         source: Uri,
     ): LocalPhoto? = withContext(Dispatchers.IO) {
+        Timber.d("New widget photo: $source (appWidgetId=$appWidgetId)")
         val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
         val originalPhotosDir = File("$widgetDir/original").apply { mkdirs() }
         val newPhotoName = "${UUID.randomUUID()}.png"
@@ -95,6 +96,7 @@ class PhotoWidgetStorage @Inject constructor(
                     async {
                         FileOutputStream(file).use { fos ->
                             importedPhoto.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                            Timber.d("$source saved to $file")
                         }
                     }
                 }.awaitAll()

@@ -103,6 +103,7 @@ import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
+import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit
 
 @Composable
@@ -845,29 +846,40 @@ fun ShapedPhoto(
 
         var photoBitmap: Bitmap? by remember(photo) {
             mutableStateOf(
-                when {
-                    localInspectionMode -> BitmapFactory.decodeResource(
-                        localContext.resources,
-                        R.drawable.widget_preview,
-                    )
-
-                    !photo.path.isNullOrEmpty() -> BitmapFactory.decodeFile(photo.path)
-
-                    else -> null
+                if (localInspectionMode) {
+                    BitmapFactory.decodeResource(localContext.resources, R.drawable.widget_preview)
+                } else {
+                    null
                 },
             )
         }
         var showLoading: Boolean by remember(photo) { mutableStateOf(false) }
 
-        if (photo.path.isNullOrEmpty() && photo.externalUri != null) {
-            val decoder = remember { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
-            val maxWidth = with(LocalDensity.current) { maxWidth.toPx().toInt() }
+        val decoder = remember { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
+        val maxWidth = with(LocalDensity.current) {
+            remember(maxWidth) { maxWidth.toPx().toInt() }
+        }
 
-            LaunchedEffect(key1 = photo.externalUri) {
-                showLoading = true
-                photoBitmap = decoder.decode(source = photo.externalUri, maxDimension = maxWidth)
-                showLoading = false
+        LaunchedEffect(key1 = photo.path, key2 = photo.externalUri) {
+            if (photoBitmap != null) return@LaunchedEffect
+
+            when {
+                !photo.path.isNullOrEmpty() -> {
+                    photoBitmap = decoder.decode(localPath = photo.path)
+                }
+
+                photo.externalUri != null -> {
+                    photoBitmap = decoder.decode(source = photo.externalUri, maxDimension = maxWidth)
+                }
             }
+
+            showLoading = false
+        }
+
+        LaunchedEffect(key1 = photo) {
+            // Avoid flickering the indicator, only show if the photos takes a while to load
+            delay(timeMillis = 300)
+            showLoading = photoBitmap == null
         }
 
         val transformedBitmap: ImageBitmap? by remember(photo, shapeId, aspectRatio, cornerRadius) {

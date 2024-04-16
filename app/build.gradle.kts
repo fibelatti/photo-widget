@@ -155,6 +155,7 @@ dependencies {
     ksp(libs.room.compiler)
 
     implementation(libs.ucrop)
+    implementation(libs.coil)
 
     implementation(libs.about.libraries)
 

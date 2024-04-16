@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.widget.RemoteViews
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetPinnedReceiver
@@ -111,11 +110,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val bitmap = try {
                 when {
                     !photoWidget.currentPhoto.path.isNullOrEmpty() -> {
-                        requireNotNull(BitmapFactory.decodeFile(photoWidget.currentPhoto.path))
+                        requireNotNull(photoWidget.currentPhoto.path?.let { decoder.decode(localPath = it) })
                     }
 
                     photoWidget.currentPhoto.externalUri != null -> {
-                        requireNotNull(photoWidget.currentPhoto.externalUri?.let { decoder.decode(it) })
+                        requireNotNull(photoWidget.currentPhoto.externalUri?.let { decoder.decode(source = it) })
                     }
 
                     else -> return null
