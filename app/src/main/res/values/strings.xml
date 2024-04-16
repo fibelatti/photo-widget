@@ -39,7 +39,7 @@
     <string name="photo_widget_configure_navigate_back_warning">Any changes will be lost, go back anyway?</string>
 
     <string name="photo_widget_configure_import_error">Unable to import all selected photos</string>
-    <string name="photo_widget_configure_too_many_photos_error">Widgets synced with a folder can have at most 500 photos. Please select a different folder.</string>
+    <string name="photo_widget_configure_too_many_photos_error">Widgets synced with a folder cannot be synced to your camera roll and can have at most 500 photos. Please select a different folder.</string>
 
     <string name="photo_widget_configure_menu_source">Source</string>
     <string name="photo_widget_configure_change_source_warning">You can select each photo or sync a widget with a folder. When syncing, all current and future photos will be added automatically.\n\nChanging the source will replace the current photos from this widget. Do you wish to continue?</string>

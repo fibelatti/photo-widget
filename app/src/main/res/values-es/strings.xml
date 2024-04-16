@@ -40,10 +40,10 @@
     <string name="photo_widget_configure_navigate_back_warning">¿Se perderán los cambios, volver de todos modos?</string>
 
     <string name="photo_widget_configure_import_error">No se pueden importar todas las fotos seleccionadas</string>
-    <string name="photo_widget_configure_too_many_photos_error">Los widgets sincronizados con directorio pueden tener como máximo 500 fotos. Seleccione un directorio diferente.</string>
+    <string name="photo_widget_configure_too_many_photos_error">Los widgets sincronizados con una carpeta no se pueden sincronizar con el carrete de la cámara y pueden tener como máximo 500 fotos. Seleccione una carpeta diferente.</string>
 
     <string name="photo_widget_configure_menu_source">Origen</string>
-    <string name="photo_widget_configure_change_source_warning">Puede seleccionar cada foto o sincronizar un widget con un directorio. Al sincronizar, todas las fotos actuales y futuras se agregarán automáticamente.\n\nCambiar la origen reemplazará las fotos actuales de este widget. ¿Desea continuar?</string>
+    <string name="photo_widget_configure_change_source_warning">Puede seleccionar cada foto o sincronizar un widget con una carpeta. Al sincronizar, todas las fotos actuales y futuras se agregarán automáticamente.\n\nCambiar la origen reemplazará las fotos actuales de este widget. ¿Desea continuar?</string>
 
     <string name="photo_widget_configure_menu_crop">Recortar</string>
     <string name="photo_widget_configure_menu_remove">Eliminar</string>
@@ -51,7 +51,7 @@
     <string name="photo_widget_configure_menu_move_right">Mover a la derecha</string>
 
     <string name="photo_widget_configure_photos">Fotos</string>
-    <string name="photo_widget_configure_photos_from_dir">Fotos del directorio</string>
+    <string name="photo_widget_configure_photos_from_dir">Fotos de carpeta</string>
 
     <string name="photo_widget_configure_shuffle_on">Activado</string>
     <string name="photo_widget_configure_shuffle_off">Desactivado</string>
@@ -103,5 +103,5 @@
     <string name="photo_widget_cd_change_source">Cambiar origen del widget</string>
     <string name="photo_widget_cd_toggle_shuffle">Cambiar modo aleatorio</string>
     <string name="photo_widget_cd_open_photo_picker">Abrir selector de fotos</string>
-    <string name="photo_widget_cd_open_folder_picker">Abrir selector de directorio</string>
+    <string name="photo_widget_cd_open_folder_picker">Abrir selector de carpetas</string>
 </resources>

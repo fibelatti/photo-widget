@@ -113,6 +113,8 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     suspend fun isValidDir(dirUri: Uri): Boolean {
+        Timber.d("Checking validity of selected dir: $dirUri")
+        if (dirUri.toString().endsWith("DCIM%2FCamera", ignoreCase = true)) return false
         return withDirectoryPhotosCursor(dirUri = dirUri) { _, cursor -> cursor.count <= 500 } ?: true
     }
 
