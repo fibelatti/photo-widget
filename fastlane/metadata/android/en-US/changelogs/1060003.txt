@@ -1,0 +1,9 @@
+Version 1.6 is released with the following updates:
+
+New: Folder based widgets — choose a folder to have all its photos automatically added to a widget
+New: Shuffle — flip through the widget photos in a random order
+New: Disable auto-flipping — you can now disable the automatic flipping of widgets
+
+This update also includes a bunch of small adjustments to the interface to better accommodate all controls
+
+Feedback and suggestions are always welcome, visit the project page to contribute!
