@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.util.DisplayMetrics
 import android.widget.RemoteViews
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetPinnedReceiver
@@ -16,10 +17,12 @@ import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.math.sqrt
 
 class PhotoWidgetProvider : AppWidgetProvider() {
 
@@ -59,6 +62,9 @@ class PhotoWidgetProvider : AppWidgetProvider() {
     companion object {
 
         private const val TAP_TO_FLIP_ACTION = "TAP_TO_FLIP_ACTION"
+
+        // RemoteViews have a maximum allowed memory for bitmaps
+        private const val MAX_WIDGET_BITMAP_MEMORY = 6_912_000
 
         fun ids(context: Context): List<Int> = AppWidgetManager.getInstance(context)
             .getAppWidgetIds(ComponentName(context, PhotoWidgetProvider::class.java))
@@ -108,17 +114,15 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
             Timber.d("Decoding the bitmap")
             val bitmap = try {
-                when {
-                    !photoWidget.currentPhoto.path.isNullOrEmpty() -> {
-                        requireNotNull(photoWidget.currentPhoto.path?.let { decoder.decode(localPath = it) })
-                    }
-
-                    photoWidget.currentPhoto.externalUri != null -> {
-                        requireNotNull(photoWidget.currentPhoto.externalUri?.let { decoder.decode(source = it) })
-                    }
-
+                val data = when {
+                    !photoWidget.currentPhoto.path.isNullOrEmpty() -> photoWidget.currentPhoto.path
+                    photoWidget.currentPhoto.externalUri != null -> photoWidget.currentPhoto.externalUri
                     else -> return null
                 }
+                val displayMetrics: DisplayMetrics = context.resources.displayMetrics
+                val maxDimension = sqrt(MAX_WIDGET_BITMAP_MEMORY / 4 / displayMetrics.density).toInt()
+
+                requireNotNull(decoder.decode(data = data, maxDimension = maxDimension))
             } catch (_: Exception) {
                 return null
             }

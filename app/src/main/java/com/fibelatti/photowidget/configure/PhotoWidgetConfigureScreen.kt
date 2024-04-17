@@ -860,19 +860,14 @@ fun ShapedPhoto(
             remember(maxWidth) { maxWidth.toPx().toInt() }
         }
 
-        LaunchedEffect(key1 = photo.path, key2 = photo.externalUri) {
-            if (photoBitmap != null) return@LaunchedEffect
-
-            when {
-                !photo.path.isNullOrEmpty() -> {
-                    photoBitmap = decoder.decode(localPath = photo.path)
-                }
-
-                photo.externalUri != null -> {
-                    photoBitmap = decoder.decode(source = photo.externalUri, maxDimension = maxWidth)
-                }
+        LaunchedEffect(key1 = photo) {
+            val data = when {
+                !photo.path.isNullOrEmpty() -> photo.path
+                photo.externalUri != null -> photo.externalUri
+                else -> return@LaunchedEffect
             }
 
+            photoBitmap = decoder.decode(data = data, maxDimension = maxWidth.coerceAtMost(PhotoWidget.MAX_DIMENSION))
             showLoading = false
         }
 

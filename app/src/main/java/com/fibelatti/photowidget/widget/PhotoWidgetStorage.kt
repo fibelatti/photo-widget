@@ -9,6 +9,7 @@ import android.provider.DocumentsContract
 import androidx.core.content.edit
 import com.fibelatti.photowidget.model.LegacyPhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.LocalPhoto
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.toLoopingInterval
@@ -89,7 +90,7 @@ class PhotoWidgetStorage @Inject constructor(
         val newFiles = listOf(originalPhoto, croppedPhoto)
 
         runCatching {
-            decoder.decode(source = source)?.let { importedPhoto ->
+            decoder.decode(data = source, maxDimension = PhotoWidget.MAX_DIMENSION)?.let { importedPhoto ->
                 newFiles.map { file ->
                     file.createNewFile()
 
