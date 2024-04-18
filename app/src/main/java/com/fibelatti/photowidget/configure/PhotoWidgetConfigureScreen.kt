@@ -867,7 +867,7 @@ fun ShapedPhoto(
                 else -> return@LaunchedEffect
             }
 
-            photoBitmap = decoder.decode(data = data, maxDimension = maxWidth.coerceAtMost(PhotoWidget.MAX_DIMENSION))
+            photoBitmap = decoder.decode(data = data, maxDimension = maxWidth)
             showLoading = false
         }
 

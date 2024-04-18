@@ -7,6 +7,7 @@ import coil.ImageLoader
 import coil.request.ErrorResult
 import coil.request.ImageRequest
 import coil.request.SuccessResult
+import com.fibelatti.photowidget.model.PhotoWidget
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -22,12 +23,14 @@ class PhotoDecoder @Inject constructor(
         data: Any?,
         maxDimension: Int,
     ): Bitmap? = withContext(Dispatchers.IO) {
-        Timber.d("Decoding $data into a bitmap (maxDimension=$maxDimension)")
+        val coerced = maxDimension.coerceIn(100, PhotoWidget.MAX_DIMENSION)
+
+        Timber.d("Decoding $data into a bitmap (maxDimension=$coerced)")
 
         val request = ImageRequest.Builder(context)
             .data(data)
             .allowHardware(enable = false)
-            .size(maxDimension)
+            .size(coerced)
             .build()
 
         imageLoader.execute(request)
