@@ -24,16 +24,18 @@ fun Bitmap.withRoundedCorners(
 fun Bitmap.withPolygonalShape(
     shapeId: String,
 ): Bitmap = withTransformation(desiredAspectRatio = PhotoWidgetAspectRatio.SQUARE) { canvas, rect, paint ->
-    val shape = PhotoWidgetShapeBuilder.buildShape(
-        shapeId = shapeId,
-        width = width.toFloat(),
-        height = height.toFloat(),
-    )
+    try {
+        val shape = PhotoWidgetShapeBuilder.buildShape(
+            shapeId = shapeId,
+            width = width.toFloat(),
+            height = height.toFloat(),
+        )
 
-    canvas.drawPath(
-        shape.transformed(bounds = rect.toRectF()).toPath(),
-        paint,
-    )
+        canvas.drawPath(shape.transformed(bounds = rect.toRectF()).toPath(), paint)
+    } catch (_: Exception) {
+        val radius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS
+        canvas.drawRoundRect(rect.toRectF(), radius, radius, paint)
+    }
 }
 
 private inline fun Bitmap.withTransformation(

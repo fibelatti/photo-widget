@@ -76,27 +76,20 @@ object PhotoWidgetShapeBuilder {
 
     const val DEFAULT_SHAPE_ID = "rounded-square"
 
-    fun buildAllShapes(
-        bounds: RectF? = null,
-        width: Float = 1f,
-        height: Float = 1f,
-    ): Map<PhotoWidgetShape, RoundedPolygon> = shapes.associateWith { shape ->
+    fun buildAllShapes(): Map<PhotoWidgetShape, RoundedPolygon> = shapes.associateWith { shape ->
         buildShape(photoWidgetShape = shape).transformed(
-            bounds = bounds,
-            width = width,
-            height = height,
+            width = 1f,
+            height = 1f,
         )
     }
 
     fun buildShape(
         shapeId: String?,
-        bounds: RectF? = null,
         width: Float = 1f,
         height: Float = 1f,
     ): RoundedPolygon = buildShape(
         photoWidgetShape = shapes.firstOrNull { it.id == shapeId } ?: shapes.first(),
     ).transformed(
-        bounds = bounds,
         width = width,
         height = height,
     )
@@ -105,9 +98,7 @@ object PhotoWidgetShapeBuilder {
         roundedPolygon: RoundedPolygon,
         width: Float,
         height: Float,
-        bounds: RectF = RectF(0f, 0f, 1f, 1f),
     ): RoundedPolygon = RoundedPolygon(source = roundedPolygon).transformed(
-        bounds = bounds,
         width = width,
         height = height,
     )
