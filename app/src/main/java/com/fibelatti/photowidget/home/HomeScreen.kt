@@ -79,6 +79,7 @@ fun HomeScreen(
     onHelpClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
+    showRate: Boolean,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
     onViewLicensesClick: () -> Unit,
@@ -159,6 +160,7 @@ fun HomeScreen(
                 HomeScreenFooter(
                     onAppearanceClick = onAppearanceClick,
                     onColorsClick = onColorsClick,
+                    showRate = showRate,
                     onRateClick = onRateClick,
                     onShareClick = onShareClick,
                     onViewLicensesClick = onViewLicensesClick,
@@ -348,6 +350,7 @@ private fun AspectRatioItem(
 private fun HomeScreenFooter(
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
+    showRate: Boolean,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
     onViewLicensesClick: () -> Unit,
@@ -379,12 +382,14 @@ private fun HomeScreenFooter(
                 )
             }
 
-            FooterAction(
-                icon = R.drawable.ic_rate,
-                label = R.string.photo_widget_home_rate,
-                onClick = onRateClick,
-                modifier = footerActionModifier,
-            )
+            if (showRate) {
+                FooterAction(
+                    icon = R.drawable.ic_rate,
+                    label = R.string.photo_widget_home_rate,
+                    onClick = onRateClick,
+                    modifier = footerActionModifier,
+                )
+            }
 
             FooterAction(
                 icon = R.drawable.ic_share,
@@ -483,6 +488,7 @@ private fun HomeScreenPreview() {
             onHelpClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
+            showRate = true,
             onRateClick = {},
             onShareClick = {},
             onViewLicensesClick = {},

@@ -42,6 +42,7 @@ class HomeActivity : AppCompatActivity() {
                     onAppearanceClick = ::showAppearancePicker,
                     onColorsClick = ::showAppColorsPicker,
                     onShareClick = ::shareApp,
+                    showRate = getRateIntent().resolveActivity(packageManager) != null,
                     onRateClick = ::rateApp,
                     onViewLicensesClick = ::viewOpenSourceLicenses,
                 )
@@ -145,12 +146,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun rateApp() {
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse(APP_URL)
-            setPackage("com.android.vending")
-        }
+        startActivity(getRateIntent())
+    }
 
-        startActivity(intent)
+    private fun getRateIntent(): Intent = Intent(Intent.ACTION_VIEW, Uri.parse(APP_URL)).apply {
+        setPackage("com.android.vending")
     }
 
     private fun viewOpenSourceLicenses() {
