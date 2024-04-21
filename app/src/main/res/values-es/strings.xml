@@ -91,6 +91,9 @@
     <string name="help_article_title_2">Las fotos del widget no cambian automáticamente</string>
     <string name="help_article_body_2">El intervalo seleccionado es una aproximación de cuánto tiempo pasará hasta que la foto cambie a la siguiente. Los tiempos reales son determinados por Android considerando múltiples factores.\n\nCada fabricante de dispositivos también puede imponer restricciones más estrictas a las cosas que se ejecutan en segundo plano, lo que podría interferir con el funcionamiento de la aplicación. Desafortunadamente, no se puede hacer mucho al respecto ya que el sistema tiene un mayor control por razones como la optimización de la vida útil de la batería.</string>
 
+    <!-- Viewer -->
+    <string name="photo_widget_viewer_actions">Pellizcar para hacer zoom | Arrastra para mover | Toca para cerrar</string>
+
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Sí</string>
     <string name="photo_widget_action_no">No</string>

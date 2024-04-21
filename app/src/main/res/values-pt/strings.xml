@@ -90,6 +90,9 @@
     <string name="help_article_title_2">As fotos não estão trocando automaticamente</string>
     <string name="help_article_body_2">O intervalo selecionado é apenas uma aproximação de quanto tempo cada troca levará no mínimo. O tempo atual é determinado pelo Android levando em conta múltiplos fatores.\n\nCada fabricante pode ainda impor mais restrições para processos que não estão em foco, o que acaba por interferir no funcionamento do app. Infelizmente não há nada que pode ser feito visto que o sistema detém controle por razões como otimização da duração da bateria.</string>
 
+    <!-- Viewer -->
+    <string name="photo_widget_viewer_actions">Pince para ampliar | Arraste para mover | Toque para fechar</string>
+
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Sim</string>
     <string name="photo_widget_action_no">Não</string>

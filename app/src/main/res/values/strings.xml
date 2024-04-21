@@ -88,6 +88,9 @@
     <string name="help_article_title_2">Widget photos are not changing automatically</string>
     <string name="help_article_body_2">The selected interval is an approximation of how soon the photo will change to the next. Actual times are determined by Android considering multiple factors.\n\nEach device manufacturer can also impose stricter restrictions to things running on the background, which could interfere with how the app works. Unfortunately nothing much can be done about it as the system has greater control for reasons such as battery life optimization.</string>
 
+    <!-- Viewer -->
+    <string name="photo_widget_viewer_actions">Pinch to zoom | Drag to move | Tap to dismiss</string>
+
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Yes</string>
     <string name="photo_widget_action_no">No</string>
