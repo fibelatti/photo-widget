@@ -1,22 +1,32 @@
-<b>Material Photo Widget</b> is as simple as it can be: a home screen widget to display a photo or collection of photos. It is a free, no-ads, open source alternative for people who want to customize their home screen with their favorite photos.
+<b>Material Photo Widget</b> is as simple as it can be: a home screen widget to
+display a photo or collection of photos. It is a free, no-ads, open source
+alternative for people who want to customize their home screen with their
+favorite photos.
 
-It's <b>easy</b> and <b>simple</b> to add a new widget with your photos. Start from the app or directly from the home screen widget browser on your preferred launcher.
+It's <b>easy</b> and <b>simple</b> to add a new widget with your photos. Start
+from the app or directly from the home screen widget browser on your preferred
+launcher.
 
 <b>FEATURES</b>
 
-- 3 aspect ratios: square, tall and wide
-- 8 different shapes to customize square widgets
-- Choose multiple photos and have them flip automatically on a given interval
+- 4 aspect ratios: square, tall, wide and original
+- Customize your square widgets with 9 different shapes
+- Customize the rounded corners of your tall, widget or original widgets
+- Choose each photo or sync the widget with a device folder
+- Set an optional interval and have photos flip automatically
+- Choose the tap action of each widget: view next photo or view in full screen
 
 <b>PERMISSIONS</b>
 
-The app doesn't require any permissions. Photos are selected using the native photo picker and stored within the app to keep everything private and secure.
+The app doesn't require any permissions. Photos are selected using the native
+photo picker and stored within the app to keep everything private and secure.
 
 There's no tracking or network communication.
 
 ---------------
 
-<b>Material Photo Widget</b> is an open-source project, find the code and submit feedback at https://github.com/fibelatti/photo-widget
+<b>Material Photo Widget</b> is an open-source project, find the code and
+submit feedback at https://github.com/fibelatti/photo-widget
 
 ---------------
 
