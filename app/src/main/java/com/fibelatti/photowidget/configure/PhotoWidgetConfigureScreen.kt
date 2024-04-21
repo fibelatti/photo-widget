@@ -1,7 +1,5 @@
 package com.fibelatti.photowidget.configure
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
@@ -14,14 +12,12 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -47,8 +43,6 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -60,16 +54,11 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.asComposePath
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -79,8 +68,6 @@ import androidx.compose.ui.unit.sp
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
 import com.fibelatti.photowidget.R
-import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
-import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -90,13 +77,13 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
-import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit
 
 @Composable
@@ -799,84 +786,33 @@ fun ShapedPhoto(
     modifier: Modifier = Modifier,
     badge: @Composable BoxScope.() -> Unit = {},
 ) {
-    BoxWithConstraints(
-        modifier = modifier,
-        contentAlignment = Alignment.Center,
-    ) {
-        val localInspectionMode = LocalInspectionMode.current
-        val localContext = LocalContext.current
-
-        var photoBitmap: Bitmap? by remember(photo) {
-            mutableStateOf(
-                if (localInspectionMode) {
-                    BitmapFactory.decodeResource(localContext.resources, R.drawable.widget_preview)
+    AsyncPhotoViewer(
+        data = when {
+            !photo.path.isNullOrEmpty() -> photo.path
+            photo.externalUri != null -> photo.externalUri
+            else -> null
+        },
+        contentScale = if (PhotoWidgetAspectRatio.ORIGINAL != aspectRatio) {
+            ContentScale.FillWidth
+        } else {
+            ContentScale.Inside
+        },
+        modifier = modifier.aspectRatio(ratio = aspectRatio.aspectRatio),
+        transformer = { bitmap ->
+            bitmap?.run {
+                if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
+                    withPolygonalShape(shapeId = shapeId)
                 } else {
-                    null
-                },
-            )
-        }
-        var showLoading: Boolean by remember(photo) { mutableStateOf(false) }
-
-        val decoder = remember { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
-        val maxWidth = with(LocalDensity.current) {
-            remember(maxWidth) { maxWidth.toPx().toInt() }
-        }
-
-        LaunchedEffect(key1 = photo) {
-            val data = when {
-                !photo.path.isNullOrEmpty() -> photo.path
-                photo.externalUri != null -> photo.externalUri
-                else -> return@LaunchedEffect
-            }
-
-            photoBitmap = decoder.decode(data = data, maxDimension = maxWidth)
-            showLoading = false
-        }
-
-        LaunchedEffect(key1 = photo) {
-            // Avoid flickering the indicator, only show if the photos takes a while to load
-            delay(timeMillis = 300)
-            showLoading = photoBitmap == null
-        }
-
-        val transformedBitmap: ImageBitmap? by remember(photo, shapeId, aspectRatio, cornerRadius) {
-            derivedStateOf {
-                photoBitmap?.run {
-                    if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
-                        withPolygonalShape(shapeId = shapeId)
-                    } else {
-                        withRoundedCorners(
-                            desiredAspectRatio = aspectRatio,
-                            radius = cornerRadius,
-                        )
-                    }.asImageBitmap()
+                    withRoundedCorners(
+                        desiredAspectRatio = aspectRatio,
+                        radius = cornerRadius,
+                    )
                 }
             }
-        }
-
-        transformedBitmap?.let { bitmap ->
-            Image(
-                bitmap = bitmap,
-                contentDescription = "",
-                modifier = Modifier
-                    .aspectRatio(ratio = aspectRatio.aspectRatio)
-                    .fillMaxSize(),
-                contentScale = if (PhotoWidgetAspectRatio.ORIGINAL != aspectRatio) {
-                    ContentScale.FillWidth
-                } else {
-                    ContentScale.Inside
-                },
-            )
-
-            badge()
-        } ?: run {
-            if (showLoading) {
-                LoadingIndicator(
-                    modifier = Modifier.padding(all = 4.dp),
-                )
-            }
-        }
-    }
+        },
+        transformerKey = arrayOf(photo, shapeId, aspectRatio, cornerRadius),
+        badge = badge,
+    )
 }
 
 @Composable
