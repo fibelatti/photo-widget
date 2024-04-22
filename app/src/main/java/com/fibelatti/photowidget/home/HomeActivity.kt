@@ -145,12 +145,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun rateApp() {
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse(APP_URL)
-            setPackage("com.android.vending")
-        }
-
-        startActivity(intent)
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(APP_URL)))
     }
 
     private fun viewOpenSourceLicenses() {
