@@ -34,7 +34,7 @@ fun AsyncPhotoViewer(
     contentScale: ContentScale,
     modifier: Modifier = Modifier,
     transformer: (Bitmap?) -> Bitmap? = { it },
-    vararg transformerKey: Any = emptyArray(),
+    vararg transformerKey: Any? = arrayOf(data, transformer),
     badge: @Composable BoxScope.() -> Unit = {},
 ) {
     BoxWithConstraints(

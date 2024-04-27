@@ -51,9 +51,12 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         if (TAP_TO_FLIP_ACTION == intent.action) {
             runCatching {
                 val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
+                val scope = entryPoint.coroutineScope()
                 val flipPhotoUseCase = entryPoint.flipPhotoUseCase()
 
-                flipPhotoUseCase(appWidgetId = intent.appWidgetId)
+                scope.launch {
+                    flipPhotoUseCase(appWidgetId = intent.appWidgetId)
+                }
             }
         }
     }
