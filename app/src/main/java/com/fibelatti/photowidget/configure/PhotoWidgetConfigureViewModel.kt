@@ -18,6 +18,7 @@ import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -104,9 +105,11 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     fun photoPicked(source: List<Uri>) {
         if (source.isEmpty()) return
 
-        _state.update { current -> current.copy(isProcessing = true) }
-
         viewModelScope.launch {
+            while (_state.value.isProcessing) delay(timeMillis = 100L)
+
+            _state.update { current -> current.copy(isProcessing = true) }
+
             val newPhotos = source.map { uri ->
                 async {
                     photoWidgetStorage.newWidgetPhoto(
