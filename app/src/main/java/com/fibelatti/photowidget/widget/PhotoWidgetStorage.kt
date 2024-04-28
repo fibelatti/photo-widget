@@ -117,25 +117,31 @@ class PhotoWidgetStorage @Inject constructor(
 
     suspend fun isValidDir(dirUri: Uri): Boolean {
         Timber.d("Checking validity of selected dir: $dirUri")
+
         if (dirUri.toString().endsWith("DCIM%2FCamera", ignoreCase = true)) return false
-        return withDirectoryPhotosCursor(dirUri = dirUri) { _, cursor -> cursor.count <= 500 } ?: true
+
+        return getDirectoryPhotoCount(dirUri = dirUri) <= 1_000
     }
 
     suspend fun getWidgetPhotoCount(appWidgetId: Int): Int = withContext(Dispatchers.IO) {
         if (PhotoWidgetSource.DIRECTORY == getWidgetSource(appWidgetId = appWidgetId)) {
             val dirUri = getWidgetSyncDir(appWidgetId = appWidgetId) ?: return@withContext 0
-            withDirectoryPhotosCursor(dirUri = dirUri) { _, cursor ->
-                var count = 0
-
-                while (cursor.moveToNext()) {
-                    val mimeType = cursor.getString(1)
-                    if (mimeType in ALLOWED_TYPES) count += 1
-                }
-
-                count
-            }
+            getDirectoryPhotoCount(dirUri = dirUri)
         } else {
-            getWidgetDir(appWidgetId = appWidgetId).list { _, name -> name != "original" }?.size
+            getWidgetDir(appWidgetId = appWidgetId).list { _, name -> name != "original" }?.size ?: 0
+        }
+    }
+
+    private suspend fun getDirectoryPhotoCount(dirUri: Uri): Int {
+        return withDirectoryPhotosCursor(dirUri = dirUri) { _, cursor ->
+            var count = 0
+
+            while (cursor.moveToNext()) {
+                val mimeType = cursor.getString(1)
+                if (mimeType in ALLOWED_TYPES) count += 1
+            }
+
+            count
         } ?: 0
     }
 
@@ -183,29 +189,25 @@ class PhotoWidgetStorage @Inject constructor(
         val dirUri = getWidgetSyncDir(appWidgetId = appWidgetId) ?: return emptyList()
 
         return withDirectoryPhotosCursor(dirUri = dirUri) { documentUri, cursor ->
-            val toLocalPhoto: Cursor.() -> LocalPhoto? = {
-                val documentId = getString(0)
-                val mimeType = getString(1)
-                val documentName = getString(2).takeUnless { it.startsWith(".trashed") }
-                val documentLastModified = getLong(3)
-
-                val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
-
-                if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
-                    LocalPhoto(
-                        name = documentName,
-                        path = croppedPhotos[documentName]?.path,
-                        externalUri = fileUri,
-                        timestamp = documentLastModified,
-                    )
-                } else {
-                    null
-                }
-            }
-
             buildList {
                 while (cursor.moveToNext()) {
-                    cursor.toLocalPhoto()?.let { add(it) }
+                    val documentId = cursor.getString(0)
+                    val mimeType = cursor.getString(1)
+                    val documentName = cursor.getString(2).takeUnless { it.startsWith(".trashed") }
+                    val documentLastModified = cursor.getLong(3)
+
+                    val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
+
+                    if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
+                        val localPhoto = LocalPhoto(
+                            name = documentName,
+                            path = croppedPhotos[documentName]?.path,
+                            externalUri = fileUri,
+                            timestamp = documentLastModified,
+                        )
+
+                        add(localPhoto)
+                    }
                 }
             }.sortedByDescending { it.timestamp }
         }.orEmpty()
@@ -290,7 +292,7 @@ class PhotoWidgetStorage @Inject constructor(
         )
     }
 
-    suspend fun getWidgetOrder(appWidgetId: Int): List<String> {
+    private suspend fun getWidgetOrder(appWidgetId: Int): List<String> {
         // Check for legacy storage value
         val value = sharedPreferences.getString("${PreferencePrefix.ORDER}$appWidgetId", null)
             ?.split(",")
@@ -489,8 +491,9 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     private companion object {
+
         const val SHARED_PREFERENCES_NAME = "com.fibelatti.photowidget.PhotoWidget"
 
-        private val ALLOWED_TYPES = arrayOf("image/jpeg", "image/png")
+        val ALLOWED_TYPES = arrayOf("image/jpeg", "image/png")
     }
 }
