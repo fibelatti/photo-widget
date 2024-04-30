@@ -49,7 +49,7 @@ class FlipPhotoUseCase @Inject constructor(
             currentIndex == count - 1 -> 0
 
             else -> currentIndex + 1
-        }
+        }.coerceIn(0, count - 1)
 
         Timber.d("Updating index from $currentIndex to $nextIndex")
         photoWidgetStorage.saveWidgetIndex(appWidgetId = appWidgetId, index = nextIndex)
