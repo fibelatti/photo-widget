@@ -153,7 +153,6 @@ private fun ScreenContent(
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
                 .padding(start = 32.dp, end = 32.dp, bottom = 48.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (showFlipControls) {
@@ -163,6 +162,7 @@ private fun ScreenContent(
             }
 
             Column(
+                modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(2.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
