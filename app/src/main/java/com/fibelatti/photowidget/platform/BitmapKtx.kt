@@ -32,9 +32,11 @@ fun Bitmap.withPolygonalShape(
         )
 
         canvas.drawPath(shape.transformed(bounds = rect.toRectF()).toPath(), paint)
-    } catch (_: Exception) {
-        val radius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS
-        canvas.drawRoundRect(rect.toRectF(), radius, radius, paint)
+    } catch (e: Exception) {
+        val message = "withPolygonalShape failed! " +
+            "(shapeId=$shapeId, bitmap=$width, $height, rect=${rect.width()}, ${rect.height()})"
+
+        throw RuntimeException(message, e)
     }
 }
 
