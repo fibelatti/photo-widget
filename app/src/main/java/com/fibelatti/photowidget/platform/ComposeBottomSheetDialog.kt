@@ -3,6 +3,7 @@ package com.fibelatti.photowidget.platform
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -22,6 +23,7 @@ class ComposeBottomSheetDialog(
 
         setContentView(
             ComposeView(context).apply {
+                setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
                 setContent {
                     AppTheme {
                         content()
