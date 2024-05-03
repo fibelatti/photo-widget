@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -134,18 +133,7 @@ private fun ScreenContent(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = Color.Black.copy(alpha = 0.8f))
-            .combinedClickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = onDismiss,
-                onDoubleClick = {
-                    scope.launch {
-                        state.animateZoomBy(if (scale > 1f) 0.5f else 2f)
-                        if (scale > 1f) offset = Offset.Zero
-                    }
-                },
-            ),
+            .background(color = Color.Black.copy(alpha = 0.8f)),
         contentAlignment = Alignment.Center,
     ) {
         Row(
@@ -200,6 +188,17 @@ private fun ScreenContent(
                 ContentScale.Inside
             },
             modifier = Modifier
+                .combinedClickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = onDismiss,
+                    onDoubleClick = {
+                        scope.launch {
+                            state.animateZoomBy(if (scale > 1f) 0.5f else 2f)
+                            if (scale > 1f) offset = Offset.Zero
+                        }
+                    },
+                )
                 .graphicsLayer {
                     scaleX = scale
                     scaleY = scale
@@ -207,7 +206,6 @@ private fun ScreenContent(
                     translationY = offset.y
                 }
                 .transformable(state = state)
-                .fillMaxHeight()
                 .aspectRatio(ratio = aspectRatio.aspectRatio)
                 .padding(all = 32.dp),
         )
