@@ -87,7 +87,7 @@ private fun SourcePickerContent(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .nestedScroll(rememberNestedScrollInteropConnection()),
-            contentPadding = PaddingValues(bottom = 100.dp),
+            contentPadding = PaddingValues(bottom = 120.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             stickyHeader {
@@ -108,6 +108,7 @@ private fun SourcePickerContent(
                     Text(
                         text = stringResource(id = R.string.photo_widget_configure_source_description),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Justify,
                         style = MaterialTheme.typography.labelLarge,
                     )
 
@@ -119,7 +120,7 @@ private fun SourcePickerContent(
                                 }
 
                                 PhotoWidgetSource.DIRECTORY -> {
-                                    if (syncedDir.isEmpty()) {
+                                    if (dirList.isEmpty()) {
                                         R.string.photo_widget_configure_source_selection_directory_empty
                                     } else {
                                         R.string.photo_widget_configure_source_selection_directory_non_empty
@@ -153,14 +154,14 @@ private fun SourcePickerContent(
                         Text(
                             text = dir.lastPathSegment.orEmpty(),
                             modifier = Modifier.weight(1f),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
                             style = MaterialTheme.typography.bodyLarge,
                         )
 
                         Icon(
                             painter = painterResource(id = R.drawable.ic_trash),
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
                     }
                 }
@@ -181,7 +182,7 @@ private fun SourcePickerContent(
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 Color.Transparent,
-                                MaterialTheme.colorScheme.background,
+                                MaterialTheme.colorScheme.surfaceContainerLow,
                             ),
                         ),
                     ),
@@ -205,7 +206,7 @@ private fun SourcePickerContent(
 
             Text(
                 text = stringResource(id = R.string.photo_widget_configure_source_warning),
-                modifier = Modifier.padding(horizontal = 40.dp),
+                modifier = Modifier.padding(start = 40.dp, top = 8.dp, end = 40.dp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.labelMedium,
@@ -237,13 +238,7 @@ private fun SourcePickerContentDirectoryPreview() {
     ExtendedTheme {
         SourcePickerContent(
             currentSource = PhotoWidgetSource.DIRECTORY,
-            syncedDir = setOf(
-                Uri.parse("https://test1"),
-                Uri.parse("https://test2"),
-                Uri.parse("https://test3"),
-                Uri.parse("https://test4"),
-                Uri.parse("https://test5"),
-            ),
+            syncedDir = List(10) { Uri.parse("https://test/$it") }.toSet(),
             onDirRemoved = {},
             onApplyClick = {},
         )
