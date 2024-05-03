@@ -330,6 +330,7 @@ private fun PhotoWidgetViewer(
 ) {
     Box(
         modifier = modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center,
     ) {
         val colors = listOf(
             Color.White,
@@ -360,7 +361,7 @@ private fun PhotoWidgetViewer(
                 cornerRadius = cornerRadius,
                 modifier = Modifier
                     .padding(start = 32.dp, top = 32.dp, end = 32.dp, bottom = 48.dp)
-                    .fillMaxSize(),
+                    .fillMaxHeight(),
             )
         }
     }
@@ -604,7 +605,7 @@ private fun PhotoPicker(
                     shapeId = shapeId,
                     cornerRadius = cornerRadius,
                     modifier = Modifier
-                        .fillMaxHeight()
+                        .fillMaxWidth()
                         .aspectRatio(ratio = aspectRatio.aspectRatio)
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
