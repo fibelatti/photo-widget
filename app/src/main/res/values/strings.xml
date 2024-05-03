@@ -42,7 +42,13 @@
     <string name="photo_widget_configure_too_many_photos_error">Widgets synced with a folder cannot be synced to your camera roll and can have at most 1000 photos. Please select a different folder.</string>
 
     <string name="photo_widget_configure_menu_source">Source</string>
-    <string name="photo_widget_configure_change_source_warning">You can select each photo or sync a widget with a folder. When syncing, all current and future photos will be added automatically.\n\nChanging the source will replace the current photos from this widget. Do you wish to continue?</string>
+    <string name="photo_widget_configure_source_description">You can select each photo or sync a widget with folders. When syncing, all current and future photos will be added automatically.</string>
+    <string name="photo_widget_configure_source_selection_photos">You have selected each photo for this widget.</string>
+    <string name="photo_widget_configure_source_selection_directory_empty">This widget is not synced with any folder</string>
+    <string name="photo_widget_configure_source_selection_directory_non_empty">This widget is synced with these folders:</string>
+    <string name="photo_widget_configure_source_set_directory">Set source to Folder</string>
+    <string name="photo_widget_configure_source_set_photos">Set source to Photos</string>
+    <string name="photo_widget_configure_source_warning">Changing the source will replace the current photos from this widget.</string>
 
     <string name="photo_widget_configure_menu_crop">Crop</string>
     <string name="photo_widget_configure_menu_remove">Remove</string>

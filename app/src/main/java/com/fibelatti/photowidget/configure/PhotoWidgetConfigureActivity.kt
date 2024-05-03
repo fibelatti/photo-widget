@@ -26,6 +26,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.SelectionDialog
@@ -101,7 +102,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     onRemoveClick = viewModel::photoRemoved,
                     onMoveLeftClick = viewModel::moveLeft,
                     onMoveRightClick = viewModel::moveRight,
-                    onChangeSource = viewModel::changeSource,
+                    onChangeSource = ::showSourcePicker,
                     onShuffleClick = viewModel::toggleShuffle,
                     onPhotoPickerClick = ::launchPhotoPicker,
                     onDirPickerClick = ::launchFolderPicker,
@@ -189,6 +190,19 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             options = PhotoWidgetAspectRatio.entries,
             optionName = { option -> getString(option.label) },
             onOptionSelected = viewModel::setAspectRatio,
+        )
+    }
+
+    private fun showSourcePicker(
+        currentSource: PhotoWidgetSource,
+        syncedDir: Set<Uri>,
+    ) {
+        PhotoWidgetSourcePicker.show(
+            context = this,
+            currentSource = currentSource,
+            syncedDir = syncedDir,
+            onDirRemoved = viewModel::removeDir,
+            onApplyClick = viewModel::changeSource,
         )
     }
 

@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class PhotoWidget(
     val source: PhotoWidgetSource = PhotoWidgetSource.PHOTOS,
-    val syncedDir: Uri? = null,
+    val syncedDir: Set<Uri> = emptySet(),
     val photos: List<LocalPhoto> = emptyList(),
     val currentIndex: Int = 0,
     val shuffle: Boolean = false,

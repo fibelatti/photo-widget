@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.configure
 
+import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
@@ -32,7 +33,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,12 +41,9 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -96,7 +93,7 @@ fun PhotoWidgetConfigureScreen(
     onRemoveClick: (LocalPhoto) -> Unit,
     onMoveLeftClick: (LocalPhoto) -> Unit,
     onMoveRightClick: (LocalPhoto) -> Unit,
-    onChangeSource: () -> Unit,
+    onChangeSource: (currentSource: PhotoWidgetSource, syncedDir: Set<Uri>) -> Unit,
     onShuffleClick: () -> Unit,
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
@@ -170,7 +167,7 @@ private fun PhotoWidgetConfigureContent(
     onRemoveClick: (LocalPhoto) -> Unit,
     onMoveLeftClick: (LocalPhoto) -> Unit,
     onMoveRightClick: (LocalPhoto) -> Unit,
-    onChangeSource: () -> Unit,
+    onChangeSource: (currentSource: PhotoWidgetSource, syncedDir: Set<Uri>) -> Unit,
     onShuffleClick: () -> Unit,
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
@@ -229,7 +226,7 @@ private fun PhotoWidgetConfigureContent(
 
         PhotoPicker(
             source = photoWidget.source,
-            onChangeSource = onChangeSource,
+            onChangeSource = { onChangeSource(photoWidget.source, photoWidget.syncedDir) },
             photos = photoWidget.photos,
             shuffleVisible = photoWidget.canShuffle,
             shuffle = photoWidget.shuffle,
@@ -295,29 +292,6 @@ private fun PhotoWidgetConfigureContent(
             Text(text = stringResource(id = R.string.photo_widget_configure_add_to_home))
         }
     }
-}
-
-@Composable
-private fun ChangeSourceWarningDialog(
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            TextButton(onClick = onConfirm) {
-                Text(text = stringResource(id = R.string.photo_widget_action_continue))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(text = stringResource(id = R.string.photo_widget_action_cancel))
-            }
-        },
-        text = {
-            Text(text = stringResource(id = R.string.photo_widget_configure_change_source_warning))
-        },
-    )
 }
 
 @Composable
@@ -486,18 +460,6 @@ private fun PhotoPicker(
     cornerRadius: Float,
     modifier: Modifier = Modifier,
 ) {
-    var dialogVisible by remember { mutableStateOf(false) }
-
-    if (dialogVisible) {
-        ChangeSourceWarningDialog(
-            onDismiss = { dialogVisible = false },
-            onConfirm = {
-                dialogVisible = false
-                onChangeSource()
-            },
-        )
-    }
-
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -544,7 +506,7 @@ private fun PhotoPicker(
                 label = R.string.photo_widget_configure_menu_source,
                 icon = R.drawable.ic_pick_folder,
                 contentDescription = R.string.photo_widget_cd_change_source,
-                onClick = { dialogVisible = true },
+                onClick = onChangeSource,
                 modifier = Modifier.alignByBaseline(),
             )
         }
@@ -872,7 +834,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onAspectRatioClick = {},
             onCropClick = {},
             onRemoveClick = {},
-            onChangeSource = {},
+            onChangeSource = { _, _ -> },
             onShuffleClick = {},
             onPhotoPickerClick = {},
             onDirPickerClick = {},

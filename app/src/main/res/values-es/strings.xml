@@ -43,7 +43,14 @@
     <string name="photo_widget_configure_too_many_photos_error">Los widgets sincronizados con una carpeta no se pueden sincronizar con el carrete de la cámara y pueden tener como máximo 1000 fotos. Seleccione una carpeta diferente.</string>
 
     <string name="photo_widget_configure_menu_source">Origen</string>
-    <string name="photo_widget_configure_change_source_warning">Puede seleccionar cada foto o sincronizar un widget con una carpeta. Al sincronizar, todas las fotos actuales y futuras se agregarán automáticamente.\n\nCambiar la origen reemplazará las fotos actuales de este widget. ¿Desea continuar?</string>
+    <string name="photo_widget_configure_source_description">Puedes seleccionar cada foto o sincronizar un widget con carpetas. Al sincronizar, todas las fotos actuales y futuras se añadirán automáticamente.</string>
+    <string name="photo_widget_configure_source_selection_photos">Has seleccionado cada foto para este widget.</string>
+    <string name="photo_widget_configure_source_selection_directory_empty">Este widget no está sincronizado con ninguna carpeta.</string>
+    <string name="photo_widget_configure_source_selection_directory_non_empty">Este widget está sincronizado con estas carpetas:</string>
+    <string name="photo_widget_configure_source_set_directory">Establecer origen en Carpeta</string>
+    <string name="photo_widget_configure_source_set_photos">Establecer origen en Fotos</string>
+    <string name="photo_widget_configure_source_warning">Cambiar la origen reemplazará las fotos actuales de este widget.</string>
+
 
     <string name="photo_widget_configure_menu_crop">Recortar</string>
     <string name="photo_widget_configure_menu_remove">Eliminar</string>

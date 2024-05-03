@@ -42,7 +42,14 @@
     <string name="photo_widget_configure_too_many_photos_error">Os widgets pareados com uma pasta não podem ser pareados com o rolo da câmera e podem ter no máximo 1000 fotos. Selecione uma pasta diferente.</string>
 
     <string name="photo_widget_configure_menu_source">Origem</string>
-    <string name="photo_widget_configure_change_source_warning">Você pode escolher cada foto ou parear o widget com uma pasta. Ao parear, todas as fotos atuais e futuras serão incluídas automaticamente.\n\nAlterar a origem irá substituir as fotos atuais deste widget. Deseja continuar?</string>
+    <string name="photo_widget_configure_source_description">Você pode selecionar cada foto ou sincronizar um widget com pastas. Ao sincronizar, todas as fotos atuais e futuras serão adicionadas automaticamente.</string>
+    <string name="photo_widget_configure_source_selection_photos">Você selecionou cada foto para este widget.</string>
+    <string name="photo_widget_configure_source_selection_directory_empty">Este widget não está sincronizado com nenhuma pasta.</string>
+    <string name="photo_widget_configure_source_selection_directory_non_empty">Este widget está sincronizado com estas pastas:</string>
+    <string name="photo_widget_configure_source_set_directory">Definir origem para Pasta</string>
+    <string name="photo_widget_configure_source_set_photos">Definir origem para Fotos</string>
+    <string name="photo_widget_configure_source_warning">Alterar a origem irá substituir as fotos atuais deste widget.</string>
+
 
     <string name="photo_widget_configure_menu_crop">Recortar</string>
     <string name="photo_widget_configure_menu_remove">Remover</string>

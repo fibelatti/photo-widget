@@ -28,9 +28,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
             }
 
             PhotoWidgetSource.DIRECTORY -> {
-                photoWidget.syncedDir?.let {
-                    photoWidgetStorage.saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = photoWidget.syncedDir)
-                }
+                photoWidgetStorage.saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = photoWidget.syncedDir)
             }
         }
 

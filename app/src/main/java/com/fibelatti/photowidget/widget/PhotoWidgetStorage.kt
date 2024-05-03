@@ -21,6 +21,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
@@ -62,17 +63,37 @@ class PhotoWidgetStorage @Inject constructor(
         return enumValueOfOrNull<PhotoWidgetSource>(name)
     }
 
-    fun saveWidgetSyncedDir(appWidgetId: Int, dirUri: Uri) {
-        contentResolver.takePersistableUriPermission(dirUri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    fun saveWidgetSyncedDir(appWidgetId: Int, dirUri: Set<Uri>) {
+        val newDir = dirUri.minus(contentResolver.persistedUriPermissions.map { it.uri }.toSet())
+        for (dir in newDir) {
+            contentResolver.takePersistableUriPermission(dir, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
         sharedPreferences.edit {
-            putString("${PreferencePrefix.SYNCED_DIR}$appWidgetId", dirUri.toString())
+            putStringSet("${PreferencePrefix.SYNCED_DIR}$appWidgetId", dirUri.map { it.toString() }.toSet())
         }
     }
 
-    fun getWidgetSyncDir(appWidgetId: Int): Uri? {
-        val uriString = sharedPreferences.getString("${PreferencePrefix.SYNCED_DIR}$appWidgetId", null)
+    fun removeSyncedDir(appWidgetId: Int, dirUri: Uri) {
+        contentResolver.releasePersistableUriPermission(dirUri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
-        return uriString?.let(Uri::parse)
+        val currentDir = getWidgetSyncDir(appWidgetId = appWidgetId)
+        saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = currentDir - dirUri)
+    }
+
+    fun getWidgetSyncDir(appWidgetId: Int): Set<Uri> {
+        val legacyUriString = sharedPreferences.getString("${PreferencePrefix.LEGACY_SYNCED_DIR}$appWidgetId", null)
+            ?.let(Uri::parse)
+
+        if (legacyUriString != null) {
+            saveWidgetSyncedDir(appWidgetId = appWidgetId, setOf(legacyUriString))
+            sharedPreferences.edit { remove("${PreferencePrefix.LEGACY_SYNCED_DIR}$appWidgetId") }
+        }
+
+        return sharedPreferences.getStringSet("${PreferencePrefix.SYNCED_DIR}$appWidgetId", null)
+            .orEmpty()
+            .map(Uri::parse)
+            .toSet()
     }
 
     suspend fun newWidgetPhoto(
@@ -125,8 +146,12 @@ class PhotoWidgetStorage @Inject constructor(
 
     suspend fun getWidgetPhotoCount(appWidgetId: Int): Int = withContext(Dispatchers.IO) {
         if (PhotoWidgetSource.DIRECTORY == getWidgetSource(appWidgetId = appWidgetId)) {
-            val dirUri = getWidgetSyncDir(appWidgetId = appWidgetId) ?: return@withContext 0
-            getDirectoryPhotoCount(dirUri = dirUri)
+            coroutineScope {
+                getWidgetSyncDir(appWidgetId = appWidgetId)
+                    .map { uri -> async { getDirectoryPhotoCount(dirUri = uri) } }
+                    .awaitAll()
+                    .sum()
+            }
         } else {
             getWidgetDir(appWidgetId = appWidgetId).list { _, name -> name != "original" }?.size ?: 0
         }
@@ -185,32 +210,37 @@ class PhotoWidgetStorage @Inject constructor(
     private suspend fun getDirectoryPhotos(
         appWidgetId: Int,
         croppedPhotos: Map<String, LocalPhoto>,
-    ): List<LocalPhoto> {
-        val dirUri = getWidgetSyncDir(appWidgetId = appWidgetId) ?: return emptyList()
+    ): List<LocalPhoto> = coroutineScope {
+        getWidgetSyncDir(appWidgetId = appWidgetId)
+            .map { uri ->
+                async {
+                    withDirectoryPhotosCursor(dirUri = uri) { documentUri, cursor ->
+                        buildList {
+                            while (cursor.moveToNext()) {
+                                val documentId = cursor.getString(0)
+                                val mimeType = cursor.getString(1)
+                                val documentName = cursor.getString(2).takeUnless { it.startsWith(".trashed") }
+                                val documentLastModified = cursor.getLong(3)
 
-        return withDirectoryPhotosCursor(dirUri = dirUri) { documentUri, cursor ->
-            buildList {
-                while (cursor.moveToNext()) {
-                    val documentId = cursor.getString(0)
-                    val mimeType = cursor.getString(1)
-                    val documentName = cursor.getString(2).takeUnless { it.startsWith(".trashed") }
-                    val documentLastModified = cursor.getLong(3)
+                                val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
 
-                    val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
+                                if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
+                                    val localPhoto = LocalPhoto(
+                                        name = documentName,
+                                        path = croppedPhotos[documentName]?.path,
+                                        externalUri = fileUri,
+                                        timestamp = documentLastModified,
+                                    )
 
-                    if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
-                        val localPhoto = LocalPhoto(
-                            name = documentName,
-                            path = croppedPhotos[documentName]?.path,
-                            externalUri = fileUri,
-                            timestamp = documentLastModified,
-                        )
-
-                        add(localPhoto)
-                    }
+                                    add(localPhoto)
+                                }
+                            }
+                        }.sortedByDescending { it.timestamp }
+                    }.orEmpty()
                 }
-            }.sortedByDescending { it.timestamp }
-        }.orEmpty()
+            }
+            .awaitAll()
+            .flatten()
     }
 
     private suspend inline fun <T> withDirectoryPhotosCursor(
@@ -464,7 +494,16 @@ class PhotoWidgetStorage @Inject constructor(
 
     private enum class PreferencePrefix(val value: String) {
         SOURCE(value = "appwidget_source_"),
-        SYNCED_DIR(value = "appwidget_synced_dir_"),
+
+        /**
+         * Key from when initial support for directory based widgets was introduced.
+         */
+        LEGACY_SYNCED_DIR(value = "appwidget_synced_dir_"),
+
+        /**
+         * Key from when support for syncing multiple directories was introduced.
+         */
+        SYNCED_DIR(value = "appwidget_synced_dir_set_"),
 
         ORDER(value = "appwidget_order_"),
         SHUFFLE(value = "appwidget_shuffle_"),
