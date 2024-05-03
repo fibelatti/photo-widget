@@ -31,10 +31,10 @@ import kotlinx.coroutines.delay
 @Composable
 fun AsyncPhotoViewer(
     data: Any?,
+    dataKey: Array<Any?>,
     contentScale: ContentScale,
     modifier: Modifier = Modifier,
     transformer: (Bitmap?) -> Bitmap? = { it },
-    vararg transformerKey: Any? = arrayOf(data, transformer),
     badge: @Composable BoxScope.() -> Unit = {},
 ) {
     BoxWithConstraints(
@@ -44,7 +44,7 @@ fun AsyncPhotoViewer(
         val localInspectionMode = LocalInspectionMode.current
         val localContext = LocalContext.current
 
-        var photoBitmap: Bitmap? by remember(data) {
+        var photoBitmap: Bitmap? by remember {
             mutableStateOf(
                 if (localInspectionMode) {
                     BitmapFactory.decodeResource(localContext.resources, R.drawable.widget_preview)
@@ -53,13 +53,13 @@ fun AsyncPhotoViewer(
                 },
             )
         }
-        val transformedBitmap: ImageBitmap? by remember(transformerKey) {
+        val transformedBitmap: ImageBitmap? by remember(*dataKey) {
             derivedStateOf {
                 photoBitmap?.let { transformer(it) }?.asImageBitmap()
             }
         }
 
-        var showLoading: Boolean by remember(data) { mutableStateOf(false) }
+        var showLoading: Boolean by remember { mutableStateOf(false) }
 
         val decoder by remember {
             lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
@@ -68,12 +68,12 @@ fun AsyncPhotoViewer(
             remember(maxWidth) { maxWidth.toPx().toInt() }
         }
 
-        LaunchedEffect(key1 = data) {
+        LaunchedEffect(*dataKey) {
             photoBitmap = decoder.decode(data = data, maxDimension = maxWidth)
             showLoading = false
         }
 
-        LaunchedEffect(key1 = data) {
+        LaunchedEffect(*dataKey) {
             // Avoid flickering the indicator, only show if the photos takes a while to load
             delay(timeMillis = 300)
             showLoading = photoBitmap == null

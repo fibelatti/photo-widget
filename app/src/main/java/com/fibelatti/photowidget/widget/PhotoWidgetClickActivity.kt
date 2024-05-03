@@ -193,6 +193,7 @@ private fun ScreenContent(
                 photo.externalUri != null -> photo.externalUri
                 else -> null
             },
+            dataKey = arrayOf(photo, aspectRatio),
             contentScale = if (PhotoWidgetAspectRatio.ORIGINAL != aspectRatio) {
                 ContentScale.FillWidth
             } else {
@@ -209,7 +210,6 @@ private fun ScreenContent(
                 .fillMaxHeight()
                 .aspectRatio(ratio = aspectRatio.aspectRatio)
                 .padding(all = 32.dp),
-            transformerKey = arrayOf(photo, aspectRatio),
         )
     }
 }

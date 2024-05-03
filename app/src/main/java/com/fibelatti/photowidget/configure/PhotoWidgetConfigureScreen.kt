@@ -792,6 +792,7 @@ fun ShapedPhoto(
             photo.externalUri != null -> photo.externalUri
             else -> null
         },
+        dataKey = arrayOf(photo, shapeId, aspectRatio, cornerRadius),
         contentScale = if (PhotoWidgetAspectRatio.ORIGINAL != aspectRatio) {
             ContentScale.FillWidth
         } else {
@@ -810,7 +811,6 @@ fun ShapedPhoto(
                 }
             }
         },
-        transformerKey = arrayOf(photo, shapeId, aspectRatio, cornerRadius),
         badge = badge,
     )
 }
