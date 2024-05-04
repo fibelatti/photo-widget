@@ -1,0 +1,8 @@
+Version 1.7 is released with the following updates:
+
+New: Sync widgets with multiple folders. The limit per folder was also increased to 1000 photos
+New: The full screen viewer now shows the original photo (in increased brightness for those using widgets to display their club cards)
+New: You can now view the next and previous photos from within the full screen viewer
+New: Heart shape for square widgets
+
+Feedback and suggestions are always welcome, visit the project page to contribute!
