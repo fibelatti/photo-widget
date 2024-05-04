@@ -7,15 +7,13 @@ runs:
     - name: Setup JDK
       uses: actions/setup-java@v4
       with:
-        distribution: 'corretto'
+        distribution: 'temurin'
         java-version: 17
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
         generate-job-summary: false
-        gradle-home-cache-strict-match: true
-        gradle-home-cache-cleanup: true
 
     - name: Optimize for Gradle build
       shell: bash
