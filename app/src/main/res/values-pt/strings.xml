@@ -46,8 +46,9 @@
     <string name="photo_widget_configure_source_selection_photos">Você deve selectionar cada foto deste widget.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Este widget não está sincronizado com nenhuma pasta.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Este widget está sincronizado com estas pastas:</string>
-    <string name="photo_widget_configure_source_set_directory">Definir origem para Pasta</string>
-    <string name="photo_widget_configure_source_set_photos">Definir origem para Fotos</string>
+    <string name="photo_widget_configure_source_keep_current">Manter origem atual</string>
+    <string name="photo_widget_configure_source_set_directory">Mudar origem para Pasta</string>
+    <string name="photo_widget_configure_source_set_photos">Mudar origem para Fotos</string>
     <string name="photo_widget_configure_source_warning">Alterar a origem irá substituir as fotos atuais deste widget.</string>
 
     <string name="photo_widget_configure_menu_crop">Recortar</string>

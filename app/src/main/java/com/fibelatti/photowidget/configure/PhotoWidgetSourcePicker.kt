@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,6 +34,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
@@ -41,6 +43,7 @@ import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 
 object PhotoWidgetSourcePicker {
@@ -50,15 +53,18 @@ object PhotoWidgetSourcePicker {
         currentSource: PhotoWidgetSource,
         syncedDir: Set<Uri>,
         onDirRemoved: (Uri) -> Unit,
-        onApplyClick: () -> Unit,
+        onChangeSource: () -> Unit,
     ) {
         ComposeBottomSheetDialog(context) {
             SourcePickerContent(
                 currentSource = currentSource,
                 syncedDir = syncedDir,
                 onDirRemoved = onDirRemoved,
-                onApplyClick = {
-                    onApplyClick()
+                onKeepSource = {
+                    dismiss()
+                },
+                onChangeSource = {
+                    onChangeSource()
                     dismiss()
                 },
             )
@@ -72,7 +78,8 @@ private fun SourcePickerContent(
     currentSource: PhotoWidgetSource,
     syncedDir: Set<Uri>,
     onDirRemoved: (Uri) -> Unit,
-    onApplyClick: () -> Unit,
+    onKeepSource: () -> Unit,
+    onChangeSource: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -87,7 +94,7 @@ private fun SourcePickerContent(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .nestedScroll(rememberNestedScrollInteropConnection()),
-            contentPadding = PaddingValues(bottom = 120.dp),
+            contentPadding = PaddingValues(bottom = 200.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             stickyHeader {
@@ -129,6 +136,7 @@ private fun SourcePickerContent(
                             },
                         ),
                         color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.labelLarge,
                     )
                 }
@@ -151,10 +159,11 @@ private fun SourcePickerContent(
                             .padding(horizontal = 16.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text(
+                        AutoSizeText(
                             text = dir.lastPathSegment.orEmpty(),
                             modifier = Modifier.weight(1f),
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            maxLines = 1,
                             style = MaterialTheme.typography.bodyLarge,
                         )
 
@@ -171,28 +180,33 @@ private fun SourcePickerContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colorStops = arrayOf(
+                            0f to Color.Transparent,
+                            0.1f to MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.9f),
+                            0.2f to MaterialTheme.colorScheme.surfaceContainerLow,
+                        ),
+                    ),
+                )
+                .padding(top = 30.dp)
                 .align(Alignment.BottomCenter),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(30.dp)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                MaterialTheme.colorScheme.surfaceContainerLow,
-                            ),
-                        ),
-                    ),
-            )
-
             FilledTonalButton(
-                onClick = onApplyClick,
+                onClick = onKeepSource,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
+            ) {
+                Text(text = stringResource(id = R.string.photo_widget_configure_source_keep_current))
+            }
+
+            OutlinedButton(
+                onClick = onChangeSource,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, top = 8.dp, end = 16.dp),
             ) {
                 Text(
                     text = stringResource(
@@ -225,7 +239,8 @@ private fun SourcePickerContentPhotosPreview() {
             currentSource = PhotoWidgetSource.PHOTOS,
             syncedDir = emptySet(),
             onDirRemoved = {},
-            onApplyClick = {},
+            onKeepSource = {},
+            onChangeSource = {},
         )
     }
 }
@@ -240,7 +255,8 @@ private fun SourcePickerContentDirectoryPreview() {
             currentSource = PhotoWidgetSource.DIRECTORY,
             syncedDir = List(10) { Uri.parse("https://test/$it") }.toSet(),
             onDirRemoved = {},
-            onApplyClick = {},
+            onKeepSource = {},
+            onChangeSource = {},
         )
     }
 }

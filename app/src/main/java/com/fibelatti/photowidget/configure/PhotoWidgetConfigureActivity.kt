@@ -202,7 +202,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             currentSource = currentSource,
             syncedDir = syncedDir,
             onDirRemoved = viewModel::removeDir,
-            onApplyClick = viewModel::changeSource,
+            onChangeSource = viewModel::changeSource,
         )
     }
 

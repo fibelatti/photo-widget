@@ -463,11 +463,10 @@ private fun FooterAction(
 
         AutoSizeText(
             text = stringResource(id = label),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             maxLines = 1,
             minTextSize = 8.sp,
-            style = MaterialTheme.typography.labelSmall.copy(
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            ),
+            style = MaterialTheme.typography.labelSmall,
         )
     }
 }

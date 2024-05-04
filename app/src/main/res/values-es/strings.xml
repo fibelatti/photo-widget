@@ -42,14 +42,15 @@
     <string name="photo_widget_configure_import_error">No se pueden importar todas las fotos seleccionadas</string>
     <string name="photo_widget_configure_too_many_photos_error">Los widgets sincronizados con una carpeta no se pueden sincronizar con el carrete de la cámara y pueden tener como máximo 1000 fotos. Seleccione una carpeta diferente.</string>
 
-    <string name="photo_widget_configure_menu_source">Origen</string>
+    <string name="photo_widget_configure_menu_source">Fuente</string>
     <string name="photo_widget_configure_source_description">Puedes seleccionar cada foto o sincronizar un widget con carpetas. Al sincronizar, todas las fotos actuales y futuras se añadirán automáticamente.</string>
     <string name="photo_widget_configure_source_selection_photos">Debes seleccionar cada foto para este widget.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Este widget no está sincronizado con ninguna carpeta.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Este widget está sincronizado con estas carpetas:</string>
-    <string name="photo_widget_configure_source_set_directory">Establecer origen en Carpeta</string>
-    <string name="photo_widget_configure_source_set_photos">Establecer origen en Fotos</string>
-    <string name="photo_widget_configure_source_warning">Cambiar la origen reemplazará las fotos actuales de este widget.</string>
+    <string name="photo_widget_configure_source_keep_current">Mantener la fuente actual</string>
+    <string name="photo_widget_configure_source_set_directory">Cambiar fuente a Carpeta</string>
+    <string name="photo_widget_configure_source_set_photos">Cambiar fuente a Fotos</string>
+    <string name="photo_widget_configure_source_warning">Cambiar la fuente reemplazará las fotos actuales de este widget.</string>
 
     <string name="photo_widget_configure_menu_crop">Recortar</string>
     <string name="photo_widget_configure_menu_remove">Eliminar</string>
@@ -111,7 +112,7 @@
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de pantalla principal de Material Photo</string>
-    <string name="photo_widget_cd_change_source">Cambiar origen del widget</string>
+    <string name="photo_widget_cd_change_source">Cambiar fuente del widget</string>
     <string name="photo_widget_cd_toggle_shuffle">Cambiar modo aleatorio</string>
     <string name="photo_widget_cd_open_photo_picker">Abrir selector de fotos</string>
     <string name="photo_widget_cd_open_folder_picker">Abrir selector de carpetas</string>
