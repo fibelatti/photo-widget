@@ -21,6 +21,9 @@
 
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Você não adicionou nenhum widget.\nWidgets adicionados à sua tela inicial irão aparecer aqui.</string>
+    <string name="photo_widget_home_filter_all">Todos</string>
+    <string name="photo_widget_home_filter_photos">Fotos</string>
+    <string name="photo_widget_home_filter_folder">Pasta</string>
 
     <!-- Preferences -->
     <string name="preferences_appearance_follow_system">Mesmo do sistema</string>

@@ -41,6 +41,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -48,8 +49,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,6 +63,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -426,64 +432,117 @@ private fun AspectRatioItem(
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 private fun MyWidgetsScreen(
     widgets: List<Pair<Int, PhotoWidget>>,
     onClick: (appWidgetId: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (widgets.isEmpty()) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 32.dp),
-            verticalArrangement = Arrangement.spacedBy(32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            val allShapes = remember {
-                PhotoWidgetShapeBuilder.buildAllShapes().values
-            }
-
-            ColoredShape(
-                polygon = allShapes.random(),
-                color = MaterialTheme.colorScheme.primaryContainer,
-                modifier = Modifier.size(120.dp),
-            )
-
-            Text(
-                text = stringResource(id = R.string.photo_widget_home_empty_widgets),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyLarge,
-            )
-        }
-
-        return
-    }
-
     BoxWithConstraints(
         modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.TopCenter,
     ) {
         val maxWidth = maxWidth
 
-        LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Fixed(count = if (maxWidth < 600.dp) 2 else 4),
-            modifier = modifier.fillMaxSize(),
-            contentPadding = PaddingValues(all = 16.dp),
-            verticalItemSpacing = 16.dp,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            items(widgets) { (id, widget) ->
-                ShapedPhoto(
-                    photo = widget.currentPhoto,
-                    aspectRatio = widget.aspectRatio,
-                    shapeId = widget.shapeId,
-                    cornerRadius = widget.cornerRadius,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clickable { onClick(id) },
+        var selectedSource: PhotoWidgetSource? by remember { mutableStateOf(null) }
+        val filteredWidgets: List<Pair<Int, PhotoWidget>> by remember(widgets) {
+            derivedStateOf {
+                widgets.filter { selectedSource == null || it.second.source == selectedSource }
+            }
+        }
+
+        if (filteredWidgets.isNotEmpty()) {
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Fixed(count = if (maxWidth < 600.dp) 2 else 4),
+                modifier = modifier.fillMaxSize(),
+                contentPadding = PaddingValues(start = 16.dp, top = 64.dp, end = 16.dp, bottom = 16.dp),
+                verticalItemSpacing = 16.dp,
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                items(filteredWidgets) { (id, widget) ->
+                    ShapedPhoto(
+                        photo = widget.currentPhoto,
+                        aspectRatio = widget.aspectRatio,
+                        shapeId = widget.shapeId,
+                        cornerRadius = widget.cornerRadius,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable { onClick(id) },
+                    )
+                }
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 32.dp, top = 120.dp, end = 32.dp),
+                verticalArrangement = Arrangement.spacedBy(32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                val allShapes = remember {
+                    PhotoWidgetShapeBuilder.buildAllShapes().values
+                }
+
+                ColoredShape(
+                    polygon = allShapes.random(),
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    modifier = Modifier.size(120.dp),
+                )
+
+                Text(
+                    text = stringResource(id = R.string.photo_widget_home_empty_widgets),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyLarge,
                 )
             }
+        }
+
+        SingleChoiceSegmentedButtonRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 16.dp),
+        ) {
+            val borderColor = SegmentedButtonDefaults.borderStroke(SegmentedButtonDefaults.colors().activeBorderColor)
+
+            SegmentedButton(
+                selected = selectedSource == null,
+                onClick = { selectedSource = null },
+                shape = RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp),
+                border = borderColor,
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.photo_widget_home_filter_all),
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                },
+            )
+
+            SegmentedButton(
+                selected = PhotoWidgetSource.PHOTOS == selectedSource,
+                onClick = { selectedSource = PhotoWidgetSource.PHOTOS },
+                shape = RectangleShape,
+                border = borderColor,
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.photo_widget_home_filter_photos),
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                },
+            )
+
+            SegmentedButton(
+                selected = PhotoWidgetSource.DIRECTORY == selectedSource,
+                onClick = { selectedSource = PhotoWidgetSource.DIRECTORY },
+                shape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
+                border = borderColor,
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.photo_widget_home_filter_folder),
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                },
+            )
         }
     }
 }
