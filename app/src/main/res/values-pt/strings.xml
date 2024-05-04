@@ -7,6 +7,9 @@
     <string name="photo_widget_home_title">Enfeite sua tela inicial com as suas fotos favoritas</string>
     <string name="photo_widget_home_aspect_ratio">Escolha o formato do widget e clique no botão para começar. Não se preocupe, você pode alterar isso a qualquer hora!</string>
     <string name="photo_widget_home_new_widget">Criar novo widget</string>
+    <string name="photo_widget_home_new">Novo Widget</string>
+    <string name="photo_widget_home_current">Meus Widgets</string>
+    <string name="photo_widget_home_settings">Configurações</string>
     <string name="photo_widget_home_appearance">Tema do app</string>
     <string name="photo_widget_home_dynamic_colors">Cores do app</string>
     <string name="photo_widget_home_share">Compartilhar</string>
@@ -15,6 +18,9 @@
     <string name="photo_widget_home_developer">Feito com ❤ por Filipe Belatti</string>
     <string name="photo_widget_home_version">Versão: %s</string>
     <string name="photo_widget_home_view_licenses">Licenças de Software</string>
+
+    <!-- My Widgets -->
+    <string name="photo_widget_home_empty_widgets">Você não adicionou nenhum widget.\nWidgets adicionados à sua tela inicial irão aparecer aqui.</string>
 
     <!-- Preferences -->
     <string name="preferences_appearance_follow_system">Mesmo do sistema</string>

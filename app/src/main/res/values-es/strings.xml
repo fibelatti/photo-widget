@@ -8,6 +8,9 @@
     <string name="photo_widget_home_title">Decora tu pantalla principal con tus fotos favoritas</string>
     <string name="photo_widget_home_aspect_ratio">Selecciona la proporción del widget y toca el botón para comenzar. ¡No te preocupes, puedes cambiar esto en cualquier momento!</string>
     <string name="photo_widget_home_new_widget">Crear un nuevo widget</string>
+    <string name="photo_widget_home_new">Nuevo Widget</string>
+    <string name="photo_widget_home_current">Mis Widgets</string>
+    <string name="photo_widget_home_settings">Ajustes</string>
     <string name="photo_widget_home_appearance">Apariencia</string>
     <string name="photo_widget_home_dynamic_colors">Colores</string>
     <string name="photo_widget_home_share">Compartir</string>
@@ -16,6 +19,9 @@
     <string name="photo_widget_home_developer">Desarrollado con ❤ por Filipe Belatti</string>
     <string name="photo_widget_home_version">Versión: %s</string>
     <string name="photo_widget_home_view_licenses">Licencias de OSS</string>
+
+    <!-- My Widgets -->
+    <string name="photo_widget_home_empty_widgets">Aún no has agregado ningún widget.\nLos widgets agregados a tu pantalla de inicio aparecerán aquí.</string>
 
     <!-- Preferences -->
     <string name="preferences_appearance_follow_system">Seguir el sistema</string>

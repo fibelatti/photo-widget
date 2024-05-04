@@ -3,6 +3,7 @@ package com.fibelatti.photowidget.home
 import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -34,6 +35,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -41,13 +45,15 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,8 +70,14 @@ import androidx.compose.ui.unit.sp
 import com.fibelatti.photowidget.BuildConfig
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.ColoredShape
+import com.fibelatti.photowidget.configure.ShapedPhoto
+import com.fibelatti.photowidget.model.LocalPhoto
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
+import com.fibelatti.photowidget.model.PhotoWidgetSource
+import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
@@ -76,94 +88,163 @@ import com.fibelatti.ui.theme.ExtendedTheme
 @Composable
 fun HomeScreen(
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
-    onHelpClick: () -> Unit,
+    currentWidgets: List<Pair<Int, PhotoWidget>>,
+    onCurrentWidgetClick: (appWidgetId: Int) -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
+    onHelpClick: () -> Unit,
     onViewLicensesClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var currentDestination: HomeNavigationDestination by rememberSaveable {
+        mutableStateOf(HomeNavigationDestination.NEW_WIDGET)
+    }
+
     Scaffold(
         modifier = modifier,
+        bottomBar = {
+            HomeNavigation(
+                currentDestination = currentDestination,
+                onDestinationClick = { currentDestination = it },
+            )
+        },
     ) { paddingValues ->
-        BoxWithConstraints(
+        Column(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.background)
                 .fillMaxSize()
                 .padding(paddingValues),
-            contentAlignment = Alignment.Center,
         ) {
-            val maxHeight = maxHeight
-
-            Column(
+            ShapesBanner(
                 modifier = Modifier
-                    .widthIn(max = 600.dp)
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                ShapesBanner(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                )
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+            )
 
-                Spacer(modifier = Modifier.weight(0.25f))
+            AnimatedContent(
+                targetState = currentDestination,
+                label = "Home_Navigation",
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.Center,
+            ) { destination ->
+                when (destination) {
+                    HomeNavigationDestination.NEW_WIDGET -> {
+                        NewWidgetScreen(
+                            onCreateNewWidgetClick = onCreateNewWidgetClick,
+                        )
+                    }
 
-                AutoSizeText(
-                    text = stringResource(id = R.string.photo_widget_home_title),
-                    modifier = Modifier.padding(horizontal = 40.dp),
-                    maxLines = 2,
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleMedium,
-                )
+                    HomeNavigationDestination.MY_WIDGETS -> {
+                        MyWidgetsScreen(
+                            widgets = currentWidgets,
+                            onClick = onCurrentWidgetClick,
+                        )
+                    }
 
-                var selectedAspectRatio by remember {
-                    mutableStateOf(PhotoWidgetAspectRatio.SQUARE)
+                    HomeNavigationDestination.SETTINGS -> {
+                        SettingsScreen(
+                            onAppearanceClick = onAppearanceClick,
+                            onColorsClick = onColorsClick,
+                            onRateClick = onRateClick,
+                            onShareClick = onShareClick,
+                            onHelpClick = onHelpClick,
+                            onViewLicensesClick = onViewLicensesClick,
+                        )
+                    }
                 }
+            }
+        }
+    }
+}
 
-                AspectRatioPicker(
-                    selectedAspectRatio = selectedAspectRatio,
-                    onAspectRatioSelected = { selectedAspectRatio = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    useGridLayout = maxHeight > 600.dp,
-                )
-
-                Text(
-                    text = stringResource(id = R.string.photo_widget_home_aspect_ratio),
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodySmall,
-                )
-
-                FilledTonalButton(
-                    onClick = { onCreateNewWidgetClick(selectedAspectRatio) },
-                ) {
-                    Text(text = stringResource(id = R.string.photo_widget_home_new_widget))
-                }
-
-                TextButton(
-                    onClick = onHelpClick,
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.photo_widget_home_help),
-                        style = MaterialTheme.typography.labelMedium,
+@Composable
+private fun HomeNavigation(
+    currentDestination: HomeNavigationDestination,
+    onDestinationClick: (HomeNavigationDestination) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    NavigationBar(
+        modifier = modifier,
+    ) {
+        HomeNavigationDestination.entries.forEach { destination ->
+            NavigationBarItem(
+                selected = destination == currentDestination,
+                onClick = { onDestinationClick(destination) },
+                icon = {
+                    Icon(
+                        painter = painterResource(id = destination.icon),
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp),
                     )
-                }
+                },
+                label = {
+                    Text(text = stringResource(id = destination.label))
+                },
+            )
+        }
+    }
+}
 
-                Spacer(modifier = Modifier.weight(0.25f))
+private enum class HomeNavigationDestination(
+    @DrawableRes val icon: Int,
+    @StringRes val label: Int,
+) {
+    NEW_WIDGET(icon = R.drawable.ic_new_widget, label = R.string.photo_widget_home_new),
+    MY_WIDGETS(icon = R.drawable.ic_my_widgets, label = R.string.photo_widget_home_current),
+    SETTINGS(icon = R.drawable.ic_settings, label = R.string.photo_widget_home_settings),
+}
 
-                HomeScreenFooter(
-                    onAppearanceClick = onAppearanceClick,
-                    onColorsClick = onColorsClick,
-                    onRateClick = onRateClick,
-                    onShareClick = onShareClick,
-                    onViewLicensesClick = onViewLicensesClick,
-                    modifier = Modifier.padding(all = 16.dp),
-                )
+@Composable
+private fun NewWidgetScreen(
+    onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    BoxWithConstraints(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        val maxHeight = maxHeight
+
+        Column(
+            modifier = Modifier
+                .widthIn(max = 600.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(32.dp),
+        ) {
+            AutoSizeText(
+                text = stringResource(id = R.string.photo_widget_home_title),
+                modifier = Modifier.padding(horizontal = 32.dp),
+                maxLines = 2,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleLarge,
+            )
+
+            var selectedAspectRatio by remember {
+                mutableStateOf(PhotoWidgetAspectRatio.SQUARE)
+            }
+
+            AspectRatioPicker(
+                selectedAspectRatio = selectedAspectRatio,
+                onAspectRatioSelected = { selectedAspectRatio = it },
+                modifier = Modifier.fillMaxWidth(),
+                useGridLayout = maxHeight > 600.dp,
+            )
+
+            Text(
+                text = stringResource(id = R.string.photo_widget_home_aspect_ratio),
+                modifier = Modifier.padding(horizontal = 32.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+
+            FilledTonalButton(
+                onClick = { onCreateNewWidgetClick(selectedAspectRatio) },
+            ) {
+                Text(text = stringResource(id = R.string.photo_widget_home_new_widget))
             }
         }
     }
@@ -345,54 +426,116 @@ private fun AspectRatioItem(
 }
 
 @Composable
-private fun HomeScreenFooter(
+private fun MyWidgetsScreen(
+    widgets: List<Pair<Int, PhotoWidget>>,
+    onClick: (appWidgetId: Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    if (widgets.isEmpty()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 32.dp),
+            verticalArrangement = Arrangement.spacedBy(32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            val allShapes = remember {
+                PhotoWidgetShapeBuilder.buildAllShapes().values
+            }
+
+            ColoredShape(
+                polygon = allShapes.random(),
+                color = MaterialTheme.colorScheme.primaryContainer,
+                modifier = Modifier.size(120.dp),
+            )
+
+            Text(
+                text = stringResource(id = R.string.photo_widget_home_empty_widgets),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyLarge,
+            )
+        }
+
+        return
+    }
+
+    BoxWithConstraints(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        val maxWidth = maxWidth
+
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Fixed(count = if (maxWidth < 600.dp) 2 else 4),
+            modifier = modifier.fillMaxSize(),
+            contentPadding = PaddingValues(all = 16.dp),
+            verticalItemSpacing = 16.dp,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            items(widgets) { (id, widget) ->
+                ShapedPhoto(
+                    photo = widget.currentPhoto,
+                    aspectRatio = widget.aspectRatio,
+                    shapeId = widget.shapeId,
+                    cornerRadius = widget.cornerRadius,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable { onClick(id) },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SettingsScreen(
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
+    onHelpClick: () -> Unit,
     onViewLicensesClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .fillMaxSize()
+            .padding(all = 16.dp),
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-            val footerActionModifier = Modifier.weight(1f)
+        SettingsAction(
+            icon = R.drawable.ic_appearance,
+            label = R.string.photo_widget_home_appearance,
+            onClick = onAppearanceClick,
+        )
 
-            FooterAction(
-                icon = R.drawable.ic_appearance,
-                label = R.string.photo_widget_home_appearance,
-                onClick = onAppearanceClick,
-                modifier = footerActionModifier,
-            )
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                FooterAction(
-                    icon = R.drawable.ic_dynamic_color,
-                    label = R.string.photo_widget_home_dynamic_colors,
-                    onClick = onColorsClick,
-                    modifier = footerActionModifier,
-                )
-            }
-
-            FooterAction(
-                icon = R.drawable.ic_rate,
-                label = R.string.photo_widget_home_rate,
-                onClick = onRateClick,
-                modifier = footerActionModifier,
-            )
-
-            FooterAction(
-                icon = R.drawable.ic_share,
-                label = R.string.photo_widget_home_share,
-                onClick = onShareClick,
-                modifier = footerActionModifier,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            SettingsAction(
+                icon = R.drawable.ic_dynamic_color,
+                label = R.string.photo_widget_home_dynamic_colors,
+                onClick = onColorsClick,
             )
         }
+
+        SettingsAction(
+            icon = R.drawable.ic_rate,
+            label = R.string.photo_widget_home_rate,
+            onClick = onRateClick,
+        )
+
+        SettingsAction(
+            icon = R.drawable.ic_share,
+            label = R.string.photo_widget_home_share,
+            onClick = onShareClick,
+        )
+
+        SettingsAction(
+            icon = R.drawable.ic_help,
+            label = R.string.photo_widget_home_help,
+            onClick = onHelpClick,
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
 
         HorizontalDivider(
             modifier = Modifier.padding(vertical = 12.dp),
@@ -401,76 +544,83 @@ private fun HomeScreenFooter(
 
         Text(
             text = stringResource(id = R.string.photo_widget_home_developer),
-            modifier = Modifier.padding(bottom = 4.dp),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(bottom = 2.dp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.labelLarge,
         )
 
         Row(
             modifier = Modifier
+                .align(Alignment.CenterHorizontally)
                 .clickable(
                     onClick = onViewLicensesClick,
                     role = Role.Button,
-                )
-                .padding(4.dp),
+                ),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = stringResource(R.string.photo_widget_home_version, BuildConfig.VERSION_NAME),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelMedium,
             )
 
             Text(
                 text = "—",
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelMedium,
             )
 
             Text(
                 text = stringResource(id = R.string.photo_widget_home_view_licenses),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelMedium,
             )
         }
     }
 }
 
 @Composable
-private fun FooterAction(
+private fun SettingsAction(
     @DrawableRes icon: Int,
     @StringRes label: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier.clickable(
-            interactionSource = remember { MutableInteractionSource() },
-            indication = null,
-            onClick = onClick,
-            role = Role.Button,
-        ),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(60.dp)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onClick,
+                role = Role.Button,
+            ),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             painter = painterResource(id = icon),
-            contentDescription = "",
-            modifier = Modifier.size(24.dp),
+            contentDescription = null,
+            modifier = Modifier.size(36.dp),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         AutoSizeText(
             text = stringResource(id = label),
+            modifier = Modifier.weight(1f),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             maxLines = 1,
             minTextSize = 8.sp,
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.titleMedium,
         )
     }
 }
 
+// region Previews
 @Composable
 @ThemePreviews
 @LocalePreviews
@@ -479,6 +629,8 @@ private fun HomeScreenPreview() {
     ExtendedTheme {
         HomeScreen(
             onCreateNewWidgetClick = {},
+            currentWidgets = emptyList(),
+            onCurrentWidgetClick = {},
             onHelpClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
@@ -488,3 +640,64 @@ private fun HomeScreenPreview() {
         )
     }
 }
+
+@Composable
+@ThemePreviews
+@LocalePreviews
+@DevicePreviews
+private fun MyWidgetsScreenPreview() {
+    ExtendedTheme {
+        val allShapeIds = PhotoWidgetShapeBuilder.buildAllShapes().map { it.key.id }
+
+        MyWidgetsScreen(
+            widgets = List(size = 10) { index ->
+                index to PhotoWidget(
+                    source = PhotoWidgetSource.PHOTOS,
+                    photos = listOf(LocalPhoto(name = "photo-1")),
+                    shuffle = false,
+                    loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
+                    tapAction = PhotoWidgetTapAction.VIEW_FULL_SCREEN,
+                    aspectRatio = when {
+                        index % 3 == 0 -> PhotoWidgetAspectRatio.WIDE
+                        index % 2 == 0 -> PhotoWidgetAspectRatio.TALL
+                        else -> PhotoWidgetAspectRatio.SQUARE
+                    },
+                    shapeId = allShapeIds.random(),
+                    cornerRadius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
+                )
+            },
+            onClick = {},
+        )
+    }
+}
+
+@Composable
+@ThemePreviews
+@LocalePreviews
+@DevicePreviews
+private fun MyWidgetsScreenEmptyPreview() {
+    ExtendedTheme {
+        MyWidgetsScreen(
+            widgets = emptyList(),
+            onClick = {},
+        )
+    }
+}
+
+@Composable
+@ThemePreviews
+@LocalePreviews
+@DevicePreviews
+private fun SettingsScreenPreview() {
+    ExtendedTheme {
+        SettingsScreen(
+            onAppearanceClick = {},
+            onColorsClick = {},
+            onRateClick = {},
+            onShareClick = {},
+            onHelpClick = {},
+            onViewLicensesClick = {},
+        )
+    }
+}
+// endregion Previews

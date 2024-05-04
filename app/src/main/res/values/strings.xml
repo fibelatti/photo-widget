@@ -7,6 +7,9 @@
     <string name="photo_widget_home_title">Decorate your home screen with your favorite photos</string>
     <string name="photo_widget_home_aspect_ratio">Select the widget aspect ratio and tap the button to begin. Don\'t worry, you can change this at any time!</string>
     <string name="photo_widget_home_new_widget">Create a new widget</string>
+    <string name="photo_widget_home_new">New Widget</string>
+    <string name="photo_widget_home_current">My Widgets</string>
+    <string name="photo_widget_home_settings">Settings</string>
     <string name="photo_widget_home_appearance">Appearance</string>
     <string name="photo_widget_home_dynamic_colors">App colors</string>
     <string name="photo_widget_home_share">Share</string>
@@ -15,6 +18,9 @@
     <string name="photo_widget_home_developer">Developed with ❤ by Filipe Belatti</string>
     <string name="photo_widget_home_version">App version: %s</string>
     <string name="photo_widget_home_view_licenses">OSS Licenses</string>
+
+    <!-- My Widgets -->
+    <string name="photo_widget_home_empty_widgets">You haven\'t added any widgets yet.\nWidgets added to your home screen will appear here.</string>
 
     <!-- Preferences -->
     <string name="preferences_appearance_follow_system">Follow system</string>

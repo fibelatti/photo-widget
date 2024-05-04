@@ -6,12 +6,16 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.runtime.getValue
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
+import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.configure.aspectRatio
 import com.fibelatti.photowidget.configure.sharedPhotos
 import com.fibelatti.photowidget.licenses.OssLicensesActivity
@@ -19,11 +23,14 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
+import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
+
+    private val homeViewModel by viewModels<HomeViewModel>()
 
     @Inject
     lateinit var userPreferencesStorage: UserPreferencesStorage
@@ -36,19 +43,28 @@ class HomeActivity : AppCompatActivity() {
 
         setContent {
             AppTheme {
+                val currentWidgets by homeViewModel.currentWidgets.collectAsStateWithLifecycle()
+
                 HomeScreen(
                     onCreateNewWidgetClick = ::createNewWidget,
-                    onHelpClick = ::showHelp,
+                    currentWidgets = currentWidgets,
+                    onCurrentWidgetClick = ::editExistingWidget,
                     onAppearanceClick = ::showAppearancePicker,
                     onColorsClick = ::showAppColorsPicker,
                     onShareClick = ::shareApp,
                     onRateClick = ::rateApp,
+                    onHelpClick = ::showHelp,
                     onViewLicensesClick = ::viewOpenSourceLicenses,
                 )
             }
         }
 
         checkIntent()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        homeViewModel.loadCurrentWidgets(ids = PhotoWidgetProvider.ids(context = this))
     }
 
     @Suppress("DEPRECATION")
@@ -76,6 +92,14 @@ class HomeActivity : AppCompatActivity() {
         }
 
         preparedIntent = null
+
+        startActivity(intent)
+    }
+
+    private fun editExistingWidget(appWidgetId: Int) {
+        val intent = Intent(this, PhotoWidgetConfigureActivity::class.java).apply {
+            this.appWidgetId = appWidgetId
+        }
 
         startActivity(intent)
     }
