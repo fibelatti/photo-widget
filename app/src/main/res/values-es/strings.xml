@@ -92,8 +92,10 @@
 
     <string name="photo_widget_configure_tap_action">Acción de toque</string>
     <string name="photo_widget_configure_tap_action_none">Ninguna</string>
-    <string name="photo_widget_configure_tap_action_view_full_screen">Ver en pantalla completa</string>
+    <string name="photo_widget_configure_tap_action_view_full_screen">Ver foto en pantalla completa</string>
     <string name="photo_widget_configure_tap_action_next_photo">Ver siguiente foto</string>
+    <string name="photo_widget_configure_tap_action_app_shortcut">Abrir una aplicación</string>
+    <string name="photo_widget_configure_tap_action_choose_app">Elige la aplicación</string>
 
     <string name="photo_widget_configure_applied_shape">Forma</string>
     <string name="photo_widget_configure_corner_radius">Redondez</string>

@@ -89,8 +89,10 @@
 
     <string name="photo_widget_configure_tap_action">Tap action</string>
     <string name="photo_widget_configure_tap_action_none">None</string>
-    <string name="photo_widget_configure_tap_action_view_full_screen">View in full screen</string>
+    <string name="photo_widget_configure_tap_action_view_full_screen">View photo in full screen</string>
     <string name="photo_widget_configure_tap_action_next_photo">View next photo</string>
+    <string name="photo_widget_configure_tap_action_app_shortcut">App shortcut</string>
+    <string name="photo_widget_configure_tap_action_choose_app">Choose app</string>
 
     <string name="photo_widget_configure_applied_shape">Shape</string>
     <string name="photo_widget_configure_corner_radius">Roundness</string>

@@ -84,9 +84,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 val tempViews = PhotoWidgetPinnedReceiver.preview?.get()
                     ?.takeIf { photoWidget.photos.isEmpty() }
                     ?.also { PhotoWidgetPinnedReceiver.preview = null }
-                val tapAction = PhotoWidgetPinnedReceiver.callbackIntent?.get()?.photoWidget?.tapAction
+                val tempWidget = PhotoWidgetPinnedReceiver.callbackIntent?.get()?.photoWidget
                     ?.takeIf { tempViews != null }
-                    ?: photoWidget.tapAction
 
                 val views = tempViews
                     ?: createRemoteViews(context = context, photoWidget = photoWidget)
@@ -95,7 +94,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 val clickPendingIntent = getClickPendingIntent(
                     context = context,
                     appWidgetId = appWidgetId,
-                    tapAction = tapAction,
+                    tapAction = tempWidget?.tapAction ?: photoWidget.tapAction,
+                    appShortcut = tempWidget?.appShortcut ?: photoWidget.appShortcut,
                 )
 
                 views.setOnClickPendingIntent(R.id.iv_widget, clickPendingIntent)
@@ -149,6 +149,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             context: Context,
             appWidgetId: Int,
             tapAction: PhotoWidgetTapAction,
+            appShortcut: String?,
         ): PendingIntent? = when (tapAction) {
             PhotoWidgetTapAction.NONE -> null
 
@@ -165,6 +166,17 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             }
 
             PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> flipPhotoPendingIntent(context, appWidgetId)
+
+            PhotoWidgetTapAction.APP_SHORTCUT -> {
+                appShortcut?.let(context.packageManager::getLaunchIntentForPackage).let { clickIntent ->
+                    PendingIntent.getActivity(
+                        context,
+                        appWidgetId,
+                        clickIntent,
+                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                    )
+                }
+            }
         }
 
         fun flipPhotoPendingIntent(

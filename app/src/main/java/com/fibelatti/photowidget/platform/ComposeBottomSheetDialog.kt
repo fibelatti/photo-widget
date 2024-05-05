@@ -8,11 +8,14 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class ComposeBottomSheetDialog(
     context: Context,
-    content: @Composable BottomSheetDialog.() -> Unit,
+    content: @Composable ComposeBottomSheetDialog.() -> Unit,
 ) : BottomSheetDialog(context, R.style.AppTheme_BottomSheetDialog) {
+
+    val activityResult: MutableStateFlow<Any?> = MutableStateFlow(null)
 
     init {
         behavior.peekHeight = 1200.dp.value.toInt()
@@ -31,5 +34,9 @@ class ComposeBottomSheetDialog(
                 }
             },
         )
+    }
+
+    fun setActivityResult(data: Any?) {
+        activityResult.value = data
     }
 }

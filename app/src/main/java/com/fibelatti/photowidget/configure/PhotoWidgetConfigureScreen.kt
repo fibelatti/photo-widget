@@ -99,7 +99,7 @@ fun PhotoWidgetConfigureScreen(
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval, intervalBasedLoopingEnabled: Boolean) -> Unit,
-    onTapActionPickerClick: () -> Unit,
+    onTapActionPickerClick: (PhotoWidgetTapAction, appShortcut: String?) -> Unit,
     onShapeClick: (String) -> Unit,
     onCornerRadiusChange: (Float) -> Unit,
     onAddToHomeClick: () -> Unit,
@@ -173,7 +173,7 @@ private fun PhotoWidgetConfigureContent(
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval, intervalBasedLoopingEnabled: Boolean) -> Unit,
-    onTapActionPickerClick: () -> Unit,
+    onTapActionPickerClick: (PhotoWidgetTapAction, appShortcut: String?) -> Unit,
     onShapeClick: (String) -> Unit,
     onCornerRadiusChange: (Float) -> Unit,
     onAddToHomeClick: () -> Unit,
@@ -264,7 +264,9 @@ private fun PhotoWidgetConfigureContent(
         ) {
             TapActionPicker(
                 tapAction = photoWidget.tapAction,
-                onTapActionPickerClick = onTapActionPickerClick,
+                onTapActionPickerClick = {
+                    onTapActionPickerClick(photoWidget.tapAction, photoWidget.appShortcut)
+                },
                 modifier = Modifier.weight(1f),
             )
 
@@ -840,7 +842,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onDirPickerClick = {},
             onPhotoClick = {},
             onLoopingIntervalPickerClick = { _, _ -> },
-            onTapActionPickerClick = {},
+            onTapActionPickerClick = { _, _ -> },
             onShapeClick = {},
             onCornerRadiusChange = {},
             onAddToHomeClick = {},

@@ -453,6 +453,16 @@ class PhotoWidgetStorage @Inject constructor(
         return enumValueOfOrNull<PhotoWidgetTapAction>(name)
     }
 
+    fun saveWidgetAppShortcut(appWidgetId: Int, appName: String?) {
+        sharedPreferences.edit {
+            putString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", appName)
+        }
+    }
+
+    fun getWidgetAppShortcut(appWidgetId: Int): String? {
+        return sharedPreferences.getString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", null)
+    }
+
     suspend fun deleteWidgetData(appWidgetId: Int) {
         Timber.d("Deleting data (appWidgetId=$appWidgetId)")
         getWidgetDir(appWidgetId).deleteRecursively()
@@ -524,6 +534,7 @@ class PhotoWidgetStorage @Inject constructor(
         SHAPE(value = "appwidget_shape_"),
         CORNER_RADIUS(value = "appwidget_corner_radius_"),
         TAP_ACTION(value = "appwidget_tap_action_"),
+        APP_SHORTCUT(value = "appwidget_app_shortcut_"),
         ;
 
         override fun toString(): String = value

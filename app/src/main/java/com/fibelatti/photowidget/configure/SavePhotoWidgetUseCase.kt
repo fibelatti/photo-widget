@@ -62,6 +62,11 @@ class SavePhotoWidgetUseCase @Inject constructor(
             tapAction = photoWidget.tapAction,
         )
 
+        photoWidgetStorage.saveWidgetAppShortcut(
+            appWidgetId = appWidgetId,
+            appName = photoWidget.appShortcut,
+        )
+
         photoWidgetStorage.saveWidgetAspectRatio(
             appWidgetId = appWidgetId,
             aspectRatio = photoWidget.aspectRatio,

@@ -29,6 +29,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.AppTheme
+import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.platform.getAttributeColor
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
@@ -57,6 +58,12 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         ::onDirPicked,
     )
 
+    private val appPickerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) { result ->
+        currentDialog.get()?.setActivityResult(result.data?.component?.packageName)
+    }
+
     private val onBackPressedCallback = object : OnBackPressedCallback(enabled = false) {
 
         override fun handleOnBackPressed() {
@@ -78,6 +85,8 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             }
         }
     }
+
+    private var currentDialog: WeakReference<ComposeBottomSheetDialog?> = WeakReference(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -263,14 +272,20 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         )
     }
 
-    private fun showTapActionPicker() {
-        SelectionDialog.show(
+    private fun showTapActionPicker(tapAction: PhotoWidgetTapAction, appShortcut: String?) {
+        PhotoWidgetTapActionPicker.show(
             context = this,
-            title = getString(R.string.photo_widget_configure_tap_action),
-            options = PhotoWidgetTapAction.entries,
-            optionName = { option -> getString(option.title) },
-            onOptionSelected = viewModel::tapActionSelected,
-        )
+            currentTapAction = tapAction,
+            currentAppShortcut = appShortcut,
+            onChooseApp = {
+                val intent = Intent(Intent.ACTION_PICK_ACTIVITY)
+                    .putExtra(Intent.EXTRA_INTENT, Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER))
+                appPickerLauncher.launch(intent)
+            },
+            onApplyClick = viewModel::tapActionSelected,
+        ).also {
+            currentDialog = WeakReference(it)
+        }
     }
 
     private fun addNewWidget(appWidgetId: Int) {

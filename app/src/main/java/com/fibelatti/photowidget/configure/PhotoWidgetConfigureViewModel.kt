@@ -338,10 +338,13 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun tapActionSelected(tapAction: PhotoWidgetTapAction) {
+    fun tapActionSelected(tapAction: PhotoWidgetTapAction, appShortcut: String?) {
         _state.update { current ->
             current.copy(
-                photoWidget = current.photoWidget.copy(tapAction = tapAction),
+                photoWidget = current.photoWidget.copy(
+                    tapAction = tapAction,
+                    appShortcut = appShortcut.takeIf { PhotoWidgetTapAction.APP_SHORTCUT == tapAction },
+                ),
             )
         }
     }
