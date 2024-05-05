@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Revamped home screen, including a new "My Widgets" screen to make it easier
   to view and edit existing widgets
 
-## [v1.7] - 2024-05-4
+## [v1.7] - 2024-05-04
 
 ### Added
 
