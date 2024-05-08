@@ -72,8 +72,15 @@ class PhotoWidgetClickActivity : AppCompatActivity() {
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
                 state.photoWidget?.let { photoWidget ->
+                    val currentPhoto = try {
+                        photoWidget.currentPhoto
+                    } catch (_: Exception) {
+                        finish()
+                        return@let
+                    }
+
                     ScreenContent(
-                        photo = photoWidget.currentPhoto,
+                        photo = currentPhoto,
                         aspectRatio = photoWidget.aspectRatio,
                         onDismiss = { finish() },
                         showFlipControls = state.showMoveControls,
