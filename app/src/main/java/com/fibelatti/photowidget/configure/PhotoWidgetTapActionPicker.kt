@@ -1,7 +1,10 @@
 package com.fibelatti.photowidget.configure
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -10,7 +13,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -22,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -30,7 +31,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
@@ -48,22 +48,36 @@ object PhotoWidgetTapActionPicker {
         context: Context,
         currentTapAction: PhotoWidgetTapAction,
         currentAppShortcut: String?,
-        onChooseApp: () -> Unit,
         onApplyClick: (newTapAction: PhotoWidgetTapAction, newAppShortcut: String?) -> Unit,
-    ): ComposeBottomSheetDialog = ComposeBottomSheetDialog(context) {
-        val result by activityResult.collectAsStateWithLifecycle()
+    ) {
+        ComposeBottomSheetDialog(context) {
+            var selectedApp: String? by remember(currentAppShortcut) {
+                mutableStateOf(currentAppShortcut)
+            }
+            val launcher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.StartActivityForResult(),
+            ) { result ->
+                selectedApp = result.data?.component?.packageName
+            }
 
-        TapActionPickerContent(
-            currentTapAction = currentTapAction,
-            currentAppShortcut = currentAppShortcut,
-            onChooseApp = onChooseApp,
-            selectedApp = result as? String,
-            onApplyClick = { newTapAction, newAppShortcut ->
-                onApplyClick(newTapAction, newAppShortcut)
-                dismiss()
-            },
-        )
-    }.also { it.show() }
+            TapActionPickerContent(
+                currentTapAction = currentTapAction,
+                currentAppShortcut = selectedApp,
+                onChooseApp = {
+                    launcher.launch(
+                        Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
+                            Intent.EXTRA_INTENT,
+                            Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
+                        ),
+                    )
+                },
+                onApplyClick = { newTapAction, newAppShortcut ->
+                    onApplyClick(newTapAction, newAppShortcut)
+                    dismiss()
+                },
+            )
+        }.show()
+    }
 }
 
 @Composable
@@ -71,11 +85,9 @@ private fun TapActionPickerContent(
     currentTapAction: PhotoWidgetTapAction,
     currentAppShortcut: String?,
     onChooseApp: () -> Unit,
-    selectedApp: String?,
     onApplyClick: (newTapAction: PhotoWidgetTapAction, newAppShortcut: String?) -> Unit,
 ) {
     var tapAction by remember { mutableStateOf(currentTapAction) }
-    val appShortcutPackageName = selectedApp ?: currentAppShortcut
 
     Column(
         modifier = Modifier
@@ -123,10 +135,10 @@ private fun TapActionPickerContent(
                     Text(text = stringResource(id = R.string.photo_widget_configure_tap_action_choose_app))
                 }
 
-                appShortcutPackageName?.runCatching {
+                currentAppShortcut?.runCatching {
                     val packageManager = LocalContext.current.packageManager
                     val appInfo = packageManager.getApplicationInfo(
-                        appShortcutPackageName,
+                        currentAppShortcut,
                         PackageManager.MATCH_DEFAULT_ONLY,
                     )
                     val appIcon = packageManager.getApplicationIcon(appInfo).toBitmap().asImageBitmap()
@@ -151,7 +163,7 @@ private fun TapActionPickerContent(
         }
 
         FilledTonalButton(
-            onClick = { onApplyClick(tapAction, appShortcutPackageName) },
+            onClick = { onApplyClick(tapAction, currentAppShortcut) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
@@ -171,7 +183,6 @@ private fun PhotoWidgetTapActionPickerPreview() {
             currentTapAction = PhotoWidgetTapAction.APP_SHORTCUT,
             currentAppShortcut = null,
             onChooseApp = {},
-            selectedApp = null,
             onApplyClick = { _, _ -> },
         )
     }
