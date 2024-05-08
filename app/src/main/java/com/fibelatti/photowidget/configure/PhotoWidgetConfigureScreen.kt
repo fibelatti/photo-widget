@@ -99,7 +99,7 @@ fun PhotoWidgetConfigureScreen(
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval, intervalBasedLoopingEnabled: Boolean) -> Unit,
-    onTapActionPickerClick: (PhotoWidgetTapAction, appShortcut: String?) -> Unit,
+    onTapActionPickerClick: (PhotoWidgetTapAction, appShortcut: String?, increaseBrightness: Boolean) -> Unit,
     onShapeClick: (String) -> Unit,
     onCornerRadiusChange: (Float) -> Unit,
     onAddToHomeClick: () -> Unit,
@@ -173,7 +173,7 @@ private fun PhotoWidgetConfigureContent(
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval, intervalBasedLoopingEnabled: Boolean) -> Unit,
-    onTapActionPickerClick: (PhotoWidgetTapAction, appShortcut: String?) -> Unit,
+    onTapActionPickerClick: (PhotoWidgetTapAction, appShortcut: String?, increaseBrightness: Boolean) -> Unit,
     onShapeClick: (String) -> Unit,
     onCornerRadiusChange: (Float) -> Unit,
     onAddToHomeClick: () -> Unit,
@@ -265,7 +265,11 @@ private fun PhotoWidgetConfigureContent(
             TapActionPicker(
                 tapAction = photoWidget.tapAction,
                 onTapActionPickerClick = {
-                    onTapActionPickerClick(photoWidget.tapAction, photoWidget.appShortcut)
+                    onTapActionPickerClick(
+                        photoWidget.tapAction,
+                        photoWidget.appShortcut,
+                        photoWidget.increaseBrightness,
+                    )
                 },
                 modifier = Modifier.weight(1f),
             )
@@ -842,7 +846,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onDirPickerClick = {},
             onPhotoClick = {},
             onLoopingIntervalPickerClick = { _, _ -> },
-            onTapActionPickerClick = { _, _ -> },
+            onTapActionPickerClick = { _, _, _ -> },
             onShapeClick = {},
             onCornerRadiusChange = {},
             onAddToHomeClick = {},

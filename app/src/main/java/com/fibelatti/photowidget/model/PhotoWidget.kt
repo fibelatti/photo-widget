@@ -14,6 +14,7 @@ data class PhotoWidget(
     val loopingInterval: PhotoWidgetLoopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
     val intervalBasedLoopingEnabled: Boolean = true,
     val tapAction: PhotoWidgetTapAction = PhotoWidgetTapAction.NONE,
+    val increaseBrightness: Boolean = false,
     val appShortcut: String? = null,
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
     val shapeId: String = PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID,

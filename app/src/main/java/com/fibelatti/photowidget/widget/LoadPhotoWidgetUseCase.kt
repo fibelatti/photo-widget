@@ -30,6 +30,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             loopingInterval = getWidgetInterval(appWidgetId = appWidgetId) ?: PhotoWidgetLoopingInterval.ONE_DAY,
             intervalBasedLoopingEnabled = getWidgetIntervalEnabled(appWidgetId = appWidgetId),
             tapAction = getWidgetTapAction(appWidgetId = appWidgetId) ?: PhotoWidgetTapAction.NONE,
+            increaseBrightness = getWidgetIncreaseBrightness(appWidgetId = appWidgetId),
             appShortcut = getWidgetAppShortcut(appWidgetId = appWidgetId),
             aspectRatio = getWidgetAspectRatio(appWidgetId = appWidgetId) ?: PhotoWidgetAspectRatio.SQUARE,
             shapeId = getWidgetShapeId(appWidgetId = appWidgetId) ?: PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID,

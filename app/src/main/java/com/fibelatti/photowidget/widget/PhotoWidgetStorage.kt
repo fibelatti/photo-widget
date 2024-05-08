@@ -453,6 +453,16 @@ class PhotoWidgetStorage @Inject constructor(
         return enumValueOfOrNull<PhotoWidgetTapAction>(name)
     }
 
+    fun saveWidgetIncreaseBrightness(appWidgetId: Int, value: Boolean) {
+        sharedPreferences.edit {
+            putBoolean("${PreferencePrefix.INCREASE_BRIGHTNESS}$appWidgetId", value)
+        }
+    }
+
+    fun getWidgetIncreaseBrightness(appWidgetId: Int): Boolean {
+        return sharedPreferences.getBoolean("${PreferencePrefix.INCREASE_BRIGHTNESS}$appWidgetId", false)
+    }
+
     fun saveWidgetAppShortcut(appWidgetId: Int, appName: String?) {
         sharedPreferences.edit {
             putString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", appName)
@@ -534,6 +544,7 @@ class PhotoWidgetStorage @Inject constructor(
         SHAPE(value = "appwidget_shape_"),
         CORNER_RADIUS(value = "appwidget_corner_radius_"),
         TAP_ACTION(value = "appwidget_tap_action_"),
+        INCREASE_BRIGHTNESS(value = "appwidget_increase_brightness_"),
         APP_SHORTCUT(value = "appwidget_app_shortcut_"),
         ;
 

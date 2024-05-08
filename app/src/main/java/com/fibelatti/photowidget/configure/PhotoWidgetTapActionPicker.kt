@@ -5,7 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -48,7 +49,8 @@ object PhotoWidgetTapActionPicker {
         context: Context,
         currentTapAction: PhotoWidgetTapAction,
         currentAppShortcut: String?,
-        onApplyClick: (newTapAction: PhotoWidgetTapAction, newAppShortcut: String?) -> Unit,
+        currentIncreaseBrightness: Boolean,
+        onApplyClick: (newTapAction: PhotoWidgetTapAction, newAppShortcut: String?, newIncreaseBrightness: Boolean) -> Unit,
     ) {
         ComposeBottomSheetDialog(context) {
             var selectedApp: String? by remember(currentAppShortcut) {
@@ -63,6 +65,7 @@ object PhotoWidgetTapActionPicker {
             TapActionPickerContent(
                 currentTapAction = currentTapAction,
                 currentAppShortcut = selectedApp,
+                currentIncreaseBrightness = currentIncreaseBrightness,
                 onChooseApp = {
                     launcher.launch(
                         Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
@@ -71,8 +74,8 @@ object PhotoWidgetTapActionPicker {
                         ),
                     )
                 },
-                onApplyClick = { newTapAction, newAppShortcut ->
-                    onApplyClick(newTapAction, newAppShortcut)
+                onApplyClick = { newTapAction, newAppShortcut, newIncreaseBrightness ->
+                    onApplyClick(newTapAction, newAppShortcut, newIncreaseBrightness)
                     dismiss()
                 },
             )
@@ -84,10 +87,12 @@ object PhotoWidgetTapActionPicker {
 private fun TapActionPickerContent(
     currentTapAction: PhotoWidgetTapAction,
     currentAppShortcut: String?,
+    currentIncreaseBrightness: Boolean,
     onChooseApp: () -> Unit,
-    onApplyClick: (newTapAction: PhotoWidgetTapAction, newAppShortcut: String?) -> Unit,
+    onApplyClick: (newTapAction: PhotoWidgetTapAction, newAppShortcut: String?, newIncreaseBrightness: Boolean) -> Unit,
 ) {
     var tapAction by remember { mutableStateOf(currentTapAction) }
+    var increaseBrightness by remember { mutableStateOf(currentIncreaseBrightness) }
 
     Column(
         modifier = Modifier
@@ -121,54 +126,104 @@ private fun TapActionPickerContent(
             ),
         )
 
-        AnimatedVisibility(
-            visible = PhotoWidgetTapAction.APP_SHORTCUT == tapAction,
-        ) {
-            Row(
-                modifier = Modifier.padding(top = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                OutlinedButton(
-                    onClick = onChooseApp,
-                ) {
-                    Text(text = stringResource(id = R.string.photo_widget_configure_tap_action_choose_app))
-                }
-
-                currentAppShortcut?.runCatching {
-                    val packageManager = LocalContext.current.packageManager
-                    val appInfo = packageManager.getApplicationInfo(
-                        currentAppShortcut,
-                        PackageManager.MATCH_DEFAULT_ONLY,
-                    )
-                    val appIcon = packageManager.getApplicationIcon(appInfo).toBitmap().asImageBitmap()
-                    val appLabel = packageManager.getApplicationLabel(appInfo).toString()
-
-                    Image(
-                        bitmap = appIcon,
-                        contentDescription = null,
-                        modifier = Modifier.size(40.dp),
-                    )
-
-                    AutoSizeText(
-                        text = appLabel,
-                        modifier = Modifier.weight(1f),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                        style = MaterialTheme.typography.labelLarge,
-                    )
-                }
+        AnimatedContent(
+            targetState = tapAction,
+            label = "TapAction_CustomOptions",
+        ) { value ->
+            if (PhotoWidgetTapAction.VIEW_FULL_SCREEN == value) {
+                BrightnessToggle(
+                    enabled = increaseBrightness,
+                    onChange = { increaseBrightness = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                )
+            } else if (PhotoWidgetTapAction.APP_SHORTCUT == value) {
+                AppPicker(
+                    onChooseApp = onChooseApp,
+                    currentAppShortcut = currentAppShortcut,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                )
             }
         }
 
         FilledTonalButton(
-            onClick = { onApplyClick(tapAction, currentAppShortcut) },
+            onClick = { onApplyClick(tapAction, currentAppShortcut, increaseBrightness) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
         ) {
             Text(text = stringResource(id = R.string.photo_widget_action_apply))
+        }
+    }
+}
+
+@Composable
+private fun BrightnessToggle(
+    enabled: Boolean,
+    onChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Switch(
+            checked = enabled,
+            onCheckedChange = onChange,
+        )
+
+        Text(
+            text = stringResource(id = R.string.photo_widget_configure_tap_action_increase_brightness),
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.labelLarge,
+        )
+    }
+}
+
+@Composable
+private fun AppPicker(
+    onChooseApp: () -> Unit,
+    currentAppShortcut: String?,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        OutlinedButton(
+            onClick = onChooseApp,
+        ) {
+            Text(text = stringResource(id = R.string.photo_widget_configure_tap_action_choose_app))
+        }
+
+        currentAppShortcut?.runCatching {
+            val packageManager = LocalContext.current.packageManager
+            val appInfo = packageManager.getApplicationInfo(
+                currentAppShortcut,
+                PackageManager.MATCH_DEFAULT_ONLY,
+            )
+            val appIcon = packageManager.getApplicationIcon(appInfo).toBitmap().asImageBitmap()
+            val appLabel = packageManager.getApplicationLabel(appInfo).toString()
+
+            Image(
+                bitmap = appIcon,
+                contentDescription = null,
+                modifier = Modifier.size(40.dp),
+            )
+
+            AutoSizeText(
+                text = appLabel,
+                modifier = Modifier.weight(1f),
+                color = MaterialTheme.colorScheme.onSurface,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                style = MaterialTheme.typography.labelLarge,
+            )
         }
     }
 }
@@ -182,8 +237,9 @@ private fun PhotoWidgetTapActionPickerPreview() {
         TapActionPickerContent(
             currentTapAction = PhotoWidgetTapAction.APP_SHORTCUT,
             currentAppShortcut = null,
+            currentIncreaseBrightness = false,
             onChooseApp = {},
-            onApplyClick = { _, _ -> },
+            onApplyClick = { _, _, _ -> },
         )
     }
 }

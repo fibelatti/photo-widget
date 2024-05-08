@@ -263,11 +263,16 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         )
     }
 
-    private fun showTapActionPicker(tapAction: PhotoWidgetTapAction, appShortcut: String?) {
+    private fun showTapActionPicker(
+        tapAction: PhotoWidgetTapAction,
+        appShortcut: String?,
+        increaseBrightness: Boolean,
+    ) {
         PhotoWidgetTapActionPicker.show(
             context = this,
             currentTapAction = tapAction,
             currentAppShortcut = appShortcut,
+            currentIncreaseBrightness = increaseBrightness,
             onApplyClick = viewModel::tapActionSelected,
         )
     }

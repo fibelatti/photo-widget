@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   to view and edit existing widgets
 * New tap action: set the widget as an app shortcut
 
+### Changed
+
+* Made the brightness increase optional when using the full screen viewer
+
 ## [v1.7] - 2024-05-04
 
 ### Added

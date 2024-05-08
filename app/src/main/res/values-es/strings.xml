@@ -95,6 +95,7 @@
     <string name="photo_widget_configure_tap_action_view_full_screen">Ver foto en pantalla completa</string>
     <string name="photo_widget_configure_tap_action_next_photo">Ver siguiente foto</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Abrir una aplicación</string>
+    <string name="photo_widget_configure_tap_action_increase_brightness">Aumentar automáticamente el brillo</string>
     <string name="photo_widget_configure_tap_action_choose_app">Elige la aplicación</string>
 
     <string name="photo_widget_configure_applied_shape">Forma</string>
