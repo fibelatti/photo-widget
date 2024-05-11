@@ -111,7 +111,7 @@ class PhotoWidgetStorage @Inject constructor(
         val newFiles = listOf(originalPhoto, croppedPhoto)
 
         runCatching {
-            decoder.decode(data = source, maxDimension = PhotoWidget.MAX_DIMENSION)?.let { importedPhoto ->
+            decoder.decode(data = source, maxDimension = PhotoWidget.MAX_STORAGE_DIMENSION)?.let { importedPhoto ->
                 newFiles.map { file ->
                     file.createNewFile()
 

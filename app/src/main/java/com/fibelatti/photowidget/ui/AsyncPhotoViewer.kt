@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
+import com.fibelatti.photowidget.model.PhotoWidget
 import kotlinx.coroutines.delay
 
 @Composable
@@ -65,7 +66,9 @@ fun AsyncPhotoViewer(
             lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
         }
         val maxWidth = with(LocalDensity.current) {
-            remember(maxWidth) { maxWidth.toPx().toInt() }
+            remember(maxWidth) {
+                maxWidth.toPx().toInt().coerceAtMost(maximumValue = PhotoWidget.MAX_WIDGET_DIMENSION)
+            }
         }
 
         LaunchedEffect(*dataKey) {

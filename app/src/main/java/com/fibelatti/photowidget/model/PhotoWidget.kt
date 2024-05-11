@@ -39,6 +39,7 @@ data class PhotoWidget(
 
     companion object {
 
-        const val MAX_DIMENSION: Int = 800
+        const val MAX_WIDGET_DIMENSION: Int = 720
+        const val MAX_STORAGE_DIMENSION: Int = 1_920
     }
 }

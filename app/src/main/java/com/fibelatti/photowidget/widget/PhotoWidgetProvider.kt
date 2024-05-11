@@ -123,7 +123,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 }
                 val displayMetrics: DisplayMetrics = context.resources.displayMetrics
                 val maxDimension = sqrt(MAX_WIDGET_BITMAP_MEMORY / 4 / displayMetrics.density).toInt()
-                    .coerceAtMost(maximumValue = 600) // Avoid random `RoundedPolygon` crashes
+                    .coerceAtMost(maximumValue = PhotoWidget.MAX_WIDGET_DIMENSION)
 
                 requireNotNull(decoder.decode(data = data, maxDimension = maxDimension))
             } catch (_: Exception) {

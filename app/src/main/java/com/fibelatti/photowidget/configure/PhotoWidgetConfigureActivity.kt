@@ -233,7 +233,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     withAspectRatio(aspectRatio.x, aspectRatio.y)
                 }
             }
-            .withMaxResultSize(PhotoWidget.MAX_DIMENSION, PhotoWidget.MAX_DIMENSION)
+            .withMaxResultSize(PhotoWidget.MAX_STORAGE_DIMENSION, PhotoWidget.MAX_STORAGE_DIMENSION)
             .withOptions(
                 UCrop.Options().apply {
                     setCompressionFormat(Bitmap.CompressFormat.PNG)
