@@ -17,6 +17,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
+import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -36,6 +37,7 @@ class PhotoWidgetStorage @Inject constructor(
     @ApplicationContext private val context: Context,
     private val photoWidgetOrderDao: PhotoWidgetOrderDao,
     private val decoder: PhotoDecoder,
+    private val userPreferencesStorage: UserPreferencesStorage,
 ) {
 
     private val rootDir by lazy {
@@ -57,10 +59,10 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
-    fun getWidgetSource(appWidgetId: Int): PhotoWidgetSource? {
+    fun getWidgetSource(appWidgetId: Int): PhotoWidgetSource {
         val name = sharedPreferences.getString("${PreferencePrefix.SOURCE}$appWidgetId", null)
 
-        return enumValueOfOrNull<PhotoWidgetSource>(name)
+        return enumValueOfOrNull<PhotoWidgetSource>(name) ?: userPreferencesStorage.defaultSource
     }
 
     fun saveWidgetSyncedDir(appWidgetId: Int, dirUri: Set<Uri>) {
@@ -344,7 +346,10 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     fun getWidgetShuffle(appWidgetId: Int): Boolean {
-        return sharedPreferences.getBoolean("${PreferencePrefix.SHUFFLE}$appWidgetId", false)
+        return sharedPreferences.getBoolean(
+            "${PreferencePrefix.SHUFFLE}$appWidgetId",
+            userPreferencesStorage.defaultShuffle,
+        )
     }
 
     fun saveWidgetInterval(appWidgetId: Int, interval: PhotoWidgetLoopingInterval) {
@@ -354,7 +359,7 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
-    fun getWidgetInterval(appWidgetId: Int): PhotoWidgetLoopingInterval? {
+    fun getWidgetInterval(appWidgetId: Int): PhotoWidgetLoopingInterval {
         val legacyName = sharedPreferences.getString("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId", null)
         val legacyValue = enumValueOfOrNull<LegacyPhotoWidgetLoopingInterval>(legacyName)
         val value = sharedPreferences.getLong("${PreferencePrefix.INTERVAL}$appWidgetId", 0)
@@ -369,7 +374,7 @@ class PhotoWidgetStorage @Inject constructor(
 
             value > 0 -> value.toLoopingInterval()
 
-            else -> null
+            else -> userPreferencesStorage.defaultInterval
         }
     }
 
@@ -380,7 +385,10 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     fun getWidgetIntervalEnabled(appWidgetId: Int): Boolean {
-        return sharedPreferences.getBoolean("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId", true)
+        return sharedPreferences.getBoolean(
+            "${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId",
+            userPreferencesStorage.defaultIntervalEnabled,
+        )
     }
 
     fun saveWidgetIndex(appWidgetId: Int, index: Int) {
@@ -412,10 +420,10 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
-    fun getWidgetAspectRatio(appWidgetId: Int): PhotoWidgetAspectRatio? {
+    fun getWidgetAspectRatio(appWidgetId: Int): PhotoWidgetAspectRatio {
         val name = sharedPreferences.getString("${PreferencePrefix.RATIO}$appWidgetId", null)
 
-        return enumValueOfOrNull<PhotoWidgetAspectRatio>(name)
+        return enumValueOfOrNull<PhotoWidgetAspectRatio>(name) ?: PhotoWidgetAspectRatio.SQUARE
     }
 
     fun saveWidgetShapeId(appWidgetId: Int, shapeId: String) {
@@ -424,8 +432,9 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
-    fun getWidgetShapeId(appWidgetId: Int): String? {
+    fun getWidgetShapeId(appWidgetId: Int): String {
         return sharedPreferences.getString("${PreferencePrefix.SHAPE}$appWidgetId", null)
+            ?: userPreferencesStorage.defaultShape
     }
 
     fun saveWidgetCornerRadius(appWidgetId: Int, cornerRadius: Float) {
@@ -437,7 +446,7 @@ class PhotoWidgetStorage @Inject constructor(
     fun getWidgetCornerRadius(appWidgetId: Int): Float {
         return sharedPreferences.getFloat(
             "${PreferencePrefix.CORNER_RADIUS}$appWidgetId",
-            PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
+            userPreferencesStorage.defaultCornerRadius,
         )
     }
 
@@ -447,10 +456,10 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
-    fun getWidgetTapAction(appWidgetId: Int): PhotoWidgetTapAction? {
+    fun getWidgetTapAction(appWidgetId: Int): PhotoWidgetTapAction {
         val name = sharedPreferences.getString("${PreferencePrefix.TAP_ACTION}$appWidgetId", null)
 
-        return enumValueOfOrNull<PhotoWidgetTapAction>(name)
+        return enumValueOfOrNull<PhotoWidgetTapAction>(name) ?: userPreferencesStorage.defaultTapAction
     }
 
     fun saveWidgetIncreaseBrightness(appWidgetId: Int, value: Boolean) {
@@ -460,7 +469,10 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     fun getWidgetIncreaseBrightness(appWidgetId: Int): Boolean {
-        return sharedPreferences.getBoolean("${PreferencePrefix.INCREASE_BRIGHTNESS}$appWidgetId", false)
+        return sharedPreferences.getBoolean(
+            "${PreferencePrefix.INCREASE_BRIGHTNESS}$appWidgetId",
+            userPreferencesStorage.defaultIncreaseBrightness,
+        )
     }
 
     fun saveWidgetAppShortcut(appWidgetId: Int, appName: String?) {

@@ -96,6 +96,7 @@ fun HomeScreen(
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
     currentWidgets: List<Pair<Int, PhotoWidget>>,
     onCurrentWidgetClick: (appWidgetId: Int) -> Unit,
+    onDefaultsClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onRateClick: () -> Unit,
@@ -151,6 +152,7 @@ fun HomeScreen(
 
                     HomeNavigationDestination.SETTINGS -> {
                         SettingsScreen(
+                            onDefaultsClick = onDefaultsClick,
                             onAppearanceClick = onAppearanceClick,
                             onColorsClick = onColorsClick,
                             onRateClick = onRateClick,
@@ -549,6 +551,7 @@ private fun MyWidgetsScreen(
 
 @Composable
 private fun SettingsScreen(
+    onDefaultsClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onRateClick: () -> Unit,
@@ -562,6 +565,12 @@ private fun SettingsScreen(
             .fillMaxSize()
             .padding(all = 16.dp),
     ) {
+        SettingsAction(
+            icon = R.drawable.ic_default,
+            label = R.string.widget_defaults_title,
+            onClick = onDefaultsClick,
+        )
+
         SettingsAction(
             icon = R.drawable.ic_appearance,
             label = R.string.photo_widget_home_appearance,
@@ -690,11 +699,12 @@ private fun HomeScreenPreview() {
             onCreateNewWidgetClick = {},
             currentWidgets = emptyList(),
             onCurrentWidgetClick = {},
-            onHelpClick = {},
+            onDefaultsClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
             onRateClick = {},
             onShareClick = {},
+            onHelpClick = {},
             onViewLicensesClick = {},
         )
     }
@@ -750,6 +760,7 @@ private fun MyWidgetsScreenEmptyPreview() {
 private fun SettingsScreenPreview() {
     ExtendedTheme {
         SettingsScreen(
+            onDefaultsClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
             onRateClick = {},

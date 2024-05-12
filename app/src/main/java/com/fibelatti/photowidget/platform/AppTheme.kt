@@ -5,8 +5,8 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.fibelatti.photowidget.home.UserPreferences
-import com.fibelatti.photowidget.home.UserPreferencesStorage
+import com.fibelatti.photowidget.preferences.UserPreferences
+import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.ui.theme.ExtendedTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow

@@ -2,8 +2,8 @@ package com.fibelatti.photowidget
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.fibelatti.photowidget.home.Appearance
-import com.fibelatti.photowidget.home.UserPreferencesStorage
+import com.fibelatti.photowidget.preferences.Appearance
+import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions

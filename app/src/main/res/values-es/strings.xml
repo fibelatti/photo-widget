@@ -40,9 +40,24 @@
     <string name="preferences_dynamic_colors_enabled">Colores dinámicos</string>
     <string name="preferences_dynamic_colors_disabled">Colores predeterminados</string>
 
+    <!-- Widget Defaults -->
+    <string name="widget_defaults_title">Valores Predeterminados</string>
+    <string name="widget_defaults_source">Fuente</string>
+    <string name="widget_defaults_shuffle">Barajar</string>
+    <string name="widget_defaults_interval">Intervalo de cambio</string>
+    <string name="widget_defaults_shape">Forma</string>
+    <string name="widget_defaults_corner_radius">Redondez</string>
+    <string name="widget_defaults_tap_action">Acción de toque</string>
+    <string name="widget_defaults_increase_brightness">Aumentar el brillo</string>
+    <string name="widget_defaults_reset">Restablecer valores</string>
+
     <!-- Share -->
     <string name="share_title">Corre la voz</string>
     <string name="share_text">Añade tus fotos favoritas a tu pantalla principal con Material Photo Widget. Descárgalo gratis en %s</string>
+
+    <!-- Source -->
+    <string name="photo_widget_source_photos">Fotos</string>
+    <string name="photo_widget_source_directory">Carpeta</string>
 
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Selecciona la proporción</string>

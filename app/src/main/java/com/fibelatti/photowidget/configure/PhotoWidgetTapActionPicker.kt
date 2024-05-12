@@ -111,7 +111,7 @@ private fun TapActionPickerContent(
             items = PhotoWidgetTapAction.entries.map {
                 ToggleButtonGroup.Item(
                     id = it.name,
-                    text = stringResource(id = it.title),
+                    text = stringResource(id = it.label),
                 )
             },
             onButtonClick = { item ->

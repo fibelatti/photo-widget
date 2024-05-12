@@ -23,6 +23,9 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
+import com.fibelatti.photowidget.preferences.Appearance
+import com.fibelatti.photowidget.preferences.UserPreferencesStorage
+import com.fibelatti.photowidget.preferences.WidgetDefaultsActivity
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,6 +53,7 @@ class HomeActivity : AppCompatActivity() {
                     onCreateNewWidgetClick = ::createNewWidget,
                     currentWidgets = currentWidgets,
                     onCurrentWidgetClick = ::editExistingWidget,
+                    onDefaultsClick = ::showDefaults,
                     onAppearanceClick = ::showAppearancePicker,
                     onColorsClick = ::showAppColorsPicker,
                     onShareClick = ::shareApp,
@@ -122,6 +126,10 @@ class HomeActivity : AppCompatActivity() {
         ComposeBottomSheetDialog(context = this) {
             HelpScreen()
         }.show()
+    }
+
+    private fun showDefaults() {
+        startActivity(Intent(this, WidgetDefaultsActivity::class.java))
     }
 
     private fun showAppearancePicker() {

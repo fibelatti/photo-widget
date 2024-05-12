@@ -31,7 +31,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -654,7 +653,7 @@ private fun TapActionPicker(
             modifier = Modifier.fillMaxWidth(),
         ) {
             AutoSizeText(
-                text = stringResource(id = tapAction.title),
+                text = stringResource(id = tapAction.label),
                 maxLines = 1,
                 minTextSize = 8.sp,
             )
@@ -682,13 +681,10 @@ private fun ShapePicker(
             PhotoWidgetShapeBuilder.buildAllShapes().toList()
         }
 
-        val state = rememberLazyListState()
-
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            state = state,
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {

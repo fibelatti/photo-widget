@@ -1,11 +1,6 @@
 package com.fibelatti.photowidget.widget
 
 import com.fibelatti.photowidget.model.PhotoWidget
-import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
-import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
-import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -22,18 +17,18 @@ class LoadPhotoWidgetUseCase @Inject constructor(
         val currentIndex = getWidgetIndex(appWidgetId = appWidgetId)
 
         return PhotoWidget(
-            source = getWidgetSource(appWidgetId = appWidgetId) ?: PhotoWidgetSource.PHOTOS,
+            source = getWidgetSource(appWidgetId = appWidgetId),
             syncedDir = getWidgetSyncDir(appWidgetId = appWidgetId),
             photos = getWidgetPhotos(appWidgetId = appWidgetId, index = currentIndex.takeIf { currentPhotoOnly }),
             currentIndex = currentIndex,
             shuffle = getWidgetShuffle(appWidgetId = appWidgetId),
-            loopingInterval = getWidgetInterval(appWidgetId = appWidgetId) ?: PhotoWidgetLoopingInterval.ONE_DAY,
+            loopingInterval = getWidgetInterval(appWidgetId = appWidgetId),
             intervalBasedLoopingEnabled = getWidgetIntervalEnabled(appWidgetId = appWidgetId),
-            tapAction = getWidgetTapAction(appWidgetId = appWidgetId) ?: PhotoWidgetTapAction.NONE,
+            tapAction = getWidgetTapAction(appWidgetId = appWidgetId),
             increaseBrightness = getWidgetIncreaseBrightness(appWidgetId = appWidgetId),
             appShortcut = getWidgetAppShortcut(appWidgetId = appWidgetId),
-            aspectRatio = getWidgetAspectRatio(appWidgetId = appWidgetId) ?: PhotoWidgetAspectRatio.SQUARE,
-            shapeId = getWidgetShapeId(appWidgetId = appWidgetId) ?: PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID,
+            aspectRatio = getWidgetAspectRatio(appWidgetId = appWidgetId),
+            shapeId = getWidgetShapeId(appWidgetId = appWidgetId),
             cornerRadius = getWidgetCornerRadius(appWidgetId = appWidgetId),
         )
     }

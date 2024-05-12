@@ -47,6 +47,10 @@
         </activity>
 
         <activity
+            android:name=".preferences.WidgetDefaultsActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".configure.PhotoWidgetConfigureActivity"
             android:enableOnBackInvokedCallback="false"
             android:exported="true">

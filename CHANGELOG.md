@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Revamped home screen, including a new "My Widgets" screen to make it easier
   to view and edit existing widgets
+* Default widget settings
 * New tap action: set the widget as an app shortcut
 
 ### Changed
