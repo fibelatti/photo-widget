@@ -24,6 +24,7 @@ import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -84,6 +85,17 @@ class HomeActivity : AppCompatActivity() {
                 else -> null
             }
         }
+
+        val size = preparedIntent?.sharedPhotos?.size ?: 0
+        if (size == 0) {
+            preparedIntent = null
+            return
+        }
+
+        MaterialAlertDialogBuilder(this)
+            .setMessage(resources.getQuantityString(R.plurals.photo_widget_home_share_received, size, size))
+            .setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+            .show()
     }
 
     private fun createNewWidget(aspectRatio: PhotoWidgetAspectRatio) {
@@ -97,9 +109,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun editExistingWidget(appWidgetId: Int) {
-        val intent = Intent(this, PhotoWidgetConfigureActivity::class.java).apply {
+        val intent = (preparedIntent ?: Intent(this, PhotoWidgetConfigureActivity::class.java)).apply {
             this.appWidgetId = appWidgetId
         }
+
+        preparedIntent = null
 
         startActivity(intent)
     }

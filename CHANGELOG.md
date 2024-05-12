@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Made the brightness increase optional when using the full screen viewer
+* Share photos to an existing widget
 
 ## [v1.7] - 2024-05-04
 

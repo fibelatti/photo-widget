@@ -20,6 +20,12 @@
     <string name="photo_widget_home_version">Versión: %s</string>
     <string name="photo_widget_home_view_licenses">Licencias de OSS</string>
 
+    <plurals name="photo_widget_home_share_received">
+        <item quantity="one">1 foto recibida. Cree un nuevo widget o elija uno existente para agregarla.</item>
+        <item quantity="many">%d fotos recibidas. Cree un nuevo widget o elija uno existente para agregarlas.</item>
+        <item quantity="other">%d fotos recibidas. Cree un nuevo widget o elija uno existente para agregarlas.</item>
+    </plurals>
+
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Aún no has agregado ningún widget.\nLos widgets agregados a tu pantalla de inicio aparecerán aquí.</string>
     <string name="photo_widget_home_filter_all">Todos</string>
@@ -121,6 +127,7 @@
     <string name="photo_widget_action_continue">Continuar</string>
     <string name="photo_widget_action_cancel">Cancelar</string>
     <string name="photo_widget_action_apply">Aplicar</string>
+    <string name="photo_widget_action_got_it">Entiendo</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de pantalla principal de Material Photo</string>

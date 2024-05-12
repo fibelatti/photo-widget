@@ -19,6 +19,12 @@
     <string name="photo_widget_home_version">Versão: %s</string>
     <string name="photo_widget_home_view_licenses">Licenças de Software</string>
 
+    <plurals name="photo_widget_home_share_received">
+        <item quantity="one">%d foto recebida. Crie um novo widget ou escolha um existente para adicioná-la.</item>
+        <item quantity="many">%d fotos recebidas. Crie um novo widget ou escolha um existente para adicioná-las.</item>
+        <item quantity="other">%d fotos recebidas. Crie um novo widget ou escolha um existente para adicioná-las.</item>
+    </plurals>
+
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Você não adicionou nenhum widget.\nWidgets adicionados à sua tela inicial irão aparecer aqui.</string>
     <string name="photo_widget_home_filter_all">Todos</string>
@@ -120,6 +126,7 @@
     <string name="photo_widget_action_continue">Continuar</string>
     <string name="photo_widget_action_cancel">Cancelar</string>
     <string name="photo_widget_action_apply">Aplicar</string>
+    <string name="photo_widget_action_got_it">Entendi</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de fotos da tela inicial</string>

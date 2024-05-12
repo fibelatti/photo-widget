@@ -19,6 +19,11 @@
     <string name="photo_widget_home_version">App version: %s</string>
     <string name="photo_widget_home_view_licenses">OSS Licenses</string>
 
+    <plurals name="photo_widget_home_share_received">
+        <item quantity="one">1 photo received. Create a new widget or choose an existing one to add it.</item>
+        <item quantity="other">%d photos received. Create a new widget or choose an existing one to add them.</item>
+    </plurals>
+
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">You haven\'t added any widgets yet.\nWidgets added to your home screen will appear here.</string>
     <string name="photo_widget_home_filter_all">All</string>
@@ -118,6 +123,7 @@
     <string name="photo_widget_action_continue">Continue</string>
     <string name="photo_widget_action_cancel">Cancel</string>
     <string name="photo_widget_action_apply">Apply</string>
+    <string name="photo_widget_action_got_it">Got it</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo home screen widget</string>
