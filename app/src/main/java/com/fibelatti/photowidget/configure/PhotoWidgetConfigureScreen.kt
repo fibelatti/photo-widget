@@ -13,6 +13,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -50,6 +51,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
@@ -467,6 +469,7 @@ private fun EditingControls(
 
 // region Pickers
 @Composable
+@OptIn(ExperimentalFoundationApi::class)
 private fun PhotoPicker(
     source: PhotoWidgetSource,
     onChangeSource: () -> Unit,
@@ -536,17 +539,16 @@ private fun PhotoPicker(
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp),
+                .height(56.dp)
+                .padding(start = 16.dp),
+            contentPadding = PaddingValues(end = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            item {
-                val shape = remember(shapeId) {
-                    PhotoWidgetShapeBuilder.buildShape(shapeId = shapeId)
-                }
-
+            stickyHeader {
                 ColoredShape(
-                    polygon = shape,
+                    polygon = remember(shapeId) {
+                        PhotoWidgetShapeBuilder.buildShape(shapeId = shapeId)
+                    },
                     color = MaterialTheme.colorScheme.primaryContainer,
                     modifier = Modifier
                         .fillMaxHeight()
@@ -561,6 +563,15 @@ private fun PhotoPicker(
                                 }
                             },
                             role = Role.Button,
+                        )
+                        .background(
+                            brush = Brush.horizontalGradient(
+                                colorStops = arrayOf(
+                                    0f to MaterialTheme.colorScheme.background,
+                                    0.9f to MaterialTheme.colorScheme.background.copy(alpha = 0.9f),
+                                    1f to Color.Transparent,
+                                ),
+                            ),
                         ),
                 ) {
                     Icon(
