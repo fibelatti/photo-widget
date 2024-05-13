@@ -1,0 +1,9 @@
+Version 1.8 is released with the following updates:
+
+New: Revamped home screen, including a new "My Widgets" screen to make it easier to manage existing widgets
+New: Set default settings that apply to every new widget
+New: Set the widget as an app shortcut with a new tap action
+New: Share photos from your gallery to an existing widget
+New: Optional brightness setting when using the full screen viewer
+
+Feedback and suggestions are always welcome, visit the project page to contribute!
