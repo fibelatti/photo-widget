@@ -25,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -64,8 +65,6 @@ class PhotoWidgetClickActivity : AppCompatActivity() {
         fadeIn()
         super.onCreate(savedInstanceState)
 
-        setScreenBrightness(value = 0.9f)
-
         setContent {
             AppTheme {
                 val viewModel: PhotoWidgetClickViewModel = hiltViewModel()
@@ -77,6 +76,12 @@ class PhotoWidgetClickActivity : AppCompatActivity() {
                     } catch (_: Exception) {
                         finish()
                         return@let
+                    }
+
+                    LaunchedEffect(Unit) {
+                        if (photoWidget.increaseBrightness) {
+                            setScreenBrightness(value = 0.9f)
+                        }
                     }
 
                     ScreenContent(
