@@ -457,7 +457,7 @@ private fun MyWidgetsScreen(
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Fixed(count = if (maxWidth < 600.dp) 2 else 4),
                 modifier = modifier.fillMaxSize(),
-                contentPadding = PaddingValues(start = 16.dp, top = 64.dp, end = 16.dp, bottom = 16.dp),
+                contentPadding = PaddingValues(start = 16.dp, top = 80.dp, end = 16.dp, bottom = 16.dp),
                 verticalItemSpacing = 16.dp,
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
@@ -481,12 +481,10 @@ private fun MyWidgetsScreen(
                 verticalArrangement = Arrangement.spacedBy(32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                val allShapes = remember {
-                    PhotoWidgetShapeBuilder.buildAllShapes().values
-                }
-
                 ColoredShape(
-                    polygon = allShapes.random(),
+                    polygon = remember {
+                        PhotoWidgetShapeBuilder.buildAllShapes().values.random()
+                    },
                     color = MaterialTheme.colorScheme.primaryContainer,
                     modifier = Modifier.size(120.dp),
                 )
@@ -673,7 +671,7 @@ private fun SettingsAction(
         Icon(
             painter = painterResource(id = icon),
             contentDescription = null,
-            modifier = Modifier.size(36.dp),
+            modifier = Modifier.size(24.dp),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
