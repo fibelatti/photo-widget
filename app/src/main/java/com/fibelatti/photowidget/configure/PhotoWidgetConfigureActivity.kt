@@ -60,13 +60,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     private val onBackPressedCallback = object : OnBackPressedCallback(enabled = false) {
 
         override fun handleOnBackPressed() {
-            MaterialAlertDialogBuilder(this@PhotoWidgetConfigureActivity)
-                .setMessage(R.string.photo_widget_configure_navigate_back_warning)
-                .setPositiveButton(R.string.photo_widget_action_yes) { _, _ ->
-                    finish()
-                }
-                .setNegativeButton(R.string.photo_widget_action_no) { _, _ -> }
-                .show()
+            handleBackNav()
         }
     }
 
@@ -97,6 +91,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     photoWidget = state.photoWidget,
                     selectedPhoto = state.selectedPhoto,
                     isProcessing = state.isProcessing,
+                    onNavClick = ::handleBackNav,
                     onAspectRatioClick = ::showAspectRatioPicker,
                     onCropClick = viewModel::requestCrop,
                     onRemoveClick = viewModel::photoRemoved,
@@ -137,6 +132,16 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
     private fun checkIntent() {
         intent.sharedPhotos?.let(viewModel::photoPicked)
+    }
+
+    private fun handleBackNav() {
+        MaterialAlertDialogBuilder(this)
+            .setMessage(R.string.photo_widget_configure_navigate_back_warning)
+            .setPositiveButton(R.string.photo_widget_action_yes) { _, _ ->
+                finish()
+            }
+            .setNegativeButton(R.string.photo_widget_action_no) { _, _ -> }
+            .show()
     }
 
     private suspend fun handleMessage(message: PhotoWidgetConfigureState.Message) {

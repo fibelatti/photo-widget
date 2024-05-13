@@ -35,6 +35,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -87,6 +88,7 @@ fun PhotoWidgetConfigureScreen(
     photoWidget: PhotoWidget,
     selectedPhoto: LocalPhoto?,
     isProcessing: Boolean,
+    onNavClick: () -> Unit,
     onAspectRatioClick: () -> Unit,
     onCropClick: (LocalPhoto) -> Unit,
     onRemoveClick: (LocalPhoto) -> Unit,
@@ -118,6 +120,7 @@ fun PhotoWidgetConfigureScreen(
             PhotoWidgetConfigureContent(
                 photoWidget = photoWidget,
                 selectedPhoto = selectedPhoto,
+                onNavClick = onNavClick,
                 onMoveLeftClick = onMoveLeftClick,
                 onMoveRightClick = onMoveRightClick,
                 onAspectRatioClick = onAspectRatioClick,
@@ -161,6 +164,7 @@ fun PhotoWidgetConfigureScreen(
 private fun PhotoWidgetConfigureContent(
     photoWidget: PhotoWidget,
     selectedPhoto: LocalPhoto?,
+    onNavClick: () -> Unit,
     onAspectRatioClick: () -> Unit,
     onCropClick: (LocalPhoto) -> Unit,
     onRemoveClick: (LocalPhoto) -> Unit,
@@ -195,6 +199,19 @@ private fun PhotoWidgetConfigureContent(
                 modifier = Modifier.fillMaxSize(),
                 cornerRadius = photoWidget.cornerRadius,
             )
+
+            IconButton(
+                onClick = onNavClick,
+                modifier = Modifier.align(Alignment.TopStart),
+                colors = IconButtonDefaults.iconButtonColors().copy(
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                ),
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_back),
+                    contentDescription = null,
+                )
+            }
 
             ConfigurationControl(
                 label = photoWidget.aspectRatio.label,
@@ -831,6 +848,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             ),
             selectedPhoto = LocalPhoto(name = "photo-1"),
             isProcessing = false,
+            onNavClick = {},
             onMoveLeftClick = {},
             onMoveRightClick = {},
             onAspectRatioClick = {},
