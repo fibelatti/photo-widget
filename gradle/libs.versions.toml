@@ -1,10 +1,10 @@
 [versions]
 agp = "8.4.0"
-composeCompiler = "1.5.13"
+composeCompiler = "1.5.14"
 coroutines = "1.8.0"
 hilt = "2.51"
 hiltExtensions = "1.2.0"
-kotlin = "1.9.23"
+kotlin = "1.9.24"
 lifecycle = "2.8.0"
 room = "2.6.1"
 aboutLibraries = "10.10.0"
@@ -48,7 +48,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version = "1.9.23-1.0.20" }
+ksp = { id = "com.google.devtools.ksp", version = "1.9.24-1.0.20" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 room = { id = "androidx.room", version.ref = "room" }
 spotless = { id = "com.diffplug.spotless", version = "6.25.0" }
