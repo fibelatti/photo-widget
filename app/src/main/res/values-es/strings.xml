@@ -42,6 +42,7 @@
 
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Valores Predeterminados</string>
+    <string name="widget_defaults_explanation">Estos valores se aplican solo al crear un nuevo widget. No tienen ningún efecto sobre los widgets existentes.</string>
     <string name="widget_defaults_source">Fuente</string>
     <string name="widget_defaults_shuffle">Barajar</string>
     <string name="widget_defaults_interval">Intervalo de cambio</string>

@@ -40,6 +40,7 @@
 
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Widget Defaults</string>
+    <string name="widget_defaults_explanation">These values are applied only when creating a new widget. They have no effect on existing widgets.</string>
     <string name="widget_defaults_source">Source</string>
     <string name="widget_defaults_shuffle">Shuffle</string>
     <string name="widget_defaults_interval">Flipping interval</string>

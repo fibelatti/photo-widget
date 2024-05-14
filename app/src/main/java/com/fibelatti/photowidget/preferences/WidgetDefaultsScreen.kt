@@ -176,6 +176,11 @@ private fun WidgetDefaultsScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+            Text(
+                text = stringResource(id = R.string.widget_defaults_explanation),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_source),
                 currentValue = stringResource(id = userPreferences.defaultSource.label),
