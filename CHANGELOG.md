@@ -5,6 +5,16 @@ All notable user-facing changes to this app will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.8.2] - 2024-05-15
+
+### Changed
+
+* Added explanation for the widget defaults
+
+### Fixed
+
+* Crash that could happen when loading widgets
+
 ## [v1.8.1] - 2024-05-13
 
 ### Fixed

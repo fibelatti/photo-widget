@@ -14,7 +14,7 @@ object AppInfo {
 
     private const val VERSION_MAJOR = 1
     private const val VERSION_MINOR = 8
-    private const val VERSION_PATCH = 1
+    private const val VERSION_PATCH = 2
     private const val VERSION_BUILD = 0
 
     val versionCode: Int =
