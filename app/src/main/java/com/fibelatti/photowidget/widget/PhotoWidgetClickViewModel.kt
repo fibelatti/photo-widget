@@ -34,7 +34,7 @@ class PhotoWidgetClickViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val photoWidget = async {
-                loadPhotoWidgetUseCase(appWidgetId = appWidgetId, currentPhotoOnly = true)
+                loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
             }
             val count = async {
                 photoWidgetStorage.getWidgetPhotoCount(appWidgetId = appWidgetId)
@@ -55,7 +55,7 @@ class PhotoWidgetClickViewModel @Inject constructor(
 
             _state.update { current ->
                 current.copy(
-                    photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId, currentPhotoOnly = true),
+                    photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId),
                 )
             }
         }

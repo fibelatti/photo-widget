@@ -172,7 +172,7 @@ class PhotoWidgetStorage @Inject constructor(
         } ?: 0
     }
 
-    suspend fun getWidgetPhotos(appWidgetId: Int, index: Int? = null): List<LocalPhoto> = withContext(Dispatchers.IO) {
+    suspend fun getWidgetPhotos(appWidgetId: Int): List<LocalPhoto> = withContext(Dispatchers.IO) {
         Timber.d("Retrieving photos (appWidgetId=$appWidgetId)")
 
         val croppedPhotos = getWidgetDir(appWidgetId = appWidgetId).let { dir ->
@@ -189,23 +189,11 @@ class PhotoWidgetStorage @Inject constructor(
         }
 
         return@withContext if (PhotoWidgetSource.DIRECTORY == source) {
-            getDirectoryPhotos(appWidgetId = appWidgetId, croppedPhotos = dict).let { items ->
-                if (index == null) {
-                    items
-                } else {
-                    listOfNotNull(items.elementAtOrNull(index))
-                }
-            }
+            getDirectoryPhotos(appWidgetId = appWidgetId, croppedPhotos = dict)
         } else {
             getWidgetOrder(appWidgetId = appWidgetId)
                 .ifEmpty { dict.keys }
-                .let { items ->
-                    if (index == null) {
-                        items.mapNotNull { dict[it] }
-                    } else {
-                        listOfNotNull(items.elementAtOrNull(index)?.let { dict[it] })
-                    }
-                }
+                .mapNotNull { dict[it] }
         }.also { Timber.d("Total photos found: ${it.size}") }
     }
 

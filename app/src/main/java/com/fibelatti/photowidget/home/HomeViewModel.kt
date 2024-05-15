@@ -24,7 +24,7 @@ class HomeViewModel @Inject constructor(
     fun loadCurrentWidgets(ids: List<Int>) {
         viewModelScope.launch {
             _currentWidgets.value = ids.map { id ->
-                async { id to loadPhotoWidgetUseCase(appWidgetId = id, currentPhotoOnly = true) }
+                async { id to loadPhotoWidgetUseCase(appWidgetId = id) }
             }.awaitAll()
         }
     }

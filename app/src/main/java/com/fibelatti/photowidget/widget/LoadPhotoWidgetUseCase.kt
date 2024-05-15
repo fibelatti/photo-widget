@@ -10,16 +10,15 @@ class LoadPhotoWidgetUseCase @Inject constructor(
 
     suspend operator fun invoke(
         appWidgetId: Int,
-        currentPhotoOnly: Boolean = false,
     ): PhotoWidget = with(photoWidgetStorage) {
-        Timber.d("Loading widget data (appWidgetId=$appWidgetId, currentPhotoOnly=$currentPhotoOnly)")
+        Timber.d("Loading widget data (appWidgetId=$appWidgetId)")
 
         val currentIndex = getWidgetIndex(appWidgetId = appWidgetId)
 
         return PhotoWidget(
             source = getWidgetSource(appWidgetId = appWidgetId),
             syncedDir = getWidgetSyncDir(appWidgetId = appWidgetId),
-            photos = getWidgetPhotos(appWidgetId = appWidgetId, index = currentIndex.takeIf { currentPhotoOnly }),
+            photos = getWidgetPhotos(appWidgetId = appWidgetId),
             currentIndex = currentIndex,
             shuffle = getWidgetShuffle(appWidgetId = appWidgetId),
             loopingInterval = getWidgetInterval(appWidgetId = appWidgetId),
