@@ -125,7 +125,7 @@ room {
 }
 
 dependencies {
-    implementation(project(":ui"))
+    implementation(projects.ui)
 
     // Kotlin
     implementation(libs.kotlin)

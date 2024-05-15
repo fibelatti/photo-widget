@@ -1,7 +1,9 @@
 @file:Suppress("UnstableApiUsage")
 
-rootProject.name = "Photo Widget"
+rootProject.name = "PhotoWidget"
 rootProject.buildFileName = "build.gradle.kts"
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":app")
 include(":ui")

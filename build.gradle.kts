@@ -22,40 +22,42 @@ buildscript {
 }
 
 allprojects {
-    apply(plugin = "com.diffplug.spotless")
+    afterEvaluate {
+        apply(plugin = libs.plugins.spotless.get().pluginId)
 
-    val configureSpotless: SpotlessExtension.() -> Unit = {
-        kotlin {
-            target("**/*.kt")
-            targetExclude("**/build/**/*.kt")
+        val configureSpotless: SpotlessExtension.() -> Unit = {
+            kotlin {
+                target("**/*.kt")
+                targetExclude("**/build/**/*.kt")
+            }
+            kotlinGradle {
+                target("**/*.kts")
+                targetExclude("**/build/**/*.kts")
+
+                ktlint()
+            }
+            format("misc") {
+                target("*.gradle", "*.md", ".gitignore")
+
+                trimTrailingWhitespace()
+                indentWithSpaces()
+                endWithNewline()
+            }
         }
-        kotlinGradle {
-            target("**/*.kts")
-            targetExclude("**/build/**/*.kts")
 
-            ktlint()
+        if (project === rootProject) {
+            extensions.getByType<SpotlessExtension>().predeclareDeps()
+            extensions.configure<SpotlessExtensionPredeclare>(configureSpotless)
+        } else {
+            extensions.configure(configureSpotless)
         }
-        format("misc") {
-            target("*.gradle", "*.md", ".gitignore")
-
-            trimTrailingWhitespace()
-            indentWithSpaces()
-            endWithNewline()
-        }
-    }
-
-    if (project === rootProject) {
-        extensions.getByType<SpotlessExtension>().predeclareDeps()
-        extensions.configure<SpotlessExtensionPredeclare>(configureSpotless)
-    } else {
-        extensions.configure(configureSpotless)
     }
 }
 
 subprojects {
     afterEvaluate {
         plugins.withType<com.android.build.gradle.api.AndroidBasePlugin> {
-            apply(plugin = "org.gradle.android.cache-fix")
+            apply(plugin = libs.plugins.cache.fix.get().pluginId)
         }
 
         extensions.findByType(CommonExtension::class.java)?.apply {
