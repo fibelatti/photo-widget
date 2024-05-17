@@ -6,6 +6,7 @@ import android.content.Intent
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class PhotoWidgetRescheduleReceiver : BroadcastReceiver() {
 
@@ -16,23 +17,28 @@ class PhotoWidgetRescheduleReceiver : BroadcastReceiver() {
                 intent.data?.schemeSpecificPart == context?.packageName)
 
         if (context != null && (isBoot || isUpdate)) {
+            Timber.d("isBoot: $isBoot, isUpdate: $isUpdate")
+
             val ids = PhotoWidgetProvider.ids(context).ifEmpty { return }
 
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
-            val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
-            val photoWidgetAlarmManager = entryPoint.photoWidgetAlarmManager()
             val coroutineScope = entryPoint.coroutineScope()
+            val photoWidgetStorage = entryPoint.photoWidgetStorage()
+            val photoWidgetAlarmManager = entryPoint.photoWidgetAlarmManager()
 
             coroutineScope.launch {
                 for (id in ids) {
-                    val widget = loadPhotoWidgetUseCase(appWidgetId = id)
-                    if (widget.loopingEnabled) {
+                    val enabled = photoWidgetStorage.getWidgetIntervalEnabled(appWidgetId = id)
+                    val interval = photoWidgetStorage.getWidgetInterval(appWidgetId = id)
+                    if (enabled) {
                         photoWidgetAlarmManager.setup(
                             appWidgetId = id,
-                            repeatInterval = widget.loopingInterval.repeatInterval,
-                            timeUnit = widget.loopingInterval.timeUnit,
+                            repeatInterval = interval.repeatInterval,
+                            timeUnit = interval.timeUnit,
                         )
                     }
+
+                    PhotoWidgetProvider.update(context = context, appWidgetId = id)
                 }
             }
         }
