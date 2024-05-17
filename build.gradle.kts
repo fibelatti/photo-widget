@@ -1,6 +1,7 @@
 import com.android.build.api.dsl.CommonExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.diffplug.gradle.spotless.SpotlessExtensionPredeclare
+import com.diffplug.gradle.spotless.SpotlessPlugin
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -22,35 +23,37 @@ buildscript {
 }
 
 allprojects {
-    afterEvaluate {
-        apply(plugin = libs.plugins.spotless.get().pluginId)
+    apply<SpotlessPlugin>()
 
-        val configureSpotless: SpotlessExtension.() -> Unit = {
-            kotlin {
-                target("**/*.kt")
-                targetExclude("**/build/**/*.kt")
-            }
-            kotlinGradle {
-                target("**/*.kts")
-                targetExclude("**/build/**/*.kts")
-
-                ktlint()
-            }
-            format("misc") {
-                target("*.gradle", "*.md", ".gitignore")
-
-                trimTrailingWhitespace()
-                indentWithSpaces()
-                endWithNewline()
-            }
+    val configureSpotless: SpotlessExtension.() -> Unit = {
+        kotlin {
+            target("**/*.kt")
+            targetExclude("**/build/**/*.kt")
         }
+        kotlinGradle {
+            target("**/*.kts")
+            targetExclude("**/build/**/*.kts")
 
-        if (project === rootProject) {
-            extensions.getByType<SpotlessExtension>().predeclareDeps()
-            extensions.configure<SpotlessExtensionPredeclare>(configureSpotless)
-        } else {
-            extensions.configure(configureSpotless)
+            ktlint()
         }
+        format("xml") {
+            target("**/*.xml")
+            targetExclude("**/build/**/*.xml")
+        }
+        format("misc") {
+            target("*.gradle", "*.md", ".gitignore")
+
+            trimTrailingWhitespace()
+            indentWithSpaces()
+            endWithNewline()
+        }
+    }
+
+    if (project === rootProject) {
+        extensions.getByType<SpotlessExtension>().predeclareDeps()
+        extensions.configure<SpotlessExtensionPredeclare>(configureSpotless)
+    } else {
+        extensions.configure(configureSpotless)
     }
 }
 
