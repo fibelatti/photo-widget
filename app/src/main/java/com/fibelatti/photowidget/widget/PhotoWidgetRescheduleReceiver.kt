@@ -16,10 +16,13 @@ class PhotoWidgetRescheduleReceiver : BroadcastReceiver() {
             (Intent.ACTION_PACKAGE_REPLACED == intent?.action &&
                 intent.data?.schemeSpecificPart == context?.packageName)
 
-        if (context != null && (isBoot || isUpdate)) {
-            Timber.d("isBoot: $isBoot, isUpdate: $isUpdate")
+        Timber.d("Reschedule received (isBoot=$isBoot, isUpdate=$isUpdate)")
 
-            val ids = PhotoWidgetProvider.ids(context).ifEmpty { return }
+        if (context != null && (isBoot || isUpdate)) {
+            val ids = PhotoWidgetProvider.ids(context).ifEmpty {
+                Timber.d("There are no widgets")
+                return
+            }
 
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
             val coroutineScope = entryPoint.coroutineScope()
@@ -30,6 +33,9 @@ class PhotoWidgetRescheduleReceiver : BroadcastReceiver() {
                 for (id in ids) {
                     val enabled = photoWidgetStorage.getWidgetIntervalEnabled(appWidgetId = id)
                     val interval = photoWidgetStorage.getWidgetInterval(appWidgetId = id)
+
+                    Timber.d("Processing widget (id=$id, enabled=$enabled, interval=$interval")
+
                     if (enabled) {
                         photoWidgetAlarmManager.setup(
                             appWidgetId = id,
