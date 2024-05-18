@@ -12,9 +12,11 @@
     <string name="photo_widget_home_settings">Configurações</string>
     <string name="photo_widget_home_appearance">Tema do app</string>
     <string name="photo_widget_home_dynamic_colors">Cores do app</string>
-    <string name="photo_widget_home_share">Compartilhar</string>
-    <string name="photo_widget_home_rate">Avaliar</string>
-    <string name="photo_widget_home_help">Ajuda</string>
+    <string name="photo_widget_home_share">Compartilhe o app</string>
+    <string name="photo_widget_home_rate">Deixe sua avaliação</string>
+    <string name="photo_widget_home_feedback">Envie seu feedback</string>
+    <string name="photo_widget_home_help">Perguntas frequentes</string>
+    <string name="photo_widget_home_privacy_policy">Política de privacidade</string>
     <string name="photo_widget_home_developer">Feito com ❤ por Filipe Belatti</string>
     <string name="photo_widget_home_version">Versão: %s</string>
     <string name="photo_widget_home_view_licenses">Licenças de Software</string>
@@ -40,7 +42,7 @@
     <string name="preferences_dynamic_colors_disabled">Cores padrão</string>
 
     <!-- Widget Defaults -->
-    <string name="widget_defaults_title">Valores Padrão</string>
+    <string name="widget_defaults_title">Valores padrão</string>
     <string name="widget_defaults_explanation">Esses valores são aplicados somente ao criar um novo widget. Eles não têm efeito nos widgets existentes.</string>
     <string name="widget_defaults_source">Origem</string>
     <string name="widget_defaults_shuffle">Embaralhar</string>

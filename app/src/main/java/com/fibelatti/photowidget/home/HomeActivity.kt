@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.fibelatti.photowidget.BuildConfig
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.configure.appWidgetId
@@ -56,9 +57,11 @@ class HomeActivity : AppCompatActivity() {
                     onDefaultsClick = ::showDefaults,
                     onAppearanceClick = ::showAppearancePicker,
                     onColorsClick = ::showAppColorsPicker,
-                    onShareClick = ::shareApp,
+                    onSendFeedbackClick = ::sendFeedback,
                     onRateClick = ::rateApp,
+                    onShareClick = ::shareApp,
                     onHelpClick = ::showHelp,
+                    onPrivacyPolicyClick = ::openPrivacyPolicy,
                     onViewLicensesClick = ::viewOpenSourceLicenses,
                 )
             }
@@ -190,8 +193,29 @@ class HomeActivity : AppCompatActivity() {
             .startChooser()
     }
 
+    private fun sendFeedback() {
+        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")).apply {
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("appsupport@fibelatti.com"))
+            putExtra(
+                Intent.EXTRA_SUBJECT,
+                "Material Photo Widget (${BuildConfig.VERSION_NAME}) — Feature request / Bug report",
+            )
+        }
+
+        startActivity(Intent.createChooser(emailIntent, getString(R.string.photo_widget_home_feedback)))
+    }
+
     private fun rateApp() {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(APP_URL)))
+    }
+
+    private fun openPrivacyPolicy() {
+        startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://fibelatti.github.io/photo-widget/"),
+            ),
+        )
     }
 
     private fun viewOpenSourceLicenses() {

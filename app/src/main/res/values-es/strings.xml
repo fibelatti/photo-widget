@@ -11,11 +11,13 @@
     <string name="photo_widget_home_new">Nuevo Widget</string>
     <string name="photo_widget_home_current">Mis Widgets</string>
     <string name="photo_widget_home_settings">Ajustes</string>
-    <string name="photo_widget_home_appearance">Apariencia</string>
-    <string name="photo_widget_home_dynamic_colors">Colores</string>
-    <string name="photo_widget_home_share">Compartir</string>
-    <string name="photo_widget_home_rate">Calificar</string>
-    <string name="photo_widget_home_help">Ayuda</string>
+    <string name="photo_widget_home_appearance">Tema de la aplicación</string>
+    <string name="photo_widget_home_dynamic_colors">Colores de la aplicación</string>
+    <string name="photo_widget_home_share">Comparte la aplicación</string>
+    <string name="photo_widget_home_rate">Escribe una reseña</string>
+    <string name="photo_widget_home_feedback">Envía tus comentarios</string>
+    <string name="photo_widget_home_help">Preguntas frecuentes</string>
+    <string name="photo_widget_home_privacy_policy">Política de privacidad</string>
     <string name="photo_widget_home_developer">Desarrollado con ❤ por Filipe Belatti</string>
     <string name="photo_widget_home_version">Versión: %s</string>
     <string name="photo_widget_home_view_licenses">Licencias de OSS</string>
@@ -41,7 +43,7 @@
     <string name="preferences_dynamic_colors_disabled">Colores predeterminados</string>
 
     <!-- Widget Defaults -->
-    <string name="widget_defaults_title">Valores Predeterminados</string>
+    <string name="widget_defaults_title">Valores predeterminados</string>
     <string name="widget_defaults_explanation">Estos valores se aplican solo al crear un nuevo widget. No tienen ningún efecto sobre los widgets existentes.</string>
     <string name="widget_defaults_source">Fuente</string>
     <string name="widget_defaults_shuffle">Barajar</string>

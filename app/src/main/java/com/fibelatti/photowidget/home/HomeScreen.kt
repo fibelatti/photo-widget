@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,7 +37,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -63,9 +64,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -99,9 +104,11 @@ fun HomeScreen(
     onDefaultsClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
+    onSendFeedbackClick: () -> Unit,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
     onHelpClick: () -> Unit,
+    onPrivacyPolicyClick: () -> Unit,
     onViewLicensesClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -155,9 +162,11 @@ fun HomeScreen(
                             onDefaultsClick = onDefaultsClick,
                             onAppearanceClick = onAppearanceClick,
                             onColorsClick = onColorsClick,
+                            onSendFeedbackClick = onSendFeedbackClick,
                             onRateClick = onRateClick,
                             onShareClick = onShareClick,
                             onHelpClick = onHelpClick,
+                            onPrivacyPolicyClick = onPrivacyPolicyClick,
                             onViewLicensesClick = onViewLicensesClick,
                         )
                     }
@@ -554,57 +563,115 @@ private fun SettingsScreen(
     onDefaultsClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
+    onSendFeedbackClick: () -> Unit,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
     onHelpClick: () -> Unit,
+    onPrivacyPolicyClick: () -> Unit,
+    onViewLicensesClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+    ) {
+        var footerHeight by remember { mutableStateOf(64.dp) }
+
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(
+                    start = 16.dp,
+                    top = 16.dp,
+                    end = 16.dp,
+                    bottom = footerHeight + 16.dp,
+                ),
+        ) {
+            SettingsAction(
+                icon = R.drawable.ic_default,
+                label = R.string.widget_defaults_title,
+                onClick = onDefaultsClick,
+            )
+
+            SettingsAction(
+                icon = R.drawable.ic_appearance,
+                label = R.string.photo_widget_home_appearance,
+                onClick = onAppearanceClick,
+            )
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                SettingsAction(
+                    icon = R.drawable.ic_dynamic_color,
+                    label = R.string.photo_widget_home_dynamic_colors,
+                    onClick = onColorsClick,
+                )
+            }
+
+            HorizontalDivider()
+
+            SettingsAction(
+                icon = R.drawable.ic_feedback,
+                label = R.string.photo_widget_home_feedback,
+                onClick = onSendFeedbackClick,
+            )
+
+            SettingsAction(
+                icon = R.drawable.ic_rate,
+                label = R.string.photo_widget_home_rate,
+                onClick = onRateClick,
+            )
+
+            SettingsAction(
+                icon = R.drawable.ic_share,
+                label = R.string.photo_widget_home_share,
+                onClick = onShareClick,
+            )
+
+            HorizontalDivider()
+
+            SettingsAction(
+                icon = R.drawable.ic_help,
+                label = R.string.photo_widget_home_help,
+                onClick = onHelpClick,
+            )
+
+            SettingsAction(
+                icon = R.drawable.ic_privacy_policy,
+                label = R.string.photo_widget_home_privacy_policy,
+                onClick = onPrivacyPolicyClick,
+            )
+        }
+
+        val localDensity = LocalDensity.current
+        SettingsFooter(
+            onViewLicensesClick = onViewLicensesClick,
+            modifier = Modifier
+                .onGloballyPositioned {
+                    footerHeight = with(localDensity) { it.size.height.toDp() }
+                }
+                .background(
+                    brush = Brush.verticalGradient(
+                        colorStops = arrayOf(
+                            0f to Color.Transparent,
+                            0.3f to MaterialTheme.colorScheme.background.copy(alpha = 0.9f),
+                            0.4f to MaterialTheme.colorScheme.background,
+                        ),
+                    ),
+                )
+                .padding(top = 30.dp, bottom = 16.dp)
+                .align(Alignment.BottomCenter),
+        )
+    }
+}
+
+@Composable
+private fun SettingsFooter(
     onViewLicensesClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(all = 16.dp),
+        modifier = modifier.fillMaxWidth(),
     ) {
-        SettingsAction(
-            icon = R.drawable.ic_default,
-            label = R.string.widget_defaults_title,
-            onClick = onDefaultsClick,
-        )
-
-        SettingsAction(
-            icon = R.drawable.ic_appearance,
-            label = R.string.photo_widget_home_appearance,
-            onClick = onAppearanceClick,
-        )
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            SettingsAction(
-                icon = R.drawable.ic_dynamic_color,
-                label = R.string.photo_widget_home_dynamic_colors,
-                onClick = onColorsClick,
-            )
-        }
-
-        SettingsAction(
-            icon = R.drawable.ic_rate,
-            label = R.string.photo_widget_home_rate,
-            onClick = onRateClick,
-        )
-
-        SettingsAction(
-            icon = R.drawable.ic_share,
-            label = R.string.photo_widget_home_share,
-            onClick = onShareClick,
-        )
-
-        SettingsAction(
-            icon = R.drawable.ic_help,
-            label = R.string.photo_widget_home_help,
-            onClick = onHelpClick,
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
         HorizontalDivider(
             modifier = Modifier.padding(vertical = 12.dp),
             color = MaterialTheme.colorScheme.surfaceVariant,
@@ -702,9 +769,11 @@ private fun HomeScreenPreview() {
             onDefaultsClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
+            onSendFeedbackClick = {},
             onRateClick = {},
             onShareClick = {},
             onHelpClick = {},
+            onPrivacyPolicyClick = {},
             onViewLicensesClick = {},
         )
     }
@@ -763,9 +832,11 @@ private fun SettingsScreenPreview() {
             onDefaultsClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
+            onSendFeedbackClick = {},
             onRateClick = {},
             onShareClick = {},
             onHelpClick = {},
+            onPrivacyPolicyClick = {},
             onViewLicensesClick = {},
         )
     }
