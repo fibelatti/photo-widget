@@ -1,0 +1,14 @@
+Version 1.8.3 is released with the following updates:
+
+Fix: widgets sometimes not working correctly after a device restart
+New: feedback and privacy policy shortcuts on the settings screen
+
+Previously on 1.8x:
+
+New: Revamped home screen, including a new "My Widgets" screen to make it easier to manage existing widgets
+New: Set default settings that apply to every new widget
+New: Set the widget as an app shortcut with a new tap action
+New: Share photos from your gallery to an existing widget
+New: Optional brightness setting when using the full screen viewer
+
+Feedback and suggestions are always welcome, visit the project page to contribute!
