@@ -13,6 +13,9 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -186,15 +189,25 @@ private fun HomeNavigation(
         modifier = modifier,
     ) {
         HomeNavigationDestination.entries.forEach { destination ->
+
+            val selected = destination == currentDestination
+
             NavigationBarItem(
-                selected = destination == currentDestination,
+                selected = selected,
                 onClick = { onDestinationClick(destination) },
                 icon = {
-                    Icon(
-                        painter = painterResource(id = destination.icon),
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp),
-                    )
+                    AnimatedContent(
+                        targetState = if (selected) destination.iconSelected else destination.icon,
+                        transitionSpec = { fadeIn() togetherWith fadeOut() },
+                        label = "NavIcon",
+                    ) { iconRes ->
+                        Icon(
+                            painter = painterResource(id = iconRes),
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp),
+                            tint = Color.Unspecified,
+                        )
+                    }
                 },
                 label = {
                     Text(text = stringResource(id = destination.label))
@@ -205,12 +218,25 @@ private fun HomeNavigation(
 }
 
 private enum class HomeNavigationDestination(
-    @DrawableRes val icon: Int,
     @StringRes val label: Int,
+    @DrawableRes val icon: Int,
+    @DrawableRes val iconSelected: Int,
 ) {
-    NEW_WIDGET(icon = R.drawable.ic_new_widget, label = R.string.photo_widget_home_new),
-    MY_WIDGETS(icon = R.drawable.ic_my_widgets, label = R.string.photo_widget_home_current),
-    SETTINGS(icon = R.drawable.ic_settings, label = R.string.photo_widget_home_settings),
+    NEW_WIDGET(
+        label = R.string.photo_widget_home_new,
+        icon = R.drawable.ic_new_widget,
+        iconSelected = R.drawable.ic_new_widget_selected,
+    ),
+    MY_WIDGETS(
+        label = R.string.photo_widget_home_current,
+        icon = R.drawable.ic_my_widgets,
+        iconSelected = R.drawable.ic_my_widgets_selected,
+    ),
+    SETTINGS(
+        label = R.string.photo_widget_home_settings,
+        icon = R.drawable.ic_settings,
+        iconSelected = R.drawable.ic_settings_selected,
+    ),
 }
 
 @Composable
