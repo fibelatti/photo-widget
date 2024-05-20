@@ -8,8 +8,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -37,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
@@ -193,29 +196,43 @@ private fun SourcePickerContent(
                 .align(Alignment.BottomCenter),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            FilledTonalButton(
-                onClick = onKeepSource,
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 16.dp)
+                    .height(IntrinsicSize.Max),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Text(text = stringResource(id = R.string.photo_widget_configure_source_keep_current))
-            }
+                OutlinedButton(
+                    onClick = onKeepSource,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.photo_widget_configure_source_keep_current),
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                }
 
-            OutlinedButton(
-                onClick = onChangeSource,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, top = 8.dp, end = 16.dp),
-            ) {
-                Text(
-                    text = stringResource(
-                        id = when (currentSource) {
-                            PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_source_set_directory
-                            PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_source_set_photos
-                        },
-                    ),
-                )
+                FilledTonalButton(
+                    onClick = onChangeSource,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                ) {
+                    Text(
+                        text = stringResource(
+                            id = when (currentSource) {
+                                PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_source_set_directory
+                                PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_source_set_photos
+                            },
+                        ),
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
 
             Text(

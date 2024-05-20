@@ -77,13 +77,13 @@
 
     <string name="photo_widget_configure_menu_source">Fuente</string>
     <string name="photo_widget_configure_source_description">Puedes seleccionar cada foto o sincronizar un widget con carpetas. Al sincronizar, todas las fotos actuales y futuras se añadirán automáticamente.</string>
-    <string name="photo_widget_configure_source_selection_photos">Debes seleccionar cada foto para este widget.</string>
-    <string name="photo_widget_configure_source_selection_directory_empty">Este widget no está sincronizado con ninguna carpeta.</string>
+    <string name="photo_widget_configure_source_selection_photos">Solo las fotos que hayas seleccionado se mostrarán en este widget.</string>
+    <string name="photo_widget_configure_source_selection_directory_empty">Este widget aún no está sincronizado con ninguna carpeta.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Este widget está sincronizado con estas carpetas:</string>
     <string name="photo_widget_configure_source_keep_current">Mantener la fuente actual</string>
     <string name="photo_widget_configure_source_set_directory">Cambiar fuente a Carpeta</string>
     <string name="photo_widget_configure_source_set_photos">Cambiar fuente a Fotos</string>
-    <string name="photo_widget_configure_source_warning">Cambiar la fuente reemplazará las fotos actuales de este widget.</string>
+    <string name="photo_widget_configure_source_warning">Cambiar la fuente reemplazará las fotos actuales de este widget</string>
 
     <string name="photo_widget_configure_menu_crop">Recortar</string>
     <string name="photo_widget_configure_menu_remove">Eliminar</string>
