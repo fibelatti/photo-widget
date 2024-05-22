@@ -2,6 +2,7 @@ import com.android.build.api.dsl.CommonExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.diffplug.gradle.spotless.SpotlessExtensionPredeclare
 import com.diffplug.gradle.spotless.SpotlessPlugin
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -9,6 +10,7 @@ plugins {
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
+    alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.spotless) apply false
@@ -71,10 +73,10 @@ subprojects {
         }
 
         tasks.withType<KotlinCompile>().configureEach {
-            kotlinOptions.apply {
-                jvmTarget = "17"
+            compilerOptions {
+                jvmTarget.set(JvmTarget.JVM_17)
                 freeCompilerArgs = buildList {
-                    addAll(freeCompilerArgs)
+                    addAll(freeCompilerArgs.get())
 
                     add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
 

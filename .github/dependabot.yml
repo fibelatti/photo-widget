@@ -13,6 +13,5 @@ updates:
     groups:
       compose-kotlin:
         patterns:
-          - "androidx.compose.compiler:compiler"
           - "org.jetbrains.kotlin:*"
           - "com.google.devtools.ksp"
