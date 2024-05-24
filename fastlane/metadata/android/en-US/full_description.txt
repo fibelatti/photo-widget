@@ -10,11 +10,12 @@ launcher.
 <b>FEATURES</b>
 
 * 4 aspect ratios: square, tall, wide and original
-* Customize your square widgets with 9 different shapes
-* Customize the rounded corners of your tall, widget or original widgets
-* Choose each photo or sync the widget with a device folder
+* Customize your square widgets with 10 different shapes
+* Customize the rounded corners of your tall, wide or original widgets
+* Choose each photo or sync the widget with selected folders
 * Set an optional interval and have photos flip automatically
-* Choose the tap action of each widget: view next photo or view in full screen
+* Choose the tap action of each widget: none, view next photo, view in full
+  screen or open another app
 
 <b>PERMISSIONS</b>
 
@@ -33,5 +34,7 @@ There's no tracking or network communication.
 submit feedback at https://github.com/fibelatti/photo-widget
 
 ---------------
+
+Vectors and icons by Dazzle Ui (https://dazzleui.gumroad.com/l/dazzleiconsfree?ref=svgrepo.com) in CC Attribution License via https://www.svgrepo.com/
 
 Screenshots were generated with https://screenshots.pro
