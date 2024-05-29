@@ -13,7 +13,7 @@ kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "ko
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 
-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
+appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.0" }
 core-ktx = { module = "androidx.core:core-ktx", version = "1.13.1" }
 material = { module = "com.google.android.material:material", version = "1.12.0" }
 lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
