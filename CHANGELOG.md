@@ -5,6 +5,14 @@ All notable user-facing changes to this app will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Changed
+
+* Updated bottom nav bar icons to better represent the selected state
+* Updated the button structure of the source picker dialog
+* Widgets will now include subdirectories of all synced directories
+
 ## [v1.8.3-floss] - 2024-05-22
 
 ### Changed

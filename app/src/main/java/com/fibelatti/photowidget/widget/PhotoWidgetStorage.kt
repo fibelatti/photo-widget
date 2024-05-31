@@ -143,14 +143,27 @@ class PhotoWidgetStorage @Inject constructor(
 
         if (dirUri.toString().endsWith("DCIM%2FCamera", ignoreCase = true)) return false
 
-        return getDirectoryPhotoCount(dirUri = dirUri) <= 1_000
+        val documentUri = DocumentsContract.buildDocumentUriUsingTree(
+            /* treeUri = */ dirUri,
+            /* documentId = */ DocumentsContract.getTreeDocumentId(dirUri),
+        )
+
+        return getDirectoryPhotoCount(documentUri = documentUri) <= 1_000
     }
 
     suspend fun getWidgetPhotoCount(appWidgetId: Int): Int = withContext(Dispatchers.IO) {
         if (PhotoWidgetSource.DIRECTORY == getWidgetSource(appWidgetId = appWidgetId)) {
             coroutineScope {
                 getWidgetSyncDir(appWidgetId = appWidgetId)
-                    .map { uri -> async { getDirectoryPhotoCount(dirUri = uri) } }
+                    .map { uri ->
+                        async {
+                            val documentUri = DocumentsContract.buildDocumentUriUsingTree(
+                                /* treeUri = */ uri,
+                                /* documentId = */ DocumentsContract.getTreeDocumentId(uri),
+                            )
+                            getDirectoryPhotoCount(documentUri = documentUri)
+                        }
+                    }
                     .awaitAll()
                     .sum()
             }
@@ -159,13 +172,29 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
-    private suspend fun getDirectoryPhotoCount(dirUri: Uri): Int {
-        return withDirectoryPhotosCursor(dirUri = dirUri) { _, cursor ->
+    private suspend fun getDirectoryPhotoCount(documentUri: Uri): Int {
+        return withDirectoryPhotosCursor(documentUri = documentUri) { cursor ->
             var count = 0
 
             while (cursor.moveToNext()) {
+                val documentId = cursor.getString(0)
                 val mimeType = cursor.getString(1)
-                if (mimeType in ALLOWED_TYPES) count += 1
+                val documentName = cursor.getString(2).takeUnless { it.startsWith(".trashed") }
+                val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
+
+                Timber.d(
+                    "Cursor item (" +
+                        "documentId=$documentId, " +
+                        "mimeType=$mimeType, " +
+                        "documentName=$documentName, " +
+                        "fileUri=$fileUri",
+                )
+
+                if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
+                    count += 1
+                } else if (documentName?.startsWith(".") != true && mimeType == "vnd.android.document/directory") {
+                    count += getDirectoryPhotoCount(documentUri = fileUri)
+                }
             }
 
             count
@@ -204,44 +233,59 @@ class PhotoWidgetStorage @Inject constructor(
         getWidgetSyncDir(appWidgetId = appWidgetId)
             .map { uri ->
                 async {
-                    withDirectoryPhotosCursor(dirUri = uri) { documentUri, cursor ->
-                        buildList {
-                            while (cursor.moveToNext()) {
-                                val documentId = cursor.getString(0)
-                                val mimeType = cursor.getString(1)
-                                val documentName = cursor.getString(2).takeUnless { it.startsWith(".trashed") }
-                                val documentLastModified = cursor.getLong(3)
-
-                                val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
-
-                                if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
-                                    val localPhoto = LocalPhoto(
-                                        name = documentName,
-                                        path = croppedPhotos[documentName]?.path,
-                                        externalUri = fileUri,
-                                        timestamp = documentLastModified,
-                                    )
-
-                                    add(localPhoto)
-                                }
-                            }
-                        }.sortedByDescending { it.timestamp }
-                    }.orEmpty()
+                    val documentUri = DocumentsContract.buildDocumentUriUsingTree(
+                        /* treeUri = */ uri,
+                        /* documentId = */ DocumentsContract.getTreeDocumentId(uri),
+                    )
+                    directoryPhotosToList(documentUri = documentUri, croppedPhotos = croppedPhotos)
                 }
             }
             .awaitAll()
             .flatten()
     }
 
-    private suspend inline fun <T> withDirectoryPhotosCursor(
-        dirUri: Uri,
-        crossinline block: (documentUri: Uri, Cursor) -> T,
-    ): T? = withContext(Dispatchers.IO) {
-        val documentUri = DocumentsContract.buildDocumentUriUsingTree(
-            /* treeUri = */ dirUri,
-            /* documentId = */ DocumentsContract.getTreeDocumentId(dirUri),
-        )
+    private suspend fun directoryPhotosToList(
+        documentUri: Uri,
+        croppedPhotos: Map<String, LocalPhoto>,
+    ): List<LocalPhoto> {
+        return withDirectoryPhotosCursor(documentUri = documentUri) { cursor ->
+            buildList {
+                while (cursor.moveToNext()) {
+                    val documentId = cursor.getString(0)
+                    val mimeType = cursor.getString(1)
+                    val documentName = cursor.getString(2).takeUnless { it.startsWith(".trashed") }
+                    val documentLastModified = cursor.getLong(3)
+                    val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
 
+                    Timber.d(
+                        "Cursor item (" +
+                            "documentId=$documentId, " +
+                            "mimeType=$mimeType, " +
+                            "documentName=$documentName, " +
+                            "fileUri=$fileUri",
+                    )
+
+                    if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
+                        val localPhoto = LocalPhoto(
+                            name = documentName,
+                            path = croppedPhotos[documentName]?.path,
+                            externalUri = fileUri,
+                            timestamp = documentLastModified,
+                        )
+
+                        add(localPhoto)
+                    } else if (documentName?.startsWith(".") != true && mimeType == "vnd.android.document/directory") {
+                        addAll(directoryPhotosToList(documentUri = fileUri, croppedPhotos = croppedPhotos))
+                    }
+                }
+            }.sortedByDescending { it.timestamp }
+        }.orEmpty()
+    }
+
+    private suspend inline fun <T> withDirectoryPhotosCursor(
+        documentUri: Uri,
+        crossinline block: suspend (Cursor) -> T,
+    ): T? = withContext(Dispatchers.IO) {
         val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
             /* treeUri = */ documentUri,
             /* parentDocumentId = */ DocumentsContract.getDocumentId(documentUri),
@@ -260,7 +304,7 @@ class PhotoWidgetStorage @Inject constructor(
             /* selection = */ null,
             /* selectionArgs = */ null,
             /* sortOrder = */ null,
-        )?.use { cursor -> block(documentUri, cursor) }
+        )?.use { cursor -> block(cursor) }
     }
 
     suspend fun getCropSources(appWidgetId: Int, localPhoto: LocalPhoto): Pair<Uri, Uri> {
