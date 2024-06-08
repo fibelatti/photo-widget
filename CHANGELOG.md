@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* Add support for intervals in seconds
+
 ### Changed
 
 * Updated bottom nav bar icons to better represent the selected state

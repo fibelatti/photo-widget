@@ -634,22 +634,18 @@ private fun PhotoIntervalPicker(
             onClick = onLoopingIntervalPickerClick,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            val intervalString = if (TimeUnit.HOURS == loopingInterval.timeUnit) {
-                pluralStringResource(
-                    id = R.plurals.photo_widget_configure_interval_current_hours,
-                    count = loopingInterval.repeatInterval.toInt(),
-                    loopingInterval.repeatInterval,
-                )
-            } else {
-                pluralStringResource(
-                    id = R.plurals.photo_widget_configure_interval_current_minutes,
-                    count = loopingInterval.repeatInterval.toInt(),
-                    loopingInterval.repeatInterval,
-                )
-            }
-
             AutoSizeText(
                 text = if (intervalBasedLoopingEnabled) {
+                    val intervalString = pluralStringResource(
+                        id = when (loopingInterval.timeUnit) {
+                            TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
+                            TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
+                            else -> R.plurals.photo_widget_configure_interval_current_hours
+                        },
+                        count = loopingInterval.repeatInterval.toInt(),
+                        loopingInterval.repeatInterval,
+                    )
+
                     stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
                 } else {
                     stringResource(id = R.string.photo_widget_configure_interval_current_disabled)

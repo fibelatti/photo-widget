@@ -96,6 +96,10 @@
 
     <string name="photo_widget_configure_select_interval">Flipping interval</string>
     <string name="photo_widget_configure_interval_current_label">Every %s</string>
+    <plurals name="photo_widget_configure_interval_current_seconds">
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
     <plurals name="photo_widget_configure_interval_current_minutes">
         <item quantity="one">%d minute</item>
         <item quantity="other">%d minutes</item>
@@ -105,10 +109,17 @@
         <item quantity="other">%d hours</item>
     </plurals>
     <string name="photo_widget_configure_interval_current_disabled">Disabled</string>
+    <string name="photo_widget_configure_interval_seconds_label">Seconds</string>
     <string name="photo_widget_configure_interval_minutes_label">Minutes</string>
     <string name="photo_widget_configure_interval_hours_label">Hours</string>
     <string name="photo_widget_configure_interval_warning">The actual interval can be longer at times due to restrictions imposed by Android to optimize battery life</string>
     <string name="photo_widget_configure_interval_enabled">Flip photos automatically based on the selected interval</string>
+
+    <string name="photo_widget_configure_interval_grant_permission">Grant exact alarm permission</string>
+    <string name="photo_widget_configure_interval_permission_dialog_title">About this permission</string>
+    <string name="photo_widget_configure_interval_permission_dialog_description">Android restricts background work to optimize battery life which can lead to longer intervals between each photo.\n\nIf you want widgets to update precisely at the selected interval open settings and enable this permission.</string>
+    <string name="photo_widget_configure_interval_permission_advised">For intervals in seconds it is highly recommended to grant the permission for exact alarms</string>
+    <string name="photo_widget_configure_interval_open_settings">Open settings</string>
 
     <string name="photo_widget_configure_tap_action">Tap action</string>
     <string name="photo_widget_configure_tap_action_none">None</string>

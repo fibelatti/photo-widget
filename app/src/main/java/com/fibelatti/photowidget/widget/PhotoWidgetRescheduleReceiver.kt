@@ -10,15 +10,15 @@ import timber.log.Timber
 
 class PhotoWidgetRescheduleReceiver : BroadcastReceiver() {
 
-    override fun onReceive(context: Context?, intent: Intent?) {
-        val isBoot = Intent.ACTION_BOOT_COMPLETED == intent?.action
-        val isUpdate = Intent.ACTION_MY_PACKAGE_REPLACED == intent?.action ||
-            (Intent.ACTION_PACKAGE_REPLACED == intent?.action &&
-                intent.data?.schemeSpecificPart == context?.packageName)
+    override fun onReceive(context: Context, intent: Intent) {
+        val isBoot = Intent.ACTION_BOOT_COMPLETED == intent.action
+        val isUpdate = Intent.ACTION_MY_PACKAGE_REPLACED == intent.action ||
+            (Intent.ACTION_PACKAGE_REPLACED == intent.action &&
+                intent.data?.schemeSpecificPart == context.packageName)
 
         Timber.d("Reschedule received (isBoot=$isBoot, isUpdate=$isUpdate)")
 
-        if (context != null && (isBoot || isUpdate)) {
+        if (isBoot || isUpdate) {
             val ids = PhotoWidgetProvider.ids(context).ifEmpty {
                 Timber.d("There are no widgets")
                 return
@@ -32,16 +32,11 @@ class PhotoWidgetRescheduleReceiver : BroadcastReceiver() {
             coroutineScope.launch {
                 for (id in ids) {
                     val enabled = photoWidgetStorage.getWidgetIntervalEnabled(appWidgetId = id)
-                    val interval = photoWidgetStorage.getWidgetInterval(appWidgetId = id)
 
-                    Timber.d("Processing widget (id=$id, enabled=$enabled, interval=$interval")
+                    Timber.d("Processing widget (id=$id, enabled=$enabled)")
 
                     if (enabled) {
-                        photoWidgetAlarmManager.setup(
-                            appWidgetId = id,
-                            repeatInterval = interval.repeatInterval,
-                            timeUnit = interval.timeUnit,
-                        )
+                        photoWidgetAlarmManager.setup(appWidgetId = id)
                     }
 
                     PhotoWidgetProvider.update(context = context, appWidgetId = id)

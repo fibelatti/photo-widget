@@ -98,6 +98,11 @@
 
     <string name="photo_widget_configure_select_interval">Intervalo de cambio</string>
     <string name="photo_widget_configure_interval_current_label">Cada %s</string>
+    <plurals name="photo_widget_configure_interval_current_seconds">
+        <item quantity="one">%d segundo</item>
+        <item quantity="many">%d segundos</item>
+        <item quantity="other">%d segundos</item>
+    </plurals>
     <plurals name="photo_widget_configure_interval_current_minutes">
         <item quantity="one">%d minuto</item>
         <item quantity="many">%d minutos</item>
@@ -109,10 +114,17 @@
         <item quantity="other">%d horas</item>
     </plurals>
     <string name="photo_widget_configure_interval_current_disabled">Desactivado</string>
+    <string name="photo_widget_configure_interval_seconds_label">Segundos</string>
     <string name="photo_widget_configure_interval_minutes_label">Minutos</string>
     <string name="photo_widget_configure_interval_hours_label">Horas</string>
     <string name="photo_widget_configure_interval_warning">El intervalo real puede ser más largo a veces debido a restricciones impuestas por Android para optimizar la duración de la batería</string>
     <string name="photo_widget_configure_interval_enabled">Cambiar fotos automáticamente según el intervalo seleccionado</string>
+
+    <string name="photo_widget_configure_interval_grant_permission">Conceder permiso de alarma exacta</string>
+    <string name="photo_widget_configure_interval_permission_dialog_title">Acerca de este permiso</string>
+    <string name="photo_widget_configure_interval_permission_dialog_description">Android restringe el trabajo en segundo plano para optimizar la duración de la batería, lo que puede llevar a intervalos más largos entre cada foto.\n\nSi deseas que los widgets se actualicen precisamente en el intervalo seleccionado, abre la configuración y habilita este permiso.</string>
+    <string name="photo_widget_configure_interval_permission_advised">Para intervalos en segundos, se recomienda otorgar permiso para alarmas exactas</string>
+    <string name="photo_widget_configure_interval_open_settings">Abrir configuración</string>
 
     <string name="photo_widget_configure_tap_action">Acción de toque</string>
     <string name="photo_widget_configure_tap_action_none">Ninguna</string>

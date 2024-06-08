@@ -193,23 +193,18 @@ private fun WidgetDefaultsScreen(
                 onCheckedChange = onShuffleChange,
             )
 
-            val intervalString = if (TimeUnit.HOURS == userPreferences.defaultInterval.timeUnit) {
-                pluralStringResource(
-                    id = R.plurals.photo_widget_configure_interval_current_hours,
-                    count = userPreferences.defaultInterval.repeatInterval.toInt(),
-                    userPreferences.defaultInterval.repeatInterval,
-                )
-            } else {
-                pluralStringResource(
-                    id = R.plurals.photo_widget_configure_interval_current_minutes,
-                    count = userPreferences.defaultInterval.repeatInterval.toInt(),
-                    userPreferences.defaultInterval.repeatInterval,
-                )
-            }
-
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_interval),
                 currentValue = if (userPreferences.defaultIntervalEnabled) {
+                    val intervalString = pluralStringResource(
+                        id = when (userPreferences.defaultInterval.timeUnit) {
+                            TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
+                            TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
+                            else -> R.plurals.photo_widget_configure_interval_current_hours
+                        },
+                        count = userPreferences.defaultInterval.repeatInterval.toInt(),
+                        userPreferences.defaultInterval.repeatInterval,
+                    )
                     stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
                 } else {
                     stringResource(id = R.string.photo_widget_configure_interval_current_disabled)

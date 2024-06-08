@@ -20,7 +20,9 @@ launcher.
 <b>PERMISSIONS</b>
 
 * RECEIVE_BOOT_COMPLETED — Used to ensure that widgets function correctly after
-  the device is rebooted
+  the device is restarted
+* SCHEDULE_EXACT_ALARM (optional) — Used to ensure that widgets are updated
+  precisely at the selected interval
 
 The app does not require any storage permissions. Photos and directories are
 selected using the native pickers and stored within the app to keep data

@@ -4,7 +4,8 @@ import android.content.Context
 import androidx.core.content.edit
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.toLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.minutesToLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.secondsToLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
@@ -93,11 +94,20 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
 
     var defaultInterval: PhotoWidgetLoopingInterval
         get() {
+            val legacyValue = sharedPreferences.getLong(Preference.LEGACY_DEFAULT_INTERVAL.value, 0)
             val value = sharedPreferences.getLong(Preference.DEFAULT_INTERVAL.value, 0)
-            return if (value > 0) value.toLoopingInterval() else PhotoWidgetLoopingInterval.ONE_DAY
+
+            return when {
+                legacyValue > 0 -> legacyValue.minutesToLoopingInterval()
+                value > 0 -> value.secondsToLoopingInterval()
+                else -> PhotoWidgetLoopingInterval.ONE_DAY
+            }
         }
         set(value) {
-            sharedPreferences.edit { putLong(Preference.DEFAULT_INTERVAL.value, value.toMinutes()) }
+            sharedPreferences.edit {
+                remove(Preference.LEGACY_DEFAULT_INTERVAL.value)
+                putLong(Preference.DEFAULT_INTERVAL.value, value.toSeconds())
+            }
             _userPreferences.update { current -> current.copy(defaultInterval = value) }
         }
 
@@ -173,7 +183,16 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         DEFAULT_SOURCE(value = "default_source"),
         DEFAULT_SHUFFLE(value = "default_shuffle"),
         DEFAULT_INTERVAL_ENABLED(value = "default_interval_enabled"),
-        DEFAULT_INTERVAL("default_interval_minutes"),
+
+        /**
+         * Key from when the interval was persisted in minutes.
+         */
+        LEGACY_DEFAULT_INTERVAL("default_interval_minutes"),
+
+        /**
+         * Key from when the interval was migrated from minutes to seconds.
+         */
+        DEFAULT_INTERVAL("default_interval_seconds"),
         DEFAULT_SHAPE(value = "default_shape"),
         DEFAULT_CORNER_RADIUS(value = "default_corner_radius"),
         DEFAULT_TAP_ACTION(value = "default_tap_action"),

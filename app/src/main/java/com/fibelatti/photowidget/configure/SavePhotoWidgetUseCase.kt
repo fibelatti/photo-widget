@@ -32,16 +32,6 @@ class SavePhotoWidgetUseCase @Inject constructor(
             }
         }
 
-        if (photoWidget.loopingEnabled) {
-            photoWidgetAlarmManager.setup(
-                appWidgetId = appWidgetId,
-                repeatInterval = photoWidget.loopingInterval.repeatInterval,
-                timeUnit = photoWidget.loopingInterval.timeUnit,
-            )
-        } else {
-            photoWidgetAlarmManager.cancel(appWidgetId = appWidgetId)
-        }
-
         photoWidgetStorage.saveWidgetShuffle(
             appWidgetId = appWidgetId,
             value = photoWidget.canShuffle && photoWidget.shuffle,
@@ -86,5 +76,11 @@ class SavePhotoWidgetUseCase @Inject constructor(
             appWidgetId = appWidgetId,
             cornerRadius = photoWidget.cornerRadius,
         )
+
+        if (photoWidget.loopingEnabled) {
+            photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
+        } else {
+            photoWidgetAlarmManager.cancel(appWidgetId = appWidgetId)
+        }
     }
 }

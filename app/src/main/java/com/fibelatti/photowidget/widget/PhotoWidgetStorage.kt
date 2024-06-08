@@ -12,7 +12,8 @@ import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.toLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.minutesToLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.secondsToLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.PhotoDecoder
@@ -387,14 +388,16 @@ class PhotoWidgetStorage @Inject constructor(
     fun saveWidgetInterval(appWidgetId: Int, interval: PhotoWidgetLoopingInterval) {
         sharedPreferences.edit {
             remove("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId")
-            putLong("${PreferencePrefix.INTERVAL}$appWidgetId", interval.toMinutes())
+            remove("${PreferencePrefix.LEGACY_INTERVAL_MINUTES}$appWidgetId")
+            putLong("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId", interval.toSeconds())
         }
     }
 
     fun getWidgetInterval(appWidgetId: Int): PhotoWidgetLoopingInterval {
         val legacyName = sharedPreferences.getString("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId", null)
         val legacyValue = enumValueOfOrNull<LegacyPhotoWidgetLoopingInterval>(legacyName)
-        val value = sharedPreferences.getLong("${PreferencePrefix.INTERVAL}$appWidgetId", 0)
+        val legacyMinutes = sharedPreferences.getLong("${PreferencePrefix.LEGACY_INTERVAL_MINUTES}$appWidgetId", 0)
+        val seconds = sharedPreferences.getLong("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId", 0)
 
         return when {
             legacyValue != null -> {
@@ -404,7 +407,9 @@ class PhotoWidgetStorage @Inject constructor(
                 )
             }
 
-            value > 0 -> value.toLoopingInterval()
+            legacyMinutes > 0 -> legacyMinutes.minutesToLoopingInterval()
+
+            seconds > 0 -> seconds.secondsToLoopingInterval()
 
             else -> userPreferencesStorage.defaultInterval
         }
@@ -580,7 +585,12 @@ class PhotoWidgetStorage @Inject constructor(
         /**
          * Key from when the interval was migrated to [PhotoWidgetLoopingInterval].
          */
-        INTERVAL(value = "appwidget_interval_minutes_"),
+        LEGACY_INTERVAL_MINUTES(value = "appwidget_interval_minutes_"),
+
+        /**
+         * Key from when the interval was migrated from minutes to seconds.
+         */
+        INTERVAL_SECONDS(value = "appwidget_interval_seconds_"),
         INTERVAL_ENABLED(value = "appwidget_interval_enabled_"),
         INDEX(value = "appwidget_index_"),
         PAST_INDICES(value = "appwidget_past_indices_"),

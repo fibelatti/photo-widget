@@ -10,36 +10,66 @@ data class PhotoWidgetLoopingInterval(
     val timeUnit: TimeUnit,
 ) : Parcelable {
 
-    init {
-        require(repeatInterval in MIN_VALUE..MAX_VALUE)
-        require(TimeUnit.MINUTES == timeUnit || TimeUnit.HOURS == timeUnit)
-    }
-
     fun toMinutes(): Long = timeUnit.toMinutes(repeatInterval)
+
+    fun toSeconds(): Long = timeUnit.toSeconds(repeatInterval)
+
+    fun range(): ClosedFloatingPointRange<Float> {
+        return when (timeUnit) {
+            TimeUnit.SECONDS -> MIN_SECONDS.toFloat()..MAX_DEFAULT.toFloat()
+            TimeUnit.HOURS -> MIN_DEFAULT.toFloat()..MAX_HOURS.toFloat()
+            else -> MIN_DEFAULT.toFloat()..MAX_DEFAULT.toFloat()
+        }
+    }
 
     companion object {
 
-        private const val MAX_VALUE = 30
-        private const val MIN_VALUE = 1
-
-        val RANGE = MIN_VALUE.toFloat()..MAX_VALUE.toFloat()
+        const val MAX_DEFAULT: Long = 30
+        const val MAX_HOURS: Long = 24
+        const val MIN_DEFAULT: Long = 1
+        const val MIN_SECONDS: Long = 10
 
         val ONE_DAY = PhotoWidgetLoopingInterval(
             repeatInterval = 24,
             timeUnit = TimeUnit.HOURS,
         )
 
-        fun Long.toLoopingInterval(): PhotoWidgetLoopingInterval {
-            return if (this > MAX_VALUE) {
-                PhotoWidgetLoopingInterval(
-                    repeatInterval = TimeUnit.MINUTES.toHours(this),
-                    timeUnit = TimeUnit.HOURS,
-                )
-            } else {
+        fun Long.minutesToLoopingInterval(): PhotoWidgetLoopingInterval {
+            return if (this <= MAX_DEFAULT) {
                 PhotoWidgetLoopingInterval(
                     repeatInterval = TimeUnit.MINUTES.toMinutes(this),
                     timeUnit = TimeUnit.MINUTES,
                 )
+            } else {
+                PhotoWidgetLoopingInterval(
+                    repeatInterval = TimeUnit.MINUTES.toHours(this),
+                    timeUnit = TimeUnit.HOURS,
+                )
+            }
+        }
+
+        fun Long.secondsToLoopingInterval(): PhotoWidgetLoopingInterval {
+            return when {
+                this <= MAX_DEFAULT -> {
+                    PhotoWidgetLoopingInterval(
+                        repeatInterval = TimeUnit.SECONDS.toSeconds(this),
+                        timeUnit = TimeUnit.SECONDS,
+                    )
+                }
+
+                this <= TimeUnit.MINUTES.toSeconds(MAX_DEFAULT) -> {
+                    PhotoWidgetLoopingInterval(
+                        repeatInterval = TimeUnit.SECONDS.toMinutes(this),
+                        timeUnit = TimeUnit.MINUTES,
+                    )
+                }
+
+                else -> {
+                    PhotoWidgetLoopingInterval(
+                        repeatInterval = TimeUnit.SECONDS.toHours(this),
+                        timeUnit = TimeUnit.HOURS,
+                    )
+                }
             }
         }
     }
