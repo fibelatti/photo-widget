@@ -2,6 +2,7 @@ import com.android.build.api.dsl.CommonExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.diffplug.gradle.spotless.SpotlessExtensionPredeclare
 import com.diffplug.gradle.spotless.SpotlessPlugin
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -72,24 +73,23 @@ subprojects {
             }
         }
 
+        extensions.findByType(ComposeCompilerGradlePluginExtension::class.java)?.apply {
+            enableStrongSkippingMode = true
+            stabilityConfigurationFile = rootProject.layout.projectDirectory.file("compose_compiler_config.conf")
+
+            if (project.findProperty("composeCompilerReports") == "true") {
+                val destinationDir = project.layout.buildDirectory.dir("compose_compiler")
+                reportsDestination = destinationDir
+                metricsDestination = destinationDir
+            }
+        }
+
         tasks.withType<KotlinCompile>().configureEach {
             compilerOptions {
                 jvmTarget.set(JvmTarget.JVM_17)
                 freeCompilerArgs = buildList {
                     addAll(freeCompilerArgs.get())
-
                     add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
-
-                    add("-P")
-                    add("plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=$rootDir/compose_compiler_config.conf")
-
-                    if (project.findProperty("composeCompilerReports") == "true") {
-                        val composeCompilerPath = "${project.layout.buildDirectory.asFile.get()}/compose_compiler"
-                        add("-P")
-                        add("plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=$composeCompilerPath")
-                        add("-P")
-                        add("plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=$composeCompilerPath")
-                    }
                 }
             }
         }
