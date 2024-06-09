@@ -55,6 +55,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.ColoredShape
 import com.fibelatti.photowidget.configure.PhotoWidgetIntervalPicker
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
@@ -122,6 +123,17 @@ fun WidgetDefaultsScreen(
                 )
             }.show()
         },
+        onOpacityClick = {
+            ComposeBottomSheetDialog(localContext) {
+                OpacityPicker(
+                    currentValue = preferences.defaultOpacity,
+                    onApplyClick = { newValue ->
+                        preferencesViewModel.saveDefaultOpacity(newValue)
+                        dismiss()
+                    },
+                )
+            }.show()
+        },
         onTapActionClick = {
             SelectionDialog.show(
                 context = localContext,
@@ -146,6 +158,7 @@ private fun WidgetDefaultsScreen(
     onIntervalClick: () -> Unit,
     onShapeClick: () -> Unit,
     onCornerRadiusClick: () -> Unit,
+    onOpacityClick: () -> Unit,
     onTapActionClick: () -> Unit,
     onIncreaseBrightnessChange: (Boolean) -> Unit,
     onClearDefaultsClick: () -> Unit,
@@ -223,6 +236,12 @@ private fun WidgetDefaultsScreen(
                 title = stringResource(id = R.string.widget_defaults_corner_radius),
                 currentValue = userPreferences.defaultCornerRadius.toInt().toString(),
                 onClick = onCornerRadiusClick,
+            )
+
+            PickerDefault(
+                title = stringResource(id = R.string.widget_defaults_opacity),
+                currentValue = userPreferences.defaultOpacity.toInt().toString(),
+                onClick = onOpacityClick,
             )
 
             PickerDefault(
@@ -423,8 +442,55 @@ fun CornerRadiusPicker(
         Image(
             bitmap = baseBitmap
                 .withRoundedCorners(
-                    desiredAspectRatio = PhotoWidgetAspectRatio.SQUARE,
+                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
                     radius = value,
+                )
+                .asImageBitmap(),
+            contentDescription = null,
+        )
+
+        Slider(
+            value = value,
+            onValueChange = { value = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            valueRange = 0f..100f,
+        )
+
+        FilledTonalButton(
+            onClick = { onApplyClick(value) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+        ) {
+            Text(text = stringResource(id = R.string.photo_widget_action_apply))
+        }
+    }
+}
+
+@Composable
+fun OpacityPicker(
+    currentValue: Float,
+    onApplyClick: (newValue: Float) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    DefaultPicker(
+        title = stringResource(id = R.string.widget_defaults_opacity),
+        modifier = modifier,
+    ) {
+        val localContext = LocalContext.current
+        val baseBitmap = remember {
+            BitmapFactory.decodeResource(localContext.resources, R.drawable.image_sample)
+        }
+        var value by remember(currentValue) { mutableFloatStateOf(currentValue) }
+
+        Image(
+            bitmap = baseBitmap
+                .withRoundedCorners(
+                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
+                    radius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
+                    opacity = value,
                 )
                 .asImageBitmap(),
             contentDescription = null,
@@ -493,6 +559,7 @@ private fun WidgetDefaultsScreenPreview() {
                 defaultInterval = PhotoWidgetLoopingInterval.ONE_DAY,
                 defaultShape = PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID,
                 defaultCornerRadius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
+                defaultOpacity = PhotoWidget.DEFAULT_OPACITY,
                 defaultTapAction = PhotoWidgetTapAction.NONE,
                 defaultIncreaseBrightness = true,
             ),
@@ -502,6 +569,7 @@ private fun WidgetDefaultsScreenPreview() {
             onIntervalClick = {},
             onShapeClick = {},
             onCornerRadiusClick = {},
+            onOpacityClick = {},
             onTapActionClick = {},
             onIncreaseBrightnessChange = {},
             onClearDefaultsClick = {},

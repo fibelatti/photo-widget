@@ -98,6 +98,7 @@ import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
+import kotlin.random.Random
 
 @Composable
 fun HomeScreen(
@@ -503,6 +504,7 @@ private fun MyWidgetsScreen(
                             aspectRatio = widget.aspectRatio,
                             shapeId = widget.shapeId,
                             cornerRadius = widget.cornerRadius,
+                            opacity = widget.opacity,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clickable { onClick(id) },
@@ -828,6 +830,7 @@ private fun MyWidgetsScreenPreview() {
                     },
                     shapeId = allShapeIds.random(),
                     cornerRadius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
+                    opacity = Random.nextFloat().coerceIn(70f, 100f),
                 )
             },
             onClick = {},

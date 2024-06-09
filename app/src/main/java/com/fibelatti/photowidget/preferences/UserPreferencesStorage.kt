@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.preferences
 
 import android.content.Context
 import androidx.core.content.edit
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.minutesToLoopingInterval
@@ -36,6 +37,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             defaultInterval = defaultInterval,
             defaultShape = defaultShape,
             defaultCornerRadius = defaultCornerRadius,
+            defaultOpacity = defaultOpacity,
             defaultTapAction = defaultTapAction,
             defaultIncreaseBrightness = defaultIncreaseBrightness,
         ),
@@ -133,6 +135,18 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             _userPreferences.update { current -> current.copy(defaultCornerRadius = value) }
         }
 
+    var defaultOpacity: Float
+        get() {
+            return sharedPreferences.getFloat(
+                Preference.DEFAULT_OPACITY.value,
+                PhotoWidget.DEFAULT_OPACITY,
+            )
+        }
+        set(value) {
+            sharedPreferences.edit { putFloat(Preference.DEFAULT_OPACITY.value, value) }
+            _userPreferences.update { current -> current.copy(defaultOpacity = value) }
+        }
+
     var defaultTapAction: PhotoWidgetTapAction
         get() {
             val name = sharedPreferences.getString(Preference.DEFAULT_TAP_ACTION.value, null)
@@ -169,6 +183,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                 defaultInterval = defaultInterval,
                 defaultShape = defaultShape,
                 defaultCornerRadius = defaultCornerRadius,
+                defaultOpacity = defaultOpacity,
                 defaultTapAction = defaultTapAction,
                 defaultIncreaseBrightness = defaultIncreaseBrightness,
             )
@@ -195,6 +210,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         DEFAULT_INTERVAL("default_interval_seconds"),
         DEFAULT_SHAPE(value = "default_shape"),
         DEFAULT_CORNER_RADIUS(value = "default_corner_radius"),
+        DEFAULT_OPACITY(value = "default_opacity"),
         DEFAULT_TAP_ACTION(value = "default_tap_action"),
         DEFAULT_INCREASE_BRIGHTNESS(value = "default_increase_brightness"),
         ;

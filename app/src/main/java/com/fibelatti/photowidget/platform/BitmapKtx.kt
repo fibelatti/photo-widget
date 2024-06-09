@@ -8,6 +8,7 @@ import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import androidx.core.graphics.toRectF
 import androidx.graphics.shapes.toPath
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.transformed
@@ -15,15 +16,23 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 
 fun Bitmap.withRoundedCorners(
-    desiredAspectRatio: PhotoWidgetAspectRatio,
+    aspectRatio: PhotoWidgetAspectRatio,
     radius: Float = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
-): Bitmap = withTransformation(desiredAspectRatio = desiredAspectRatio) { canvas, rect, paint ->
+    opacity: Float = PhotoWidget.DEFAULT_OPACITY,
+): Bitmap = withTransformation(
+    aspectRatio = aspectRatio,
+    opacity = opacity,
+) { canvas, rect, paint ->
     canvas.drawRoundRect(rect.toRectF(), radius, radius, paint)
 }
 
 fun Bitmap.withPolygonalShape(
     shapeId: String,
-): Bitmap = withTransformation(desiredAspectRatio = PhotoWidgetAspectRatio.SQUARE) { canvas, rect, paint ->
+    opacity: Float = PhotoWidget.DEFAULT_OPACITY,
+): Bitmap = withTransformation(
+    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
+    opacity = opacity,
+) { canvas, rect, paint ->
     try {
         val shape = PhotoWidgetShapeBuilder.buildShape(
             shapeId = shapeId,
@@ -41,10 +50,11 @@ fun Bitmap.withPolygonalShape(
 }
 
 private inline fun Bitmap.withTransformation(
-    desiredAspectRatio: PhotoWidgetAspectRatio,
+    aspectRatio: PhotoWidgetAspectRatio,
+    opacity: Float,
     body: (Canvas, Rect, Paint) -> Unit,
 ): Bitmap {
-    val source = when (desiredAspectRatio) {
+    val source = when (aspectRatio) {
         PhotoWidgetAspectRatio.SQUARE -> {
             val size = min(height, width)
 
@@ -94,11 +104,12 @@ private inline fun Bitmap.withTransformation(
     val canvas = Canvas(output)
     val paint = Paint().apply {
         isAntiAlias = true
+        alpha = (opacity * 255 / 100).toInt()
     }
 
     canvas.drawARGB(0, 0, 0, 0)
 
-    body(canvas, if (PhotoWidgetAspectRatio.SQUARE == desiredAspectRatio) source else destination, paint)
+    body(canvas, if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) source else destination, paint)
 
     paint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.SRC_IN))
     canvas.drawBitmap(this, source, destination, paint)

@@ -13,6 +13,7 @@ data class UserPreferences(
     val defaultInterval: PhotoWidgetLoopingInterval,
     val defaultShape: String,
     val defaultCornerRadius: Float,
+    val defaultOpacity: Float,
     val defaultTapAction: PhotoWidgetTapAction,
     val defaultIncreaseBrightness: Boolean,
 )

@@ -487,6 +487,19 @@ class PhotoWidgetStorage @Inject constructor(
         )
     }
 
+    fun saveWidgetOpacity(appWidgetId: Int, opacity: Float) {
+        sharedPreferences.edit {
+            putFloat("${PreferencePrefix.OPACITY}$appWidgetId", opacity)
+        }
+    }
+
+    fun getWidgetOpacity(appWidgetId: Int): Float {
+        return sharedPreferences.getFloat(
+            "${PreferencePrefix.OPACITY}$appWidgetId",
+            userPreferencesStorage.defaultOpacity,
+        )
+    }
+
     fun saveWidgetTapAction(appWidgetId: Int, tapAction: PhotoWidgetTapAction) {
         sharedPreferences.edit {
             putString("${PreferencePrefix.TAP_ACTION}$appWidgetId", tapAction.name)
@@ -597,6 +610,7 @@ class PhotoWidgetStorage @Inject constructor(
         RATIO(value = "appwidget_aspect_ratio_"),
         SHAPE(value = "appwidget_shape_"),
         CORNER_RADIUS(value = "appwidget_corner_radius_"),
+        OPACITY(value = "appwidget_opacity_"),
         TAP_ACTION(value = "appwidget_tap_action_"),
         INCREASE_BRIGHTNESS(value = "appwidget_increase_brightness_"),
         APP_SHORTCUT(value = "appwidget_app_shortcut_"),

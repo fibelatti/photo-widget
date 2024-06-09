@@ -370,6 +370,14 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
+    fun opacitySelected(opacity: Float) {
+        _state.update { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(opacity = opacity),
+            )
+        }
+    }
+
     fun addNewWidget() {
         val currentState = _state.value
 

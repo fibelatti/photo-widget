@@ -77,6 +77,7 @@ import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.CornerRadiusPicker
+import com.fibelatti.photowidget.preferences.OpacityPicker
 import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.photowidget.preferences.ShapeDefault
 import com.fibelatti.photowidget.preferences.ShapePicker
@@ -108,6 +109,7 @@ fun PhotoWidgetConfigureScreen(
     onTapActionPickerClick: (PhotoWidgetTapAction, appShortcut: String?, increaseBrightness: Boolean) -> Unit,
     onShapeChange: (String) -> Unit,
     onCornerRadiusChange: (Float) -> Unit,
+    onOpacityChange: (Float) -> Unit,
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -162,6 +164,17 @@ fun PhotoWidgetConfigureScreen(
                         )
                     }.show()
                 },
+                onOpacityClick = {
+                    ComposeBottomSheetDialog(localContext) {
+                        OpacityPicker(
+                            currentValue = photoWidget.opacity,
+                            onApplyClick = { newValue ->
+                                onOpacityChange(newValue)
+                                dismiss()
+                            },
+                        )
+                    }.show()
+                },
                 onAddToHomeClick = onAddToHomeClick,
                 modifier = Modifier
                     .fillMaxSize()
@@ -206,12 +219,12 @@ private fun PhotoWidgetConfigureContent(
     onTapActionPickerClick: (PhotoWidgetTapAction, appShortcut: String?, increaseBrightness: Boolean) -> Unit,
     onShapeClick: () -> Unit,
     onCornerRadiusClick: () -> Unit,
+    onOpacityClick: () -> Unit,
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Box(
             modifier = Modifier
@@ -225,6 +238,7 @@ private fun PhotoWidgetConfigureContent(
                 shapeId = photoWidget.shapeId,
                 modifier = Modifier.fillMaxSize(),
                 cornerRadius = photoWidget.cornerRadius,
+                opacity = photoWidget.opacity,
             )
 
             IconButton(
@@ -261,7 +275,7 @@ private fun PhotoWidgetConfigureContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
-                .padding(bottom = 16.dp),
+                .padding(vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             PhotoPicker(
@@ -277,6 +291,7 @@ private fun PhotoWidgetConfigureContent(
                 aspectRatio = photoWidget.aspectRatio,
                 shapeId = photoWidget.shapeId,
                 cornerRadius = photoWidget.cornerRadius,
+                opacity = photoWidget.opacity,
             )
 
             PickerDefault(
@@ -307,6 +322,13 @@ private fun PhotoWidgetConfigureContent(
                     )
                 }
             }
+
+            PickerDefault(
+                title = stringResource(id = R.string.widget_defaults_opacity),
+                currentValue = photoWidget.opacity.toInt().toString(),
+                onClick = onOpacityClick,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
 
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_tap_action),
@@ -366,6 +388,7 @@ private fun PhotoWidgetViewer(
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     cornerRadius: Float,
+    opacity: Float,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -399,6 +422,7 @@ private fun PhotoWidgetViewer(
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
                 cornerRadius = cornerRadius,
+                opacity = opacity,
                 modifier = Modifier
                     .padding(start = 32.dp, top = 32.dp, end = 32.dp, bottom = 48.dp)
                     .fillMaxHeight(),
@@ -525,6 +549,7 @@ private fun PhotoPicker(
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     cornerRadius: Float,
+    opacity: Float,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -641,6 +666,7 @@ private fun PhotoPicker(
                     aspectRatio = aspectRatio,
                     shapeId = shapeId,
                     cornerRadius = cornerRadius,
+                    opacity = opacity,
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(ratio = aspectRatio.aspectRatio)
@@ -663,6 +689,7 @@ fun ShapedPhoto(
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     cornerRadius: Float,
+    opacity: Float,
     modifier: Modifier = Modifier,
     badge: @Composable BoxScope.() -> Unit = {},
 ) {
@@ -672,7 +699,7 @@ fun ShapedPhoto(
             photo.externalUri != null -> photo.externalUri
             else -> null
         },
-        dataKey = arrayOf(photo, shapeId, aspectRatio, cornerRadius),
+        dataKey = arrayOf(photo, shapeId, aspectRatio, cornerRadius, opacity),
         contentScale = if (PhotoWidgetAspectRatio.ORIGINAL != aspectRatio) {
             ContentScale.FillWidth
         } else {
@@ -682,11 +709,15 @@ fun ShapedPhoto(
         transformer = { bitmap ->
             bitmap?.run {
                 if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
-                    withPolygonalShape(shapeId = shapeId)
+                    withPolygonalShape(
+                        shapeId = shapeId,
+                        opacity = opacity,
+                    )
                 } else {
                     withRoundedCorners(
-                        desiredAspectRatio = aspectRatio,
+                        aspectRatio = aspectRatio,
                         radius = cornerRadius,
+                        opacity = opacity,
                     )
                 }
             }
@@ -762,6 +793,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onTapActionPickerClick = { _, _, _ -> },
             onShapeChange = {},
             onCornerRadiusChange = {},
+            onOpacityChange = {},
             onAddToHomeClick = {},
         )
     }
@@ -786,6 +818,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
                 aspectRatio = PhotoWidgetAspectRatio.TALL,
                 shapeId = PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID,
                 cornerRadius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
+                opacity = 80f,
             ),
             selectedPhoto = LocalPhoto(name = "photo-1"),
             isProcessing = false,
@@ -804,6 +837,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onTapActionPickerClick = { _, _, _ -> },
             onShapeChange = {},
             onCornerRadiusChange = {},
+            onOpacityChange = {},
             onAddToHomeClick = {},
         )
     }

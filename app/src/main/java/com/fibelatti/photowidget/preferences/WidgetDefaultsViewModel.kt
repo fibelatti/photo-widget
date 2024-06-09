@@ -39,6 +39,10 @@ class WidgetDefaultsViewModel @Inject constructor(
         userPreferencesStorage.defaultCornerRadius = value
     }
 
+    fun saveDefaultOpacity(value: Float) {
+        userPreferencesStorage.defaultOpacity = value
+    }
+
     fun saveDefaultTapAction(tapAction: PhotoWidgetTapAction) {
         userPreferencesStorage.defaultTapAction = tapAction
     }

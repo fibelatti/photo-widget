@@ -29,6 +29,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             aspectRatio = getWidgetAspectRatio(appWidgetId = appWidgetId),
             shapeId = getWidgetShapeId(appWidgetId = appWidgetId),
             cornerRadius = getWidgetCornerRadius(appWidgetId = appWidgetId),
+            opacity = getWidgetOpacity(appWidgetId = appWidgetId),
         )
     }
 }

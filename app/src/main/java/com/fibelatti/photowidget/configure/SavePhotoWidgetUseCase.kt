@@ -77,6 +77,11 @@ class SavePhotoWidgetUseCase @Inject constructor(
             cornerRadius = photoWidget.cornerRadius,
         )
 
+        photoWidgetStorage.saveWidgetOpacity(
+            appWidgetId = appWidgetId,
+            opacity = photoWidget.opacity,
+        )
+
         if (photoWidget.loopingEnabled) {
             photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
         } else {
