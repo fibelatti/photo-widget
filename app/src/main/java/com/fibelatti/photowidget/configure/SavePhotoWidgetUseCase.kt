@@ -82,6 +82,12 @@ class SavePhotoWidgetUseCase @Inject constructor(
             opacity = photoWidget.opacity,
         )
 
+        photoWidgetStorage.saveWidgetOffset(
+            appWidgetId = appWidgetId,
+            horizontalOffset = photoWidget.horizontalOffset,
+            verticalOffset = photoWidget.verticalOffset,
+        )
+
         if (photoWidget.loopingEnabled) {
             photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
         } else {

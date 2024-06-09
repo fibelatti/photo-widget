@@ -546,7 +546,7 @@ fun OpacityPicker(
 }
 
 @Composable
-private fun DefaultPicker(
+fun DefaultPicker(
     title: String,
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit,

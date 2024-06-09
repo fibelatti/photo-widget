@@ -14,6 +14,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
         Timber.d("Loading widget data (appWidgetId=$appWidgetId)")
 
         val currentIndex = getWidgetIndex(appWidgetId = appWidgetId)
+        val (horizontalOffset, verticalOffset) = getWidgetOffset(appWidgetId = appWidgetId)
 
         return PhotoWidget(
             source = getWidgetSource(appWidgetId = appWidgetId),
@@ -30,6 +31,8 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             shapeId = getWidgetShapeId(appWidgetId = appWidgetId),
             cornerRadius = getWidgetCornerRadius(appWidgetId = appWidgetId),
             opacity = getWidgetOpacity(appWidgetId = appWidgetId),
+            horizontalOffset = horizontalOffset,
+            verticalOffset = verticalOffset,
         )
     }
 }

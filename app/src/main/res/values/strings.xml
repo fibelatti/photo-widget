@@ -122,6 +122,11 @@
     <string name="photo_widget_configure_interval_permission_advised">For intervals in seconds it is highly recommended to grant the permission for exact alarms</string>
     <string name="photo_widget_configure_interval_open_settings">Open settings</string>
 
+    <string name="photo_widget_configure_offset">Offset</string>
+    <string name="photo_widget_configure_offset_current_values">Horizontal: %1$d, Vertical: %2$d</string>
+    <string name="photo_widget_configure_offset_current_horizontal">Horizontal: %1$d</string>
+    <string name="photo_widget_configure_offset_current_vertical">Vertical: %1$d</string>
+
     <string name="photo_widget_configure_tap_action">Tap action</string>
     <string name="photo_widget_configure_tap_action_none">None</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">View photo in full screen</string>

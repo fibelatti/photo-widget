@@ -7,6 +7,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.widget.RemoteViews
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetPinnedReceiver
@@ -151,6 +152,21 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
             return RemoteViews(context.packageName, R.layout.photo_widget).apply {
                 setImageViewBitmap(R.id.iv_widget, transformedBitmap)
+                setViewPadding(
+                    /* viewId = */ R.id.iv_widget,
+                    /* left = */ TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        photoWidget.horizontalOffset * 10f,
+                        context.resources.displayMetrics,
+                    ).toInt(),
+                    /* top = */ TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        photoWidget.verticalOffset * 10f,
+                        context.resources.displayMetrics,
+                    ).toInt(),
+                    /* right = */ 0,
+                    /* bottom = */ 0,
+                )
             }
         }
 

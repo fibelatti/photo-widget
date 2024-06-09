@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.configure
 
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -13,6 +14,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -22,13 +24,16 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -39,15 +44,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Brush
@@ -56,12 +65,16 @@ import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.asComposePath
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
@@ -77,6 +90,7 @@ import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.CornerRadiusPicker
+import com.fibelatti.photowidget.preferences.DefaultPicker
 import com.fibelatti.photowidget.preferences.OpacityPicker
 import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.photowidget.preferences.ShapeDefault
@@ -110,6 +124,7 @@ fun PhotoWidgetConfigureScreen(
     onShapeChange: (String) -> Unit,
     onCornerRadiusChange: (Float) -> Unit,
     onOpacityChange: (Float) -> Unit,
+    onOffsetChange: (horizontalOffset: Int, verticalOffset: Int) -> Unit,
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -175,6 +190,18 @@ fun PhotoWidgetConfigureScreen(
                         )
                     }.show()
                 },
+                onOffsetClick = {
+                    ComposeBottomSheetDialog(localContext) {
+                        OffsetPicker(
+                            horizontalOffset = photoWidget.horizontalOffset,
+                            verticalOffset = photoWidget.verticalOffset,
+                            onApplyClick = { newHorizontalOffset, newVerticalOffset ->
+                                onOffsetChange(newHorizontalOffset, newVerticalOffset)
+                                dismiss()
+                            },
+                        )
+                    }.show()
+                },
                 onAddToHomeClick = onAddToHomeClick,
                 modifier = Modifier
                     .fillMaxSize()
@@ -220,6 +247,7 @@ private fun PhotoWidgetConfigureContent(
     onShapeClick: () -> Unit,
     onCornerRadiusClick: () -> Unit,
     onOpacityClick: () -> Unit,
+    onOffsetClick: () -> Unit,
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -327,6 +355,17 @@ private fun PhotoWidgetConfigureContent(
                 title = stringResource(id = R.string.widget_defaults_opacity),
                 currentValue = photoWidget.opacity.toInt().toString(),
                 onClick = onOpacityClick,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+
+            PickerDefault(
+                title = stringResource(id = R.string.photo_widget_configure_offset),
+                currentValue = stringResource(
+                    id = R.string.photo_widget_configure_offset_current_values,
+                    photoWidget.horizontalOffset,
+                    photoWidget.verticalOffset,
+                ),
+                onClick = onOffsetClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
 
@@ -681,6 +720,180 @@ private fun PhotoPicker(
         }
     }
 }
+
+@Composable
+private fun OffsetPicker(
+    horizontalOffset: Int,
+    verticalOffset: Int,
+    onApplyClick: (newHorizontalOffset: Int, newVerticalOffset: Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    DefaultPicker(
+        title = stringResource(id = R.string.photo_widget_configure_offset),
+        modifier = modifier,
+    ) {
+        val localContext = LocalContext.current
+        val baseBitmap = remember {
+            BitmapFactory.decodeResource(localContext.resources, R.drawable.image_sample)
+        }
+        var horizontalValue by remember(horizontalOffset) { mutableIntStateOf(horizontalOffset) }
+        var verticalValue by remember(verticalOffset) { mutableIntStateOf(verticalOffset) }
+        val localHaptics = LocalHapticFeedback.current
+
+        Box(
+            Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center,
+        ) {
+            Image(
+                bitmap = baseBitmap
+                    .withRoundedCorners(aspectRatio = PhotoWidgetAspectRatio.SQUARE)
+                    .asImageBitmap(),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(32.dp)
+                    .offset(x = horizontalValue.dp, y = verticalValue.dp),
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(32.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .height(144.dp)
+                        .width(48.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            shape = MaterialTheme.shapes.medium,
+                        ),
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_chevron_down),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .rotate(180f)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                            ) {
+                                verticalValue -= 1
+                                localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                            },
+                    )
+
+                    Spacer(modifier = Modifier.size(48.dp))
+
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_chevron_down),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                            ) {
+                                verticalValue += 1
+                                localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                            },
+                    )
+                }
+
+                Row(
+                    modifier = Modifier
+                        .width(144.dp)
+                        .height(48.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            shape = MaterialTheme.shapes.medium,
+                        ),
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_chevron_left),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                            ) {
+                                horizontalValue -= 1
+                                localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                            },
+                    )
+
+                    Spacer(modifier = Modifier.size(48.dp))
+
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_chevron_right),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                            ) {
+                                horizontalValue += 1
+                                localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                            },
+                    )
+                }
+            }
+
+            Column(
+                modifier = Modifier.weight(1f),
+            ) {
+                Text(
+                    text = stringResource(
+                        id = R.string.photo_widget_configure_offset_current_horizontal,
+                        horizontalValue,
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.End,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+
+                Text(
+                    text = stringResource(
+                        id = R.string.photo_widget_configure_offset_current_vertical,
+                        verticalValue,
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.End,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+            }
+        }
+
+        OutlinedButton(
+            onClick = {
+                horizontalValue = 0
+                verticalValue = 0
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+        ) {
+            Text(text = stringResource(id = R.string.widget_defaults_reset))
+        }
+
+        FilledTonalButton(
+            onClick = { onApplyClick(horizontalValue, verticalValue) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+        ) {
+            Text(text = stringResource(id = R.string.photo_widget_action_apply))
+        }
+    }
+}
 // endregion Pickers
 
 @Composable
@@ -794,6 +1007,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onShapeChange = {},
             onCornerRadiusChange = {},
             onOpacityChange = {},
+            onOffsetChange = { _, _ -> },
             onAddToHomeClick = {},
         )
     }
@@ -838,7 +1052,22 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onShapeChange = {},
             onCornerRadiusChange = {},
             onOpacityChange = {},
+            onOffsetChange = { _, _ -> },
             onAddToHomeClick = {},
+        )
+    }
+}
+
+@Composable
+@ThemePreviews
+@LocalePreviews
+@DevicePreviews
+private fun OffsetPickerPreview() {
+    ExtendedTheme {
+        OffsetPicker(
+            horizontalOffset = 0,
+            verticalOffset = 0,
+            onApplyClick = { _, _ -> },
         )
     }
 }

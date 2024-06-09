@@ -20,6 +20,8 @@ data class PhotoWidget(
     val shapeId: String = DEFAULT_SHAPE_ID,
     val cornerRadius: Float = DEFAULT_CORNER_RADIUS,
     val opacity: Float = DEFAULT_OPACITY,
+    val horizontalOffset: Int = 0,
+    val verticalOffset: Int = 0,
 ) : Parcelable {
 
     val currentPhoto: LocalPhoto

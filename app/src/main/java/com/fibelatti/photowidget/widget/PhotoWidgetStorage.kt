@@ -500,6 +500,23 @@ class PhotoWidgetStorage @Inject constructor(
         )
     }
 
+    fun saveWidgetOffset(appWidgetId: Int, horizontalOffset: Int, verticalOffset: Int) {
+        sharedPreferences.edit {
+            putInt("${PreferencePrefix.HORIZONTAL_OFFSET}$appWidgetId", horizontalOffset)
+            putInt("${PreferencePrefix.VERTICAL_OFFSET}$appWidgetId", verticalOffset)
+        }
+    }
+
+    fun getWidgetOffset(appWidgetId: Int): Pair<Int, Int> {
+        return sharedPreferences.getInt(
+            "${PreferencePrefix.HORIZONTAL_OFFSET}$appWidgetId",
+            0,
+        ) to sharedPreferences.getInt(
+            "${PreferencePrefix.VERTICAL_OFFSET}$appWidgetId",
+            0,
+        )
+    }
+
     fun saveWidgetTapAction(appWidgetId: Int, tapAction: PhotoWidgetTapAction) {
         sharedPreferences.edit {
             putString("${PreferencePrefix.TAP_ACTION}$appWidgetId", tapAction.name)
@@ -611,6 +628,8 @@ class PhotoWidgetStorage @Inject constructor(
         SHAPE(value = "appwidget_shape_"),
         CORNER_RADIUS(value = "appwidget_corner_radius_"),
         OPACITY(value = "appwidget_opacity_"),
+        HORIZONTAL_OFFSET(value = "appwidget_horizontal_offset_"),
+        VERTICAL_OFFSET(value = "appwidget_vertical_offset_"),
         TAP_ACTION(value = "appwidget_tap_action_"),
         INCREASE_BRIGHTNESS(value = "appwidget_increase_brightness_"),
         APP_SHORTCUT(value = "appwidget_app_shortcut_"),

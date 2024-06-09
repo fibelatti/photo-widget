@@ -378,6 +378,17 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
+    fun offsetSelected(horizontalOffset: Int, verticalOffset: Int) {
+        _state.update { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(
+                    horizontalOffset = horizontalOffset,
+                    verticalOffset = verticalOffset,
+                ),
+            )
+        }
+    }
+
     fun addNewWidget() {
         val currentState = _state.value
 
