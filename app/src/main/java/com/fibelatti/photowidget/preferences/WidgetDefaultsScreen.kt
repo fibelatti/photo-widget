@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -449,14 +450,28 @@ fun CornerRadiusPicker(
             contentDescription = null,
         )
 
-        Slider(
-            value = value,
-            onValueChange = { value = it },
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp),
-            valueRange = 0f..100f,
-        )
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Slider(
+                value = value,
+                onValueChange = { value = it },
+                modifier = Modifier.weight(1f),
+                valueRange = 0f..100f,
+            )
+
+            Text(
+                text = "${value.toInt()}",
+                modifier = Modifier.width(40.dp),
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.End,
+                style = MaterialTheme.typography.labelLarge,
+            )
+        }
 
         FilledTonalButton(
             onClick = { onApplyClick(value) },
@@ -496,14 +511,28 @@ fun OpacityPicker(
             contentDescription = null,
         )
 
-        Slider(
-            value = value,
-            onValueChange = { value = it },
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp),
-            valueRange = 0f..100f,
-        )
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Slider(
+                value = value,
+                onValueChange = { value = it },
+                modifier = Modifier.weight(1f),
+                valueRange = 0f..100f,
+            )
+
+            Text(
+                text = "${value.toInt()}",
+                modifier = Modifier.width(40.dp),
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.End,
+                style = MaterialTheme.typography.labelLarge,
+            )
+        }
 
         FilledTonalButton(
             onClick = { onApplyClick(value) },
