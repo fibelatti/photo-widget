@@ -4,14 +4,21 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 
 @Preview(
-    name = "Nexus 5",
+    name = "Regular Device",
+    group = "Device",
+    showSystemUi = true,
+    showBackground = true,
+    device = Devices.PIXEL_7,
+)
+@Preview(
+    name = "Small Device",
     group = "Device",
     showSystemUi = true,
     showBackground = true,
     device = Devices.NEXUS_5,
 )
 @Preview(
-    name = "Nexus 5 (pt)",
+    name = "Small Device (pt)",
     group = "Device",
     showSystemUi = true,
     showBackground = true,
@@ -19,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
     locale = "pt",
 )
 @Preview(
-    name = "Nexus 5 (es)",
+    name = "Small Device (es)",
     group = "Device",
     showSystemUi = true,
     showBackground = true,
@@ -27,7 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
     locale = "es",
 )
 @Preview(
-    name = "Pixel Tablet",
+    name = "Tablet",
     group = "Device",
     showSystemUi = true,
     showBackground = true,
