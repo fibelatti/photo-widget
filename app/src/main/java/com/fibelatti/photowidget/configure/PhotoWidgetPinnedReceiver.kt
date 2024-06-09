@@ -9,8 +9,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
-import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
+import kotlinx.coroutines.launch
 
 /**
  * [BroadcastReceiver] to handle the callback from [AppWidgetManager.requestPinAppWidget].

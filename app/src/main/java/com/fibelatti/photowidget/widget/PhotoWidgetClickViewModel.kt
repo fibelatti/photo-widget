@@ -7,13 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.platform.savedState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class PhotoWidgetClickViewModel @Inject constructor(

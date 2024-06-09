@@ -1,8 +1,8 @@
 package com.fibelatti.photowidget.widget
 
 import com.fibelatti.photowidget.model.PhotoWidget
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 class LoadPhotoWidgetUseCase @Inject constructor(
     private val photoWidgetStorage: PhotoWidgetStorage,

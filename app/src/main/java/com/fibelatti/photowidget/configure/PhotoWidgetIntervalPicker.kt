@@ -3,7 +3,6 @@ package com.fibelatti.photowidget.configure
 import android.app.AlarmManager
 import android.content.Context
 import android.content.Intent
-import android.widget.Space
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

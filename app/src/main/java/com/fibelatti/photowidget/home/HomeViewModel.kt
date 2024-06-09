@@ -5,13 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(

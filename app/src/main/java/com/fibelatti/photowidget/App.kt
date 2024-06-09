@@ -8,10 +8,10 @@ import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltAndroidApp
 class App : Application() {

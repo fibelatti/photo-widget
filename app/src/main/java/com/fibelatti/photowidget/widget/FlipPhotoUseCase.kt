@@ -2,8 +2,8 @@ package com.fibelatti.photowidget.widget
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 class FlipPhotoUseCase @Inject constructor(
     @ApplicationContext private val context: Context,

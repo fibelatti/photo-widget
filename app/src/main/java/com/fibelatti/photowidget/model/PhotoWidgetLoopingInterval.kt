@@ -1,8 +1,8 @@
 package com.fibelatti.photowidget.model
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import java.util.concurrent.TimeUnit
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PhotoWidgetLoopingInterval(
