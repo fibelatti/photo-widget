@@ -88,8 +88,6 @@ object PhotoWidgetShapeBuilder {
         ),
     )
 
-    const val DEFAULT_SHAPE_ID = "rounded-square"
-
     fun buildAllShapes(): Map<PhotoWidgetShape, RoundedPolygon> = shapes.associateWith { shape ->
         buildShape(photoWidgetShape = shape).transformed(
             width = 1f,

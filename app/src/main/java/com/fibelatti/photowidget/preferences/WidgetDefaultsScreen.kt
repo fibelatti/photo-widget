@@ -489,7 +489,7 @@ fun OpacityPicker(
             bitmap = baseBitmap
                 .withRoundedCorners(
                     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                    radius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
+                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                     opacity = value,
                 )
                 .asImageBitmap(),
@@ -557,8 +557,8 @@ private fun WidgetDefaultsScreenPreview() {
                 defaultShuffle = false,
                 defaultIntervalEnabled = false,
                 defaultInterval = PhotoWidgetLoopingInterval.ONE_DAY,
-                defaultShape = PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID,
-                defaultCornerRadius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
+                defaultShape = PhotoWidget.DEFAULT_SHAPE_ID,
+                defaultCornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                 defaultOpacity = PhotoWidget.DEFAULT_OPACITY,
                 defaultTapAction = PhotoWidgetTapAction.NONE,
                 defaultIncreaseBrightness = true,

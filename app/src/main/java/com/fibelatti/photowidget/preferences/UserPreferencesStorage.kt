@@ -3,11 +3,9 @@ package com.fibelatti.photowidget.preferences
 import android.content.Context
 import androidx.core.content.edit
 import com.fibelatti.photowidget.model.PhotoWidget
-import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.minutesToLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.secondsToLoopingInterval
-import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
@@ -116,7 +114,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
     var defaultShape: String
         get() {
             return sharedPreferences.getString(Preference.DEFAULT_SHAPE.value, null)
-                ?: PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID
+                ?: PhotoWidget.DEFAULT_SHAPE_ID
         }
         set(value) {
             sharedPreferences.edit { putString(Preference.DEFAULT_SHAPE.value, value) }
@@ -127,7 +125,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         get() {
             return sharedPreferences.getFloat(
                 Preference.DEFAULT_CORNER_RADIUS.value,
-                PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
+                PhotoWidget.DEFAULT_CORNER_RADIUS,
             )
         }
         set(value) {

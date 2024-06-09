@@ -829,7 +829,7 @@ private fun MyWidgetsScreenPreview() {
                         else -> PhotoWidgetAspectRatio.SQUARE
                     },
                     shapeId = allShapeIds.random(),
-                    cornerRadius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
+                    cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                     opacity = Random.nextFloat().coerceIn(70f, 100f),
                 )
             },

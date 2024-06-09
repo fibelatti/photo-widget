@@ -17,8 +17,8 @@ data class PhotoWidget(
     val increaseBrightness: Boolean = false,
     val appShortcut: String? = null,
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
-    val shapeId: String = PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID,
-    val cornerRadius: Float = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
+    val shapeId: String = DEFAULT_SHAPE_ID,
+    val cornerRadius: Float = DEFAULT_CORNER_RADIUS,
     val opacity: Float = DEFAULT_OPACITY,
 ) : Parcelable {
 
@@ -43,6 +43,8 @@ data class PhotoWidget(
         const val MAX_WIDGET_DIMENSION: Int = 720
         const val MAX_STORAGE_DIMENSION: Int = 1_920
 
+        const val DEFAULT_SHAPE_ID = "rounded-square"
+        const val DEFAULT_CORNER_RADIUS: Float = 64f
         const val DEFAULT_OPACITY: Float = 100f
     }
 }

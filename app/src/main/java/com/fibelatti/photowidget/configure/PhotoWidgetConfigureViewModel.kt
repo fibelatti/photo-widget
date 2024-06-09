@@ -6,9 +6,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.LocalPhoto
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
-import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.savedState
@@ -95,7 +95,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     shapeId = if (photoWidgetAspectRatio == PhotoWidgetAspectRatio.SQUARE) {
                         current.photoWidget.shapeId
                     } else {
-                        PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID
+                        PhotoWidget.DEFAULT_SHAPE_ID
                     },
                 ),
             )
