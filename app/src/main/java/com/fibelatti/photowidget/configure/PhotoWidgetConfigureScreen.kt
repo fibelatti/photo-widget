@@ -5,7 +5,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
@@ -32,15 +31,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -58,12 +57,12 @@ import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
 import com.fibelatti.photowidget.R
@@ -74,14 +73,18 @@ import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import com.fibelatti.photowidget.preferences.CornerRadiusPicker
+import com.fibelatti.photowidget.preferences.PickerDefault
+import com.fibelatti.photowidget.preferences.ShapeDefault
+import com.fibelatti.photowidget.preferences.ShapePicker
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
-import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit
 
@@ -103,11 +106,13 @@ fun PhotoWidgetConfigureScreen(
     onPhotoClick: (LocalPhoto) -> Unit,
     onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval, intervalBasedLoopingEnabled: Boolean) -> Unit,
     onTapActionPickerClick: (PhotoWidgetTapAction, appShortcut: String?, increaseBrightness: Boolean) -> Unit,
-    onShapeClick: (String) -> Unit,
+    onShapeChange: (String) -> Unit,
     onCornerRadiusChange: (Float) -> Unit,
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val localContext = LocalContext.current
+
     Scaffold(
         modifier = modifier,
     ) { paddingValues ->
@@ -135,8 +140,28 @@ fun PhotoWidgetConfigureScreen(
                 onPhotoClick = onPhotoClick,
                 onLoopingIntervalPickerClick = onLoopingIntervalPickerClick,
                 onTapActionPickerClick = onTapActionPickerClick,
-                onShapeClick = onShapeClick,
-                onCornerRadiusChange = onCornerRadiusChange,
+                onShapeClick = {
+                    ComposeBottomSheetDialog(localContext) {
+                        ShapePicker(
+                            onClick = { newShapeId ->
+                                onShapeChange(newShapeId)
+                                dismiss()
+                            },
+                            selectedShapeId = photoWidget.shapeId,
+                        )
+                    }.show()
+                },
+                onCornerRadiusClick = {
+                    ComposeBottomSheetDialog(localContext) {
+                        CornerRadiusPicker(
+                            currentValue = photoWidget.cornerRadius,
+                            onApplyClick = { newValue ->
+                                onCornerRadiusChange(newValue)
+                                dismiss()
+                            },
+                        )
+                    }.show()
+                },
                 onAddToHomeClick = onAddToHomeClick,
                 modifier = Modifier
                     .fillMaxSize()
@@ -179,19 +204,19 @@ private fun PhotoWidgetConfigureContent(
     onPhotoClick: (LocalPhoto) -> Unit,
     onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval, intervalBasedLoopingEnabled: Boolean) -> Unit,
     onTapActionPickerClick: (PhotoWidgetTapAction, appShortcut: String?, increaseBrightness: Boolean) -> Unit,
-    onShapeClick: (String) -> Unit,
-    onCornerRadiusChange: (Float) -> Unit,
+    onShapeClick: () -> Unit,
+    onCornerRadiusClick: () -> Unit,
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(bottom = 16.dp),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
+                .height(300.dp),
             contentAlignment = Alignment.Center,
         ) {
             PhotoWidgetViewer(
@@ -215,16 +240,6 @@ private fun PhotoWidgetConfigureContent(
                 )
             }
 
-            ConfigurationControl(
-                label = photoWidget.aspectRatio.label,
-                icon = R.drawable.ic_aspect_ratio,
-                contentDescription = R.string.photo_widget_aspect_ratio_title,
-                onClick = onAspectRatioClick,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(all = 8.dp),
-            )
-
             if (selectedPhoto != null) {
                 EditingControls(
                     onCropClick = { onCropClick(selectedPhoto) },
@@ -242,78 +257,105 @@ private fun PhotoWidgetConfigureContent(
             }
         }
 
-        PhotoPicker(
-            source = photoWidget.source,
-            onChangeSource = { onChangeSource(photoWidget.source, photoWidget.syncedDir) },
-            photos = photoWidget.photos,
-            shuffleVisible = photoWidget.canShuffle,
-            shuffle = photoWidget.shuffle,
-            onShuffleClick = onShuffleClick,
-            onPhotoPickerClick = onPhotoPickerClick,
-            onDirPickerClick = onDirPickerClick,
-            onPhotoClick = onPhotoClick,
-            aspectRatio = photoWidget.aspectRatio,
-            shapeId = photoWidget.shapeId,
-            cornerRadius = photoWidget.cornerRadius,
-        )
-
-        AnimatedContent(
-            targetState = photoWidget.aspectRatio,
-            transitionSpec = { fadeIn() togetherWith fadeOut() },
-            label = "Customization_Picker",
-        ) { aspectRatio ->
-            if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
-                ShapePicker(
-                    shapeId = photoWidget.shapeId,
-                    onShapeClick = onShapeClick,
-                )
-            } else {
-                CornerRadiusPicker(
-                    value = photoWidget.cornerRadius,
-                    onValueChange = onCornerRadiusChange,
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                )
-            }
-        }
-
-        Row(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            TapActionPicker(
-                tapAction = photoWidget.tapAction,
-                onTapActionPickerClick = {
+            PhotoPicker(
+                source = photoWidget.source,
+                onChangeSource = { onChangeSource(photoWidget.source, photoWidget.syncedDir) },
+                photos = photoWidget.photos,
+                shuffleVisible = photoWidget.canShuffle,
+                shuffle = photoWidget.shuffle,
+                onShuffleClick = onShuffleClick,
+                onPhotoPickerClick = onPhotoPickerClick,
+                onDirPickerClick = onDirPickerClick,
+                onPhotoClick = onPhotoClick,
+                aspectRatio = photoWidget.aspectRatio,
+                shapeId = photoWidget.shapeId,
+                cornerRadius = photoWidget.cornerRadius,
+            )
+
+            PickerDefault(
+                title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
+                currentValue = stringResource(id = photoWidget.aspectRatio.label),
+                onClick = onAspectRatioClick,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+
+            AnimatedContent(
+                targetState = photoWidget.aspectRatio,
+                transitionSpec = { fadeIn() togetherWith fadeOut() },
+                label = "Customization_Picker",
+            ) { aspectRatio ->
+                if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
+                    ShapeDefault(
+                        title = stringResource(id = R.string.widget_defaults_shape),
+                        currentValue = photoWidget.shapeId,
+                        onClick = onShapeClick,
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                    )
+                } else {
+                    PickerDefault(
+                        title = stringResource(id = R.string.widget_defaults_corner_radius),
+                        currentValue = photoWidget.cornerRadius.toInt().toString(),
+                        onClick = onCornerRadiusClick,
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                    )
+                }
+            }
+
+            PickerDefault(
+                title = stringResource(id = R.string.widget_defaults_tap_action),
+                currentValue = stringResource(id = photoWidget.tapAction.label),
+                onClick = {
                     onTapActionPickerClick(
                         photoWidget.tapAction,
                         photoWidget.appShortcut,
                         photoWidget.increaseBrightness,
                     )
                 },
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.padding(horizontal = 16.dp),
             )
 
             if (photoWidget.photos.size > 1) {
-                PhotoIntervalPicker(
-                    loopingInterval = photoWidget.loopingInterval,
-                    intervalBasedLoopingEnabled = photoWidget.intervalBasedLoopingEnabled,
-                    onLoopingIntervalPickerClick = {
+                PickerDefault(
+                    title = stringResource(id = R.string.widget_defaults_interval),
+                    currentValue = if (photoWidget.intervalBasedLoopingEnabled) {
+                        val intervalString = pluralStringResource(
+                            id = when (photoWidget.loopingInterval.timeUnit) {
+                                TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
+                                TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
+                                else -> R.plurals.photo_widget_configure_interval_current_hours
+                            },
+                            count = photoWidget.loopingInterval.repeatInterval.toInt(),
+                            photoWidget.loopingInterval.repeatInterval,
+                        )
+                        stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
+                    } else {
+                        stringResource(id = R.string.photo_widget_configure_interval_current_disabled)
+                    },
+                    onClick = {
                         onLoopingIntervalPickerClick(
                             photoWidget.loopingInterval,
                             photoWidget.intervalBasedLoopingEnabled,
                         )
                     },
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
-        }
 
-        FilledTonalButton(
-            onClick = onAddToHomeClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-        ) {
-            Text(text = stringResource(id = R.string.photo_widget_configure_add_to_home))
+            FilledTonalButton(
+                onClick = onAddToHomeClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+            ) {
+                Text(text = stringResource(id = R.string.photo_widget_configure_add_to_home))
+            }
         }
     }
 }
@@ -613,157 +655,6 @@ private fun PhotoPicker(
         }
     }
 }
-
-@Composable
-private fun PhotoIntervalPicker(
-    loopingInterval: PhotoWidgetLoopingInterval,
-    intervalBasedLoopingEnabled: Boolean,
-    onLoopingIntervalPickerClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        Text(
-            text = stringResource(id = R.string.photo_widget_configure_select_interval),
-            style = MaterialTheme.typography.titleMedium,
-        )
-
-        OutlinedButton(
-            onClick = onLoopingIntervalPickerClick,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            AutoSizeText(
-                text = if (intervalBasedLoopingEnabled) {
-                    val intervalString = pluralStringResource(
-                        id = when (loopingInterval.timeUnit) {
-                            TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
-                            TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
-                            else -> R.plurals.photo_widget_configure_interval_current_hours
-                        },
-                        count = loopingInterval.repeatInterval.toInt(),
-                        loopingInterval.repeatInterval,
-                    )
-
-                    stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
-                } else {
-                    stringResource(id = R.string.photo_widget_configure_interval_current_disabled)
-                },
-                maxLines = 1,
-                minTextSize = 8.sp,
-            )
-        }
-    }
-}
-
-@Composable
-private fun TapActionPicker(
-    tapAction: PhotoWidgetTapAction,
-    onTapActionPickerClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        Text(
-            text = stringResource(id = R.string.photo_widget_configure_tap_action),
-            style = MaterialTheme.typography.titleMedium,
-        )
-
-        OutlinedButton(
-            onClick = onTapActionPickerClick,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            AutoSizeText(
-                text = stringResource(id = tapAction.label),
-                maxLines = 1,
-                minTextSize = 8.sp,
-            )
-        }
-    }
-}
-
-@Composable
-private fun ShapePicker(
-    shapeId: String,
-    onShapeClick: (String) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        Text(
-            text = stringResource(id = R.string.photo_widget_configure_applied_shape),
-            modifier = Modifier.padding(horizontal = 16.dp),
-            style = MaterialTheme.typography.titleMedium,
-        )
-
-        val shapesToPolygons = remember {
-            PhotoWidgetShapeBuilder.buildAllShapes().toList()
-        }
-
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            items(shapesToPolygons) { (shape, polygon) ->
-                val color by animateColorAsState(
-                    targetValue = if (shape.id == shapeId) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.surfaceVariant
-                    },
-                    label = "ShapePicker_SelectedColor",
-                )
-
-                ColoredShape(
-                    polygon = polygon,
-                    color = color,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .aspectRatio(ratio = 1f)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            role = Role.RadioButton,
-                        ) {
-                            onShapeClick(shape.id)
-                        },
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun CornerRadiusPicker(
-    value: Float,
-    onValueChange: (Float) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        Text(
-            text = stringResource(id = R.string.photo_widget_configure_corner_radius),
-            style = MaterialTheme.typography.titleMedium,
-        )
-
-        Slider(
-            value = value,
-            onValueChange = onValueChange,
-            modifier = Modifier.padding(horizontal = 4.dp),
-            valueRange = 0f..100f,
-        )
-    }
-}
 // endregion Pickers
 
 @Composable
@@ -833,6 +724,7 @@ fun ColoredShape(
     )
 }
 
+// region Previews
 @Composable
 @ThemePreviews
 @LocalePreviews
@@ -868,9 +760,52 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onPhotoClick = {},
             onLoopingIntervalPickerClick = { _, _ -> },
             onTapActionPickerClick = { _, _, _ -> },
-            onShapeClick = {},
+            onShapeChange = {},
             onCornerRadiusChange = {},
             onAddToHomeClick = {},
         )
     }
 }
+
+@Composable
+@ThemePreviews
+@LocalePreviews
+@DevicePreviews
+private fun PhotoWidgetConfigureScreenTallPreview() {
+    ExtendedTheme {
+        PhotoWidgetConfigureScreen(
+            photoWidget = PhotoWidget(
+                source = PhotoWidgetSource.DIRECTORY,
+                photos = listOf(
+                    LocalPhoto(name = "photo-1"),
+                    LocalPhoto(name = "photo-2"),
+                ),
+                shuffle = false,
+                loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
+                tapAction = PhotoWidgetTapAction.VIEW_FULL_SCREEN,
+                aspectRatio = PhotoWidgetAspectRatio.TALL,
+                shapeId = PhotoWidgetShapeBuilder.DEFAULT_SHAPE_ID,
+                cornerRadius = PhotoWidgetAspectRatio.DEFAULT_CORNER_RADIUS,
+            ),
+            selectedPhoto = LocalPhoto(name = "photo-1"),
+            isProcessing = false,
+            onNavClick = {},
+            onMoveLeftClick = {},
+            onMoveRightClick = {},
+            onAspectRatioClick = {},
+            onCropClick = {},
+            onRemoveClick = {},
+            onChangeSource = { _, _ -> },
+            onShuffleClick = {},
+            onPhotoPickerClick = {},
+            onDirPickerClick = {},
+            onPhotoClick = {},
+            onLoopingIntervalPickerClick = { _, _ -> },
+            onTapActionPickerClick = { _, _, _ -> },
+            onShapeChange = {},
+            onCornerRadiusChange = {},
+            onAddToHomeClick = {},
+        )
+    }
+}
+// endregion Previews

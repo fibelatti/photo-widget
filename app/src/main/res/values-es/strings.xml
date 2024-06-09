@@ -63,7 +63,7 @@
     <string name="photo_widget_source_directory">Carpeta</string>
 
     <!-- Aspect Ratio -->
-    <string name="photo_widget_aspect_ratio_title">Selecciona la proporción</string>
+    <string name="photo_widget_aspect_ratio_title">Proporción</string>
     <string name="photo_widget_aspect_ratio_square">Cuadrado</string>
     <string name="photo_widget_aspect_ratio_tall">Alto</string>
     <string name="photo_widget_aspect_ratio_wide">Ancho</string>

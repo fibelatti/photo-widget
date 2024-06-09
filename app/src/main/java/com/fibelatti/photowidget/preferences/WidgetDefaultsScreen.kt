@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.preferences
 
 import android.graphics.BitmapFactory
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -284,7 +285,7 @@ private fun BooleanDefault(
 }
 
 @Composable
-private fun PickerDefault(
+fun PickerDefault(
     title: String,
     currentValue: String,
     onClick: () -> Unit,
@@ -321,7 +322,7 @@ private fun PickerDefault(
 }
 
 @Composable
-private fun ShapeDefault(
+fun ShapeDefault(
     title: String,
     currentValue: String,
     onClick: () -> Unit,
@@ -361,9 +362,10 @@ private fun ShapeDefault(
 
 // region Pickers
 @Composable
-private fun ShapePicker(
+fun ShapePicker(
     onClick: (shapeId: String) -> Unit,
     modifier: Modifier = Modifier,
+    selectedShapeId: String? = null,
 ) {
     DefaultPicker(
         title = stringResource(id = R.string.widget_defaults_shape),
@@ -381,9 +383,17 @@ private fun ShapePicker(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(shapesToPolygons) { (shape, polygon) ->
+                val color by animateColorAsState(
+                    targetValue = if (shape.id == selectedShapeId || selectedShapeId == null) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.surfaceVariant
+                    },
+                    label = "ShapePicker_SelectedColor",
+                )
                 ColoredShape(
                     polygon = polygon,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = color,
                     modifier = Modifier
                         .fillMaxHeight()
                         .aspectRatio(ratio = 1f)
@@ -395,7 +405,7 @@ private fun ShapePicker(
 }
 
 @Composable
-private fun CornerRadiusPicker(
+fun CornerRadiusPicker(
     currentValue: Float,
     onApplyClick: (newValue: Float) -> Unit,
     modifier: Modifier = Modifier,

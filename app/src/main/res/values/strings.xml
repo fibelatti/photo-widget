@@ -61,7 +61,7 @@
     <string name="photo_widget_source_directory">Folder</string>
 
     <!-- Aspect Ratio -->
-    <string name="photo_widget_aspect_ratio_title">Select the aspect ratio</string>
+    <string name="photo_widget_aspect_ratio_title">Aspect ratio</string>
     <string name="photo_widget_aspect_ratio_square">Square</string>
     <string name="photo_widget_aspect_ratio_tall">Tall</string>
     <string name="photo_widget_aspect_ratio_wide">Wide</string>

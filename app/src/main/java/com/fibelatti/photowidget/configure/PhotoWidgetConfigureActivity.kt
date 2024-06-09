@@ -104,7 +104,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     onPhotoClick = viewModel::previewPhoto,
                     onLoopingIntervalPickerClick = ::showIntervalPicker,
                     onTapActionPickerClick = ::showTapActionPicker,
-                    onShapeClick = viewModel::shapeSelected,
+                    onShapeChange = viewModel::shapeSelected,
                     onCornerRadiusChange = viewModel::cornerRadiusSelected,
                     onAddToHomeClick = viewModel::addNewWidget,
                 )
