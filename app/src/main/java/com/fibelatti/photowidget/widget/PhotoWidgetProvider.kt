@@ -18,7 +18,6 @@ import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
-import com.fibelatti.photowidget.platform.intentExtras
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import kotlin.math.sqrt
@@ -57,10 +56,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 entryPoint.coroutineScope().launch {
                     entryPoint.flipPhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
                 }
-
-                if (intent.rescheduleAlarm) {
-                    entryPoint.photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
-                }
             }
         }
     }
@@ -71,8 +66,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
         // RemoteViews have a maximum allowed memory for bitmaps
         private const val MAX_WIDGET_BITMAP_MEMORY = 6_912_000
-
-        var Intent.rescheduleAlarm: Boolean by intentExtras(default = false)
 
         fun ids(context: Context): List<Int> = AppWidgetManager.getInstance(context)
             .getAppWidgetIds(ComponentName(context, PhotoWidgetProvider::class.java))
@@ -207,12 +200,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         fun flipPhotoPendingIntent(
             context: Context,
             appWidgetId: Int,
-            rescheduleAlarm: Boolean = false,
         ): PendingIntent {
             val intent = Intent(context, PhotoWidgetProvider::class.java).apply {
                 this.appWidgetId = appWidgetId
                 this.action = TAP_TO_FLIP_ACTION
-                this.rescheduleAlarm = rescheduleAlarm
             }
             return PendingIntent.getBroadcast(
                 /* context = */ context,

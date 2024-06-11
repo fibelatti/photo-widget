@@ -1,12 +1,19 @@
 package com.fibelatti.photowidget.widget
 
 import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.getSystemService
+import com.fibelatti.photowidget.configure.appWidgetId
+import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
+import com.fibelatti.photowidget.di.entryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @Singleton
@@ -30,10 +37,9 @@ class PhotoWidgetAlarmManager @Inject constructor(
                 alarmManager.setExact(
                     /* type = */ AlarmManager.RTC,
                     /* triggerAtMillis = */ System.currentTimeMillis() + intervalMillis,
-                    /* operation = */ PhotoWidgetProvider.flipPhotoPendingIntent(
+                    /* operation = */ ExactRepeatingAlarmReceiver.pendingIntent(
                         context = context,
                         appWidgetId = appWidgetId,
-                        rescheduleAlarm = true,
                     ),
                 )
             } catch (_: SecurityException) {
@@ -60,11 +66,40 @@ class PhotoWidgetAlarmManager @Inject constructor(
     fun cancel(appWidgetId: Int) {
         Timber.d("Cancelling alarm for widget (appWidgetId=$appWidgetId)")
 
-        val pendingIntent = PhotoWidgetProvider.flipPhotoPendingIntent(
-            context = context,
-            appWidgetId = appWidgetId,
-        )
+        alarmManager.cancel(PhotoWidgetProvider.flipPhotoPendingIntent(context = context, appWidgetId = appWidgetId))
+        alarmManager.cancel(ExactRepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId))
+    }
+}
 
-        alarmManager.cancel(pendingIntent)
+class ExactRepeatingAlarmReceiver : BroadcastReceiver() {
+
+    override fun onReceive(context: Context, intent: Intent) {
+        runCatching {
+            val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
+
+            entryPoint.coroutineScope().launch {
+                entryPoint.flipPhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
+            }
+
+            entryPoint.photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
+        }
+    }
+
+    companion object {
+
+        fun pendingIntent(
+            context: Context,
+            appWidgetId: Int,
+        ): PendingIntent {
+            val intent = Intent(context, ExactRepeatingAlarmReceiver::class.java).apply {
+                this.appWidgetId = appWidgetId
+            }
+            return PendingIntent.getBroadcast(
+                /* context = */ context,
+                /* requestCode = */ appWidgetId,
+                /* intent = */ intent,
+                /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
+        }
     }
 }
