@@ -1,0 +1,8 @@
+Version 1.9.1 is released with the following updates:
+
+* Added support for intervals in seconds
+* Added support for widget opacity
+* Added support for adjusting the widget position for better alignment with other home screen elements
+* Widgets synced with directories will now include their subdirectories as well
+
+Feedback and suggestions are always welcome, visit the project page to contribute!
