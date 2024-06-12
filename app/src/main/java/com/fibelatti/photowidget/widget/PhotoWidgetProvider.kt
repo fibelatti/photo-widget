@@ -49,12 +49,15 @@ class PhotoWidgetProvider : AppWidgetProvider() {
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
 
-        if (TAP_TO_FLIP_ACTION == intent.action) {
+        if (ACTION_VIEW_NEXT_PHOTO == intent.action || ACTION_VIEW_PREVIOUS_PHOTO == intent.action) {
             runCatching {
                 val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
 
                 entryPoint.coroutineScope().launch {
-                    entryPoint.flipPhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
+                    entryPoint.flipPhotoUseCase().invoke(
+                        appWidgetId = intent.appWidgetId,
+                        flipBackwards = ACTION_VIEW_PREVIOUS_PHOTO == intent.action,
+                    )
                 }
             }
         }
@@ -62,7 +65,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
     companion object {
 
-        private const val TAP_TO_FLIP_ACTION = "TAP_TO_FLIP_ACTION"
+        private const val ACTION_VIEW_NEXT_PHOTO = "ACTION_VIEW_NEXT_PHOTO"
+        private const val ACTION_VIEW_PREVIOUS_PHOTO = "ACTION_VIEW_PREVIOUS_PHOTO"
 
         // RemoteViews have a maximum allowed memory for bitmaps
         private const val MAX_WIDGET_BITMAP_MEMORY = 6_912_000
@@ -90,14 +94,26 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     ?: createRemoteViews(context = context, photoWidget = photoWidget)
                     ?: return@launch
 
-                val clickPendingIntent = getClickPendingIntent(
-                    context = context,
-                    appWidgetId = appWidgetId,
-                    tapAction = tempWidget?.tapAction ?: photoWidget.tapAction,
-                    appShortcut = tempWidget?.appShortcut ?: photoWidget.appShortcut,
+                views.setOnClickPendingIntent(
+                    R.id.view_tap_previous,
+                    getClickPendingIntent(
+                        context = context,
+                        appWidgetId = appWidgetId,
+                        tapAction = tempWidget?.tapAction ?: photoWidget.tapAction,
+                        flipBackwards = true,
+                        appShortcut = tempWidget?.appShortcut ?: photoWidget.appShortcut,
+                    ),
                 )
-
-                views.setOnClickPendingIntent(R.id.iv_widget, clickPendingIntent)
+                views.setOnClickPendingIntent(
+                    R.id.view_tap_next,
+                    getClickPendingIntent(
+                        context = context,
+                        appWidgetId = appWidgetId,
+                        tapAction = tempWidget?.tapAction ?: photoWidget.tapAction,
+                        flipBackwards = false,
+                        appShortcut = tempWidget?.appShortcut ?: photoWidget.appShortcut,
+                    ),
+                )
 
                 Timber.d("Dispatching update to AppWidgetManager")
                 AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, views)
@@ -167,6 +183,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             context: Context,
             appWidgetId: Int,
             tapAction: PhotoWidgetTapAction,
+            flipBackwards: Boolean,
             appShortcut: String?,
         ): PendingIntent? = when (tapAction) {
             PhotoWidgetTapAction.NONE -> null
@@ -183,7 +200,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 )
             }
 
-            PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> flipPhotoPendingIntent(context, appWidgetId)
+            PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> flipPhotoPendingIntent(
+                context = context,
+                appWidgetId = appWidgetId,
+                flipBackwards = flipBackwards,
+            )
 
             PhotoWidgetTapAction.APP_SHORTCUT -> {
                 appShortcut?.let(context.packageManager::getLaunchIntentForPackage).let { clickIntent ->
@@ -200,10 +221,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         fun flipPhotoPendingIntent(
             context: Context,
             appWidgetId: Int,
+            flipBackwards: Boolean = false,
         ): PendingIntent {
             val intent = Intent(context, PhotoWidgetProvider::class.java).apply {
                 this.appWidgetId = appWidgetId
-                this.action = TAP_TO_FLIP_ACTION
+                this.action = if (flipBackwards) ACTION_VIEW_PREVIOUS_PHOTO else ACTION_VIEW_NEXT_PHOTO
             }
             return PendingIntent.getBroadcast(
                 /* context = */ context,

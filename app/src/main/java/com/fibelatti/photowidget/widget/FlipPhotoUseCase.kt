@@ -11,7 +11,7 @@ class FlipPhotoUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(appWidgetId: Int, flipBackwards: Boolean = false) {
-        Timber.d("Flipping widget (appWidgetId=$appWidgetId)")
+        Timber.d("Flipping widget (appWidgetId=$appWidgetId, flipBackwards=$flipBackwards)")
 
         val count = photoWidgetStorage.getWidgetPhotoCount(appWidgetId = appWidgetId)
 
