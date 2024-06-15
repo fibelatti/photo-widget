@@ -19,6 +19,8 @@ launcher.
 
 <b>PERMISSIONS</b>
 
+* INSTALL_SHORTCUT — Declared to ensure that widgets can be placed correctly on
+  Xiaomi and Redmi devices
 * RECEIVE_BOOT_COMPLETED — Used to ensure that widgets function correctly after
   the device is restarted
 * SCHEDULE_EXACT_ALARM (optional) — Used to ensure that widgets are updated

@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Make it possible to view the previous photo on tap
 * Add "View in gallery" as a tap action
 
+### Changed
+
+* Declare INSTALL_SHORTCUT attempting to solve Xiaomi issues
+
 ## [v1.9.1] - 2024-06-11
 
 ### Fixed
