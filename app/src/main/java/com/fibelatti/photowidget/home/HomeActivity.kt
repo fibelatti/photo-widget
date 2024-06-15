@@ -7,6 +7,7 @@ import android.os.Parcelable
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue
@@ -18,6 +19,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.configure.aspectRatio
+import com.fibelatti.photowidget.configure.duplicateFromId
 import com.fibelatti.photowidget.configure.sharedPhotos
 import com.fibelatti.photowidget.licenses.OssLicensesActivity
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -53,7 +55,7 @@ class HomeActivity : AppCompatActivity() {
                 HomeScreen(
                     onCreateNewWidgetClick = ::createNewWidget,
                     currentWidgets = currentWidgets,
-                    onCurrentWidgetClick = ::editExistingWidget,
+                    onCurrentWidgetClick = ::showExistingWidgetMenu,
                     onDefaultsClick = ::showDefaults,
                     onAppearanceClick = ::showAppearancePicker,
                     onColorsClick = ::showAppColorsPicker,
@@ -115,14 +117,33 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun editExistingWidget(appWidgetId: Int) {
-        val intent = (preparedIntent ?: Intent(this, PhotoWidgetConfigureActivity::class.java)).apply {
-            this.appWidgetId = appWidgetId
+    private fun showExistingWidgetMenu(appWidgetId: Int) {
+        preparedIntent?.let {
+            val intent = it.apply { this.appWidgetId = appWidgetId }
+
+            preparedIntent = null
+
+            startActivity(intent)
+
+            return
         }
 
-        preparedIntent = null
+        SelectionDialog.show(
+            context = this,
+            title = "",
+            options = MyWidgetOptions.entries,
+            optionName = { option -> getString(option.label) },
+            onOptionSelected = { option ->
+                val intent = Intent(this, PhotoWidgetConfigureActivity::class.java).apply {
+                    when (option) {
+                        MyWidgetOptions.EDIT -> this.appWidgetId = appWidgetId
+                        MyWidgetOptions.DUPLICATE -> this.duplicateFromId = appWidgetId
+                    }
+                }
 
-        startActivity(intent)
+                startActivity(intent)
+            },
+        )
     }
 
     private fun showHelp() {
@@ -220,6 +241,13 @@ class HomeActivity : AppCompatActivity() {
 
     private fun viewOpenSourceLicenses() {
         startActivity(Intent(this, OssLicensesActivity::class.java))
+    }
+
+    private enum class MyWidgetOptions(
+        @StringRes val label: Int,
+    ) {
+        EDIT(label = R.string.photo_widget_home_my_widget_action_edit),
+        DUPLICATE(label = R.string.photo_widget_home_my_widget_action_duplicate),
     }
 
     private companion object {

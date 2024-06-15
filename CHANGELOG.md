@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Make it possible to view the previous photo on tap
 * Add "View in gallery" as a tap action
 * Make it possible to adjust the widget padding
+* Make it possible to duplicate existing widgets
 
 ### Changed
 

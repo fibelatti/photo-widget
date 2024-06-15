@@ -13,6 +13,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.savedState
 import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
+import com.fibelatti.photowidget.widget.DuplicatePhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,6 +33,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val photoWidgetStorage: PhotoWidgetStorage,
     loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
+    duplicatePhotoWidgetUseCase: DuplicatePhotoWidgetUseCase,
     private val savePhotoWidgetUseCase: SavePhotoWidgetUseCase,
     deleteStaleDataUseCase: DeleteStaleDataUseCase,
 ) : ViewModel() {
@@ -40,6 +42,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         key = AppWidgetManager.EXTRA_APPWIDGET_ID,
         default = AppWidgetManager.INVALID_APPWIDGET_ID,
     )
+    private val duplicateFromId: Int? by savedStateHandle.savedState()
     private val aspectRatio: PhotoWidgetAspectRatio? by savedStateHandle.savedState()
 
     private val _state = MutableStateFlow(PhotoWidgetConfigureState())
@@ -50,6 +53,11 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
         viewModelScope.launch {
             deleteStaleDataUseCase()
+
+            duplicateFromId?.let {
+                Timber.d("Duplicating widget (duplicateFromId=$it)")
+                duplicatePhotoWidgetUseCase(originalAppWidgetId = it, newAppWidgetId = appWidgetId)
+            }
 
             val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
 

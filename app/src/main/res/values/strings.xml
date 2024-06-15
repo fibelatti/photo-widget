@@ -32,6 +32,9 @@
     <string name="photo_widget_home_filter_photos">Photos</string>
     <string name="photo_widget_home_filter_folder">Folder</string>
 
+    <string name="photo_widget_home_my_widget_action_edit">Edit</string>
+    <string name="photo_widget_home_my_widget_action_duplicate">Duplicate</string>
+
     <!-- Preferences -->
     <string name="preferences_appearance_follow_system">Follow system</string>
     <string name="preferences_appearance_light">Light</string>

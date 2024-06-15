@@ -78,8 +78,6 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     fun removeSyncedDir(appWidgetId: Int, dirUri: Uri) {
-        contentResolver.releasePersistableUriPermission(dirUri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-
         val currentDir = getWidgetSyncDir(appWidgetId = appWidgetId)
         saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = currentDir - dirUri)
     }
@@ -593,6 +591,16 @@ class PhotoWidgetStorage @Inject constructor(
         if (tempDir.exists()) {
             tempDir.renameTo(File("$rootDir/$appWidgetId"))
         }
+    }
+
+    fun duplicateWidgetDir(
+        originalAppWidgetId: Int,
+        newAppWidgetId: Int,
+    ) {
+        val originalDir = getWidgetDir(appWidgetId = originalAppWidgetId)
+        val newDir = getWidgetDir(appWidgetId = newAppWidgetId)
+
+        originalDir.copyTo(newDir, overwrite = true)
     }
 
     private fun getWidgetDir(appWidgetId: Int): File {

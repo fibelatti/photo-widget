@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.platform
 
 import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -45,6 +46,7 @@ object SelectionDialog {
 }
 
 @Composable
+@OptIn(ExperimentalFoundationApi::class)
 private fun <T> SelectionDialogContent(
     title: String,
     options: List<T>,
@@ -59,14 +61,16 @@ private fun <T> SelectionDialogContent(
         contentPadding = PaddingValues(all = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        item {
-            Text(
-                text = title,
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge,
-            )
+        if (title.isNotEmpty()) {
+            stickyHeader {
+                Text(
+                    text = title,
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleLarge,
+                )
+            }
         }
 
         items(options) { option ->
