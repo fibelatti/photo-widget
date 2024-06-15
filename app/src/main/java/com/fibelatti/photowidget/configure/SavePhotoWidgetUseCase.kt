@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.configure
 
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetSource
+import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import javax.inject.Inject
@@ -49,7 +50,12 @@ class SavePhotoWidgetUseCase @Inject constructor(
 
         photoWidgetStorage.saveWidgetTapAction(
             appWidgetId = appWidgetId,
-            tapAction = photoWidget.tapAction,
+            tapAction = when {
+                PhotoWidgetTapAction.VIEW_IN_GALLERY == photoWidget.tapAction &&
+                    PhotoWidgetSource.PHOTOS == photoWidget.source -> PhotoWidgetTapAction.VIEW_FULL_SCREEN
+
+                else -> photoWidget.tapAction
+            },
         )
 
         photoWidgetStorage.saveWidgetIncreaseBrightness(

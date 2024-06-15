@@ -130,9 +130,13 @@
     <string name="photo_widget_configure_tap_action">Tap action</string>
     <string name="photo_widget_configure_tap_action_none">None</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">View photo in full screen</string>
-    <string name="photo_widget_configure_tap_action_next_photo">View next photo</string>
+    <string name="photo_widget_configure_tap_action_view_in_gallery">View in gallery</string>
+    <string name="photo_widget_configure_tap_action_flip_photo">Flip photo</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">App shortcut</string>
+
     <string name="photo_widget_configure_tap_action_increase_brightness">Automatically increase brightness</string>
+    <string name="photo_widget_configure_tap_action_gallery_description">Available for folder-based widgets. Photo-based widgets will use \"View photo in full screen\" instead.</string>
+    <string name="photo_widget_configure_tap_action_flip_description">Tap on the left half to view the previous photo and on right half to view the next one.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Choose app</string>
 
     <string name="photo_widget_configure_applied_shape">Shape</string>

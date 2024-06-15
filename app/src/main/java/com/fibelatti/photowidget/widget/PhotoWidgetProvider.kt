@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.widget.RemoteViews
@@ -99,9 +100,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     getClickPendingIntent(
                         context = context,
                         appWidgetId = appWidgetId,
-                        tapAction = tempWidget?.tapAction ?: photoWidget.tapAction,
+                        tapAction = (tempWidget ?: photoWidget).tapAction,
                         flipBackwards = true,
-                        appShortcut = tempWidget?.appShortcut ?: photoWidget.appShortcut,
+                        externalUri = (tempWidget ?: photoWidget).currentPhoto.externalUri,
+                        appShortcut = (tempWidget ?: photoWidget).appShortcut,
                     ),
                 )
                 views.setOnClickPendingIntent(
@@ -109,9 +111,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     getClickPendingIntent(
                         context = context,
                         appWidgetId = appWidgetId,
-                        tapAction = tempWidget?.tapAction ?: photoWidget.tapAction,
+                        tapAction = (tempWidget ?: photoWidget).tapAction,
                         flipBackwards = false,
-                        appShortcut = tempWidget?.appShortcut ?: photoWidget.appShortcut,
+                        externalUri = (tempWidget ?: photoWidget).currentPhoto.externalUri,
+                        appShortcut = (tempWidget ?: photoWidget).appShortcut,
                     ),
                 )
 
@@ -184,6 +187,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             appWidgetId: Int,
             tapAction: PhotoWidgetTapAction,
             flipBackwards: Boolean,
+            externalUri: Uri?,
             appShortcut: String?,
         ): PendingIntent? = when (tapAction) {
             PhotoWidgetTapAction.NONE -> null
@@ -197,6 +201,19 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     appWidgetId,
                     clickIntent,
                     PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                )
+            }
+
+            PhotoWidgetTapAction.VIEW_IN_GALLERY -> {
+                val intent = Intent(Intent.ACTION_VIEW, externalUri).apply {
+                    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                }
+
+                PendingIntent.getActivity(
+                    context,
+                    appWidgetId,
+                    intent,
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                 )
             }
 

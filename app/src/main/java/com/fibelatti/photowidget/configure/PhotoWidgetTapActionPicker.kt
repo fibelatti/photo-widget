@@ -130,22 +130,48 @@ private fun TapActionPickerContent(
             targetState = tapAction,
             label = "TapAction_CustomOptions",
         ) { value ->
-            if (PhotoWidgetTapAction.VIEW_FULL_SCREEN == value) {
-                BrightnessToggle(
-                    enabled = increaseBrightness,
-                    onChange = { increaseBrightness = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                )
-            } else if (PhotoWidgetTapAction.APP_SHORTCUT == value) {
-                AppPicker(
-                    onChooseApp = onChooseApp,
-                    currentAppShortcut = currentAppShortcut,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                )
+            val customOptionModifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+
+            when (value) {
+                PhotoWidgetTapAction.VIEW_FULL_SCREEN -> {
+                    BrightnessToggle(
+                        enabled = increaseBrightness,
+                        onChange = { increaseBrightness = it },
+                        modifier = customOptionModifier,
+                    )
+                }
+
+                PhotoWidgetTapAction.VIEW_IN_GALLERY -> {
+                    Text(
+                        text = stringResource(id = R.string.photo_widget_configure_tap_action_gallery_description),
+                        modifier = customOptionModifier,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
+
+                PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> {
+                    Text(
+                        text = stringResource(id = R.string.photo_widget_configure_tap_action_flip_description),
+                        modifier = customOptionModifier,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
+
+                PhotoWidgetTapAction.APP_SHORTCUT -> {
+                    AppPicker(
+                        onChooseApp = onChooseApp,
+                        currentAppShortcut = currentAppShortcut,
+                        modifier = customOptionModifier,
+                    )
+                }
+
+                PhotoWidgetTapAction.NONE -> Unit
             }
         }
 
