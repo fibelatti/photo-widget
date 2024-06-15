@@ -22,6 +22,7 @@ data class PhotoWidget(
     val opacity: Float = DEFAULT_OPACITY,
     val horizontalOffset: Int = 0,
     val verticalOffset: Int = 0,
+    val padding: Int = 0,
 ) : Parcelable {
 
     val currentPhoto: LocalPhoto

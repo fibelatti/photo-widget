@@ -517,6 +517,16 @@ class PhotoWidgetStorage @Inject constructor(
         )
     }
 
+    fun saveWidgetPadding(appWidgetId: Int, padding: Int) {
+        sharedPreferences.edit {
+            putInt("${PreferencePrefix.PADDING}$appWidgetId", padding)
+        }
+    }
+
+    fun getWidgetPadding(appWidgetId: Int): Int {
+        return sharedPreferences.getInt("${PreferencePrefix.PADDING}$appWidgetId", 0)
+    }
+
     fun saveWidgetTapAction(appWidgetId: Int, tapAction: PhotoWidgetTapAction) {
         sharedPreferences.edit {
             putString("${PreferencePrefix.TAP_ACTION}$appWidgetId", tapAction.name)
@@ -630,6 +640,7 @@ class PhotoWidgetStorage @Inject constructor(
         OPACITY(value = "appwidget_opacity_"),
         HORIZONTAL_OFFSET(value = "appwidget_horizontal_offset_"),
         VERTICAL_OFFSET(value = "appwidget_vertical_offset_"),
+        PADDING(value = "appwidget_padding_"),
         TAP_ACTION(value = "appwidget_tap_action_"),
         INCREASE_BRIGHTNESS(value = "appwidget_increase_brightness_"),
         APP_SHORTCUT(value = "appwidget_app_shortcut_"),

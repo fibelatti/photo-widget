@@ -33,6 +33,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             opacity = getWidgetOpacity(appWidgetId = appWidgetId),
             horizontalOffset = horizontalOffset,
             verticalOffset = verticalOffset,
+            padding = getWidgetPadding(appWidgetId = appWidgetId),
         )
     }
 }

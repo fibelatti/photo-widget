@@ -94,6 +94,11 @@ class SavePhotoWidgetUseCase @Inject constructor(
             verticalOffset = photoWidget.verticalOffset,
         )
 
+        photoWidgetStorage.saveWidgetPadding(
+            appWidgetId = appWidgetId,
+            padding = photoWidget.padding,
+        )
+
         if (photoWidget.loopingEnabled) {
             photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
         } else {

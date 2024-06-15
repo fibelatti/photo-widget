@@ -448,6 +448,7 @@ fun CornerRadiusPicker(
                 )
                 .asImageBitmap(),
             contentDescription = null,
+            modifier = Modifier.size(200.dp),
         )
 
         Row(
@@ -509,6 +510,7 @@ fun OpacityPicker(
                 )
                 .asImageBitmap(),
             contentDescription = null,
+            modifier = Modifier.size(200.dp),
         )
 
         Row(

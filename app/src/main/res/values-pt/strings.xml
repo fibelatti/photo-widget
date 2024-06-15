@@ -131,6 +131,8 @@
     <string name="photo_widget_configure_offset_current_horizontal">Horizontal: %1$d</string>
     <string name="photo_widget_configure_offset_current_vertical">Vertical: %1$d</string>
 
+    <string name="photo_widget_configure_padding">Espaçamento</string>
+
     <string name="photo_widget_configure_tap_action">Ação ao tocar</string>
     <string name="photo_widget_configure_tap_action_none">Nenhuma</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Ver foto em tela cheia</string>

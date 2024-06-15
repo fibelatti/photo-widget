@@ -166,20 +166,20 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 setImageViewBitmap(R.id.iv_widget, transformedBitmap)
                 setViewPadding(
                     /* viewId = */ R.id.iv_widget,
-                    /* left = */ TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP,
-                        photoWidget.horizontalOffset * 10f,
-                        context.resources.displayMetrics,
-                    ).toInt(),
-                    /* top = */ TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP,
-                        photoWidget.verticalOffset * 10f,
-                        context.resources.displayMetrics,
-                    ).toInt(),
-                    /* right = */ 0,
-                    /* bottom = */ 0,
+                    /* left = */ getDimensionValue(context, photoWidget.padding + photoWidget.horizontalOffset),
+                    /* top = */ getDimensionValue(context, photoWidget.padding + photoWidget.verticalOffset),
+                    /* right = */ getDimensionValue(context, photoWidget.padding),
+                    /* bottom = */ getDimensionValue(context, photoWidget.padding),
                 )
             }
+        }
+
+        private fun getDimensionValue(context: Context, value: Int): Int {
+            return TypedValue.applyDimension(
+                /* unit = */ TypedValue.COMPLEX_UNIT_DIP,
+                /* value = */ value * 10f,
+                /* metrics = */ context.resources.displayMetrics,
+            ).toInt()
         }
 
         private fun getClickPendingIntent(

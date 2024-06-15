@@ -46,6 +46,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -125,6 +126,7 @@ fun PhotoWidgetConfigureScreen(
     onCornerRadiusChange: (Float) -> Unit,
     onOpacityChange: (Float) -> Unit,
     onOffsetChange: (horizontalOffset: Int, verticalOffset: Int) -> Unit,
+    onPaddingChange: (Int) -> Unit,
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -202,6 +204,17 @@ fun PhotoWidgetConfigureScreen(
                         )
                     }.show()
                 },
+                onPaddingClick = {
+                    ComposeBottomSheetDialog(localContext) {
+                        PaddingPicker(
+                            currentValue = photoWidget.padding,
+                            onApplyClick = { newValue ->
+                                onPaddingChange(newValue)
+                                dismiss()
+                            },
+                        )
+                    }.show()
+                },
                 onAddToHomeClick = onAddToHomeClick,
                 modifier = Modifier
                     .fillMaxSize()
@@ -248,6 +261,7 @@ private fun PhotoWidgetConfigureContent(
     onCornerRadiusClick: () -> Unit,
     onOpacityClick: () -> Unit,
     onOffsetClick: () -> Unit,
+    onPaddingClick: () -> Unit,
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -366,6 +380,13 @@ private fun PhotoWidgetConfigureContent(
                     photoWidget.verticalOffset,
                 ),
                 onClick = onOffsetClick,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+
+            PickerDefault(
+                title = stringResource(id = R.string.photo_widget_configure_padding),
+                currentValue = photoWidget.padding.toString(),
+                onClick = onPaddingClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
 
@@ -751,6 +772,7 @@ private fun OffsetPicker(
                 contentDescription = null,
                 modifier = Modifier
                     .padding(32.dp)
+                    .size(200.dp)
                     .offset(x = horizontalValue.dp, y = verticalValue.dp),
             )
         }
@@ -894,6 +916,69 @@ private fun OffsetPicker(
         }
     }
 }
+
+@Composable
+fun PaddingPicker(
+    currentValue: Int,
+    onApplyClick: (newValue: Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    DefaultPicker(
+        title = stringResource(id = R.string.photo_widget_configure_padding),
+        modifier = modifier,
+    ) {
+        val localContext = LocalContext.current
+        val baseBitmap = remember {
+            BitmapFactory.decodeResource(localContext.resources, R.drawable.image_sample)
+        }
+        var value by remember(currentValue) { mutableIntStateOf(currentValue) }
+
+        Image(
+            bitmap = baseBitmap
+                .withRoundedCorners(
+                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
+                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS,
+                )
+                .asImageBitmap(),
+            contentDescription = null,
+            modifier = Modifier
+                .size(200.dp)
+                .padding(value.dp),
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Slider(
+                value = value.toFloat(),
+                onValueChange = { value = it.toInt() },
+                modifier = Modifier.weight(1f),
+                valueRange = 0f..20f,
+            )
+
+            Text(
+                text = "$value",
+                modifier = Modifier.width(40.dp),
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.End,
+                style = MaterialTheme.typography.labelLarge,
+            )
+        }
+
+        FilledTonalButton(
+            onClick = { onApplyClick(value) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+        ) {
+            Text(text = stringResource(id = R.string.photo_widget_action_apply))
+        }
+    }
+}
 // endregion Pickers
 
 @Composable
@@ -1008,6 +1093,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onCornerRadiusChange = {},
             onOpacityChange = {},
             onOffsetChange = { _, _ -> },
+            onPaddingChange = {},
             onAddToHomeClick = {},
         )
     }
@@ -1053,6 +1139,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onCornerRadiusChange = {},
             onOpacityChange = {},
             onOffsetChange = { _, _ -> },
+            onPaddingChange = {},
             onAddToHomeClick = {},
         )
     }

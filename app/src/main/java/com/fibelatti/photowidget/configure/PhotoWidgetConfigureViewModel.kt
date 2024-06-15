@@ -389,6 +389,16 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
+    fun paddingSelected(padding: Int) {
+        _state.update { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(
+                    padding = padding,
+                ),
+            )
+        }
+    }
+
     fun addNewWidget() {
         val currentState = _state.value
 
