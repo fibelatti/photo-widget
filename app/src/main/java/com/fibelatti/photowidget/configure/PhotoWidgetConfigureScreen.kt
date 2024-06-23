@@ -16,6 +16,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -75,6 +76,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.RoundedPolygon
@@ -796,7 +798,7 @@ private fun OffsetPicker(
                             shape = MaterialTheme.shapes.medium,
                         ),
                 ) {
-                    Image(
+                    Icon(
                         painter = painterResource(id = R.drawable.ic_chevron_down),
                         contentDescription = null,
                         modifier = Modifier
@@ -809,11 +811,12 @@ private fun OffsetPicker(
                                 verticalValue -= 1
                                 localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                             },
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
 
                     Spacer(modifier = Modifier.size(48.dp))
 
-                    Image(
+                    Icon(
                         painter = painterResource(id = R.drawable.ic_chevron_down),
                         contentDescription = null,
                         modifier = Modifier
@@ -825,6 +828,7 @@ private fun OffsetPicker(
                                 verticalValue += 1
                                 localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                             },
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }
 
@@ -837,7 +841,7 @@ private fun OffsetPicker(
                             shape = MaterialTheme.shapes.medium,
                         ),
                 ) {
-                    Image(
+                    Icon(
                         painter = painterResource(id = R.drawable.ic_chevron_left),
                         contentDescription = null,
                         modifier = Modifier
@@ -849,11 +853,12 @@ private fun OffsetPicker(
                                 horizontalValue -= 1
                                 localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                             },
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
 
                     Spacer(modifier = Modifier.size(48.dp))
 
-                    Image(
+                    Icon(
                         painter = painterResource(id = R.drawable.ic_chevron_right),
                         contentDescription = null,
                         modifier = Modifier
@@ -865,6 +870,7 @@ private fun OffsetPicker(
                                 horizontalValue += 1
                                 localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                             },
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }
             }
@@ -877,8 +883,21 @@ private fun OffsetPicker(
                         id = R.string.photo_widget_configure_offset_current_horizontal,
                         horizontalValue,
                     ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
+                        )
+                        .border(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
+                        )
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
                     color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.End,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyLarge,
                 )
 
@@ -887,8 +906,21 @@ private fun OffsetPicker(
                         id = R.string.photo_widget_configure_offset_current_vertical,
                         verticalValue,
                     ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
+                        )
+                        .border(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
+                        )
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
                     color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.End,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyLarge,
                 )
             }
