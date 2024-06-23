@@ -1,0 +1,8 @@
+Version 1.10 is released with the following updates:
+
+* Add "View in gallery" as a tap action
+* Make it possible to view the previous photo on tap
+* Make it possible to adjust the widget padding
+* Make it possible to duplicate existing widgets
+
+Feedback and suggestions are always welcome, visit the project page to contribute!
