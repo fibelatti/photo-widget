@@ -97,7 +97,7 @@ private fun SourcePickerContent(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .nestedScroll(rememberNestedScrollInteropConnection()),
-            contentPadding = PaddingValues(bottom = 200.dp),
+            contentPadding = PaddingValues(bottom = 140.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             stickyHeader {

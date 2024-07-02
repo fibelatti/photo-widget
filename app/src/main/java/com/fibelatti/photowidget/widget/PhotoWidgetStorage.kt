@@ -137,17 +137,21 @@ class PhotoWidgetStorage @Inject constructor(
         }.getOrNull()
     }
 
-    suspend fun isValidDir(dirUri: Uri): Boolean {
+    suspend fun isValidDir(dirUri: Uri, bypassLimit: Boolean = false): DirValidationResult {
         Timber.d("Checking validity of selected dir: $dirUri")
 
-        if (dirUri.toString().endsWith("DCIM%2FCamera", ignoreCase = true)) return false
+        if (dirUri.toString().endsWith("DCIM%2FCamera", ignoreCase = true)) return DirValidationResult.INVALID
 
         val documentUri = DocumentsContract.buildDocumentUriUsingTree(
             /* treeUri = */ dirUri,
             /* documentId = */ DocumentsContract.getTreeDocumentId(dirUri),
         )
 
-        return getDirectoryPhotoCount(documentUri = documentUri) <= 1_000
+        return if (bypassLimit || getDirectoryPhotoCount(documentUri = documentUri) <= 1_000) {
+            DirValidationResult.VALID
+        } else {
+            DirValidationResult.CAN_BYPASS
+        }
     }
 
     suspend fun getWidgetPhotoCount(appWidgetId: Int): Int = withContext(Dispatchers.IO) {
@@ -607,6 +611,12 @@ class PhotoWidgetStorage @Inject constructor(
         return File("$rootDir/$appWidgetId").apply {
             mkdirs()
         }
+    }
+
+    enum class DirValidationResult {
+        VALID,
+        CAN_BYPASS,
+        INVALID,
     }
 
     private enum class PreferencePrefix(val value: String) {

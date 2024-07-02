@@ -76,10 +76,11 @@
     <string name="photo_widget_configure_navigate_back_warning">As alterações serão perdidas, voltar mesmo assim?</string>
 
     <string name="photo_widget_configure_import_error">Não foi possível importar todas as fotos escolhidas</string>
-    <string name="photo_widget_configure_too_many_photos_error">Os widgets pareados com uma pasta não podem ser pareados com o rolo da câmera e podem ter no máximo 1000 fotos. Selecione uma pasta diferente.</string>
+    <string name="photo_widget_configure_camera_folder_error">Os widgets sincronizados com uma pasta não podem ser sincronizados com o rolo da câmera.\n\nInfelizmente, o Android oferece apenas uma maneira extremamente lenta de ler fotos, e o rolo da câmera pode conter milhares, resultando em graves problemas de desempenho.</string>
+    <string name="photo_widget_configure_too_many_photos_error">A pasta selecionada contém mais de 1.000 fotos.\n\nIsso afetará diretamente o desempenho do widget, tornando seu carregamento e atualização mais lentos.\n\nDeseja continuar?</string>
 
     <string name="photo_widget_configure_menu_source">Origem</string>
-    <string name="photo_widget_configure_source_description">Você pode selecionar cada foto ou sincronizar um widget com pastas. Ao sincronizar, todas as fotos atuais e futuras serão adicionadas automaticamente.</string>
+    <string name="photo_widget_configure_source_description">Você pode selecionar cada foto ou sincronizar um widget com uma ou mais pastas. Ao sincronizar, todas as fotos atuais e futuras serão adicionadas automaticamente.</string>
     <string name="photo_widget_configure_source_selection_photos">Somente as fotos que você selecionou serão exibidas neste widget.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Este widget ainda não está sincronizado com nenhuma pasta.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Este widget está sincronizado com estas pastas:</string>

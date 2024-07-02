@@ -75,10 +75,11 @@
     <string name="photo_widget_configure_navigate_back_warning">Any changes will be lost, go back anyway?</string>
 
     <string name="photo_widget_configure_import_error">Unable to import all selected photos</string>
-    <string name="photo_widget_configure_too_many_photos_error">Widgets synced with a folder cannot be synced to your camera roll and can have at most 1000 photos. Please select a different folder.</string>
+    <string name="photo_widget_configure_camera_folder_error">Widgets synced with a folder cannot be synced to your camera roll.\n\nUnfortunately Android only offers an extremely slow way of reading photos and the camera roll can contain many thousands resulting in severe performance issues.</string>
+    <string name="photo_widget_configure_too_many_photos_error">The selected folder contains more than 1000 photos.\n\nThis will directly impact the performance of the widget, making it slower to load and update.\n\nDo you want to continue?</string>
 
     <string name="photo_widget_configure_menu_source">Source</string>
-    <string name="photo_widget_configure_source_description">You can select each photo or sync a widget with folders. When syncing, all current and future photos will be added automatically.</string>
+    <string name="photo_widget_configure_source_description">You can select each photo or sync a widget with one or more folders. When syncing, all current and future photos will be added automatically.</string>
     <string name="photo_widget_configure_source_selection_photos">Only the photos you selected will be displayed in this widget.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">This widget is not synced with any folder yet.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">This widget is synced with these folders:</string>

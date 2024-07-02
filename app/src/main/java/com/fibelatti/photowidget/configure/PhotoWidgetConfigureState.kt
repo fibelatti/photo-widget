@@ -17,7 +17,9 @@ data class PhotoWidgetConfigureState(
 
         data object ImportFailed : Message()
 
-        data object TooManyPhotos : Message()
+        data object CameraFolderSelected : Message()
+
+        data class TooManyPhotos(val source: Uri) : Message()
 
         data class LaunchCrop(
             val source: Uri,

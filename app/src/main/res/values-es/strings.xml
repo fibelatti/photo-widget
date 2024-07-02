@@ -77,10 +77,11 @@
     <string name="photo_widget_configure_navigate_back_warning">¿Se perderán los cambios, volver de todos modos?</string>
 
     <string name="photo_widget_configure_import_error">No se pueden importar todas las fotos seleccionadas</string>
-    <string name="photo_widget_configure_too_many_photos_error">Los widgets sincronizados con una carpeta no se pueden sincronizar con el carrete de la cámara y pueden tener como máximo 1000 fotos. Seleccione una carpeta diferente.</string>
+    <string name="photo_widget_configure_camera_folder_error">Los widgets sincronizados con una carpeta no se pueden sincronizar con el carrete de la cámara.\n\nDesafortunadamente, Android solo ofrece una forma extremadamente lenta de leer fotos y el carrete de la cámara puede contener muchos miles, lo que genera graves problemas de rendimiento.</string>
+    <string name="photo_widget_configure_too_many_photos_error">La carpeta seleccionada contiene más de 1000 fotos.\n\nEsto afectará directamente el rendimiento del widget, lo que hará que su carga y actualización sean más lentas.\n\n¿Quieres continuar?</string>
 
     <string name="photo_widget_configure_menu_source">Fuente</string>
-    <string name="photo_widget_configure_source_description">Puedes seleccionar cada foto o sincronizar un widget con carpetas. Al sincronizar, todas las fotos actuales y futuras se añadirán automáticamente.</string>
+    <string name="photo_widget_configure_source_description">Puedes seleccionar cada foto o sincronizar un widget con una o más carpetas. Al sincronizar, todas las fotos actuales y futuras se añadirán automáticamente.</string>
     <string name="photo_widget_configure_source_selection_photos">Solo las fotos que hayas seleccionado se mostrarán en este widget.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Este widget aún no está sincronizado con ninguna carpeta.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Este widget está sincronizado con estas carpetas:</string>
