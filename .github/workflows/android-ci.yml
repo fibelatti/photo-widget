@@ -1,6 +1,6 @@
 name: Android CI
 
-on: [ push ]
+on: [ push, pull_request ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -26,3 +26,17 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: app/build/outputs/apk/debug/*.apk
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Project Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Android Build
+        uses: ./.github/actions/setup-android-build
+
+      - name: Build
+        run: ./gradlew lint --stacktrace
