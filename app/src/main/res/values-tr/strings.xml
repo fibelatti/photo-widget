@@ -75,8 +75,8 @@
     <string name="photo_widget_configure_navigate_back_warning">Değişiklikler kaybolacak, yine de geri dönmek istiyor musunuz?</string>
 
     <string name="photo_widget_configure_import_error">Seçilen tüm fotoğraflar içe aktarılamadı</string>
-    <string name="photo_widget_configure_camera_folder_error">Klasör ile senkronize edilen widget\'lar kamera rulosu ile senkronize edilemez.\n\nMaalesef Android, fotoğrafları okumanın son derece yavaş bir yolunu sunuyor ve kamera rulosu birçok binlerce içerebilir ve bu da performans sorunlarına neden olur.</string>
-    <string name="photo_widget_configure_too_many_photos_error">Seçilen klasör 1000\'den fazla fotoğraf içeriyor.\n\nBu, widget\'in performansını doğrudan etkileyerek yüklenmesini ve güncellenmesini yavaşlatır.\n\nDevam etmek istiyor musunuz?</string>
+    <string name="photo_widget_configure_camera_folder_error">Bir klasörle senkronize edilen widget\'lar kamera rulonuzla veya 3000\'den fazla fotoğrafa sahip bir klasörle senkronize edilemez.\n\nMaalesef Android, fotoğrafları okumanın son derece yavaş bir yolunu sunuyor ve kamera rulosu birçok binlerce içerebilir ve bu da performans sorunlarına neden olur.</string>
+    <string name="photo_widget_configure_too_many_photos_error">Seçilen klasör 1000\'den fazla fotoğraf içeriyor.\n\nBu, widget\'in performansını doğrudan etkileyerek yüklenmesini ve güncellenmesini yavaşlatır. Saniye cinsinden bir aralık ayarlarken bu önerilmez.\n\nDevam etmek istiyor musunuz?</string>
 
     <string name="photo_widget_configure_menu_source">Kaynak</string>
     <string name="photo_widget_configure_source_description">Her bir fotoğrafı seçebilir veya bir widget\'i bir veya daha fazla klasörle senkronize edebilirsiniz. Senkronize edildiğinde, tüm mevcut ve gelecekteki fotoğraflar otomatik olarak eklenir.</string>

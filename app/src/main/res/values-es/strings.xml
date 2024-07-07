@@ -77,8 +77,8 @@
     <string name="photo_widget_configure_navigate_back_warning">¿Se perderán los cambios, volver de todos modos?</string>
 
     <string name="photo_widget_configure_import_error">No se pueden importar todas las fotos seleccionadas</string>
-    <string name="photo_widget_configure_camera_folder_error">Los widgets sincronizados con una carpeta no se pueden sincronizar con el carrete de la cámara.\n\nDesafortunadamente, Android solo ofrece una forma extremadamente lenta de leer fotos y el carrete de la cámara puede contener muchos miles, lo que genera graves problemas de rendimiento.</string>
-    <string name="photo_widget_configure_too_many_photos_error">La carpeta seleccionada contiene más de 1000 fotos.\n\nEsto afectará directamente el rendimiento del widget, lo que hará que su carga y actualización sean más lentas.\n\n¿Quieres continuar?</string>
+    <string name="photo_widget_configure_camera_folder_error">Los widgets sincronizados con una carpeta no se pueden sincronizar con el carrete de la cámara ni con una carpeta que tenga más de 3000 fotos.\n\nDesafortunadamente, Android solo ofrece una forma extremadamente lenta de leer fotos y el carrete de la cámara puede contener muchos miles, lo que genera graves problemas de rendimiento.</string>
+    <string name="photo_widget_configure_too_many_photos_error">La carpeta seleccionada contiene más de 1000 fotos.\n\nEsto afectará directamente el rendimiento del widget, lo que hará que su carga y actualización sean más lentas. Esto no se recomienda al establecer un intervalo en segundos.\n\n¿Quieres continuar?</string>
 
     <string name="photo_widget_configure_menu_source">Fuente</string>
     <string name="photo_widget_configure_source_description">Puedes seleccionar cada foto o sincronizar un widget con una o más carpetas. Al sincronizar, todas las fotos actuales y futuras se añadirán automáticamente.</string>
