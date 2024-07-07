@@ -38,7 +38,7 @@ coil = { module = "io.coil-kt:coil", version = "2.6.0" }
 about-libraries = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "aboutLibraries" }
 
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
-leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.13" }
+leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.14" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
