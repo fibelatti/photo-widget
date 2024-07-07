@@ -10,12 +10,14 @@ include(":ui")
 
 pluginManagement {
     repositories {
-        mavenCentral {
-            content {
-                excludeGroupByRegex("com\\.android.*")
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
             }
         }
-        google()
+        mavenCentral()
         gradlePluginPortal()
     }
 }
@@ -23,16 +25,20 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        exclusiveContent {
-            forRepository { maven(url = "https://jitpack.io") }
-            filter { includeGroup("com.github.yalantis") }
-        }
-        mavenCentral {
-            content {
-                excludeGroupByRegex("androidx.*")
-                excludeGroupByRegex("com\\.android.*")
+        maven(url = "https://jitpack.io") {
+            mavenContent {
+                includeGroup("com.github.yalantis")
             }
         }
-        google()
+
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
+
+        mavenCentral()
     }
 }
