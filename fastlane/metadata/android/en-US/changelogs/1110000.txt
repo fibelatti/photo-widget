@@ -1,0 +1,6 @@
+Version 1.11 is released with the following updates:
+
+* Increase the limit for widgets synced with a directory to 3000 photos
+* Add turkish translation
+
+Feedback and suggestions are always welcome, visit the project page to contribute!
