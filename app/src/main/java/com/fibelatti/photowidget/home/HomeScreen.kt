@@ -498,18 +498,16 @@ private fun MyWidgetsScreen(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 items(filteredWidgets) { (id, widget) ->
-                    runCatching {
-                        ShapedPhoto(
-                            photo = widget.currentPhoto,
-                            aspectRatio = widget.aspectRatio,
-                            shapeId = widget.shapeId,
-                            cornerRadius = widget.cornerRadius,
-                            opacity = widget.opacity,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clickable { onClick(id) },
-                        )
-                    }
+                    ShapedPhoto(
+                        photo = widget.currentPhoto,
+                        aspectRatio = widget.aspectRatio,
+                        shapeId = widget.shapeId,
+                        cornerRadius = widget.cornerRadius,
+                        opacity = widget.opacity,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable { onClick(id) },
+                    )
                 }
             }
         } else {

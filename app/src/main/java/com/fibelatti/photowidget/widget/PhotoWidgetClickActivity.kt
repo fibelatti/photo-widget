@@ -71,13 +71,6 @@ class PhotoWidgetClickActivity : AppCompatActivity() {
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
                 state.photoWidget?.let { photoWidget ->
-                    val currentPhoto = try {
-                        photoWidget.currentPhoto
-                    } catch (_: Exception) {
-                        finish()
-                        return@let
-                    }
-
                     LaunchedEffect(Unit) {
                         if (photoWidget.increaseBrightness) {
                             setScreenBrightness(value = 0.9f)
@@ -85,7 +78,7 @@ class PhotoWidgetClickActivity : AppCompatActivity() {
                     }
 
                     ScreenContent(
-                        photo = currentPhoto,
+                        photo = photoWidget.currentPhoto,
                         aspectRatio = photoWidget.aspectRatio,
                         onDismiss = { finish() },
                         showFlipControls = state.showMoveControls,
@@ -126,7 +119,7 @@ class PhotoWidgetClickActivity : AppCompatActivity() {
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 private fun ScreenContent(
-    photo: LocalPhoto,
+    photo: LocalPhoto?,
     aspectRatio: PhotoWidgetAspectRatio,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
@@ -188,10 +181,12 @@ private fun ScreenContent(
         }
 
         AsyncPhotoViewer(
-            data = when {
-                !photo.path.isNullOrEmpty() -> photo.path
-                photo.externalUri != null -> photo.externalUri
-                else -> null
+            data = photo?.run {
+                when {
+                    !path.isNullOrEmpty() -> path
+                    externalUri != null -> externalUri
+                    else -> null
+                }
             },
             dataKey = arrayOf(photo, aspectRatio),
             contentScale = if (PhotoWidgetAspectRatio.ORIGINAL != aspectRatio) {

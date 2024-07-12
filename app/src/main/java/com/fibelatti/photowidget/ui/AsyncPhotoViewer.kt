@@ -3,10 +3,13 @@ package com.fibelatti.photowidget.ui
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -22,6 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
@@ -61,6 +65,7 @@ fun AsyncPhotoViewer(
         }
 
         var showLoading: Boolean by remember { mutableStateOf(false) }
+        var showError: Boolean by remember { mutableStateOf(false) }
 
         val decoder by remember {
             lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
@@ -72,14 +77,19 @@ fun AsyncPhotoViewer(
         }
 
         LaunchedEffect(*dataKey) {
-            photoBitmap = decoder.decode(data = data, maxDimension = maxWidth)
-            showLoading = false
+            if (data != null) {
+                photoBitmap = decoder.decode(data = data, maxDimension = maxWidth)
+                showLoading = false
+                showError = false
+            } else {
+                showError = true
+            }
         }
 
         LaunchedEffect(*dataKey) {
             // Avoid flickering the indicator, only show if the photos takes a while to load
             delay(timeMillis = 300)
-            showLoading = photoBitmap == null
+            showLoading = data != null && photoBitmap == null
         }
 
         transformedBitmap?.let { bitmap ->
@@ -92,10 +102,24 @@ fun AsyncPhotoViewer(
 
             badge()
         } ?: run {
-            if (showLoading) {
-                LoadingIndicator(
-                    modifier = Modifier.padding(all = 4.dp),
-                )
+            when {
+                showLoading -> {
+                    LoadingIndicator(
+                        modifier = Modifier.padding(all = 4.dp),
+                    )
+                }
+
+                showError -> {
+                    Image(
+                        bitmap = ImageBitmap.imageResource(id = R.drawable.ic_file_not_found),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(color = MaterialTheme.colorScheme.errorContainer, shape = CircleShape)
+                            .padding(4.dp),
+                        contentScale = contentScale,
+                    )
+                }
             }
         }
     }

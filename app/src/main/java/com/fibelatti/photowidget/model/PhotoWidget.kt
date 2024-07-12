@@ -25,12 +25,7 @@ data class PhotoWidget(
     val padding: Int = 0,
 ) : Parcelable {
 
-    val currentPhoto: LocalPhoto
-        get() = try {
-            photos[currentIndex]
-        } catch (_: Exception) {
-            photos.first()
-        }
+    val currentPhoto: LocalPhoto? get() = photos.getOrNull(currentIndex) ?: photos.firstOrNull()
 
     val loopingEnabled: Boolean get() = photos.size > 1 && intervalBasedLoopingEnabled
 

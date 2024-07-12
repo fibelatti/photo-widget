@@ -91,9 +91,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 val tempWidget = PhotoWidgetPinnedReceiver.callbackIntent?.get()?.photoWidget
                     ?.takeIf { tempViews != null }
 
-                val views = tempViews
-                    ?: createRemoteViews(context = context, photoWidget = photoWidget)
-                    ?: return@launch
+                val views = tempViews ?: createRemoteViews(context = context, photoWidget = photoWidget)
 
                 views.setOnClickPendingIntent(
                     R.id.view_tap_previous,
@@ -102,7 +100,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         appWidgetId = appWidgetId,
                         tapAction = (tempWidget ?: photoWidget).tapAction,
                         flipBackwards = true,
-                        externalUri = (tempWidget ?: photoWidget).currentPhoto.externalUri,
+                        externalUri = (tempWidget ?: photoWidget).currentPhoto?.externalUri,
                         appShortcut = (tempWidget ?: photoWidget).appShortcut,
                     ),
                 )
@@ -113,7 +111,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         appWidgetId = appWidgetId,
                         tapAction = (tempWidget ?: photoWidget).tapAction,
                         flipBackwards = false,
-                        externalUri = (tempWidget ?: photoWidget).currentPhoto.externalUri,
+                        externalUri = (tempWidget ?: photoWidget).currentPhoto?.externalUri,
                         appShortcut = (tempWidget ?: photoWidget).appShortcut,
                     ),
                 )
@@ -126,8 +124,9 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         suspend fun createRemoteViews(
             context: Context,
             photoWidget: PhotoWidget,
-        ): RemoteViews? {
+        ): RemoteViews {
             Timber.d("Creating remote views")
+            val currentPhoto = photoWidget.currentPhoto ?: return createErrorView(context = context)
 
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
             val decoder = entryPoint.photoDecoder()
@@ -135,9 +134,9 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             Timber.d("Decoding the bitmap")
             val bitmap = try {
                 val data = when {
-                    !photoWidget.currentPhoto.path.isNullOrEmpty() -> photoWidget.currentPhoto.path
-                    photoWidget.currentPhoto.externalUri != null -> photoWidget.currentPhoto.externalUri
-                    else -> return null
+                    !currentPhoto.path.isNullOrEmpty() -> currentPhoto.path
+                    currentPhoto.externalUri != null -> currentPhoto.externalUri
+                    else -> return createErrorView(context = context)
                 }
                 val displayMetrics: DisplayMetrics = context.resources.displayMetrics
                 val maxDimension = sqrt(MAX_WIDGET_BITMAP_MEMORY / 4 / displayMetrics.density).toInt()
@@ -145,7 +144,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
                 requireNotNull(decoder.decode(data = data, maxDimension = maxDimension))
             } catch (_: Exception) {
-                return null
+                return createErrorView(context = context)
             }
 
             Timber.d("Transforming the bitmap")
@@ -174,6 +173,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             }
         }
 
+        private fun createErrorView(context: Context): RemoteViews {
+            return RemoteViews(context.packageName, R.layout.photo_widget_file_not_found)
+        }
+
         private fun getDimensionValue(context: Context, value: Int): Int {
             return TypedValue.applyDimension(
                 /* unit = */ TypedValue.COMPLEX_UNIT_DIP,
@@ -189,48 +192,52 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             flipBackwards: Boolean,
             externalUri: Uri?,
             appShortcut: String?,
-        ): PendingIntent? = when (tapAction) {
-            PhotoWidgetTapAction.NONE -> null
+        ): PendingIntent? {
+            return when (tapAction) {
+                PhotoWidgetTapAction.NONE -> null
 
-            PhotoWidgetTapAction.VIEW_FULL_SCREEN -> {
-                val clickIntent = Intent(context, PhotoWidgetClickActivity::class.java).apply {
-                    this.appWidgetId = appWidgetId
-                }
-                PendingIntent.getActivity(
-                    context,
-                    appWidgetId,
-                    clickIntent,
-                    PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-                )
-            }
-
-            PhotoWidgetTapAction.VIEW_IN_GALLERY -> {
-                val intent = Intent(Intent.ACTION_VIEW, externalUri).apply {
-                    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                }
-
-                PendingIntent.getActivity(
-                    context,
-                    appWidgetId,
-                    intent,
-                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-                )
-            }
-
-            PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> flipPhotoPendingIntent(
-                context = context,
-                appWidgetId = appWidgetId,
-                flipBackwards = flipBackwards,
-            )
-
-            PhotoWidgetTapAction.APP_SHORTCUT -> {
-                appShortcut?.let(context.packageManager::getLaunchIntentForPackage).let { clickIntent ->
+                PhotoWidgetTapAction.VIEW_FULL_SCREEN -> {
+                    val clickIntent = Intent(context, PhotoWidgetClickActivity::class.java).apply {
+                        this.appWidgetId = appWidgetId
+                    }
                     PendingIntent.getActivity(
                         context,
                         appWidgetId,
                         clickIntent,
                         PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
+                }
+
+                PhotoWidgetTapAction.VIEW_IN_GALLERY -> {
+                    if (externalUri == null) return null
+
+                    val intent = Intent(Intent.ACTION_VIEW, externalUri).apply {
+                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    }
+
+                    PendingIntent.getActivity(
+                        context,
+                        appWidgetId,
+                        intent,
+                        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                    )
+                }
+
+                PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> flipPhotoPendingIntent(
+                    context = context,
+                    appWidgetId = appWidgetId,
+                    flipBackwards = flipBackwards,
+                )
+
+                PhotoWidgetTapAction.APP_SHORTCUT -> {
+                    appShortcut?.let(context.packageManager::getLaunchIntentForPackage).let { clickIntent ->
+                        PendingIntent.getActivity(
+                            context,
+                            appWidgetId,
+                            clickIntent,
+                            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        )
+                    }
                 }
             }
         }

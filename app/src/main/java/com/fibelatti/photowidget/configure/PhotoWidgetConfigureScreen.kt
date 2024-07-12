@@ -1015,7 +1015,7 @@ fun PaddingPicker(
 
 @Composable
 fun ShapedPhoto(
-    photo: LocalPhoto,
+    photo: LocalPhoto?,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     cornerRadius: Float,
@@ -1024,10 +1024,12 @@ fun ShapedPhoto(
     badge: @Composable BoxScope.() -> Unit = {},
 ) {
     AsyncPhotoViewer(
-        data = when {
-            !photo.path.isNullOrEmpty() -> photo.path
-            photo.externalUri != null -> photo.externalUri
-            else -> null
+        data = photo?.run {
+            when {
+                !path.isNullOrEmpty() -> path
+                externalUri != null -> externalUri
+                else -> null
+            }
         },
         dataKey = arrayOf(photo, shapeId, aspectRatio, cornerRadius, opacity),
         contentScale = if (PhotoWidgetAspectRatio.ORIGINAL != aspectRatio) {
