@@ -33,7 +33,7 @@ room-runtime = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
 ucrop = { module = "com.github.yalantis:ucrop", version = "2.2.9" }
-coil = { module = "io.coil-kt:coil", version = "2.6.0" }
+coil = { module = "io.coil-kt:coil", version = "2.7.0" }
 
 about-libraries = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "aboutLibraries" }
 
