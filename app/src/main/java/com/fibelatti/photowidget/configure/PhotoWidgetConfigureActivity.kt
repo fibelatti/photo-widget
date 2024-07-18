@@ -248,7 +248,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     ) {
         val intent = UCrop.of(sourceUri, destinationUri)
             .apply {
-                if (PhotoWidgetAspectRatio.ORIGINAL != aspectRatio) {
+                if (aspectRatio.isConstrained) {
                     withAspectRatio(aspectRatio.x, aspectRatio.y)
                 }
             }

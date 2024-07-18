@@ -23,10 +23,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,9 +33,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -58,10 +59,12 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -99,6 +102,7 @@ import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import kotlin.random.Random
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
@@ -245,12 +249,10 @@ private fun NewWidgetScreen(
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    BoxWithConstraints(
+    Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        val maxHeight = maxHeight
-
         Column(
             modifier = Modifier
                 .widthIn(max = 600.dp)
@@ -266,6 +268,14 @@ private fun NewWidgetScreen(
                 style = MaterialTheme.typography.titleLarge,
             )
 
+            Text(
+                text = stringResource(id = R.string.photo_widget_home_aspect_ratio),
+                modifier = Modifier.padding(horizontal = 32.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+
             var selectedAspectRatio by remember {
                 mutableStateOf(PhotoWidgetAspectRatio.SQUARE)
             }
@@ -274,15 +284,6 @@ private fun NewWidgetScreen(
                 selectedAspectRatio = selectedAspectRatio,
                 onAspectRatioSelected = { selectedAspectRatio = it },
                 modifier = Modifier.fillMaxWidth(),
-                useGridLayout = maxHeight > 600.dp,
-            )
-
-            Text(
-                text = stringResource(id = R.string.photo_widget_home_aspect_ratio),
-                modifier = Modifier.padding(horizontal = 32.dp),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyMedium,
             )
 
             FilledTonalButton(
@@ -353,49 +354,36 @@ private fun ShapesBanner(
 }
 
 @Composable
-@OptIn(ExperimentalLayoutApi::class)
 private fun AspectRatioPicker(
     selectedAspectRatio: PhotoWidgetAspectRatio,
     onAspectRatioSelected: (PhotoWidgetAspectRatio) -> Unit,
     modifier: Modifier = Modifier,
-    useGridLayout: Boolean = true,
 ) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
-        if (useGridLayout) {
-            FlowRow(
-                modifier = Modifier.widthIn(max = 240.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                maxItemsInEachRow = 2,
-            ) {
-                PhotoWidgetAspectRatio.entries.forEach {
-                    AspectRatioItem(
-                        ratio = it.aspectRatio,
-                        label = stringResource(id = it.label),
-                        isSelected = it == selectedAspectRatio,
-                        onClick = { onAspectRatioSelected(it) },
-                        modifier = Modifier.weight(1f),
-                    )
-                }
+        val listState = rememberLazyListState()
+
+        LazyRow(
+            state = listState,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+        ) {
+            items(PhotoWidgetAspectRatio.entries) {
+                AspectRatioItem(
+                    ratio = it.aspectRatio,
+                    label = stringResource(id = it.label),
+                    isSelected = it == selectedAspectRatio,
+                    onClick = { onAspectRatioSelected(it) },
+                )
             }
-        } else {
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp),
-            ) {
-                items(PhotoWidgetAspectRatio.entries) {
-                    AspectRatioItem(
-                        ratio = it.aspectRatio,
-                        label = stringResource(id = it.label),
-                        isSelected = it == selectedAspectRatio,
-                        onClick = { onAspectRatioSelected(it) },
-                        modifier = Modifier.height(120.dp),
-                    )
-                }
-            }
+        }
+
+        LaunchedEffect(key1 = selectedAspectRatio) {
+            listState.animateScrollToItem(
+                index = PhotoWidgetAspectRatio.entries.indexOf(selectedAspectRatio),
+            )
         }
     }
 }
@@ -422,17 +410,15 @@ private fun AspectRatioItem(
 
     ElevatedCard(
         modifier = modifier
-            .aspectRatio(ratio = 1f)
+            .width(140.dp)
+            .height(120.dp)
             .clip(shape = CardDefaults.elevatedShape)
             .clickable(onClick = onClick),
         colors = CardDefaults.elevatedCardColors(containerColor = containerColor),
     ) {
         Column(
-            modifier = Modifier
-                .padding(all = 12.dp)
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             val aspectRatioColor by transition.animateColor(label = "AspectRatioColor") { selected ->
                 if (selected) {
@@ -444,6 +430,7 @@ private fun AspectRatioItem(
 
             Box(
                 modifier = Modifier
+                    .padding(16.dp)
                     .weight(1f)
                     .aspectRatio(ratio = ratio)
                     .background(
@@ -463,8 +450,11 @@ private fun AspectRatioItem(
             Text(
                 text = label,
                 color = textColor,
+                textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.labelSmall,
             )
+
+            Spacer(modifier = Modifier.size(12.dp))
         }
     }
 }

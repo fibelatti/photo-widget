@@ -161,7 +161,13 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 )
             }
 
-            return RemoteViews(context.packageName, R.layout.photo_widget).apply {
+            val layoutId = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio) {
+                R.layout.photo_widget_fill
+            } else {
+                R.layout.photo_widget
+            }
+
+            return RemoteViews(context.packageName, layoutId).apply {
                 setImageViewBitmap(R.id.iv_widget, transformedBitmap)
                 setViewPadding(
                     /* viewId = */ R.id.iv_widget,

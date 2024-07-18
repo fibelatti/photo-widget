@@ -189,7 +189,7 @@ private fun ScreenContent(
                 }
             },
             dataKey = arrayOf(photo, aspectRatio),
-            contentScale = if (PhotoWidgetAspectRatio.ORIGINAL != aspectRatio) {
+            contentScale = if (aspectRatio.isConstrained) {
                 ContentScale.FillWidth
             } else {
                 ContentScale.Inside

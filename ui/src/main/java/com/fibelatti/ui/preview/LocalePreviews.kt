@@ -16,4 +16,11 @@ import androidx.compose.ui.tooling.preview.Preview
     showBackground = true,
     locale = "es",
 )
+@Preview(
+    name = "Locale Preview - TR",
+    group = "Localization",
+    showSystemUi = true,
+    showBackground = true,
+    locale = "tr",
+)
 annotation class LocalePreviews

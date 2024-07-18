@@ -1032,7 +1032,7 @@ fun ShapedPhoto(
             }
         },
         dataKey = arrayOf(photo, shapeId, aspectRatio, cornerRadius, opacity),
-        contentScale = if (PhotoWidgetAspectRatio.ORIGINAL != aspectRatio) {
+        contentScale = if (aspectRatio.isConstrained) {
             ContentScale.FillWidth
         } else {
             ContentScale.Inside

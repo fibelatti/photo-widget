@@ -71,7 +71,8 @@
     <string name="photo_widget_aspect_ratio_square">Cuadrado</string>
     <string name="photo_widget_aspect_ratio_tall">Alto</string>
     <string name="photo_widget_aspect_ratio_wide">Ancho</string>
-    <string name="photo_widget_aspect_ratio_original">Original</string>
+    <string name="photo_widget_aspect_ratio_original">La misma que la foto</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">Llenar el área</string>
 
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">¿Se perderán los cambios, volver de todos modos?</string>

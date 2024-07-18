@@ -70,7 +70,8 @@
     <string name="photo_widget_aspect_ratio_square">Quadrado</string>
     <string name="photo_widget_aspect_ratio_tall">Alto</string>
     <string name="photo_widget_aspect_ratio_wide">Largo</string>
-    <string name="photo_widget_aspect_ratio_original">Original</string>
+    <string name="photo_widget_aspect_ratio_original">Igual à foto</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">Preencher área</string>
 
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">As alterações serão perdidas, voltar mesmo assim?</string>

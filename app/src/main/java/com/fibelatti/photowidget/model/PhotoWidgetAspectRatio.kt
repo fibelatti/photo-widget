@@ -9,6 +9,7 @@ enum class PhotoWidgetAspectRatio(
     val x: Float,
     val y: Float,
     @StringRes val label: Int,
+    val isConstrained: Boolean = true,
 ) {
 
     SQUARE(
@@ -30,7 +31,14 @@ enum class PhotoWidgetAspectRatio(
         x = 4f,
         y = 5f,
         label = R.string.photo_widget_aspect_ratio_original,
+        isConstrained = false,
     ),
+    FILL_WIDGET(
+        x = 4f,
+        y = 3f,
+        label = R.string.photo_widget_aspect_ratio_fill_widget,
+        isConstrained = false,
+    )
     ;
 
     val aspectRatio: Float

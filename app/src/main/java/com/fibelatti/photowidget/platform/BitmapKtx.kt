@@ -96,7 +96,9 @@ private inline fun Bitmap.withTransformation(
             Rect(left, top, left + scaledWidth, top + scaledHeight)
         }
 
-        PhotoWidgetAspectRatio.ORIGINAL -> Rect(0, 0, width, height)
+        PhotoWidgetAspectRatio.ORIGINAL, PhotoWidgetAspectRatio.FILL_WIDGET -> {
+            Rect(0, 0, width, height)
+        }
     }
     val destination = Rect(0, 0, source.width(), source.height())
 

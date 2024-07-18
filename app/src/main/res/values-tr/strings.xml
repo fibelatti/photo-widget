@@ -69,7 +69,8 @@
     <string name="photo_widget_aspect_ratio_square">Kare</string>
     <string name="photo_widget_aspect_ratio_tall">Uzun</string>
     <string name="photo_widget_aspect_ratio_wide">Geniş</string>
-    <string name="photo_widget_aspect_ratio_original">Orijinal</string>
+    <string name="photo_widget_aspect_ratio_original">Fotoğrafla aynı</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">Widget alanını doldur</string>
 
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Değişiklikler kaybolacak, yine de geri dönmek istiyor musunuz?</string>
