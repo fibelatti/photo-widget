@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * New aspect ratio to fill the widget area
 
+### Changed
+
+* The full screen viewer control hints are only shown once
+
 ## [v1.11.0] - 2024-07-07
 
 ### Added

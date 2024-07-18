@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fibelatti.photowidget.hints.HintStorage
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.platform.savedState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +22,7 @@ class PhotoWidgetClickViewModel @Inject constructor(
     private val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
     private val flipPhotoUseCase: FlipPhotoUseCase,
     private val photoWidgetStorage: PhotoWidgetStorage,
+    private val hintStorage: HintStorage,
 ) : ViewModel() {
 
     private val appWidgetId: Int by savedStateHandle.savedState(
@@ -44,8 +46,11 @@ class PhotoWidgetClickViewModel @Inject constructor(
                 current.copy(
                     photoWidget = photoWidget.await(),
                     showMoveControls = count.await() > 1,
+                    showHint = hintStorage.showFullScreenViewerHint,
                 )
             }
+
+            hintStorage.showFullScreenViewerHint = false
         }
     }
 
@@ -64,5 +69,6 @@ class PhotoWidgetClickViewModel @Inject constructor(
     data class State(
         val photoWidget: PhotoWidget? = null,
         val showMoveControls: Boolean = false,
+        val showHint: Boolean = true,
     )
 }

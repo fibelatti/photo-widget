@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -84,6 +85,7 @@ class PhotoWidgetClickActivity : AppCompatActivity() {
                         showFlipControls = state.showMoveControls,
                         onPreviousClick = { viewModel.flip(backwards = true) },
                         onNextClick = { viewModel.flip() },
+                        showHint = state.showHint,
                     )
                 }
             }
@@ -126,6 +128,7 @@ private fun ScreenContent(
     showFlipControls: Boolean = false,
     onPreviousClick: () -> Unit = {},
     onNextClick: () -> Unit = {},
+    showHint: Boolean = true,
 ) {
     var scale by remember { mutableFloatStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
@@ -154,23 +157,27 @@ private fun ScreenContent(
                 }
             }
 
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    text = stringResource(id = R.string.photo_widget_viewer_actions_pinch),
-                    style = MaterialTheme.typography.labelSmall.copy(color = Color.LightGray),
-                )
-                Text(
-                    text = stringResource(id = R.string.photo_widget_viewer_actions_drag),
-                    style = MaterialTheme.typography.labelSmall.copy(color = Color.LightGray),
-                )
-                Text(
-                    text = stringResource(id = R.string.photo_widget_viewer_actions_tap),
-                    style = MaterialTheme.typography.labelSmall.copy(color = Color.LightGray),
-                )
+            if (showHint) {
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.photo_widget_viewer_actions_pinch),
+                        style = MaterialTheme.typography.labelSmall.copy(color = Color.LightGray),
+                    )
+                    Text(
+                        text = stringResource(id = R.string.photo_widget_viewer_actions_drag),
+                        style = MaterialTheme.typography.labelSmall.copy(color = Color.LightGray),
+                    )
+                    Text(
+                        text = stringResource(id = R.string.photo_widget_viewer_actions_tap),
+                        style = MaterialTheme.typography.labelSmall.copy(color = Color.LightGray),
+                    )
+                }
+            } else {
+                Spacer(modifier = Modifier.weight(1f))
             }
 
             if (showFlipControls) {
