@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * The full screen viewer control hints are only shown once
 
+### Fixed
+
+* Avoid crashing when the file cannot be found
+
 ## [v1.11.0] - 2024-07-07
 
 ### Added
