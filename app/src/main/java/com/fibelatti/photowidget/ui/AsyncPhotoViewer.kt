@@ -4,10 +4,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -25,8 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.painterResource
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
@@ -70,7 +69,7 @@ fun AsyncPhotoViewer(
         val decoder by remember {
             lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
         }
-        val maxWidth = with(LocalDensity.current) {
+        val maxDimension = with(LocalDensity.current) {
             remember(maxWidth) {
                 maxWidth.toPx().toInt().coerceAtMost(maximumValue = PhotoWidget.MAX_WIDGET_DIMENSION)
             }
@@ -78,10 +77,11 @@ fun AsyncPhotoViewer(
 
         LaunchedEffect(*dataKey) {
             if (data != null) {
-                photoBitmap = decoder.decode(data = data, maxDimension = maxWidth)
+                photoBitmap = decoder.decode(data = data, maxDimension = maxDimension)
                 showLoading = false
                 showError = false
             } else {
+                showLoading = false
                 showError = true
             }
         }
@@ -89,34 +89,44 @@ fun AsyncPhotoViewer(
         LaunchedEffect(*dataKey) {
             // Avoid flickering the indicator, only show if the photos takes a while to load
             delay(timeMillis = 300)
-            showLoading = data != null && photoBitmap == null
+            showLoading = data != null && photoBitmap == null && !showError
         }
 
-        transformedBitmap?.let { bitmap ->
-            Image(
-                bitmap = bitmap,
-                contentDescription = "",
-                modifier = Modifier.fillMaxSize(),
-                contentScale = contentScale,
-            )
+        val finalBitmap = transformedBitmap
+        when {
+            finalBitmap != null -> {
+                Image(
+                    bitmap = finalBitmap,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = contentScale,
+                )
 
-            badge()
-        } ?: run {
-            when {
-                showLoading -> {
+                badge()
+            }
+
+            showLoading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
                     LoadingIndicator(
-                        modifier = Modifier.padding(all = 4.dp),
+                        modifier = Modifier.fillMaxSize(fraction = 0.8f),
                     )
                 }
+            }
 
-                showError -> {
+            showError -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = MaterialTheme.colorScheme.errorContainer, shape = CircleShape),
+                    contentAlignment = Alignment.Center,
+                ) {
                     Image(
-                        bitmap = ImageBitmap.imageResource(id = R.drawable.ic_file_not_found),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(color = MaterialTheme.colorScheme.errorContainer, shape = CircleShape)
-                            .padding(4.dp),
+                        painter = painterResource(id = R.drawable.ic_file_not_found),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(fraction = 0.8f),
                         contentScale = contentScale,
                     )
                 }
