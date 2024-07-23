@@ -1,0 +1,7 @@
+Version 1.12.1 is released with the following updates:
+
+* New aspect ratio to fill the widget area
+* The control hints of the full screen viewer are hidden after being seen
+* Internal bug fixes and improvements
+
+Feedback and suggestions are always welcome, visit the project page to contribute!
