@@ -78,6 +78,7 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
+            isCrunchPngs = false
             setProguardFiles(
                 listOf(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -165,4 +166,25 @@ dependencies {
 
     implementation(libs.timber)
     debugImplementation(libs.leakcanary)
+}
+
+val removeAboutLibrariesTimestamp by tasks.creating(DefaultTask::class) {
+    group = "other"
+    description = "Removes the generated timestamp from aboutlibraries.json"
+    outputs.upToDateWhen { false }
+
+    doLast {
+        val regex = "\\\"metadata\\\":\\{\\\"generated\\\":\\\"[\\w-:.]*\\\"\\},".toRegex()
+        val dir = file("$rootDir/app/build/generated/aboutLibraries/")
+
+        dir.walk().filter { it.name == "aboutlibraries.json" }.forEach { file ->
+            file.writeText(file.readText().replace(regex, ""))
+        }
+    }
+}
+
+afterEvaluate {
+    tasks.named { it.startsWith("prepareLibraryDefinitions") }.configureEach {
+        finalizedBy("removeAboutLibrariesTimestamp")
+    }
 }
