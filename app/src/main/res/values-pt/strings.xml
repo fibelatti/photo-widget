@@ -98,6 +98,9 @@
     <string name="photo_widget_configure_photos">Fotos</string>
     <string name="photo_widget_configure_photos_from_dir">Fotos da pasta</string>
 
+    <string name="photo_widget_configure_pick_photo">Escolher fotos</string>
+    <string name="photo_widget_configure_pick_folder">Escolher pasta</string>
+
     <string name="photo_widget_configure_shuffle_on">Ligado</string>
     <string name="photo_widget_configure_shuffle_off">Desligado</string>
 

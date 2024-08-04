@@ -97,6 +97,9 @@
     <string name="photo_widget_configure_photos">Photos</string>
     <string name="photo_widget_configure_photos_from_dir">Folder photos</string>
 
+    <string name="photo_widget_configure_pick_photo">Pick photos</string>
+    <string name="photo_widget_configure_pick_folder">Pick folder</string>
+
     <string name="photo_widget_configure_shuffle_on">On</string>
     <string name="photo_widget_configure_shuffle_off">Off</string>
 

@@ -52,6 +52,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -79,6 +80,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
 import com.fibelatti.photowidget.R
@@ -668,12 +670,14 @@ private fun PhotoPicker(
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
+                .height(64.dp)
                 .padding(start = 16.dp),
             contentPadding = PaddingValues(end = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             stickyHeader {
+                var showHint by remember { mutableStateOf(true) }
+
                 ColoredShape(
                     polygon = remember(shapeId) {
                         PhotoWidgetShapeBuilder.buildShape(shapeId = shapeId)
@@ -690,6 +694,7 @@ private fun PhotoPicker(
                                     PhotoWidgetSource.PHOTOS -> onPhotoPickerClick()
                                     PhotoWidgetSource.DIRECTORY -> onDirPickerClick()
                                 }
+                                showHint = false
                             },
                             role = Role.Button,
                         )
@@ -703,22 +708,43 @@ private fun PhotoPicker(
                             ),
                         ),
                 ) {
-                    Icon(
-                        painter = painterResource(
-                            id = when (source) {
-                                PhotoWidgetSource.PHOTOS -> R.drawable.ic_pick_image
-                                PhotoWidgetSource.DIRECTORY -> R.drawable.ic_pick_folder
-                            },
-                        ),
-                        contentDescription = stringResource(
-                            id = when (source) {
-                                PhotoWidgetSource.PHOTOS -> R.string.photo_widget_cd_open_photo_picker
-                                PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_cd_open_folder_picker
-                            },
-                        ),
-                        modifier = Modifier.size(32.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
+                    Column(
+                        modifier = Modifier.padding(2.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Icon(
+                            painter = painterResource(
+                                id = when (source) {
+                                    PhotoWidgetSource.PHOTOS -> R.drawable.ic_pick_image
+                                    PhotoWidgetSource.DIRECTORY -> R.drawable.ic_pick_folder
+                                },
+                            ),
+                            contentDescription = stringResource(
+                                id = when (source) {
+                                    PhotoWidgetSource.PHOTOS -> R.string.photo_widget_cd_open_photo_picker
+                                    PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_cd_open_folder_picker
+                                },
+                            ),
+                            modifier = Modifier.size(if (showHint) 24.dp else 32.dp),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        )
+
+                        if (showHint) {
+                            Text(
+                                text = stringResource(
+                                    id = when (source) {
+                                        PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_pick_photo
+                                        PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_pick_folder
+                                    },
+                                ),
+                                fontSize = 10.sp,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.labelSmall,
+                            )
+                        }
+                    }
                 }
             }
 
