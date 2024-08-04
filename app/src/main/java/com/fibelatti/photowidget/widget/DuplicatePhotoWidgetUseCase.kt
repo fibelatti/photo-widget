@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.widget
 
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import javax.inject.Inject
 
@@ -11,7 +12,7 @@ class DuplicatePhotoWidgetUseCase @Inject constructor(
     suspend operator fun invoke(
         originalAppWidgetId: Int,
         newAppWidgetId: Int,
-    ) {
+    ): PhotoWidget {
         val appWidget = loadPhotoWidgetUseCase(appWidgetId = originalAppWidgetId)
 
         photoWidgetStorage.saveWidgetSource(
@@ -34,5 +35,10 @@ class DuplicatePhotoWidgetUseCase @Inject constructor(
                 )
             }
         }
+
+        return appWidget.copy(
+            currentIndex = 0,
+            deletionTimestamp = -1,
+        )
     }
 }

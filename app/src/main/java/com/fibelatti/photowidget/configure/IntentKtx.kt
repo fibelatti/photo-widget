@@ -14,6 +14,8 @@ var Intent.appWidgetId: Int by intentExtras(
 
 var Intent.duplicateFromId: Int? by intentExtras()
 
+var Intent.restoreFromId: Int? by intentExtras()
+
 var Intent.photoWidget: PhotoWidget by intentExtras()
 
 var Intent.aspectRatio: PhotoWidgetAspectRatio by intentExtras()

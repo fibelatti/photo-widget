@@ -35,14 +35,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
-        val coroutineScope = entryPoint.coroutineScope()
         val storage = entryPoint.photoWidgetStorage()
         val alarmManager = entryPoint.photoWidgetAlarmManager()
 
         for (appWidgetId in appWidgetIds) {
-            coroutineScope.launch {
-                storage.deleteWidgetData(appWidgetId = appWidgetId)
-            }
+            storage.saveWidgetDeletionTimestamp(
+                appWidgetId = appWidgetId,
+                timestamp = System.currentTimeMillis(),
+            )
             alarmManager.cancel(appWidgetId = appWidgetId)
         }
     }

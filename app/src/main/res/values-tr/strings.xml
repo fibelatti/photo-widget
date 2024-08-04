@@ -32,8 +32,12 @@
     <string name="photo_widget_home_filter_photos">Fotoğraflar</string>
     <string name="photo_widget_home_filter_folder">Klasör</string>
 
+    <string name="photo_widget_home_removed_widgets_hint">Gri renkteki widget\'lar ana ekranınızdan kaldırıldı ve bir hafta sonra kalıcı olarak silinecek</string>
+
     <string name="photo_widget_home_my_widget_action_edit">Düzenle</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Çoğalt</string>
+    <string name="photo_widget_home_removed_widget_action_restore">Eski haline getirmek</string>
+    <string name="photo_widget_home_removed_widget_action_delete">kalıcı olarak sil</string>
 
     <!-- Preferences -->
     <string name="preferences_appearance_follow_system">Sistemi takip et</string>

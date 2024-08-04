@@ -33,8 +33,12 @@
     <string name="photo_widget_home_filter_photos">Fotos</string>
     <string name="photo_widget_home_filter_folder">Pasta</string>
 
+    <string name="photo_widget_home_removed_widgets_hint">Os widgets acinzentados foram removidos da tela inicial e serão excluídos permanentemente após uma semana</string>
+
     <string name="photo_widget_home_my_widget_action_edit">Editar</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicar</string>
+    <string name="photo_widget_home_removed_widget_action_restore">Restaurar</string>
+    <string name="photo_widget_home_removed_widget_action_delete">Apagar permanentemente</string>
 
     <!-- Preferences -->
     <string name="preferences_appearance_follow_system">Mesmo do sistema</string>

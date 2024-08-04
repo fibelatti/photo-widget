@@ -34,6 +34,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             horizontalOffset = horizontalOffset,
             verticalOffset = verticalOffset,
             padding = getWidgetPadding(appWidgetId = appWidgetId),
+            deletionTimestamp = getWidgetDeletionTimestamp(appWidgetId = appWidgetId),
         )
     }
 }

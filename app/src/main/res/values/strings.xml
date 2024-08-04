@@ -32,8 +32,12 @@
     <string name="photo_widget_home_filter_photos">Photos</string>
     <string name="photo_widget_home_filter_folder">Folder</string>
 
+    <string name="photo_widget_home_removed_widgets_hint">Grayed out widgets were removed from your home screen and will be permanently deleted after a week</string>
+
     <string name="photo_widget_home_my_widget_action_edit">Edit</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicate</string>
+    <string name="photo_widget_home_removed_widget_action_restore">Restore</string>
+    <string name="photo_widget_home_removed_widget_action_delete">Delete permanently</string>
 
     <!-- Preferences -->
     <string name="preferences_appearance_follow_system">Follow system</string>

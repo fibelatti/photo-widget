@@ -64,7 +64,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -95,20 +94,22 @@ import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.ui.foundation.conditional
 import com.fibelatti.ui.foundation.dpToPx
+import com.fibelatti.ui.foundation.grayScale
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import kotlin.random.Random
-import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
     currentWidgets: List<Pair<Int, PhotoWidget>>,
     onCurrentWidgetClick: (appWidgetId: Int) -> Unit,
+    onRemovedWidgetClick: (appWidgetId: Int) -> Unit,
     onDefaultsClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
@@ -161,7 +162,8 @@ fun HomeScreen(
                     HomeNavigationDestination.MY_WIDGETS -> {
                         MyWidgetsScreen(
                             widgets = currentWidgets,
-                            onClick = onCurrentWidgetClick,
+                            onCurrentWidgetClick = onCurrentWidgetClick,
+                            onRemovedWidgetClick = onRemovedWidgetClick,
                         )
                     }
 
@@ -463,7 +465,8 @@ private fun AspectRatioItem(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun MyWidgetsScreen(
     widgets: List<Pair<Int, PhotoWidget>>,
-    onClick: (appWidgetId: Int) -> Unit,
+    onCurrentWidgetClick: (appWidgetId: Int) -> Unit,
+    onRemovedWidgetClick: (appWidgetId: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(
@@ -478,6 +481,11 @@ private fun MyWidgetsScreen(
                 widgets.filter { selectedSource == null || it.second.source == selectedSource }
             }
         }
+        val hasDeletedWidgets by remember(widgets) {
+            derivedStateOf {
+                filteredWidgets.any { it.second.deletionTimestamp > 0 }
+            }
+        }
 
         if (filteredWidgets.isNotEmpty()) {
             LazyVerticalStaggeredGrid(
@@ -488,15 +496,21 @@ private fun MyWidgetsScreen(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 items(filteredWidgets) { (id, widget) ->
+                    val isRemoved = widget.deletionTimestamp > 0
+
                     ShapedPhoto(
                         photo = widget.currentPhoto,
                         aspectRatio = widget.aspectRatio,
                         shapeId = widget.shapeId,
                         cornerRadius = widget.cornerRadius,
-                        opacity = widget.opacity,
+                        opacity = if (isRemoved) 70f else widget.opacity,
                         modifier = Modifier
                             .fillMaxSize()
-                            .clickable { onClick(id) },
+                            .clickable { if (isRemoved) onRemovedWidgetClick(id) else onCurrentWidgetClick(id) }
+                            .conditional(
+                                predicate = isRemoved,
+                                ifTrue = { grayScale() },
+                            ),
                     )
                 }
             }
@@ -569,6 +583,24 @@ private fun MyWidgetsScreen(
                         style = MaterialTheme.typography.bodySmall,
                     )
                 },
+            )
+        }
+
+        if (hasDeletedWidgets) {
+            Text(
+                text = stringResource(id = R.string.photo_widget_home_removed_widgets_hint),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .padding(start = 32.dp, bottom = 16.dp, end = 32.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f),
+                        shape = RoundedCornerShape(8.dp),
+                    )
+                    .padding(all = 8.dp),
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.labelMedium,
             )
         }
     }
@@ -782,6 +814,7 @@ private fun HomeScreenPreview() {
             onCreateNewWidgetClick = {},
             currentWidgets = emptyList(),
             onCurrentWidgetClick = {},
+            onRemovedWidgetClick = {},
             onDefaultsClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
@@ -819,9 +852,11 @@ private fun MyWidgetsScreenPreview() {
                     shapeId = allShapeIds.random(),
                     cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                     opacity = Random.nextFloat().coerceIn(70f, 100f),
+                    deletionTimestamp = if (index == 3) 1 else -1,
                 )
             },
-            onClick = {},
+            onCurrentWidgetClick = {},
+            onRemovedWidgetClick = {},
         )
     }
 }
@@ -834,7 +869,8 @@ private fun MyWidgetsScreenEmptyPreview() {
     ExtendedTheme {
         MyWidgetsScreen(
             widgets = emptyList(),
-            onClick = {},
+            onCurrentWidgetClick = {},
+            onRemovedWidgetClick = {},
         )
     }
 }

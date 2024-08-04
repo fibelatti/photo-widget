@@ -43,6 +43,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         default = AppWidgetManager.INVALID_APPWIDGET_ID,
     )
     private val duplicateFromId: Int? by savedStateHandle.savedState()
+    private val restoreFromId: Int? by savedStateHandle.savedState()
     private val aspectRatio: PhotoWidgetAspectRatio? by savedStateHandle.savedState()
 
     private val _state = MutableStateFlow(PhotoWidgetConfigureState())
@@ -54,12 +55,13 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         viewModelScope.launch {
             deleteStaleDataUseCase()
 
-            duplicateFromId?.let {
+            val photoWidget = duplicateFromId?.let {
                 Timber.d("Duplicating widget (duplicateFromId=$it)")
                 duplicatePhotoWidgetUseCase(originalAppWidgetId = it, newAppWidgetId = appWidgetId)
-            }
-
-            val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+            } ?: restoreFromId?.let {
+                Timber.d("Restoring widget (restoreFromId=$it)")
+                duplicatePhotoWidgetUseCase(originalAppWidgetId = it, newAppWidgetId = appWidgetId)
+            } ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
 
             _state.update { current ->
                 current.copy(
@@ -452,6 +454,14 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                         )
                     }
                 }
+            }
+        }
+    }
+
+    fun widgetAdded() {
+        restoreFromId?.let {
+            viewModelScope.launch {
+                photoWidgetStorage.deleteWidgetData(appWidgetId = it)
             }
         }
     }

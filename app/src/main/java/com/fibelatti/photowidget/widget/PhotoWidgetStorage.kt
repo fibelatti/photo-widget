@@ -567,6 +567,16 @@ class PhotoWidgetStorage @Inject constructor(
         return sharedPreferences.getString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", null)
     }
 
+    fun saveWidgetDeletionTimestamp(appWidgetId: Int, timestamp: Long) {
+        sharedPreferences.edit {
+            putLong("${PreferencePrefix.DELETION_TIMESTAMP}$appWidgetId", timestamp)
+        }
+    }
+
+    fun getWidgetDeletionTimestamp(appWidgetId: Int): Long {
+        return sharedPreferences.getLong("${PreferencePrefix.DELETION_TIMESTAMP}$appWidgetId", -1)
+    }
+
     suspend fun deleteWidgetData(appWidgetId: Int) {
         Timber.d("Deleting data (appWidgetId=$appWidgetId)")
         getWidgetDir(appWidgetId).deleteRecursively()
@@ -583,14 +593,27 @@ class PhotoWidgetStorage @Inject constructor(
         val unusedWidgetIds = rootDir.listFiles().orEmpty()
             .filter { it.isDirectory && it.name !in existingWidgetsAsDirName }
             .map { it.name.toInt() }
+        val pendingDeletionIds = getPendingDeletionWidgetIds()
 
         Timber.d("Deleting temp widget data")
         deleteWidgetData(appWidgetId = 0)
 
-        for (id in unusedWidgetIds) {
+        for (id in unusedWidgetIds + pendingDeletionIds) {
             Timber.d("Unused data found (appWidgetId=$id)")
+
+            val deletionInterval = System.currentTimeMillis() - getWidgetDeletionTimestamp(appWidgetId = id)
+            if (deletionInterval <= DELETION_THRESHOLD_MILLIS) {
+                Timber.d("Deletion threshold not reached (appWidgetId=$id)")
+                return
+            }
             deleteWidgetData(appWidgetId = id)
         }
+    }
+
+    fun getPendingDeletionWidgetIds(): List<Int> {
+        return sharedPreferences.all
+            .filter { (key, _) -> key.startsWith(PreferencePrefix.DELETION_TIMESTAMP.value) }
+            .mapNotNull { (key, value) -> key.substringAfterLast("_").toIntOrNull()?.takeIf { value as Long > 0 } }
     }
 
     fun renameTemporaryWidgetDir(appWidgetId: Int) {
@@ -665,6 +688,8 @@ class PhotoWidgetStorage @Inject constructor(
         TAP_ACTION(value = "appwidget_tap_action_"),
         INCREASE_BRIGHTNESS(value = "appwidget_increase_brightness_"),
         APP_SHORTCUT(value = "appwidget_app_shortcut_"),
+
+        DELETION_TIMESTAMP(value = "appwidget_deletion_timestamp_"),
         ;
 
         override fun toString(): String = value
@@ -675,5 +700,7 @@ class PhotoWidgetStorage @Inject constructor(
         const val SHARED_PREFERENCES_NAME = "com.fibelatti.photowidget.PhotoWidget"
 
         val ALLOWED_TYPES = arrayOf("image/jpeg", "image/png")
+
+        private const val DELETION_THRESHOLD_MILLIS: Long = 7 * 24 * 60 * 60 * 1_000
     }
 }

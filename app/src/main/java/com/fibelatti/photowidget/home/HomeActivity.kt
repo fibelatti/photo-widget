@@ -20,6 +20,7 @@ import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.configure.aspectRatio
 import com.fibelatti.photowidget.configure.duplicateFromId
+import com.fibelatti.photowidget.configure.restoreFromId
 import com.fibelatti.photowidget.configure.sharedPhotos
 import com.fibelatti.photowidget.licenses.OssLicensesActivity
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -56,6 +57,7 @@ class HomeActivity : AppCompatActivity() {
                     onCreateNewWidgetClick = ::createNewWidget,
                     currentWidgets = currentWidgets,
                     onCurrentWidgetClick = ::showExistingWidgetMenu,
+                    onRemovedWidgetClick = ::showRemovedWidgetMenu,
                     onDefaultsClick = ::showDefaults,
                     onAppearanceClick = ::showAppearancePicker,
                     onColorsClick = ::showAppColorsPicker,
@@ -142,6 +144,30 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 startActivity(intent)
+            },
+        )
+    }
+
+    private fun showRemovedWidgetMenu(appWidgetId: Int) {
+        SelectionDialog.show(
+            context = this,
+            title = "",
+            options = RemovedWidgetOptions.entries,
+            optionName = { option -> getString(option.label) },
+            onOptionSelected = { option ->
+                when (option) {
+                    RemovedWidgetOptions.RESTORE -> {
+                        val intent = Intent(this, PhotoWidgetConfigureActivity::class.java).apply {
+                            this.restoreFromId = appWidgetId
+                        }
+
+                        startActivity(intent)
+                    }
+
+                    RemovedWidgetOptions.DELETE -> {
+                        homeViewModel.deleteWidget(appWidgetId = appWidgetId)
+                    }
+                }
             },
         )
     }
@@ -248,6 +274,13 @@ class HomeActivity : AppCompatActivity() {
     ) {
         EDIT(label = R.string.photo_widget_home_my_widget_action_edit),
         DUPLICATE(label = R.string.photo_widget_home_my_widget_action_duplicate),
+    }
+
+    private enum class RemovedWidgetOptions(
+        @StringRes val label: Int,
+    ) {
+        RESTORE(label = R.string.photo_widget_home_removed_widget_action_restore),
+        DELETE(label = R.string.photo_widget_home_removed_widget_action_delete),
     }
 
     private companion object {
