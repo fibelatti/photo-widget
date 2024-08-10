@@ -1,0 +1,8 @@
+Version 1.13 is released with the following updates:
+
+* Removed widgets can be restored if they've been deleted for less than a week
+* Update the photo/folder picker to show a hint
+* Made the required adjustments to support Reproducible Builds
+
+Feedback and suggestions are always welcome, visit the project page to
+contribute!
