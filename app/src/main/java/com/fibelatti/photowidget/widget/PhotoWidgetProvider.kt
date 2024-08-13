@@ -75,6 +75,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         fun ids(context: Context): List<Int> = AppWidgetManager.getInstance(context)
             .getAppWidgetIds(ComponentName(context, PhotoWidgetProvider::class.java))
             .toList()
+            .also { Timber.d("Provider widget IDs: $it") }
 
         fun update(context: Context, appWidgetId: Int) {
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)

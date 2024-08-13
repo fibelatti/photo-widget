@@ -26,9 +26,18 @@ class HomeViewModel @Inject constructor(
 
     fun loadCurrentWidgets(ids: List<Int>) {
         viewModelScope.launch {
-            _currentWidgets.value = (ids + photoWidgetStorage.getPendingDeletionWidgetIds()).map { id ->
-                async { id to loadPhotoWidgetUseCase(appWidgetId = id) }
-            }.awaitAll()
+            _currentWidgets.value = (ids + photoWidgetStorage.getPendingDeletionWidgetIds())
+                .map { id ->
+                    async {
+                        val widget = loadPhotoWidgetUseCase(appWidgetId = id)
+
+                        if (widget.photos.isEmpty()) return@async null
+
+                        id to widget
+                    }
+                }
+                .awaitAll()
+                .filterNotNull()
         }
     }
 
