@@ -137,23 +137,24 @@ class PhotoWidgetStorage @Inject constructor(
         }.getOrNull()
     }
 
-    suspend fun isValidDir(dirUri: Uri, bypassLimit: Boolean = false): DirValidationResult = coroutineScope {
+    suspend fun isValidDir(dirUri: Uri): DirValidationResult {
         Timber.d("Checking validity of selected dir: $dirUri")
 
         if (dirUri.toString().endsWith("DCIM%2FCamera", ignoreCase = true)) {
-            return@coroutineScope DirValidationResult.INVALID
+            return DirValidationResult.INVALID
         }
 
         val documentUri = DocumentsContract.buildDocumentUriUsingTree(
             /* treeUri = */ dirUri,
             /* documentId = */ DocumentsContract.getTreeDocumentId(dirUri),
         )
-        val photoCount = async { getDirectoryPhotoCount(documentUri = documentUri) }
 
-        return@coroutineScope when {
-            bypassLimit || photoCount.await() <= 1_000 -> DirValidationResult.VALID
-            photoCount.await() <= 3_000 -> DirValidationResult.CAN_BYPASS
-            else -> DirValidationResult.INVALID
+        return try {
+            // Traverse the directory structure to ensure that all folders contains less than the limit
+            getDirectoryPhotoCount(documentUri = documentUri, applyValidation = true)
+            DirValidationResult.VALID
+        } catch (_: InvalidDirException) {
+            DirValidationResult.INVALID
         }
     }
 
@@ -167,7 +168,7 @@ class PhotoWidgetStorage @Inject constructor(
                                 /* treeUri = */ uri,
                                 /* documentId = */ DocumentsContract.getTreeDocumentId(uri),
                             )
-                            getDirectoryPhotoCount(documentUri = documentUri)
+                            getDirectoryPhotoCount(documentUri = documentUri, applyValidation = false)
                         }
                     }
                     .awaitAll()
@@ -178,7 +179,7 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
-    private suspend fun getDirectoryPhotoCount(documentUri: Uri): Int {
+    private suspend fun getDirectoryPhotoCount(documentUri: Uri, applyValidation: Boolean): Int {
         return withDirectoryPhotosCursor(documentUri = documentUri) { cursor ->
             var count = 0
 
@@ -193,13 +194,18 @@ class PhotoWidgetStorage @Inject constructor(
                         "documentId=$documentId, " +
                         "mimeType=$mimeType, " +
                         "documentName=$documentName, " +
-                        "fileUri=$fileUri",
+                        "fileUri=$fileUri" +
+                        ")",
                 )
 
                 if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
                     count += 1
                 } else if (documentName?.startsWith(".") != true && mimeType == "vnd.android.document/directory") {
-                    count += getDirectoryPhotoCount(documentUri = fileUri)
+                    val dirCount = getDirectoryPhotoCount(documentUri = fileUri, applyValidation = applyValidation)
+
+                    if (applyValidation && dirCount >= 3_000) throw InvalidDirException()
+
+                    count += dirCount
                 }
             }
 
@@ -641,7 +647,6 @@ class PhotoWidgetStorage @Inject constructor(
 
     enum class DirValidationResult {
         VALID,
-        CAN_BYPASS,
         INVALID,
     }
 
@@ -694,6 +699,8 @@ class PhotoWidgetStorage @Inject constructor(
 
         override fun toString(): String = value
     }
+
+    private class InvalidDirException : RuntimeException()
 
     private companion object {
 

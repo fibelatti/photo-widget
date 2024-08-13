@@ -155,24 +155,18 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun dirPicked(source: Uri?, bypassLimit: Boolean = false) {
+    fun dirPicked(source: Uri?) {
         if (source == null) return
 
         viewModelScope.launch {
             _state.update { current -> current.copy(isProcessing = true) }
 
-            val validationResult = photoWidgetStorage.isValidDir(dirUri = source, bypassLimit = bypassLimit)
+            val validationResult = photoWidgetStorage.isValidDir(dirUri = source)
             if (PhotoWidgetStorage.DirValidationResult.VALID != validationResult) {
                 _state.update { current ->
-                    val message = if (PhotoWidgetStorage.DirValidationResult.CAN_BYPASS == validationResult) {
-                        PhotoWidgetConfigureState.Message.TooManyPhotos(source)
-                    } else {
-                        PhotoWidgetConfigureState.Message.CameraFolderSelected
-                    }
-
                     current.copy(
                         isProcessing = false,
-                        messages = current.messages + message,
+                        messages = current.messages + PhotoWidgetConfigureState.Message.TooManyPhotos,
                     )
                 }
 

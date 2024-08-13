@@ -157,21 +157,10 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     .show()
             }
 
-            is PhotoWidgetConfigureState.Message.CameraFolderSelected -> {
-                MaterialAlertDialogBuilder(this)
-                    .setMessage(R.string.photo_widget_configure_camera_folder_error)
-                    .setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
-                    .setOnDismissListener { viewModel.messageHandled(message = message) }
-                    .show()
-            }
-
             is PhotoWidgetConfigureState.Message.TooManyPhotos -> {
                 MaterialAlertDialogBuilder(this)
                     .setMessage(R.string.photo_widget_configure_too_many_photos_error)
-                    .setPositiveButton(R.string.photo_widget_action_continue) { _, _ ->
-                        viewModel.dirPicked(source = message.source, bypassLimit = true)
-                    }
-                    .setNegativeButton(R.string.photo_widget_action_cancel) { _, _ -> }
+                    .setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
                     .setOnDismissListener { viewModel.messageHandled(message = message) }
                     .show()
             }

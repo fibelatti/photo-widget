@@ -1,4 +1,5 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Widget Host -->
     <string name="photo_widget_host_label">Şekilli Fotoğraflar</string>
     <string name="photo_widget_host_description">Ana ekranınızı favori fotoğraflarınızla süsleyin</string>
@@ -80,8 +81,7 @@
     <string name="photo_widget_configure_navigate_back_warning">Değişiklikler kaybolacak, yine de geri dönmek istiyor musunuz?</string>
 
     <string name="photo_widget_configure_import_error">Seçilen tüm fotoğraflar içe aktarılamadı</string>
-    <string name="photo_widget_configure_camera_folder_error">Bir klasörle senkronize edilen widget\'lar kamera rulonuzla veya 3000\'den fazla fotoğrafa sahip bir klasörle senkronize edilemez.\n\nMaalesef Android, fotoğrafları okumanın son derece yavaş bir yolunu sunuyor ve kamera rulosu birçok binlerce içerebilir ve bu da performans sorunlarına neden olur.</string>
-    <string name="photo_widget_configure_too_many_photos_error">Seçilen klasör 1000\'den fazla fotoğraf içeriyor.\n\nBu, widget\'in performansını doğrudan etkileyerek yüklenmesini ve güncellenmesini yavaşlatır. Saniye cinsinden bir aralık ayarlarken bu önerilmez.\n\nDevam etmek istiyor musunuz?</string>
+    <string name="photo_widget_configure_too_many_photos_error" tools:ignore="Typos">Her senkronize klasör en fazla 3000 fotoğraf içerebilir. Birden fazla seçebilirsiniz ve her alt klasör ayrı ayrı sayılır.\n\nKamera rulosunu seçemezsiniz. Fotoğraflar tek tek işlenir ve binlerce fotoğraf içeren klasörler, widget düzenleyicide ve fotoğraflar arasında geçiş yaparken ana ekranda ciddi performans sorunlarına neden olur.</string>
 
     <string name="photo_widget_configure_menu_source">Kaynak</string>
     <string name="photo_widget_configure_source_description">Her bir fotoğrafı seçebilir veya bir widget\'i bir veya daha fazla klasörle senkronize edebilirsiniz. Senkronize edildiğinde, tüm mevcut ve gelecekteki fotoğraflar otomatik olarak eklenir.</string>
