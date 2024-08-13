@@ -83,6 +83,7 @@
 
     <string name="photo_widget_configure_import_error">Não foi possível importar todas as fotos escolhidas</string>
     <string name="photo_widget_configure_too_many_photos_error">Cada pasta sincronizada pode conter no máximo 3000 fotos. Você pode selecionar mais de uma e cada subpasta é contada separadamente.\n\nVocê não pode selecionar seu rolo da câmera. As fotos são processadas uma por uma e pastas com muitos milhares resultam em problemas graves de desempenho no editor de widgets, bem como na tela inicial ao alternar fotos.</string>
+    <string name="photo_widget_configure_missing_photos_error">O widget deve ter pelo menos uma foto. Os widgets só podem ser excluídos diretamente da tela inicial.</string>
 
     <string name="photo_widget_configure_menu_source">Origem</string>
     <string name="photo_widget_configure_source_description">Você pode selecionar cada foto ou sincronizar um widget com uma ou mais pastas. Ao sincronizar, todas as fotos atuais e futuras serão adicionadas automaticamente.</string>

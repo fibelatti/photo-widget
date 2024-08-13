@@ -83,6 +83,7 @@
 
     <string name="photo_widget_configure_import_error">No se pueden importar todas las fotos seleccionadas</string>
     <string name="photo_widget_configure_too_many_photos_error">Cada carpeta sincronizada puede contener un máximo de 3000 fotos. Puedes seleccionar más de una y cada subcarpeta se cuenta por separado.\n\nNo puedes seleccionar el carrete de tu cámara. Las fotos se procesan una por una y las carpetas con muchos miles provocan graves problemas de rendimiento en el editor de widgets, así como en la pantalla de inicio, al cambiar de fotos.</string>
+    <string name="photo_widget_configure_missing_photos_error">El widget debe tener al menos una foto. Los widgets solo se pueden eliminar directamente desde la pantalla de inicio.</string>
 
     <string name="photo_widget_configure_menu_source">Fuente</string>
     <string name="photo_widget_configure_source_description">Puedes seleccionar cada foto o sincronizar un widget con una o más carpetas. Al sincronizar, todas las fotos actuales y futuras se añadirán automáticamente.</string>

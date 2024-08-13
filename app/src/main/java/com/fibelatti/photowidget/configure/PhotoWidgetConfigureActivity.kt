@@ -184,6 +184,14 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 viewModel.messageHandled(message = message)
             }
 
+            is PhotoWidgetConfigureState.Message.MissingPhotos -> {
+                MaterialAlertDialogBuilder(this)
+                    .setMessage(R.string.photo_widget_configure_missing_photos_error)
+                    .setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+                    .setOnDismissListener { viewModel.messageHandled(message = message) }
+                    .show()
+            }
+
             is PhotoWidgetConfigureState.Message.CancelWidget -> {
                 finish()
                 viewModel.messageHandled(message = message)

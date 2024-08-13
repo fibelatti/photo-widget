@@ -18,6 +18,7 @@ import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @HiltViewModel
@@ -280,10 +282,6 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     }
 
     fun photoRemoved(photo: LocalPhoto) {
-        photoWidgetStorage.deleteWidgetPhoto(
-            appWidgetId = appWidgetId,
-            photoName = photo.name,
-        )
         _state.update { current ->
             val updatedPhotos = current.photoWidget.photos.filterNot { it.name == photo.name }
             current.copy(
@@ -293,6 +291,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 } else {
                     current.selectedPhoto
                 },
+                markedForDeletion = current.markedForDeletion.plus(photo.name),
             )
         }
     }
@@ -415,9 +414,15 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
         when {
             // Without photos there's no widget
-            currentState.photoWidget.photos.isEmpty() -> {
+            currentState.photoWidget.photos.isEmpty() && AppWidgetManager.INVALID_APPWIDGET_ID == appWidgetId -> {
                 _state.update { current ->
                     current.copy(messages = current.messages + PhotoWidgetConfigureState.Message.CancelWidget)
+                }
+            }
+
+            currentState.photoWidget.photos.isEmpty() -> {
+                _state.update { current ->
+                    current.copy(messages = current.messages + PhotoWidgetConfigureState.Message.MissingPhotos)
                 }
             }
 
@@ -456,6 +461,17 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         restoreFromId?.let {
             viewModelScope.launch {
                 photoWidgetStorage.deleteWidgetData(appWidgetId = it)
+            }
+        }
+
+        viewModelScope.launch {
+            withContext(NonCancellable) {
+                _state.value.markedForDeletion.forEach { photoName ->
+                    photoWidgetStorage.deleteWidgetPhoto(
+                        appWidgetId = appWidgetId,
+                        photoName = photoName,
+                    )
+                }
             }
         }
     }

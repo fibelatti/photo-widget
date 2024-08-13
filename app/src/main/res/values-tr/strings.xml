@@ -82,6 +82,7 @@
 
     <string name="photo_widget_configure_import_error">Seçilen tüm fotoğraflar içe aktarılamadı</string>
     <string name="photo_widget_configure_too_many_photos_error" tools:ignore="Typos">Her senkronize klasör en fazla 3000 fotoğraf içerebilir. Birden fazla seçebilirsiniz ve her alt klasör ayrı ayrı sayılır.\n\nKamera rulosunu seçemezsiniz. Fotoğraflar tek tek işlenir ve binlerce fotoğraf içeren klasörler, widget düzenleyicide ve fotoğraflar arasında geçiş yaparken ana ekranda ciddi performans sorunlarına neden olur.</string>
+    <string name="photo_widget_configure_missing_photos_error">Widget\'ta en az bir fotoğraf bulunmalıdır. Widget\'lar yalnızca doğrudan ana ekrandan silinebilir.</string>
 
     <string name="photo_widget_configure_menu_source">Kaynak</string>
     <string name="photo_widget_configure_source_description">Her bir fotoğrafı seçebilir veya bir widget\'i bir veya daha fazla klasörle senkronize edebilirsiniz. Senkronize edildiğinde, tüm mevcut ve gelecekteki fotoğraflar otomatik olarak eklenir.</string>

@@ -11,6 +11,7 @@ data class PhotoWidgetConfigureState(
     val isProcessing: Boolean = true,
     val cropQueue: List<LocalPhoto> = emptyList(),
     val messages: List<Message> = emptyList(),
+    val markedForDeletion: Set<String> = emptySet(),
 ) {
 
     sealed class Message {
@@ -28,6 +29,8 @@ data class PhotoWidgetConfigureState(
         data class RequestPin(val photoWidget: PhotoWidget) : Message()
 
         data class AddWidget(val appWidgetId: Int) : Message()
+
+        data object MissingPhotos : Message()
 
         data object CancelWidget : Message()
     }

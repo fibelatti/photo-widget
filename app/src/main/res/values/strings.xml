@@ -82,6 +82,7 @@
 
     <string name="photo_widget_configure_import_error">Unable to import all selected photos</string>
     <string name="photo_widget_configure_too_many_photos_error">Each synced folder can contain a maximum of 3000 photos. You can select more than one, and each subfolder is counted separately.\n\nYou cannot select your camera roll. Photos are processed one by one, and folders with many thousands result in severe performance issues in the widget editor, as well as on the home screen when switching photos.</string>
+    <string name="photo_widget_configure_missing_photos_error">The widget must have at least one photo. Widgets can only be deleted directly from the home screen.</string>
 
     <string name="photo_widget_configure_menu_source">Source</string>
     <string name="photo_widget_configure_source_description">You can select each photo or sync a widget with one or more folders. When syncing, all current and future photos will be added automatically.</string>
