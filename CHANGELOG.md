@@ -5,6 +5,17 @@ All notable user-facing changes to this app will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.13.1] - 2024-08-14
+
+## Changed
+
+* The photo count of each directory and subdirectory is now check independently
+
+## Fixed
+
+* Fixed a scenario where all photos of an existing widget could be deleted
+* Fixed a scenario where a broken widget was displayed on the widget list
+
 ## [v1.13] - 2024-08-10
 
 ## Added
