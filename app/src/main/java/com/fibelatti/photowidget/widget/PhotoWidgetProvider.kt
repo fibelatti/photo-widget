@@ -227,14 +227,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             externalUri: Uri?,
             appShortcut: String?,
         ): PendingIntent? {
-            return when (tapAction) {
-                PhotoWidgetTapAction.NONE -> null
+            when (tapAction) {
+                PhotoWidgetTapAction.NONE -> return null
 
                 PhotoWidgetTapAction.VIEW_FULL_SCREEN -> {
                     val clickIntent = Intent(context, PhotoWidgetClickActivity::class.java).apply {
                         this.appWidgetId = appWidgetId
                     }
-                    PendingIntent.getActivity(
+                    return PendingIntent.getActivity(
                         context,
                         appWidgetId,
                         clickIntent,
@@ -249,7 +249,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                     }
 
-                    PendingIntent.getActivity(
+                    return PendingIntent.getActivity(
                         context,
                         appWidgetId,
                         intent,
@@ -257,21 +257,37 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     )
                 }
 
-                PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> flipPhotoPendingIntent(
-                    context = context,
-                    appWidgetId = appWidgetId,
-                    flipBackwards = flipBackwards,
-                )
+                PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> {
+                    return flipPhotoPendingIntent(
+                        context = context,
+                        appWidgetId = appWidgetId,
+                        flipBackwards = flipBackwards,
+                    )
+                }
 
                 PhotoWidgetTapAction.APP_SHORTCUT -> {
-                    appShortcut?.let(context.packageManager::getLaunchIntentForPackage).let { clickIntent ->
-                        PendingIntent.getActivity(
-                            context,
-                            appWidgetId,
-                            clickIntent,
-                            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-                        )
+                    if (appShortcut == null) return null
+
+                    val pm = context.packageManager
+                    var launchIntent = pm.getLaunchIntentForPackage(appShortcut)
+
+                    if (launchIntent == null) {
+                        val queryIntent = Intent(Intent.ACTION_MAIN).setPackage(appShortcut)
+                        val activity = pm.queryIntentActivities(queryIntent, 0).firstOrNull()?.activityInfo
+                        if (activity != null) {
+                            launchIntent = Intent(Intent.ACTION_MAIN)
+                                .setComponent(ComponentName(activity.applicationInfo.packageName, activity.name))
+                        }
                     }
+
+                    if (launchIntent == null) return null
+
+                    return PendingIntent.getActivity(
+                        context,
+                        appWidgetId,
+                        launchIntent,
+                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                    )
                 }
             }
         }
