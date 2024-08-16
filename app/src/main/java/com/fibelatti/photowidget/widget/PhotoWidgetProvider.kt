@@ -21,6 +21,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -77,7 +78,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             .toList()
             .also { Timber.d("Provider widget IDs: $it") }
 
-        fun update(context: Context, appWidgetId: Int) {
+        fun update(context: Context, appWidgetId: Int, recoveryMode: Boolean = false) {
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
             val coroutineScope = entryPoint.coroutineScope()
             val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
@@ -92,7 +93,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 val tempWidget = PhotoWidgetPinnedReceiver.callbackIntent?.get()?.photoWidget
                     ?.takeIf { tempViews != null }
 
-                val views = tempViews ?: createRemoteViews(context = context, photoWidget = photoWidget)
+                val views = tempViews ?: createRemoteViews(
+                    context = context,
+                    photoWidget = photoWidget,
+                    recoveryMode = recoveryMode,
+                )
 
                 views.setOnClickPendingIntent(
                     R.id.view_tap_previous,
@@ -118,13 +123,23 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 )
 
                 Timber.d("Dispatching update to AppWidgetManager")
-                AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, views)
+
+                try {
+                    AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, views)
+                } catch (ex: IllegalArgumentException) {
+                    if (!recoveryMode) {
+                        update(context = context, appWidgetId = appWidgetId, recoveryMode = true)
+                    } else {
+                        throw ex
+                    }
+                }
             }
         }
 
         suspend fun createRemoteViews(
             context: Context,
             photoWidget: PhotoWidget,
+            recoveryMode: Boolean = false,
         ): RemoteViews {
             Timber.d("Creating remote views")
             val currentPhoto = photoWidget.currentPhoto ?: return createErrorView(context = context)
@@ -140,8 +155,20 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     else -> return createErrorView(context = context)
                 }
                 val displayMetrics: DisplayMetrics = context.resources.displayMetrics
-                val maxDimension = sqrt(MAX_WIDGET_BITMAP_MEMORY / 4 / displayMetrics.density).toInt()
-                    .coerceAtMost(maximumValue = PhotoWidget.MAX_WIDGET_DIMENSION)
+                val maxMemoryAllowed: Int = if (!recoveryMode) {
+                    (displayMetrics.heightPixels * displayMetrics.widthPixels * 4 * 1.5).roundToInt()
+                } else {
+                    MAX_WIDGET_BITMAP_MEMORY
+                }
+                val maxDimension: Int = sqrt(maxMemoryAllowed / 4 / displayMetrics.density).roundToInt()
+
+                Timber.d(
+                    "Creating widget bitmap (" +
+                        "maxMemoryAllowed=$maxMemoryAllowed," +
+                        "maxDimension=$maxDimension," +
+                        "recoveryMode=$recoveryMode" +
+                        ")",
+                )
 
                 requireNotNull(decoder.decode(data = data, maxDimension = maxDimension))
             } catch (_: Exception) {
