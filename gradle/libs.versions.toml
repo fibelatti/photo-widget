@@ -3,7 +3,7 @@ agp = "8.5.2"
 coroutines = "1.8.1"
 hilt = "2.52"
 hiltExtensions = "1.2.0"
-kotlin = "2.0.10"
+kotlin = "2.0.20"
 room = "2.6.1"
 aboutLibraries = "11.2.2"
 
