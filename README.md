@@ -9,8 +9,34 @@ Material Photo Widget is as simple as it can be: an Android home screen widget t
 collection of photos. It is a free, no-ads, open source alternative for people who want to customize
 their home screen with their favorite photos.
 
+Downloads
+--------
+
 <a href='https://play.google.com/store/apps/details?id=com.fibelatti.photowidget'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='150' /></a>
 <a href='https://apt.izzysoft.de/fdroid/index/apk/com.fibelatti.photowidget'><img alt='Get it on IzzyOnDroid' src='https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png' width='150' /></a>
+<a href="https://github.com/fibelatti/photo-widget/releases/latest"><img alt="Get it on GitHub" src="https://github.com/machiav3lli/oandbackupx/blob/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png" width="150"></a>
+
+>[!Note]
+>
+> Downloads from Google Play are verified by Google Play Protect.
+>
+> Downloads from IzzyOnDroid are verified by [Reproducible Builds](https://android.izzysoft.de/articles/named/iod-rbs-mirrors-clients?lang=en).
+>
+> Downloads from GitHub can be verified with third-party tools such as [AppVerifier](https://github.com/soupslurpr/AppVerifier) using the following SHA-256 digest:
+>
+> 3A:36:30:F5:EB:47:82:43:49:46:9F:11:53:D7:2E:02:3A:15:29:39:50:60:44:A2:DB:EF:63:76:08:76:E4:5B
+
+Features
+--------
+
+* 5 aspect ratios: square, tall, wide, original and fill widget
+* Customize your square widgets with 10 different shapes
+* Customize the rounded corners of your tall, wide or original widgets
+* Customize the opacity, offset and padding
+* Choose each photo or sync the widget with device folders
+* Set an optional interval and have photos flip automatically
+* Choose the tap action of each widget: none, view next photo, view in full
+  screen or open another app
 
 About the project
 --------
@@ -18,9 +44,14 @@ About the project
 Photo Widget is a playground to study and explore modern Android development.
 
 Explored topics:
-- Material Design, including Material 3
+- Clean & beautiful UI built with Jetpack Compose and Google's [material design three](https://m3.material.io/) guidelines, with support for Material You theming
 - Android Jetpack, including Jetpack Compose
 - Home screen widgets
+
+Contributing
+--------
+
+Anyone is welcome to submit bug reports, feature requests and improvement ideas. Submit yours using the [provided templates](https://github.com/fibelatti/photo-widget/issues/new/choose).
 
 License
 --------

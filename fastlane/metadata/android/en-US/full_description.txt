@@ -9,10 +9,11 @@ launcher.
 
 <b>FEATURES</b>
 
-* 4 aspect ratios: square, tall, wide and original
+* 5 aspect ratios: square, tall, wide, original and fill widget
 * Customize your square widgets with 10 different shapes
 * Customize the rounded corners of your tall, wide or original widgets
-* Choose each photo or sync the widget with selected folders
+* Customize the opacity, offset and padding
+* Choose each photo or sync the widget with device folders
 * Set an optional interval and have photos flip automatically
 * Choose the tap action of each widget: none, view next photo, view in full
   screen or open another app
