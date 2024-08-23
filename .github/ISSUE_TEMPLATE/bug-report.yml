@@ -1,0 +1,50 @@
+name: Bug Report
+description: Report something that's not working as expected
+title: "[Bug]: "
+labels: [ bug ]
+body:
+  - type: textarea
+    attributes:
+      label: Describe the problem
+      description: |
+        Describe what's happening to the best of your ability.
+        You can also write reproduction steps if you're comfortable with it.
+      placeholder: |
+        1. Click on...
+        2. Choose...
+        3. Observe that...
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        # Device information
+  - type: input
+    attributes:
+      label: Device model
+      description: The name of the device model and manufacturer.
+      placeholder: Google Pixel 9
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: Android version
+      description: You can find this in your phone's Settings app, then "About phone".
+      placeholder: Android 14
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: App version
+      description: You can find this in the app menu.
+      placeholder: 1.0.0
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional information
+      description: |
+        Use the field below to share any additional information you think might help.
+        You can attach screenshots or screen recordings by dragging and dropping files.
+    validations:
+      required: false

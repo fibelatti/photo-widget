@@ -1,0 +1,25 @@
+name: Feature Request
+description: Suggest a new feature or improvement
+title: "[Feature Request]: "
+labels: [ enhancement ]
+body:
+  - type: textarea
+    attributes:
+      label: Describe your idea
+      description: Describe it to the best of your ability. If your idea stems from a problem, try explaining why it is a problem and why it could be better
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Describe how you think it could work
+      description: Try describing where and how you'd like to see your idea added to the app
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: |
+        Use the field below to share any additional information you think might help.
+        You can attach screenshots or screen recordings by dragging and dropping files.
+    validations:
+      required: false
