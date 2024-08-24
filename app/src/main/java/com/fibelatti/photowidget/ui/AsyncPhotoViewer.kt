@@ -36,6 +36,7 @@ import kotlinx.coroutines.delay
 fun AsyncPhotoViewer(
     data: Any?,
     dataKey: Array<Any?>,
+    isLoading: Boolean,
     contentScale: ContentScale,
     modifier: Modifier = Modifier,
     transformer: (Bitmap?) -> Bitmap? = { it },
@@ -80,7 +81,7 @@ fun AsyncPhotoViewer(
                 photoBitmap = decoder.decode(data = data, maxDimension = maxDimension)
                 showLoading = false
                 showError = false
-            } else {
+            } else if (!isLoading) {
                 showLoading = false
                 showError = true
             }
@@ -89,22 +90,11 @@ fun AsyncPhotoViewer(
         LaunchedEffect(*dataKey) {
             // Avoid flickering the indicator, only show if the photos takes a while to load
             delay(timeMillis = 300)
-            showLoading = data != null && photoBitmap == null && !showError
+            showLoading = isLoading || (data != null && photoBitmap == null && !showError)
         }
 
         val finalBitmap = transformedBitmap
         when {
-            finalBitmap != null -> {
-                Image(
-                    bitmap = finalBitmap,
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = contentScale,
-                )
-
-                badge()
-            }
-
             showLoading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -130,6 +120,17 @@ fun AsyncPhotoViewer(
                         contentScale = contentScale,
                     )
                 }
+            }
+
+            finalBitmap != null -> {
+                Image(
+                    bitmap = finalBitmap,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = contentScale,
+                )
+
+                badge()
             }
         }
     }

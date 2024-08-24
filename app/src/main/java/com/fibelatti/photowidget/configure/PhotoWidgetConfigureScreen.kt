@@ -1048,6 +1048,7 @@ fun ShapedPhoto(
     opacity: Float,
     modifier: Modifier = Modifier,
     badge: @Composable BoxScope.() -> Unit = {},
+    isLoading: Boolean = false,
 ) {
     AsyncPhotoViewer(
         data = photo?.run {
@@ -1058,6 +1059,7 @@ fun ShapedPhoto(
             }
         },
         dataKey = arrayOf(photo, shapeId, aspectRatio, cornerRadius, opacity),
+        isLoading = isLoading,
         contentScale = if (aspectRatio.isConstrained) {
             ContentScale.FillWidth
         } else {

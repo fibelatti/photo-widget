@@ -80,6 +80,7 @@ class PhotoWidgetClickActivity : AppCompatActivity() {
 
                     ScreenContent(
                         photo = photoWidget.currentPhoto,
+                        isLoading = photoWidget.isLoading,
                         aspectRatio = photoWidget.aspectRatio,
                         onDismiss = { finish() },
                         showFlipControls = state.showMoveControls,
@@ -122,6 +123,7 @@ class PhotoWidgetClickActivity : AppCompatActivity() {
 @OptIn(ExperimentalFoundationApi::class)
 private fun ScreenContent(
     photo: LocalPhoto?,
+    isLoading: Boolean,
     aspectRatio: PhotoWidgetAspectRatio,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
@@ -196,6 +198,7 @@ private fun ScreenContent(
                 }
             },
             dataKey = arrayOf(photo, aspectRatio),
+            isLoading = isLoading,
             contentScale = if (aspectRatio.isConstrained) {
                 ContentScale.FillWidth
             } else {
@@ -234,6 +237,7 @@ private fun ScreenContentPreview() {
     ExtendedTheme {
         ScreenContent(
             photo = LocalPhoto(name = "photo-1"),
+            isLoading = false,
             aspectRatio = PhotoWidgetAspectRatio.SQUARE,
             onDismiss = {},
             showFlipControls = true,

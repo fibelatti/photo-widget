@@ -25,6 +25,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -57,20 +59,29 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         viewModelScope.launch {
             deleteStaleDataUseCase()
 
-            val photoWidget = duplicateFromId?.let {
+            val sourceWidget = duplicateFromId?.let {
                 Timber.d("Duplicating widget (duplicateFromId=$it)")
                 duplicatePhotoWidgetUseCase(originalAppWidgetId = it, newAppWidgetId = appWidgetId)
             } ?: restoreFromId?.let {
                 Timber.d("Restoring widget (restoreFromId=$it)")
                 duplicatePhotoWidgetUseCase(originalAppWidgetId = it, newAppWidgetId = appWidgetId)
-            } ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+            }
+            val updateState = { photoWidget: PhotoWidget ->
+                _state.update { current ->
+                    current.copy(
+                        photoWidget = photoWidget.copy(aspectRatio = aspectRatio ?: photoWidget.aspectRatio),
+                        selectedPhoto = photoWidget.photos.firstOrNull(),
+                        isProcessing = photoWidget.isLoading,
+                    )
+                }
+            }
 
-            _state.update { current ->
-                current.copy(
-                    photoWidget = photoWidget.copy(aspectRatio = aspectRatio ?: photoWidget.aspectRatio),
-                    selectedPhoto = photoWidget.photos.firstOrNull(),
-                    isProcessing = false,
-                )
+            if (sourceWidget != null) {
+                updateState(sourceWidget)
+            } else {
+                loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+                    .onEach { photoWidget -> updateState(photoWidget) }
+                    .launchIn(viewModelScope)
             }
         }
     }

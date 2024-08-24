@@ -24,6 +24,7 @@ data class PhotoWidget(
     val verticalOffset: Int = 0,
     val padding: Int = 0,
     val deletionTimestamp: Long = -1,
+    val isLoading: Boolean = false,
 ) : Parcelable {
 
     val currentPhoto: LocalPhoto? get() = photos.getOrNull(currentIndex) ?: photos.firstOrNull()

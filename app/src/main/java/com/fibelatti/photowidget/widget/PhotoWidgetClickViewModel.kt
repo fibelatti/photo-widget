@@ -9,10 +9,12 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.platform.savedState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.async
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -21,7 +23,6 @@ class PhotoWidgetClickViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
     private val flipPhotoUseCase: FlipPhotoUseCase,
-    private val photoWidgetStorage: PhotoWidgetStorage,
     private val hintStorage: HintStorage,
 ) : ViewModel() {
 
@@ -33,36 +34,37 @@ class PhotoWidgetClickViewModel @Inject constructor(
     private val _state: MutableStateFlow<State> = MutableStateFlow(State())
     val state: StateFlow<State> = _state.asStateFlow()
 
+    private var loadWidgetJob: Job? = null
+
     init {
-        viewModelScope.launch {
-            val photoWidget = async {
-                loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
-            }
-            val count = async {
-                photoWidgetStorage.getWidgetPhotoCount(appWidgetId = appWidgetId)
-            }
+        loadWidgetJob = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+            .onEach(::updateState)
+            .launchIn(viewModelScope)
+    }
 
-            _state.update { current ->
-                current.copy(
-                    photoWidget = photoWidget.await(),
-                    showMoveControls = count.await() > 1,
-                    showHint = hintStorage.showFullScreenViewerHint,
-                )
-            }
-
-            hintStorage.showFullScreenViewerHint = false
-        }
+    override fun onCleared() {
+        hintStorage.showFullScreenViewerHint = false
+        super.onCleared()
     }
 
     fun flip(backwards: Boolean = false) {
-        viewModelScope.launch {
+        loadWidgetJob?.cancel()
+        loadWidgetJob = viewModelScope.launch {
             flipPhotoUseCase(appWidgetId = appWidgetId, flipBackwards = backwards)
 
-            _state.update { current ->
-                current.copy(
-                    photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId),
-                )
-            }
+            loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+                .onEach(::updateState)
+                .launchIn(this)
+        }
+    }
+
+    private fun updateState(photoWidget: PhotoWidget) {
+        _state.update { current ->
+            current.copy(
+                photoWidget = photoWidget,
+                showMoveControls = photoWidget.photos.size > 1,
+                showHint = hintStorage.showFullScreenViewerHint,
+            )
         }
     }
 

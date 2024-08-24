@@ -7,12 +7,14 @@ import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.withIndex
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -25,20 +27,18 @@ class HomeViewModel @Inject constructor(
     val currentWidgets: StateFlow<List<Pair<Int, PhotoWidget>>> = _currentWidgets.asStateFlow()
 
     fun loadCurrentWidgets(ids: List<Int>) {
-        viewModelScope.launch {
-            _currentWidgets.value = (ids + photoWidgetStorage.getPendingDeletionWidgetIds())
-                .map { id ->
-                    async {
-                        val widget = loadPhotoWidgetUseCase(appWidgetId = id)
+        val allIds = ids + photoWidgetStorage.getPendingDeletionWidgetIds()
+        val flows = allIds.map(loadPhotoWidgetUseCase::invoke)
 
-                        if (widget.photos.isEmpty()) return@async null
-
-                        id to widget
-                    }
+        combine(flows, Array<PhotoWidget>::toList)
+            .withIndex()
+            .onEach { (emissionIndex, widgets) ->
+                _currentWidgets.value = widgets.withIndex().mapNotNull { (index, widget) ->
+                    if (emissionIndex > 0 && widget.photos.isEmpty()) return@mapNotNull null
+                    allIds[index] to widget
                 }
-                .awaitAll()
-                .filterNotNull()
-        }
+            }
+            .launchIn(viewModelScope)
     }
 
     fun deleteWidget(appWidgetId: Int) {

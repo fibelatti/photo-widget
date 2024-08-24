@@ -511,6 +511,7 @@ private fun MyWidgetsScreen(
                                 predicate = isRemoved,
                                 ifTrue = { grayScale() },
                             ),
+                        isLoading = widget.isLoading,
                     )
                 }
             }

@@ -2,24 +2,24 @@ package com.fibelatti.photowidget.widget
 
 import com.fibelatti.photowidget.model.PhotoWidget
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
 class LoadPhotoWidgetUseCase @Inject constructor(
     private val photoWidgetStorage: PhotoWidgetStorage,
 ) {
 
-    suspend operator fun invoke(
+    operator fun invoke(
         appWidgetId: Int,
-    ): PhotoWidget = with(photoWidgetStorage) {
+    ): Flow<PhotoWidget> = with(photoWidgetStorage) {
         Timber.d("Loading widget data (appWidgetId=$appWidgetId)")
 
         val currentIndex = getWidgetIndex(appWidgetId = appWidgetId)
         val (horizontalOffset, verticalOffset) = getWidgetOffset(appWidgetId = appWidgetId)
-
-        return PhotoWidget(
+        val widget = PhotoWidget(
             source = getWidgetSource(appWidgetId = appWidgetId),
             syncedDir = getWidgetSyncDir(appWidgetId = appWidgetId),
-            photos = getWidgetPhotos(appWidgetId = appWidgetId),
             currentIndex = currentIndex,
             shuffle = getWidgetShuffle(appWidgetId = appWidgetId),
             loopingInterval = getWidgetInterval(appWidgetId = appWidgetId),
@@ -36,5 +36,15 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             padding = getWidgetPadding(appWidgetId = appWidgetId),
             deletionTimestamp = getWidgetDeletionTimestamp(appWidgetId = appWidgetId),
         )
+
+        return flow {
+            emit(widget.copy(isLoading = true))
+            emit(
+                widget.copy(
+                    photos = getWidgetPhotos(appWidgetId = appWidgetId),
+                    isLoading = false,
+                ),
+            )
+        }
     }
 }
