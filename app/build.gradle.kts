@@ -136,6 +136,14 @@ aboutLibraries {
     excludeFields = arrayOf("generated")
 }
 
+afterEvaluate {
+    // aboutlibraries caches the result of this task, leading to the JSON containing
+    // outdated versions after a library update
+    tasks.named { name -> name == "collectDependencies" }.configureEach {
+        outputs.upToDateWhen { false }
+    }
+}
+
 dependencies {
     implementation(projects.ui)
 
