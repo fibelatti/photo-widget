@@ -25,8 +25,7 @@ import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -87,9 +86,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val coroutineScope = entryPoint.coroutineScope()
             val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
 
-            loadPhotoWidgetUseCase(appWidgetId = appWidgetId).onEach { photoWidget ->
+            coroutineScope.launch {
                 Timber.d("Updating widget (appWidgetId=$appWidgetId)")
 
+                val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId).last()
                 val tempViews = PhotoWidgetPinnedReceiver.preview?.get()
                     ?.takeIf { photoWidget.photos.isEmpty() }
                     ?.also { PhotoWidgetPinnedReceiver.preview = null }
@@ -136,7 +136,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         throw ex
                     }
                 }
-            }.launchIn(coroutineScope)
+            }
         }
 
         suspend fun createRemoteViews(
@@ -145,11 +145,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             recoveryMode: Boolean = false,
         ): RemoteViews {
             Timber.d("Creating remote views")
-            val currentPhoto = photoWidget.currentPhoto ?: return if (photoWidget.isLoading) {
-                createLoadingView(context = context)
-            } else {
-                createErrorView(context = context)
-            }
+            val currentPhoto = photoWidget.currentPhoto ?: return createErrorView(context = context)
 
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
             val decoder = entryPoint.photoDecoder()
@@ -230,10 +226,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     /* bottom = */ getDimensionValue(context, photoWidget.padding),
                 )
             }
-        }
-
-        private fun createLoadingView(context: Context): RemoteViews {
-            return RemoteViews(context.packageName, R.layout.photo_widget_loading)
         }
 
         private fun createErrorView(context: Context): RemoteViews {
