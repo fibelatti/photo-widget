@@ -18,7 +18,9 @@ import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.model.transformed
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import kotlin.math.roundToInt
@@ -165,7 +167,25 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 } else {
                     MAX_WIDGET_BITMAP_MEMORY
                 }
-                val maxDimension: Int = sqrt(maxMemoryAllowed / 4 / displayMetrics.density).roundToInt()
+                val maxMemoryDimension: Int = sqrt(maxMemoryAllowed / 4 / displayMetrics.density).roundToInt()
+                val maxDimension: Int = if (PhotoWidgetAspectRatio.SQUARE != photoWidget.aspectRatio) {
+                    maxMemoryDimension
+                } else {
+                    val polygon = PhotoWidgetShapeBuilder.buildShape(shapeId = photoWidget.shapeId)
+                    var currentSize = maxMemoryDimension.toFloat()
+                    var didBuild = false
+
+                    while (!didBuild) {
+                        try {
+                            polygon.transformed(width = currentSize, height = currentSize)
+                            didBuild = true
+                        } catch (_: IllegalArgumentException) {
+                            currentSize *= 0.9f
+                        }
+                    }
+
+                    currentSize.roundToInt()
+                }
 
                 Timber.d(
                     "Creating widget bitmap (" +
