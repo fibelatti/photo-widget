@@ -1,0 +1,10 @@
+Version 1.13.2 is released with the following updates:
+
+* Improved the widget image quality (try editing and re-saving the widget if
+this doesn't apply automatically)
+* Improved the loading performance of the "My Widgets screen" (mainly for
+widgets with thousands of pictures)
+* Fixed the "App Shortcut" tap action sometimes not working as expected
+
+Feedback and suggestions are always welcome, visit the project page to
+contribute!

@@ -15,11 +15,14 @@ object AppInfo {
 
     private const val VERSION_MAJOR = 1
     private const val VERSION_MINOR = 13
-    private const val VERSION_PATCH = 1
-    private const val VERSION_BUILD = 0
+    private const val VERSION_PATCH = 2
+    private const val VERSION_BUILD = 1
 
     val versionCode: Int =
-        (VERSION_MAJOR * 1_000_000 + VERSION_MINOR * 10_000 + VERSION_PATCH * 100 + VERSION_BUILD)
+        (VERSION_MAJOR * 1_000_000)
+            .plus(VERSION_MINOR * 10_000)
+            .plus(VERSION_PATCH * 100)
+            .plus(VERSION_BUILD)
             .also { println("versionCode: $it") }
 
     @Suppress("KotlinConstantConditions")
