@@ -11,8 +11,7 @@ data class PhotoWidget(
     val photos: List<LocalPhoto> = emptyList(),
     val currentIndex: Int = 0,
     val shuffle: Boolean = false,
-    val loopingInterval: PhotoWidgetLoopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
-    val intervalBasedLoopingEnabled: Boolean = true,
+    val cycleMode: PhotoWidgetCycleMode = PhotoWidgetCycleMode.DEFAULT,
     val tapAction: PhotoWidgetTapAction = PhotoWidgetTapAction.NONE,
     val increaseBrightness: Boolean = false,
     val appShortcut: String? = null,
@@ -29,14 +28,14 @@ data class PhotoWidget(
 
     val currentPhoto: LocalPhoto? get() = photos.getOrNull(currentIndex) ?: photos.firstOrNull()
 
-    val loopingEnabled: Boolean get() = photos.size > 1 && intervalBasedLoopingEnabled
+    val cyclingEnabled: Boolean get() = photos.size > 1 && cycleMode !is PhotoWidgetCycleMode.Disabled
 
     val order: List<String> get() = photos.map { it.name }
 
     val canSort: Boolean get() = PhotoWidgetSource.PHOTOS == source && photos.size > 1 && !shuffle
 
     val canShuffle: Boolean
-        get() = photos.size > 1 && (intervalBasedLoopingEnabled || PhotoWidgetTapAction.VIEW_NEXT_PHOTO == tapAction)
+        get() = photos.size > 1 && (cyclingEnabled || PhotoWidgetTapAction.VIEW_NEXT_PHOTO == tapAction)
 
     companion object {
 

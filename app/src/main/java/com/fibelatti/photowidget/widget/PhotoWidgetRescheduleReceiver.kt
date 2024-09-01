@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
+import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -31,11 +32,10 @@ class PhotoWidgetRescheduleReceiver : BroadcastReceiver() {
 
             coroutineScope.launch {
                 for (id in ids) {
-                    val enabled = photoWidgetStorage.getWidgetIntervalEnabled(appWidgetId = id)
+                    val cycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = id)
+                    Timber.d("Processing widget (id=$id, cycleMode=$cycleMode)")
 
-                    Timber.d("Processing widget (id=$id, enabled=$enabled)")
-
-                    if (enabled) {
+                    if (cycleMode !is PhotoWidgetCycleMode.Disabled) {
                         photoWidgetAlarmManager.setup(appWidgetId = id)
                     }
 

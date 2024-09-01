@@ -1,7 +1,7 @@
 package com.fibelatti.photowidget.preferences
 
 import androidx.lifecycle.ViewModel
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,12 +23,8 @@ class WidgetDefaultsViewModel @Inject constructor(
         userPreferencesStorage.defaultShuffle = value
     }
 
-    fun saveDefaultIntervalEnabled(value: Boolean) {
-        userPreferencesStorage.defaultIntervalEnabled = value
-    }
-
-    fun saveDefaultInterval(interval: PhotoWidgetLoopingInterval) {
-        userPreferencesStorage.defaultInterval = interval
+    fun saveDefaultCycleMode(cycleMode: PhotoWidgetCycleMode) {
+        userPreferencesStorage.defaultCycleMode = cycleMode
     }
 
     fun saveDefaultShape(value: String) {

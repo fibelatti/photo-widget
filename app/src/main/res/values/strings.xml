@@ -53,7 +53,7 @@
     <string name="widget_defaults_explanation">These values are applied only when creating a new widget. They have no effect on existing widgets.</string>
     <string name="widget_defaults_source">Source</string>
     <string name="widget_defaults_shuffle">Shuffle</string>
-    <string name="widget_defaults_interval">Flipping interval</string>
+    <string name="widget_defaults_cycling">Photo cycling</string>
     <string name="widget_defaults_shape">Shape</string>
     <string name="widget_defaults_corner_radius">Roundness</string>
     <string name="widget_defaults_opacity">Opacity</string>
@@ -108,7 +108,15 @@
     <string name="photo_widget_configure_shuffle_on">On</string>
     <string name="photo_widget_configure_shuffle_off">Off</string>
 
-    <string name="photo_widget_configure_select_interval">Flipping interval</string>
+    <string name="photo_widget_configure_select_cycling_mode">Photo cycling</string>
+    <string name="photo_widget_configure_cycling_mode_interval">Interval</string>
+    <string name="photo_widget_configure_cycling_mode_schedule">Schedule</string>
+    <string name="photo_widget_configure_cycling_mode_disabled">Disabled</string>
+
+    <string name="photo_widget_configure_cycling_mode_interval_description">The widget will switch automatically to the next photo at the following interval:</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description">The widget will switch automatically to the next photo every day at the following scheduled times:</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">The widget won\'t cycle through photos automatically. Set a tap action to cycle through photos or choose a different mode.</string>
+
     <string name="photo_widget_configure_interval_current_label">Every %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d second</item>
@@ -122,17 +130,23 @@
         <item quantity="one">%d hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
-    <string name="photo_widget_configure_interval_current_disabled">Disabled</string>
     <string name="photo_widget_configure_interval_seconds_label">Seconds</string>
     <string name="photo_widget_configure_interval_minutes_label">Minutes</string>
     <string name="photo_widget_configure_interval_hours_label">Hours</string>
-    <string name="photo_widget_configure_interval_warning">The actual interval can be longer at times due to restrictions imposed by Android to optimize battery life</string>
-    <string name="photo_widget_configure_interval_enabled">Flip photos automatically based on the selected interval</string>
+
+    <string name="photo_widget_configure_schedule_placeholder">Schedule up to 4 times to switch your photos automatically.</string>
+    <string name="photo_widget_configure_schedule_add_new">Add new</string>
+    <string name="photo_widget_configure_schedule_limit_reached">Maximum of 4 times reached</string>
+    <plurals name="photo_widget_configure_schedule_times">
+        <item quantity="one">1 time selected</item>
+        <item quantity="other">%d times selected</item>
+    </plurals>
+
+    <string name="photo_widget_configure_interval_warning">The actual interval or scheduled time can vary due to restrictions imposed by Android to optimize battery life. To ensure it works as desired, grant the permission below</string>
 
     <string name="photo_widget_configure_interval_grant_permission">Grant exact alarm permission</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">About this permission</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">Android restricts background work to optimize battery life which can lead to longer intervals between each photo.\n\nIf you want widgets to update precisely at the selected interval open settings and enable this permission.</string>
-    <string name="photo_widget_configure_interval_permission_advised">For intervals in seconds it is highly recommended to grant the permission for exact alarms</string>
     <string name="photo_widget_configure_interval_open_settings">Open settings</string>
 
     <string name="photo_widget_configure_offset">Offset</string>
@@ -146,7 +160,7 @@
     <string name="photo_widget_configure_tap_action_none">None</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">View photo in full screen</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">View in gallery</string>
-    <string name="photo_widget_configure_tap_action_flip_photo">Flip photo</string>
+    <string name="photo_widget_configure_tap_action_flip_photo">View next/previous photo</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">App shortcut</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Automatically increase brightness</string>
@@ -154,10 +168,9 @@
     <string name="photo_widget_configure_tap_action_flip_description">Tap on the left half to view the previous photo and on right half to view the next one.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Choose app</string>
 
-    <string name="photo_widget_configure_applied_shape">Shape</string>
-    <string name="photo_widget_configure_corner_radius">Roundness</string>
-
     <string name="photo_widget_configure_add_to_home">Add to home screen</string>
+
+    <string name="photo_widget_time_picker_title">Select time</string>
 
     <!-- Help -->
     <string name="help_article_title_1">Adding a widget to the home screen is not working</string>
@@ -177,6 +190,7 @@
     <string name="photo_widget_action_continue">Continue</string>
     <string name="photo_widget_action_cancel">Cancel</string>
     <string name="photo_widget_action_apply">Apply</string>
+    <string name="photo_widget_action_confirm">Confirm</string>
     <string name="photo_widget_action_got_it">Got it</string>
 
     <!-- Content Description -->

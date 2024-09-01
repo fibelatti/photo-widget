@@ -2,7 +2,7 @@ package com.fibelatti.photowidget.di
 
 import com.fibelatti.photowidget.configure.SavePhotoWidgetUseCase
 import com.fibelatti.photowidget.platform.PhotoDecoder
-import com.fibelatti.photowidget.widget.FlipPhotoUseCase
+import com.fibelatti.photowidget.widget.CyclePhotoUseCase
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
 import com.fibelatti.photowidget.widget.PhotoWidgetStorage
@@ -23,7 +23,7 @@ interface PhotoWidgetEntryPoint {
 
     fun savePhotoWidgetUseCase(): SavePhotoWidgetUseCase
 
-    fun flipPhotoUseCase(): FlipPhotoUseCase
+    fun flipPhotoUseCase(): CyclePhotoUseCase
 
     fun photoDecoder(): PhotoDecoder
 

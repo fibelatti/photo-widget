@@ -3,11 +3,13 @@ package com.fibelatti.photowidget.preferences
 import android.content.Context
 import androidx.core.content.edit
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.minutesToLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.secondsToLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -31,8 +33,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             dynamicColors = dynamicColors,
             defaultSource = defaultSource,
             defaultShuffle = defaultShuffle,
-            defaultIntervalEnabled = defaultIntervalEnabled,
-            defaultInterval = defaultInterval,
+            defaultCycleMode = defaultCycleMode,
             defaultShape = defaultShape,
             defaultCornerRadius = defaultCornerRadius,
             defaultOpacity = defaultOpacity,
@@ -83,32 +84,73 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             _userPreferences.update { current -> current.copy(defaultShuffle = value) }
         }
 
-    var defaultIntervalEnabled: Boolean
+    var defaultCycleMode: PhotoWidgetCycleMode
         get() {
-            return sharedPreferences.getBoolean(Preference.DEFAULT_INTERVAL_ENABLED.value, true)
-        }
-        set(value) {
-            sharedPreferences.edit { putBoolean(Preference.DEFAULT_INTERVAL_ENABLED.value, value) }
-            _userPreferences.update { current -> current.copy(defaultIntervalEnabled = value) }
-        }
-
-    var defaultInterval: PhotoWidgetLoopingInterval
-        get() {
-            val legacyValue = sharedPreferences.getLong(Preference.LEGACY_DEFAULT_INTERVAL.value, 0)
-            val value = sharedPreferences.getLong(Preference.DEFAULT_INTERVAL.value, 0)
+            val containsInterval = sharedPreferences.contains(Preference.LEGACY_DEFAULT_INTERVAL.value) ||
+                sharedPreferences.contains(Preference.DEFAULT_INTERVAL.value)
 
             return when {
-                legacyValue > 0 -> legacyValue.minutesToLoopingInterval()
-                value > 0 -> value.secondsToLoopingInterval()
-                else -> PhotoWidgetLoopingInterval.ONE_DAY
+                sharedPreferences.getBoolean(Preference.DEFAULT_INTERVAL_ENABLED.value, false) -> {
+                    PhotoWidgetCycleMode.Disabled
+                }
+
+                containsInterval -> {
+                    val legacyValue = sharedPreferences.getLong(Preference.LEGACY_DEFAULT_INTERVAL.value, 0)
+                    val value = sharedPreferences.getLong(Preference.DEFAULT_INTERVAL.value, 0)
+
+                    val loopingInterval = when {
+                        legacyValue > 0 -> legacyValue.minutesToLoopingInterval()
+                        value > 0 -> value.secondsToLoopingInterval()
+                        else -> PhotoWidgetLoopingInterval.ONE_DAY
+                    }
+
+                    PhotoWidgetCycleMode.Interval(loopingInterval = loopingInterval)
+                }
+
+                sharedPreferences.contains(Preference.DEFAULT_SCHEDULE.value) -> {
+                    PhotoWidgetCycleMode.Schedule(
+                        triggers = sharedPreferences.getStringSet(Preference.DEFAULT_SCHEDULE.value, null)
+                            .orEmpty()
+                            .map(Time::fromString)
+                            .toSet(),
+                    )
+                }
+
+                else -> PhotoWidgetCycleMode.DEFAULT
             }
         }
         set(value) {
             sharedPreferences.edit {
                 remove(Preference.LEGACY_DEFAULT_INTERVAL.value)
-                putLong(Preference.DEFAULT_INTERVAL.value, value.toSeconds())
+
+                when (value) {
+                    is PhotoWidgetCycleMode.Interval -> {
+                        remove(Preference.DEFAULT_SCHEDULE.value)
+                        remove(Preference.DEFAULT_INTERVAL_ENABLED.value)
+
+                        putLong(Preference.DEFAULT_INTERVAL.value, value.loopingInterval.toSeconds())
+                    }
+
+                    is PhotoWidgetCycleMode.Schedule -> {
+                        remove(Preference.DEFAULT_INTERVAL.value)
+                        remove(Preference.DEFAULT_INTERVAL_ENABLED.value)
+
+                        putStringSet(
+                            Preference.DEFAULT_SCHEDULE.value,
+                            value.triggers.map { (hour, minute) -> "$hour:$minute" }.toSet(),
+                        )
+                    }
+
+                    is PhotoWidgetCycleMode.Disabled -> {
+                        remove(Preference.DEFAULT_INTERVAL.value)
+                        remove(Preference.DEFAULT_SCHEDULE.value)
+
+                        putBoolean(Preference.DEFAULT_INTERVAL_ENABLED.value, true)
+                    }
+                }
             }
-            _userPreferences.update { current -> current.copy(defaultInterval = value) }
+
+            _userPreferences.update { current -> current.copy(defaultCycleMode = value) }
         }
 
     var defaultShape: String
@@ -177,8 +219,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                 dynamicColors = dynamicColors,
                 defaultSource = defaultSource,
                 defaultShuffle = defaultShuffle,
-                defaultIntervalEnabled = defaultIntervalEnabled,
-                defaultInterval = defaultInterval,
+                defaultCycleMode = defaultCycleMode,
                 defaultShape = defaultShape,
                 defaultCornerRadius = defaultCornerRadius,
                 defaultOpacity = defaultOpacity,
@@ -206,6 +247,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
          * Key from when the interval was migrated from minutes to seconds.
          */
         DEFAULT_INTERVAL("default_interval_seconds"),
+        DEFAULT_SCHEDULE("default_schedule"),
         DEFAULT_SHAPE(value = "default_shape"),
         DEFAULT_CORNER_RADIUS(value = "default_corner_radius"),
         DEFAULT_OPACITY(value = "default_opacity"),

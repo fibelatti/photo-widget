@@ -1,6 +1,6 @@
 package com.fibelatti.photowidget.preferences
 
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 
@@ -9,8 +9,7 @@ data class UserPreferences(
     val dynamicColors: Boolean,
     val defaultSource: PhotoWidgetSource,
     val defaultShuffle: Boolean,
-    val defaultIntervalEnabled: Boolean,
-    val defaultInterval: PhotoWidgetLoopingInterval,
+    val defaultCycleMode: PhotoWidgetCycleMode,
     val defaultShape: String,
     val defaultCornerRadius: Float,
     val defaultOpacity: Float,

@@ -54,7 +54,7 @@
     <string name="widget_defaults_explanation">Esses valores são aplicados somente ao criar um novo widget. Eles não têm efeito nos widgets existentes.</string>
     <string name="widget_defaults_source">Origem</string>
     <string name="widget_defaults_shuffle">Embaralhar</string>
-    <string name="widget_defaults_interval">Intervalo de troca</string>
+    <string name="widget_defaults_cycling">Ciclo de fotos</string>
     <string name="widget_defaults_shape">Forma</string>
     <string name="widget_defaults_corner_radius">Arredondamento</string>
     <string name="widget_defaults_opacity">Opacidade</string>
@@ -109,7 +109,15 @@
     <string name="photo_widget_configure_shuffle_on">Ligado</string>
     <string name="photo_widget_configure_shuffle_off">Desligado</string>
 
-    <string name="photo_widget_configure_select_interval">Intervalo de troca</string>
+    <string name="photo_widget_configure_select_cycling_mode">Ciclo de fotos</string>
+    <string name="photo_widget_configure_cycling_mode_interval">Intervalo</string>
+    <string name="photo_widget_configure_cycling_mode_schedule">Agendado</string>
+    <string name="photo_widget_configure_cycling_mode_disabled">Desativado</string>
+
+    <string name="photo_widget_configure_cycling_mode_interval_description">O widget irá mostrar a próxima foto a cada intervalo de tempo selecionado:</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description">O widget irá mostrar a próxima foto a cada horário selecionado:</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">O widget não irá mostrar a próxima foto automaticamente. Use a ação de toque para alternar entre as fotos, ou escolha outro modo.</string>
+
     <string name="photo_widget_configure_interval_current_label">A cada %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d segundo</item>
@@ -126,17 +134,24 @@
         <item quantity="many">%d horas</item>
         <item quantity="other">%d horas</item>
     </plurals>
-    <string name="photo_widget_configure_interval_current_disabled">Desativado</string>
     <string name="photo_widget_configure_interval_seconds_label">Segundos</string>
     <string name="photo_widget_configure_interval_minutes_label">Minutos</string>
     <string name="photo_widget_configure_interval_hours_label">Horas</string>
-    <string name="photo_widget_configure_interval_warning">O intervalo real pode ser mais longo às vezes devido a restrições impostas pelo Android para otimizar a duração da bateria</string>
-    <string name="photo_widget_configure_interval_enabled">Trocar fotos automaticamente de acordo com o intervalo escolhido</string>
+
+    <string name="photo_widget_configure_schedule_placeholder">Agende até 4 horários para alternar as fotos automaticamente.</string>
+    <string name="photo_widget_configure_schedule_add_new">Agendar novo</string>
+    <string name="photo_widget_configure_schedule_limit_reached">Máximo de 4 horários agendados</string>
+    <plurals name="photo_widget_configure_schedule_times">
+        <item quantity="one">%d horário agendado</item>
+        <item quantity="many">%d horários agendados</item>
+        <item quantity="other">%d horários agendados</item>
+    </plurals>
+
+    <string name="photo_widget_configure_interval_warning">The actual interval or scheduled time can vary due to restrictions imposed by Android to optimize battery life. To ensure it works as desired, grant the permission below</string>
 
     <string name="photo_widget_configure_interval_grant_permission">Dar permissão de alarme exato</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">Sobre esta permissão</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">O Android restringe atividades em segundo plano para otimizar a duração da bateria, o que pode levar a intervalos mais longos entre cada foto.\n\nSe você deseja que os widgets sejam atualizados precisamente no intervalo selecionado, abra as configurações e habilite esta permissão.</string>
-    <string name="photo_widget_configure_interval_permission_advised">Para intervalos em segundos, é altamente recomendável conceder permissão para alarmes exatos</string>
     <string name="photo_widget_configure_interval_open_settings">Abrir configurações</string>
 
     <string name="photo_widget_configure_offset">Deslocamento</string>
@@ -150,7 +165,7 @@
     <string name="photo_widget_configure_tap_action_none">Nenhuma</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Ver foto em tela cheia</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Ver na galeria</string>
-    <string name="photo_widget_configure_tap_action_flip_photo">Trocar foto</string>
+    <string name="photo_widget_configure_tap_action_flip_photo">Ver foto seguinte/anterior</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Abrir um app</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Aumentar o brilho automaticamente</string>
@@ -158,10 +173,9 @@
     <string name="photo_widget_configure_tap_action_flip_description">Toque na metade esquerda para ver a foto anterior e na metade direita para ver a próxima.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Escolher app</string>
 
-    <string name="photo_widget_configure_applied_shape">Forma</string>
-    <string name="photo_widget_configure_corner_radius">Arredondamento</string>
-
     <string name="photo_widget_configure_add_to_home">Adicionar à tela inicial</string>
+
+    <string name="photo_widget_time_picker_title">Escolha o horário</string>
 
     <!-- Help -->
     <string name="help_article_title_1">O widget não funciona após adicionado a tela inicial</string>
@@ -181,6 +195,7 @@
     <string name="photo_widget_action_continue">Continuar</string>
     <string name="photo_widget_action_cancel">Cancelar</string>
     <string name="photo_widget_action_apply">Aplicar</string>
+    <string name="photo_widget_action_confirm">Confirmar</string>
     <string name="photo_widget_action_got_it">Entendi</string>
 
     <!-- Content Description -->

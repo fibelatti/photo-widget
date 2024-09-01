@@ -53,7 +53,7 @@
     <string name="widget_defaults_explanation">Bu değerler yalnızca yeni bir widget oluştururken uygulanır. Mevcut widget\'lar üzerinde hiçbir etkisi yoktur.</string>
     <string name="widget_defaults_source">Kaynak</string>
     <string name="widget_defaults_shuffle">Karıştır</string>
-    <string name="widget_defaults_interval">Çevirme aralığı</string>
+    <string name="widget_defaults_cycling">Fotoğraf Döngüsü</string>
     <string name="widget_defaults_shape">Şekil</string>
     <string name="widget_defaults_corner_radius">Yuvarlaklık</string>
     <string name="widget_defaults_opacity">Opaklık</string>
@@ -108,7 +108,15 @@
     <string name="photo_widget_configure_shuffle_on">Açık</string>
     <string name="photo_widget_configure_shuffle_off">Kapalı</string>
 
-    <string name="photo_widget_configure_select_interval">Çevirme aralığı</string>
+    <string name="photo_widget_configure_select_cycling_mode">Fotoğraf Döngüsü</string>
+    <string name="photo_widget_configure_cycling_mode_interval">Aralık</string>
+    <string name="photo_widget_configure_cycling_mode_schedule">Zamanlama</string>
+    <string name="photo_widget_configure_cycling_mode_disabled">Devre dışı</string>
+
+    <string name="photo_widget_configure_cycling_mode_interval_description">Widget, belirli aralıklarla otomatik olarak bir sonraki fotoğrafa geçecektir:</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description">Widget, her gün belirlenen zamanlarda otomatik olarak bir sonraki fotoğrafa geçecektir:</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Widget, fotoğraflar arasında otomatik olarak geçiş yapmayacaktır. Fotoğraflar arasında geçiş yapmak için bir dokunma eylemi ayarlayın veya farklı bir mod seçin.</string>
+
     <string name="photo_widget_configure_interval_current_label">Her %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d saniye</item>
@@ -122,17 +130,23 @@
         <item quantity="one">%d saat</item>
         <item quantity="other">%d saat</item>
     </plurals>
-    <string name="photo_widget_configure_interval_current_disabled">Devre dışı</string>
     <string name="photo_widget_configure_interval_seconds_label">Saniye</string>
     <string name="photo_widget_configure_interval_minutes_label">Dakika</string>
     <string name="photo_widget_configure_interval_hours_label">Saat</string>
-    <string name="photo_widget_configure_interval_warning">Android\'in pil ömrünü optimize etmek için getirdiği kısıtlamalar nedeniyle, gerçek aralık bazen daha uzun olabilir</string>
-    <string name="photo_widget_configure_interval_enabled">Seçilen aralığa göre fotoğrafları otomatik olarak çevir</string>
+
+    <string name="photo_widget_configure_schedule_placeholder">Fotoğraflarınızı otomatik olarak değiştirmek için en fazla 4 zaman belirleyin.</string>
+    <string name="photo_widget_configure_schedule_add_new">Yeni ekle</string>
+    <string name="photo_widget_configure_schedule_limit_reached">Maksimum 4 zaman sınırına ulaşıldı</string>
+    <plurals name="photo_widget_configure_schedule_times">
+        <item quantity="one">1 zaman seçildi</item>
+        <item quantity="other">%d zaman seçildi</item>
+    </plurals>
+
+    <string name="photo_widget_configure_interval_warning">Gerçek aralık veya planlanan zaman, Android\'in pil ömrünü optimize etmek için uyguladığı kısıtlamalar nedeniyle değişebilir. İstediğiniz gibi çalışmasını sağlamak için aşağıdaki izni verin.</string>
 
     <string name="photo_widget_configure_interval_grant_permission">Kesin alarm izni ver</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">Bu izin hakkında</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">Android, pil ömrünü optimize etmek için arka plan çalışmalarını kısıtlar, bu da her fotoğraf arasındaki aralıkların daha uzun olmasına neden olabilir.\n\nWidget\'ların seçilen aralıkta tam olarak güncellenmesini istiyorsanız, ayarları açın ve bu izni etkinleştirin.</string>
-    <string name="photo_widget_configure_interval_permission_advised">Saniye cinsinden aralıklar için kesin alarm iznini vermeniz şiddetle tavsiye edilir</string>
     <string name="photo_widget_configure_interval_open_settings">Ayarları aç</string>
 
     <string name="photo_widget_configure_offset">Ofset</string>
@@ -146,7 +160,7 @@
     <string name="photo_widget_configure_tap_action_none">Hiçbiri</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Fotoğrafı tam ekranda görüntüle</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Galeride görüntüle</string>
-    <string name="photo_widget_configure_tap_action_flip_photo">Fotoğrafı çevir</string>
+    <string name="photo_widget_configure_tap_action_flip_photo">Sonraki/önceki fotoğrafı görüntüle</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Uygulama kısayolu</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Parlaklığı otomatik olarak artır</string>
@@ -154,10 +168,9 @@
     <string name="photo_widget_configure_tap_action_flip_description">Önceki fotoğrafı görüntülemek için sol yarıya, sonraki fotoğrafı görüntülemek için sağ yarıya dokunun.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Uygulama seç</string>
 
-    <string name="photo_widget_configure_applied_shape">Şekil</string>
-    <string name="photo_widget_configure_corner_radius">Yuvarlaklık</string>
-
     <string name="photo_widget_configure_add_to_home">Ana ekrana ekle</string>
+
+    <string name="photo_widget_time_picker_title">Zamanı seçin</string>
 
     <!-- Help -->
     <string name="help_article_title_1">Widget\'ı ana ekrana eklemek çalışmıyor</string>
@@ -177,6 +190,7 @@
     <string name="photo_widget_action_continue">Devam et</string>
     <string name="photo_widget_action_cancel">İptal</string>
     <string name="photo_widget_action_apply">Uygula</string>
+    <string name="photo_widget_action_confirm">Onaylamak</string>
     <string name="photo_widget_action_got_it">Anladım</string>
 
     <!-- Content Description -->

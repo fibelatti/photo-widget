@@ -10,7 +10,9 @@ import androidx.core.content.getSystemService
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
+import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.util.Calendar
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.launch
@@ -23,21 +25,40 @@ class PhotoWidgetAlarmManager @Inject constructor(
 ) {
 
     private val alarmManager: AlarmManager by lazy { requireNotNull(context.getSystemService()) }
+    private val canScheduleExactAlarms by lazy {
+        AlarmManagerCompat.canScheduleExactAlarms(alarmManager).also {
+            Timber.d("Schedule exact alarms permission granted: $it")
+        }
+    }
 
     fun setup(appWidgetId: Int) {
         Timber.d("Setting alarm for widget (appWidgetId=$appWidgetId)")
 
-        val widgetInterval = photoWidgetStorage.getWidgetInterval(appWidgetId = appWidgetId)
+        when (val cycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = appWidgetId)) {
+            is PhotoWidgetCycleMode.Interval -> setupIntervalAlarm(cycleMode = cycleMode, appWidgetId = appWidgetId)
+            is PhotoWidgetCycleMode.Schedule -> setupScheduleAlarm(cycleMode = cycleMode, appWidgetId = appWidgetId)
+            is PhotoWidgetCycleMode.Disabled -> return
+        }
+    }
+
+    fun cancel(appWidgetId: Int) {
+        Timber.d("Cancelling alarm for widget (appWidgetId=$appWidgetId)")
+
+        alarmManager.cancel(PhotoWidgetProvider.flipPhotoPendingIntent(context = context, appWidgetId = appWidgetId))
+        alarmManager.cancel(ExactRepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId))
+    }
+
+    private fun setupIntervalAlarm(cycleMode: PhotoWidgetCycleMode.Interval, appWidgetId: Int) {
+        val widgetInterval = cycleMode.loopingInterval
         val intervalMillis = widgetInterval.timeUnit.toMillis(widgetInterval.repeatInterval)
 
-        if (AlarmManagerCompat.canScheduleExactAlarms(alarmManager)) {
+        if (canScheduleExactAlarms) {
             try {
-                Timber.d("Permission was granted, scheduling exact alarm")
-
                 alarmManager.setExact(
                     /* type = */ AlarmManager.RTC,
                     /* triggerAtMillis = */ System.currentTimeMillis() + intervalMillis,
-                    /* operation = */ ExactRepeatingAlarmReceiver.pendingIntent(
+                    /* operation = */
+                    ExactRepeatingAlarmReceiver.pendingIntent(
                         context = context,
                         appWidgetId = appWidgetId,
                     ),
@@ -48,8 +69,6 @@ class PhotoWidgetAlarmManager @Inject constructor(
                 setRepeatingAlarm(intervalMillis = intervalMillis, appWidgetId = appWidgetId)
             }
         } else {
-            Timber.d("Permission was not granted, scheduling inexact alarm")
-
             setRepeatingAlarm(intervalMillis = intervalMillis, appWidgetId = appWidgetId)
         }
     }
@@ -63,25 +82,67 @@ class PhotoWidgetAlarmManager @Inject constructor(
         )
     }
 
-    fun cancel(appWidgetId: Int) {
-        Timber.d("Cancelling alarm for widget (appWidgetId=$appWidgetId)")
+    private fun setupScheduleAlarm(cycleMode: PhotoWidgetCycleMode.Schedule, appWidgetId: Int) {
+        val calendar = Calendar.getInstance()
 
-        alarmManager.cancel(PhotoWidgetProvider.flipPhotoPendingIntent(context = context, appWidgetId = appWidgetId))
-        alarmManager.cancel(ExactRepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId))
+        val nextSameDayTrigger = cycleMode.triggers.firstOrNull { (hour, minute) ->
+            hour >= calendar.get(Calendar.HOUR_OF_DAY) && minute > calendar.get(Calendar.MINUTE)
+        }
+
+        calendar.apply {
+            if (nextSameDayTrigger != null) {
+                set(Calendar.HOUR_OF_DAY, nextSameDayTrigger.hour)
+                set(Calendar.MINUTE, nextSameDayTrigger.minute)
+            } else {
+                val nextTrigger = cycleMode.triggers.first()
+
+                add(Calendar.DAY_OF_MONTH, 1)
+                set(Calendar.HOUR_OF_DAY, nextTrigger.hour)
+                set(Calendar.MINUTE, nextTrigger.minute)
+            }
+
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+
+        if (canScheduleExactAlarms) {
+            try {
+                alarmManager.setExactAndAllowWhileIdle(
+                    /* type = */ AlarmManager.RTC,
+                    /* triggerAtMillis = */ calendar.timeInMillis,
+                    /* operation = */
+                    ExactRepeatingAlarmReceiver.pendingIntent(
+                        context = context,
+                        appWidgetId = appWidgetId,
+                    ),
+                )
+            } catch (_: SecurityException) {
+                Timber.d("SecurityException: fallback to inexact alarm")
+                setAlarm(triggerAtMillis = calendar.timeInMillis, appWidgetId = appWidgetId)
+            }
+        } else {
+            setAlarm(triggerAtMillis = calendar.timeInMillis, appWidgetId = appWidgetId)
+        }
+    }
+
+    private fun setAlarm(triggerAtMillis: Long, appWidgetId: Int) {
+        alarmManager.setAndAllowWhileIdle(
+            /* type = */ AlarmManager.RTC,
+            /* triggerAtMillis = */ triggerAtMillis,
+            /* operation = */ ExactRepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId),
+        )
     }
 }
 
 class ExactRepeatingAlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        runCatching {
-            val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
-
-            entryPoint.coroutineScope().launch {
-                entryPoint.flipPhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
+        entryPoint<PhotoWidgetEntryPoint>(context).runCatching {
+            coroutineScope().launch {
+                flipPhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
             }
 
-            entryPoint.photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
+            photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
         }
     }
 

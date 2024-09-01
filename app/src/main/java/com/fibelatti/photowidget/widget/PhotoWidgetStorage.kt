@@ -11,11 +11,13 @@ import com.fibelatti.photowidget.model.LegacyPhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.minutesToLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.secondsToLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
@@ -396,15 +398,64 @@ class PhotoWidgetStorage @Inject constructor(
         )
     }
 
-    fun saveWidgetInterval(appWidgetId: Int, interval: PhotoWidgetLoopingInterval) {
+    fun saveWidgetCycleMode(appWidgetId: Int, cycleMode: PhotoWidgetCycleMode) {
         sharedPreferences.edit {
             remove("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId")
             remove("${PreferencePrefix.LEGACY_INTERVAL_MINUTES}$appWidgetId")
-            putLong("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId", interval.toSeconds())
+
+            when (cycleMode) {
+                is PhotoWidgetCycleMode.Interval -> {
+                    remove("${PreferencePrefix.SCHEDULE}$appWidgetId")
+                    remove("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId")
+
+                    putLong("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId", cycleMode.loopingInterval.toSeconds())
+                }
+
+                is PhotoWidgetCycleMode.Schedule -> {
+                    remove("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId")
+                    remove("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId")
+
+                    putStringSet(
+                        "${PreferencePrefix.SCHEDULE}$appWidgetId",
+                        cycleMode.triggers.map { (hour, minute) -> "$hour:$minute" }.toSet(),
+                    )
+                }
+
+                is PhotoWidgetCycleMode.Disabled -> {
+                    remove("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId")
+                    remove("${PreferencePrefix.SCHEDULE}$appWidgetId")
+
+                    putBoolean("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId", false)
+                }
+            }
         }
     }
 
-    fun getWidgetInterval(appWidgetId: Int): PhotoWidgetLoopingInterval {
+    fun getWidgetCycleMode(appWidgetId: Int): PhotoWidgetCycleMode {
+        val containsEnabled = sharedPreferences.contains("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId")
+        val containsInterval = sharedPreferences.contains("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId") ||
+            sharedPreferences.contains("${PreferencePrefix.LEGACY_INTERVAL_MINUTES}$appWidgetId") ||
+            sharedPreferences.contains("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId")
+
+        return when {
+            containsEnabled && getWidgetIntervalEnabled(appWidgetId) -> PhotoWidgetCycleMode.Disabled
+
+            containsInterval -> PhotoWidgetCycleMode.Interval(loopingInterval = getWidgetInterval(appWidgetId))
+
+            sharedPreferences.contains("${PreferencePrefix.SCHEDULE}$appWidgetId") -> {
+                PhotoWidgetCycleMode.Schedule(
+                    triggers = sharedPreferences.getStringSet("${PreferencePrefix.SCHEDULE}$appWidgetId", null)
+                        .orEmpty()
+                        .map(Time::fromString)
+                        .toSet(),
+                )
+            }
+
+            else -> userPreferencesStorage.defaultCycleMode
+        }
+    }
+
+    private fun getWidgetInterval(appWidgetId: Int): PhotoWidgetLoopingInterval {
         val legacyName = sharedPreferences.getString("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId", null)
         val legacyValue = enumValueOfOrNull<LegacyPhotoWidgetLoopingInterval>(legacyName)
         val legacyMinutes = sharedPreferences.getLong("${PreferencePrefix.LEGACY_INTERVAL_MINUTES}$appWidgetId", 0)
@@ -422,20 +473,14 @@ class PhotoWidgetStorage @Inject constructor(
 
             seconds > 0 -> seconds.secondsToLoopingInterval()
 
-            else -> userPreferencesStorage.defaultInterval
+            else -> PhotoWidgetLoopingInterval.ONE_DAY
         }
     }
 
-    fun saveWidgetIntervalEnabled(appWidgetId: Int, value: Boolean) {
-        sharedPreferences.edit {
-            putBoolean("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId", value)
-        }
-    }
-
-    fun getWidgetIntervalEnabled(appWidgetId: Int): Boolean {
+    private fun getWidgetIntervalEnabled(appWidgetId: Int): Boolean {
         return sharedPreferences.getBoolean(
             "${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId",
-            userPreferencesStorage.defaultIntervalEnabled,
+            false,
         )
     }
 
@@ -681,6 +726,7 @@ class PhotoWidgetStorage @Inject constructor(
          */
         INTERVAL_SECONDS(value = "appwidget_interval_seconds_"),
         INTERVAL_ENABLED(value = "appwidget_interval_enabled_"),
+        SCHEDULE(value = "appwidget_schedule_"),
         INDEX(value = "appwidget_index_"),
         PAST_INDICES(value = "appwidget_past_indices_"),
         RATIO(value = "appwidget_aspect_ratio_"),

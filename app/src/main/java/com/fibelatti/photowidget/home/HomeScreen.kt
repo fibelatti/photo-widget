@@ -90,7 +90,7 @@ import com.fibelatti.photowidget.configure.ShapedPhoto
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
@@ -843,7 +843,7 @@ private fun MyWidgetsScreenPreview() {
                     source = PhotoWidgetSource.PHOTOS,
                     photos = listOf(LocalPhoto(name = "photo-1")),
                     shuffle = false,
-                    loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
+                    cycleMode = PhotoWidgetCycleMode.DEFAULT,
                     tapAction = PhotoWidgetTapAction.VIEW_FULL_SCREEN,
                     aspectRatio = when {
                         index % 3 == 0 -> PhotoWidgetAspectRatio.WIDE

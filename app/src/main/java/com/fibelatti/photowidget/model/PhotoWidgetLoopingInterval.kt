@@ -76,9 +76,9 @@ data class PhotoWidgetLoopingInterval(
 }
 
 /**
- * This enum used to act as a set of pre-defined intervals for flipping widgets. This has been migrated for a more
- * customizable approach where users can pick their intervals instead. This class is kept to allow migrating the
- * persisted data of any widgets that has been configured with it.
+ * This enum used to act as a set of pre-defined intervals for cycling photos in widgets.
+ * This has been migrated for a more customizable approach where users can pick their intervals instead.
+ * This class is kept to allow migrating the persisted data of any widgets that has been configured with it.
  */
 @Suppress("Unused")
 enum class LegacyPhotoWidgetLoopingInterval(

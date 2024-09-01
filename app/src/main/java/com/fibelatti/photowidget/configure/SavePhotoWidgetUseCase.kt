@@ -38,14 +38,9 @@ class SavePhotoWidgetUseCase @Inject constructor(
             value = photoWidget.canShuffle && photoWidget.shuffle,
         )
 
-        photoWidgetStorage.saveWidgetIntervalEnabled(
+        photoWidgetStorage.saveWidgetCycleMode(
             appWidgetId = appWidgetId,
-            value = photoWidget.loopingEnabled,
-        )
-
-        photoWidgetStorage.saveWidgetInterval(
-            appWidgetId = appWidgetId,
-            interval = photoWidget.loopingInterval,
+            cycleMode = photoWidget.cycleMode,
         )
 
         photoWidgetStorage.saveWidgetTapAction(
@@ -99,7 +94,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
             padding = photoWidget.padding,
         )
 
-        if (photoWidget.loopingEnabled) {
+        if (photoWidget.cyclingEnabled) {
             photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
         } else {
             photoWidgetAlarmManager.cancel(appWidgetId = appWidgetId)

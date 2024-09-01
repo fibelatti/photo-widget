@@ -87,7 +87,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
@@ -124,7 +124,7 @@ fun PhotoWidgetConfigureScreen(
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
-    onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval, intervalBasedLoopingEnabled: Boolean) -> Unit,
+    onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onTapActionPickerClick: (PhotoWidgetTapAction, appShortcut: String?, increaseBrightness: Boolean) -> Unit,
     onShapeChange: (String) -> Unit,
     onCornerRadiusChange: (Float) -> Unit,
@@ -161,7 +161,7 @@ fun PhotoWidgetConfigureScreen(
                 onPhotoPickerClick = onPhotoPickerClick,
                 onDirPickerClick = onDirPickerClick,
                 onPhotoClick = onPhotoClick,
-                onLoopingIntervalPickerClick = onLoopingIntervalPickerClick,
+                onCycleModePickerClick = onCycleModePickerClick,
                 onTapActionPickerClick = onTapActionPickerClick,
                 onShapeClick = {
                     ComposeBottomSheetDialog(localContext) {
@@ -259,7 +259,7 @@ private fun PhotoWidgetConfigureContent(
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
-    onLoopingIntervalPickerClick: (PhotoWidgetLoopingInterval, intervalBasedLoopingEnabled: Boolean) -> Unit,
+    onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onTapActionPickerClick: (PhotoWidgetTapAction, appShortcut: String?, increaseBrightness: Boolean) -> Unit,
     onShapeClick: () -> Unit,
     onCornerRadiusClick: () -> Unit,
@@ -409,27 +409,34 @@ private fun PhotoWidgetConfigureContent(
 
             if (photoWidget.photos.size > 1) {
                 PickerDefault(
-                    title = stringResource(id = R.string.widget_defaults_interval),
-                    currentValue = if (photoWidget.intervalBasedLoopingEnabled) {
-                        val intervalString = pluralStringResource(
-                            id = when (photoWidget.loopingInterval.timeUnit) {
-                                TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
-                                TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
-                                else -> R.plurals.photo_widget_configure_interval_current_hours
-                            },
-                            count = photoWidget.loopingInterval.repeatInterval.toInt(),
-                            photoWidget.loopingInterval.repeatInterval,
-                        )
-                        stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
-                    } else {
-                        stringResource(id = R.string.photo_widget_configure_interval_current_disabled)
+                    title = stringResource(id = R.string.widget_defaults_cycling),
+                    currentValue = when (photoWidget.cycleMode) {
+                        is PhotoWidgetCycleMode.Interval -> {
+                            val intervalString = pluralStringResource(
+                                id = when (photoWidget.cycleMode.loopingInterval.timeUnit) {
+                                    TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
+                                    TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
+                                    else -> R.plurals.photo_widget_configure_interval_current_hours
+                                },
+                                count = photoWidget.cycleMode.loopingInterval.repeatInterval.toInt(),
+                                photoWidget.cycleMode.loopingInterval.repeatInterval,
+                            )
+                            stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
+                        }
+
+                        is PhotoWidgetCycleMode.Schedule -> {
+                            pluralStringResource(
+                                id = R.plurals.photo_widget_configure_schedule_times,
+                                count = photoWidget.cycleMode.triggers.size,
+                                photoWidget.cycleMode.triggers.size,
+                            )
+                        }
+
+                        is PhotoWidgetCycleMode.Disabled -> {
+                            stringResource(id = R.string.photo_widget_configure_cycling_mode_disabled)
+                        }
                     },
-                    onClick = {
-                        onLoopingIntervalPickerClick(
-                            photoWidget.loopingInterval,
-                            photoWidget.intervalBasedLoopingEnabled,
-                        )
-                    },
+                    onClick = { onCycleModePickerClick(photoWidget.cycleMode) },
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
@@ -1130,7 +1137,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
                     LocalPhoto(name = "photo-2"),
                 ),
                 shuffle = false,
-                loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
+                cycleMode = PhotoWidgetCycleMode.DEFAULT,
                 tapAction = PhotoWidgetTapAction.VIEW_FULL_SCREEN,
                 aspectRatio = PhotoWidgetAspectRatio.SQUARE,
                 shapeId = PhotoWidget.DEFAULT_SHAPE_ID,
@@ -1149,7 +1156,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onPhotoPickerClick = {},
             onDirPickerClick = {},
             onPhotoClick = {},
-            onLoopingIntervalPickerClick = { _, _ -> },
+            onCycleModePickerClick = {},
             onTapActionPickerClick = { _, _, _ -> },
             onShapeChange = {},
             onCornerRadiusChange = {},
@@ -1175,7 +1182,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
                     LocalPhoto(name = "photo-2"),
                 ),
                 shuffle = false,
-                loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY,
+                cycleMode = PhotoWidgetCycleMode.DEFAULT,
                 tapAction = PhotoWidgetTapAction.VIEW_FULL_SCREEN,
                 aspectRatio = PhotoWidgetAspectRatio.TALL,
                 shapeId = PhotoWidget.DEFAULT_SHAPE_ID,
@@ -1195,7 +1202,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onPhotoPickerClick = {},
             onDirPickerClick = {},
             onPhotoClick = {},
-            onLoopingIntervalPickerClick = { _, _ -> },
+            onCycleModePickerClick = {},
             onTapActionPickerClick = { _, _, _ -> },
             onShapeChange = {},
             onCornerRadiusChange = {},

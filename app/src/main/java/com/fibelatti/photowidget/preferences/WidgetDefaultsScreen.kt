@@ -55,10 +55,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.ColoredShape
-import com.fibelatti.photowidget.configure.PhotoWidgetIntervalPicker
+import com.fibelatti.photowidget.configure.PhotoWidgetCycleModePicker
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
@@ -93,14 +93,10 @@ fun WidgetDefaultsScreen(
         },
         onShuffleChange = preferencesViewModel::saveDefaultShuffle,
         onIntervalClick = {
-            PhotoWidgetIntervalPicker.show(
+            PhotoWidgetCycleModePicker.show(
                 context = localContext,
-                currentInterval = preferences.defaultInterval,
-                currentIntervalBasedLoopingEnabled = preferences.defaultIntervalEnabled,
-                onApplyClick = { newInterval, intervalBasedLoopingEnabled ->
-                    preferencesViewModel.saveDefaultInterval(newInterval)
-                    preferencesViewModel.saveDefaultIntervalEnabled(intervalBasedLoopingEnabled)
-                },
+                cycleMode = preferences.defaultCycleMode,
+                onApplyClick = preferencesViewModel::saveDefaultCycleMode,
             )
         },
         onShapeClick = {
@@ -209,20 +205,32 @@ private fun WidgetDefaultsScreen(
             )
 
             PickerDefault(
-                title = stringResource(id = R.string.widget_defaults_interval),
-                currentValue = if (userPreferences.defaultIntervalEnabled) {
-                    val intervalString = pluralStringResource(
-                        id = when (userPreferences.defaultInterval.timeUnit) {
-                            TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
-                            TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
-                            else -> R.plurals.photo_widget_configure_interval_current_hours
-                        },
-                        count = userPreferences.defaultInterval.repeatInterval.toInt(),
-                        userPreferences.defaultInterval.repeatInterval,
-                    )
-                    stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
-                } else {
-                    stringResource(id = R.string.photo_widget_configure_interval_current_disabled)
+                title = stringResource(id = R.string.widget_defaults_cycling),
+                currentValue = when (userPreferences.defaultCycleMode) {
+                    is PhotoWidgetCycleMode.Interval -> {
+                        val intervalString = pluralStringResource(
+                            id = when (userPreferences.defaultCycleMode.loopingInterval.timeUnit) {
+                                TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
+                                TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
+                                else -> R.plurals.photo_widget_configure_interval_current_hours
+                            },
+                            count = userPreferences.defaultCycleMode.loopingInterval.repeatInterval.toInt(),
+                            userPreferences.defaultCycleMode.loopingInterval.repeatInterval,
+                        )
+                        stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
+                    }
+
+                    is PhotoWidgetCycleMode.Schedule -> {
+                        pluralStringResource(
+                            id = R.plurals.photo_widget_configure_schedule_times,
+                            count = userPreferences.defaultCycleMode.triggers.size,
+                            userPreferences.defaultCycleMode.triggers.size,
+                        )
+                    }
+
+                    is PhotoWidgetCycleMode.Disabled -> {
+                        stringResource(id = R.string.photo_widget_configure_cycling_mode_disabled)
+                    }
                 },
                 onClick = onIntervalClick,
             )
@@ -586,8 +594,7 @@ private fun WidgetDefaultsScreenPreview() {
                 dynamicColors = true,
                 defaultSource = PhotoWidgetSource.PHOTOS,
                 defaultShuffle = false,
-                defaultIntervalEnabled = false,
-                defaultInterval = PhotoWidgetLoopingInterval.ONE_DAY,
+                defaultCycleMode = PhotoWidgetCycleMode.DEFAULT,
                 defaultShape = PhotoWidget.DEFAULT_SHAPE_ID,
                 defaultCornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                 defaultOpacity = PhotoWidget.DEFAULT_OPACITY,

@@ -5,13 +5,13 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import timber.log.Timber
 
-class FlipPhotoUseCase @Inject constructor(
+class CyclePhotoUseCase @Inject constructor(
     @ApplicationContext private val context: Context,
     private val photoWidgetStorage: PhotoWidgetStorage,
 ) {
 
     suspend operator fun invoke(appWidgetId: Int, flipBackwards: Boolean = false) {
-        Timber.d("Flipping widget (appWidgetId=$appWidgetId, flipBackwards=$flipBackwards)")
+        Timber.d("Cycling photo (appWidgetId=$appWidgetId, flipBackwards=$flipBackwards)")
 
         val count = photoWidgetStorage.getWidgetPhotoCount(appWidgetId = appWidgetId)
 

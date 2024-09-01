@@ -25,7 +25,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.AppTheme
@@ -102,7 +102,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     onPhotoPickerClick = ::launchPhotoPicker,
                     onDirPickerClick = ::launchFolderPicker,
                     onPhotoClick = viewModel::previewPhoto,
-                    onLoopingIntervalPickerClick = ::showIntervalPicker,
+                    onCycleModePickerClick = ::showCycleModePicker,
                     onTapActionPickerClick = ::showTapActionPicker,
                     onShapeChange = viewModel::shapeSelected,
                     onCornerRadiusChange = viewModel::cornerRadiusSelected,
@@ -267,15 +267,11 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             ?: run { viewModel.cropCancelled() }
     }
 
-    private fun showIntervalPicker(
-        loopingInterval: PhotoWidgetLoopingInterval,
-        intervalBasedLoopingEnabled: Boolean,
-    ) {
-        PhotoWidgetIntervalPicker.show(
+    private fun showCycleModePicker(cycleMode: PhotoWidgetCycleMode) {
+        PhotoWidgetCycleModePicker.show(
             context = this,
-            currentInterval = loopingInterval,
-            currentIntervalBasedLoopingEnabled = intervalBasedLoopingEnabled,
-            onApplyClick = viewModel::intervalSelected,
+            cycleMode = cycleMode,
+            onApplyClick = viewModel::cycleModeSelected,
         )
     }
 

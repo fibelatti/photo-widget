@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.savedState
@@ -335,17 +335,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun intervalSelected(
-        interval: PhotoWidgetLoopingInterval,
-        intervalBasedLoopingEnabled: Boolean,
-    ) {
+    fun cycleModeSelected(cycleMode: PhotoWidgetCycleMode) {
         _state.update { current ->
-            current.copy(
-                photoWidget = current.photoWidget.copy(
-                    loopingInterval = interval,
-                    intervalBasedLoopingEnabled = intervalBasedLoopingEnabled,
-                ),
-            )
+            current.copy(photoWidget = current.photoWidget.copy(cycleMode = cycleMode))
         }
     }
 

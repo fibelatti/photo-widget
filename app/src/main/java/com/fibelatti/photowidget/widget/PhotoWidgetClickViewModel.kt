@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 class PhotoWidgetClickViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
-    private val flipPhotoUseCase: FlipPhotoUseCase,
+    private val cyclePhotoUseCase: CyclePhotoUseCase,
     private val hintStorage: HintStorage,
 ) : ViewModel() {
 
@@ -50,7 +50,7 @@ class PhotoWidgetClickViewModel @Inject constructor(
     fun flip(backwards: Boolean = false) {
         loadWidgetJob?.cancel()
         loadWidgetJob = viewModelScope.launch {
-            flipPhotoUseCase(appWidgetId = appWidgetId, flipBackwards = backwards)
+            cyclePhotoUseCase(appWidgetId = appWidgetId, flipBackwards = backwards)
 
             loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
                 .onEach(::updateState)
