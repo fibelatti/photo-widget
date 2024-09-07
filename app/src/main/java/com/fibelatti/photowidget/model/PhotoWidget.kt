@@ -41,7 +41,7 @@ data class PhotoWidget(
     companion object {
 
         const val MAX_WIDGET_DIMENSION: Int = 720
-        const val MAX_STORAGE_DIMENSION: Int = 1_920
+        const val MAX_STORAGE_DIMENSION: Int = 3_840
 
         const val DEFAULT_SHAPE_ID = "rounded-square"
         const val DEFAULT_CORNER_RADIUS: Float = 64f
