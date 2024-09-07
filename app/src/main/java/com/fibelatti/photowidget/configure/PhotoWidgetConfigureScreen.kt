@@ -102,6 +102,7 @@ import com.fibelatti.photowidget.preferences.ShapeDefault
 import com.fibelatti.photowidget.preferences.ShapePicker
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.photowidget.ui.LoadingIndicator
+import com.fibelatti.ui.foundation.grayScale
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
@@ -124,6 +125,7 @@ fun PhotoWidgetConfigureScreen(
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
+    onPendingDeletionPhotoClick: (LocalPhoto) -> Unit,
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onTapActionPickerClick: (PhotoWidgetTapAction, appShortcut: String?, increaseBrightness: Boolean) -> Unit,
     onShapeChange: (String) -> Unit,
@@ -161,6 +163,7 @@ fun PhotoWidgetConfigureScreen(
                 onPhotoPickerClick = onPhotoPickerClick,
                 onDirPickerClick = onDirPickerClick,
                 onPhotoClick = onPhotoClick,
+                onPendingDeletionPhotoClick = onPendingDeletionPhotoClick,
                 onCycleModePickerClick = onCycleModePickerClick,
                 onTapActionPickerClick = onTapActionPickerClick,
                 onShapeClick = {
@@ -259,6 +262,7 @@ private fun PhotoWidgetConfigureContent(
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
+    onPendingDeletionPhotoClick: (LocalPhoto) -> Unit,
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onTapActionPickerClick: (PhotoWidgetTapAction, appShortcut: String?, increaseBrightness: Boolean) -> Unit,
     onShapeClick: () -> Unit,
@@ -339,6 +343,18 @@ private fun PhotoWidgetConfigureContent(
                 cornerRadius = photoWidget.cornerRadius,
                 opacity = photoWidget.opacity,
             )
+
+            AnimatedVisibility(
+                visible = photoWidget.photosPendingDeletion.isNotEmpty(),
+            ) {
+                PendingDeletionPhotoPicker(
+                    photos = photoWidget.photosPendingDeletion,
+                    onPhotoClick = onPendingDeletionPhotoClick,
+                    aspectRatio = photoWidget.aspectRatio,
+                    shapeId = photoWidget.shapeId,
+                    cornerRadius = photoWidget.cornerRadius,
+                )
+            }
 
             PickerDefault(
                 title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
@@ -778,6 +794,55 @@ private fun PhotoPicker(
 }
 
 @Composable
+private fun PendingDeletionPhotoPicker(
+    photos: List<LocalPhoto>,
+    onPhotoClick: (LocalPhoto) -> Unit,
+    aspectRatio: PhotoWidgetAspectRatio,
+    shapeId: String,
+    cornerRadius: Float,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Text(
+            text = stringResource(R.string.photo_widget_configure_photos_pending_deletion),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.titleMedium,
+        )
+
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            items(photos) { photo ->
+                ShapedPhoto(
+                    photo = photo,
+                    aspectRatio = aspectRatio,
+                    shapeId = shapeId,
+                    cornerRadius = cornerRadius,
+                    opacity = PhotoWidget.DEFAULT_OPACITY,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(ratio = aspectRatio.aspectRatio)
+                        .grayScale()
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            role = Role.Image,
+                            onClick = { onPhotoClick(photo) },
+                        ),
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun OffsetPicker(
     horizontalOffset: Int,
     verticalOffset: Int,
@@ -1156,6 +1221,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onPhotoPickerClick = {},
             onDirPickerClick = {},
             onPhotoClick = {},
+            onPendingDeletionPhotoClick = {},
             onCycleModePickerClick = {},
             onTapActionPickerClick = { _, _, _ -> },
             onShapeChange = {},
@@ -1202,6 +1268,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onPhotoPickerClick = {},
             onDirPickerClick = {},
             onPhotoClick = {},
+            onPendingDeletionPhotoClick = {},
             onCycleModePickerClick = {},
             onTapActionPickerClick = { _, _, _ -> },
             onShapeChange = {},

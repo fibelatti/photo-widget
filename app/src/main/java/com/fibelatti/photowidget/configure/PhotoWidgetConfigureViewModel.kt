@@ -294,15 +294,31 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
     fun photoRemoved(photo: LocalPhoto) {
         _state.update { current ->
+            val removedPhoto = current.photoWidget.photos.first { it.name == photo.name }
             val updatedPhotos = current.photoWidget.photos.filterNot { it.name == photo.name }
             current.copy(
-                photoWidget = current.photoWidget.copy(photos = updatedPhotos),
+                photoWidget = current.photoWidget.copy(
+                    photos = updatedPhotos,
+                    photosPendingDeletion = current.photoWidget.photosPendingDeletion + removedPhoto,
+                ),
                 selectedPhoto = if (current.selectedPhoto?.name == photo.name) {
                     updatedPhotos.firstOrNull()
                 } else {
                     current.selectedPhoto
                 },
-                markedForDeletion = current.markedForDeletion.plus(photo.name),
+                markedForDeletion = current.markedForDeletion + photo.name,
+            )
+        }
+    }
+
+    fun restorePhoto(photo: LocalPhoto) {
+        _state.update { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(
+                    photos = current.photoWidget.photos + photo,
+                    photosPendingDeletion = current.photoWidget.photosPendingDeletion.filterNot { it.name == photo.name },
+                ),
+                markedForDeletion = current.markedForDeletion - photo.name,
             )
         }
     }
@@ -461,20 +477,14 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     }
 
     fun widgetAdded() {
-        restoreFromId?.let {
-            viewModelScope.launch {
-                photoWidgetStorage.deleteWidgetData(appWidgetId = it)
-            }
-        }
-
         viewModelScope.launch {
             withContext(NonCancellable) {
-                _state.value.markedForDeletion.forEach { photoName ->
-                    photoWidgetStorage.deleteWidgetPhoto(
-                        appWidgetId = appWidgetId,
-                        photoName = photoName,
-                    )
-                }
+                restoreFromId?.let { photoWidgetStorage.deleteWidgetData(appWidgetId = it) }
+
+                photoWidgetStorage.markPhotosForDeletion(
+                    appWidgetId = appWidgetId,
+                    photoNames = _state.value.markedForDeletion,
+                )
             }
         }
     }

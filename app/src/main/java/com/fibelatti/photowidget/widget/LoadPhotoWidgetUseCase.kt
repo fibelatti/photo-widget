@@ -41,6 +41,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             emit(
                 widget.copy(
                     photos = getWidgetPhotos(appWidgetId = appWidgetId),
+                    photosPendingDeletion = getPendingDeletionPhotos(appWidgetId = appWidgetId),
                     isLoading = false,
                 ),
             )

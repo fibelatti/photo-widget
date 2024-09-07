@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * It's now possible to schedule times to cycle through photos
+* It's now possible to restore recently deleted photos (photo widget only, for
+  photos deleted after this update)
 
 ### Changed
 

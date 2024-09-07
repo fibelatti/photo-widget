@@ -39,6 +39,7 @@ import timber.log.Timber
 class PhotoWidgetStorage @Inject constructor(
     @ApplicationContext private val context: Context,
     private val photoWidgetOrderDao: PhotoWidgetOrderDao,
+    private val pendingDeletionWidgetPhotoDao: PendingDeletionWidgetPhotoDao,
     private val decoder: PhotoDecoder,
     private val userPreferencesStorage: UserPreferencesStorage,
 ) {
@@ -177,7 +178,12 @@ class PhotoWidgetStorage @Inject constructor(
                     .sum()
             }
         } else {
-            getWidgetDir(appWidgetId = appWidgetId).list { _, name -> name != "original" }?.size ?: 0
+            val pendingDeletionPhotos = getPendingDeletionPhotoIds(appWidgetId = appWidgetId)
+
+            getWidgetDir(appWidgetId = appWidgetId).list { _, name -> name != "original" }
+                .orEmpty()
+                .subtract(pendingDeletionPhotos)
+                .size
         }
     }
 
@@ -218,9 +224,12 @@ class PhotoWidgetStorage @Inject constructor(
     suspend fun getWidgetPhotos(appWidgetId: Int): List<LocalPhoto> = withContext(Dispatchers.IO) {
         Timber.d("Retrieving photos (appWidgetId=$appWidgetId)")
 
+        val pendingDeletionPhotos = getPendingDeletionPhotoIds(appWidgetId = appWidgetId)
+
         val croppedPhotos = getWidgetDir(appWidgetId = appWidgetId).let { dir ->
             dir.list { _, name -> name != "original" }
                 .orEmpty()
+                .subtract(pendingDeletionPhotos)
                 .map { file -> LocalPhoto(name = file, path = "$dir/$file") }
         }
         val dict: Map<String, LocalPhoto> = croppedPhotos.associateBy { it.name }
@@ -238,6 +247,27 @@ class PhotoWidgetStorage @Inject constructor(
                 .ifEmpty { dict.keys }
                 .mapNotNull { dict[it] }
         }.also { Timber.d("Total photos found: ${it.size}") }
+    }
+
+    suspend fun getPendingDeletionPhotos(appWidgetId: Int): List<LocalPhoto> = withContext(Dispatchers.IO) {
+        if (PhotoWidgetSource.DIRECTORY == getWidgetSource(appWidgetId = appWidgetId)) {
+            return@withContext emptyList()
+        }
+
+        val pendingDeletionPhotos = getPendingDeletionPhotoIds(appWidgetId = appWidgetId)
+
+        getWidgetDir(appWidgetId = appWidgetId).let { dir ->
+            dir.list { _, name -> name != "original" }
+                .orEmpty()
+                .intersect(pendingDeletionPhotos)
+                .map { file -> LocalPhoto(name = file, path = "$dir/$file") }
+        }
+    }
+
+    private suspend fun getPendingDeletionPhotoIds(appWidgetId: Int): Set<String> {
+        return pendingDeletionWidgetPhotoDao.getPendingDeletionPhotos(widgetId = appWidgetId)
+            .map { it.photoId }
+            .toSet()
     }
 
     private suspend fun getDirectoryPhotos(
@@ -345,7 +375,22 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
-    fun deleteWidgetPhoto(appWidgetId: Int, photoName: String) {
+    suspend fun markPhotosForDeletion(appWidgetId: Int, photoNames: Set<String>) {
+        val deletionTimestamp = System.currentTimeMillis() + DELETION_THRESHOLD_MILLIS
+
+        val photos = photoNames.map { photoName ->
+            PendingDeletionWidgetPhotoDto(
+                widgetId = appWidgetId,
+                photoId = photoName,
+                deletionTimestamp = deletionTimestamp,
+            )
+        }
+
+        pendingDeletionWidgetPhotoDao.deletePhotosByWidgetId(widgetId = appWidgetId)
+        pendingDeletionWidgetPhotoDao.savePendingDeletionPhotos(photos = photos)
+    }
+
+    private fun deleteWidgetPhoto(appWidgetId: Int, photoName: String) {
         val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
         val originalPhotosDir = File("$widgetDir/original")
 
@@ -645,6 +690,7 @@ class PhotoWidgetStorage @Inject constructor(
             .filter { it.isDirectory && it.name !in existingWidgetsAsDirName }
             .map { it.name.toInt() }
         val pendingDeletionIds = getPendingDeletionWidgetIds()
+        val currentTimestamp = System.currentTimeMillis()
 
         Timber.d("Deleting temp widget data")
         deleteWidgetData(appWidgetId = 0)
@@ -652,13 +698,19 @@ class PhotoWidgetStorage @Inject constructor(
         for (id in unusedWidgetIds + pendingDeletionIds) {
             Timber.d("Unused data found (appWidgetId=$id)")
 
-            val deletionInterval = System.currentTimeMillis() - getWidgetDeletionTimestamp(appWidgetId = id)
+            val deletionInterval = currentTimestamp - getWidgetDeletionTimestamp(appWidgetId = id)
             if (deletionInterval <= DELETION_THRESHOLD_MILLIS) {
                 Timber.d("Deletion threshold not reached (appWidgetId=$id)")
                 return
             }
             deleteWidgetData(appWidgetId = id)
         }
+
+        val photosToDelete = pendingDeletionWidgetPhotoDao.getPhotosToDelete(timestamp = currentTimestamp)
+        for (photo in photosToDelete) {
+            deleteWidgetPhoto(appWidgetId = photo.widgetId, photoName = photo.photoId)
+        }
+        pendingDeletionWidgetPhotoDao.deletePhotosBeforeTimestamp(timestamp = currentTimestamp)
     }
 
     fun getPendingDeletionWidgetIds(): List<Int> {

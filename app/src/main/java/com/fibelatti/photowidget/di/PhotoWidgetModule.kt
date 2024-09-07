@@ -6,6 +6,7 @@ import androidx.room.Room
 import coil.ImageLoader
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
+import com.fibelatti.photowidget.widget.PendingDeletionWidgetPhotoDao
 import com.fibelatti.photowidget.widget.PhotoWidgetDatabase
 import com.fibelatti.photowidget.widget.PhotoWidgetOrderDao
 import dagger.Module
@@ -39,6 +40,11 @@ object PhotoWidgetModule {
     fun photoWidgetOrderDao(
         photoWidgetDatabase: PhotoWidgetDatabase,
     ): PhotoWidgetOrderDao = photoWidgetDatabase.photoWidgetOrderDao()
+
+    @Provides
+    fun photoPendingDeletionPhotoDao(
+        photoWidgetDatabase: PhotoWidgetDatabase,
+    ): PendingDeletionWidgetPhotoDao = photoWidgetDatabase.pendingDeletionWidgetPhotoDao()
 
     @Provides
     @Singleton

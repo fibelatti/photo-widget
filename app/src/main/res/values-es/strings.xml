@@ -102,6 +102,7 @@
 
     <string name="photo_widget_configure_photos">Fotos</string>
     <string name="photo_widget_configure_photos_from_dir">Fotos de carpeta</string>
+    <string name="photo_widget_configure_photos_pending_deletion">Fotos eliminadas recientemente</string>
 
     <string name="photo_widget_configure_pick_photo">Seleccionar fotos</string>
     <string name="photo_widget_configure_pick_folder">Seleccionar carpeta</string>
