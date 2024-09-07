@@ -432,13 +432,13 @@ private fun MyWidgetsScreen(
                             cornerRadius = widget.cornerRadius,
                             opacity = if (isRemoved) 70f else widget.opacity,
                             modifier = Modifier
+                                .animateItemPlacement()
                                 .fillMaxSize()
                                 .clickable { if (isRemoved) onRemovedWidgetClick(id) else onCurrentWidgetClick(id) }
                                 .conditional(
                                     predicate = isRemoved,
                                     ifTrue = { grayScale() },
-                                )
-                                .animateItemPlacement(),
+                                ),
                             isLoading = widget.isLoading,
                         )
                     }

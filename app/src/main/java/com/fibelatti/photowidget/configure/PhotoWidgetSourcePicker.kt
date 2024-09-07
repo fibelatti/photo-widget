@@ -146,9 +146,10 @@ private fun SourcePickerContent(
             }
 
             if (PhotoWidgetSource.DIRECTORY == currentSource) {
-                items(dirList) { dir ->
+                items(dirList, key = { it }) { dir ->
                     Row(
                         modifier = Modifier
+                            .animateItemPlacement()
                             .fillMaxWidth()
                             .height(48.dp)
                             .clickable {

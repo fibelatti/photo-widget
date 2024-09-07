@@ -771,7 +771,7 @@ private fun PhotoPicker(
                 }
             }
 
-            items(photos) { photo ->
+            items(photos, key = { it.name }) { photo ->
                 ShapedPhoto(
                     photo = photo,
                     aspectRatio = aspectRatio,
@@ -779,6 +779,7 @@ private fun PhotoPicker(
                     cornerRadius = cornerRadius,
                     opacity = opacity,
                     modifier = Modifier
+                        .animateItemPlacement()
                         .fillMaxWidth()
                         .aspectRatio(ratio = aspectRatio.aspectRatio)
                         .clickable(
@@ -794,6 +795,7 @@ private fun PhotoPicker(
 }
 
 @Composable
+@OptIn(ExperimentalFoundationApi::class)
 private fun PendingDeletionPhotoPicker(
     photos: List<LocalPhoto>,
     onPhotoClick: (LocalPhoto) -> Unit,
@@ -819,7 +821,7 @@ private fun PendingDeletionPhotoPicker(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(photos) { photo ->
+            items(photos, key = { it.name }) { photo ->
                 ShapedPhoto(
                     photo = photo,
                     aspectRatio = aspectRatio,
@@ -827,6 +829,7 @@ private fun PendingDeletionPhotoPicker(
                     cornerRadius = cornerRadius,
                     opacity = PhotoWidget.DEFAULT_OPACITY,
                     modifier = Modifier
+                        .animateItemPlacement()
                         .fillMaxWidth()
                         .aspectRatio(ratio = aspectRatio.aspectRatio)
                         .grayScale()
