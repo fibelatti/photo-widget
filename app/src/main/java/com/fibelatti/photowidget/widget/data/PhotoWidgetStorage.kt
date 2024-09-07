@@ -1,83 +1,35 @@
 package com.fibelatti.photowidget.widget.data
 
-import android.content.Context
-import android.content.Intent
-import android.database.Cursor
-import android.graphics.Bitmap
 import android.net.Uri
-import android.provider.DocumentsContract
-import androidx.core.content.edit
-import com.fibelatti.photowidget.model.LegacyPhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.LocalPhoto
-import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.minutesToLoopingInterval
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.secondsToLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
-import com.fibelatti.photowidget.model.Time
-import com.fibelatti.photowidget.platform.PhotoDecoder
-import com.fibelatti.photowidget.platform.enumValueOfOrNull
-import com.fibelatti.photowidget.preferences.UserPreferencesStorage
-import dagger.hilt.android.qualifiers.ApplicationContext
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @Singleton
 class PhotoWidgetStorage @Inject constructor(
-    @ApplicationContext private val context: Context,
-    private val photoWidgetOrderDao: PhotoWidgetOrderDao,
-    private val pendingDeletionWidgetPhotoDao: PendingDeletionWidgetPhotoDao,
-    private val decoder: PhotoDecoder,
-    private val userPreferencesStorage: UserPreferencesStorage,
+    private val sharedPreferences: PhotoWidgetSharedPreferences,
+    private val internalFileStorage: PhotoWidgetInternalFileStorage,
+    private val externalFileStorage: PhotoWidgetExternalFileStorage,
+    private val orderDao: PhotoWidgetOrderDao,
+    private val pendingDeletionPhotosDao: PendingDeletionWidgetPhotoDao,
 ) {
 
-    private val rootDir by lazy {
-        File("${context.filesDir}/widgets").apply {
-            mkdirs()
-        }
-    }
-
-    private val sharedPreferences = context.getSharedPreferences(
-        SHARED_PREFERENCES_NAME,
-        Context.MODE_PRIVATE,
-    )
-
-    private val contentResolver = context.contentResolver
-
     fun saveWidgetSource(appWidgetId: Int, source: PhotoWidgetSource) {
-        sharedPreferences.edit {
-            putString("${PreferencePrefix.SOURCE}$appWidgetId", source.name)
-        }
+        sharedPreferences.saveWidgetSource(appWidgetId = appWidgetId, source = source)
     }
 
     fun getWidgetSource(appWidgetId: Int): PhotoWidgetSource {
-        val name = sharedPreferences.getString("${PreferencePrefix.SOURCE}$appWidgetId", null)
-
-        return enumValueOfOrNull<PhotoWidgetSource>(name) ?: userPreferencesStorage.defaultSource
+        return sharedPreferences.getWidgetSource(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetSyncedDir(appWidgetId: Int, dirUri: Set<Uri>) {
-        val newDir = dirUri.minus(contentResolver.persistedUriPermissions.map { it.uri }.toSet())
-        for (dir in newDir) {
-            contentResolver.takePersistableUriPermission(dir, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        }
-
-        sharedPreferences.edit {
-            putStringSet("${PreferencePrefix.SYNCED_DIR}$appWidgetId", dirUri.map { it.toString() }.toSet())
-        }
+        externalFileStorage.takePersistableUriPermission(dirUri = dirUri)
+        sharedPreferences.saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = dirUri)
     }
 
     fun removeSyncedDir(appWidgetId: Int, dirUri: Uri) {
@@ -86,293 +38,76 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     fun getWidgetSyncDir(appWidgetId: Int): Set<Uri> {
-        val legacyUriString = sharedPreferences.getString("${PreferencePrefix.LEGACY_SYNCED_DIR}$appWidgetId", null)
-            ?.let(Uri::parse)
-
-        if (legacyUriString != null) {
-            saveWidgetSyncedDir(appWidgetId = appWidgetId, setOf(legacyUriString))
-            sharedPreferences.edit { remove("${PreferencePrefix.LEGACY_SYNCED_DIR}$appWidgetId") }
-        }
-
-        return sharedPreferences.getStringSet("${PreferencePrefix.SYNCED_DIR}$appWidgetId", null)
-            .orEmpty()
-            .map(Uri::parse)
-            .toSet()
+        return sharedPreferences.getWidgetSyncDir(appWidgetId = appWidgetId)
     }
 
-    suspend fun newWidgetPhoto(
-        appWidgetId: Int,
-        source: Uri,
-    ): LocalPhoto? = withContext(Dispatchers.IO) {
-        Timber.d("New widget photo: $source (appWidgetId=$appWidgetId)")
-        val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
-        val originalPhotosDir = File("$widgetDir/original").apply { mkdirs() }
-        val newPhotoName = "${UUID.randomUUID()}.png"
-
-        val originalPhoto = File("$originalPhotosDir/$newPhotoName")
-        val croppedPhoto = File("$widgetDir/$newPhotoName")
-
-        val newFiles = listOf(originalPhoto, croppedPhoto)
-
-        runCatching {
-            decoder.decode(data = source, maxDimension = PhotoWidget.MAX_STORAGE_DIMENSION)?.let { importedPhoto ->
-                newFiles.map { file ->
-                    file.createNewFile()
-
-                    async {
-                        FileOutputStream(file).use { fos ->
-                            importedPhoto.compress(Bitmap.CompressFormat.PNG, 100, fos)
-                            Timber.d("$source saved to $file")
-                        }
-                    }
-                }.awaitAll()
-            } ?: return@withContext null // Exit early if the bitmap can't be decoded
-
-            // Safety check to ensure the photos were copied correctly
-            return@withContext if (newFiles.all { it.exists() }) {
-                LocalPhoto(
-                    name = newPhotoName,
-                    path = croppedPhoto.path,
-                )
-            } else {
-                null
-            }
-        }.getOrNull()
+    suspend fun newWidgetPhoto(appWidgetId: Int, source: Uri): LocalPhoto? {
+        return internalFileStorage.newWidgetPhoto(appWidgetId = appWidgetId, source = source)
     }
 
-    suspend fun isValidDir(dirUri: Uri): DirValidationResult {
-        Timber.d("Checking validity of selected dir: $dirUri")
-
-        if (dirUri.toString().endsWith("DCIM%2FCamera", ignoreCase = true)) {
-            return DirValidationResult.INVALID
-        }
-
-        val documentUri = DocumentsContract.buildDocumentUriUsingTree(
-            /* treeUri = */ dirUri,
-            /* documentId = */ DocumentsContract.getTreeDocumentId(dirUri),
-        )
-
-        return try {
-            // Traverse the directory structure to ensure that all folders contains less than the limit
-            getDirectoryPhotoCount(documentUri = documentUri, applyValidation = true)
-            DirValidationResult.VALID
-        } catch (_: InvalidDirException) {
-            DirValidationResult.INVALID
-        }
+    suspend fun isValidDir(dirUri: Uri): Boolean {
+        return externalFileStorage.isValidDir(dirUri = dirUri)
     }
 
-    suspend fun getWidgetPhotoCount(appWidgetId: Int): Int = withContext(Dispatchers.IO) {
-        if (PhotoWidgetSource.DIRECTORY == getWidgetSource(appWidgetId = appWidgetId)) {
-            coroutineScope {
-                getWidgetSyncDir(appWidgetId = appWidgetId)
-                    .map { uri ->
-                        async {
-                            val documentUri = DocumentsContract.buildDocumentUriUsingTree(
-                                /* treeUri = */ uri,
-                                /* documentId = */ DocumentsContract.getTreeDocumentId(uri),
-                            )
-                            getDirectoryPhotoCount(documentUri = documentUri, applyValidation = false)
-                        }
-                    }
-                    .awaitAll()
-                    .sum()
-            }
+    suspend fun getWidgetPhotoCount(appWidgetId: Int): Int {
+        return if (PhotoWidgetSource.DIRECTORY == getWidgetSource(appWidgetId = appWidgetId)) {
+            externalFileStorage.getPhotoCount(dirUri = getWidgetSyncDir(appWidgetId = appWidgetId))
         } else {
             val pendingDeletionPhotos = getPendingDeletionPhotoIds(appWidgetId = appWidgetId)
 
-            getWidgetDir(appWidgetId = appWidgetId).list { _, name -> name != "original" }
-                .orEmpty()
-                .subtract(pendingDeletionPhotos)
+            internalFileStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+                .filterNot { it.name in pendingDeletionPhotos }
                 .size
         }
     }
 
-    private suspend fun getDirectoryPhotoCount(documentUri: Uri, applyValidation: Boolean): Int {
-        return withDirectoryPhotosCursor(documentUri = documentUri) { cursor ->
-            var count = 0
-
-            while (cursor.moveToNext()) {
-                val documentId = cursor.getString(0)
-                val mimeType = cursor.getString(1)
-                val documentName = cursor.getString(2).takeUnless { it.startsWith(".trashed") }
-                val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
-
-                Timber.d(
-                    "Cursor item (" +
-                        "documentId=$documentId, " +
-                        "mimeType=$mimeType, " +
-                        "documentName=$documentName, " +
-                        "fileUri=$fileUri" +
-                        ")",
-                )
-
-                if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
-                    count += 1
-                } else if (documentName?.startsWith(".") != true && mimeType == "vnd.android.document/directory") {
-                    val dirCount = getDirectoryPhotoCount(documentUri = fileUri, applyValidation = applyValidation)
-
-                    if (applyValidation && dirCount >= 3_000) throw InvalidDirException()
-
-                    count += dirCount
-                }
-            }
-
-            count
-        } ?: 0
-    }
-
-    suspend fun getWidgetPhotos(appWidgetId: Int): List<LocalPhoto> = withContext(Dispatchers.IO) {
+    suspend fun getWidgetPhotos(appWidgetId: Int): List<LocalPhoto> {
         Timber.d("Retrieving photos (appWidgetId=$appWidgetId)")
 
         val pendingDeletionPhotos = getPendingDeletionPhotoIds(appWidgetId = appWidgetId)
 
-        val croppedPhotos = getWidgetDir(appWidgetId = appWidgetId).let { dir ->
-            dir.list { _, name -> name != "original" }
-                .orEmpty()
-                .subtract(pendingDeletionPhotos)
-                .map { file -> LocalPhoto(name = file, path = "$dir/$file") }
-        }
-        val dict: Map<String, LocalPhoto> = croppedPhotos.associateBy { it.name }
+        val croppedPhotos = internalFileStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+            .filterNot { it.name in pendingDeletionPhotos }
+            .associateBy { it.name }
 
-        Timber.d("Cropped photos found: ${dict.size}")
+        Timber.d("Cropped photos found: ${croppedPhotos.size}")
 
-        val source = getWidgetSource(appWidgetId = appWidgetId).also {
-            Timber.d("Widget source: $it")
-        }
+        val source = getWidgetSource(appWidgetId = appWidgetId)
+            .also { Timber.d("Widget source: $it") }
 
-        return@withContext if (PhotoWidgetSource.DIRECTORY == source) {
-            getDirectoryPhotos(appWidgetId = appWidgetId, croppedPhotos = dict)
+        return if (PhotoWidgetSource.DIRECTORY == source) {
+            externalFileStorage.getPhotos(dirUri = getWidgetSyncDir(appWidgetId), croppedPhotos = croppedPhotos)
         } else {
-            getWidgetOrder(appWidgetId = appWidgetId)
-                .ifEmpty { dict.keys }
-                .mapNotNull { dict[it] }
+            // Check for legacy storage value
+            // Migrate found value to the new storage
+            // or retrieve it from the new storage if not found
+            val widgetOrder = sharedPreferences.getWidgetOrder(appWidgetId = appWidgetId)
+                ?.also { saveWidgetOrder(appWidgetId = appWidgetId, order = it) }
+                ?: orderDao.getWidgetOrder(appWidgetId = appWidgetId)
+
+            widgetOrder.ifEmpty(croppedPhotos::keys).mapNotNull(croppedPhotos::get)
         }.also { Timber.d("Total photos found: ${it.size}") }
     }
 
-    suspend fun getPendingDeletionPhotos(appWidgetId: Int): List<LocalPhoto> = withContext(Dispatchers.IO) {
+    suspend fun getPendingDeletionPhotos(appWidgetId: Int): List<LocalPhoto> {
         if (PhotoWidgetSource.DIRECTORY == getWidgetSource(appWidgetId = appWidgetId)) {
-            return@withContext emptyList()
+            return emptyList()
         }
 
         val pendingDeletionPhotos = getPendingDeletionPhotoIds(appWidgetId = appWidgetId)
 
-        getWidgetDir(appWidgetId = appWidgetId).let { dir ->
-            dir.list { _, name -> name != "original" }
-                .orEmpty()
-                .intersect(pendingDeletionPhotos)
-                .map { file -> LocalPhoto(name = file, path = "$dir/$file") }
-        }
+        return internalFileStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+            .filter { it.name in pendingDeletionPhotos }
     }
 
     private suspend fun getPendingDeletionPhotoIds(appWidgetId: Int): Set<String> {
-        return pendingDeletionWidgetPhotoDao.getPendingDeletionPhotos(widgetId = appWidgetId)
+        return pendingDeletionPhotosDao.getPendingDeletionPhotos(widgetId = appWidgetId)
             .map { it.photoId }
             .toSet()
     }
 
-    private suspend fun getDirectoryPhotos(
-        appWidgetId: Int,
-        croppedPhotos: Map<String, LocalPhoto>,
-    ): List<LocalPhoto> = coroutineScope {
-        getWidgetSyncDir(appWidgetId = appWidgetId)
-            .map { uri ->
-                async {
-                    val documentUri = DocumentsContract.buildDocumentUriUsingTree(
-                        /* treeUri = */ uri,
-                        /* documentId = */ DocumentsContract.getTreeDocumentId(uri),
-                    )
-                    directoryPhotosToList(documentUri = documentUri, croppedPhotos = croppedPhotos)
-                }
-            }
-            .awaitAll()
-            .flatten()
-    }
-
-    private suspend fun directoryPhotosToList(
-        documentUri: Uri,
-        croppedPhotos: Map<String, LocalPhoto>,
-    ): List<LocalPhoto> {
-        return withDirectoryPhotosCursor(documentUri = documentUri) { cursor ->
-            buildList {
-                while (cursor.moveToNext()) {
-                    val documentId = cursor.getString(0)
-                    val mimeType = cursor.getString(1)
-                    val documentName = cursor.getString(2).takeUnless { it.startsWith(".trashed") }
-                    val documentLastModified = cursor.getLong(3)
-                    val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
-
-                    Timber.d(
-                        "Cursor item (" +
-                            "documentId=$documentId, " +
-                            "mimeType=$mimeType, " +
-                            "documentName=$documentName, " +
-                            "fileUri=$fileUri",
-                    )
-
-                    if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
-                        val localPhoto = LocalPhoto(
-                            name = documentName,
-                            path = croppedPhotos[documentName]?.path,
-                            externalUri = fileUri,
-                            timestamp = documentLastModified,
-                        )
-
-                        add(localPhoto)
-                    } else if (documentName?.startsWith(".") != true && mimeType == "vnd.android.document/directory") {
-                        addAll(directoryPhotosToList(documentUri = fileUri, croppedPhotos = croppedPhotos))
-                    }
-                }
-            }.sortedByDescending { it.timestamp }
-        }.orEmpty()
-    }
-
-    private suspend inline fun <T> withDirectoryPhotosCursor(
-        documentUri: Uri,
-        crossinline block: suspend (Cursor) -> T,
-    ): T? = withContext(Dispatchers.IO) {
-        val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
-            /* treeUri = */ documentUri,
-            /* parentDocumentId = */ DocumentsContract.getDocumentId(documentUri),
-        )
-
-        val projection = arrayOf(
-            DocumentsContract.Document.COLUMN_DOCUMENT_ID,
-            DocumentsContract.Document.COLUMN_MIME_TYPE,
-            DocumentsContract.Document.COLUMN_DISPLAY_NAME,
-            DocumentsContract.Document.COLUMN_LAST_MODIFIED,
-        )
-
-        contentResolver.query(
-            /* uri = */ childrenUri,
-            /* projection = */ projection,
-            /* selection = */ null,
-            /* selectionArgs = */ null,
-            /* sortOrder = */ null,
-        )?.use { cursor -> block(cursor) }
-    }
-
     suspend fun getCropSources(appWidgetId: Int, localPhoto: LocalPhoto): Pair<Uri, Uri> {
-        val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
-        val croppedPhoto = File("$widgetDir/${localPhoto.name}")
-
-        if (localPhoto.externalUri != null) {
-            return localPhoto.externalUri to Uri.fromFile(croppedPhoto)
-        } else {
-            val originalPhotosDir = File("$widgetDir/original")
-            val originalPhoto = File("$originalPhotosDir/${localPhoto.name}")
-
-            if (!originalPhoto.exists()) {
-                withContext(Dispatchers.IO) {
-                    originalPhoto.createNewFile()
-
-                    FileInputStream(croppedPhoto).use { fileInputStream ->
-                        fileInputStream.copyTo(FileOutputStream(originalPhoto))
-                    }
-                }
-            }
-
-            return Uri.fromFile(originalPhoto) to Uri.fromFile(croppedPhoto)
-        }
+        return internalFileStorage.getCropSources(appWidgetId = appWidgetId, localPhoto = localPhoto)
     }
 
     suspend fun markPhotosForDeletion(appWidgetId: Int, photoNames: Set<String>) {
@@ -386,24 +121,12 @@ class PhotoWidgetStorage @Inject constructor(
             )
         }
 
-        pendingDeletionWidgetPhotoDao.deletePhotosByWidgetId(widgetId = appWidgetId)
-        pendingDeletionWidgetPhotoDao.savePendingDeletionPhotos(photos = photos)
-    }
-
-    private fun deleteWidgetPhoto(appWidgetId: Int, photoName: String) {
-        val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
-        val originalPhotosDir = File("$widgetDir/original")
-
-        with(File("$originalPhotosDir/$photoName")) {
-            if (exists()) delete()
-        }
-        with(File("$widgetDir/$photoName")) {
-            if (exists()) delete()
-        }
+        pendingDeletionPhotosDao.deletePhotosByWidgetId(widgetId = appWidgetId)
+        pendingDeletionPhotosDao.savePendingDeletionPhotos(photos = photos)
     }
 
     suspend fun saveWidgetOrder(appWidgetId: Int, order: List<String>) {
-        photoWidgetOrderDao.replaceWidgetOrder(
+        orderDao.replaceWidgetOrder(
             widgetId = appWidgetId,
             order = order.mapIndexed { index, photoId ->
                 PhotoWidgetOrderDto(
@@ -415,280 +138,131 @@ class PhotoWidgetStorage @Inject constructor(
         )
     }
 
-    private suspend fun getWidgetOrder(appWidgetId: Int): List<String> {
-        // Check for legacy storage value
-        val value = sharedPreferences.getString("${PreferencePrefix.ORDER}$appWidgetId", null)
-            ?.split(",")
-
-        if (value != null) {
-            // Migrate found value to the new storage
-            saveWidgetOrder(appWidgetId, value)
-            sharedPreferences.edit { remove("${PreferencePrefix.ORDER}$appWidgetId") }
-        }
-
-        // Return it to the caller, or retrieve it from the new storage if not found
-        return value ?: photoWidgetOrderDao.getWidgetOrder(appWidgetId = appWidgetId)
-    }
-
     fun saveWidgetShuffle(appWidgetId: Int, value: Boolean) {
-        sharedPreferences.edit {
-            putBoolean("${PreferencePrefix.SHUFFLE}$appWidgetId", value)
-        }
+        sharedPreferences.saveWidgetShuffle(appWidgetId = appWidgetId, value = value)
     }
 
     fun getWidgetShuffle(appWidgetId: Int): Boolean {
-        return sharedPreferences.getBoolean(
-            "${PreferencePrefix.SHUFFLE}$appWidgetId",
-            userPreferencesStorage.defaultShuffle,
-        )
+        return sharedPreferences.getWidgetShuffle(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetCycleMode(appWidgetId: Int, cycleMode: PhotoWidgetCycleMode) {
-        sharedPreferences.edit {
-            remove("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId")
-            remove("${PreferencePrefix.LEGACY_INTERVAL_MINUTES}$appWidgetId")
-
-            when (cycleMode) {
-                is PhotoWidgetCycleMode.Interval -> {
-                    remove("${PreferencePrefix.SCHEDULE}$appWidgetId")
-                    remove("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId")
-
-                    putLong("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId", cycleMode.loopingInterval.toSeconds())
-                }
-
-                is PhotoWidgetCycleMode.Schedule -> {
-                    remove("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId")
-                    remove("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId")
-
-                    putStringSet(
-                        "${PreferencePrefix.SCHEDULE}$appWidgetId",
-                        cycleMode.triggers.map { (hour, minute) -> "$hour:$minute" }.toSet(),
-                    )
-                }
-
-                is PhotoWidgetCycleMode.Disabled -> {
-                    remove("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId")
-                    remove("${PreferencePrefix.SCHEDULE}$appWidgetId")
-
-                    putBoolean("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId", false)
-                }
-            }
-        }
+        sharedPreferences.saveWidgetCycleMode(appWidgetId = appWidgetId, cycleMode = cycleMode)
     }
 
     fun getWidgetCycleMode(appWidgetId: Int): PhotoWidgetCycleMode {
-        val containsEnabled = sharedPreferences.contains("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId")
-        val containsInterval = sharedPreferences.contains("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId") ||
-            sharedPreferences.contains("${PreferencePrefix.LEGACY_INTERVAL_MINUTES}$appWidgetId") ||
-            sharedPreferences.contains("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId")
-
-        return when {
-            containsEnabled && getWidgetIntervalEnabled(appWidgetId) -> PhotoWidgetCycleMode.Disabled
-
-            containsInterval -> PhotoWidgetCycleMode.Interval(loopingInterval = getWidgetInterval(appWidgetId))
-
-            sharedPreferences.contains("${PreferencePrefix.SCHEDULE}$appWidgetId") -> {
-                PhotoWidgetCycleMode.Schedule(
-                    triggers = sharedPreferences.getStringSet("${PreferencePrefix.SCHEDULE}$appWidgetId", null)
-                        .orEmpty()
-                        .map(Time::fromString)
-                        .toSet(),
-                )
-            }
-
-            else -> userPreferencesStorage.defaultCycleMode
-        }
-    }
-
-    private fun getWidgetInterval(appWidgetId: Int): PhotoWidgetLoopingInterval {
-        val legacyName = sharedPreferences.getString("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId", null)
-        val legacyValue = enumValueOfOrNull<LegacyPhotoWidgetLoopingInterval>(legacyName)
-        val legacyMinutes = sharedPreferences.getLong("${PreferencePrefix.LEGACY_INTERVAL_MINUTES}$appWidgetId", 0)
-        val seconds = sharedPreferences.getLong("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId", 0)
-
-        return when {
-            legacyValue != null -> {
-                PhotoWidgetLoopingInterval(
-                    repeatInterval = legacyValue.repeatInterval,
-                    timeUnit = legacyValue.timeUnit,
-                )
-            }
-
-            legacyMinutes > 0 -> legacyMinutes.minutesToLoopingInterval()
-
-            seconds > 0 -> seconds.secondsToLoopingInterval()
-
-            else -> PhotoWidgetLoopingInterval.ONE_DAY
-        }
-    }
-
-    private fun getWidgetIntervalEnabled(appWidgetId: Int): Boolean {
-        return sharedPreferences.getBoolean(
-            "${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId",
-            false,
-        )
+        return sharedPreferences.getWidgetCycleMode(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetIndex(appWidgetId: Int, index: Int) {
-        sharedPreferences.edit {
-            putInt("${PreferencePrefix.INDEX}$appWidgetId", index)
-        }
+        sharedPreferences.saveWidgetIndex(appWidgetId = appWidgetId, index = index)
     }
 
     fun getWidgetIndex(appWidgetId: Int): Int {
-        return sharedPreferences.getInt("${PreferencePrefix.INDEX}$appWidgetId", 0)
+        return sharedPreferences.getWidgetIndex(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetPastIndices(appWidgetId: Int, pastIndices: Set<Int>) {
-        sharedPreferences.edit {
-            putStringSet("${PreferencePrefix.PAST_INDICES}$appWidgetId", pastIndices.map { "$it" }.toSet())
-        }
+        sharedPreferences.saveWidgetPastIndices(appWidgetId = appWidgetId, pastIndices = pastIndices)
     }
 
     fun getWidgetPastIndices(appWidgetId: Int): Set<Int> {
-        return sharedPreferences.getStringSet("${PreferencePrefix.PAST_INDICES}$appWidgetId", null)
-            .orEmpty()
-            .mapNotNull { it.toIntOrNull() }
-            .toSet()
+        return sharedPreferences.getWidgetPastIndices(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetAspectRatio(appWidgetId: Int, aspectRatio: PhotoWidgetAspectRatio) {
-        sharedPreferences.edit {
-            putString("${PreferencePrefix.RATIO}$appWidgetId", aspectRatio.name)
-        }
+        sharedPreferences.saveWidgetAspectRatio(appWidgetId = appWidgetId, aspectRatio = aspectRatio)
     }
 
     fun getWidgetAspectRatio(appWidgetId: Int): PhotoWidgetAspectRatio {
-        val name = sharedPreferences.getString("${PreferencePrefix.RATIO}$appWidgetId", null)
-
-        return enumValueOfOrNull<PhotoWidgetAspectRatio>(name) ?: PhotoWidgetAspectRatio.SQUARE
+        return sharedPreferences.getWidgetAspectRatio(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetShapeId(appWidgetId: Int, shapeId: String) {
-        sharedPreferences.edit {
-            putString("${PreferencePrefix.SHAPE}$appWidgetId", shapeId)
-        }
+        sharedPreferences.saveWidgetShapeId(appWidgetId = appWidgetId, shapeId = shapeId)
     }
 
     fun getWidgetShapeId(appWidgetId: Int): String {
-        return sharedPreferences.getString("${PreferencePrefix.SHAPE}$appWidgetId", null)
-            ?: userPreferencesStorage.defaultShape
+        return sharedPreferences.getWidgetShapeId(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetCornerRadius(appWidgetId: Int, cornerRadius: Float) {
-        sharedPreferences.edit {
-            putFloat("${PreferencePrefix.CORNER_RADIUS}$appWidgetId", cornerRadius)
-        }
+        sharedPreferences.saveWidgetCornerRadius(appWidgetId = appWidgetId, cornerRadius = cornerRadius)
     }
 
     fun getWidgetCornerRadius(appWidgetId: Int): Float {
-        return sharedPreferences.getFloat(
-            "${PreferencePrefix.CORNER_RADIUS}$appWidgetId",
-            userPreferencesStorage.defaultCornerRadius,
-        )
+        return sharedPreferences.getWidgetCornerRadius(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetOpacity(appWidgetId: Int, opacity: Float) {
-        sharedPreferences.edit {
-            putFloat("${PreferencePrefix.OPACITY}$appWidgetId", opacity)
-        }
+        sharedPreferences.saveWidgetOpacity(appWidgetId = appWidgetId, opacity = opacity)
     }
 
     fun getWidgetOpacity(appWidgetId: Int): Float {
-        return sharedPreferences.getFloat(
-            "${PreferencePrefix.OPACITY}$appWidgetId",
-            userPreferencesStorage.defaultOpacity,
-        )
+        return sharedPreferences.getWidgetOpacity(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetOffset(appWidgetId: Int, horizontalOffset: Int, verticalOffset: Int) {
-        sharedPreferences.edit {
-            putInt("${PreferencePrefix.HORIZONTAL_OFFSET}$appWidgetId", horizontalOffset)
-            putInt("${PreferencePrefix.VERTICAL_OFFSET}$appWidgetId", verticalOffset)
-        }
+        sharedPreferences.saveWidgetOffset(
+            appWidgetId = appWidgetId,
+            horizontalOffset = horizontalOffset,
+            verticalOffset = verticalOffset,
+        )
     }
 
     fun getWidgetOffset(appWidgetId: Int): Pair<Int, Int> {
-        return sharedPreferences.getInt(
-            "${PreferencePrefix.HORIZONTAL_OFFSET}$appWidgetId",
-            0,
-        ) to sharedPreferences.getInt(
-            "${PreferencePrefix.VERTICAL_OFFSET}$appWidgetId",
-            0,
-        )
+        return sharedPreferences.getWidgetOffset(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetPadding(appWidgetId: Int, padding: Int) {
-        sharedPreferences.edit {
-            putInt("${PreferencePrefix.PADDING}$appWidgetId", padding)
-        }
+        sharedPreferences.saveWidgetPadding(appWidgetId = appWidgetId, padding = padding)
     }
 
     fun getWidgetPadding(appWidgetId: Int): Int {
-        return sharedPreferences.getInt("${PreferencePrefix.PADDING}$appWidgetId", 0)
+        return sharedPreferences.getWidgetPadding(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetTapAction(appWidgetId: Int, tapAction: PhotoWidgetTapAction) {
-        sharedPreferences.edit {
-            putString("${PreferencePrefix.TAP_ACTION}$appWidgetId", tapAction.name)
-        }
+        sharedPreferences.saveWidgetTapAction(appWidgetId = appWidgetId, tapAction = tapAction)
     }
 
     fun getWidgetTapAction(appWidgetId: Int): PhotoWidgetTapAction {
-        val name = sharedPreferences.getString("${PreferencePrefix.TAP_ACTION}$appWidgetId", null)
-
-        return enumValueOfOrNull<PhotoWidgetTapAction>(name) ?: userPreferencesStorage.defaultTapAction
+        return sharedPreferences.getWidgetTapAction(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetIncreaseBrightness(appWidgetId: Int, value: Boolean) {
-        sharedPreferences.edit {
-            putBoolean("${PreferencePrefix.INCREASE_BRIGHTNESS}$appWidgetId", value)
-        }
+        sharedPreferences.saveWidgetIncreaseBrightness(appWidgetId = appWidgetId, value = value)
     }
 
     fun getWidgetIncreaseBrightness(appWidgetId: Int): Boolean {
-        return sharedPreferences.getBoolean(
-            "${PreferencePrefix.INCREASE_BRIGHTNESS}$appWidgetId",
-            userPreferencesStorage.defaultIncreaseBrightness,
-        )
+        return sharedPreferences.getWidgetIncreaseBrightness(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetAppShortcut(appWidgetId: Int, appName: String?) {
-        sharedPreferences.edit {
-            putString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", appName)
-        }
+        sharedPreferences.saveWidgetAppShortcut(appWidgetId = appWidgetId, appName = appName)
     }
 
     fun getWidgetAppShortcut(appWidgetId: Int): String? {
-        return sharedPreferences.getString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", null)
+        return sharedPreferences.getWidgetAppShortcut(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetDeletionTimestamp(appWidgetId: Int, timestamp: Long) {
-        sharedPreferences.edit {
-            putLong("${PreferencePrefix.DELETION_TIMESTAMP}$appWidgetId", timestamp)
-        }
+        sharedPreferences.saveWidgetDeletionTimestamp(appWidgetId = appWidgetId, timestamp = timestamp)
     }
 
     fun getWidgetDeletionTimestamp(appWidgetId: Int): Long {
-        return sharedPreferences.getLong("${PreferencePrefix.DELETION_TIMESTAMP}$appWidgetId", -1)
+        return sharedPreferences.getWidgetDeletionTimestamp(appWidgetId = appWidgetId)
     }
 
     suspend fun deleteWidgetData(appWidgetId: Int) {
         Timber.d("Deleting data (appWidgetId=$appWidgetId)")
-        getWidgetDir(appWidgetId).deleteRecursively()
-
-        sharedPreferences.edit {
-            PreferencePrefix.entries.forEach { prefix -> remove("$prefix$appWidgetId") }
-        }
-
-        photoWidgetOrderDao.deleteWidgetOrder(appWidgetId = appWidgetId)
+        internalFileStorage.deleteWidgetData(appWidgetId = appWidgetId)
+        sharedPreferences.deleteWidgetData(appWidgetId = appWidgetId)
+        orderDao.deleteWidgetOrder(appWidgetId = appWidgetId)
     }
 
     suspend fun deleteUnusedWidgetData(existingWidgetIds: List<Int>) {
-        val existingWidgetsAsDirName = existingWidgetIds.map { "$it" }.toSet()
-        val unusedWidgetIds = rootDir.listFiles().orEmpty()
-            .filter { it.isDirectory && it.name !in existingWidgetsAsDirName }
-            .map { it.name.toInt() }
+        val unusedWidgetIds = internalFileStorage.getWidgetIds() - existingWidgetIds.toSet()
         val pendingDeletionIds = getPendingDeletionWidgetIds()
         val currentTimestamp = System.currentTimeMillis()
 
@@ -706,105 +280,29 @@ class PhotoWidgetStorage @Inject constructor(
             deleteWidgetData(appWidgetId = id)
         }
 
-        val photosToDelete = pendingDeletionWidgetPhotoDao.getPhotosToDelete(timestamp = currentTimestamp)
+        val photosToDelete = pendingDeletionPhotosDao.getPhotosToDelete(timestamp = currentTimestamp)
         for (photo in photosToDelete) {
-            deleteWidgetPhoto(appWidgetId = photo.widgetId, photoName = photo.photoId)
+            internalFileStorage.deleteWidgetPhoto(appWidgetId = photo.widgetId, photoName = photo.photoId)
         }
-        pendingDeletionWidgetPhotoDao.deletePhotosBeforeTimestamp(timestamp = currentTimestamp)
+        pendingDeletionPhotosDao.deletePhotosBeforeTimestamp(timestamp = currentTimestamp)
     }
 
     fun getPendingDeletionWidgetIds(): List<Int> {
-        return sharedPreferences.all
-            .filter { (key, _) -> key.startsWith(PreferencePrefix.DELETION_TIMESTAMP.value) }
-            .mapNotNull { (key, value) -> key.substringAfterLast("_").toIntOrNull()?.takeIf { value as Long > 0 } }
+        return sharedPreferences.getPendingDeletionWidgetIds()
     }
 
     fun renameTemporaryWidgetDir(appWidgetId: Int) {
-        val tempDir = File("$rootDir/0")
-        if (tempDir.exists()) {
-            tempDir.renameTo(File("$rootDir/$appWidgetId"))
-        }
+        internalFileStorage.renameTemporaryWidgetDir(appWidgetId = appWidgetId)
     }
 
-    fun duplicateWidgetDir(
-        originalAppWidgetId: Int,
-        newAppWidgetId: Int,
-    ) {
-        val originalDir = getWidgetDir(appWidgetId = originalAppWidgetId)
-        val newDir = getWidgetDir(appWidgetId = newAppWidgetId)
-
-        originalDir.copyTo(newDir, overwrite = true)
+    suspend fun duplicateWidgetDir(originalAppWidgetId: Int, newAppWidgetId: Int) {
+        internalFileStorage.duplicateWidgetDir(
+            originalAppWidgetId = originalAppWidgetId,
+            newAppWidgetId = newAppWidgetId,
+        )
     }
-
-    private fun getWidgetDir(appWidgetId: Int): File {
-        return File("$rootDir/$appWidgetId").apply {
-            mkdirs()
-        }
-    }
-
-    enum class DirValidationResult {
-        VALID,
-        INVALID,
-    }
-
-    private enum class PreferencePrefix(val value: String) {
-        SOURCE(value = "appwidget_source_"),
-
-        /**
-         * Key from when initial support for directory based widgets was introduced.
-         */
-        LEGACY_SYNCED_DIR(value = "appwidget_synced_dir_"),
-
-        /**
-         * Key from when support for syncing multiple directories was introduced.
-         */
-        SYNCED_DIR(value = "appwidget_synced_dir_set_"),
-
-        ORDER(value = "appwidget_order_"),
-        SHUFFLE(value = "appwidget_shuffle_"),
-
-        /**
-         * Key from when the interval was persisted as [LegacyPhotoWidgetLoopingInterval].
-         */
-        LEGACY_INTERVAL(value = "appwidget_interval_"),
-
-        /**
-         * Key from when the interval was migrated to [PhotoWidgetLoopingInterval].
-         */
-        LEGACY_INTERVAL_MINUTES(value = "appwidget_interval_minutes_"),
-
-        /**
-         * Key from when the interval was migrated from minutes to seconds.
-         */
-        INTERVAL_SECONDS(value = "appwidget_interval_seconds_"),
-        INTERVAL_ENABLED(value = "appwidget_interval_enabled_"),
-        SCHEDULE(value = "appwidget_schedule_"),
-        INDEX(value = "appwidget_index_"),
-        PAST_INDICES(value = "appwidget_past_indices_"),
-        RATIO(value = "appwidget_aspect_ratio_"),
-        SHAPE(value = "appwidget_shape_"),
-        CORNER_RADIUS(value = "appwidget_corner_radius_"),
-        OPACITY(value = "appwidget_opacity_"),
-        HORIZONTAL_OFFSET(value = "appwidget_horizontal_offset_"),
-        VERTICAL_OFFSET(value = "appwidget_vertical_offset_"),
-        PADDING(value = "appwidget_padding_"),
-        TAP_ACTION(value = "appwidget_tap_action_"),
-        INCREASE_BRIGHTNESS(value = "appwidget_increase_brightness_"),
-        APP_SHORTCUT(value = "appwidget_app_shortcut_"),
-
-        DELETION_TIMESTAMP(value = "appwidget_deletion_timestamp_"),
-        ;
-
-        override fun toString(): String = value
-    }
-
-    private class InvalidDirException : RuntimeException()
 
     private companion object {
-
-        const val SHARED_PREFERENCES_NAME = "com.fibelatti.photowidget.PhotoWidget"
-
-        val ALLOWED_TYPES = arrayOf("image/jpeg", "image/png")
 
         private const val DELETION_THRESHOLD_MILLIS: Long = 7 * 24 * 60 * 60 * 1_000
     }

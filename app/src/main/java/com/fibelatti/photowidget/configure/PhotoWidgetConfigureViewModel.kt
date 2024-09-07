@@ -174,8 +174,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { current -> current.copy(isProcessing = true) }
 
-            val validationResult = photoWidgetStorage.isValidDir(dirUri = source)
-            if (PhotoWidgetStorage.DirValidationResult.VALID != validationResult) {
+            if (!photoWidgetStorage.isValidDir(dirUri = source)) {
                 _state.update { current ->
                     current.copy(
                         isProcessing = false,
