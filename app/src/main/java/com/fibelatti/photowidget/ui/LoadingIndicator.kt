@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.ui
 
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.StartOffset
 import androidx.compose.animation.core.animateFloat
@@ -42,7 +43,7 @@ fun LoadingIndicator(
             initialValue = 0f,
             targetValue = 180f,
             animationSpec = infiniteRepeatable(
-                animation = tween(durationMillis = 1_000),
+                animation = tween(durationMillis = 2_000, easing = LinearEasing),
                 repeatMode = RepeatMode.Restart,
                 initialStartOffset = StartOffset(offsetMillis = 300),
             ),

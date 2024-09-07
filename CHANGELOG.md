@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * It's now possible to schedule times to cycle through photos
 
+### Changed
+
+* Updated and reduced in-app motion animations
+
 ## [v1.13.3] - 2024-08-26
 
 ### Fixed

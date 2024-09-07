@@ -5,6 +5,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -185,7 +188,7 @@ private fun PhotoCycleModePickerContent(
         Spacer(modifier = Modifier.size(8.dp))
 
         AnimatedContent(
-            targetState = mode, label = "SelectedCycleModeContent",
+            targetState = mode,
             modifier = Modifier
                 .border(
                     width = 1.dp,
@@ -193,6 +196,8 @@ private fun PhotoCycleModePickerContent(
                     shape = MaterialTheme.shapes.large,
                 )
                 .padding(all = 16.dp),
+            transitionSpec = { fadeIn() togetherWith fadeOut() },
+            label = "SelectedCycleModeContent",
         ) { current ->
             when (current) {
                 is PhotoWidgetCycleMode.Interval -> {

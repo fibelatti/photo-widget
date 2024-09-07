@@ -6,6 +6,9 @@ import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -128,6 +131,7 @@ private fun TapActionPickerContent(
 
         AnimatedContent(
             targetState = tapAction,
+            transitionSpec = { fadeIn() togetherWith fadeOut() },
             label = "TapAction_CustomOptions",
         ) { value ->
             val customOptionModifier = Modifier
