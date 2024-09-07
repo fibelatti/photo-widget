@@ -6,9 +6,9 @@ import androidx.room.Room
 import coil.ImageLoader
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
-import com.fibelatti.photowidget.widget.PendingDeletionWidgetPhotoDao
-import com.fibelatti.photowidget.widget.PhotoWidgetDatabase
-import com.fibelatti.photowidget.widget.PhotoWidgetOrderDao
+import com.fibelatti.photowidget.widget.data.PendingDeletionWidgetPhotoDao
+import com.fibelatti.photowidget.widget.data.PhotoWidgetDatabase
+import com.fibelatti.photowidget.widget.data.PhotoWidgetOrderDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

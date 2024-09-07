@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.widget
+package com.fibelatti.photowidget.widget.data
 
 import androidx.room.AutoMigration
 import androidx.room.Dao

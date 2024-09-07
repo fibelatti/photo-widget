@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
-import com.fibelatti.photowidget.widget.PhotoWidgetStorage
+import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.widget
 
 import android.content.Context
+import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

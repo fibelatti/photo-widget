@@ -5,7 +5,7 @@ import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.widget.CyclePhotoUseCase
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
-import com.fibelatti.photowidget.widget.PhotoWidgetStorage
+import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent

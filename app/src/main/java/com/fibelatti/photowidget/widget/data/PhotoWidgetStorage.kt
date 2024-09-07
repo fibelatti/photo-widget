@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.widget
+package com.fibelatti.photowidget.widget.data
 
 import android.content.Context
 import android.content.Intent
