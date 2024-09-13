@@ -61,14 +61,15 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
-    suspend fun getWidgetPhotos(appWidgetId: Int): List<LocalPhoto> {
+    suspend fun getWidgetPhotos(appWidgetId: Int, originalPhotos: Boolean = false): List<LocalPhoto> {
         Timber.d("Retrieving photos (appWidgetId=$appWidgetId)")
 
         val pendingDeletionPhotos = getPendingDeletionPhotoIds(appWidgetId = appWidgetId)
 
-        val croppedPhotos = internalFileStorage.getWidgetPhotos(appWidgetId = appWidgetId)
-            .filterNot { it.name in pendingDeletionPhotos }
-            .associateBy { it.name }
+        val croppedPhotos = internalFileStorage.getWidgetPhotos(
+            appWidgetId = appWidgetId,
+            originalPhotos = originalPhotos,
+        ).filterNot { it.name in pendingDeletionPhotos }.associateBy { it.name }
 
         Timber.d("Cropped photos found: ${croppedPhotos.size}")
 
@@ -236,6 +237,14 @@ class PhotoWidgetStorage @Inject constructor(
 
     fun getWidgetIncreaseBrightness(appWidgetId: Int): Boolean {
         return sharedPreferences.getWidgetIncreaseBrightness(appWidgetId = appWidgetId)
+    }
+
+    fun saveWidgetViewOriginalPhoto(appWidgetId: Int, value: Boolean) {
+        sharedPreferences.saveWidgetViewOriginalPhoto(appWidgetId = appWidgetId, value = value)
+    }
+
+    fun getWidgetViewOriginalPhoto(appWidgetId: Int): Boolean {
+        return sharedPreferences.getWidgetViewOriginalPhoto(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetAppShortcut(appWidgetId: Int, appName: String?) {

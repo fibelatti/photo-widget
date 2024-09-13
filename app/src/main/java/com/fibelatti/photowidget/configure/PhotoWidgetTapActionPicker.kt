@@ -53,7 +53,13 @@ object PhotoWidgetTapActionPicker {
         currentTapAction: PhotoWidgetTapAction,
         currentAppShortcut: String?,
         currentIncreaseBrightness: Boolean,
-        onApplyClick: (newTapAction: PhotoWidgetTapAction, newAppShortcut: String?, newIncreaseBrightness: Boolean) -> Unit,
+        currentViewOriginalPhoto: Boolean,
+        onApplyClick: (
+            newTapAction: PhotoWidgetTapAction,
+            newAppShortcut: String?,
+            newIncreaseBrightness: Boolean,
+            newViewOriginalPhoto: Boolean,
+        ) -> Unit,
     ) {
         ComposeBottomSheetDialog(context) {
             var selectedApp: String? by remember(currentAppShortcut) {
@@ -69,6 +75,7 @@ object PhotoWidgetTapActionPicker {
                 currentTapAction = currentTapAction,
                 currentAppShortcut = selectedApp,
                 currentIncreaseBrightness = currentIncreaseBrightness,
+                currentViewOriginalPhoto = currentViewOriginalPhoto,
                 onChooseApp = {
                     launcher.launch(
                         Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
@@ -77,8 +84,8 @@ object PhotoWidgetTapActionPicker {
                         ),
                     )
                 },
-                onApplyClick = { newTapAction, newAppShortcut, newIncreaseBrightness ->
-                    onApplyClick(newTapAction, newAppShortcut, newIncreaseBrightness)
+                onApplyClick = { newTapAction, newAppShortcut, newIncreaseBrightness, newViewOriginalPhoto ->
+                    onApplyClick(newTapAction, newAppShortcut, newIncreaseBrightness, newViewOriginalPhoto)
                     dismiss()
                 },
             )
@@ -91,11 +98,18 @@ private fun TapActionPickerContent(
     currentTapAction: PhotoWidgetTapAction,
     currentAppShortcut: String?,
     currentIncreaseBrightness: Boolean,
+    currentViewOriginalPhoto: Boolean,
     onChooseApp: () -> Unit,
-    onApplyClick: (newTapAction: PhotoWidgetTapAction, newAppShortcut: String?, newIncreaseBrightness: Boolean) -> Unit,
+    onApplyClick: (
+        newTapAction: PhotoWidgetTapAction,
+        newAppShortcut: String?,
+        newIncreaseBrightness: Boolean,
+        newViewOriginalPhoto: Boolean,
+    ) -> Unit,
 ) {
     var tapAction by remember { mutableStateOf(currentTapAction) }
     var increaseBrightness by remember { mutableStateOf(currentIncreaseBrightness) }
+    var viewOriginalPhoto by remember { mutableStateOf(currentViewOriginalPhoto) }
 
     Column(
         modifier = Modifier
@@ -140,11 +154,22 @@ private fun TapActionPickerContent(
 
             when (value) {
                 PhotoWidgetTapAction.VIEW_FULL_SCREEN -> {
-                    BrightnessToggle(
-                        enabled = increaseBrightness,
-                        onChange = { increaseBrightness = it },
+                    Column(
                         modifier = customOptionModifier,
-                    )
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Toggle(
+                            title = stringResource(id = R.string.photo_widget_configure_tap_action_increase_brightness),
+                            enabled = increaseBrightness,
+                            onChange = { increaseBrightness = it },
+                        )
+
+                        Toggle(
+                            title = stringResource(R.string.photo_widget_configure_tap_action_view_original_photo),
+                            enabled = viewOriginalPhoto,
+                            onChange = { viewOriginalPhoto = it },
+                        )
+                    }
                 }
 
                 PhotoWidgetTapAction.VIEW_IN_GALLERY -> {
@@ -180,7 +205,7 @@ private fun TapActionPickerContent(
         }
 
         FilledTonalButton(
-            onClick = { onApplyClick(tapAction, currentAppShortcut, increaseBrightness) },
+            onClick = { onApplyClick(tapAction, currentAppShortcut, increaseBrightness, viewOriginalPhoto) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
@@ -191,7 +216,8 @@ private fun TapActionPickerContent(
 }
 
 @Composable
-private fun BrightnessToggle(
+private fun Toggle(
+    title: String,
     enabled: Boolean,
     onChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -207,7 +233,7 @@ private fun BrightnessToggle(
         )
 
         Text(
-            text = stringResource(id = R.string.photo_widget_configure_tap_action_increase_brightness),
+            text = title,
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelLarge,
         )
@@ -268,8 +294,9 @@ private fun PhotoWidgetTapActionPickerPreview() {
             currentTapAction = PhotoWidgetTapAction.APP_SHORTCUT,
             currentAppShortcut = null,
             currentIncreaseBrightness = false,
+            currentViewOriginalPhoto = false,
             onChooseApp = {},
-            onApplyClick = { _, _, _ -> },
+            onApplyClick = { _, _, _, _ -> },
         )
     }
 }

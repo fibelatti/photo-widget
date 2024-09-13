@@ -112,12 +112,19 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
     }
 
-    suspend fun getWidgetPhotos(appWidgetId: Int): List<LocalPhoto> {
+    suspend fun getWidgetPhotos(appWidgetId: Int, originalPhotos: Boolean = false): List<LocalPhoto> {
         return withContext(Dispatchers.IO) {
-            getWidgetDir(appWidgetId = appWidgetId).let { dir ->
-                dir.list { _, name -> name != "original" }
+            val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
+
+            if (originalPhotos) {
+                val originalPhotosDir = File("$widgetDir/original")
+                originalPhotosDir.list()
                     .orEmpty()
-                    .map { file -> LocalPhoto(name = file, path = "$dir/$file") }
+                    .map { file -> LocalPhoto(name = file, path = "$originalPhotosDir/$file") }
+            } else {
+                widgetDir.list { _, name -> name != "original" }
+                    .orEmpty()
+                    .map { file -> LocalPhoto(name = file, path = "$widgetDir/$file") }
             }
         }
     }

@@ -370,6 +370,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         tapAction: PhotoWidgetTapAction,
         appShortcut: String?,
         increaseBrightness: Boolean,
+        viewOriginalPhoto: Boolean,
     ) {
         _state.update { current ->
             current.copy(
@@ -377,6 +378,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     tapAction = tapAction,
                     appShortcut = appShortcut.takeIf { PhotoWidgetTapAction.APP_SHORTCUT == tapAction },
                     increaseBrightness = increaseBrightness && PhotoWidgetTapAction.VIEW_FULL_SCREEN == tapAction,
+                    viewOriginalPhoto = viewOriginalPhoto && PhotoWidgetTapAction.VIEW_FULL_SCREEN == tapAction,
                 ),
             )
         }

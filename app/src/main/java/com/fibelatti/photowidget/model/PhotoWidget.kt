@@ -14,6 +14,7 @@ data class PhotoWidget(
     val cycleMode: PhotoWidgetCycleMode = PhotoWidgetCycleMode.DEFAULT,
     val tapAction: PhotoWidgetTapAction = PhotoWidgetTapAction.NONE,
     val increaseBrightness: Boolean = false,
+    val viewOriginalPhoto: Boolean = false,
     val appShortcut: String? = null,
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
     val shapeId: String = DEFAULT_SHAPE_ID,

@@ -170,6 +170,7 @@
     <string name="photo_widget_configure_tap_action_app_shortcut">Abrir um app</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Aumentar o brilho automaticamente</string>
+    <string name="photo_widget_configure_tap_action_view_original_photo">Ver foto original (sem corte ou rotação)</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Disponível para widgets baseados em pastas. Os widgets baseados em fotos usarão \"Ver foto em tela cheia\".</string>
     <string name="photo_widget_configure_tap_action_flip_description">Toque na metade esquerda para ver a foto anterior e na metade direita para ver a próxima.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Escolher app</string>

@@ -280,12 +280,14 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         tapAction: PhotoWidgetTapAction,
         appShortcut: String?,
         increaseBrightness: Boolean,
+        viewOriginalPhoto: Boolean,
     ) {
         PhotoWidgetTapActionPicker.show(
             context = this,
             currentTapAction = tapAction,
             currentAppShortcut = appShortcut,
             currentIncreaseBrightness = increaseBrightness,
+            currentViewOriginalPhoto = viewOriginalPhoto,
             onApplyClick = viewModel::tapActionSelected,
         )
     }

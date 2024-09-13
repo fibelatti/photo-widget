@@ -13,10 +13,12 @@ class LoadPhotoWidgetUseCase @Inject constructor(
 
     operator fun invoke(
         appWidgetId: Int,
+        originalPhotos: Boolean = false,
     ): Flow<PhotoWidget> = with(photoWidgetStorage) {
         Timber.d("Loading widget data (appWidgetId=$appWidgetId)")
 
         val currentIndex = getWidgetIndex(appWidgetId = appWidgetId)
+        val viewOriginalPhoto = getWidgetViewOriginalPhoto(appWidgetId = appWidgetId)
         val (horizontalOffset, verticalOffset) = getWidgetOffset(appWidgetId = appWidgetId)
         val widget = PhotoWidget(
             source = getWidgetSource(appWidgetId = appWidgetId),
@@ -26,6 +28,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             cycleMode = getWidgetCycleMode(appWidgetId = appWidgetId),
             tapAction = getWidgetTapAction(appWidgetId = appWidgetId),
             increaseBrightness = getWidgetIncreaseBrightness(appWidgetId = appWidgetId),
+            viewOriginalPhoto = viewOriginalPhoto,
             appShortcut = getWidgetAppShortcut(appWidgetId = appWidgetId),
             aspectRatio = getWidgetAspectRatio(appWidgetId = appWidgetId),
             shapeId = getWidgetShapeId(appWidgetId = appWidgetId),
@@ -41,7 +44,10 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             emit(widget.copy(isLoading = true))
             emit(
                 widget.copy(
-                    photos = getWidgetPhotos(appWidgetId = appWidgetId),
+                    photos = getWidgetPhotos(
+                        appWidgetId = appWidgetId,
+                        originalPhotos = viewOriginalPhoto && originalPhotos,
+                    ),
                     photosPendingDeletion = getPendingDeletionPhotos(appWidgetId = appWidgetId),
                     isLoading = false,
                 ),

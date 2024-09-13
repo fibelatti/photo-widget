@@ -113,8 +113,8 @@ class PhotoWidgetSharedPreferences @Inject constructor(
     fun getWidgetCycleMode(appWidgetId: Int): PhotoWidgetCycleMode {
         val containsEnabled = sharedPreferences.contains("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId")
         val containsInterval = sharedPreferences.contains("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId") ||
-                sharedPreferences.contains("${PreferencePrefix.LEGACY_INTERVAL_MINUTES}$appWidgetId") ||
-                sharedPreferences.contains("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId")
+            sharedPreferences.contains("${PreferencePrefix.LEGACY_INTERVAL_MINUTES}$appWidgetId") ||
+            sharedPreferences.contains("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId")
 
         return when {
             containsEnabled && getWidgetIntervalEnabled(appWidgetId) -> PhotoWidgetCycleMode.Disabled
@@ -284,6 +284,16 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         )
     }
 
+    fun saveWidgetViewOriginalPhoto(appWidgetId: Int, value: Boolean) {
+        sharedPreferences.edit {
+            putBoolean("${PreferencePrefix.VIEW_ORIGINAL_PHOTO}$appWidgetId", value)
+        }
+    }
+
+    fun getWidgetViewOriginalPhoto(appWidgetId: Int): Boolean {
+        return sharedPreferences.getBoolean("${PreferencePrefix.VIEW_ORIGINAL_PHOTO}$appWidgetId", false)
+    }
+
     fun saveWidgetAppShortcut(appWidgetId: Int, appName: String?) {
         sharedPreferences.edit {
             putString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", appName)
@@ -359,6 +369,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         PADDING(value = "appwidget_padding_"),
         TAP_ACTION(value = "appwidget_tap_action_"),
         INCREASE_BRIGHTNESS(value = "appwidget_increase_brightness_"),
+        VIEW_ORIGINAL_PHOTO(value = "appwidget_view_original_photo_"),
         APP_SHORTCUT(value = "appwidget_app_shortcut_"),
 
         DELETION_TIMESTAMP(value = "appwidget_deletion_timestamp_"),

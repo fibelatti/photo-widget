@@ -58,6 +58,11 @@ class SavePhotoWidgetUseCase @Inject constructor(
             value = photoWidget.increaseBrightness,
         )
 
+        photoWidgetStorage.saveWidgetViewOriginalPhoto(
+            appWidgetId = appWidgetId,
+            value = photoWidget.viewOriginalPhoto,
+        )
+
         photoWidgetStorage.saveWidgetAppShortcut(
             appWidgetId = appWidgetId,
             appName = photoWidget.appShortcut,
