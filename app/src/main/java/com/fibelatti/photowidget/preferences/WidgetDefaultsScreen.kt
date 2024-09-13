@@ -65,6 +65,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
@@ -433,6 +434,7 @@ fun ShapePicker(
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun CornerRadiusPicker(
     currentValue: Float,
     onApplyClick: (newValue: Float) -> Unit,
@@ -471,6 +473,7 @@ fun CornerRadiusPicker(
                 onValueChange = { value = it },
                 modifier = Modifier.weight(1f),
                 valueRange = 0f..100f,
+                thumb = { SliderSmallThumb() },
             )
 
             Text(
@@ -494,6 +497,7 @@ fun CornerRadiusPicker(
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun OpacityPicker(
     currentValue: Float,
     onApplyClick: (newValue: Float) -> Unit,
@@ -533,6 +537,7 @@ fun OpacityPicker(
                 onValueChange = { value = it },
                 modifier = Modifier.weight(1f),
                 valueRange = 0f..100f,
+                thumb = { SliderSmallThumb() },
             )
 
             Text(

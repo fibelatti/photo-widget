@@ -305,7 +305,6 @@ private fun RowScope.ButtonWithIconAndText(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun IconContent(
     item: ToggleButtonGroup.Item,
     modifier: Modifier = Modifier,

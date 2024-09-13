@@ -64,6 +64,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
+import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
@@ -105,7 +106,6 @@ object PhotoWidgetCycleModePicker {
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun PhotoCycleModePickerContent(
     cycleMode: PhotoWidgetCycleMode,
     canScheduleExactAlarms: Boolean,
@@ -319,6 +319,7 @@ private fun PhotoCycleModeIntervalContent(
                 onValueChange = { newValue -> interval = interval.copy(repeatInterval = newValue.toLong()) },
                 modifier = Modifier.weight(1f),
                 valueRange = interval.range(),
+                thumb = { SliderSmallThumb() },
             )
 
             Text(
@@ -557,7 +558,7 @@ fun TimePickerDialog(
                 .height(IntrinsicSize.Min)
                 .background(
                     shape = MaterialTheme.shapes.extraLarge,
-                    color = MaterialTheme.colorScheme.surface,
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
                 ),
         ) {
             Column(

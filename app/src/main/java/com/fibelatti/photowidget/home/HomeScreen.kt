@@ -9,7 +9,6 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -39,7 +38,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -328,7 +326,7 @@ private fun AspectRatioItem(
         if (selected) {
             MaterialTheme.colorScheme.primaryContainer
         } else {
-            MaterialTheme.colorScheme.surface
+            MaterialTheme.colorScheme.surfaceContainer
         }
     }
 
@@ -348,7 +346,7 @@ private fun AspectRatioItem(
                 if (selected) {
                     MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
-                    MaterialTheme.colorScheme.secondary
+                    MaterialTheme.colorScheme.onSurface
                 }
             }
 
@@ -384,7 +382,6 @@ private fun AspectRatioItem(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 private fun MyWidgetsScreen(
     widgets: List<Pair<Int, PhotoWidget>>,
     onCurrentWidgetClick: (appWidgetId: Int) -> Unit,
@@ -432,7 +429,7 @@ private fun MyWidgetsScreen(
                             cornerRadius = widget.cornerRadius,
                             opacity = if (isRemoved) 70f else widget.opacity,
                             modifier = Modifier
-                                .animateItemPlacement()
+                                .animateItem()
                                 .fillMaxSize()
                                 .clickable { if (isRemoved) onRemovedWidgetClick(id) else onCurrentWidgetClick(id) }
                                 .conditional(

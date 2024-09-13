@@ -149,7 +149,7 @@ private fun SourcePickerContent(
                 items(dirList, key = { it }) { dir ->
                     Row(
                         modifier = Modifier
-                            .animateItemPlacement()
+                            .animateItem()
                             .fillMaxWidth()
                             .height(48.dp)
                             .clickable {

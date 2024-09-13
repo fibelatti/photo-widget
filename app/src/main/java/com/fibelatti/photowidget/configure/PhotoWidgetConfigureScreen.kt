@@ -40,6 +40,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -102,6 +103,7 @@ import com.fibelatti.photowidget.preferences.ShapeDefault
 import com.fibelatti.photowidget.preferences.ShapePicker
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.photowidget.ui.LoadingIndicator
+import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.ui.foundation.grayScale
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
@@ -779,7 +781,7 @@ private fun PhotoPicker(
                     cornerRadius = cornerRadius,
                     opacity = opacity,
                     modifier = Modifier
-                        .animateItemPlacement()
+                        .animateItem()
                         .fillMaxWidth()
                         .aspectRatio(ratio = aspectRatio.aspectRatio)
                         .clickable(
@@ -795,7 +797,6 @@ private fun PhotoPicker(
 }
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 private fun PendingDeletionPhotoPicker(
     photos: List<LocalPhoto>,
     onPhotoClick: (LocalPhoto) -> Unit,
@@ -829,7 +830,7 @@ private fun PendingDeletionPhotoPicker(
                     cornerRadius = cornerRadius,
                     opacity = PhotoWidget.DEFAULT_OPACITY,
                     modifier = Modifier
-                        .animateItemPlacement()
+                        .animateItem()
                         .fillMaxWidth()
                         .aspectRatio(ratio = aspectRatio.aspectRatio)
                         .grayScale()
@@ -1051,6 +1052,7 @@ private fun OffsetPicker(
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun PaddingPicker(
     currentValue: Int,
     onApplyClick: (newValue: Int) -> Unit,
@@ -1091,6 +1093,7 @@ fun PaddingPicker(
                 onValueChange = { value = it.toInt() },
                 modifier = Modifier.weight(1f),
                 valueRange = 0f..20f,
+                thumb = { SliderSmallThumb() },
             )
 
             Text(
