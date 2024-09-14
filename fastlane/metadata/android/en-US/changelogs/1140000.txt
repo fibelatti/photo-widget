@@ -1,0 +1,12 @@
+Version 1.14 is released with the following updates:
+
+* Update widgets at a scheduled time
+* Restore recently removed photos (photo widget only, for photos deleted after
+  version 1.14)
+* The View in full screen tap action now offers a way to view the original
+  photo
+* Improved pre-crop image quality when importing photos
+* Reduced in-app motion animations
+
+Feedback and suggestions are always welcome, visit the project page to
+contribute!
