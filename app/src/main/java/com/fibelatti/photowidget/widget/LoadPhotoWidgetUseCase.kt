@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.widget
 
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -44,6 +45,11 @@ class LoadPhotoWidgetUseCase @Inject constructor(
                         appWidgetId = appWidgetId,
                         originalPhotos = widget.viewOriginalPhoto && originalPhotos,
                     ),
+                    aspectRatio = if (widget.viewOriginalPhoto && originalPhotos) {
+                        PhotoWidgetAspectRatio.ORIGINAL
+                    } else {
+                        widget.aspectRatio
+                    },
                     photosPendingDeletion = getPendingDeletionPhotos(appWidgetId = appWidgetId),
                     isLoading = false,
                 ),
