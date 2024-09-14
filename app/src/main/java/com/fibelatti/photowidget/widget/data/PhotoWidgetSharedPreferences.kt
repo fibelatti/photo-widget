@@ -117,7 +117,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
             sharedPreferences.contains("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId")
 
         return when {
-            containsEnabled && getWidgetIntervalEnabled(appWidgetId) -> PhotoWidgetCycleMode.Disabled
+            containsEnabled && !getWidgetIntervalEnabled(appWidgetId) -> PhotoWidgetCycleMode.Disabled
 
             containsInterval -> PhotoWidgetCycleMode.Interval(loopingInterval = getWidgetInterval(appWidgetId))
 
