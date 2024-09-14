@@ -770,7 +770,7 @@ private fun MyWidgetsScreenPreview() {
                     photos = listOf(LocalPhoto(name = "photo-1")),
                     shuffle = false,
                     cycleMode = PhotoWidgetCycleMode.DEFAULT,
-                    tapAction = PhotoWidgetTapAction.VIEW_FULL_SCREEN,
+                    tapAction = PhotoWidgetTapAction.DEFAULT,
                     aspectRatio = when {
                         index % 3 == 0 -> PhotoWidgetAspectRatio.WIDE
                         index % 2 == 0 -> PhotoWidgetAspectRatio.TALL

@@ -56,6 +56,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.ColoredShape
 import com.fibelatti.photowidget.configure.PhotoWidgetCycleModePicker
+import com.fibelatti.photowidget.configure.PhotoWidgetTapActionPicker
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
@@ -133,15 +134,12 @@ fun WidgetDefaultsScreen(
             }.show()
         },
         onTapActionClick = {
-            SelectionDialog.show(
+            PhotoWidgetTapActionPicker.show(
                 context = localContext,
-                title = localContext.getString(R.string.widget_defaults_tap_action),
-                options = PhotoWidgetTapAction.entries,
-                optionName = { option -> localContext.getString(option.label) },
-                onOptionSelected = preferencesViewModel::saveDefaultTapAction,
+                currentTapAction = preferences.defaultTapAction,
+                onApplyClick = preferencesViewModel::saveDefaultTapAction,
             )
         },
-        onIncreaseBrightnessChange = preferencesViewModel::saveDefaultIncreaseBrightness,
         onClearDefaultsClick = preferencesViewModel::clearDefaults,
     )
 }
@@ -158,7 +156,6 @@ private fun WidgetDefaultsScreen(
     onCornerRadiusClick: () -> Unit,
     onOpacityClick: () -> Unit,
     onTapActionClick: () -> Unit,
-    onIncreaseBrightnessChange: (Boolean) -> Unit,
     onClearDefaultsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -258,12 +255,6 @@ private fun WidgetDefaultsScreen(
                 title = stringResource(id = R.string.widget_defaults_tap_action),
                 currentValue = stringResource(id = userPreferences.defaultTapAction.label),
                 onClick = onTapActionClick,
-            )
-
-            BooleanDefault(
-                title = stringResource(id = R.string.widget_defaults_increase_brightness),
-                currentValue = userPreferences.defaultIncreaseBrightness,
-                onCheckedChange = onIncreaseBrightnessChange,
             )
 
             OutlinedButton(
@@ -603,8 +594,7 @@ private fun WidgetDefaultsScreenPreview() {
                 defaultShape = PhotoWidget.DEFAULT_SHAPE_ID,
                 defaultCornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                 defaultOpacity = PhotoWidget.DEFAULT_OPACITY,
-                defaultTapAction = PhotoWidgetTapAction.NONE,
-                defaultIncreaseBrightness = true,
+                defaultTapAction = PhotoWidgetTapAction.DEFAULT,
             ),
             onNavClick = {},
             onSourceClick = {},
@@ -614,7 +604,6 @@ private fun WidgetDefaultsScreenPreview() {
             onCornerRadiusClick = {},
             onOpacityClick = {},
             onTapActionClick = {},
-            onIncreaseBrightnessChange = {},
             onClearDefaultsClick = {},
         )
     }

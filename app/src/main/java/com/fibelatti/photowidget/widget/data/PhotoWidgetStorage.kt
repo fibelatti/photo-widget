@@ -231,30 +231,6 @@ class PhotoWidgetStorage @Inject constructor(
         return sharedPreferences.getWidgetTapAction(appWidgetId = appWidgetId)
     }
 
-    fun saveWidgetIncreaseBrightness(appWidgetId: Int, value: Boolean) {
-        sharedPreferences.saveWidgetIncreaseBrightness(appWidgetId = appWidgetId, value = value)
-    }
-
-    fun getWidgetIncreaseBrightness(appWidgetId: Int): Boolean {
-        return sharedPreferences.getWidgetIncreaseBrightness(appWidgetId = appWidgetId)
-    }
-
-    fun saveWidgetViewOriginalPhoto(appWidgetId: Int, value: Boolean) {
-        sharedPreferences.saveWidgetViewOriginalPhoto(appWidgetId = appWidgetId, value = value)
-    }
-
-    fun getWidgetViewOriginalPhoto(appWidgetId: Int): Boolean {
-        return sharedPreferences.getWidgetViewOriginalPhoto(appWidgetId = appWidgetId)
-    }
-
-    fun saveWidgetAppShortcut(appWidgetId: Int, appName: String?) {
-        sharedPreferences.saveWidgetAppShortcut(appWidgetId = appWidgetId, appName = appName)
-    }
-
-    fun getWidgetAppShortcut(appWidgetId: Int): String? {
-        return sharedPreferences.getWidgetAppShortcut(appWidgetId = appWidgetId)
-    }
-
     fun saveWidgetDeletionTimestamp(appWidgetId: Int, timestamp: Long) {
         sharedPreferences.saveWidgetDeletionTimestamp(appWidgetId = appWidgetId, timestamp = timestamp)
     }

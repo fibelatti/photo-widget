@@ -58,7 +58,6 @@
     <string name="widget_defaults_corner_radius">Yuvarlaklık</string>
     <string name="widget_defaults_opacity">Opaklık</string>
     <string name="widget_defaults_tap_action">Dokunma eylemi</string>
-    <string name="widget_defaults_increase_brightness">Parlaklığı artır</string>
     <string name="widget_defaults_reset">Değerleri sıfırla</string>
 
     <!-- Share -->

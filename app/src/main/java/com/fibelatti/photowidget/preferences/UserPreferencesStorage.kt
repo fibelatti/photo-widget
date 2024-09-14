@@ -38,7 +38,6 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             defaultCornerRadius = defaultCornerRadius,
             defaultOpacity = defaultOpacity,
             defaultTapAction = defaultTapAction,
-            defaultIncreaseBrightness = defaultIncreaseBrightness,
         ),
     )
     val userPreferences: StateFlow<UserPreferences> = _userPreferences.asStateFlow()
@@ -188,22 +187,43 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         }
 
     var defaultTapAction: PhotoWidgetTapAction
-        get() {
-            val name = sharedPreferences.getString(Preference.DEFAULT_TAP_ACTION.value, null)
-            return enumValueOfOrNull<PhotoWidgetTapAction>(name) ?: PhotoWidgetTapAction.NONE
-        }
-        set(value) {
-            sharedPreferences.edit { putString(Preference.DEFAULT_TAP_ACTION.value, value.name) }
-            _userPreferences.update { current -> current.copy(defaultTapAction = value) }
-        }
+        get() = with(sharedPreferences) {
+            val name = getString(Preference.DEFAULT_TAP_ACTION.value, null)
+                ?: return PhotoWidgetTapAction.DEFAULT
 
-    var defaultIncreaseBrightness: Boolean
-        get() {
-            return sharedPreferences.getBoolean(Preference.DEFAULT_INCREASE_BRIGHTNESS.value, false)
+            return PhotoWidgetTapAction.fromSerializedName(name).let { tapAction ->
+                when (tapAction) {
+                    is PhotoWidgetTapAction.ViewFullScreen -> tapAction.copy(
+                        increaseBrightness = getBoolean(Preference.DEFAULT_INCREASE_BRIGHTNESS.value, false),
+                        viewOriginalPhoto = getBoolean(Preference.DEFAULT_VIEW_ORIGINAL_PHOTO.value, false),
+                    )
+
+                    is PhotoWidgetTapAction.AppShortcut -> tapAction.copy(
+                        appShortcut = getString(Preference.DEFAULT_APP_SHORTCUT.value, null),
+                    )
+
+                    else -> tapAction
+                }
+            }
         }
         set(value) {
-            sharedPreferences.edit { putBoolean(Preference.DEFAULT_INCREASE_BRIGHTNESS.value, value) }
-            _userPreferences.update { current -> current.copy(defaultIncreaseBrightness = value) }
+            sharedPreferences.edit {
+                putString(Preference.DEFAULT_TAP_ACTION.value, value.serializedName)
+
+                when (value) {
+                    is PhotoWidgetTapAction.ViewFullScreen -> {
+                        putBoolean(Preference.DEFAULT_INCREASE_BRIGHTNESS.value, value.increaseBrightness)
+                        putBoolean(Preference.DEFAULT_VIEW_ORIGINAL_PHOTO.value, value.viewOriginalPhoto)
+                    }
+
+                    is PhotoWidgetTapAction.AppShortcut -> {
+                        putString(Preference.DEFAULT_APP_SHORTCUT.value, value.appShortcut)
+                    }
+
+                    else -> Unit
+                }
+            }
+            _userPreferences.update { current -> current.copy(defaultTapAction = value) }
         }
     // endregion Defaults
 
@@ -224,7 +244,6 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                 defaultCornerRadius = defaultCornerRadius,
                 defaultOpacity = defaultOpacity,
                 defaultTapAction = defaultTapAction,
-                defaultIncreaseBrightness = defaultIncreaseBrightness,
             )
         }
     }
@@ -253,6 +272,8 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         DEFAULT_OPACITY(value = "default_opacity"),
         DEFAULT_TAP_ACTION(value = "default_tap_action"),
         DEFAULT_INCREASE_BRIGHTNESS(value = "default_increase_brightness"),
+        DEFAULT_VIEW_ORIGINAL_PHOTO(value = "default_view_original_photo"),
+        DEFAULT_APP_SHORTCUT(value = "default_app_shortcut"),
         ;
 
         override fun toString(): String = value

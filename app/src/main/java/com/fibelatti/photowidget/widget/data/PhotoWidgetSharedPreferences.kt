@@ -261,47 +261,41 @@ class PhotoWidgetSharedPreferences @Inject constructor(
 
     fun saveWidgetTapAction(appWidgetId: Int, tapAction: PhotoWidgetTapAction) {
         sharedPreferences.edit {
-            putString("${PreferencePrefix.TAP_ACTION}$appWidgetId", tapAction.name)
+            putString("${PreferencePrefix.TAP_ACTION}$appWidgetId", tapAction.serializedName)
+
+            when (tapAction) {
+                is PhotoWidgetTapAction.ViewFullScreen -> {
+                    putBoolean("${PreferencePrefix.INCREASE_BRIGHTNESS}$appWidgetId", tapAction.increaseBrightness)
+                    putBoolean("${PreferencePrefix.VIEW_ORIGINAL_PHOTO}$appWidgetId", tapAction.viewOriginalPhoto)
+                }
+
+                is PhotoWidgetTapAction.AppShortcut -> {
+                    putString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", tapAction.appShortcut)
+                }
+
+                else -> Unit
+            }
         }
     }
 
-    fun getWidgetTapAction(appWidgetId: Int): PhotoWidgetTapAction {
-        val name = sharedPreferences.getString("${PreferencePrefix.TAP_ACTION}$appWidgetId", null)
+    fun getWidgetTapAction(appWidgetId: Int): PhotoWidgetTapAction = with(sharedPreferences) {
+        val name = getString("${PreferencePrefix.TAP_ACTION}$appWidgetId", null)
+            ?: return userPreferencesStorage.defaultTapAction
 
-        return enumValueOfOrNull<PhotoWidgetTapAction>(name) ?: userPreferencesStorage.defaultTapAction
-    }
+        return PhotoWidgetTapAction.fromSerializedName(name).let { tapAction ->
+            when (tapAction) {
+                is PhotoWidgetTapAction.ViewFullScreen -> tapAction.copy(
+                    increaseBrightness = getBoolean("${PreferencePrefix.INCREASE_BRIGHTNESS}$appWidgetId", false),
+                    viewOriginalPhoto = getBoolean("${PreferencePrefix.VIEW_ORIGINAL_PHOTO}$appWidgetId", false),
+                )
 
-    fun saveWidgetIncreaseBrightness(appWidgetId: Int, value: Boolean) {
-        sharedPreferences.edit {
-            putBoolean("${PreferencePrefix.INCREASE_BRIGHTNESS}$appWidgetId", value)
+                is PhotoWidgetTapAction.AppShortcut -> tapAction.copy(
+                    appShortcut = getString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", null),
+                )
+
+                else -> tapAction
+            }
         }
-    }
-
-    fun getWidgetIncreaseBrightness(appWidgetId: Int): Boolean {
-        return sharedPreferences.getBoolean(
-            "${PreferencePrefix.INCREASE_BRIGHTNESS}$appWidgetId",
-            userPreferencesStorage.defaultIncreaseBrightness,
-        )
-    }
-
-    fun saveWidgetViewOriginalPhoto(appWidgetId: Int, value: Boolean) {
-        sharedPreferences.edit {
-            putBoolean("${PreferencePrefix.VIEW_ORIGINAL_PHOTO}$appWidgetId", value)
-        }
-    }
-
-    fun getWidgetViewOriginalPhoto(appWidgetId: Int): Boolean {
-        return sharedPreferences.getBoolean("${PreferencePrefix.VIEW_ORIGINAL_PHOTO}$appWidgetId", false)
-    }
-
-    fun saveWidgetAppShortcut(appWidgetId: Int, appName: String?) {
-        sharedPreferences.edit {
-            putString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", appName)
-        }
-    }
-
-    fun getWidgetAppShortcut(appWidgetId: Int): String? {
-        return sharedPreferences.getString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", null)
     }
 
     fun saveWidgetDeletionTimestamp(appWidgetId: Int, timestamp: Long) {

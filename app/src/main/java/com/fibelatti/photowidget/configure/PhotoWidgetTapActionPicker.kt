@@ -22,6 +22,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,19 +52,11 @@ object PhotoWidgetTapActionPicker {
     fun show(
         context: Context,
         currentTapAction: PhotoWidgetTapAction,
-        currentAppShortcut: String?,
-        currentIncreaseBrightness: Boolean,
-        currentViewOriginalPhoto: Boolean,
-        onApplyClick: (
-            newTapAction: PhotoWidgetTapAction,
-            newAppShortcut: String?,
-            newIncreaseBrightness: Boolean,
-            newViewOriginalPhoto: Boolean,
-        ) -> Unit,
+        onApplyClick: (newTapAction: PhotoWidgetTapAction) -> Unit,
     ) {
         ComposeBottomSheetDialog(context) {
-            var selectedApp: String? by remember(currentAppShortcut) {
-                mutableStateOf(currentAppShortcut)
+            var selectedApp: String? by remember(currentTapAction) {
+                mutableStateOf((currentTapAction as? PhotoWidgetTapAction.AppShortcut)?.appShortcut)
             }
             val launcher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartActivityForResult(),
@@ -74,8 +67,6 @@ object PhotoWidgetTapActionPicker {
             TapActionPickerContent(
                 currentTapAction = currentTapAction,
                 currentAppShortcut = selectedApp,
-                currentIncreaseBrightness = currentIncreaseBrightness,
-                currentViewOriginalPhoto = currentViewOriginalPhoto,
                 onChooseApp = {
                     launcher.launch(
                         Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
@@ -84,8 +75,8 @@ object PhotoWidgetTapActionPicker {
                         ),
                     )
                 },
-                onApplyClick = { newTapAction, newAppShortcut, newIncreaseBrightness, newViewOriginalPhoto ->
-                    onApplyClick(newTapAction, newAppShortcut, newIncreaseBrightness, newViewOriginalPhoto)
+                onApplyClick = { newTapAction ->
+                    onApplyClick(newTapAction)
                     dismiss()
                 },
             )
@@ -97,19 +88,16 @@ object PhotoWidgetTapActionPicker {
 private fun TapActionPickerContent(
     currentTapAction: PhotoWidgetTapAction,
     currentAppShortcut: String?,
-    currentIncreaseBrightness: Boolean,
-    currentViewOriginalPhoto: Boolean,
     onChooseApp: () -> Unit,
-    onApplyClick: (
-        newTapAction: PhotoWidgetTapAction,
-        newAppShortcut: String?,
-        newIncreaseBrightness: Boolean,
-        newViewOriginalPhoto: Boolean,
-    ) -> Unit,
+    onApplyClick: (newTapAction: PhotoWidgetTapAction) -> Unit,
 ) {
     var tapAction by remember { mutableStateOf(currentTapAction) }
-    var increaseBrightness by remember { mutableStateOf(currentIncreaseBrightness) }
-    var viewOriginalPhoto by remember { mutableStateOf(currentViewOriginalPhoto) }
+
+    LaunchedEffect(currentAppShortcut) {
+        if (currentAppShortcut != null && tapAction is PhotoWidgetTapAction.AppShortcut) {
+            tapAction = PhotoWidgetTapAction.AppShortcut(currentAppShortcut)
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -127,20 +115,24 @@ private fun TapActionPickerContent(
         ColumnToggleButtonGroup(
             items = PhotoWidgetTapAction.entries.map {
                 ToggleButtonGroup.Item(
-                    id = it.name,
+                    id = it.serializedName,
                     text = stringResource(id = it.label),
                 )
             },
             onButtonClick = { item ->
-                tapAction = PhotoWidgetTapAction.valueOf(item.id)
+                tapAction = PhotoWidgetTapAction.fromSerializedName(item.id).let { selection ->
+                    if (selection.javaClass == currentTapAction.javaClass) {
+                        currentTapAction
+                    } else {
+                        selection
+                    }
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
-            selectedIndex = PhotoWidgetTapAction.entries.indexOf(tapAction),
-            colors = ToggleButtonGroup.colors(
-                unselectedButtonColor = MaterialTheme.colorScheme.surfaceContainerLow,
-            ),
+            selectedIndex = PhotoWidgetTapAction.entries.indexOfFirst { it.serializedName == tapAction.serializedName },
+            colors = ToggleButtonGroup.colors(unselectedButtonColor = MaterialTheme.colorScheme.surfaceContainerLow),
         )
 
         AnimatedContent(
@@ -153,26 +145,26 @@ private fun TapActionPickerContent(
                 .padding(top = 16.dp)
 
             when (value) {
-                PhotoWidgetTapAction.VIEW_FULL_SCREEN -> {
+                is PhotoWidgetTapAction.ViewFullScreen -> {
                     Column(
                         modifier = customOptionModifier,
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         Toggle(
                             title = stringResource(id = R.string.photo_widget_configure_tap_action_increase_brightness),
-                            enabled = increaseBrightness,
-                            onChange = { increaseBrightness = it },
+                            enabled = value.increaseBrightness,
+                            onChange = { tapAction = value.copy(increaseBrightness = it) },
                         )
 
                         Toggle(
                             title = stringResource(R.string.photo_widget_configure_tap_action_view_original_photo),
-                            enabled = viewOriginalPhoto,
-                            onChange = { viewOriginalPhoto = it },
+                            enabled = value.viewOriginalPhoto,
+                            onChange = { tapAction = value.copy(viewOriginalPhoto = it) },
                         )
                     }
                 }
 
-                PhotoWidgetTapAction.VIEW_IN_GALLERY -> {
+                is PhotoWidgetTapAction.ViewInGallery -> {
                     Text(
                         text = stringResource(id = R.string.photo_widget_configure_tap_action_gallery_description),
                         modifier = customOptionModifier,
@@ -182,7 +174,7 @@ private fun TapActionPickerContent(
                     )
                 }
 
-                PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> {
+                is PhotoWidgetTapAction.ViewNextPhoto -> {
                     Text(
                         text = stringResource(id = R.string.photo_widget_configure_tap_action_flip_description),
                         modifier = customOptionModifier,
@@ -192,7 +184,7 @@ private fun TapActionPickerContent(
                     )
                 }
 
-                PhotoWidgetTapAction.APP_SHORTCUT -> {
+                is PhotoWidgetTapAction.AppShortcut -> {
                     AppPicker(
                         onChooseApp = onChooseApp,
                         currentAppShortcut = currentAppShortcut,
@@ -200,12 +192,12 @@ private fun TapActionPickerContent(
                     )
                 }
 
-                PhotoWidgetTapAction.NONE -> Unit
+                PhotoWidgetTapAction.None -> Unit
             }
         }
 
         FilledTonalButton(
-            onClick = { onApplyClick(tapAction, currentAppShortcut, increaseBrightness, viewOriginalPhoto) },
+            onClick = { onApplyClick(tapAction) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
@@ -291,12 +283,10 @@ private fun AppPicker(
 private fun PhotoWidgetTapActionPickerPreview() {
     ExtendedTheme {
         TapActionPickerContent(
-            currentTapAction = PhotoWidgetTapAction.APP_SHORTCUT,
+            currentTapAction = PhotoWidgetTapAction.DEFAULT,
             currentAppShortcut = null,
-            currentIncreaseBrightness = false,
-            currentViewOriginalPhoto = false,
             onChooseApp = {},
-            onApplyClick = { _, _, _, _ -> },
+            onApplyClick = {},
         )
     }
 }

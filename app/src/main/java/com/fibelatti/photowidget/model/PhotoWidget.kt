@@ -12,10 +12,7 @@ data class PhotoWidget(
     val currentIndex: Int = 0,
     val shuffle: Boolean = false,
     val cycleMode: PhotoWidgetCycleMode = PhotoWidgetCycleMode.DEFAULT,
-    val tapAction: PhotoWidgetTapAction = PhotoWidgetTapAction.NONE,
-    val increaseBrightness: Boolean = false,
-    val viewOriginalPhoto: Boolean = false,
-    val appShortcut: String? = null,
+    val tapAction: PhotoWidgetTapAction = PhotoWidgetTapAction.DEFAULT,
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
     val shapeId: String = DEFAULT_SHAPE_ID,
     val cornerRadius: Float = DEFAULT_CORNER_RADIUS,
@@ -37,7 +34,13 @@ data class PhotoWidget(
     val canSort: Boolean get() = PhotoWidgetSource.PHOTOS == source && photos.size > 1 && !shuffle
 
     val canShuffle: Boolean
-        get() = photos.size > 1 && (cyclingEnabled || PhotoWidgetTapAction.VIEW_NEXT_PHOTO == tapAction)
+        get() = photos.size > 1 && (cyclingEnabled || tapAction is PhotoWidgetTapAction.ViewNextPhoto)
+
+    val increaseBrightness: Boolean
+        get() = (tapAction as? PhotoWidgetTapAction.ViewFullScreen)?.increaseBrightness == true
+
+    val viewOriginalPhoto: Boolean
+        get() = (tapAction as? PhotoWidgetTapAction.ViewFullScreen)?.viewOriginalPhoto == true
 
     companion object {
 

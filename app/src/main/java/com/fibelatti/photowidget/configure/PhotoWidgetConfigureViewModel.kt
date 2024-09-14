@@ -366,20 +366,10 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun tapActionSelected(
-        tapAction: PhotoWidgetTapAction,
-        appShortcut: String?,
-        increaseBrightness: Boolean,
-        viewOriginalPhoto: Boolean,
-    ) {
+    fun tapActionSelected(tapAction: PhotoWidgetTapAction) {
         _state.update { current ->
             current.copy(
-                photoWidget = current.photoWidget.copy(
-                    tapAction = tapAction,
-                    appShortcut = appShortcut.takeIf { PhotoWidgetTapAction.APP_SHORTCUT == tapAction },
-                    increaseBrightness = increaseBrightness && PhotoWidgetTapAction.VIEW_FULL_SCREEN == tapAction,
-                    viewOriginalPhoto = viewOriginalPhoto && PhotoWidgetTapAction.VIEW_FULL_SCREEN == tapAction,
-                ),
+                photoWidget = current.photoWidget.copy(tapAction = tapAction),
             )
         }
     }

@@ -108,7 +108,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         tapAction = (tempWidget ?: photoWidget).tapAction,
                         flipBackwards = true,
                         externalUri = (tempWidget ?: photoWidget).currentPhoto?.externalUri,
-                        appShortcut = (tempWidget ?: photoWidget).appShortcut,
                     ),
                 )
                 views.setOnClickPendingIntent(
@@ -119,7 +118,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         tapAction = (tempWidget ?: photoWidget).tapAction,
                         flipBackwards = false,
                         externalUri = (tempWidget ?: photoWidget).currentPhoto?.externalUri,
-                        appShortcut = (tempWidget ?: photoWidget).appShortcut,
                     ),
                 )
 
@@ -231,12 +229,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             tapAction: PhotoWidgetTapAction,
             flipBackwards: Boolean,
             externalUri: Uri?,
-            appShortcut: String?,
         ): PendingIntent? {
             when (tapAction) {
-                PhotoWidgetTapAction.NONE -> return null
+                is PhotoWidgetTapAction.None -> return null
 
-                PhotoWidgetTapAction.VIEW_FULL_SCREEN -> {
+                is PhotoWidgetTapAction.ViewFullScreen -> {
                     val clickIntent = Intent(context, PhotoWidgetClickActivity::class.java).apply {
                         this.appWidgetId = appWidgetId
                     }
@@ -248,7 +245,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     )
                 }
 
-                PhotoWidgetTapAction.VIEW_IN_GALLERY -> {
+                is PhotoWidgetTapAction.ViewInGallery -> {
                     if (externalUri == null) return null
 
                     val intent = Intent(Intent.ACTION_VIEW, externalUri).apply {
@@ -263,7 +260,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     )
                 }
 
-                PhotoWidgetTapAction.VIEW_NEXT_PHOTO -> {
+                is PhotoWidgetTapAction.ViewNextPhoto -> {
                     return flipPhotoPendingIntent(
                         context = context,
                         appWidgetId = appWidgetId,
@@ -271,14 +268,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     )
                 }
 
-                PhotoWidgetTapAction.APP_SHORTCUT -> {
-                    if (appShortcut == null) return null
+                is PhotoWidgetTapAction.AppShortcut -> {
+                    if (tapAction.appShortcut == null) return null
 
                     val pm = context.packageManager
-                    var launchIntent = pm.getLaunchIntentForPackage(appShortcut)
+                    var launchIntent = pm.getLaunchIntentForPackage(tapAction.appShortcut)
 
                     if (launchIntent == null) {
-                        val queryIntent = Intent(Intent.ACTION_MAIN).setPackage(appShortcut)
+                        val queryIntent = Intent(Intent.ACTION_MAIN).setPackage(tapAction.appShortcut)
                         val activity = pm.queryIntentActivities(queryIntent, 0).firstOrNull()?.activityInfo
                         if (activity != null) {
                             launchIntent = Intent(Intent.ACTION_MAIN)

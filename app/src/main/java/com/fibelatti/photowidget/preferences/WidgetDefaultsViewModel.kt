@@ -43,10 +43,6 @@ class WidgetDefaultsViewModel @Inject constructor(
         userPreferencesStorage.defaultTapAction = tapAction
     }
 
-    fun saveDefaultIncreaseBrightness(value: Boolean) {
-        userPreferencesStorage.defaultIncreaseBrightness = value
-    }
-
     fun clearDefaults() {
         userPreferencesStorage.clearDefaults()
     }

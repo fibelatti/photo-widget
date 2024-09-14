@@ -46,26 +46,11 @@ class SavePhotoWidgetUseCase @Inject constructor(
         photoWidgetStorage.saveWidgetTapAction(
             appWidgetId = appWidgetId,
             tapAction = when {
-                PhotoWidgetTapAction.VIEW_IN_GALLERY == photoWidget.tapAction &&
-                    PhotoWidgetSource.PHOTOS == photoWidget.source -> PhotoWidgetTapAction.VIEW_FULL_SCREEN
+                photoWidget.tapAction is PhotoWidgetTapAction.ViewInGallery &&
+                    PhotoWidgetSource.PHOTOS == photoWidget.source -> PhotoWidgetTapAction.ViewFullScreen()
 
                 else -> photoWidget.tapAction
             },
-        )
-
-        photoWidgetStorage.saveWidgetIncreaseBrightness(
-            appWidgetId = appWidgetId,
-            value = photoWidget.increaseBrightness,
-        )
-
-        photoWidgetStorage.saveWidgetViewOriginalPhoto(
-            appWidgetId = appWidgetId,
-            value = photoWidget.viewOriginalPhoto,
-        )
-
-        photoWidgetStorage.saveWidgetAppShortcut(
-            appWidgetId = appWidgetId,
-            appName = photoWidget.appShortcut,
         )
 
         photoWidgetStorage.saveWidgetAspectRatio(

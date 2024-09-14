@@ -14,5 +14,4 @@ data class UserPreferences(
     val defaultCornerRadius: Float,
     val defaultOpacity: Float,
     val defaultTapAction: PhotoWidgetTapAction,
-    val defaultIncreaseBrightness: Boolean,
 )

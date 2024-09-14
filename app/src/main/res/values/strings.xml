@@ -58,7 +58,6 @@
     <string name="widget_defaults_corner_radius">Roundness</string>
     <string name="widget_defaults_opacity">Opacity</string>
     <string name="widget_defaults_tap_action">Tap action</string>
-    <string name="widget_defaults_increase_brightness">Increase brightness</string>
     <string name="widget_defaults_reset">Reset values</string>
 
     <!-- Share -->
