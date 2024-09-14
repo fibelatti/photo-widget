@@ -74,7 +74,6 @@ subprojects {
         }
 
         extensions.findByType(ComposeCompilerGradlePluginExtension::class.java)?.apply {
-            enableStrongSkippingMode = true
             stabilityConfigurationFile = rootProject.layout.projectDirectory.file("compose_compiler_config.conf")
 
             if (project.findProperty("composeCompilerReports") == "true") {
