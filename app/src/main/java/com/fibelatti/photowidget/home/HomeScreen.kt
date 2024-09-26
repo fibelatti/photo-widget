@@ -49,6 +49,7 @@ import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -135,6 +136,7 @@ fun HomeScreen(
                 HomeNavigationDestination.NEW_WIDGET -> {
                     NewWidgetScreen(
                         onCreateNewWidgetClick = onCreateNewWidgetClick,
+                        onHelpClick = onHelpClick,
                     )
                 }
 
@@ -227,6 +229,7 @@ private enum class HomeNavigationDestination(
 @Composable
 private fun NewWidgetScreen(
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
+    onHelpClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -270,6 +273,12 @@ private fun NewWidgetScreen(
                 onClick = { onCreateNewWidgetClick(selectedAspectRatio) },
             ) {
                 Text(text = stringResource(id = R.string.photo_widget_home_new_widget))
+            }
+
+            TextButton(
+                onClick = onHelpClick,
+            ) {
+                Text(text = stringResource(R.string.photo_widget_home_help))
             }
         }
     }
@@ -606,7 +615,7 @@ private fun SettingsScreen(
 
             SettingsAction(
                 icon = R.drawable.ic_help,
-                label = R.string.photo_widget_home_help,
+                label = R.string.photo_widget_home_common_issues,
                 onClick = onHelpClick,
             )
 

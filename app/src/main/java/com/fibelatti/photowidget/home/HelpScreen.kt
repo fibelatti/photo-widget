@@ -1,6 +1,6 @@
 package com.fibelatti.photowidget.home
 
-import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -11,19 +11,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -38,30 +39,45 @@ import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
-fun HelpScreen() {
-    Column(
+fun HelpScreen(
+    onSendFeedbackClick: () -> Unit,
+) {
+    var expanded: HelpArticle? by remember { mutableStateOf(null) }
+
+    LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
             .nestedScroll(rememberNestedScrollInteropConnection())
-            .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp, vertical = 24.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = stringResource(id = R.string.photo_widget_home_help),
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.titleLarge,
-        )
+        item {
+            Text(
+                text = stringResource(id = R.string.photo_widget_home_help),
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.titleLarge,
+            )
+        }
 
-        HelpCard(
-            cardTitle = stringResource(id = R.string.help_article_title_1),
-            cardText = stringResource(id = R.string.help_article_body_1),
-        )
+        items(HelpArticle.allArticles()) { article ->
+            HelpCard(
+                cardTitle = stringResource(id = article.title),
+                cardText = stringResource(id = article.body),
+                expanded = article == expanded,
+                modifier = Modifier.clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = { expanded = article.takeUnless { expanded == article } },
+                ),
+            )
+        }
 
-        HelpCard(
-            cardTitle = stringResource(id = R.string.help_article_title_2),
-            cardText = stringResource(id = R.string.help_article_body_2),
-        )
+        item {
+            TextButton(onClick = onSendFeedbackClick) {
+                Text(text = stringResource(R.string.help_article_footer))
+            }
+        }
     }
 }
 
@@ -69,25 +85,17 @@ fun HelpScreen() {
 private fun HelpCard(
     cardTitle: String,
     cardText: String,
+    expanded: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    var expanded by remember { mutableStateOf(false) }
-
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .animateContentSize()
             .background(
                 color = MaterialTheme.colorScheme.surfaceVariant,
-                shape = RoundedCornerShape(size = 8.dp),
-            )
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = { expanded = !expanded },
+                shape = MaterialTheme.shapes.medium,
             )
             .padding(all = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Text(
@@ -113,18 +121,28 @@ private fun HelpCard(
             )
         }
 
-        if (expanded) {
-            HorizontalDivider(
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+        AnimatedVisibility(
+            visible = expanded,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                HorizontalDivider(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
 
-            Text(
-                text = cardText,
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.bodyMedium,
-            )
+                Text(
+                    text = cardText,
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
         }
     }
 }
@@ -135,6 +153,8 @@ private fun HelpCard(
 @DevicePreviews
 private fun HelpScreenPreview() {
     ExtendedTheme {
-        HelpScreen()
+        HelpScreen(
+            onSendFeedbackClick = {},
+        )
     }
 }

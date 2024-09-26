@@ -16,7 +16,8 @@
     <string name="photo_widget_home_share">Compartilhe o app</string>
     <string name="photo_widget_home_rate">Deixe sua avaliação</string>
     <string name="photo_widget_home_feedback">Envie seu feedback</string>
-    <string name="photo_widget_home_help">Perguntas frequentes</string>
+    <string name="photo_widget_home_help">Ajuda</string>
+    <string name="photo_widget_home_common_issues">Problemas comuns</string>
     <string name="photo_widget_home_privacy_policy">Política de privacidade</string>
     <string name="photo_widget_home_developer">Feito com ❤ por Filipe Belatti</string>
     <string name="photo_widget_home_version">Versão: %s</string>
@@ -179,11 +180,19 @@
     <string name="photo_widget_time_picker_title">Escolha o horário</string>
 
     <!-- Help -->
-    <string name="help_article_title_1">O widget não funciona após adicionado a tela inicial</string>
-    <string name="help_article_body_1">Se nada acontece quando você clica para adicionar o widget ou o widget é adicionado mas não exibe as fotos escolhidas, você pode tentar adicioná-lo diretamente da sua tela inicial.\n\nAs instruções podem variar de acordo com a versão do Android, fabricante do aparelho e o seu launcher mas geralmente são as seguintes:\n\n1. Pressione um espaço vazio na sua tela inicial até que um menu apareça\n2. Localize a opção de widgets\n3. Procure por Material Photo Widget dentre as opções\n4. Arraste o widget para a tela inicial e o configure normalmente</string>
+    <string name="help_article_title_1">Adicionar um widget à tela inicial não está funcionando</string>
+    <string name="help_article_body_1">Se você configurou um widget e nada acontece ao tentar adicioná-lo à tela inicial, ou se ele foi adicionado, mas não exibe as fotos selecionadas, você pode tentar adicioná-lo diretamente da sua tela inicial.\n\nAs instruções podem variar dependendo da versão do Android, do fabricante do dispositivo e do launcher da tela inicial, mas geralmente o processo é o seguinte:\n\n1. Pressione e segure um espaço vazio na sua tela inicial até que um menu pop-up apareça.\n2. Localize a opção "Widgets".\n3. Procure por "Material Photo Widget" dentro dos widgets disponíveis.\n4. Arraste-o para sua tela inicial e configure-o como de costume.</string>
 
-    <string name="help_article_title_2">As fotos não estão trocando automaticamente</string>
-    <string name="help_article_body_2">O intervalo selecionado é apenas uma aproximação de quanto tempo cada troca levará no mínimo. O tempo atual é determinado pelo Android levando em conta múltiplos fatores.\n\nCada fabricante pode ainda impor mais restrições para processos que não estão em foco, o que acaba por interferir no funcionamento do app. Infelizmente não há nada que pode ser feito visto que o sistema detém controle por razões como otimização da duração da bateria.</string>
+    <string name="help_article_title_2">As fotos não estão mudando automaticamente</string>
+    <string name="help_article_body_2">O intervalo selecionado ou os horários programados são uma aproximação de quando a próxima foto será exibida. O Android considera vários fatores ao determinar o tempo exato, e cada fabricante de dispositivos pode impor restrições aos processos em segundo plano.\n\nPara garantir que as fotos mudem exatamente quando você deseja, dê ao aplicativo a permissão de "Alarmes Exatos" e verifique se nenhuma restrição de bateria está aplicada a ele nas configurações do seu telefone.</string>
+
+    <string name="help_article_title_3">O widget não funciona após reiniciar o telefone</string>
+    <string name="help_article_body_3">Quando seu telefone reinicia, o Android envia um sinal para os aplicativos para notificá-los, permitindo que eles reiniciem sozinhos. Infelizmente, alguns fabricantes de dispositivos (como Xiaomi, Redmi, Huawei e outros) bloqueiam esse sinal.\n\nPara ativar essa funcionalidade, altere a permissão "Início Automático" no seu aplicativo de segurança.</string>
+
+    <string name="help_article_title_4">O widget está muito pequeno</string>
+    <string name="help_article_body_4">Após adicionar o widget à sua tela inicial, você pode pressioná-lo por alguns segundos para revelar a opção de tamanho. Em seguida, arraste as bordas para ajustá-lo ao tamanho desejado.</string>
+
+    <string name="help_article_footer">Encontrou algum outro problema?</string>
 
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pince para ampliar</string>

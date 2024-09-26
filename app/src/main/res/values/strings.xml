@@ -16,7 +16,8 @@
     <string name="photo_widget_home_share">Share the app</string>
     <string name="photo_widget_home_rate">Write a review</string>
     <string name="photo_widget_home_feedback">Send your feedback</string>
-    <string name="photo_widget_home_help">Frequent questions</string>
+    <string name="photo_widget_home_help">Help</string>
+    <string name="photo_widget_home_common_issues">Common issues</string>
     <string name="photo_widget_home_privacy_policy">Privacy policy</string>
     <string name="photo_widget_home_developer">Developed with ❤ by Filipe Belatti</string>
     <string name="photo_widget_home_version">App version: %s</string>
@@ -175,10 +176,18 @@
 
     <!-- Help -->
     <string name="help_article_title_1">Adding a widget to the home screen is not working</string>
-    <string name="help_article_body_1">If nothing happens when you tap to add a widget or it is added but does not show the selected photos, you can try adding it directly from your home screen.\n\nInstructions vary depending on your Android version, device manufacturer and home screen launcher but are generally the following:\n\n1. Long press on an empty space on your home screen until a pop-up menu appears\n2. Locate the widget option\n3. Search for Material Photo Widget within the available widgets\n4. Drag it to your home screen and configure it as usual</string>
+    <string name="help_article_body_1">If you have configured a widget and nothing happens when you try to add it to the home screen, or if it\'s added but doesn\'t display the selected photos, you can try adding it directly from your home screen.\n\nInstructions may vary depending on your Android version, device manufacturer, and home screen launcher, but generally, the process is as follows:\n\n1. Long press on an empty space on your home screen until a pop-up menu appears.\n2. Locate the "Widgets" option.\n3. Search for "Material Photo Widget" within the available widgets.\n4. Drag it to your home screen and configure it as usual.</string>
 
-    <string name="help_article_title_2">Widget photos are not changing automatically</string>
-    <string name="help_article_body_2">The selected interval is an approximation of how soon the photo will change to the next. Actual times are determined by Android considering multiple factors.\n\nEach device manufacturer can also impose stricter restrictions to things running on the background, which could interfere with how the app works. Unfortunately nothing much can be done about it as the system has greater control for reasons such as battery life optimization.</string>
+    <string name="help_article_title_2">Photos are not changing automatically</string>
+    <string name="help_article_body_2">The selected interval or scheduled times are an approximation of when the next photo will be displayed. Android considers several factors when determining the actual time, and each device manufacturer may impose restrictions on background processes.\n\nTo ensure that the photos change exactly when you want them to, grant the app "Exact Alarms" permission and make sure no battery restrictions are applied to it in your phone\'s settings.</string>
+
+    <string name="help_article_title_3">The widget does not work after restarting the phone</string>
+    <string name="help_article_body_3">When your phone restarts, Android sends a signal to apps to notify them, so they can restart themselves. Unfortunately, some device manufacturers (such as Xiaomi, Redmi, Huawei, and others) block this signal.\n\nTo enable this functionality, change the "Auto Start" permission in your security app.</string>
+
+    <string name="help_article_title_4">The widget size is too small</string>
+    <string name="help_article_body_4">After adding the widget to your home screen, you can long press it to reveal the resizing option. Then, drag its borders to adjust it to your desired size.</string>
+
+    <string name="help_article_footer">Something else is not working?</string>
 
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pinch to zoom</string>

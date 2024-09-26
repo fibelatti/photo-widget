@@ -16,7 +16,8 @@
     <string name="photo_widget_home_share">Uygulamayı paylaş</string>
     <string name="photo_widget_home_rate">Yorum yaz</string>
     <string name="photo_widget_home_feedback">Geri bildiriminizi gönderin</string>
-    <string name="photo_widget_home_help">Sık sorulan sorular</string>
+    <string name="photo_widget_home_help">Yardım</string>
+    <string name="photo_widget_home_common_issues">Yaygın sorunlar</string>
     <string name="photo_widget_home_privacy_policy">Gizlilik politikası</string>
     <string name="photo_widget_home_developer">❤ ile geliştiren Filipe Belatti</string>
     <string name="photo_widget_home_version">Uygulama sürümü: %s</string>
@@ -174,11 +175,19 @@
     <string name="photo_widget_time_picker_title">Zamanı seçin</string>
 
     <!-- Help -->
-    <string name="help_article_title_1">Widget\'ı ana ekrana eklemek çalışmıyor</string>
-    <string name="help_article_body_1">Widget eklemek için dokunduğunuzda hiçbir şey olmuyorsa veya eklenip seçilen fotoğrafları göstermiyorsa, doğrudan ana ekranınızdan eklemeyi deneyebilirsiniz.\n\nTalimatlar Android sürümünüze, cihaz üreticinize ve ana ekran başlatıcınıza göre değişir, ancak genellikle aşağıdaki gibidir:\n\n1. Ana ekranınızdaki boş bir alana uzun basın, bir açılır menü belirene kadar bekleyin\n2. Widget seçeneğini bulun\n3. Kullanılabilir widget\'lar arasında Material Photo Widget\'ı arayın\n4. Ana ekranınıza sürükleyin ve her zamanki gibi yapılandırın</string>
+    <string name="help_article_title_1">Ana ekrana bir widget eklemek çalışmıyor</string>
+    <string name="help_article_body_1">Bir widget yapılandırdıysanız ve ana ekrana eklemeye çalıştığınızda hiçbir şey olmuyorsa veya eklendiği halde seçilen fotoğrafları göstermiyorsa, widget\'ı doğrudan ana ekranınızdan eklemeyi deneyebilirsiniz.\n\nTalimatlar Android sürümünüze, cihaz üreticinize ve ana ekran başlatıcınıza bağlı olarak değişiklik gösterebilir, ancak genellikle süreç şu şekildedir:\n\n1. Ana ekranınızdaki boş bir alana uzun basın ve bir açılır menü görünene kadar bekleyin.\n2. "Widget\'lar" seçeneğini bulun.\n3. Mevcut widget\'lar arasında "Material Photo Widget" arayın.\n4. Ana ekranınıza sürükleyin ve her zamanki gibi yapılandırın.</string>
 
-    <string name="help_article_title_2">Widget fotoğrafları otomatik olarak değişmiyor</string>
-    <string name="help_article_body_2">Seçilen aralık, fotoğrafın bir sonraki fotoğrafa ne kadar sürede geçeceğinin yaklaşık bir tahminidir. Gerçek süreler, Android\'in birçok faktörü göz önünde bulundurmasıyla belirlenir.\n\nHer cihaz üreticisi, arka planda çalışan şeylere daha sıkı kısıtlamalar getirebilir, bu da uygulamanın nasıl çalıştığını etkileyebilir. Maalesef, pil ömrü optimizasyonu gibi nedenlerle sistemin daha fazla kontrolü olduğundan bu konuda pek bir şey yapılamaz.</string>
+    <string name="help_article_title_2">Fotoğraflar otomatik olarak değişmiyor</string>
+    <string name="help_article_body_2">Seçilen aralık veya programlanan zamanlar, bir sonraki fotoğrafın ne zaman gösterileceğine dair bir tahmindir. Android, gerçek zamanı belirlerken çeşitli faktörleri dikkate alır ve her cihaz üreticisi, arka plan işlemlerine kısıtlamalar getirebilir.\n\nFotoğrafların tam olarak istediğiniz zaman değiştiğinden emin olmak için uygulamaya "Kesin Alarmlar" izni verin ve telefonunuzun ayarlarında uygulamaya herhangi bir pil kısıtlaması uygulanmadığından emin olun.</string>
+
+    <string name="help_article_title_3">Telefon yeniden başlatıldıktan sonra widget çalışmıyor</string>
+    <string name="help_article_body_3">Telefonunuz yeniden başlatıldığında, Android uygulamalara kendilerini yeniden başlatmaları için bir sinyal gönderir. Ne yazık ki, bazı cihaz üreticileri (Xiaomi, Redmi, Huawei ve diğerleri gibi) bu sinyali engeller.\n\nBu işlevi etkinleştirmek için güvenlik uygulamanızdaki "Otomatik Başlatma" iznini değiştirin.</string>
+
+    <string name="help_article_title_4">Widget boyutu çok küçük</string>
+    <string name="help_article_body_4">Widget\'ı ana ekranınıza ekledikten sonra, yeniden boyutlandırma seçeneğini açmak için uzun basabilirsiniz. Ardından, kenarlarını sürükleyerek istediğiniz boyuta ayarlayın.</string>
+
+    <string name="help_article_footer">Başka bir şey mi çalışmıyor?</string>
 
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Yakınlaştırmak için kıstır</string>

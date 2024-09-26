@@ -174,7 +174,9 @@ class HomeActivity : AppCompatActivity() {
 
     private fun showHelp() {
         ComposeBottomSheetDialog(context = this) {
-            HelpScreen()
+            HelpScreen(
+                onSendFeedbackClick = ::sendFeedback,
+            )
         }.show()
     }
 
