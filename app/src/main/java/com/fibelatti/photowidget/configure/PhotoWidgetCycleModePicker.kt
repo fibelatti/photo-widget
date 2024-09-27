@@ -51,6 +51,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -68,6 +69,7 @@ import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
@@ -349,8 +351,10 @@ private fun PhotoCycleModeIntervalContent(
                 shape = RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp),
                 border = borderColor,
                 label = {
-                    Text(
+                    AutoSizeText(
                         text = stringResource(id = R.string.photo_widget_configure_interval_seconds_label),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
                         style = MaterialTheme.typography.bodySmall,
                     )
                 },
@@ -362,8 +366,10 @@ private fun PhotoCycleModeIntervalContent(
                 shape = RectangleShape,
                 border = borderColor,
                 label = {
-                    Text(
+                    AutoSizeText(
                         text = stringResource(id = R.string.photo_widget_configure_interval_minutes_label),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
                         style = MaterialTheme.typography.bodySmall,
                     )
                 },
@@ -379,11 +385,28 @@ private fun PhotoCycleModeIntervalContent(
                         timeUnit = TimeUnit.HOURS,
                     )
                 },
+                shape = RectangleShape,
+                border = borderColor,
+                label = {
+                    AutoSizeText(
+                        text = stringResource(id = R.string.photo_widget_configure_interval_hours_label),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                },
+            )
+
+            SegmentedButton(
+                selected = TimeUnit.DAYS == interval.timeUnit,
+                onClick = { interval = interval.copy(timeUnit = TimeUnit.DAYS) },
                 shape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
                 border = borderColor,
                 label = {
-                    Text(
-                        text = stringResource(id = R.string.photo_widget_configure_interval_hours_label),
+                    AutoSizeText(
+                        text = stringResource(R.string.photo_widget_configure_interval_days_label),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
                         style = MaterialTheme.typography.bodySmall,
                     )
                 },

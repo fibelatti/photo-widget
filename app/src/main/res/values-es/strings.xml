@@ -135,9 +135,15 @@
         <item quantity="many">%d horas</item>
         <item quantity="other">%d horas</item>
     </plurals>
+    <plurals name="photo_widget_configure_interval_current_days">
+        <item quantity="one">%d día</item>
+        <item quantity="many">%d días</item>
+        <item quantity="other">%d días</item>
+    </plurals>
     <string name="photo_widget_configure_interval_seconds_label">Segundos</string>
     <string name="photo_widget_configure_interval_minutes_label">Minutos</string>
     <string name="photo_widget_configure_interval_hours_label">Horas</string>
+    <string name="photo_widget_configure_interval_days_label">Días</string>
 
     <string name="photo_widget_configure_schedule_placeholder">Programa hasta 4 horarios para alternar las fotos automáticamente.</string>
     <string name="photo_widget_configure_schedule_add_new">Programar nuevo</string>

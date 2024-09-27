@@ -10,8 +10,6 @@ data class PhotoWidgetLoopingInterval(
     val timeUnit: TimeUnit,
 ) : Parcelable {
 
-    fun toMinutes(): Long = timeUnit.toMinutes(repeatInterval)
-
     fun toSeconds(): Long = timeUnit.toSeconds(repeatInterval)
 
     fun range(): ClosedFloatingPointRange<Float> {
@@ -64,10 +62,17 @@ data class PhotoWidgetLoopingInterval(
                     )
                 }
 
-                else -> {
+                this <= TimeUnit.HOURS.toSeconds(MAX_HOURS) -> {
                     PhotoWidgetLoopingInterval(
                         repeatInterval = TimeUnit.SECONDS.toHours(this),
                         timeUnit = TimeUnit.HOURS,
+                    )
+                }
+
+                else -> {
+                    PhotoWidgetLoopingInterval(
+                        repeatInterval = TimeUnit.SECONDS.toDays(this),
+                        timeUnit = TimeUnit.DAYS,
                     )
                 }
             }

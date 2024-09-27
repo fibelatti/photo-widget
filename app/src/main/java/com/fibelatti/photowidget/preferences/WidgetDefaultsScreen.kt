@@ -210,7 +210,8 @@ private fun WidgetDefaultsScreen(
                             id = when (userPreferences.defaultCycleMode.loopingInterval.timeUnit) {
                                 TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
                                 TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
-                                else -> R.plurals.photo_widget_configure_interval_current_hours
+                                TimeUnit.HOURS -> R.plurals.photo_widget_configure_interval_current_hours
+                                else -> R.plurals.photo_widget_configure_interval_current_days
                             },
                             count = userPreferences.defaultCycleMode.loopingInterval.repeatInterval.toInt(),
                             userPreferences.defaultCycleMode.loopingInterval.repeatInterval,

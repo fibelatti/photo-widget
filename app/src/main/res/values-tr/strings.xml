@@ -131,9 +131,14 @@
         <item quantity="one">%d saat</item>
         <item quantity="other">%d saat</item>
     </plurals>
+    <plurals name="photo_widget_configure_interval_current_days">
+        <item quantity="one">%d gün</item>
+        <item quantity="other">%d gün</item>
+    </plurals>
     <string name="photo_widget_configure_interval_seconds_label">Saniye</string>
     <string name="photo_widget_configure_interval_minutes_label">Dakika</string>
     <string name="photo_widget_configure_interval_hours_label">Saat</string>
+    <string name="photo_widget_configure_interval_days_label">Gün</string>
 
     <string name="photo_widget_configure_schedule_placeholder">Fotoğraflarınızı otomatik olarak değiştirmek için en fazla 4 zaman belirleyin.</string>
     <string name="photo_widget_configure_schedule_add_new">Yeni ekle</string>
