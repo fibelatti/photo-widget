@@ -5,6 +5,8 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -64,6 +66,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -176,8 +179,13 @@ private fun HomeNavigation(
         modifier = modifier,
     ) {
         HomeNavigationDestination.entries.forEach { destination ->
-
             val selected = destination == currentDestination
+
+            val scale by animateFloatAsState(
+                targetValue = if (selected) 1.1f else 1f,
+                animationSpec = tween(),
+                label = "NavIcon_Scale",
+            )
 
             NavigationBarItem(
                 selected = selected,
@@ -195,6 +203,10 @@ private fun HomeNavigation(
                             tint = Color.Unspecified,
                         )
                     }
+                },
+                modifier = Modifier.graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
                 },
                 label = {
                     Text(text = stringResource(id = destination.label))
