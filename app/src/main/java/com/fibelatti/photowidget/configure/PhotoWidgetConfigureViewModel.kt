@@ -350,6 +350,16 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
+    fun reorderPhotos(photos: List<LocalPhoto>) {
+        _state.update { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(
+                    photos = photos,
+                ),
+            )
+        }
+    }
+
     fun cycleModeSelected(cycleMode: PhotoWidgetCycleMode) {
         _state.update { current ->
             current.copy(photoWidget = current.photoWidget.copy(cycleMode = cycleMode))

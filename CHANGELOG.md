@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * It's now possible to set a cycle interval in days
 * Added more help articles for troubleshooting
 
+### Changed
+
+* It's now possible to drag to reorder photos when configuring the widget
+
 ## [v1.14.0] - 2024-09-14
 
 ### Added

@@ -176,6 +176,7 @@ dependencies {
 
     implementation(libs.ucrop)
     implementation(libs.coil)
+    implementation(libs.reorderable)
 
     implementation(libs.about.libraries)
 

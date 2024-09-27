@@ -39,6 +39,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -56,7 +57,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -112,6 +115,8 @@ import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyListState
 
 @Composable
 fun PhotoWidgetConfigureScreen(
@@ -129,6 +134,7 @@ fun PhotoWidgetConfigureScreen(
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
+    onReorderFinished: (List<LocalPhoto>) -> Unit,
     onPendingDeletionPhotoClick: (LocalPhoto) -> Unit,
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
@@ -165,6 +171,7 @@ fun PhotoWidgetConfigureScreen(
             onPhotoPickerClick = onPhotoPickerClick,
             onDirPickerClick = onDirPickerClick,
             onPhotoClick = onPhotoClick,
+            onReorderFinished = onReorderFinished,
             onPendingDeletionPhotoClick = onPendingDeletionPhotoClick,
             onCycleModePickerClick = onCycleModePickerClick,
             onTapActionPickerClick = onTapActionPickerClick,
@@ -262,6 +269,7 @@ private fun PhotoWidgetConfigureContent(
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
+    onReorderFinished: (List<LocalPhoto>) -> Unit,
     onPendingDeletionPhotoClick: (LocalPhoto) -> Unit,
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
@@ -341,6 +349,7 @@ private fun PhotoWidgetConfigureContent(
                 onPhotoPickerClick = onPhotoPickerClick,
                 onDirPickerClick = onDirPickerClick,
                 onPhotoClick = onPhotoClick,
+                onReorderFinished = onReorderFinished,
                 aspectRatio = photoWidget.aspectRatio,
                 shapeId = photoWidget.shapeId,
             )
@@ -631,6 +640,7 @@ private fun PhotoPicker(
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
+    onReorderFinished: (List<LocalPhoto>) -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     modifier: Modifier = Modifier,
@@ -639,6 +649,17 @@ private fun PhotoPicker(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
+        val haptics = LocalHapticFeedback.current
+
+        val currentPhotos by rememberUpdatedState(photos.toMutableStateList())
+        val lazyListState = rememberLazyListState()
+        val reorderableLazyListState = rememberReorderableLazyListState(lazyListState) { from, to ->
+            currentPhotos.apply {
+                add(index = to.index - 1, element = removeAt(index = from.index - 1))
+            }
+            haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+        }
+
         var showHint by remember { mutableStateOf(true) }
 
         Row(
@@ -693,6 +714,7 @@ private fun PhotoPicker(
                 .fillMaxWidth()
                 .height(64.dp)
                 .padding(start = 16.dp),
+            state = lazyListState,
             contentPadding = PaddingValues(end = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
@@ -746,28 +768,39 @@ private fun PhotoPicker(
                 }
             }
 
-            items(photos, key = { it.name }) { photo ->
-                ShapedPhoto(
-                    photo = photo,
-                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                    shapeId = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
-                        shapeId
-                    } else {
-                        PhotoWidget.DEFAULT_SHAPE_ID
-                    },
-                    cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
-                    opacity = PhotoWidget.DEFAULT_OPACITY,
-                    modifier = Modifier
-                        .animateItem()
-                        .fillMaxWidth()
-                        .aspectRatio(ratio = 1f)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            role = Role.Image,
-                            onClick = { onPhotoClick(photo) },
-                        ),
-                )
+            items(currentPhotos, key = { it.name }) { photo ->
+                ReorderableItem(reorderableLazyListState, key = photo.name) {
+                    ShapedPhoto(
+                        photo = photo,
+                        aspectRatio = PhotoWidgetAspectRatio.SQUARE,
+                        shapeId = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
+                            shapeId
+                        } else {
+                            PhotoWidget.DEFAULT_SHAPE_ID
+                        },
+                        cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
+                        opacity = PhotoWidget.DEFAULT_OPACITY,
+                        modifier = Modifier
+                            .animateItem()
+                            .draggableHandle(
+                                onDragStarted = {
+                                    haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                },
+                                onDragStopped = {
+                                    onReorderFinished(currentPhotos)
+                                    haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                },
+                            )
+                            .fillMaxHeight()
+                            .aspectRatio(ratio = 1f)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                role = Role.Image,
+                                onClick = { onPhotoClick(photo) },
+                            ),
+                    )
+                }
             }
         }
 
@@ -1221,6 +1254,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onPhotoPickerClick = {},
             onDirPickerClick = {},
             onPhotoClick = {},
+            onReorderFinished = {},
             onPendingDeletionPhotoClick = {},
             onCycleModePickerClick = {},
             onTapActionPickerClick = {},
@@ -1268,6 +1302,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onPhotoPickerClick = {},
             onDirPickerClick = {},
             onPhotoClick = {},
+            onReorderFinished = {},
             onPendingDeletionPhotoClick = {},
             onCycleModePickerClick = {},
             onTapActionPickerClick = {},

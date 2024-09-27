@@ -100,6 +100,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     onPhotoPickerClick = ::launchPhotoPicker,
                     onDirPickerClick = ::launchFolderPicker,
                     onPhotoClick = viewModel::previewPhoto,
+                    onReorderFinished = viewModel::reorderPhotos,
                     onPendingDeletionPhotoClick = viewModel::restorePhoto,
                     onCycleModePickerClick = ::showCycleModePicker,
                     onTapActionPickerClick = ::showTapActionPicker,
