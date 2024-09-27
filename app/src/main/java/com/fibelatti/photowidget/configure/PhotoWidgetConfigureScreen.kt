@@ -8,10 +8,12 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -47,7 +49,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -81,7 +82,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
 import com.fibelatti.photowidget.R
@@ -105,6 +105,8 @@ import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.ui.foundation.grayScale
+import com.fibelatti.ui.foundation.navigationBarsPaddingCompat
+import com.fibelatti.ui.foundation.topSystemBarsPaddingCompat
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
@@ -140,110 +142,106 @@ fun PhotoWidgetConfigureScreen(
 ) {
     val localContext = LocalContext.current
 
-    Scaffold(
+    Box(
         modifier = modifier,
-    ) { paddingValues ->
-        Box(
-            contentAlignment = Alignment.Center,
-        ) {
-            val blurRadius by animateDpAsState(
-                targetValue = if (isProcessing) 10.dp else 0.dp,
-                label = "ProcessingBlur",
-            )
+        contentAlignment = Alignment.Center,
+    ) {
+        val blurRadius by animateDpAsState(
+            targetValue = if (isProcessing) 10.dp else 0.dp,
+            label = "ProcessingBlur",
+        )
 
-            PhotoWidgetConfigureContent(
-                photoWidget = photoWidget,
-                selectedPhoto = selectedPhoto,
-                onNavClick = onNavClick,
-                onMoveLeftClick = onMoveLeftClick,
-                onMoveRightClick = onMoveRightClick,
-                onAspectRatioClick = onAspectRatioClick,
-                onCropClick = onCropClick,
-                onRemoveClick = onRemoveClick,
-                onChangeSource = onChangeSource,
-                onShuffleClick = onShuffleClick,
-                onPhotoPickerClick = onPhotoPickerClick,
-                onDirPickerClick = onDirPickerClick,
-                onPhotoClick = onPhotoClick,
-                onPendingDeletionPhotoClick = onPendingDeletionPhotoClick,
-                onCycleModePickerClick = onCycleModePickerClick,
-                onTapActionPickerClick = onTapActionPickerClick,
-                onShapeClick = {
-                    ComposeBottomSheetDialog(localContext) {
-                        ShapePicker(
-                            onClick = { newShapeId ->
-                                onShapeChange(newShapeId)
-                                dismiss()
-                            },
-                            selectedShapeId = photoWidget.shapeId,
-                        )
-                    }.show()
-                },
-                onCornerRadiusClick = {
-                    ComposeBottomSheetDialog(localContext) {
-                        CornerRadiusPicker(
-                            currentValue = photoWidget.cornerRadius,
-                            onApplyClick = { newValue ->
-                                onCornerRadiusChange(newValue)
-                                dismiss()
-                            },
-                        )
-                    }.show()
-                },
-                onOpacityClick = {
-                    ComposeBottomSheetDialog(localContext) {
-                        OpacityPicker(
-                            currentValue = photoWidget.opacity,
-                            onApplyClick = { newValue ->
-                                onOpacityChange(newValue)
-                                dismiss()
-                            },
-                        )
-                    }.show()
-                },
-                onOffsetClick = {
-                    ComposeBottomSheetDialog(localContext) {
-                        OffsetPicker(
-                            horizontalOffset = photoWidget.horizontalOffset,
-                            verticalOffset = photoWidget.verticalOffset,
-                            onApplyClick = { newHorizontalOffset, newVerticalOffset ->
-                                onOffsetChange(newHorizontalOffset, newVerticalOffset)
-                                dismiss()
-                            },
-                        )
-                    }.show()
-                },
-                onPaddingClick = {
-                    ComposeBottomSheetDialog(localContext) {
-                        PaddingPicker(
-                            currentValue = photoWidget.padding,
-                            onApplyClick = { newValue ->
-                                onPaddingChange(newValue)
-                                dismiss()
-                            },
-                        )
-                    }.show()
-                },
-                onAddToHomeClick = onAddToHomeClick,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .blur(radius = blurRadius)
-                    .padding(paddingValues),
-            )
-
-            AnimatedVisibility(
-                visible = isProcessing,
-                enter = fadeIn(),
-                exit = fadeOut(),
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    LoadingIndicator(
-                        modifier = Modifier.size(72.dp),
+        PhotoWidgetConfigureContent(
+            photoWidget = photoWidget,
+            selectedPhoto = selectedPhoto,
+            onNavClick = onNavClick,
+            onMoveLeftClick = onMoveLeftClick,
+            onMoveRightClick = onMoveRightClick,
+            onAspectRatioClick = onAspectRatioClick,
+            onCropClick = onCropClick,
+            onRemoveClick = onRemoveClick,
+            onChangeSource = onChangeSource,
+            onShuffleClick = onShuffleClick,
+            onPhotoPickerClick = onPhotoPickerClick,
+            onDirPickerClick = onDirPickerClick,
+            onPhotoClick = onPhotoClick,
+            onPendingDeletionPhotoClick = onPendingDeletionPhotoClick,
+            onCycleModePickerClick = onCycleModePickerClick,
+            onTapActionPickerClick = onTapActionPickerClick,
+            onShapeClick = {
+                ComposeBottomSheetDialog(localContext) {
+                    ShapePicker(
+                        onClick = { newShapeId ->
+                            onShapeChange(newShapeId)
+                            dismiss()
+                        },
+                        selectedShapeId = photoWidget.shapeId,
                     )
-                }
+                }.show()
+            },
+            onCornerRadiusClick = {
+                ComposeBottomSheetDialog(localContext) {
+                    CornerRadiusPicker(
+                        currentValue = photoWidget.cornerRadius,
+                        onApplyClick = { newValue ->
+                            onCornerRadiusChange(newValue)
+                            dismiss()
+                        },
+                    )
+                }.show()
+            },
+            onOpacityClick = {
+                ComposeBottomSheetDialog(localContext) {
+                    OpacityPicker(
+                        currentValue = photoWidget.opacity,
+                        onApplyClick = { newValue ->
+                            onOpacityChange(newValue)
+                            dismiss()
+                        },
+                    )
+                }.show()
+            },
+            onOffsetClick = {
+                ComposeBottomSheetDialog(localContext) {
+                    OffsetPicker(
+                        horizontalOffset = photoWidget.horizontalOffset,
+                        verticalOffset = photoWidget.verticalOffset,
+                        onApplyClick = { newHorizontalOffset, newVerticalOffset ->
+                            onOffsetChange(newHorizontalOffset, newVerticalOffset)
+                            dismiss()
+                        },
+                    )
+                }.show()
+            },
+            onPaddingClick = {
+                ComposeBottomSheetDialog(localContext) {
+                    PaddingPicker(
+                        currentValue = photoWidget.padding,
+                        onApplyClick = { newValue ->
+                            onPaddingChange(newValue)
+                            dismiss()
+                        },
+                    )
+                }.show()
+            },
+            onAddToHomeClick = onAddToHomeClick,
+            modifier = Modifier
+                .fillMaxSize()
+                .blur(radius = blurRadius),
+        )
+
+        AnimatedVisibility(
+            visible = isProcessing,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                LoadingIndicator(
+                    modifier = Modifier.size(72.dp),
+                )
             }
         }
     }
@@ -281,7 +279,7 @@ private fun PhotoWidgetConfigureContent(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp),
+                .height(320.dp),
             contentAlignment = Alignment.Center,
         ) {
             PhotoWidgetViewer(
@@ -295,7 +293,9 @@ private fun PhotoWidgetConfigureContent(
 
             IconButton(
                 onClick = onNavClick,
-                modifier = Modifier.align(Alignment.TopStart),
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .topSystemBarsPaddingCompat(),
                 colors = IconButtonDefaults.iconButtonColors().copy(
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 ),
@@ -327,7 +327,8 @@ private fun PhotoWidgetConfigureContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
-                .padding(vertical = 16.dp),
+                .padding(vertical = 16.dp)
+                .navigationBarsPaddingCompat(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             PhotoPicker(
@@ -342,8 +343,6 @@ private fun PhotoWidgetConfigureContent(
                 onPhotoClick = onPhotoClick,
                 aspectRatio = photoWidget.aspectRatio,
                 shapeId = photoWidget.shapeId,
-                cornerRadius = photoWidget.cornerRadius,
-                opacity = photoWidget.opacity,
             )
 
             AnimatedVisibility(
@@ -497,7 +496,8 @@ private fun PhotoWidgetViewer(
             modifier = Modifier
                 .fillMaxSize()
                 .background(largeRadialGradient)
-                .blur(10.dp),
+                .blur(10.dp)
+                .topSystemBarsPaddingCompat(),
         )
 
         if (photo != null) {
@@ -508,6 +508,7 @@ private fun PhotoWidgetViewer(
                 cornerRadius = cornerRadius,
                 opacity = opacity,
                 modifier = Modifier
+                    .topSystemBarsPaddingCompat()
                     .padding(start = 32.dp, top = 32.dp, end = 32.dp, bottom = 48.dp)
                     .fillMaxHeight(),
             )
@@ -632,14 +633,14 @@ private fun PhotoPicker(
     onPhotoClick: (LocalPhoto) -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
-    cornerRadius: Float,
-    opacity: Float,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
+        var showHint by remember { mutableStateOf(true) }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -696,8 +697,6 @@ private fun PhotoPicker(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             stickyHeader {
-                var showHint by remember { mutableStateOf(true) }
-
                 ColoredShape(
                     polygon = remember(shapeId) {
                         PhotoWidgetShapeBuilder.buildShape(shapeId = shapeId)
@@ -728,57 +727,40 @@ private fun PhotoPicker(
                             ),
                         ),
                 ) {
-                    Column(
-                        modifier = Modifier.padding(2.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        Icon(
-                            painter = painterResource(
-                                id = when (source) {
-                                    PhotoWidgetSource.PHOTOS -> R.drawable.ic_pick_image
-                                    PhotoWidgetSource.DIRECTORY -> R.drawable.ic_pick_folder
-                                },
-                            ),
-                            contentDescription = stringResource(
-                                id = when (source) {
-                                    PhotoWidgetSource.PHOTOS -> R.string.photo_widget_cd_open_photo_picker
-                                    PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_cd_open_folder_picker
-                                },
-                            ),
-                            modifier = Modifier.size(if (showHint) 24.dp else 32.dp),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        )
-
-                        if (showHint) {
-                            Text(
-                                text = stringResource(
-                                    id = when (source) {
-                                        PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_pick_photo
-                                        PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_pick_folder
-                                    },
-                                ),
-                                fontSize = 10.sp,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.labelSmall,
-                            )
-                        }
-                    }
+                    Icon(
+                        painter = painterResource(
+                            id = when (source) {
+                                PhotoWidgetSource.PHOTOS -> R.drawable.ic_pick_image
+                                PhotoWidgetSource.DIRECTORY -> R.drawable.ic_pick_folder
+                            },
+                        ),
+                        contentDescription = stringResource(
+                            id = when (source) {
+                                PhotoWidgetSource.PHOTOS -> R.string.photo_widget_cd_open_photo_picker
+                                PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_cd_open_folder_picker
+                            },
+                        ),
+                        modifier = Modifier.size(32.dp),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
                 }
             }
 
             items(photos, key = { it.name }) { photo ->
                 ShapedPhoto(
                     photo = photo,
-                    aspectRatio = aspectRatio,
-                    shapeId = shapeId,
-                    cornerRadius = cornerRadius,
-                    opacity = opacity,
+                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
+                    shapeId = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
+                        shapeId
+                    } else {
+                        PhotoWidget.DEFAULT_SHAPE_ID
+                    },
+                    cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
+                    opacity = PhotoWidget.DEFAULT_OPACITY,
                     modifier = Modifier
                         .animateItem()
                         .fillMaxWidth()
-                        .aspectRatio(ratio = aspectRatio.aspectRatio)
+                        .aspectRatio(ratio = 1f)
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
@@ -787,6 +769,23 @@ private fun PhotoPicker(
                         ),
                 )
             }
+        }
+
+        AnimatedVisibility(
+            visible = showHint,
+            modifier = Modifier.padding(horizontal = 16.dp),
+            exit = fadeOut(tween(delayMillis = 200)) + shrinkVertically(tween(delayMillis = 200)),
+        ) {
+            Text(
+                text = stringResource(
+                    id = when (source) {
+                        PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_pick_photo
+                        PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_pick_folder
+                    },
+                ),
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.labelSmall,
+            )
         }
     }
 }

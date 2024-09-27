@@ -85,8 +85,6 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             AppTheme {
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
-                onBackPressedCallback.isEnabled = state.photoWidget.photos.isNotEmpty()
-
                 PhotoWidgetConfigureScreen(
                     photoWidget = state.photoWidget,
                     selectedPhoto = state.selectedPhoto,
@@ -112,6 +110,10 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     onPaddingChange = viewModel::paddingSelected,
                     onAddToHomeClick = viewModel::addNewWidget,
                 )
+
+                LaunchedEffect(state.photoWidget.photos.isNotEmpty()) {
+                    onBackPressedCallback.isEnabled = state.photoWidget.photos.isNotEmpty()
+                }
 
                 LaunchedEffect(state.messages) {
                     state.messages.firstOrNull()?.let { handleMessage(it) }

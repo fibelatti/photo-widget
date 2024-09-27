@@ -326,6 +326,7 @@ fun PickerDefault(
                 .heightIn(min = 60.dp)
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
                 text = title,
@@ -336,6 +337,7 @@ fun PickerDefault(
 
             Text(
                 text = currentValue,
+                textAlign = TextAlign.End,
                 style = MaterialTheme.typography.bodyMedium,
             )
         }
