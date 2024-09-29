@@ -5,11 +5,13 @@ import android.graphics.Bitmap
 import android.net.Uri
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.FilenameFilter
 import java.util.UUID
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -112,17 +114,24 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
     }
 
-    suspend fun getWidgetPhotos(appWidgetId: Int, originalPhotos: Boolean = false): List<LocalPhoto> {
+    suspend fun getWidgetPhotos(
+        appWidgetId: Int,
+        source: PhotoWidgetSource,
+        originalPhotos: Boolean = false,
+    ): List<LocalPhoto> {
         return withContext(Dispatchers.IO) {
             val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
+            val originalPhotosDir = File("$widgetDir/original")
+            val originalPhotoNames = originalPhotosDir.list().orEmpty().toSet()
 
             if (originalPhotos) {
-                val originalPhotosDir = File("$widgetDir/original")
-                originalPhotosDir.list()
-                    .orEmpty()
-                    .map { file -> LocalPhoto(name = file, path = "$originalPhotosDir/$file") }
+                originalPhotoNames.map { file -> LocalPhoto(name = file, path = "$originalPhotosDir/$file") }
             } else {
-                widgetDir.list { _, name -> name != "original" }
+                val fileNameFilter = FilenameFilter { _, name ->
+                    name != "original" && (name in originalPhotoNames || PhotoWidgetSource.DIRECTORY == source)
+                }
+
+                widgetDir.list(fileNameFilter)
                     .orEmpty()
                     .map { file -> LocalPhoto(name = file, path = "$widgetDir/$file") }
             }

@@ -50,12 +50,13 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     suspend fun getWidgetPhotoCount(appWidgetId: Int): Int {
-        return if (PhotoWidgetSource.DIRECTORY == getWidgetSource(appWidgetId = appWidgetId)) {
+        val source = getWidgetSource(appWidgetId = appWidgetId)
+        return if (PhotoWidgetSource.DIRECTORY == source) {
             externalFileStorage.getPhotoCount(dirUri = getWidgetSyncDir(appWidgetId = appWidgetId))
         } else {
             val pendingDeletionPhotos = getPendingDeletionPhotoIds(appWidgetId = appWidgetId)
 
-            internalFileStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+            internalFileStorage.getWidgetPhotos(appWidgetId = appWidgetId, source = source)
                 .filterNot { it.name in pendingDeletionPhotos }
                 .size
         }
@@ -65,16 +66,16 @@ class PhotoWidgetStorage @Inject constructor(
         Timber.d("Retrieving photos (appWidgetId=$appWidgetId)")
 
         val pendingDeletionPhotos = getPendingDeletionPhotoIds(appWidgetId = appWidgetId)
+        val source = getWidgetSource(appWidgetId = appWidgetId)
+            .also { Timber.d("Widget source: $it") }
 
         val croppedPhotos = internalFileStorage.getWidgetPhotos(
             appWidgetId = appWidgetId,
+            source = source,
             originalPhotos = originalPhotos,
         ).filterNot { it.name in pendingDeletionPhotos }.associateBy { it.name }
 
         Timber.d("Cropped photos found: ${croppedPhotos.size}")
-
-        val source = getWidgetSource(appWidgetId = appWidgetId)
-            .also { Timber.d("Widget source: $it") }
 
         return if (PhotoWidgetSource.DIRECTORY == source) {
             externalFileStorage.getPhotos(dirUri = getWidgetSyncDir(appWidgetId), croppedPhotos = croppedPhotos)
@@ -91,13 +92,14 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     suspend fun getPendingDeletionPhotos(appWidgetId: Int): List<LocalPhoto> {
-        if (PhotoWidgetSource.DIRECTORY == getWidgetSource(appWidgetId = appWidgetId)) {
+        val source = getWidgetSource(appWidgetId = appWidgetId)
+        if (PhotoWidgetSource.DIRECTORY == source) {
             return emptyList()
         }
 
         val pendingDeletionPhotos = getPendingDeletionPhotoIds(appWidgetId = appWidgetId)
 
-        return internalFileStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+        return internalFileStorage.getWidgetPhotos(appWidgetId = appWidgetId, source = source)
             .filter { it.name in pendingDeletionPhotos }
     }
 
