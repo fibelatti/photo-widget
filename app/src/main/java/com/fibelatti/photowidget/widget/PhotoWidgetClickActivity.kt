@@ -132,7 +132,7 @@ private fun ScreenContent(
     onNextClick: () -> Unit = {},
     showHint: Boolean = true,
 ) {
-    var scale by remember { mutableFloatStateOf(1f) }
+    var scale by remember { mutableFloatStateOf(2f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     val state = rememberTransformableState { zoomChange, offsetChange, _ ->
         scale = (scale * zoomChange).coerceIn(1f, 4f)
@@ -211,8 +211,8 @@ private fun ScreenContent(
                     onClick = onDismiss,
                     onDoubleClick = {
                         scope.launch {
-                            state.animateZoomBy(if (scale > 1f) 0.5f else 2f)
-                            if (scale > 1f) offset = Offset.Zero
+                            state.animateZoomBy(if (scale > 2f) 0.5f else 2f)
+                            if (scale > 2f) offset = Offset.Zero
                         }
                     },
                 )
