@@ -783,6 +783,7 @@ private fun PhotoPicker(
                         modifier = Modifier
                             .animateItem()
                             .draggableHandle(
+                                enabled = !shuffle,
                                 onDragStarted = {
                                     haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                                 },
