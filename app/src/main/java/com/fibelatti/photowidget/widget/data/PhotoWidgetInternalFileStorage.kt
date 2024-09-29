@@ -70,13 +70,13 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
     suspend fun getCropSources(appWidgetId: Int, localPhoto: LocalPhoto): Pair<Uri, Uri> {
         val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
-        val croppedPhoto = File("$widgetDir/${localPhoto.name}")
+        val croppedPhoto = File("$widgetDir/${localPhoto.name}").apply { createNewFile() }
 
         if (localPhoto.externalUri != null) {
             return localPhoto.externalUri to Uri.fromFile(croppedPhoto)
         } else {
             val originalPhotosDir = File("$widgetDir/original")
-            val originalPhoto = File("$originalPhotosDir/${localPhoto.name}")
+            val originalPhoto = File("$originalPhotosDir/${localPhoto.name}").apply { mkdirs() }
 
             if (!originalPhoto.exists()) {
                 withContext(Dispatchers.IO) {
