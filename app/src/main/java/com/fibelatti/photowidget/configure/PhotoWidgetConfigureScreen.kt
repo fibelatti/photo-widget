@@ -782,7 +782,7 @@ private fun PhotoPicker(
                         opacity = PhotoWidget.DEFAULT_OPACITY,
                         modifier = Modifier
                             .animateItem()
-                            .draggableHandle(
+                            .longPressDraggableHandle(
                                 enabled = !shuffle,
                                 onDragStarted = {
                                     haptics.performHapticFeedback(HapticFeedbackType.LongPress)
