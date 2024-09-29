@@ -1,0 +1,9 @@
+Version 1.15 is released with the following updates:
+
+* You can now set a change interval in days
+* You can now reorder photos by dragging them when configuring a widget. Long
+  press a photo and start dragging
+* Added more help articles for troubleshooting
+
+Feedback and suggestions are always welcome, visit the project page to
+contribute!
