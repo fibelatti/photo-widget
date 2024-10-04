@@ -3,6 +3,7 @@ package com.fibelatti.photowidget.configure
 import android.app.AlarmManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -96,7 +97,11 @@ object PhotoWidgetCycleModePicker {
                 cycleMode = cycleMode,
                 canScheduleExactAlarms = canScheduleExactAlarms,
                 onOpenPermission = {
-                    context.startActivity(Intent("android.settings.REQUEST_SCHEDULE_EXACT_ALARM"))
+                    val intent = Intent("android.settings.REQUEST_SCHEDULE_EXACT_ALARM").apply {
+                        data = Uri.fromParts("package", context.packageName, null)
+                    }
+
+                    context.startActivity(intent)
                 },
                 onApplyClick = { newMode ->
                     onApplyClick(newMode)
