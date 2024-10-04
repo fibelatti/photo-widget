@@ -146,6 +146,44 @@ private fun ScreenContent(
             .background(color = Color.Black.copy(alpha = 0.8f)),
         contentAlignment = Alignment.Center,
     ) {
+        AsyncPhotoViewer(
+            data = photo?.run {
+                when {
+                    !path.isNullOrEmpty() -> path
+                    externalUri != null -> externalUri
+                    else -> null
+                }
+            },
+            dataKey = arrayOf(photo, aspectRatio),
+            isLoading = isLoading,
+            contentScale = if (aspectRatio.isConstrained) {
+                ContentScale.FillWidth
+            } else {
+                ContentScale.Inside
+            },
+            modifier = Modifier
+                .combinedClickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = onDismiss,
+                    onDoubleClick = {
+                        scope.launch {
+                            state.animateZoomBy(if (scale > 2f) 0.5f else 2f)
+                            if (scale > 2f) offset = Offset.Zero
+                        }
+                    },
+                )
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                    translationX = offset.x
+                    translationY = offset.y
+                }
+                .transformable(state = state)
+                .aspectRatio(ratio = aspectRatio.aspectRatio)
+                .padding(all = 32.dp),
+        )
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -188,44 +226,6 @@ private fun ScreenContent(
                 }
             }
         }
-
-        AsyncPhotoViewer(
-            data = photo?.run {
-                when {
-                    !path.isNullOrEmpty() -> path
-                    externalUri != null -> externalUri
-                    else -> null
-                }
-            },
-            dataKey = arrayOf(photo, aspectRatio),
-            isLoading = isLoading,
-            contentScale = if (aspectRatio.isConstrained) {
-                ContentScale.FillWidth
-            } else {
-                ContentScale.Inside
-            },
-            modifier = Modifier
-                .combinedClickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = onDismiss,
-                    onDoubleClick = {
-                        scope.launch {
-                            state.animateZoomBy(if (scale > 2f) 0.5f else 2f)
-                            if (scale > 2f) offset = Offset.Zero
-                        }
-                    },
-                )
-                .graphicsLayer {
-                    scaleX = scale
-                    scaleY = scale
-                    translationX = offset.x
-                    translationY = offset.y
-                }
-                .transformable(state = state)
-                .aspectRatio(ratio = aspectRatio.aspectRatio)
-                .padding(all = 32.dp),
-        )
     }
 }
 
