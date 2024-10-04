@@ -4,6 +4,8 @@ import android.app.AlarmManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -59,8 +61,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.getSystemService
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
@@ -89,7 +89,7 @@ object PhotoWidgetCycleModePicker {
                 mutableStateOf(AlarmManagerCompat.canScheduleExactAlarms(alarmManager))
             }
 
-            LifecycleEventEffect(event = Lifecycle.Event.ON_RESUME) {
+            val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 canScheduleExactAlarms = AlarmManagerCompat.canScheduleExactAlarms(alarmManager)
             }
 
@@ -101,7 +101,7 @@ object PhotoWidgetCycleModePicker {
                         data = Uri.fromParts("package", context.packageName, null)
                     }
 
-                    context.startActivity(intent)
+                    launcher.launch(intent)
                 },
                 onApplyClick = { newMode ->
                     onApplyClick(newMode)
