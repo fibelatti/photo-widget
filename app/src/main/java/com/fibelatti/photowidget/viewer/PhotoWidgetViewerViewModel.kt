@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.widget
+package com.fibelatti.photowidget.viewer
 
 import android.appwidget.AppWidgetManager
 import androidx.lifecycle.SavedStateHandle
@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.hints.HintStorage
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.platform.savedState
+import com.fibelatti.photowidget.widget.CyclePhotoUseCase
+import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Job
@@ -19,7 +21,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class PhotoWidgetClickViewModel @Inject constructor(
+class PhotoWidgetViewerViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
     private val cyclePhotoUseCase: CyclePhotoUseCase,

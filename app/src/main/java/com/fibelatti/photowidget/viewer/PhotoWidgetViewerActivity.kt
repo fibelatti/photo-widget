@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.widget
+package com.fibelatti.photowidget.viewer
 
 import android.os.Build
 import android.os.Bundle
@@ -57,7 +57,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PhotoWidgetClickActivity : AppCompatActivity() {
+class PhotoWidgetViewerActivity : AppCompatActivity() {
 
     private var currentScreenBrightness: Float? = null
 
@@ -68,7 +68,7 @@ class PhotoWidgetClickActivity : AppCompatActivity() {
 
         setContent {
             AppTheme {
-                val viewModel: PhotoWidgetClickViewModel = hiltViewModel()
+                val viewModel: PhotoWidgetViewerViewModel = hiltViewModel()
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
                 state.photoWidget?.let { photoWidget ->

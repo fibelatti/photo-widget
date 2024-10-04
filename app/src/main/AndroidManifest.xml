@@ -69,7 +69,7 @@
         </activity>
 
         <activity
-            android:name=".widget.PhotoWidgetClickActivity"
+            android:name=".viewer.PhotoWidgetViewerActivity"
             android:enableOnBackInvokedCallback="false"
             android:exported="false"
             android:launchMode="singleInstance"

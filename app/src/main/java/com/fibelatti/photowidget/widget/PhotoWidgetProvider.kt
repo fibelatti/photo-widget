@@ -21,6 +21,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import kotlinx.coroutines.flow.last
@@ -234,7 +235,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 is PhotoWidgetTapAction.None -> return null
 
                 is PhotoWidgetTapAction.ViewFullScreen -> {
-                    val clickIntent = Intent(context, PhotoWidgetClickActivity::class.java).apply {
+                    val clickIntent = Intent(context, PhotoWidgetViewerActivity::class.java).apply {
                         this.appWidgetId = appWidgetId
                     }
                     return PendingIntent.getActivity(
