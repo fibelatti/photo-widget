@@ -1,0 +1,7 @@
+Version 1.15.1 is released with the following updates:
+
+* Fix buttons not working in the full screen viewer
+* Reduce the initial scale of the full screen viewer
+
+Feedback and suggestions are always welcome, visit the project page to
+contribute!
