@@ -330,6 +330,7 @@ private fun PhotoWidgetConfigureContent(
 
         Column(
             modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.background)
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
                 .padding(vertical = 16.dp)
@@ -705,98 +706,100 @@ private fun PhotoPicker(
             )
         }
 
-        LazyRow(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp)
-                .padding(start = 16.dp),
-            state = lazyListState,
-            contentPadding = PaddingValues(end = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                .height(64.dp),
         ) {
-            stickyHeader {
-                ColoredShape(
-                    polygon = remember(shapeId) {
-                        PhotoWidgetShapeBuilder.buildShape(shapeId = shapeId)
-                    },
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .aspectRatio(ratio = 1f)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = {
-                                when (source) {
-                                    PhotoWidgetSource.PHOTOS -> onPhotoPickerClick()
-                                    PhotoWidgetSource.DIRECTORY -> onDirPickerClick()
-                                }
+            LazyRow(
+                modifier = Modifier.fillMaxSize(),
+                state = lazyListState,
+                // 16.dp start padding + 64.dp item size + 8.dp item spacing
+                contentPadding = PaddingValues(start = 88.dp, end = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                items(currentPhotos, key = { it.name }) { photo ->
+                    ReorderableItem(reorderableLazyListState, key = photo.name) {
+                        ShapedPhoto(
+                            photo = photo,
+                            aspectRatio = PhotoWidgetAspectRatio.SQUARE,
+                            shapeId = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
+                                shapeId
+                            } else {
+                                PhotoWidget.DEFAULT_SHAPE_ID
                             },
-                            role = Role.Button,
-                        )
-                        .background(
-                            brush = Brush.horizontalGradient(
-                                colorStops = arrayOf(
-                                    0f to MaterialTheme.colorScheme.background,
-                                    0.9f to MaterialTheme.colorScheme.background.copy(alpha = 0.9f),
-                                    1f to Color.Transparent,
+                            cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
+                            opacity = PhotoWidget.DEFAULT_OPACITY,
+                            modifier = Modifier
+                                .animateItem()
+                                .longPressDraggableHandle(
+                                    enabled = !shuffle,
+                                    onDragStarted = {
+                                        haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    },
+                                    onDragStopped = {
+                                        onReorderFinished(currentPhotos)
+                                        haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    },
+                                )
+                                .fillMaxHeight()
+                                .aspectRatio(ratio = 1f)
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null,
+                                    role = Role.Image,
+                                    onClick = { onPhotoClick(photo) },
                                 ),
-                            ),
-                        ),
-                ) {
-                    Icon(
-                        painter = painterResource(
-                            id = when (source) {
-                                PhotoWidgetSource.PHOTOS -> R.drawable.ic_pick_image
-                                PhotoWidgetSource.DIRECTORY -> R.drawable.ic_pick_folder
-                            },
-                        ),
-                        contentDescription = stringResource(
-                            id = when (source) {
-                                PhotoWidgetSource.PHOTOS -> R.string.photo_widget_cd_open_photo_picker
-                                PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_cd_open_folder_picker
-                            },
-                        ),
-                        modifier = Modifier.size(32.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
+                        )
+                    }
                 }
             }
 
-            items(currentPhotos, key = { it.name }) { photo ->
-                ReorderableItem(reorderableLazyListState, key = photo.name) {
-                    ShapedPhoto(
-                        photo = photo,
-                        aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                        shapeId = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
-                            shapeId
-                        } else {
-                            PhotoWidget.DEFAULT_SHAPE_ID
-                        },
-                        cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
-                        opacity = PhotoWidget.DEFAULT_OPACITY,
-                        modifier = Modifier
-                            .animateItem()
-                            .longPressDraggableHandle(
-                                enabled = !shuffle,
-                                onDragStarted = {
-                                    haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                                },
-                                onDragStopped = {
-                                    onReorderFinished(currentPhotos)
-                                    haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                                },
+            ColoredShape(
+                polygon = remember(shapeId) {
+                    PhotoWidgetShapeBuilder.buildShape(shapeId = shapeId)
+                },
+                color = MaterialTheme.colorScheme.primaryContainer,
+                modifier = Modifier
+                    .background(
+                        brush = Brush.horizontalGradient(
+                            colorStops = arrayOf(
+                                0f to MaterialTheme.colorScheme.background,
+                                0.9f to MaterialTheme.colorScheme.background.copy(alpha = 0.9f),
+                                1f to Color.Transparent,
                             )
-                            .fillMaxHeight()
-                            .aspectRatio(ratio = 1f)
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                                role = Role.Image,
-                                onClick = { onPhotoClick(photo) },
-                            ),
+                        )
                     )
-                }
+                    .padding(start = 16.dp, end = 8.dp)
+                    .size(64.dp)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = {
+                            when (source) {
+                                PhotoWidgetSource.PHOTOS -> onPhotoPickerClick()
+                                PhotoWidgetSource.DIRECTORY -> onDirPickerClick()
+                            }
+                        },
+                        role = Role.Button,
+                    ),
+            ) {
+                Icon(
+                    painter = painterResource(
+                        id = when (source) {
+                            PhotoWidgetSource.PHOTOS -> R.drawable.ic_pick_image
+                            PhotoWidgetSource.DIRECTORY -> R.drawable.ic_pick_folder
+                        },
+                    ),
+                    contentDescription = stringResource(
+                        id = when (source) {
+                            PhotoWidgetSource.PHOTOS -> R.string.photo_widget_cd_open_photo_picker
+                            PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_cd_open_folder_picker
+                        },
+                    ),
+                    modifier = Modifier.size(24.dp),
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
             }
         }
 
