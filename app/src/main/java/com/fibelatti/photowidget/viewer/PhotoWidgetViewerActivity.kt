@@ -132,7 +132,7 @@ private fun ScreenContent(
     onNextClick: () -> Unit = {},
     showHint: Boolean = true,
 ) {
-    var scale by remember { mutableFloatStateOf(2f) }
+    var scale by remember { mutableFloatStateOf(1.1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     val state = rememberTransformableState { zoomChange, offsetChange, _ ->
         scale = (scale * zoomChange).coerceIn(1f, 4f)

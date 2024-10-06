@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fix buttons not working in the full screen viewer
 
+### Changed
+
+* Reduce the initial scale of the full screen viewer
+
 ## [v1.15.0] - 2024-09-29
 
 ### Added
