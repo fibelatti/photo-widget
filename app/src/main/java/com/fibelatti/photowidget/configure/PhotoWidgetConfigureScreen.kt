@@ -679,6 +679,7 @@ private fun PhotoPicker(
                 modifier = Modifier
                     .weight(1f)
                     .alignByBaseline(),
+                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleMedium,
             )
 
