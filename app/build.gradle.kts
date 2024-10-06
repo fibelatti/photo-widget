@@ -134,6 +134,7 @@ room {
 
 aboutLibraries {
     excludeFields = arrayOf("generated")
+    registerAndroidTasks = false
 }
 
 afterEvaluate {

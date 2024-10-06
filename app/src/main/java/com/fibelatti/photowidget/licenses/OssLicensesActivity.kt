@@ -16,8 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.AppTheme
+import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
+import com.mikepenz.aboutlibraries.util.withJson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,6 +40,9 @@ class OssLicensesActivity : AppCompatActivity() {
     private fun OssLicensesScreen() {
         LibrariesContainer(
             modifier = Modifier.fillMaxSize(),
+            librariesBlock = { ctx ->
+                Libs.Builder().withJson(ctx, R.raw.aboutlibraries).build()
+            },
             colors = LibraryDefaults.libraryColors(
                 backgroundColor = MaterialTheme.colorScheme.background,
                 contentColor = MaterialTheme.colorScheme.onBackground,
