@@ -8,12 +8,10 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -55,7 +53,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
@@ -660,8 +657,6 @@ private fun PhotoPicker(
             haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
         }
 
-        var showHint by remember { mutableStateOf(true) }
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -736,7 +731,6 @@ private fun PhotoPicker(
                                     PhotoWidgetSource.PHOTOS -> onPhotoPickerClick()
                                     PhotoWidgetSource.DIRECTORY -> onDirPickerClick()
                                 }
-                                showHint = false
                             },
                             role = Role.Button,
                         )
@@ -806,22 +800,17 @@ private fun PhotoPicker(
             }
         }
 
-        AnimatedVisibility(
-            visible = showHint,
+        Text(
+            text = stringResource(
+                id = when (source) {
+                    PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_pick_photo
+                    PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_pick_folder
+                },
+            ),
             modifier = Modifier.padding(horizontal = 16.dp),
-            exit = fadeOut(tween(delayMillis = 200)) + shrinkVertically(tween(delayMillis = 200)),
-        ) {
-            Text(
-                text = stringResource(
-                    id = when (source) {
-                        PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_pick_photo
-                        PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_pick_folder
-                    },
-                ),
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.labelSmall,
-            )
-        }
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.labelSmall,
+        )
     }
 }
 
