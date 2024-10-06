@@ -77,6 +77,7 @@ fun AsyncPhotoViewer(
         }
 
         LaunchedEffect(*dataKey) {
+            if (localInspectionMode) return@LaunchedEffect
             if (data != null) {
                 photoBitmap = decoder.decode(data = data, maxDimension = maxDimension)
                 showLoading = false
