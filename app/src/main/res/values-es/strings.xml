@@ -52,7 +52,7 @@
 
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Valores predeterminados</string>
-    <string name="widget_defaults_explanation">Estos valores se aplican solo al crear un nuevo widget. No tienen ningún efecto sobre los widgets existentes.</string>
+    <string name="widget_defaults_explanation">Estos valores se precargan al crear un nuevo widget. Son útiles para configurar varios widgets con la misma configuración, eliminando la necesidad de ajustar la configuración cada vez. Tenga en cuenta que cualquier cambio en estos valores no afectará a los widgets existentes.</string>
     <string name="widget_defaults_source">Fuente</string>
     <string name="widget_defaults_shuffle">Barajar</string>
     <string name="widget_defaults_cycling">Ciclo de fotos</string>

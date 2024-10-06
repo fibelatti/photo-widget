@@ -51,7 +51,7 @@
 
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Widget varsayılanları</string>
-    <string name="widget_defaults_explanation">Bu değerler yalnızca yeni bir widget oluştururken uygulanır. Mevcut widget\'lar üzerinde hiçbir etkisi yoktur.</string>
+    <string name="widget_defaults_explanation">Bu değerler, yeni bir widget oluşturduğunuzda önceden yüklenir. Aynı ayarlara sahip birden fazla widget oluştururken ayarları her seferinde değiştirme ihtiyacını ortadan kaldırdığı için kullanışlıdır. Bu değerlerde yapılan değişikliklerin mevcut widget\'ları etkilemeyeceğini unutmayın.</string>
     <string name="widget_defaults_source">Kaynak</string>
     <string name="widget_defaults_shuffle">Karıştır</string>
     <string name="widget_defaults_cycling">Fotoğraf Döngüsü</string>
