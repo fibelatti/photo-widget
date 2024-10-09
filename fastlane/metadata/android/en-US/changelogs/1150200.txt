@@ -1,0 +1,8 @@
+Version 1.15.2 is released with the following updates:
+
+* Fix drag to reorder leading to a crash
+* Fix buttons not working in the full screen viewer
+* Reduce the initial scale of the full screen viewer
+
+Feedback and suggestions are always welcome, visit the project page to
+contribute!
