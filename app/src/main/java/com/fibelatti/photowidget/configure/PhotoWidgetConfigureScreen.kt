@@ -653,7 +653,7 @@ private fun PhotoPicker(
         val lazyListState = rememberLazyListState()
         val reorderableLazyListState = rememberReorderableLazyListState(lazyListState) { from, to ->
             currentPhotos.apply {
-                add(index = to.index - 1, element = removeAt(index = from.index - 1))
+                add(index = to.index, element = removeAt(index = from.index))
             }
             haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
         }
