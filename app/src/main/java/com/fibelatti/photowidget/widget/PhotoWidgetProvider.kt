@@ -181,7 +181,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             }
 
             Timber.d("Transforming the bitmap")
-            val transformedBitmap = if (photoWidget.aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
+            val transformedBitmap = if (PhotoWidgetAspectRatio.SQUARE == photoWidget.aspectRatio) {
                 bitmap.withPolygonalShape(
                     shapeId = photoWidget.shapeId,
                     opacity = photoWidget.opacity,
@@ -189,7 +189,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             } else {
                 bitmap.withRoundedCorners(
                     aspectRatio = photoWidget.aspectRatio,
-                    radius = photoWidget.cornerRadius,
+                    radius = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio) {
+                        0F
+                    } else {
+                        photoWidget.cornerRadius
+                    },
                     opacity = photoWidget.opacity,
                 )
             }

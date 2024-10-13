@@ -67,9 +67,17 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 duplicatePhotoWidgetUseCase(originalAppWidgetId = it, newAppWidgetId = appWidgetId)
             }
             val updateState = { photoWidget: PhotoWidget ->
+                val resolvedAspectRatio = aspectRatio ?: photoWidget.aspectRatio
                 _state.update { current ->
                     current.copy(
-                        photoWidget = photoWidget.copy(aspectRatio = aspectRatio ?: photoWidget.aspectRatio),
+                        photoWidget = photoWidget.copy(
+                            aspectRatio = resolvedAspectRatio,
+                            cornerRadius = if (PhotoWidgetAspectRatio.FILL_WIDGET == resolvedAspectRatio) {
+                                0F
+                            } else {
+                                PhotoWidget.DEFAULT_CORNER_RADIUS
+                            },
+                        ),
                         selectedPhoto = photoWidget.photos.firstOrNull(),
                         isProcessing = photoWidget.isLoading,
                     )
@@ -115,10 +123,15 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     aspectRatio = photoWidgetAspectRatio,
-                    shapeId = if (photoWidgetAspectRatio == PhotoWidgetAspectRatio.SQUARE) {
+                    shapeId = if (PhotoWidgetAspectRatio.SQUARE == photoWidgetAspectRatio) {
                         current.photoWidget.shapeId
                     } else {
                         PhotoWidget.DEFAULT_SHAPE_ID
+                    },
+                    cornerRadius = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidgetAspectRatio) {
+                        0F
+                    } else {
+                        PhotoWidget.DEFAULT_CORNER_RADIUS
                     },
                 ),
             )

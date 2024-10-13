@@ -159,7 +159,7 @@ private fun ScreenContent(
             contentScale = if (aspectRatio.isConstrained) {
                 ContentScale.FillWidth
             } else {
-                ContentScale.Inside
+                ContentScale.Fit
             },
             modifier = Modifier
                 .combinedClickable(
@@ -180,8 +180,7 @@ private fun ScreenContent(
                     translationY = offset.y
                 }
                 .transformable(state = state)
-                .aspectRatio(ratio = aspectRatio.aspectRatio)
-                .padding(all = 32.dp),
+                .aspectRatio(ratio = aspectRatio.aspectRatio),
         )
 
         Row(

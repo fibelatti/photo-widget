@@ -4,7 +4,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
@@ -12,7 +11,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -371,26 +369,20 @@ private fun PhotoWidgetConfigureContent(
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
 
-            AnimatedContent(
-                targetState = photoWidget.aspectRatio,
-                transitionSpec = { fadeIn() togetherWith fadeOut() },
-                label = "Customization_Picker",
-            ) { aspectRatio ->
-                if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
-                    ShapeDefault(
-                        title = stringResource(id = R.string.widget_defaults_shape),
-                        currentValue = photoWidget.shapeId,
-                        onClick = onShapeClick,
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                    )
-                } else {
-                    PickerDefault(
-                        title = stringResource(id = R.string.widget_defaults_corner_radius),
-                        currentValue = photoWidget.cornerRadius.toInt().toString(),
-                        onClick = onCornerRadiusClick,
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                    )
-                }
+            if (PhotoWidgetAspectRatio.SQUARE == photoWidget.aspectRatio) {
+                ShapeDefault(
+                    title = stringResource(id = R.string.widget_defaults_shape),
+                    currentValue = photoWidget.shapeId,
+                    onClick = onShapeClick,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
+            } else if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
+                PickerDefault(
+                    title = stringResource(id = R.string.widget_defaults_corner_radius),
+                    currentValue = photoWidget.cornerRadius.toInt().toString(),
+                    onClick = onCornerRadiusClick,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
             }
 
             PickerDefault(
@@ -767,8 +759,8 @@ private fun PhotoPicker(
                                 0f to MaterialTheme.colorScheme.background,
                                 0.9f to MaterialTheme.colorScheme.background.copy(alpha = 0.9f),
                                 1f to Color.Transparent,
-                            )
-                        )
+                            ),
+                        ),
                     )
                     .padding(start = 16.dp, end = 8.dp)
                     .size(64.dp)
@@ -1162,7 +1154,7 @@ fun ShapedPhoto(
         contentScale = if (aspectRatio.isConstrained) {
             ContentScale.FillWidth
         } else {
-            ContentScale.Inside
+            ContentScale.Fit
         },
         modifier = modifier.aspectRatio(ratio = aspectRatio.aspectRatio),
         transformer = { bitmap ->
