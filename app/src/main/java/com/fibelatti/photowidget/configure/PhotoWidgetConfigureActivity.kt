@@ -7,7 +7,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
@@ -23,6 +22,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.configure.PhotoCropActivity.Companion.outputPath
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
@@ -30,10 +30,8 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.SelectionDialog
-import com.fibelatti.photowidget.platform.getAttributeColor
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yalantis.ucrop.UCrop
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
 
@@ -247,26 +245,18 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         destinationUri: Uri,
         aspectRatio: PhotoWidgetAspectRatio,
     ) {
-        val intent = UCrop.of(sourceUri, destinationUri)
-            .apply {
-                if (aspectRatio.isConstrained) {
-                    withAspectRatio(aspectRatio.x, aspectRatio.y)
-                }
-            }
-            .withMaxResultSize(PhotoWidget.MAX_STORAGE_DIMENSION, PhotoWidget.MAX_STORAGE_DIMENSION)
-            .withOptions(
-                UCrop.Options().apply {
-                    setCompressionFormat(Bitmap.CompressFormat.PNG)
-                    setActiveControlsWidgetColor(getAttributeColor(android.R.attr.colorPrimary))
-                },
-            )
-            .getIntent(this)
+        val intent = PhotoCropActivity.newIntent(
+            context = this,
+            sourceUri = sourceUri,
+            destinationUri = destinationUri,
+            aspectRatio = aspectRatio,
+        )
 
         photoCropLauncher.launch(intent)
     }
 
     private fun onPhotoCropped(result: ActivityResult) {
-        result.data?.let(UCrop::getOutput)?.path
+        result.data?.outputPath
             ?.let(viewModel::photoCropped)
             ?: run { viewModel.cropCancelled() }
     }

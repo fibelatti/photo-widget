@@ -71,6 +71,10 @@
         </activity>
 
         <activity
+            android:name=".configure.PhotoCropActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".viewer.PhotoWidgetViewerActivity"
             android:enableOnBackInvokedCallback="false"
             android:exported="false"
@@ -79,10 +83,6 @@
 
         <activity
             android:name=".licenses.OssLicensesActivity"
-            android:exported="false" />
-
-        <activity
-            android:name="com.yalantis.ucrop.UCropActivity"
             android:exported="false" />
 
         <receiver

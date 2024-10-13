@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
@@ -16,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.AppTheme
+import com.fibelatti.ui.foundation.navigationBarsCompat
+import com.fibelatti.ui.foundation.topSystemBarsPaddingCompat
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
@@ -39,10 +43,13 @@ class OssLicensesActivity : AppCompatActivity() {
     @OptIn(ExperimentalFoundationApi::class)
     private fun OssLicensesScreen() {
         LibrariesContainer(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background),
             librariesBlock = { ctx ->
                 Libs.Builder().withJson(ctx, R.raw.aboutlibraries).build()
             },
+            contentPadding = WindowInsets.navigationBarsCompat.asPaddingValues(),
             colors = LibraryDefaults.libraryColors(
                 backgroundColor = MaterialTheme.colorScheme.background,
                 contentColor = MaterialTheme.colorScheme.onBackground,
@@ -54,8 +61,9 @@ class OssLicensesActivity : AppCompatActivity() {
                 stickyHeader {
                     Row(
                         modifier = Modifier
+                            .background(color = MaterialTheme.colorScheme.background)
                             .fillMaxWidth()
-                            .background(color = MaterialTheme.colorScheme.background),
+                            .topSystemBarsPaddingCompat(),
                     ) {
                         IconButton(onClick = { finish() }) {
                             Icon(
