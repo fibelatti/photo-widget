@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget
 
 import android.app.Application
+import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate
 import com.fibelatti.photowidget.preferences.Appearance
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
@@ -30,6 +31,13 @@ class App : Application() {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+
+            StrictMode.setVmPolicy(
+                StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build(),
+            )
         }
 
         setupNightMode()
