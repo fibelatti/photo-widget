@@ -17,6 +17,13 @@ import androidx.compose.ui.tooling.preview.Preview
     locale = "es",
 )
 @Preview(
+    name = "Locale Preview - RU",
+    group = "Localization",
+    showSystemUi = true,
+    showBackground = true,
+    locale = "ru",
+)
+@Preview(
     name = "Locale Preview - TR",
     group = "Localization",
     showSystemUi = true,

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Widget Host -->
+    <string name="photo_widget_host_label">Оформленные фото</string>
+    <string name="photo_widget_host_description">Украсьте главный экран любимыми фотографиями</string>
+
+    <!-- Home -->
+    <string name="photo_widget_home_title">Украсьте главный экран любимыми фотографиями</string>
+    <string name="photo_widget_home_aspect_ratio">Выберите соотношение сторон виджета и нажмите кнопку, чтобы начать. Не волнуйтесь, это можно изменить в любое время!</string>
+    <string name="photo_widget_home_new_widget">Создать новый виджет</string>
+    <string name="photo_widget_home_new">Новый виджет</string>
+    <string name="photo_widget_home_current">Мои виджеты</string>
+    <string name="photo_widget_home_settings">Настройки</string>
+    <string name="photo_widget_home_appearance">Тема приложения</string>
+    <string name="photo_widget_home_dynamic_colors">Цвета приложения</string>
+    <string name="photo_widget_home_share">Поделиться приложением</string>
+    <string name="photo_widget_home_rate">Оставить отзыв</string>
+    <string name="photo_widget_home_feedback">Отправить отзыв</string>
+    <string name="photo_widget_home_help">Помощь</string>
+    <string name="photo_widget_home_common_issues">Распространённые проблемы</string>
+    <string name="photo_widget_home_privacy_policy">Политика конфиденциальности</string>
+    <string name="photo_widget_home_developer">Разработано с ❤ Филипом Белатти</string>
+    <string name="photo_widget_home_version">Версия приложения: %s</string>
+    <string name="photo_widget_home_view_licenses">Лицензии OSS</string>
+
+    <plurals name="photo_widget_home_share_received">
+        <item quantity="one">Получено %d фото. Создайте новый виджет или выберите существующий, чтобы добавить его.</item>
+        <item quantity="few">Получено %d фото. Создайте новый виджет или выберите существующий, чтобы добавить их.</item>
+        <item quantity="many">Получено %d фотографий. Создайте новый виджет или выберите существующий, чтобы добавить их.</item>
+    </plurals>
+
+    <!-- My Widgets -->
+    <string name="photo_widget_home_empty_widgets">Вы ещё не добавили ни одного виджета.\nДобавленные на главный экран виджеты появятся здесь.</string>
+    <string name="photo_widget_home_filter_all">Все</string>
+    <string name="photo_widget_home_filter_photos">Фотографии</string>
+    <string name="photo_widget_home_filter_folder">Папка</string>
+
+    <string name="photo_widget_home_removed_widgets_hint">Затемнённые виджеты были удалены с главного экрана и будут окончательно удалены через неделю</string>
+
+    <string name="photo_widget_home_my_widget_action_edit">Редактировать</string>
+    <string name="photo_widget_home_my_widget_action_duplicate">Дублировать</string>
+    <string name="photo_widget_home_removed_widget_action_restore">Восстановить</string>
+    <string name="photo_widget_home_removed_widget_action_delete">Удалить навсегда</string>
+
+    <!-- Preferences -->
+    <string name="preferences_appearance_follow_system">Следовать за системой</string>
+    <string name="preferences_appearance_light">Светлая</string>
+    <string name="preferences_appearance_dark">Тёмная</string>
+
+    <string name="preferences_dynamic_colors_enabled">Динамические цвета</string>
+    <string name="preferences_dynamic_colors_disabled">Цвета по умолчанию</string>
+
+    <!-- Widget Defaults -->
+    <string name="widget_defaults_title">Параметры виджета по умолчанию</string>
+    <string name="widget_defaults_explanation">Эти значения загружаются автоматически при создании нового виджета. Они полезны для настройки нескольких виджетов с одинаковой конфигурацией, что устраняет необходимость настраивать их каждый раз. Обратите внимание, что изменения этих значений не повлияют на уже существующие виджеты.</string>
+    <string name="widget_defaults_source">Источник</string>
+    <string name="widget_defaults_shuffle">Перемешивание</string>
+    <string name="widget_defaults_cycling">Цикличность фото</string>
+    <string name="widget_defaults_shape">Форма</string>
+    <string name="widget_defaults_corner_radius">Закругление углов</string>
+    <string name="widget_defaults_opacity">Прозрачность</string>
+    <string name="widget_defaults_tap_action">Действие при нажатии</string>
+    <string name="widget_defaults_reset">Сбросить значения</string>
+
+    <!-- Share -->
+    <string name="share_title">Расскажите другим</string>
+    <string name="share_text">Добавляйте свои любимые фотографии на главный экран с помощью Material Photo Widget. Скачайте бесплатно по ссылке %s</string>
+
+    <!-- Source -->
+    <string name="photo_widget_source_photos">Фотографии</string>
+    <string name="photo_widget_source_directory">Папка</string>
+
+    <!-- Aspect Ratio -->
+    <string name="photo_widget_aspect_ratio_title">Соотношение сторон</string>
+    <string name="photo_widget_aspect_ratio_square">Квадрат</string>
+    <string name="photo_widget_aspect_ratio_tall">Высокий</string>
+    <string name="photo_widget_aspect_ratio_wide">Широкий</string>
+    <string name="photo_widget_aspect_ratio_original">Как у фотографии</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">Заполнить область виджета</string>
+
+    <!-- Configure -->
+    <string name="photo_widget_configure_navigate_back_warning">Все изменения будут потеряны, вернуться назад?</string>
+
+    <string name="photo_widget_configure_import_error">Не удалось импортировать все выбранные фотографии</string>
+    <string name="photo_widget_configure_too_many_photos_error">Каждая синхронизированная папка может содержать не более 3000 фотографий. Вы можете выбрать больше одной, и каждая подпапка считается отдельно.\n\nВы не можете выбрать свою камеру. Фотографии обрабатываются по одной, и папки с несколькими тысячами приводят к серьезным проблемам с производительностью в редакторе виджетов, а также на главном экране при переключении фотографий.</string>
+    <string name="photo_widget_configure_missing_photos_error">Виджет должен содержать хотя бы одну фотографию. Виджеты можно удалять только прямо с главного экрана.</string>
+
+    <string name="photo_widget_configure_menu_source">Источник</string>
+    <string name="photo_widget_configure_source_description">Вы можете выбрать каждую фотографию или синхронизировать виджет с одной или несколькими папками. При синхронизации все текущие и будущие фотографии будут добавляться автоматически.</string>
+    <string name="photo_widget_configure_source_selection_photos">Только выбранные вами фотографии будут отображаться в этом виджете.</string>
+    <string name="photo_widget_configure_source_selection_directory_empty">Этот виджет еще не синхронизирован с какой-либо папкой.</string>
+    <string name="photo_widget_configure_source_selection_directory_non_empty">Этот виджет синхронизирован с этими папками:</string>
+    <string name="photo_widget_configure_source_keep_current">Сохранить текущий источник</string>
+    <string name="photo_widget_configure_source_set_directory">Установить источник на папку</string>
+    <string name="photo_widget_configure_source_set_photos">Установить источник на фотографии</string>
+    <string name="photo_widget_configure_source_warning">Изменение источника заменит текущие фотографии в этом виджете</string>
+
+    <string name="photo_widget_configure_menu_crop">Обрезать</string>
+    <string name="photo_widget_configure_menu_remove">Удалить</string>
+    <string name="photo_widget_configure_menu_move_left">Переместить влево</string>
+    <string name="photo_widget_configure_menu_move_right">Переместить вправо</string>
+
+    <string name="photo_widget_configure_photos">Фотографии</string>
+    <string name="photo_widget_configure_photos_from_dir">Фотографии из папки</string>
+    <string name="photo_widget_configure_photos_pending_deletion">Недавно удаленные фотографии</string>
+
+    <string name="photo_widget_configure_pick_photo">Выбрать фотографии</string>
+    <string name="photo_widget_configure_pick_folder">Выбрать папку</string>
+
+    <string name="photo_widget_configure_shuffle_on">Включено</string>
+    <string name="photo_widget_configure_shuffle_off">Выключено</string>
+
+    <string name="photo_widget_configure_select_cycling_mode">Цикл фотографий</string>
+    <string name="photo_widget_configure_cycling_mode_interval">Интервал</string>
+    <string name="photo_widget_configure_cycling_mode_schedule">Расписание</string>
+    <string name="photo_widget_configure_cycling_mode_disabled">Выключено</string>
+
+    <string name="photo_widget_configure_cycling_mode_interval_description">Виджет будет автоматически переключаться на следующую фотографию через следующий интервал:</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description">Виджет будет автоматически переключаться на следующую фотографию каждый день в следующие запланированные часы:</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Виджет не будет автоматически переключаться между фотографиями. Установите действие по нажатию для переключения между фотографиями или выберите другой режим.</string>
+
+    <string name="photo_widget_configure_interval_current_label">Каждые %s</string>
+    <plurals name="photo_widget_configure_interval_current_seconds">
+        <item quantity="one">%d секунда</item>
+        <item quantity="few">%d секунды</item>
+        <item quantity="many">%d секунд</item>
+    </plurals>
+    <plurals name="photo_widget_configure_interval_current_minutes">
+        <item quantity="one">%d минута</item>
+        <item quantity="few">%d минуты</item>
+        <item quantity="many">%d минут</item>
+    </plurals>
+    <plurals name="photo_widget_configure_interval_current_hours">
+        <item quantity="one">%d час</item>
+        <item quantity="few">%d часа</item>
+        <item quantity="many">%d часов</item>
+    </plurals>
+    <plurals name="photo_widget_configure_interval_current_days">
+        <item quantity="one">%d день</item>
+        <item quantity="few">%d дня</item>
+        <item quantity="many">%d дней</item>
+    </plurals>
+    <string name="photo_widget_configure_interval_seconds_label">Секунды</string>
+    <string name="photo_widget_configure_interval_minutes_label">Минуты</string>
+    <string name="photo_widget_configure_interval_hours_label">Часы</string>
+    <string name="photo_widget_configure_interval_days_label">Дни</string>
+
+    <string name="photo_widget_configure_schedule_placeholder">Запланируйте до 4 раз для автоматической смены фотографий.</string>
+    <string name="photo_widget_configure_schedule_add_new">Добавить новое</string>
+    <string name="photo_widget_configure_schedule_limit_reached">Достигнут максимум в 4 раза</string>
+    <plurals name="photo_widget_configure_schedule_times">
+        <item quantity="one">%d раз выбран</item>
+        <item quantity="few">%d раза выбраны</item>
+        <item quantity="many">%d раз выбрано</item>
+    </plurals>
+
+    <string name="photo_widget_configure_interval_warning">Фактический интервал или запланированное время могут варьироваться из-за ограничений, накладываемых Android для оптимизации времени работы от батареи. Чтобы обеспечить его работу по желанию, предоставьте разрешение ниже</string>
+
+    <string name="photo_widget_configure_interval_grant_permission">Предоставить разрешение на точный будильник</string>
+    <string name="photo_widget_configure_interval_permission_dialog_title">Об этом разрешении</string>
+    <string name="photo_widget_configure_interval_permission_dialog_description">Android ограничивает фоновую работу для оптимизации времени работы от батареи, что может привести к более длительным интервалам между каждой фотографией.\n\nЕсли вы хотите, чтобы виджеты обновлялись точно в выбранный интервал, откройте настройки и включите это разрешение.</string>
+    <string name="photo_widget_configure_interval_open_settings">Открыть настройки</string>
+
+    <string name="photo_widget_configure_offset">Смещение</string>
+    <string name="photo_widget_configure_offset_current_values">Горизонтальное: %1$d, Вертикальное: %2$d</string>
+    <string name="photo_widget_configure_offset_current_horizontal">Горизонтальное: %1$d</string>
+    <string name="photo_widget_configure_offset_current_vertical">Вертикальное: %1$d</string>
+
+    <string name="photo_widget_configure_padding">Отступ</string>
+
+    <string name="photo_widget_configure_tap_action">Действие по нажатию</string>
+    <string name="photo_widget_configure_tap_action_none">Нет</string>
+    <string name="photo_widget_configure_tap_action_view_full_screen">Просмотр фотографии на весь экран</string>
+    <string name="photo_widget_configure_tap_action_view_in_gallery">Просмотреть в галерее</string>
+    <string name="photo_widget_configure_tap_action_flip_photo">Просмотр следующей/предыдущей фотографии</string>
+    <string name="photo_widget_configure_tap_action_app_shortcut">Ярлык приложения</string>
+
+    <string name="photo_widget_configure_tap_action_increase_brightness">Автоматически увеличить яркость</string>
+    <string name="photo_widget_configure_tap_action_view_original_photo">Просмотреть оригинальную фотографию (без обрезки или поворота)</string>
+    <string name="photo_widget_configure_tap_action_gallery_description">Доступно для виджетов на основе папок. Виджеты на основе фотографий будут использовать «Просмотр фотографии на весь экран» вместо этого.</string>
+    <string name="photo_widget_configure_tap_action_flip_description">Нажмите на левую половину, чтобы просмотреть предыдущую фотографию, и на правую половину, чтобы просмотреть следующую.</string>
+    <string name="photo_widget_configure_tap_action_choose_app">Выбрать приложение</string>
+
+    <string name="photo_widget_configure_add_to_home">Добавить на главный экран</string>
+
+    <string name="photo_widget_time_picker_title">Выбрать время</string>
+
+    <!-- Help -->
+    <string name="help_article_title_1">Не получается добавить виджет на главный экран</string>
+    <string name="help_article_body_1">Если вы настроили виджет, но при попытке добавить его на главный экран ничего не происходит или он добавлен, но не отображает выбранные фотографии, попробуйте добавить его напрямую с главного экрана.\n\nИнструкции могут различаться в зависимости от версии Android, производителя устройства и лаунчера, но, как правило, процесс выглядит следующим образом:\n\n1. Нажмите и удерживайте пустое пространство на главном экране, пока не появится всплывающее меню.\n2. Найдите опцию «Виджеты».\n3. Найдите «Material Photo Widget» среди доступных виджетов.\n4. Перетащите его на главный экран и настройте, как обычно.</string>
+
+    <string name="help_article_title_2">Фотографии не меняются автоматически</string>
+    <string name="help_article_body_2">Выбранный интервал или запланированное время являются приблизительными моментами, когда будет отображена следующая фотография. Android учитывает несколько факторов при определении фактического времени, и каждый производитель устройства может накладывать ограничения на фоновую работу.\n\nЧтобы гарантировать, что фотографии меняются именно тогда, когда вы хотите, предоставьте приложению разрешение «Точные будильники» и убедитесь, что к нему не применяются ограничения по батарее в настройках телефона.</string>
+
+    <string name="help_article_title_3">Виджет не работает после перезагрузки телефона</string>
+    <string name="help_article_body_3">Когда ваш телефон перезагружается, Android отправляет сигнал приложениям, чтобы уведомить их, чтобы они могли перезапуститься. К сожалению, некоторые производители устройств (такие как Xiaomi, Redmi, Huawei и другие) блокируют этот сигнал.\n\nЧтобы включить эту функциональность, измените разрешение «Автозапуск» в вашем приложении безопасности.</string>
+
+    <string name="help_article_title_4">Размер виджета слишком мал</string>
+    <string name="help_article_body_4">После добавления виджета на главный экран вы можете нажать на него и удерживать, чтобы открыть опцию изменения размера. Затем перетащите его границы, чтобы настроить его на нужный размер.</string>
+
+    <string name="help_article_footer">Что-то еще не работает?</string>
+
+    <!-- Viewer -->
+    <string name="photo_widget_viewer_actions_pinch">Сожмите для увеличения</string>
+    <string name="photo_widget_viewer_actions_drag">Перетащите для перемещения</string>
+    <string name="photo_widget_viewer_actions_tap">Нажмите, чтобы закрыть</string>
+
+    <!-- Common Actions -->
+    <string name="photo_widget_action_yes">Да</string>
+    <string name="photo_widget_action_no">Нет</string>
+    <string name="photo_widget_action_continue">Продолжить</string>
+    <string name="photo_widget_action_cancel">Отменить</string>
+    <string name="photo_widget_action_apply">Применить</string>
+    <string name="photo_widget_action_confirm">Подтвердить</string>
+    <string name="photo_widget_action_got_it">Понял</string>
+
+    <!-- Content Description -->
+    <string name="photo_widget_cd_host">Виджет главного экрана Material Photo</string>
+    <string name="photo_widget_cd_change_source">Изменить источник виджета</string>
+    <string name="photo_widget_cd_toggle_shuffle">Переключить перемешивание</string>
+    <string name="photo_widget_cd_open_photo_picker">Открыть выбор фотографий</string>
+    <string name="photo_widget_cd_open_folder_picker">Открыть выбор папки</string>
+</resources>
