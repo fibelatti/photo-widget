@@ -108,6 +108,7 @@ import com.fibelatti.ui.foundation.topSystemBarsPaddingCompat
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit
 import sh.calvin.reorderable.ReorderableItem
@@ -657,7 +658,7 @@ private fun PhotoPicker(
                 .padding(bottom = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Text(
+            AutoSizeText(
                 text = stringResource(
                     id = when (source) {
                         PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_photos

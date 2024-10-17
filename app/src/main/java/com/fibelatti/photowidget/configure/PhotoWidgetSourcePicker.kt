@@ -118,7 +118,6 @@ private fun SourcePickerContent(
                     Text(
                         text = stringResource(id = R.string.photo_widget_configure_source_description),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Justify,
                         style = MaterialTheme.typography.labelLarge,
                     )
 

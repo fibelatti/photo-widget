@@ -28,6 +28,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -70,6 +71,7 @@ import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit
 
@@ -185,11 +187,6 @@ private fun WidgetDefaultsScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Text(
-                text = stringResource(id = R.string.widget_defaults_explanation),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_source),
                 currentValue = stringResource(id = userPreferences.defaultSource.label),
@@ -264,6 +261,14 @@ private fun WidgetDefaultsScreen(
             ) {
                 Text(text = stringResource(id = R.string.widget_defaults_reset))
             }
+
+            HorizontalDivider(modifier = Modifier.padding(all = 8.dp))
+
+            Text(
+                text = stringResource(id = R.string.widget_defaults_explanation),
+                modifier = Modifier.padding(horizontal = 8.dp),
+                style = MaterialTheme.typography.bodyMedium,
+            )
         }
     }
 }
@@ -326,16 +331,16 @@ fun PickerDefault(
                 .heightIn(min = 60.dp)
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
             )
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.size(40.dp))
 
-            Text(
+            AutoSizeText(
                 text = currentValue,
                 textAlign = TextAlign.End,
                 style = MaterialTheme.typography.bodyMedium,

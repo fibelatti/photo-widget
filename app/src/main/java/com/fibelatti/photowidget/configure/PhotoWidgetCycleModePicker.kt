@@ -56,7 +56,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.app.AlarmManagerCompat
@@ -249,7 +248,6 @@ private fun PhotoCycleModePickerContent(
                     text = stringResource(id = R.string.photo_widget_configure_interval_warning),
                     modifier = Modifier.fillMaxWidth(),
                     color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 10.sp,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.labelMedium,
                 )
