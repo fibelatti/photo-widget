@@ -19,6 +19,7 @@ import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropFragment
 import com.yalantis.ucrop.UCropFragmentCallback
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.max
 
 @AndroidEntryPoint
 class PhotoCropActivity : AppCompatActivity(), UCropFragmentCallback {
@@ -37,7 +38,14 @@ class PhotoCropActivity : AppCompatActivity(), UCropFragmentCallback {
     private fun setupViews() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.updatePadding(top = systemBars.top, bottom = systemBars.bottom)
+            val displayCutout = insets.getInsets(WindowInsetsCompat.Type.displayCutout())
+
+            view.updatePadding(
+                left = max(systemBars.left, displayCutout.left),
+                top = max(systemBars.top, displayCutout.top),
+                right = max(systemBars.right, displayCutout.right),
+                bottom = max(systemBars.bottom, displayCutout.bottom),
+            )
             insets
         }
 

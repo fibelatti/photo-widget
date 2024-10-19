@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.licenses
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -10,16 +11,18 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.AppTheme
-import com.fibelatti.ui.foundation.navigationBarsCompat
-import com.fibelatti.ui.foundation.topSystemBarsPaddingCompat
+import com.fibelatti.ui.foundation.copy
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
@@ -30,6 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class OssLicensesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         setContent {
@@ -42,14 +46,17 @@ class OssLicensesActivity : AppCompatActivity() {
     @Composable
     @OptIn(ExperimentalFoundationApi::class)
     private fun OssLicensesScreen() {
+        val paddingValues = WindowInsets.safeDrawing.asPaddingValues()
+
         LibrariesContainer(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.background),
+                .background(color = MaterialTheme.colorScheme.background)
+                .padding(top = paddingValues.calculateTopPadding()),
             librariesBlock = { ctx ->
                 Libs.Builder().withJson(ctx, R.raw.aboutlibraries).build()
             },
-            contentPadding = WindowInsets.navigationBarsCompat.asPaddingValues(),
+            contentPadding = paddingValues.copy(top = 0.dp),
             colors = LibraryDefaults.libraryColors(
                 backgroundColor = MaterialTheme.colorScheme.background,
                 contentColor = MaterialTheme.colorScheme.onBackground,
@@ -62,8 +69,7 @@ class OssLicensesActivity : AppCompatActivity() {
                     Row(
                         modifier = Modifier
                             .background(color = MaterialTheme.colorScheme.background)
-                            .fillMaxWidth()
-                            .topSystemBarsPaddingCompat(),
+                            .fillMaxWidth(),
                     ) {
                         IconButton(onClick = { finish() }) {
                             Icon(

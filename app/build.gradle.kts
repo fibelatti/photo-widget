@@ -155,6 +155,7 @@ dependencies {
 
     // Android Platform
     implementation(libs.appcompat)
+    implementation(libs.activity)
     implementation(libs.material)
     implementation(libs.graphics.shapes)
     implementation(libs.lifecycle.runtime.compose)

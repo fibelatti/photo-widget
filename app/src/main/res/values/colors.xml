@@ -2,8 +2,6 @@
 <resources>
     <!-- Only colors that change depending on the configuration should be defined here
     everything else should be follow the style and use the query syntax (?attr/) -->
-    <color name="color_navigation_bar">#9E9E9E</color>
-
     <color name="color_background">#FFFFFF</color>
 
     <color name="color_icon">#424242</color>

@@ -24,6 +24,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,6 +33,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
@@ -102,9 +106,8 @@ import com.fibelatti.photowidget.preferences.ShapePicker
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.ui.foundation.copy
 import com.fibelatti.ui.foundation.grayScale
-import com.fibelatti.ui.foundation.navigationBarsPaddingCompat
-import com.fibelatti.ui.foundation.topSystemBarsPaddingCompat
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
@@ -299,7 +302,7 @@ private fun PhotoWidgetConfigureContent(
                 onClick = onNavClick,
                 modifier = Modifier
                     .align(Alignment.TopStart)
-                    .topSystemBarsPaddingCompat(),
+                    .safeDrawingPadding(),
                 colors = IconButtonDefaults.iconButtonColors().copy(
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 ),
@@ -333,7 +336,11 @@ private fun PhotoWidgetConfigureContent(
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
                 .padding(vertical = 16.dp)
-                .navigationBarsPaddingCompat(),
+                .padding(
+                    WindowInsets.safeDrawing
+                        .asPaddingValues()
+                        .copy(top = 0.dp)
+                ),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             PhotoPicker(
@@ -497,7 +504,7 @@ private fun PhotoWidgetViewer(
                 .fillMaxSize()
                 .background(largeRadialGradient)
                 .blur(10.dp)
-                .topSystemBarsPaddingCompat(),
+                .safeDrawingPadding(),
         )
 
         if (photo != null) {
@@ -508,7 +515,7 @@ private fun PhotoWidgetViewer(
                 cornerRadius = cornerRadius,
                 opacity = opacity,
                 modifier = Modifier
-                    .topSystemBarsPaddingCompat()
+                    .safeDrawingPadding()
                     .padding(start = 32.dp, top = 32.dp, end = 32.dp, bottom = 48.dp)
                     .fillMaxHeight(),
             )
