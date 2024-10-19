@@ -50,14 +50,22 @@ class PhotoWidgetAlarmManager @Inject constructor(
     }
 
     private fun setupIntervalAlarm(cycleMode: PhotoWidgetCycleMode.Interval, appWidgetId: Int) {
-        val widgetInterval = cycleMode.loopingInterval
-        val intervalMillis = widgetInterval.timeUnit.toMillis(widgetInterval.repeatInterval)
+        val intervalMillis = cycleMode.loopingInterval.run { timeUnit.toMillis(repeatInterval) }
+        val nextCycleTime = photoWidgetStorage.getWidgetNextCycleTime(appWidgetId = appWidgetId)
+        val currentTimeMillis = System.currentTimeMillis()
+        val triggerAtMillis = if (nextCycleTime > currentTimeMillis) {
+            nextCycleTime
+        } else {
+            currentTimeMillis + intervalMillis
+        }
+
+        photoWidgetStorage.saveWidgetNextCycleTime(appWidgetId = appWidgetId, nextCycleTime = triggerAtMillis)
 
         if (canScheduleExactAlarms) {
             try {
                 alarmManager.setExact(
                     /* type = */ AlarmManager.RTC,
-                    /* triggerAtMillis = */ System.currentTimeMillis() + intervalMillis,
+                    /* triggerAtMillis = */ triggerAtMillis,
                     /* operation = */
                     ExactRepeatingAlarmReceiver.pendingIntent(
                         context = context,
@@ -67,17 +75,25 @@ class PhotoWidgetAlarmManager @Inject constructor(
             } catch (_: SecurityException) {
                 Timber.d("SecurityException: fallback to inexact alarm")
 
-                setRepeatingAlarm(intervalMillis = intervalMillis, appWidgetId = appWidgetId)
+                setRepeatingAlarm(
+                    triggerAtMillis = triggerAtMillis,
+                    intervalMillis = intervalMillis,
+                    appWidgetId = appWidgetId,
+                )
             }
         } else {
-            setRepeatingAlarm(intervalMillis = intervalMillis, appWidgetId = appWidgetId)
+            setRepeatingAlarm(
+                triggerAtMillis = triggerAtMillis,
+                intervalMillis = intervalMillis,
+                appWidgetId = appWidgetId,
+            )
         }
     }
 
-    private fun setRepeatingAlarm(intervalMillis: Long, appWidgetId: Int) {
+    private fun setRepeatingAlarm(triggerAtMillis: Long, intervalMillis: Long, appWidgetId: Int) {
         alarmManager.setRepeating(
             /* type = */ AlarmManager.RTC,
-            /* triggerAtMillis = */ System.currentTimeMillis() + intervalMillis,
+            /* triggerAtMillis = */ triggerAtMillis,
             /* intervalMillis = */ intervalMillis,
             /* operation = */ PhotoWidgetProvider.flipPhotoPendingIntent(context = context, appWidgetId = appWidgetId),
         )
@@ -141,9 +157,8 @@ class ExactRepeatingAlarmReceiver : BroadcastReceiver() {
         entryPoint<PhotoWidgetEntryPoint>(context).runCatching {
             coroutineScope().launch {
                 flipPhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
+                photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
             }
-
-            photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
         }
     }
 
