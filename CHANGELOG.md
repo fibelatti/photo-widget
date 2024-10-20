@@ -5,6 +5,23 @@ All notable user-facing changes to this app will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+* Russian translation
+
+### Changed
+
+* Better support for egge-to-edge UI
+* Better support for landscape and tablets
+
+### Fixed
+
+* No longer applying a corner radius when using "fill widget area"
+* Persisting the original trigger date for widget alarms, to avoid restarting
+  after a device boot
+
 ## [v1.15.2] - 2024-10-09
 
 ### Fixed
