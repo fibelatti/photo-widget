@@ -11,32 +11,35 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -49,7 +52,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -63,7 +65,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Brush
@@ -81,7 +82,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.RoundedPolygon
@@ -106,7 +106,6 @@ import com.fibelatti.photowidget.preferences.ShapePicker
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.SliderSmallThumb
-import com.fibelatti.ui.foundation.copy
 import com.fibelatti.ui.foundation.grayScale
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
@@ -209,7 +208,7 @@ fun PhotoWidgetConfigureScreen(
             },
             onOffsetClick = {
                 ComposeBottomSheetDialog(localContext) {
-                    OffsetPicker(
+                    PhotoWidgetOffsetPicker(
                         horizontalOffset = photoWidget.horizontalOffset,
                         verticalOffset = photoWidget.verticalOffset,
                         onApplyClick = { newHorizontalOffset, newVerticalOffset ->
@@ -280,194 +279,297 @@ private fun PhotoWidgetConfigureContent(
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier,
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(320.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            PhotoWidgetViewer(
-                photo = selectedPhoto,
-                aspectRatio = photoWidget.aspectRatio,
-                shapeId = photoWidget.shapeId,
-                modifier = Modifier.fillMaxSize(),
-                cornerRadius = photoWidget.cornerRadius,
-                opacity = photoWidget.opacity,
-            )
+    BoxWithConstraints(modifier = modifier) {
+        if (maxWidth < 840.dp) {
+            Column {
+                PhotoWidgetConfigureContentViewer(
+                    photoWidget = photoWidget,
+                    selectedPhoto = selectedPhoto,
+                    onNavClick = onNavClick,
+                    onCropClick = onCropClick,
+                    onRemoveClick = onRemoveClick,
+                    onMoveLeftClick = onMoveLeftClick,
+                    onMoveRightClick = onMoveRightClick,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(320.dp),
+                )
 
-            IconButton(
-                onClick = onNavClick,
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .safeDrawingPadding(),
-                colors = IconButtonDefaults.iconButtonColors().copy(
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                ),
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = null,
+                PhotoWidgetConfigureContentSettings(
+                    photoWidget = photoWidget,
+                    onChangeSource = onChangeSource,
+                    onShuffleClick = onShuffleClick,
+                    onPhotoPickerClick = onPhotoPickerClick,
+                    onDirPickerClick = onDirPickerClick,
+                    onPhotoClick = onPhotoClick,
+                    onReorderFinished = onReorderFinished,
+                    onPendingDeletionPhotoClick = onPendingDeletionPhotoClick,
+                    onAspectRatioClick = onAspectRatioClick,
+                    onShapeClick = onShapeClick,
+                    onCornerRadiusClick = onCornerRadiusClick,
+                    onOpacityClick = onOpacityClick,
+                    onOffsetClick = onOffsetClick,
+                    onPaddingClick = onPaddingClick,
+                    onTapActionPickerClick = onTapActionPickerClick,
+                    onCycleModePickerClick = onCycleModePickerClick,
+                    onAddToHomeClick = onAddToHomeClick,
+                    contentWindowInsets = WindowInsets.navigationBars,
                 )
             }
-
-            if (selectedPhoto != null) {
-                EditingControls(
-                    onCropClick = { onCropClick(selectedPhoto) },
-                    showRemove = PhotoWidgetSource.PHOTOS == photoWidget.source,
-                    onRemoveClick = { onRemoveClick(selectedPhoto) },
-                    showMoveControls = photoWidget.canSort,
-                    moveLeftEnabled = photoWidget.photos.indexOf(selectedPhoto) != 0,
-                    onMoveLeftClick = { onMoveLeftClick(selectedPhoto) },
-                    moveRightEnabled = photoWidget.photos.indexOf(selectedPhoto) < photoWidget.photos.size - 1,
-                    onMoveRightClick = { onMoveRightClick(selectedPhoto) },
+        } else {
+            Row {
+                PhotoWidgetConfigureContentViewer(
+                    photoWidget = photoWidget,
+                    selectedPhoto = selectedPhoto,
+                    onNavClick = onNavClick,
+                    onCropClick = onCropClick,
+                    onRemoveClick = onRemoveClick,
+                    onMoveLeftClick = onMoveLeftClick,
+                    onMoveRightClick = onMoveRightClick,
                     modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(bottom = 8.dp),
+                        .fillMaxHeight()
+                        .fillMaxWidth(fraction = 0.4f),
+                )
+
+                PhotoWidgetConfigureContentSettings(
+                    photoWidget = photoWidget,
+                    onChangeSource = onChangeSource,
+                    onShuffleClick = onShuffleClick,
+                    onPhotoPickerClick = onPhotoPickerClick,
+                    onDirPickerClick = onDirPickerClick,
+                    onPhotoClick = onPhotoClick,
+                    onReorderFinished = onReorderFinished,
+                    onPendingDeletionPhotoClick = onPendingDeletionPhotoClick,
+                    onAspectRatioClick = onAspectRatioClick,
+                    onShapeClick = onShapeClick,
+                    onCornerRadiusClick = onCornerRadiusClick,
+                    onOpacityClick = onOpacityClick,
+                    onOffsetClick = onOffsetClick,
+                    onPaddingClick = onPaddingClick,
+                    onTapActionPickerClick = onTapActionPickerClick,
+                    onCycleModePickerClick = onCycleModePickerClick,
+                    onAddToHomeClick = onAddToHomeClick,
+                    contentWindowInsets = WindowInsets.systemBars
+                        .union(WindowInsets.displayCutout.only(WindowInsetsSides.End)),
                 )
             }
         }
+    }
+}
 
-        Column(
+@Composable
+private fun PhotoWidgetConfigureContentViewer(
+    photoWidget: PhotoWidget,
+    selectedPhoto: LocalPhoto?,
+    onNavClick: () -> Unit,
+    onCropClick: (LocalPhoto) -> Unit,
+    onRemoveClick: (LocalPhoto) -> Unit,
+    onMoveLeftClick: (LocalPhoto) -> Unit,
+    onMoveRightClick: (LocalPhoto) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        PhotoWidgetViewer(
+            photo = selectedPhoto,
+            aspectRatio = photoWidget.aspectRatio,
+            shapeId = photoWidget.shapeId,
+            modifier = Modifier.fillMaxSize(),
+            cornerRadius = photoWidget.cornerRadius,
+            opacity = photoWidget.opacity,
+        )
+
+        IconButton(
+            onClick = onNavClick,
             modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.background)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(vertical = 16.dp)
-                .padding(
-                    WindowInsets.safeDrawing
-                        .asPaddingValues()
-                        .copy(top = 0.dp)
-                ),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+                .align(Alignment.TopStart)
+                .safeDrawingPadding(),
+            colors = IconButtonDefaults.iconButtonColors().copy(
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            ),
         ) {
-            PhotoPicker(
-                source = photoWidget.source,
-                onChangeSource = { onChangeSource(photoWidget.source, photoWidget.syncedDir) },
-                photos = photoWidget.photos,
-                shuffleVisible = photoWidget.canShuffle,
-                shuffle = photoWidget.shuffle,
-                onShuffleClick = onShuffleClick,
-                onPhotoPickerClick = onPhotoPickerClick,
-                onDirPickerClick = onDirPickerClick,
-                onPhotoClick = onPhotoClick,
-                onReorderFinished = onReorderFinished,
+            Icon(
+                painter = painterResource(id = R.drawable.ic_back),
+                contentDescription = null,
+            )
+        }
+
+        if (selectedPhoto != null) {
+            EditingControls(
+                onCropClick = { onCropClick(selectedPhoto) },
+                showRemove = PhotoWidgetSource.PHOTOS == photoWidget.source,
+                onRemoveClick = { onRemoveClick(selectedPhoto) },
+                showMoveControls = photoWidget.canSort,
+                moveLeftEnabled = photoWidget.photos.indexOf(selectedPhoto) != 0,
+                onMoveLeftClick = { onMoveLeftClick(selectedPhoto) },
+                moveRightEnabled = photoWidget.photos.indexOf(selectedPhoto) < photoWidget.photos.size - 1,
+                onMoveRightClick = { onMoveRightClick(selectedPhoto) },
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 8.dp)
+                    .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Start)),
+            )
+        }
+    }
+}
+
+@Composable
+private fun PhotoWidgetConfigureContentSettings(
+    photoWidget: PhotoWidget,
+    onChangeSource: (currentSource: PhotoWidgetSource, syncedDir: Set<Uri>) -> Unit,
+    onShuffleClick: () -> Unit,
+    onPhotoPickerClick: () -> Unit,
+    onDirPickerClick: () -> Unit,
+    onPhotoClick: (LocalPhoto) -> Unit,
+    onReorderFinished: (List<LocalPhoto>) -> Unit,
+    onPendingDeletionPhotoClick: (LocalPhoto) -> Unit,
+    onAspectRatioClick: () -> Unit,
+    onShapeClick: () -> Unit,
+    onCornerRadiusClick: () -> Unit,
+    onOpacityClick: () -> Unit,
+    onOffsetClick: () -> Unit,
+    onPaddingClick: () -> Unit,
+    onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
+    onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
+    onAddToHomeClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    contentWindowInsets: WindowInsets = WindowInsets.navigationBars,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .background(color = MaterialTheme.colorScheme.background)
+            .padding(vertical = 16.dp)
+            .windowInsetsPadding(contentWindowInsets),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        PhotoPicker(
+            source = photoWidget.source,
+            onChangeSource = { onChangeSource(photoWidget.source, photoWidget.syncedDir) },
+            photos = photoWidget.photos,
+            shuffleVisible = photoWidget.canShuffle,
+            shuffle = photoWidget.shuffle,
+            onShuffleClick = onShuffleClick,
+            onPhotoPickerClick = onPhotoPickerClick,
+            onDirPickerClick = onDirPickerClick,
+            onPhotoClick = onPhotoClick,
+            onReorderFinished = onReorderFinished,
+            aspectRatio = photoWidget.aspectRatio,
+            shapeId = photoWidget.shapeId,
+        )
+
+        AnimatedVisibility(
+            visible = photoWidget.photosPendingDeletion.isNotEmpty(),
+        ) {
+            PendingDeletionPhotoPicker(
+                photos = photoWidget.photosPendingDeletion,
+                onPhotoClick = onPendingDeletionPhotoClick,
                 aspectRatio = photoWidget.aspectRatio,
                 shapeId = photoWidget.shapeId,
+                cornerRadius = photoWidget.cornerRadius,
             )
+        }
 
-            AnimatedVisibility(
-                visible = photoWidget.photosPendingDeletion.isNotEmpty(),
-            ) {
-                PendingDeletionPhotoPicker(
-                    photos = photoWidget.photosPendingDeletion,
-                    onPhotoClick = onPendingDeletionPhotoClick,
-                    aspectRatio = photoWidget.aspectRatio,
-                    shapeId = photoWidget.shapeId,
-                    cornerRadius = photoWidget.cornerRadius,
-                )
-            }
+        PickerDefault(
+            title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
+            currentValue = stringResource(id = photoWidget.aspectRatio.label),
+            onClick = onAspectRatioClick,
+            modifier = Modifier.padding(horizontal = 16.dp),
+        )
 
-            PickerDefault(
-                title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
-                currentValue = stringResource(id = photoWidget.aspectRatio.label),
-                onClick = onAspectRatioClick,
+        if (PhotoWidgetAspectRatio.SQUARE == photoWidget.aspectRatio) {
+            ShapeDefault(
+                title = stringResource(id = R.string.widget_defaults_shape),
+                currentValue = photoWidget.shapeId,
+                onClick = onShapeClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
-
-            if (PhotoWidgetAspectRatio.SQUARE == photoWidget.aspectRatio) {
-                ShapeDefault(
-                    title = stringResource(id = R.string.widget_defaults_shape),
-                    currentValue = photoWidget.shapeId,
-                    onClick = onShapeClick,
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                )
-            } else if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
-                PickerDefault(
-                    title = stringResource(id = R.string.widget_defaults_corner_radius),
-                    currentValue = photoWidget.cornerRadius.toInt().toString(),
-                    onClick = onCornerRadiusClick,
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                )
-            }
-
+        } else if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
             PickerDefault(
-                title = stringResource(id = R.string.widget_defaults_opacity),
-                currentValue = photoWidget.opacity.toInt().toString(),
-                onClick = onOpacityClick,
+                title = stringResource(id = R.string.widget_defaults_corner_radius),
+                currentValue = photoWidget.cornerRadius.toInt().toString(),
+                onClick = onCornerRadiusClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
+        }
 
+        PickerDefault(
+            title = stringResource(id = R.string.widget_defaults_opacity),
+            currentValue = photoWidget.opacity.toInt().toString(),
+            onClick = onOpacityClick,
+            modifier = Modifier.padding(horizontal = 16.dp),
+        )
+
+        PickerDefault(
+            title = stringResource(id = R.string.photo_widget_configure_offset),
+            currentValue = stringResource(
+                id = R.string.photo_widget_configure_offset_current_values,
+                photoWidget.horizontalOffset,
+                photoWidget.verticalOffset,
+            ),
+            onClick = onOffsetClick,
+            modifier = Modifier.padding(horizontal = 16.dp),
+        )
+
+        PickerDefault(
+            title = stringResource(id = R.string.photo_widget_configure_padding),
+            currentValue = photoWidget.padding.toString(),
+            onClick = onPaddingClick,
+            modifier = Modifier.padding(horizontal = 16.dp),
+        )
+
+        PickerDefault(
+            title = stringResource(id = R.string.widget_defaults_tap_action),
+            currentValue = stringResource(id = photoWidget.tapAction.label),
+            onClick = { onTapActionPickerClick(photoWidget.tapAction) },
+            modifier = Modifier.padding(horizontal = 16.dp),
+        )
+
+        if (photoWidget.photos.size > 1) {
             PickerDefault(
-                title = stringResource(id = R.string.photo_widget_configure_offset),
-                currentValue = stringResource(
-                    id = R.string.photo_widget_configure_offset_current_values,
-                    photoWidget.horizontalOffset,
-                    photoWidget.verticalOffset,
-                ),
-                onClick = onOffsetClick,
+                title = stringResource(id = R.string.widget_defaults_cycling),
+                currentValue = when (photoWidget.cycleMode) {
+                    is PhotoWidgetCycleMode.Interval -> {
+                        val intervalString = pluralStringResource(
+                            id = when (photoWidget.cycleMode.loopingInterval.timeUnit) {
+                                TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
+                                TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
+                                TimeUnit.HOURS -> R.plurals.photo_widget_configure_interval_current_hours
+                                else -> R.plurals.photo_widget_configure_interval_current_days
+                            },
+                            count = photoWidget.cycleMode.loopingInterval.repeatInterval.toInt(),
+                            photoWidget.cycleMode.loopingInterval.repeatInterval,
+                        )
+                        stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
+                    }
+
+                    is PhotoWidgetCycleMode.Schedule -> {
+                        pluralStringResource(
+                            id = R.plurals.photo_widget_configure_schedule_times,
+                            count = photoWidget.cycleMode.triggers.size,
+                            photoWidget.cycleMode.triggers.size,
+                        )
+                    }
+
+                    is PhotoWidgetCycleMode.Disabled -> {
+                        stringResource(id = R.string.photo_widget_configure_cycling_mode_disabled)
+                    }
+                },
+                onClick = { onCycleModePickerClick(photoWidget.cycleMode) },
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
+        }
 
-            PickerDefault(
-                title = stringResource(id = R.string.photo_widget_configure_padding),
-                currentValue = photoWidget.padding.toString(),
-                onClick = onPaddingClick,
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
-
-            PickerDefault(
-                title = stringResource(id = R.string.widget_defaults_tap_action),
-                currentValue = stringResource(id = photoWidget.tapAction.label),
-                onClick = { onTapActionPickerClick(photoWidget.tapAction) },
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
-
-            if (photoWidget.photos.size > 1) {
-                PickerDefault(
-                    title = stringResource(id = R.string.widget_defaults_cycling),
-                    currentValue = when (photoWidget.cycleMode) {
-                        is PhotoWidgetCycleMode.Interval -> {
-                            val intervalString = pluralStringResource(
-                                id = when (photoWidget.cycleMode.loopingInterval.timeUnit) {
-                                    TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
-                                    TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
-                                    TimeUnit.HOURS -> R.plurals.photo_widget_configure_interval_current_hours
-                                    else -> R.plurals.photo_widget_configure_interval_current_days
-                                },
-                                count = photoWidget.cycleMode.loopingInterval.repeatInterval.toInt(),
-                                photoWidget.cycleMode.loopingInterval.repeatInterval,
-                            )
-                            stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
-                        }
-
-                        is PhotoWidgetCycleMode.Schedule -> {
-                            pluralStringResource(
-                                id = R.plurals.photo_widget_configure_schedule_times,
-                                count = photoWidget.cycleMode.triggers.size,
-                                photoWidget.cycleMode.triggers.size,
-                            )
-                        }
-
-                        is PhotoWidgetCycleMode.Disabled -> {
-                            stringResource(id = R.string.photo_widget_configure_cycling_mode_disabled)
-                        }
-                    },
-                    onClick = { onCycleModePickerClick(photoWidget.cycleMode) },
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                )
-            }
-
-            FilledTonalButton(
-                onClick = onAddToHomeClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-            ) {
-                Text(text = stringResource(id = R.string.photo_widget_configure_add_to_home))
-            }
+        FilledTonalButton(
+            onClick = onAddToHomeClick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+        ) {
+            Text(text = stringResource(id = R.string.photo_widget_configure_add_to_home))
         }
     }
 }
@@ -503,8 +605,7 @@ private fun PhotoWidgetViewer(
             modifier = Modifier
                 .fillMaxSize()
                 .background(largeRadialGradient)
-                .blur(10.dp)
-                .safeDrawingPadding(),
+                .blur(10.dp),
         )
 
         if (photo != null) {
@@ -515,7 +616,9 @@ private fun PhotoWidgetViewer(
                 cornerRadius = cornerRadius,
                 opacity = opacity,
                 modifier = Modifier
-                    .safeDrawingPadding()
+                    .windowInsetsPadding(
+                        WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Start),
+                    )
                     .padding(start = 32.dp, top = 32.dp, end = 32.dp, bottom = 48.dp)
                     .fillMaxHeight(),
             )
@@ -627,7 +730,6 @@ private fun EditingControls(
 
 // region Pickers
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 private fun PhotoPicker(
     source: PhotoWidgetSource,
     onChangeSource: () -> Unit,
@@ -868,211 +970,6 @@ private fun PendingDeletionPhotoPicker(
 }
 
 @Composable
-private fun OffsetPicker(
-    horizontalOffset: Int,
-    verticalOffset: Int,
-    onApplyClick: (newHorizontalOffset: Int, newVerticalOffset: Int) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    DefaultPicker(
-        title = stringResource(id = R.string.photo_widget_configure_offset),
-        modifier = modifier,
-    ) {
-        val localContext = LocalContext.current
-        val baseBitmap = remember {
-            BitmapFactory.decodeResource(localContext.resources, R.drawable.image_sample)
-        }
-        var horizontalValue by remember(horizontalOffset) { mutableIntStateOf(horizontalOffset) }
-        var verticalValue by remember(verticalOffset) { mutableIntStateOf(verticalOffset) }
-        val localHaptics = LocalHapticFeedback.current
-
-        Box(
-            Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center,
-        ) {
-            Image(
-                bitmap = baseBitmap
-                    .withRoundedCorners(aspectRatio = PhotoWidgetAspectRatio.SQUARE)
-                    .asImageBitmap(),
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(32.dp)
-                    .size(200.dp)
-                    .offset(x = horizontalValue.dp, y = verticalValue.dp),
-            )
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(32.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-            ) {
-                Column(
-                    modifier = Modifier
-                        .height(144.dp)
-                        .width(48.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.primaryContainer,
-                            shape = MaterialTheme.shapes.medium,
-                        ),
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_chevron_down),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(48.dp)
-                            .rotate(180f)
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                            ) {
-                                verticalValue -= 1
-                                localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                            },
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-
-                    Spacer(modifier = Modifier.size(48.dp))
-
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_chevron_down),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                            ) {
-                                verticalValue += 1
-                                localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                            },
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
-
-                Row(
-                    modifier = Modifier
-                        .width(144.dp)
-                        .height(48.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.primaryContainer,
-                            shape = MaterialTheme.shapes.medium,
-                        ),
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_chevron_left),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                            ) {
-                                horizontalValue -= 1
-                                localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                            },
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-
-                    Spacer(modifier = Modifier.size(48.dp))
-
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_chevron_right),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                            ) {
-                                horizontalValue += 1
-                                localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                            },
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
-            }
-
-            Column(
-                modifier = Modifier.weight(1f),
-            ) {
-                Text(
-                    text = stringResource(
-                        id = R.string.photo_widget_configure_offset_current_horizontal,
-                        horizontalValue,
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                            shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-                        )
-                        .border(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.primaryContainer,
-                            shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-                        )
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyLarge,
-                )
-
-                Text(
-                    text = stringResource(
-                        id = R.string.photo_widget_configure_offset_current_vertical,
-                        verticalValue,
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                            shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
-                        )
-                        .border(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.primaryContainer,
-                            shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
-                        )
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyLarge,
-                )
-            }
-        }
-
-        OutlinedButton(
-            onClick = {
-                horizontalValue = 0
-                verticalValue = 0
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-        ) {
-            Text(text = stringResource(id = R.string.widget_defaults_reset))
-        }
-
-        FilledTonalButton(
-            onClick = { onApplyClick(horizontalValue, verticalValue) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-        ) {
-            Text(text = stringResource(id = R.string.photo_widget_action_apply))
-        }
-    }
-}
-
-@Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun PaddingPicker(
     currentValue: Int,
@@ -1306,20 +1203,6 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onOffsetChange = { _, _ -> },
             onPaddingChange = {},
             onAddToHomeClick = {},
-        )
-    }
-}
-
-@Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
-private fun OffsetPickerPreview() {
-    ExtendedTheme {
-        OffsetPicker(
-            horizontalOffset = 0,
-            verticalOffset = 0,
-            onApplyClick = { _, _ -> },
         )
     }
 }

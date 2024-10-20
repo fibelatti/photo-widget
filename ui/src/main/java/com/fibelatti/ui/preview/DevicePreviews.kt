@@ -11,6 +11,13 @@ import androidx.compose.ui.tooling.preview.Preview
     device = Devices.PIXEL_7,
 )
 @Preview(
+    name = "Landscape Device",
+    group = "Device",
+    showSystemUi = true,
+    showBackground = true,
+    device = "spec:width=411dp,height=891dp,dpi=420,isRound=false,chinSize=0dp,orientation=landscape"
+)
+@Preview(
     name = "Small Device",
     group = "Device",
     showSystemUi = true,
