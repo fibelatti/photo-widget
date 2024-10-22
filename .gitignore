@@ -3,6 +3,9 @@
 *.aab
 *.ap_
 
+# Keystore
+/keystore/
+
 # Gradle
 # ------
 .gradle/
@@ -10,7 +13,6 @@
 /buildSrc/build
 /captures
 .externalNativeBuild
-
 
 # IDEA
 # ----

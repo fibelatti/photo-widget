@@ -66,9 +66,16 @@ android {
     signingConfigs {
         getByName("debug") {
             storeFile = File("$rootDir/keystore/debug.keystore")
+            storePassword = "android"
             keyAlias = "androiddebugkey"
             keyPassword = "android"
-            storePassword = "android"
+        }
+
+        create("release") {
+            storeFile = File("$rootDir/keystore/release.jks")
+            storePassword = System.getenv("SIGNING_STORE_PASSWORD")
+            keyAlias = System.getenv("SIGNING_KEY_ALIAS")
+            keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
         }
     }
 
@@ -82,6 +89,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             isCrunchPngs = false
+            signingConfig = signingConfigs.getByName("release")
             setProguardFiles(
                 listOf(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
