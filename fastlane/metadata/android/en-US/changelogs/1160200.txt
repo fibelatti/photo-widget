@@ -1,0 +1,10 @@
+Version 1.16.2 is now available with these updates:
+
+* Fixed an issue where widgets with longer intervals wouldn’t switch photos
+  if the device was powered off before switching
+* Resolved a bug where the widget corner radius overlapped with Android’s
+  default radius when using “fill widget area”
+* Improved the editing experience on tablets and landscape mode
+* Added russian translation
+
+We welcome your feedback and suggestions! Visit the project page to contribute.
