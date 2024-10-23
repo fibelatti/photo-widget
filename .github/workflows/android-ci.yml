@@ -19,7 +19,7 @@ jobs:
         uses: ./.github/actions/setup-android-build
 
       - name: Build
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew assemble --stacktrace
 
       - name: Upload APK
         if: success()

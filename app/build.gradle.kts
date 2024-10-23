@@ -89,7 +89,11 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             isCrunchPngs = false
-            signingConfig = signingConfigs.getByName("release")
+
+            if (System.getenv("SIGN_BUILD").toBoolean()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
+
             setProguardFiles(
                 listOf(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
