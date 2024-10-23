@@ -81,13 +81,21 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             .also { Timber.d("Provider widget IDs: $it") }
 
         fun update(context: Context, appWidgetId: Int, recoveryMode: Boolean = false) {
+            Timber.d("Updating widget (appWidgetId=$appWidgetId)")
+
+            val appWidgetManager = AppWidgetManager.getInstance(context)
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
             val coroutineScope = entryPoint.coroutineScope()
             val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
 
-            coroutineScope.launch {
-                Timber.d("Updating widget (appWidgetId=$appWidgetId)")
+            Timber.d("Dispatching pre-load remote views to AppWidgetManager")
+            appWidgetManager.updateAppWidget(
+                /* appWidgetId = */ appWidgetId,
+                /* views = */ RemoteViews(context.packageName, R.layout.photo_widget_placeholder),
+            )
 
+            coroutineScope.launch {
+                Timber.d("Loading widget data")
                 val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId).last()
                 val tempViews = PhotoWidgetPinnedReceiver.preview?.get()
                     ?.takeIf { photoWidget.photos.isEmpty() }
@@ -122,10 +130,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     ),
                 )
 
-                Timber.d("Dispatching update to AppWidgetManager")
+                Timber.d("Dispatching post-load remote views to AppWidgetManager")
 
                 try {
-                    AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, views)
+                    appWidgetManager.updateAppWidget(appWidgetId, views)
                 } catch (ex: IllegalArgumentException) {
                     if (!recoveryMode) {
                         update(context = context, appWidgetId = appWidgetId, recoveryMode = true)
@@ -217,7 +225,9 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         }
 
         private fun createErrorView(context: Context): RemoteViews {
-            return RemoteViews(context.packageName, R.layout.photo_widget_file_not_found)
+            return RemoteViews(context.packageName, R.layout.photo_widget_placeholder).apply {
+                setImageViewResource(R.id.image_view_placeholder, R.drawable.ic_file_not_found)
+            }
         }
 
         private fun getDimensionValue(context: Context, value: Int): Int {
