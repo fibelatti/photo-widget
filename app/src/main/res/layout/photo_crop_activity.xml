@@ -29,13 +29,25 @@
         android:layout_margin="8dp"
         android:background="@null"
         android:padding="8dp"
-        android:src="@drawable/ic_crop"
+        android:src="@drawable/ic_check"
         app:layout_constraintBottom_toTopOf="@id/barrier_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/back_button"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="#FFFFFF"
         tools:ignore="ContentDescription" />
+
+    <ProgressBar
+        android:id="@+id/progress_indicator"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:indeterminateTint="#FFFFFF"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/crop_button"
+        app:layout_constraintEnd_toEndOf="@id/crop_button"
+        app:layout_constraintStart_toStartOf="@id/crop_button"
+        app:layout_constraintTop_toTopOf="@id/crop_button" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier_nav"

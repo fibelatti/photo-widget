@@ -9,6 +9,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import com.fibelatti.photowidget.databinding.PhotoCropActivityBinding
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -54,6 +56,8 @@ class PhotoCropActivity : AppCompatActivity(), UCropFragmentCallback {
         }
         binding.cropButton.setOnClickListener {
             binding.fragmentContainerView.getFragment<UCropFragment>().cropAndSaveImage()
+            binding.cropButton.isInvisible = true
+            binding.progressIndicator.isVisible = true
         }
     }
 
