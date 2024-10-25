@@ -26,11 +26,9 @@ class PhotoWidgetAlarmManager @Inject constructor(
 ) {
 
     private val alarmManager: AlarmManager by lazy { requireNotNull(context.getSystemService()) }
-    private val canScheduleExactAlarms by lazy {
-        AlarmManagerCompat.canScheduleExactAlarms(alarmManager).also {
-            Timber.d("Schedule exact alarms permission granted: $it")
-        }
-    }
+    private val canScheduleExactAlarms: Boolean
+        get() = AlarmManagerCompat.canScheduleExactAlarms(alarmManager)
+            .also { Timber.d("Schedule exact alarms permission granted: $it") }
 
     fun setup(appWidgetId: Int) {
         Timber.d("Setting alarm for widget (appWidgetId=$appWidgetId)")
@@ -157,6 +155,7 @@ class ExactRepeatingAlarmReceiver : BroadcastReceiver() {
         entryPoint<PhotoWidgetEntryPoint>(context).runCatching {
             coroutineScope().launch {
                 flipPhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
+                photoWidgetStorage().saveWidgetNextCycleTime(appWidgetId = intent.appWidgetId, nextCycleTime = -1)
                 photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
             }
         }
