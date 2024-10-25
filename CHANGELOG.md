@@ -5,6 +5,18 @@ All notable user-facing changes to this app will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Changed
+
+* Increased widget starting size to 2x2
+* Add loading indicator when loading the widget on the home screen for the
+  first time
+
+### Fixed
+
+* Add missing progress indicator when cropping
+
 ## [v1.16.2] - 2024-10-23
 
 ### Changed
