@@ -75,6 +75,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         // RemoteViews have a maximum allowed memory for bitmaps
         private const val MAX_WIDGET_BITMAP_MEMORY = 6_912_000
 
+        private val loadedWidgets: MutableMap<Int, Boolean> = mutableMapOf()
+
         fun ids(context: Context): List<Int> = AppWidgetManager.getInstance(context)
             .getAppWidgetIds(ComponentName(context, PhotoWidgetProvider::class.java))
             .toList()
@@ -88,11 +90,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val coroutineScope = entryPoint.coroutineScope()
             val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
 
-            Timber.d("Dispatching pre-load remote views to AppWidgetManager")
-            appWidgetManager.updateAppWidget(
-                /* appWidgetId = */ appWidgetId,
-                /* views = */ RemoteViews(context.packageName, R.layout.photo_widget_placeholder),
-            )
+            if (loadedWidgets[appWidgetId] != true) {
+                Timber.d("Dispatching pre-load remote views to AppWidgetManager")
+                appWidgetManager.updateAppWidget(
+                    /* appWidgetId = */ appWidgetId,
+                    /* views = */ RemoteViews(context.packageName, R.layout.photo_widget_placeholder),
+                )
+                loadedWidgets[appWidgetId] = true
+            }
 
             coroutineScope.launch {
                 Timber.d("Loading widget data")
