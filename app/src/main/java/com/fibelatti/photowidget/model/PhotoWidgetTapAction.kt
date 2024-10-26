@@ -47,16 +47,6 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     }
 
     @Parcelize
-    data object ViewNextPhoto : PhotoWidgetTapAction {
-
-        @IgnoredOnParcel
-        override val label = R.string.photo_widget_configure_tap_action_flip_photo
-
-        @IgnoredOnParcel
-        override val serializedName: String = "VIEW_NEXT_PHOTO"
-    }
-
-    @Parcelize
     data class AppShortcut(
         val appShortcut: String? = null,
     ) : PhotoWidgetTapAction {
@@ -77,7 +67,6 @@ sealed interface PhotoWidgetTapAction : Parcelable {
                 None,
                 ViewFullScreen(),
                 ViewInGallery,
-                ViewNextPhoto,
                 AppShortcut(),
             )
         }

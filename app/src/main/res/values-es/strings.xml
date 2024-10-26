@@ -169,16 +169,15 @@
     <string name="photo_widget_configure_padding">Espaciamiento</string>
 
     <string name="photo_widget_configure_tap_action">Acción de toque</string>
+    <string name="photo_widget_configure_tap_action_description">Seleccione la acción para el área resaltada en verde. En los widgets de más de 1x1, puede tocar las áreas en rojo para ver la foto anterior y la siguiente respectivamente.</string>
     <string name="photo_widget_configure_tap_action_none">Ninguna</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Ver foto en pantalla completa</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Ver en galería</string>
-    <string name="photo_widget_configure_tap_action_flip_photo">Ver foto siguiente/anterior</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Abrir una aplicación</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Aumentar automáticamente el brillo</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Ver foto original (sin recorte ni rotación)</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Disponible para widgets basados en carpetas. Los widgets basados en fotografías utilizarán \"Ver foto en pantalla completa\" en su lugar.</string>
-    <string name="photo_widget_configure_tap_action_flip_description">Toque la mitad izquierda para ver la foto anterior y la mitad derecha para ver la siguiente.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Elige la aplicación</string>
 
     <string name="photo_widget_configure_add_to_home">Agregar a la pantalla principal</string>

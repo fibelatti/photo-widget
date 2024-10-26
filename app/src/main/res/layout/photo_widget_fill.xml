@@ -17,21 +17,28 @@
         tools:src="@drawable/widget_preview" />
 
     <LinearLayout
+        android:id="@+id/tap_actions_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
         <FrameLayout
-            android:id="@+id/view_tap_previous"
+            android:id="@+id/view_tap_left"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="3" />
 
         <FrameLayout
-            android:id="@+id/view_tap_next"
+            android:id="@+id/view_tap_center"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="4" />
+
+        <FrameLayout
+            android:id="@+id/view_tap_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3" />
     </LinearLayout>
 </FrameLayout>

@@ -7,8 +7,10 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.View
 import android.widget.RemoteViews
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetPinnedReceiver
@@ -19,6 +21,7 @@ import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.platform.WidgetSizeProvider
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
@@ -65,6 +68,16 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 }
             }
         }
+    }
+
+    override fun onAppWidgetOptionsChanged(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetId: Int,
+        newOptions: Bundle?,
+    ) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+        update(context = context, appWidgetId = appWidgetId)
     }
 
     companion object {
@@ -114,25 +127,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     recoveryMode = recoveryMode,
                 )
 
-                views.setOnClickPendingIntent(
-                    R.id.view_tap_previous,
-                    getClickPendingIntent(
-                        context = context,
-                        appWidgetId = appWidgetId,
-                        tapAction = (tempWidget ?: photoWidget).tapAction,
-                        flipBackwards = true,
-                        externalUri = (tempWidget ?: photoWidget).currentPhoto?.externalUri,
-                    ),
-                )
-                views.setOnClickPendingIntent(
-                    R.id.view_tap_next,
-                    getClickPendingIntent(
-                        context = context,
-                        appWidgetId = appWidgetId,
-                        tapAction = (tempWidget ?: photoWidget).tapAction,
-                        flipBackwards = false,
-                        externalUri = (tempWidget ?: photoWidget).currentPhoto?.externalUri,
-                    ),
+                setClickPendingIntent(
+                    views = views,
+                    context = context,
+                    appWidgetId = appWidgetId,
+                    photoWidget = tempWidget ?: photoWidget,
                 )
 
                 Timber.d("Dispatching post-load remote views to AppWidgetManager")
@@ -243,11 +242,63 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             ).toInt()
         }
 
+        private fun setClickPendingIntent(
+            views: RemoteViews,
+            context: Context,
+            appWidgetId: Int,
+            photoWidget: PhotoWidget,
+        ) {
+            val sizeProvider = WidgetSizeProvider(context = context.applicationContext)
+            val (width, _) = sizeProvider.getWidgetsSize(appWidgetId = appWidgetId)
+
+            if (width < 100) {
+                // The widget is too narrow to handle 3 different click areas
+                views.setViewVisibility(R.id.tap_actions_layout, View.GONE)
+                views.setOnClickPendingIntent(
+                    R.id.iv_widget,
+                    getClickPendingIntent(
+                        context = context,
+                        appWidgetId = appWidgetId,
+                        tapAction = photoWidget.tapAction,
+                        externalUri = photoWidget.currentPhoto?.externalUri,
+                    ),
+                )
+
+                return
+            }
+
+            views.setViewVisibility(R.id.tap_actions_layout, View.VISIBLE)
+            views.setOnClickPendingIntent(
+                R.id.view_tap_left,
+                flipPhotoPendingIntent(
+                    context = context,
+                    appWidgetId = appWidgetId,
+                    flipBackwards = true,
+                ),
+            )
+            views.setOnClickPendingIntent(
+                R.id.view_tap_center,
+                getClickPendingIntent(
+                    context = context,
+                    appWidgetId = appWidgetId,
+                    tapAction = photoWidget.tapAction,
+                    externalUri = photoWidget.currentPhoto?.externalUri,
+                ),
+            )
+            views.setOnClickPendingIntent(
+                R.id.view_tap_right,
+                flipPhotoPendingIntent(
+                    context = context,
+                    appWidgetId = appWidgetId,
+                    flipBackwards = false,
+                ),
+            )
+        }
+
         private fun getClickPendingIntent(
             context: Context,
             appWidgetId: Int,
             tapAction: PhotoWidgetTapAction,
-            flipBackwards: Boolean,
             externalUri: Uri?,
         ): PendingIntent? {
             when (tapAction) {
@@ -277,14 +328,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         appWidgetId,
                         intent,
                         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-                    )
-                }
-
-                is PhotoWidgetTapAction.ViewNextPhoto -> {
-                    return flipPhotoPendingIntent(
-                        context = context,
-                        appWidgetId = appWidgetId,
-                        flipBackwards = flipBackwards,
                     )
                 }
 

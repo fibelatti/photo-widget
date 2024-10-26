@@ -169,16 +169,15 @@
     <string name="photo_widget_configure_padding">Отступ</string>
 
     <string name="photo_widget_configure_tap_action">Действие по нажатию</string>
+    <string name="photo_widget_configure_tap_action_description">Выберите действие для области, выделенной зеленым цветом. На виджетах размером более 1x1 вы можете нажать на области, выделенные красным, чтобы просмотреть предыдущую и следующую фотографию соответственно.</string>
     <string name="photo_widget_configure_tap_action_none">Нет</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Просмотр фотографии на весь экран</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Просмотреть в галерее</string>
-    <string name="photo_widget_configure_tap_action_flip_photo">Просмотр следующей/предыдущей фотографии</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Ярлык приложения</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Автоматически увеличить яркость</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Просмотреть оригинальную фотографию (без обрезки или поворота)</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Доступно для виджетов на основе папок. Виджеты на основе фотографий будут использовать «Просмотр фотографии на весь экран» вместо этого.</string>
-    <string name="photo_widget_configure_tap_action_flip_description">Нажмите на левую половину, чтобы просмотреть предыдущую фотографию, и на правую половину, чтобы просмотреть следующую.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Выбрать приложение</string>
 
     <string name="photo_widget_configure_add_to_home">Добавить на главный экран</string>

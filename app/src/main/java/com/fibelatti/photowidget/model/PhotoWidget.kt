@@ -34,7 +34,7 @@ data class PhotoWidget(
     val canSort: Boolean get() = PhotoWidgetSource.PHOTOS == source && photos.size > 1 && !shuffle
 
     val canShuffle: Boolean
-        get() = photos.size > 1 && (cyclingEnabled || tapAction is PhotoWidgetTapAction.ViewNextPhoto)
+        get() = photos.size > 1
 
     val increaseBrightness: Boolean
         get() = (tapAction as? PhotoWidgetTapAction.ViewFullScreen)?.increaseBrightness == true

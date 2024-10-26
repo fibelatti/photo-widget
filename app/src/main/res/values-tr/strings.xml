@@ -163,16 +163,15 @@
     <string name="photo_widget_configure_padding">Dolgu</string>
 
     <string name="photo_widget_configure_tap_action">Dokunma eylemi</string>
+    <string name="photo_widget_configure_tap_action_description">Yeşil renkle vurgulanan alan için eylemi seçin. 1x1\'den büyük widget\'larda, sırasıyla önceki ve sonraki fotoğrafı görüntülemek için kırmızı alanlara dokunabilirsiniz.</string>
     <string name="photo_widget_configure_tap_action_none">Hiçbiri</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Fotoğrafı tam ekranda görüntüle</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Galeride görüntüle</string>
-    <string name="photo_widget_configure_tap_action_flip_photo">Sonraki/önceki fotoğrafı görüntüle</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Uygulama kısayolu</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Parlaklığı otomatik olarak artır</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Orijinal fotoğrafı görüntüle (kırpma veya döndürme yok)</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Klasör tabanlı widget\'lar için geçerlidir. Fotoğraf tabanlı widget\'lar bunun yerine "Fotoğrafı tam ekranda görüntüle"yi kullanacaktır.</string>
-    <string name="photo_widget_configure_tap_action_flip_description">Önceki fotoğrafı görüntülemek için sol yarıya, sonraki fotoğrafı görüntülemek için sağ yarıya dokunun.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Uygulama seç</string>
 
     <string name="photo_widget_configure_add_to_home">Ana ekrana ekle</string>

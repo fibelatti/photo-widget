@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* Widgets now support multiple tap actions. Tap the sides to view the previous
+  or next photo, with a customizable middle action
+
 ### Changed
 
 * Increased widget starting size to 2x2
