@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Add missing progress indicator when cropping
+* Fix duplicate feature not working as it should for photo widgets
 
 ## [v1.16.2] - 2024-10-23
 

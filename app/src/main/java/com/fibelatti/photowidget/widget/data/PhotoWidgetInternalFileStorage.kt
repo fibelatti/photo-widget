@@ -158,7 +158,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
             val originalDir = getWidgetDir(appWidgetId = originalAppWidgetId)
             val newDir = getWidgetDir(appWidgetId = newAppWidgetId)
 
-            originalDir.copyTo(newDir, overwrite = true)
+            originalDir.copyRecursively(newDir, overwrite = true)
         }
     }
 

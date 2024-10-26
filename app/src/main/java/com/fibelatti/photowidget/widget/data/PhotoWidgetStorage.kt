@@ -128,6 +128,12 @@ class PhotoWidgetStorage @Inject constructor(
         pendingDeletionPhotosDao.savePendingDeletionPhotos(photos = photos)
     }
 
+    suspend fun deletePhotos(appWidgetId: Int, photoNames: Iterable<String>) {
+        for (photo in photoNames) {
+            internalFileStorage.deleteWidgetPhoto(appWidgetId = appWidgetId, photoName = photo)
+        }
+    }
+
     suspend fun saveWidgetOrder(appWidgetId: Int, order: List<String>) {
         orderDao.replaceWidgetOrder(
             widgetId = appWidgetId,
