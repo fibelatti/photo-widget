@@ -60,5 +60,6 @@ object PhotoWidgetModule {
                 .maxSizePercent(0.02)
                 .build()
         }
+        .addLastModifiedToFileCacheKey(false)
         .build()
 }

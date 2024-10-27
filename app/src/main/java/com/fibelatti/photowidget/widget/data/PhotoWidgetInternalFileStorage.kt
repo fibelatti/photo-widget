@@ -70,27 +70,25 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
     }
 
-    suspend fun getCropSources(appWidgetId: Int, localPhoto: LocalPhoto): Pair<Uri, Uri> {
+    suspend fun getCropSources(appWidgetId: Int, localPhoto: LocalPhoto): Pair<Uri, Uri> = withContext(Dispatchers.IO) {
         val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
         val croppedPhoto = File("$widgetDir/${localPhoto.name}").apply { createNewFile() }
 
-        if (localPhoto.externalUri != null) {
-            return localPhoto.externalUri to Uri.fromFile(croppedPhoto)
+        return@withContext if (localPhoto.externalUri != null) {
+            localPhoto.externalUri to Uri.fromFile(croppedPhoto)
         } else {
             val originalPhotosDir = File("$widgetDir/original")
             val originalPhoto = File("$originalPhotosDir/${localPhoto.name}").apply { mkdirs() }
 
             if (!originalPhoto.exists()) {
-                withContext(Dispatchers.IO) {
-                    originalPhoto.createNewFile()
+                originalPhoto.createNewFile()
 
-                    FileInputStream(croppedPhoto).use { fileInputStream ->
-                        fileInputStream.copyTo(FileOutputStream(originalPhoto))
-                    }
+                FileInputStream(croppedPhoto).use { fileInputStream ->
+                    fileInputStream.copyTo(FileOutputStream(originalPhoto))
                 }
             }
 
-            return Uri.fromFile(originalPhoto) to Uri.fromFile(croppedPhoto)
+            Uri.fromFile(originalPhoto) to Uri.fromFile(croppedPhoto)
         }
     }
 
@@ -146,10 +144,12 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
     }
 
-    fun renameTemporaryWidgetDir(appWidgetId: Int) {
-        val tempDir = File("$rootDir/0")
-        if (tempDir.exists()) {
-            tempDir.renameTo(File("$rootDir/$appWidgetId"))
+    suspend fun renameTemporaryWidgetDir(appWidgetId: Int) {
+        withContext(Dispatchers.IO) {
+            val tempDir = File("$rootDir/0")
+            if (tempDir.exists()) {
+                tempDir.renameTo(File("$rootDir/$appWidgetId"))
+            }
         }
     }
 
@@ -162,8 +162,8 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
     }
 
-    private fun getWidgetDir(appWidgetId: Int): File {
-        return File("$rootDir/$appWidgetId").apply {
+    private suspend fun getWidgetDir(appWidgetId: Int): File = withContext(Dispatchers.IO) {
+        File("$rootDir/$appWidgetId").apply {
             mkdirs()
         }
     }

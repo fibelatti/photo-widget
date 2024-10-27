@@ -292,7 +292,7 @@ class PhotoWidgetStorage @Inject constructor(
         return sharedPreferences.getPendingDeletionWidgetIds()
     }
 
-    fun renameTemporaryWidgetDir(appWidgetId: Int) {
+    suspend fun renameTemporaryWidgetDir(appWidgetId: Int) {
         internalFileStorage.renameTemporaryWidgetDir(appWidgetId = appWidgetId)
     }
 
