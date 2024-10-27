@@ -1,0 +1,10 @@
+Version 1.17.0 is now available with these updates:
+
+* Multiple tap actions: Tap the sides to view the previous or next photo, with
+  a customizable middle action
+* New language available: french
+* Increased the widget starting size to 2x2
+* Fix "Duplicate" feature not working as it should for photo widgets
+* Add missing progress indicator when cropping photos
+
+We welcome your feedback and suggestions! Visit the project page to contribute.
