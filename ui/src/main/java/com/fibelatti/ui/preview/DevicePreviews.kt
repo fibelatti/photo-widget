@@ -41,6 +41,14 @@ import androidx.compose.ui.tooling.preview.Preview
     locale = "es",
 )
 @Preview(
+    name = "Small Device (fr)",
+    group = "Device",
+    showSystemUi = true,
+    showBackground = true,
+    device = Devices.NEXUS_5,
+    locale = "fr",
+)
+@Preview(
     name = "Tablet",
     group = "Device",
     showSystemUi = true,
