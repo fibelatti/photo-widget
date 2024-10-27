@@ -9,29 +9,29 @@ launcher.
 
 <b>FEATURES</b>
 
-* 5 aspect ratios: square, tall, wide, original and fill widget
-* Customize your square widgets with 10 different shapes
-* Customize the rounded corners of your tall, wide or original widgets
-* Customize the opacity, offset and padding
-* Choose each photo or sync the widget with device folders
-* Set an optional interval and have photos flip automatically
-* Choose the tap action of each widget: none, view next photo, view in full
-  screen or open another app
+* Choose each photo or sync a widget with device folders
+* Set an interval or schedule to switch photos automatically
+* Customize the tap action of each widget: view in full screen, view in
+  gallery, shortcut to open other apps
+* Customize the aspect ratio: square, tall, wide, original (same as photo) and
+  fill widget area
+* Customize square widgets with 10 different shapes
+* Customize the rounded corners of tall, wide or original widgets
+* Customize the opacity, offset and padding to align your home screen elements
+  perfectly
 
 <b>PERMISSIONS</b>
 
 * INSTALL_SHORTCUT — Declared to ensure that widgets can be placed correctly on
   Xiaomi and Redmi devices
 * RECEIVE_BOOT_COMPLETED — Used to ensure that widgets function correctly after
-  the device is restarted
+  the device is rebooted
 * SCHEDULE_EXACT_ALARM (optional) — Used to ensure that widgets are updated
-  precisely at the selected interval
+  precisely at the selected interval or schedule
 
 The app does not require any storage permissions. Photos and directories are
 selected using the native pickers and stored within the app to keep data
-private and secure.
-
-There's no tracking or network communication.
+private and secure. There's no tracking or network communication.
 
 ---------------
 
@@ -40,6 +40,8 @@ submit feedback at https://github.com/fibelatti/photo-widget
 
 ---------------
 
-Vectors and icons by Dazzle Ui (https://dazzleui.gumroad.com/l/dazzleiconsfree?ref=svgrepo.com) in CC Attribution License via https://www.svgrepo.com/
+* Vectors and icons by Dazzle Ui
+(https://dazzleui.gumroad.com/l/dazzleiconsfree?ref=svgrepo.com) in CC
+Attribution License via https://www.svgrepo.com/
 
-Screenshots were generated with https://screenshots.pro
+* Store listing screenshots were generated with https://screenshots.pro
