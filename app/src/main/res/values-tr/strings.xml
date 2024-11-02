@@ -36,7 +36,7 @@
 
     <string name="photo_widget_home_removed_widgets_hint">Gri renkteki widget\'lar ana ekranınızdan kaldırıldı ve bir hafta sonra kalıcı olarak silinecek</string>
 
-    <string name="photo_widget_home_my_widget_action_edit">Düzenle</string>
+    <string name="photo_widget_home_my_widget_action_edit">Görüntüle / Düzenle</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Çoğalt</string>
     <string name="photo_widget_home_removed_widget_action_restore">Eski haline getirmek</string>
     <string name="photo_widget_home_removed_widget_action_delete">kalıcı olarak sil</string>
@@ -175,6 +175,7 @@
     <string name="photo_widget_configure_tap_action_choose_app">Uygulama seç</string>
 
     <string name="photo_widget_configure_add_to_home">Ana ekrana ekle</string>
+    <string name="photo_widget_configure_save_changes">Değişiklikleri kaydet</string>
 
     <string name="photo_widget_time_picker_title">Zamanı seçin</string>
 

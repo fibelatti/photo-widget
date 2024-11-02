@@ -85,9 +85,10 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
                 PhotoWidgetConfigureScreen(
                     photoWidget = state.photoWidget,
+                    isUpdating = intent.appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID,
                     selectedPhoto = state.selectedPhoto,
                     isProcessing = state.isProcessing,
-                    onNavClick = ::handleBackNav,
+                    onNavClick = onBackPressedDispatcher::onBackPressed,
                     onAspectRatioClick = ::showAspectRatioPicker,
                     onCropClick = viewModel::requestCrop,
                     onRemoveClick = viewModel::photoRemoved,
@@ -110,8 +111,8 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     onAddToHomeClick = viewModel::addNewWidget,
                 )
 
-                LaunchedEffect(state.photoWidget.photos.isNotEmpty()) {
-                    onBackPressedCallback.isEnabled = state.photoWidget.photos.isNotEmpty()
+                LaunchedEffect(state.hasEdits) {
+                    onBackPressedCallback.isEnabled = state.hasEdits
                 }
 
                 LaunchedEffect(state.messages) {

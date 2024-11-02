@@ -36,7 +36,7 @@
 
     <string name="photo_widget_home_removed_widgets_hint">Grayed out widgets were removed from your home screen and will be permanently deleted after a week</string>
 
-    <string name="photo_widget_home_my_widget_action_edit">Edit</string>
+    <string name="photo_widget_home_my_widget_action_edit">View / Edit</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicate</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restore</string>
     <string name="photo_widget_home_removed_widget_action_delete">Delete permanently</string>
@@ -175,6 +175,7 @@
     <string name="photo_widget_configure_tap_action_choose_app">Choose app</string>
 
     <string name="photo_widget_configure_add_to_home">Add to home screen</string>
+    <string name="photo_widget_configure_save_changes">Save changes</string>
 
     <string name="photo_widget_time_picker_title">Select time</string>
 

@@ -37,7 +37,7 @@
 
     <string name="photo_widget_home_removed_widgets_hint">Os widgets acinzentados foram removidos da tela inicial e serão excluídos permanentemente após uma semana</string>
 
-    <string name="photo_widget_home_my_widget_action_edit">Editar</string>
+    <string name="photo_widget_home_my_widget_action_edit">Ver / Editar</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicar</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restaurar</string>
     <string name="photo_widget_home_removed_widget_action_delete">Apagar permanentemente</string>
@@ -181,6 +181,7 @@
     <string name="photo_widget_configure_tap_action_choose_app">Escolher app</string>
 
     <string name="photo_widget_configure_add_to_home">Adicionar à tela inicial</string>
+    <string name="photo_widget_configure_save_changes">Salvar alterações</string>
 
     <string name="photo_widget_time_picker_title">Escolha o horário</string>
 

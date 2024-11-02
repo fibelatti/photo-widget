@@ -37,7 +37,7 @@
 
     <string name="photo_widget_home_removed_widgets_hint">Затемнённые виджеты были удалены с главного экрана и будут окончательно удалены через неделю</string>
 
-    <string name="photo_widget_home_my_widget_action_edit">Редактировать</string>
+    <string name="photo_widget_home_my_widget_action_edit">Просмотреть / Редактировать</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Дублировать</string>
     <string name="photo_widget_home_removed_widget_action_restore">Восстановить</string>
     <string name="photo_widget_home_removed_widget_action_delete">Удалить навсегда</string>
@@ -181,6 +181,7 @@
     <string name="photo_widget_configure_tap_action_choose_app">Выбрать приложение</string>
 
     <string name="photo_widget_configure_add_to_home">Добавить на главный экран</string>
+    <string name="photo_widget_configure_save_changes">Сохранить изменения</string>
 
     <string name="photo_widget_time_picker_title">Выбрать время</string>
 

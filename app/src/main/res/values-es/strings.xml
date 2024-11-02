@@ -37,7 +37,7 @@
 
     <string name="photo_widget_home_removed_widgets_hint">Los widgets en gris se eliminaron de su pantalla de inicio y se eliminarán permanentemente después de una semana</string>
 
-    <string name="photo_widget_home_my_widget_action_edit">Editar</string>
+    <string name="photo_widget_home_my_widget_action_edit">Ver / Editar</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicar</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restaurar</string>
     <string name="photo_widget_home_removed_widget_action_delete">Borrar permanentemente</string>
@@ -181,6 +181,7 @@
     <string name="photo_widget_configure_tap_action_choose_app">Elige la aplicación</string>
 
     <string name="photo_widget_configure_add_to_home">Agregar a la pantalla principal</string>
+    <string name="photo_widget_configure_save_changes">Guardar cambios</string>
 
     <string name="photo_widget_time_picker_title">Seleccione la hora</string>
 

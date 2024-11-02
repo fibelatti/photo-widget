@@ -119,6 +119,7 @@ import sh.calvin.reorderable.rememberReorderableLazyListState
 @Composable
 fun PhotoWidgetConfigureScreen(
     photoWidget: PhotoWidget,
+    isUpdating: Boolean,
     selectedPhoto: LocalPhoto?,
     isProcessing: Boolean,
     onNavClick: () -> Unit,
@@ -157,6 +158,7 @@ fun PhotoWidgetConfigureScreen(
 
         PhotoWidgetConfigureContent(
             photoWidget = photoWidget,
+            isUpdating = isUpdating,
             selectedPhoto = selectedPhoto,
             onNavClick = onNavClick,
             onMoveLeftClick = onMoveLeftClick,
@@ -255,6 +257,7 @@ fun PhotoWidgetConfigureScreen(
 @Composable
 private fun PhotoWidgetConfigureContent(
     photoWidget: PhotoWidget,
+    isUpdating: Boolean,
     selectedPhoto: LocalPhoto?,
     onNavClick: () -> Unit,
     onAspectRatioClick: () -> Unit,
@@ -297,6 +300,7 @@ private fun PhotoWidgetConfigureContent(
 
                 PhotoWidgetConfigureContentSettings(
                     photoWidget = photoWidget,
+                    isUpdating = isUpdating,
                     onChangeSource = onChangeSource,
                     onShuffleClick = onShuffleClick,
                     onPhotoPickerClick = onPhotoPickerClick,
@@ -333,6 +337,7 @@ private fun PhotoWidgetConfigureContent(
 
                 PhotoWidgetConfigureContentSettings(
                     photoWidget = photoWidget,
+                    isUpdating = isUpdating,
                     onChangeSource = onChangeSource,
                     onShuffleClick = onShuffleClick,
                     onPhotoPickerClick = onPhotoPickerClick,
@@ -418,6 +423,7 @@ private fun PhotoWidgetConfigureContentViewer(
 @Composable
 private fun PhotoWidgetConfigureContentSettings(
     photoWidget: PhotoWidget,
+    isUpdating: Boolean,
     onChangeSource: (currentSource: PhotoWidgetSource, syncedDir: Set<Uri>) -> Unit,
     onShuffleClick: () -> Unit,
     onPhotoPickerClick: () -> Unit,
@@ -569,7 +575,15 @@ private fun PhotoWidgetConfigureContentSettings(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
         ) {
-            Text(text = stringResource(id = R.string.photo_widget_configure_add_to_home))
+            Text(
+                text = stringResource(
+                    id = if (isUpdating) {
+                        R.string.photo_widget_configure_save_changes
+                    } else {
+                        R.string.photo_widget_configure_add_to_home
+                    },
+                ),
+            )
         }
     }
 }
@@ -1132,6 +1146,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
                 shapeId = PhotoWidget.DEFAULT_SHAPE_ID,
                 cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
             ),
+            isUpdating = false,
             selectedPhoto = LocalPhoto(name = "photo-1"),
             isProcessing = false,
             onNavClick = {},
@@ -1180,6 +1195,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
                 cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                 opacity = 80f,
             ),
+            isUpdating = true,
             selectedPhoto = LocalPhoto(name = "photo-1"),
             isProcessing = false,
             onNavClick = {},

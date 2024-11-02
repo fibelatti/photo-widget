@@ -37,7 +37,7 @@
 
     <string name="photo_widget_home_removed_widgets_hint">Les widgets grisés ont été supprimés de votre écran d\'accueil et seront définitivement supprimés après une semaine</string>
 
-    <string name="photo_widget_home_my_widget_action_edit">Modifier</string>
+    <string name="photo_widget_home_my_widget_action_edit">Afficher / Modifier</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Dupliquer</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restaurer</string>
     <string name="photo_widget_home_removed_widget_action_delete">Supprimer définitivement</string>
@@ -181,6 +181,7 @@
     <string name="photo_widget_configure_tap_action_choose_app">Choisir une application</string>
 
     <string name="photo_widget_configure_add_to_home">Ajouter à l\'écran d\'accueil</string>
+    <string name="photo_widget_configure_save_changes">Enregistrer les modifications</string>
 
     <string name="photo_widget_time_picker_title">Sélectionnez l\'heure</string>
 
