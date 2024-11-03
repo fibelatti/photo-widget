@@ -12,6 +12,7 @@
     <string name="photo_widget_home_current">Mis Widgets</string>
     <string name="photo_widget_home_settings">Ajustes</string>
     <string name="photo_widget_home_appearance">Tema de la aplicación</string>
+    <string name="photo_widget_home_true_black_background">Fondo negro verdadero</string>
     <string name="photo_widget_home_dynamic_colors">Colores de la aplicación</string>
     <string name="photo_widget_home_share">Comparte la aplicación</string>
     <string name="photo_widget_home_rate">Escribe una reseña</string>

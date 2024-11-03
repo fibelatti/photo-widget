@@ -11,7 +11,11 @@ import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -31,6 +35,7 @@ import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.preferences.Appearance
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.preferences.WidgetDefaultsActivity
+import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -209,6 +214,14 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 AppCompatDelegate.setDefaultNightMode(mode)
+            },
+            footer = {
+                Toggle(
+                    title = stringResource(R.string.photo_widget_home_true_black_background),
+                    checked = userPreferencesStorage.useTrueBlack,
+                    onCheckedChange = { newValue -> userPreferencesStorage.useTrueBlack = newValue },
+                    modifier = Modifier.padding(all = 16.dp),
+                )
             },
         )
     }

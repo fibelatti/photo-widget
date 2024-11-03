@@ -21,6 +21,7 @@ fun AppTheme(
 
     ExtendedTheme(
         dynamicColor = userPreferences.dynamicColors,
+        useTrueBlack = userPreferences.useTrueBlack,
         content = content,
     )
 }

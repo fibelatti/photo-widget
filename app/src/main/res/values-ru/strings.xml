@@ -12,6 +12,7 @@
     <string name="photo_widget_home_current">Мои виджеты</string>
     <string name="photo_widget_home_settings">Настройки</string>
     <string name="photo_widget_home_appearance">Тема приложения</string>
+    <string name="photo_widget_home_true_black_background">Настоящий черный фон</string>
     <string name="photo_widget_home_dynamic_colors">Цвета приложения</string>
     <string name="photo_widget_home_share">Поделиться приложением</string>
     <string name="photo_widget_home_rate">Оставить отзыв</string>

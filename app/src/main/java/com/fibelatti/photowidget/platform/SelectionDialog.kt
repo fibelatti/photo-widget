@@ -29,6 +29,7 @@ object SelectionDialog {
         optionName: (T) -> String,
         optionIcon: (T) -> Int? = { null },
         onOptionSelected: (T) -> Unit,
+        footer: @Composable () -> Unit = {},
     ) {
         ComposeBottomSheetDialog(context) {
             SelectionDialogContent(
@@ -40,6 +41,7 @@ object SelectionDialog {
                     onOptionSelected(option)
                     dismiss()
                 },
+                footer = footer,
             )
         }.show()
     }
@@ -53,6 +55,7 @@ private fun <T> SelectionDialogContent(
     optionName: (T) -> String,
     optionIcon: (T) -> Int? = { null },
     onOptionSelected: (T) -> Unit,
+    footer: @Composable () -> Unit = {},
 ) {
     LazyColumn(
         modifier = Modifier
@@ -92,6 +95,10 @@ private fun <T> SelectionDialogContent(
                     )
                 }
             }
+        }
+
+        item {
+            footer()
         }
     }
 }
