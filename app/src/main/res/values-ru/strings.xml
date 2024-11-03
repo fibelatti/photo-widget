@@ -117,7 +117,7 @@
 
     <string name="photo_widget_configure_cycling_mode_interval_description">Виджет будет автоматически переключаться на следующую фотографию через следующий интервал:</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description">Виджет будет автоматически переключаться на следующую фотографию каждый день в следующие запланированные часы:</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Виджет не будет автоматически переключаться между фотографиями. Установите действие по нажатию для переключения между фотографиями или выберите другой режим.</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Виджет не будет автоматически переключаться между фотографиями. Коснитесь краев виджета, чтобы переключиться на следующую фотографию.</string>
 
     <string name="photo_widget_configure_interval_current_label">Каждые %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
@@ -174,6 +174,8 @@
     <string name="photo_widget_configure_tap_action_view_full_screen">Просмотр фотографии на весь экран</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Просмотреть в галерее</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Ярлык приложения</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">Включить/выключить цикл</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Нажмите, чтобы приостановить автоматическую смену фотографий. Нажмите еще раз, чтобы возобновить.</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Автоматически увеличить яркость</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Просмотреть оригинальную фотографию (без обрезки или поворота)</string>
@@ -204,6 +206,10 @@
     <string name="photo_widget_viewer_actions_pinch">Сожмите для увеличения</string>
     <string name="photo_widget_viewer_actions_drag">Перетащите для перемещения</string>
     <string name="photo_widget_viewer_actions_tap">Нажмите, чтобы закрыть</string>
+
+    <!-- Cycling feedback -->
+    <string name="photo_widget_cycling_feedback_paused">Цикл приостановлен</string>
+    <string name="photo_widget_cycling_feedback_resumed">Цикл возобновлен</string>
 
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Да</string>

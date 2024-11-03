@@ -225,6 +225,18 @@ private fun TapActionPickerContent(
                     )
                 }
 
+                is PhotoWidgetTapAction.ToggleCycling -> {
+                    Text(
+                        text = stringResource(
+                            id = R.string.photo_widget_configure_tap_action_toggle_cycling_description,
+                        ),
+                        modifier = customOptionModifier,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
+
                 PhotoWidgetTapAction.None -> Unit
             }
         }

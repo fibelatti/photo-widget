@@ -55,7 +55,7 @@
     <string name="widget_defaults_explanation">Ces valeurs sont préchargées lorsque vous créez un nouveau widget. Elles sont utiles pour configurer plusieurs widgets avec la même configuration, sans avoir besoin d\'ajuster les paramètres à chaque fois. Notez que toute modification de ces valeurs n\'affectera pas les widgets existants.</string>
     <string name="widget_defaults_source">Source</string>
     <string name="widget_defaults_shuffle">Aléatoire</string>
-    <string name="widget_defaults_cycling">Changement de photo</string>
+    <string name="widget_defaults_cycling">Cycle des photos</string>
     <string name="widget_defaults_shape">Forme</string>
     <string name="widget_defaults_corner_radius">Arrondi</string>
     <string name="widget_defaults_opacity">Opacité</string>
@@ -110,14 +110,14 @@
     <string name="photo_widget_configure_shuffle_on">Activé</string>
     <string name="photo_widget_configure_shuffle_off">Désactivé</string>
 
-    <string name="photo_widget_configure_select_cycling_mode">Changement de photo</string>
+    <string name="photo_widget_configure_select_cycling_mode">Cycle des photos</string>
     <string name="photo_widget_configure_cycling_mode_interval">Intervalle</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Planification</string>
     <string name="photo_widget_configure_cycling_mode_disabled">Désactivé</string>
 
     <string name="photo_widget_configure_cycling_mode_interval_description">Le widget passera automatiquement à la photo suivante à l\'intervalle suivant :</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description">Le widget passera automatiquement à la photo suivante tous les jours aux horaires suivants :</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Le widget ne fera pas défiler les photos automatiquement. Configurez une action tactile pour faire défiler les photos ou choisissez un autre mode.</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Le widget ne parcourt pas automatiquement les photos. Appuyez sur les bords du widget pour passer à la photo suivante.</string>
 
     <string name="photo_widget_configure_interval_current_label">Toutes les %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
@@ -174,6 +174,8 @@
     <string name="photo_widget_configure_tap_action_view_full_screen">Afficher la photo en plein écran</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Voir dans la galerie</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Raccourci vers l\'application</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">Activer/désactiver le cycle</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Appuyez pour mettre en pause le cycle automatique des photos. Appuyez à nouveau pour reprendre.</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Augmenter automatiquement la luminosité</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Voir la photo originale (sans recadrage ni rotation)</string>
@@ -204,6 +206,10 @@
     <string name="photo_widget_viewer_actions_pinch">Pincer pour zoomer</string>
     <string name="photo_widget_viewer_actions_drag">Faites glisser pour déplacer</string>
     <string name="photo_widget_viewer_actions_tap">Appuyez pour fermer</string>
+
+    <!-- Cycling feedback -->
+    <string name="photo_widget_cycling_feedback_paused">Cycle en pause</string>
+    <string name="photo_widget_cycling_feedback_resumed">Cycle repris</string>
 
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Oui</string>

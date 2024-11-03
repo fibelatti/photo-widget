@@ -116,7 +116,7 @@
 
     <string name="photo_widget_configure_cycling_mode_interval_description">The widget will switch automatically to the next photo at the following interval:</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description">The widget will switch automatically to the next photo every day at the following scheduled times:</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">The widget won\'t cycle through photos automatically. Set a tap action to cycle through photos or choose a different mode.</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">The widget won\'t cycle through photos automatically. Tap the widget edges to switch to the next photo.</string>
 
     <string name="photo_widget_configure_interval_current_label">Every %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
@@ -168,6 +168,8 @@
     <string name="photo_widget_configure_tap_action_view_full_screen">View photo in full screen</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">View in gallery</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">App shortcut</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">Enable/disable cycle</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Tap to pause the automatic photo cycling. Tap again to resume.</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Automatically increase brightness</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">View original photo (no crop or rotation)</string>
@@ -198,6 +200,10 @@
     <string name="photo_widget_viewer_actions_pinch">Pinch to zoom</string>
     <string name="photo_widget_viewer_actions_drag">Drag to move</string>
     <string name="photo_widget_viewer_actions_tap">Tap to dismiss</string>
+
+    <!-- Cycling feedback -->
+    <string name="photo_widget_cycling_feedback_paused">Cycle paused</string>
+    <string name="photo_widget_cycling_feedback_resumed">Cycle resumed</string>
 
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Yes</string>

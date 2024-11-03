@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* New tap action to pause/resume automatic photo cycling
+
 ### Changed
 
 * Skip the unsaved changes warning when there are no changes

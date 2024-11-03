@@ -355,6 +355,18 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
+
+                is PhotoWidgetTapAction.ToggleCycling -> {
+                    val intent = Intent(context, ToggleCyclingFeedbackActivity::class.java).apply {
+                        this.appWidgetId = appWidgetId
+                    }
+                    return PendingIntent.getActivity(
+                        context,
+                        appWidgetId,
+                        intent,
+                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                    )
+                }
             }
         }
 

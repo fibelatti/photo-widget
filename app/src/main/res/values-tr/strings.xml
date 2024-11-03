@@ -116,7 +116,7 @@
 
     <string name="photo_widget_configure_cycling_mode_interval_description">Widget, belirli aralıklarla otomatik olarak bir sonraki fotoğrafa geçecektir:</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description">Widget, her gün belirlenen zamanlarda otomatik olarak bir sonraki fotoğrafa geçecektir:</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Widget, fotoğraflar arasında otomatik olarak geçiş yapmayacaktır. Fotoğraflar arasında geçiş yapmak için bir dokunma eylemi ayarlayın veya farklı bir mod seçin.</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Widget fotoğraflar arasında otomatik olarak geçiş yapmaz. Bir sonraki fotoğrafa geçmek için widget kenarlarına dokunun.</string>
 
     <string name="photo_widget_configure_interval_current_label">Her %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
@@ -168,6 +168,8 @@
     <string name="photo_widget_configure_tap_action_view_full_screen">Fotoğrafı tam ekranda görüntüle</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Galeride görüntüle</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Uygulama kısayolu</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">Döngüyü etkinleştir/devre dışı bırak</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Otomatik fotoğraf döngüsünü duraklatmak için dokunun. Devam etmek için tekrar dokunun.</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Parlaklığı otomatik olarak artır</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Orijinal fotoğrafı görüntüle (kırpma veya döndürme yok)</string>
@@ -198,6 +200,10 @@
     <string name="photo_widget_viewer_actions_pinch">Yakınlaştırmak için kıstır</string>
     <string name="photo_widget_viewer_actions_drag">Taşımak için sürükle</string>
     <string name="photo_widget_viewer_actions_tap">Kapatmak için dokun</string>
+
+    <!-- Cycling feedback -->
+    <string name="photo_widget_cycling_feedback_paused">Duraklatılan döngü</string>
+    <string name="photo_widget_cycling_feedback_resumed">Döngü devam ettirildi</string>
 
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Evet</string>

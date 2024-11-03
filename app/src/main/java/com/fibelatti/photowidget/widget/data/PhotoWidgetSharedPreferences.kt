@@ -144,6 +144,16 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         return sharedPreferences.getLong("${PreferencePrefix.NEXT_CYCLE_TIME}$appWidgetId", -1)
     }
 
+    fun saveWidgetCyclePaused(appWidgetId: Int, value: Boolean) {
+        sharedPreferences.edit {
+            putBoolean("${PreferencePrefix.CYCLE_PAUSED}$appWidgetId", value)
+        }
+    }
+
+    fun getWidgetCyclePaused(appWidgetId: Int): Boolean {
+        return sharedPreferences.getBoolean("${PreferencePrefix.CYCLE_PAUSED}$appWidgetId", false)
+    }
+
     private fun getWidgetInterval(appWidgetId: Int): PhotoWidgetLoopingInterval {
         val legacyName = sharedPreferences.getString("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId", null)
         val legacyValue = enumValueOfOrNull<LegacyPhotoWidgetLoopingInterval>(legacyName)
@@ -363,6 +373,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         INTERVAL_ENABLED(value = "appwidget_interval_enabled_"),
         SCHEDULE(value = "appwidget_schedule_"),
         NEXT_CYCLE_TIME(value = "appwidget_next_cycle_time_"),
+        CYCLE_PAUSED(value = "appwidget_cycle_paused_"),
         INDEX(value = "appwidget_index_"),
         PAST_INDICES(value = "appwidget_past_indices_"),
         RATIO(value = "appwidget_aspect_ratio_"),
