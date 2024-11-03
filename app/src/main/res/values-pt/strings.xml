@@ -202,6 +202,8 @@
 
     <string name="help_article_footer">Encontrou algum outro problema?</string>
 
+    <string name="help_email_body">Escreva sua mensagem abaixo. Se estiver relatando um problema, tente descrever o que estava fazendo quando o problema aconteceu.</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pince para ampliar</string>
     <string name="photo_widget_viewer_actions_drag">Arraste para mover</string>

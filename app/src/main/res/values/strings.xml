@@ -196,6 +196,8 @@
 
     <string name="help_article_footer">Something else is not working?</string>
 
+    <string name="help_email_body">Write your message below. If you\'re reporting an issue, try to describe what you were doing when the problem happened.</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pinch to zoom</string>
     <string name="photo_widget_viewer_actions_drag">Drag to move</string>

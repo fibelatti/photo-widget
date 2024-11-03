@@ -202,6 +202,8 @@
 
     <string name="help_article_footer">Autre chose ne fonctionne pas ?</string>
 
+    <string name="help_email_body">Rédigez votre message ci-dessous. Si vous signalez un problème, essayez de décrire ce que vous faisiez lorsque le problème est survenu.</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pincer pour zoomer</string>
     <string name="photo_widget_viewer_actions_drag">Faites glisser pour déplacer</string>

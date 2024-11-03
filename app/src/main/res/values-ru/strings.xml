@@ -202,6 +202,8 @@
 
     <string name="help_article_footer">Что-то еще не работает?</string>
 
+    <string name="help_email_body">Напишите свое сообщение ниже. Если вы сообщаете о проблеме, постарайтесь описать, что вы делали, когда возникла проблема.</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Сожмите для увеличения</string>
     <string name="photo_widget_viewer_actions_drag">Перетащите для перемещения</string>

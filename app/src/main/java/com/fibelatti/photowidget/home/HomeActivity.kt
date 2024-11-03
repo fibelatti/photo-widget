@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.home
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.compose.setContent
@@ -243,12 +244,21 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun sendFeedback() {
+        val emailBody = StringBuilder().apply {
+            appendLine("Android Version: ${Build.VERSION.SDK_INT}")
+            appendLine("Device Manufacturer: ${Build.MANUFACTURER}")
+            appendLine("---")
+            appendLine(getString(R.string.help_email_body))
+            appendLine()
+        }
+
         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")).apply {
             putExtra(Intent.EXTRA_EMAIL, arrayOf("appsupport@fibelatti.com"))
             putExtra(
                 Intent.EXTRA_SUBJECT,
                 "Material Photo Widget (${BuildConfig.VERSION_NAME}) — Feature request / Bug report",
             )
+            putExtra(Intent.EXTRA_TEXT, emailBody.toString())
         }
 
         startActivity(Intent.createChooser(emailIntent, getString(R.string.photo_widget_home_feedback)))

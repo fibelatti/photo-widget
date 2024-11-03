@@ -196,6 +196,8 @@
 
     <string name="help_article_footer">Başka bir şey mi çalışmıyor?</string>
 
+    <string name="help_email_body">Mesajınızı aşağıya yazın. Bir sorun bildiriyorsanız, sorun oluştuğunda ne yaptığınızı açıklamaya çalışın.</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Yakınlaştırmak için kıstır</string>
     <string name="photo_widget_viewer_actions_drag">Taşımak için sürükle</string>

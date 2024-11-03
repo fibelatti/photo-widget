@@ -202,6 +202,8 @@
 
     <string name="help_article_footer">¿Algo más no está funcionando?</string>
 
+    <string name="help_email_body">Escribe tu mensaje a continuación. Si estás informando un problema, intenta describir lo que estabas haciendo cuando se produjo el problema.</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pellizcar para hacer zoom</string>
     <string name="photo_widget_viewer_actions_drag">Arrastra para mover</string>
