@@ -30,6 +30,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.SelectionDialog
+import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -310,11 +311,13 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             AppWidgetManager.EXTRA_APPWIDGET_PREVIEW to remoteViews,
         )
 
-        val callbackIntent = Intent(this, PhotoWidgetPinnedReceiver::class.java)
-            .apply { this.photoWidget = photoWidget }
+        val callbackIntent = Intent(this, PhotoWidgetPinnedReceiver::class.java).apply {
+            setIdentifierCompat("$PIN_REQUEST_CODE")
+            this.photoWidget = photoWidget
+        }
         val successCallback = PendingIntent.getBroadcast(
             /* context = */ this,
-            /* requestCode = */ 0,
+            /* requestCode = */ PIN_REQUEST_CODE,
             /* intent = */ callbackIntent,
             /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
@@ -331,6 +334,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
     companion object {
 
+        private const val PIN_REQUEST_CODE = 1001
         const val ACTION_FINISH = "FINISH_PHOTO_WIDGET_CONFIGURE_ACTIVITY"
     }
 }

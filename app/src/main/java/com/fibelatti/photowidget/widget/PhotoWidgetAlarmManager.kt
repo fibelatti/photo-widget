@@ -11,6 +11,7 @@ import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
+import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Calendar
@@ -168,6 +169,7 @@ class ExactRepeatingAlarmReceiver : BroadcastReceiver() {
             appWidgetId: Int,
         ): PendingIntent {
             val intent = Intent(context, ExactRepeatingAlarmReceiver::class.java).apply {
+                setIdentifierCompat("$appWidgetId")
                 this.appWidgetId = appWidgetId
             }
             return PendingIntent.getBroadcast(

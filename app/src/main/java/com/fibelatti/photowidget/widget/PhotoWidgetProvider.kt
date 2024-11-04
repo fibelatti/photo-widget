@@ -22,6 +22,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.WidgetSizeProvider
+import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
@@ -306,13 +307,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
                 is PhotoWidgetTapAction.ViewFullScreen -> {
                     val clickIntent = Intent(context, PhotoWidgetViewerActivity::class.java).apply {
+                        setIdentifierCompat("$appWidgetId")
                         this.appWidgetId = appWidgetId
                     }
                     return PendingIntent.getActivity(
-                        context,
-                        appWidgetId,
-                        clickIntent,
-                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        /* context = */ context,
+                        /* requestCode = */ appWidgetId,
+                        /* intent = */ clickIntent,
+                        /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
 
@@ -320,14 +322,15 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     if (externalUri == null) return null
 
                     val intent = Intent(Intent.ACTION_VIEW, externalUri).apply {
+                        setIdentifierCompat("$appWidgetId")
                         flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                     }
 
                     return PendingIntent.getActivity(
-                        context,
-                        appWidgetId,
-                        intent,
-                        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        /* context = */ context,
+                        /* requestCode = */ appWidgetId,
+                        /* intent = */ intent,
+                        /* flags = */ PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
 
@@ -348,23 +351,26 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
                     if (launchIntent == null) return null
 
+                    launchIntent.setIdentifierCompat("$appWidgetId")
+
                     return PendingIntent.getActivity(
-                        context,
-                        appWidgetId,
-                        launchIntent,
-                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        /* context = */ context,
+                        /* requestCode = */ appWidgetId,
+                        /* intent = */ launchIntent,
+                        /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
 
                 is PhotoWidgetTapAction.ToggleCycling -> {
                     val intent = Intent(context, ToggleCyclingFeedbackActivity::class.java).apply {
+                        setIdentifierCompat("$appWidgetId")
                         this.appWidgetId = appWidgetId
                     }
                     return PendingIntent.getActivity(
-                        context,
-                        appWidgetId,
-                        intent,
-                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        /* context = */ context,
+                        /* requestCode = */ appWidgetId,
+                        /* intent = */ intent,
+                        /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
             }
@@ -376,6 +382,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             flipBackwards: Boolean = false,
         ): PendingIntent {
             val intent = Intent(context, PhotoWidgetProvider::class.java).apply {
+                setIdentifierCompat("$appWidgetId")
                 this.appWidgetId = appWidgetId
                 this.action = if (flipBackwards) ACTION_VIEW_PREVIOUS_PHOTO else ACTION_VIEW_NEXT_PHOTO
             }
