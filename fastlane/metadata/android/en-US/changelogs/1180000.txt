@@ -1,0 +1,6 @@
+Version 1.18.0 is now available with these updates:
+
+* New tap action: pause and resume the automatic photo cycle
+* New app theme option for using a true black background
+
+We welcome your feedback and suggestions! Visit the project page to contribute.
