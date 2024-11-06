@@ -103,13 +103,17 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
             val coroutineScope = entryPoint.coroutineScope()
             val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
+            val photoWidgetStorage = entryPoint.photoWidgetStorage()
 
             if (loadedWidgets[appWidgetId] != true) {
                 Timber.d("Dispatching pre-load remote views to AppWidgetManager")
-                appWidgetManager.updateAppWidget(
-                    /* appWidgetId = */ appWidgetId,
-                    /* views = */ RemoteViews(context.packageName, R.layout.photo_widget_placeholder),
-                )
+
+                val aspectRatio = photoWidgetStorage.getWidgetAspectRatio(appWidgetId)
+                val remoteViews = createBaseView(context = context, aspectRatio = aspectRatio).apply {
+                    setImageViewResource(R.id.iv_placeholder, R.drawable.ic_hourglass)
+                }
+
+                appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
                 loadedWidgets[appWidgetId] = true
             }
 
@@ -155,7 +159,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             recoveryMode: Boolean = false,
         ): RemoteViews {
             Timber.d("Creating remote views")
-            val currentPhoto = photoWidget.currentPhoto ?: return createErrorView(context = context)
+            val errorView = createBaseView(context = context, aspectRatio = photoWidget.aspectRatio).apply {
+                setImageViewResource(R.id.iv_placeholder, R.drawable.ic_file_not_found)
+            }
+
+            val currentPhoto = photoWidget.currentPhoto ?: return errorView
 
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
             val decoder = entryPoint.photoDecoder()
@@ -165,7 +173,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 val data = when {
                     !currentPhoto.path.isNullOrEmpty() -> currentPhoto.path
                     currentPhoto.externalUri != null -> currentPhoto.externalUri
-                    else -> return createErrorView(context = context)
+                    else -> return errorView
                 }
                 val displayMetrics: DisplayMetrics = context.resources.displayMetrics
                 val maxMemoryAllowed: Int = if (!recoveryMode) {
@@ -190,7 +198,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
                 requireNotNull(decoder.decode(data = data, maxDimension = maxDimension))
             } catch (_: Exception) {
-                return createErrorView(context = context)
+                return errorView
             }
 
             Timber.d("Transforming the bitmap")
@@ -211,13 +219,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 )
             }
 
-            val layoutId = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio) {
-                R.layout.photo_widget_fill
-            } else {
-                R.layout.photo_widget
-            }
-
-            return RemoteViews(context.packageName, layoutId).apply {
+            return createBaseView(context = context, aspectRatio = photoWidget.aspectRatio).apply {
                 setImageViewBitmap(R.id.iv_widget, transformedBitmap)
                 setViewPadding(
                     /* viewId = */ R.id.iv_widget,
@@ -229,10 +231,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             }
         }
 
-        private fun createErrorView(context: Context): RemoteViews {
-            return RemoteViews(context.packageName, R.layout.photo_widget_placeholder).apply {
-                setImageViewResource(R.id.image_view_placeholder, R.drawable.ic_file_not_found)
+        private fun createBaseView(context: Context, aspectRatio: PhotoWidgetAspectRatio): RemoteViews {
+            val layoutId = if (PhotoWidgetAspectRatio.FILL_WIDGET == aspectRatio) {
+                R.layout.photo_widget_fill
+            } else {
+                R.layout.photo_widget
             }
+
+            return RemoteViews(context.packageName, layoutId)
         }
 
         private fun getDimensionValue(context: Context, value: Int): Int {
