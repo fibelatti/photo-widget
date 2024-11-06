@@ -89,6 +89,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.ui.ShapesBanner
 import com.fibelatti.ui.foundation.conditional
 import com.fibelatti.ui.foundation.grayScale
 import com.fibelatti.ui.preview.DevicePreviews
@@ -252,20 +253,25 @@ private fun NewWidgetScreen(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
+        ShapesBanner(
+            modifier = Modifier.align(Alignment.TopCenter),
+        )
+
         Column(
             modifier = Modifier
                 .widthIn(max = 600.dp)
                 .fillMaxWidth()
+                .padding(top = 68.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(32.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
         ) {
             AutoSizeText(
                 text = stringResource(id = R.string.photo_widget_home_title),
                 modifier = Modifier.padding(horizontal = 32.dp),
                 maxLines = 2,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
             )
 
             Text(
