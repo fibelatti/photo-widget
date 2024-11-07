@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.18.1] - 2024-11-07
+
+### Fixed
+
+* The loading icon would be visible behind transparent widgets
+
 ## [v1.18.0] - 2024-11-06
 
 ### Added
