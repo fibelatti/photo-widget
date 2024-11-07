@@ -220,6 +220,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             }
 
             return createBaseView(context = context, aspectRatio = photoWidget.aspectRatio).apply {
+                setViewVisibility(R.id.iv_placeholder, View.GONE)
                 setImageViewBitmap(R.id.iv_widget, transformedBitmap)
                 setViewPadding(
                     /* viewId = */ R.id.iv_widget,
