@@ -981,6 +981,7 @@ private fun PendingDeletionPhotoPicker(
         Text(
             text = stringResource(R.string.photo_widget_configure_photos_pending_deletion),
             modifier = Modifier.padding(horizontal = 16.dp),
+            color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.titleMedium,
         )
 
