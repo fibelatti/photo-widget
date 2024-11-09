@@ -342,11 +342,17 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
     fun restorePhoto(photo: LocalPhoto) {
         _state.update { current ->
+            val updatedPhotos = current.photoWidget.photos + photo
             current.copy(
                 photoWidget = current.photoWidget.copy(
-                    photos = current.photoWidget.photos + photo,
+                    photos = updatedPhotos,
                     photosPendingDeletion = current.photoWidget.photosPendingDeletion.filterNot { it.name == photo.name },
                 ),
+                selectedPhoto = if (updatedPhotos.size == 1) {
+                    updatedPhotos.firstOrNull()
+                } else {
+                    current.selectedPhoto
+                },
                 markedForDeletion = current.markedForDeletion - photo.name,
             )
         }
