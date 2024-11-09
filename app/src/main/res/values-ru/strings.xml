@@ -11,6 +11,7 @@
     <string name="photo_widget_home_new">Новый виджет</string>
     <string name="photo_widget_home_current">Мои виджеты</string>
     <string name="photo_widget_home_settings">Настройки</string>
+    <string name="photo_widget_home_data_saver">Оптимизированное хранилище</string>
     <string name="photo_widget_home_appearance">Тема приложения</string>
     <string name="photo_widget_home_true_black_background">Настоящий черный фон</string>
     <string name="photo_widget_home_dynamic_colors">Цвета приложения</string>
@@ -44,6 +45,9 @@
     <string name="photo_widget_home_removed_widget_action_delete">Удалить навсегда</string>
 
     <!-- Preferences -->
+    <string name="preferences_data_saver">Уменьшить использование хранилища</string>
+    <string name="preferences_data_saver_description">При включении фотографии, добавленные в виджеты, сжимаются для экономии места. Обычно это не влияет на качество, но если ваши фотографии содержат мелкий текст, рекомендуется отключить эту функцию.\n\nЭта настройка влияет только на фотографии, добавленные после ее изменения.\n\nОна не применяется к синхронизированным папкам, так как эти фотографии считываются непосредственно из хранилища вашего устройства.</string>
+
     <string name="preferences_appearance_follow_system">Следовать за системой</string>
     <string name="preferences_appearance_light">Светлая</string>
     <string name="preferences_appearance_dark">Тёмная</string>

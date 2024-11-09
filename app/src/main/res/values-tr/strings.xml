@@ -11,6 +11,7 @@
     <string name="photo_widget_home_new">Yeni Widget</string>
     <string name="photo_widget_home_current">Widget\'larım</string>
     <string name="photo_widget_home_settings">Ayarlar</string>
+    <string name="photo_widget_home_data_saver">Optimize edilmiş depolama</string>
     <string name="photo_widget_home_appearance">Uygulama teması</string>
     <string name="photo_widget_home_true_black_background">Gerçek siyah arka plan</string>
     <string name="photo_widget_home_dynamic_colors">Uygulama renkleri</string>
@@ -43,6 +44,9 @@
     <string name="photo_widget_home_removed_widget_action_delete">kalıcı olarak sil</string>
 
     <!-- Preferences -->
+    <string name="preferences_data_saver">Depolama kullanımını azaltın</string>
+    <string name="preferences_data_saver_description">Etkinleştirildiğinde, widget\'lara eklenen fotoğraflar depolama alanından tasarruf etmek için sıkıştırılır. Bu genellikle kaliteyi etkilemez, ancak fotoğraflarınız küçük metin içeriyorsa, bunu kapatmanız önerilir.\n\nBu ayar yalnızca değiştirildikten sonra eklenen fotoğrafları etkiler.\n\nSenkronize klasörler için geçerli değildir, çünkü bu fotoğraflar doğrudan cihazınızın depolama alanından okunur.</string>
+
     <string name="preferences_appearance_follow_system">Sistemi takip et</string>
     <string name="preferences_appearance_light">Aydınlık</string>
     <string name="preferences_appearance_dark">Karanlık</string>

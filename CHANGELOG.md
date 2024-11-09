@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Colored borders
+* New setting to control the compression behavior when importing photos
 
 ## [v1.18.1] - 2024-11-07
 

@@ -33,6 +33,7 @@ import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.preferences.Appearance
+import com.fibelatti.photowidget.preferences.DataSaverPicker
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.preferences.WidgetDefaultsActivity
 import com.fibelatti.photowidget.ui.Toggle
@@ -65,6 +66,7 @@ class HomeActivity : AppCompatActivity() {
                     onCurrentWidgetClick = ::showExistingWidgetMenu,
                     onRemovedWidgetClick = ::showRemovedWidgetMenu,
                     onDefaultsClick = ::showDefaults,
+                    onDataSaverClick = ::showDataSaverPicker,
                     onAppearanceClick = ::showAppearancePicker,
                     onColorsClick = ::showAppColorsPicker,
                     onSendFeedbackClick = ::sendFeedback,
@@ -190,6 +192,10 @@ class HomeActivity : AppCompatActivity() {
         startActivity(Intent(this, WidgetDefaultsActivity::class.java))
     }
 
+    private fun showDataSaverPicker() {
+        DataSaverPicker.show(context = this)
+    }
+
     private fun showAppearancePicker() {
         SelectionDialog.show(
             context = this,
@@ -297,6 +303,7 @@ class HomeActivity : AppCompatActivity() {
     private enum class MyWidgetOptions(
         @StringRes val label: Int,
     ) {
+
         EDIT(label = R.string.photo_widget_home_my_widget_action_edit),
         DUPLICATE(label = R.string.photo_widget_home_my_widget_action_duplicate),
     }
@@ -304,6 +311,7 @@ class HomeActivity : AppCompatActivity() {
     private enum class RemovedWidgetOptions(
         @StringRes val label: Int,
     ) {
+
         RESTORE(label = R.string.photo_widget_home_removed_widget_action_restore),
         DELETE(label = R.string.photo_widget_home_removed_widget_action_delete),
     }

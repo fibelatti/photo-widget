@@ -5,6 +5,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 
 data class UserPreferences(
+    val dataSaver: Boolean,
     val appearance: Appearance,
     val useTrueBlack: Boolean,
     val dynamicColors: Boolean,

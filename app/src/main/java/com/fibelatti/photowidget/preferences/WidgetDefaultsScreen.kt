@@ -605,6 +605,7 @@ private fun WidgetDefaultsScreenPreview() {
     ExtendedTheme {
         WidgetDefaultsScreen(
             userPreferences = UserPreferences(
+                dataSaver = true,
                 appearance = Appearance.FOLLOW_SYSTEM,
                 useTrueBlack = false,
                 dynamicColors = true,

@@ -11,6 +11,7 @@
     <string name="photo_widget_home_new">New Widget</string>
     <string name="photo_widget_home_current">My Widgets</string>
     <string name="photo_widget_home_settings">Settings</string>
+    <string name="photo_widget_home_data_saver">Optimized storage</string>
     <string name="photo_widget_home_appearance">App theme</string>
     <string name="photo_widget_home_true_black_background">True black background</string>
     <string name="photo_widget_home_dynamic_colors">App colors</string>
@@ -43,6 +44,9 @@
     <string name="photo_widget_home_removed_widget_action_delete">Delete permanently</string>
 
     <!-- Preferences -->
+    <string name="preferences_data_saver">Reduce storage usage</string>
+    <string name="preferences_data_saver_description">When enabled, photos added to widgets are compressed to save storage. This usually won\'t affect quality, but if your photos contain small text, it\'s recommended to turn this off.\n\nThis setting only affects photos added after it is changed.\n\nIt does not apply to synced folders, as those photos are read directly from your device storage.</string>
+
     <string name="preferences_appearance_follow_system">Follow system</string>
     <string name="preferences_appearance_light">Light</string>
     <string name="preferences_appearance_dark">Dark</string>

@@ -1,10 +1,13 @@
 package com.fibelatti.photowidget.widget.data
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.webkit.MimeTypeMap
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetSource
+import com.fibelatti.photowidget.platform.PhotoDecoder
+import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileInputStream
@@ -20,6 +23,8 @@ import timber.log.Timber
 
 class PhotoWidgetInternalFileStorage @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val userPreferencesStorage: UserPreferencesStorage,
+    private val decoder: PhotoDecoder,
 ) {
 
     private val contentResolver = context.contentResolver
@@ -44,22 +49,28 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
                 val croppedPhoto = File("$widgetDir/$newPhotoName")
 
                 val newFiles = listOf(originalPhoto, croppedPhoto)
+                val dataSaver = userPreferencesStorage.dataSaver
 
-                newFiles.map { file ->
-                    async {
-                        contentResolver.openInputStream(source)?.use { input ->
-                            file.createNewFile()
-                            runCatching {
-                                FileOutputStream(file).use { fos -> input.copyTo(fos) }
-                            }.onSuccess {
-                                Timber.d("$source saved to $file")
-                            }.onFailure {
-                                Timber.d("Failed to copy $source to $file")
-                                file.delete()
+                Timber.d("Data saver: $dataSaver")
+
+                if (dataSaver) {
+                    decoder.decode(data = source, maxDimension = 2560)?.let { importedPhoto ->
+                        val format = if (extension == "png") Bitmap.CompressFormat.PNG else Bitmap.CompressFormat.JPEG
+                        newFiles.map { file ->
+                            async {
+                                writeToFile(file) { fos -> importedPhoto.compress(format, 95, fos) }
+                            }
+                        }.awaitAll()
+                    }
+                } else {
+                    newFiles.map { file ->
+                        async {
+                            contentResolver.openInputStream(source)?.use { input ->
+                                writeToFile(file, input::copyTo)
                             }
                         }
-                    }
-                }.awaitAll()
+                    }.awaitAll()
+                }
 
                 return@withContext if (newFiles.all { it.exists() }) {
                     LocalPhoto(name = newPhotoName, path = croppedPhoto.path)
@@ -67,6 +78,18 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
                     null
                 }
             }.getOrNull()
+        }
+    }
+
+    private fun writeToFile(file: File, operation: (FileOutputStream) -> Unit) {
+        file.createNewFile()
+        runCatching {
+            FileOutputStream(file).use { fos -> operation(fos) }
+        }.onSuccess {
+            Timber.d("Successfully saved to $file")
+        }.onFailure {
+            Timber.d("Failed to save to $file")
+            file.delete()
         }
     }
 

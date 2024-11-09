@@ -11,6 +11,7 @@
     <string name="photo_widget_home_new">Nuevo Widget</string>
     <string name="photo_widget_home_current">Mis Widgets</string>
     <string name="photo_widget_home_settings">Ajustes</string>
+    <string name="photo_widget_home_data_saver">Almacenamiento optimizado</string>
     <string name="photo_widget_home_appearance">Tema de la aplicación</string>
     <string name="photo_widget_home_true_black_background">Fondo negro verdadero</string>
     <string name="photo_widget_home_dynamic_colors">Colores de la aplicación</string>
@@ -44,6 +45,9 @@
     <string name="photo_widget_home_removed_widget_action_delete">Borrar permanentemente</string>
 
     <!-- Preferences -->
+    <string name="preferences_data_saver">Reducir el uso del almacenamiento</string>
+    <string name="preferences_data_saver_description">Cuando está habilitada, las fotos agregadas a los widgets se comprimen para ahorrar espacio de almacenamiento. Por lo general, esto no afectará la calidad, pero si las fotos contienen texto pequeño, se recomienda desactivarla.\n\nEsta configuración solo afecta las fotos agregadas después de que se modifique.\n\nNo se aplica a las carpetas sincronizadas, ya que esas fotos se leen directamente desde el almacenamiento de su dispositivo.</string>
+
     <string name="preferences_appearance_follow_system">Seguir el sistema</string>
     <string name="preferences_appearance_light">Claro</string>
     <string name="preferences_appearance_dark">Oscuro</string>

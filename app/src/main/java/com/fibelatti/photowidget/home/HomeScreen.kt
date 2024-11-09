@@ -107,6 +107,7 @@ fun HomeScreen(
     onCurrentWidgetClick: (appWidgetId: Int) -> Unit,
     onRemovedWidgetClick: (appWidgetId: Int) -> Unit,
     onDefaultsClick: () -> Unit,
+    onDataSaverClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onSendFeedbackClick: () -> Unit,
@@ -164,6 +165,7 @@ fun HomeScreen(
                 HomeNavigationDestination.SETTINGS -> {
                     SettingsScreen(
                         onDefaultsClick = onDefaultsClick,
+                        onDataSaverClick = onDataSaverClick,
                         onAppearanceClick = onAppearanceClick,
                         onColorsClick = onColorsClick,
                         onSendFeedbackClick = onSendFeedbackClick,
@@ -576,6 +578,7 @@ private fun MyWidgetsScreen(
 @Composable
 private fun SettingsScreen(
     onDefaultsClick: () -> Unit,
+    onDataSaverClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onSendFeedbackClick: () -> Unit,
@@ -606,6 +609,12 @@ private fun SettingsScreen(
                 icon = R.drawable.ic_default,
                 label = R.string.widget_defaults_title,
                 onClick = onDefaultsClick,
+            )
+
+            SettingsAction(
+                icon = R.drawable.ic_hard_drive,
+                label = R.string.photo_widget_home_data_saver,
+                onClick = onDataSaverClick,
             )
 
             SettingsAction(
@@ -783,6 +792,7 @@ private fun HomeScreenPreview() {
             onCurrentWidgetClick = {},
             onRemovedWidgetClick = {},
             onDefaultsClick = {},
+            onDataSaverClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
             onSendFeedbackClick = {},
@@ -850,6 +860,7 @@ private fun SettingsScreenPreview() {
     ExtendedTheme {
         SettingsScreen(
             onDefaultsClick = {},
+            onDataSaverClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
             onSendFeedbackClick = {},
