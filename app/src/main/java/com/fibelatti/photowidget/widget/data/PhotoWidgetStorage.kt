@@ -219,6 +219,18 @@ class PhotoWidgetStorage @Inject constructor(
         return sharedPreferences.getWidgetCornerRadius(appWidgetId = appWidgetId)
     }
 
+    fun saveWidgetBorderColor(appWidgetId: Int, colorHex: String?, width: Int) {
+        sharedPreferences.saveWidgetBorderColor(appWidgetId = appWidgetId, colorHex = colorHex, width = width)
+    }
+
+    fun getWidgetBorderColorHex(appWidgetId: Int): String? {
+        return sharedPreferences.getWidgetBorderColorHex(appWidgetId = appWidgetId)
+    }
+
+    fun getWidgetBorderWidth(appWidgetId: Int): Int {
+        return sharedPreferences.getWidgetBorderWidth(appWidgetId = appWidgetId)
+    }
+
     fun saveWidgetOpacity(appWidgetId: Int, opacity: Float) {
         sharedPreferences.saveWidgetOpacity(appWidgetId = appWidgetId, opacity = opacity)
     }

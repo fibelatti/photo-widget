@@ -106,6 +106,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     onTapActionPickerClick = ::showTapActionPicker,
                     onShapeChange = viewModel::shapeSelected,
                     onCornerRadiusChange = viewModel::cornerRadiusSelected,
+                    onBorderChange = viewModel::borderSelected,
                     onOpacityChange = viewModel::opacitySelected,
                     onOffsetChange = viewModel::offsetSelected,
                     onPaddingChange = viewModel::paddingSelected,

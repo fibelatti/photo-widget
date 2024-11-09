@@ -2,10 +2,12 @@ package com.fibelatti.photowidget.platform
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
+import androidx.annotation.IntRange
 import androidx.core.graphics.toRectF
 import androidx.graphics.shapes.toPath
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -19,9 +21,13 @@ fun Bitmap.withRoundedCorners(
     aspectRatio: PhotoWidgetAspectRatio,
     radius: Float = PhotoWidget.DEFAULT_CORNER_RADIUS,
     opacity: Float = PhotoWidget.DEFAULT_OPACITY,
+    borderColorHex: String? = null,
+    @IntRange(from = 0) borderWidth: Int = 0,
 ): Bitmap = withTransformation(
     aspectRatio = aspectRatio,
     opacity = opacity,
+    borderColorHex = borderColorHex,
+    borderWidth = borderWidth,
 ) { canvas, rect, paint ->
     canvas.drawRoundRect(rect.toRectF(), radius, radius, paint)
 }
@@ -29,9 +35,13 @@ fun Bitmap.withRoundedCorners(
 fun Bitmap.withPolygonalShape(
     shapeId: String,
     opacity: Float = PhotoWidget.DEFAULT_OPACITY,
+    borderColorHex: String? = null,
+    @IntRange(from = 0) borderWidth: Int = 0,
 ): Bitmap = withTransformation(
     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
     opacity = opacity,
+    borderColorHex = borderColorHex,
+    borderWidth = borderWidth,
 ) { canvas, rect, paint ->
     try {
         val shape = PhotoWidgetShapeBuilder.buildShape(
@@ -52,6 +62,8 @@ fun Bitmap.withPolygonalShape(
 private inline fun Bitmap.withTransformation(
     aspectRatio: PhotoWidgetAspectRatio,
     opacity: Float,
+    borderColorHex: String? = null,
+    @IntRange(from = 0) borderWidth: Int = 0,
     body: (Canvas, Rect, Paint) -> Unit,
 ): Bitmap {
     val source = when (aspectRatio) {
@@ -115,6 +127,16 @@ private inline fun Bitmap.withTransformation(
 
     paint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.SRC_IN))
     canvas.drawBitmap(this, source, destination, paint)
+
+    val borderColor = runCatching { Color.parseColor("#$borderColorHex") }.getOrNull()
+    if (borderColor != null && borderWidth > 0) {
+        val stroke = paint.apply {
+            style = Paint.Style.STROKE
+            color = borderColor
+            strokeWidth = borderWidth.toFloat()
+        }
+        body(canvas, if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) source else destination, stroke)
+    }
 
     return output
 }

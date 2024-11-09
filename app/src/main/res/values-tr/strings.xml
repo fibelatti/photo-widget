@@ -156,6 +156,10 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android, pil ömrünü optimize etmek için arka plan çalışmalarını kısıtlar, bu da her fotoğraf arasındaki aralıkların daha uzun olmasına neden olabilir.\n\nWidget\'ların seçilen aralıkta tam olarak güncellenmesini istiyorsanız, ayarları açın ve bu izni etkinleştirin.</string>
     <string name="photo_widget_configure_interval_open_settings">Ayarları aç</string>
 
+    <string name="photo_widget_configure_border">Kenarlık</string>
+    <string name="photo_widget_configure_border_none">Yok</string>
+    <string name="photo_widget_configure_border_color">Renk</string>
+
     <string name="photo_widget_configure_offset">Ofset</string>
     <string name="photo_widget_configure_offset_current_values">Yatay: %1$d, Dikey: %2$d</string>
     <string name="photo_widget_configure_offset_current_horizontal">Yatay: %1$d</string>

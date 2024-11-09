@@ -191,6 +191,7 @@ dependencies {
     implementation(libs.ucrop)
     implementation(libs.coil)
     implementation(libs.reorderable)
+    implementation(libs.colorpicker.compose)
 
     implementation(libs.about.libraries)
 

@@ -156,6 +156,10 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android restricts background work to optimize battery life which can lead to longer intervals between each photo.\n\nIf you want widgets to update precisely at the selected interval open settings and enable this permission.</string>
     <string name="photo_widget_configure_interval_open_settings">Open settings</string>
 
+    <string name="photo_widget_configure_border">Border</string>
+    <string name="photo_widget_configure_border_none">None</string>
+    <string name="photo_widget_configure_border_color">Color</string>
+
     <string name="photo_widget_configure_offset">Offset</string>
     <string name="photo_widget_configure_offset_current_values">Horizontal: %1$d, Vertical: %2$d</string>
     <string name="photo_widget_configure_offset_current_horizontal">Horizontal: %1$d</string>

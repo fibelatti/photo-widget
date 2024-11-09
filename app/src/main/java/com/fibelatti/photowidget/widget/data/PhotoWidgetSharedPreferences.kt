@@ -239,6 +239,26 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         )
     }
 
+    fun saveWidgetBorderColor(appWidgetId: Int, colorHex: String?, width: Int) {
+        sharedPreferences.edit {
+            if (colorHex != null) {
+                putString("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId", colorHex)
+                putInt("${PreferencePrefix.BORDER_WIDTH}$appWidgetId", width)
+            } else {
+                remove("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId")
+                remove("${PreferencePrefix.BORDER_WIDTH}$appWidgetId")
+            }
+        }
+    }
+
+    fun getWidgetBorderColorHex(appWidgetId: Int): String? {
+        return sharedPreferences.getString("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId", null)
+    }
+
+    fun getWidgetBorderWidth(appWidgetId: Int): Int {
+        return sharedPreferences.getInt("${PreferencePrefix.BORDER_WIDTH}$appWidgetId", 0)
+    }
+
     fun saveWidgetOpacity(appWidgetId: Int, opacity: Float) {
         sharedPreferences.edit {
             putFloat("${PreferencePrefix.OPACITY}$appWidgetId", opacity)
@@ -379,6 +399,8 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         RATIO(value = "appwidget_aspect_ratio_"),
         SHAPE(value = "appwidget_shape_"),
         CORNER_RADIUS(value = "appwidget_corner_radius_"),
+        BORDER_COLOR_HEX(value = "appwidget_border_color_hex_"),
+        BORDER_WIDTH(value = "appwidget_border_width_"),
         OPACITY(value = "appwidget_opacity_"),
         HORIZONTAL_OFFSET(value = "appwidget_horizontal_offset_"),
         VERTICAL_OFFSET(value = "appwidget_vertical_offset_"),

@@ -469,6 +469,8 @@ private fun MyWidgetsScreen(
                                     predicate = isRemoved,
                                     ifTrue = { grayScale() },
                                 ),
+                            borderColorHex = widget.borderColor,
+                            borderWidth = widget.borderWidth,
                             isLoading = widget.isLoading,
                         )
                     }

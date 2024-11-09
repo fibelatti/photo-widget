@@ -206,6 +206,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 bitmap.withPolygonalShape(
                     shapeId = photoWidget.shapeId,
                     opacity = photoWidget.opacity,
+                    borderColorHex = photoWidget.borderColor,
+                    borderWidth = photoWidget.borderWidth,
                 )
             } else {
                 bitmap.withRoundedCorners(
@@ -216,6 +218,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         photoWidget.cornerRadius
                     },
                     opacity = photoWidget.opacity,
+                    borderColorHex = photoWidget.borderColor,
+                    borderWidth = photoWidget.borderWidth,
                 )
             }
 

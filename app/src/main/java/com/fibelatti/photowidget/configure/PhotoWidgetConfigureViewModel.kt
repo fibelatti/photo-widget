@@ -145,6 +145,11 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     } else {
                         PhotoWidget.DEFAULT_CORNER_RADIUS
                     },
+                    borderColor = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidgetAspectRatio) {
+                        null
+                    } else {
+                        current.photoWidget.borderColor
+                    },
                 ),
             )
         }
@@ -421,6 +426,17 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         _state.update { current ->
             current.copy(
                 photoWidget = current.photoWidget.copy(cornerRadius = cornerRadius),
+            )
+        }
+    }
+
+    fun borderSelected(colorHex: String?, width: Int) {
+        _state.update { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(
+                    borderColor = colorHex,
+                    borderWidth = width,
+                ),
             )
         }
     }

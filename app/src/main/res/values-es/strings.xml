@@ -162,6 +162,10 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android restringe el trabajo en segundo plano para optimizar la duración de la batería, lo que puede llevar a intervalos más largos entre cada foto.\n\nSi deseas que los widgets se actualicen precisamente en el intervalo seleccionado, abre la configuración y habilita este permiso.</string>
     <string name="photo_widget_configure_interval_open_settings">Abrir configuración</string>
 
+    <string name="photo_widget_configure_border">Borde</string>
+    <string name="photo_widget_configure_border_none">Ninguno</string>
+    <string name="photo_widget_configure_border_color">Color</string>
+
     <string name="photo_widget_configure_offset">Desplazamiento</string>
     <string name="photo_widget_configure_offset_current_values">Horizontal: %1$d, Vertical: %2$d</string>
     <string name="photo_widget_configure_offset_current_horizontal">Horizontal: %1$d</string>

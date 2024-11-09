@@ -162,6 +162,10 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android ограничивает фоновую работу для оптимизации времени работы от батареи, что может привести к более длительным интервалам между каждой фотографией.\n\nЕсли вы хотите, чтобы виджеты обновлялись точно в выбранный интервал, откройте настройки и включите это разрешение.</string>
     <string name="photo_widget_configure_interval_open_settings">Открыть настройки</string>
 
+    <string name="photo_widget_configure_border">Граница</string>
+    <string name="photo_widget_configure_border_none">Нет</string>
+    <string name="photo_widget_configure_border_color">Цвет</string>
+
     <string name="photo_widget_configure_offset">Смещение</string>
     <string name="photo_widget_configure_offset_current_values">Горизонтальное: %1$d, Вертикальное: %2$d</string>
     <string name="photo_widget_configure_offset_current_horizontal">Горизонтальное: %1$d</string>

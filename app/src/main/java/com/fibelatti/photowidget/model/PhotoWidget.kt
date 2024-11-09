@@ -16,6 +16,8 @@ data class PhotoWidget(
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
     val shapeId: String = DEFAULT_SHAPE_ID,
     val cornerRadius: Float = DEFAULT_CORNER_RADIUS,
+    val borderColor: String? = null,
+    val borderWidth: Int = 0,
     val opacity: Float = DEFAULT_OPACITY,
     val horizontalOffset: Int = 0,
     val verticalOffset: Int = 0,
