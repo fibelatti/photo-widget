@@ -13,7 +13,6 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import com.fibelatti.photowidget.databinding.PhotoCropActivityBinding
-import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.getAttributeColor
 import com.fibelatti.photowidget.platform.intentExtras
@@ -68,7 +67,6 @@ class PhotoCropActivity : AppCompatActivity(), UCropFragmentCallback {
                     withAspectRatio(intent.aspectRatio.x, intent.aspectRatio.y)
                 }
             }
-            .withMaxResultSize(PhotoWidget.MAX_STORAGE_DIMENSION, PhotoWidget.MAX_STORAGE_DIMENSION)
             .withOptions(
                 UCrop.Options().apply {
                     setCompressionFormat(Bitmap.CompressFormat.PNG)

@@ -1,12 +1,10 @@
 package com.fibelatti.photowidget.widget.data
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.net.Uri
+import android.webkit.MimeTypeMap
 import com.fibelatti.photowidget.model.LocalPhoto
-import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.platform.PhotoDecoder
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileInputStream
@@ -22,9 +20,10 @@ import timber.log.Timber
 
 class PhotoWidgetInternalFileStorage @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val decoder: PhotoDecoder,
 ) {
 
+    private val contentResolver = context.contentResolver
+    private val mimeTypeMap = MimeTypeMap.getSingleton()
     private val rootDir by lazy {
         File("${context.filesDir}/widgets").apply {
             mkdirs()
@@ -33,36 +32,37 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
     suspend fun newWidgetPhoto(appWidgetId: Int, source: Uri): LocalPhoto? {
         return withContext(Dispatchers.IO) {
-            Timber.d("New widget photo: $source (appWidgetId=$appWidgetId)")
-            val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
-            val originalPhotosDir = File("$widgetDir/original").apply { mkdirs() }
-            val newPhotoName = "${UUID.randomUUID()}.png"
-
-            val originalPhoto = File("$originalPhotosDir/$newPhotoName")
-            val croppedPhoto = File("$widgetDir/$newPhotoName")
-
-            val newFiles = listOf(originalPhoto, croppedPhoto)
-
             runCatching {
-                decoder.decode(data = source, maxDimension = PhotoWidget.MAX_STORAGE_DIMENSION)?.let { importedPhoto ->
-                    newFiles.map { file ->
-                        file.createNewFile()
+                Timber.d("New widget photo: $source (appWidgetId=$appWidgetId)")
 
-                        async {
-                            FileOutputStream(file).use { fos ->
-                                importedPhoto.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
+                val originalPhotosDir = File("$widgetDir/original").apply { mkdirs() }
+                val extension = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(source)) ?: "png"
+                val newPhotoName = "${UUID.randomUUID()}.$extension"
+
+                val originalPhoto = File("$originalPhotosDir/$newPhotoName")
+                val croppedPhoto = File("$widgetDir/$newPhotoName")
+
+                val newFiles = listOf(originalPhoto, croppedPhoto)
+
+                newFiles.map { file ->
+                    async {
+                        contentResolver.openInputStream(source)?.use { input ->
+                            file.createNewFile()
+                            runCatching {
+                                FileOutputStream(file).use { fos -> input.copyTo(fos) }
+                            }.onSuccess {
                                 Timber.d("$source saved to $file")
+                            }.onFailure {
+                                Timber.d("Failed to copy $source to $file")
+                                file.delete()
                             }
                         }
-                    }.awaitAll()
-                } ?: return@withContext null // Exit early if the bitmap can't be decoded
+                    }
+                }.awaitAll()
 
-                // Safety check to ensure the photos were copied correctly
                 return@withContext if (newFiles.all { it.exists() }) {
-                    LocalPhoto(
-                        name = newPhotoName,
-                        path = croppedPhoto.path,
-                    )
+                    LocalPhoto(name = newPhotoName, path = croppedPhoto.path)
                 } else {
                     null
                 }

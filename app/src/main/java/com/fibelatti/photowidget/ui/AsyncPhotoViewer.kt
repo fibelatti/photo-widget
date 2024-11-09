@@ -23,13 +23,15 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.max
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.ui.foundation.dpToPx
+import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 
 @Composable
@@ -39,6 +41,7 @@ fun AsyncPhotoViewer(
     isLoading: Boolean,
     contentScale: ContentScale,
     modifier: Modifier = Modifier,
+    constrainBitmapSize: Boolean = true,
     transformer: (Bitmap?) -> Bitmap? = { it },
     badge: @Composable BoxScope.() -> Unit = {},
 ) {
@@ -70,10 +73,11 @@ fun AsyncPhotoViewer(
         val decoder by remember {
             lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
         }
-        val maxDimension = with(LocalDensity.current) {
-            remember(maxWidth) {
-                maxWidth.toPx().toInt().coerceAtMost(maximumValue = PhotoWidget.MAX_WIDGET_DIMENSION)
-            }
+        val largestSize = max(maxWidth, maxHeight)
+        val maxDimension = if (constrainBitmapSize) {
+            largestSize.dpToPx().roundToInt().coerceAtMost(maximumValue = PhotoWidget.MAX_WIDGET_DIMENSION)
+        } else {
+            null
         }
 
         LaunchedEffect(*dataKey) {
