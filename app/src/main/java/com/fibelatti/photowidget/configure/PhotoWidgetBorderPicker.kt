@@ -3,6 +3,7 @@ package com.fibelatti.photowidget.configure
 import android.content.Context
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -240,9 +241,13 @@ private fun ColorBorderContent(
             BrightnessSlider(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .weight(1f),
+                    .weight(1f)
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                        shape = RoundedCornerShape(6.dp),
+                    ),
                 controller = colorPickerController,
-                borderColor = MaterialTheme.colorScheme.outline,
             )
 
             TextField(
