@@ -10,16 +10,25 @@ import androidx.room.Transaction
 import androidx.room.Upsert
 
 @Database(
-    entities = [PhotoWidgetOrderDto::class, PendingDeletionWidgetPhotoDto::class],
-    version = 2,
+    entities = [
+        PhotoWidgetOrderDto::class,
+        PendingDeletionWidgetPhotoDto::class,
+        ExcludedWidgetPhotoDto::class,
+    ],
+    version = 3,
     exportSchema = true,
-    autoMigrations = [AutoMigration(from = 1, to = 2)],
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2),
+        AutoMigration(from = 2, to = 3),
+    ],
 )
 abstract class PhotoWidgetDatabase : RoomDatabase() {
 
     abstract fun photoWidgetOrderDao(): PhotoWidgetOrderDao
 
     abstract fun pendingDeletionWidgetPhotoDao(): PendingDeletionWidgetPhotoDao
+
+    abstract fun excludedWidgetPhotoDao(): ExcludedWidgetPhotoDao
 }
 
 @Entity(
@@ -78,4 +87,26 @@ interface PendingDeletionWidgetPhotoDao {
 
     @Query("delete from pending_deletion_widget_photos where deletionTimestamp <= :timestamp")
     suspend fun deletePhotosBeforeTimestamp(timestamp: Long)
+}
+
+@Entity(
+    tableName = "excluded_widget_photos",
+    primaryKeys = ["widgetId", "photoId"],
+)
+data class ExcludedWidgetPhotoDto(
+    val widgetId: Int,
+    val photoId: String,
+)
+
+@Dao
+interface ExcludedWidgetPhotoDao {
+
+    @Upsert
+    suspend fun saveExcludedPhotos(photos: List<ExcludedWidgetPhotoDto>)
+
+    @Query("select * from excluded_widget_photos where widgetId = :widgetId")
+    suspend fun getExcludedPhotos(widgetId: Int): List<ExcludedWidgetPhotoDto>
+
+    @Query("delete from excluded_widget_photos where widgetId = :widgetId")
+    suspend fun deletePhotosByWidgetId(widgetId: Int)
 }

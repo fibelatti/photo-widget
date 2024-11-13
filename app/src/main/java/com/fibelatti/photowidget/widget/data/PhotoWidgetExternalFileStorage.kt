@@ -42,21 +42,25 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
 
         return try {
             // Traverse the directory structure to ensure that all folders contains less than the limit
-            getPhotoCount(documentUri = documentUri, applyValidation = true)
+            getPhotoCount(documentUri = documentUri, applyValidation = true, excludedPhotoIds = emptySet())
             true
         } catch (_: InvalidDirException) {
             false
         }
     }
 
-    suspend fun getPhotoCount(dirUri: Set<Uri>): Int = coroutineScope {
+    suspend fun getPhotoCount(dirUri: Set<Uri>, excludedPhotoIds: Collection<String>): Int = coroutineScope {
         dirUri.map { uri ->
             async {
                 val documentUri = DocumentsContract.buildDocumentUriUsingTree(
                     /* treeUri = */ uri,
                     /* documentId = */ DocumentsContract.getTreeDocumentId(uri),
                 )
-                getPhotoCount(documentUri = documentUri, applyValidation = false)
+                getPhotoCount(
+                    documentUri = documentUri,
+                    applyValidation = false,
+                    excludedPhotoIds = excludedPhotoIds,
+                )
             }
         }.awaitAll().sum()
     }
@@ -76,14 +80,20 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
         }.awaitAll().flatten()
     }
 
-    private suspend fun getPhotoCount(documentUri: Uri, applyValidation: Boolean): Int {
+    private suspend fun getPhotoCount(
+        documentUri: Uri,
+        applyValidation: Boolean,
+        excludedPhotoIds: Collection<String>,
+    ): Int {
         return usingCursor(documentUri = documentUri) { cursor ->
             var count = 0
 
             while (cursor.moveToNext()) {
                 val documentId = cursor.getString(0)
                 val mimeType = cursor.getString(1)
-                val documentName = cursor.getString(2).takeUnless { it.startsWith(".trashed") }
+                val documentName = cursor.getString(2).takeUnless {
+                    it.startsWith(".trashed") || it in excludedPhotoIds
+                }
                 val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
 
                 Timber.d(
@@ -98,7 +108,11 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
                 if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
                     count += 1
                 } else if (documentName?.startsWith(".") != true && mimeType == "vnd.android.document/directory") {
-                    val dirCount = getPhotoCount(documentUri = fileUri, applyValidation = applyValidation)
+                    val dirCount = getPhotoCount(
+                        documentUri = fileUri,
+                        applyValidation = applyValidation,
+                        excludedPhotoIds = excludedPhotoIds,
+                    )
 
                     if (applyValidation && dirCount >= 3_000) throw InvalidDirException()
 

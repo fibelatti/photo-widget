@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Colored borders
 * New setting to control the compression behavior when importing photos
 
+### Changed
+
+* It's now possible to exclude photos from widgets synced to folders
+
 ## [v1.18.1] - 2024-11-07
 
 ### Fixed

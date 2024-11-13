@@ -6,8 +6,10 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.model.WidgetPhotos
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.Duration.Companion.days
 import timber.log.Timber
 
 @Singleton
@@ -17,6 +19,7 @@ class PhotoWidgetStorage @Inject constructor(
     private val externalFileStorage: PhotoWidgetExternalFileStorage,
     private val orderDao: PhotoWidgetOrderDao,
     private val pendingDeletionPhotosDao: PendingDeletionWidgetPhotoDao,
+    private val excludedPhotosDao: ExcludedWidgetPhotoDao,
 ) {
 
     fun saveWidgetSource(appWidgetId: Int, source: PhotoWidgetSource) {
@@ -51,33 +54,37 @@ class PhotoWidgetStorage @Inject constructor(
 
     suspend fun getWidgetPhotoCount(appWidgetId: Int): Int {
         val source = getWidgetSource(appWidgetId = appWidgetId)
-        return if (PhotoWidgetSource.DIRECTORY == source) {
-            externalFileStorage.getPhotoCount(dirUri = getWidgetSyncDir(appWidgetId = appWidgetId))
-        } else {
-            val pendingDeletionPhotos = getPendingDeletionPhotoIds(appWidgetId = appWidgetId)
+        val excludedPhotoIds = getExcludedPhotoIds(appWidgetId = appWidgetId)
 
+        return if (PhotoWidgetSource.DIRECTORY == source) {
+            externalFileStorage.getPhotoCount(
+                dirUri = getWidgetSyncDir(appWidgetId = appWidgetId),
+                excludedPhotoIds = excludedPhotoIds,
+            )
+        } else {
             internalFileStorage.getWidgetPhotos(appWidgetId = appWidgetId, source = source)
-                .filterNot { it.name in pendingDeletionPhotos }
+                .filterNot { it.name in excludedPhotoIds }
                 .size
         }
     }
 
-    suspend fun getWidgetPhotos(appWidgetId: Int, originalPhotos: Boolean = false): List<LocalPhoto> {
+    suspend fun getWidgetPhotos(appWidgetId: Int, originalPhotos: Boolean = false): WidgetPhotos {
         Timber.d("Retrieving photos (appWidgetId=$appWidgetId)")
 
-        val pendingDeletionPhotos = getPendingDeletionPhotoIds(appWidgetId = appWidgetId)
         val source = getWidgetSource(appWidgetId = appWidgetId)
-            .also { Timber.d("Widget source: $it") }
+
+        Timber.d("Widget source: $source")
 
         val croppedPhotos = internalFileStorage.getWidgetPhotos(
             appWidgetId = appWidgetId,
             source = source,
             originalPhotos = originalPhotos,
-        ).filterNot { it.name in pendingDeletionPhotos }.associateBy { it.name }
+        ).associateBy { it.name }
 
         Timber.d("Cropped photos found: ${croppedPhotos.size}")
 
-        return if (PhotoWidgetSource.DIRECTORY == source) {
+        val excludedPhotos = getExcludedPhotoIds(appWidgetId = appWidgetId)
+        val loadedPhotos = if (PhotoWidgetSource.DIRECTORY == source) {
             externalFileStorage.getPhotos(dirUri = getWidgetSyncDir(appWidgetId), croppedPhotos = croppedPhotos)
         } else {
             // Check for legacy storage value
@@ -88,32 +95,37 @@ class PhotoWidgetStorage @Inject constructor(
                 ?: orderDao.getWidgetOrder(appWidgetId = appWidgetId)
 
             widgetOrder.ifEmpty(croppedPhotos::keys).mapNotNull(croppedPhotos::get)
-        }.also { Timber.d("Total photos found: ${it.size}") }
-    }
+        }.groupBy { it.name !in excludedPhotos }
 
-    suspend fun getPendingDeletionPhotos(appWidgetId: Int): List<LocalPhoto> {
-        val source = getWidgetSource(appWidgetId = appWidgetId)
-        if (PhotoWidgetSource.DIRECTORY == source) {
-            return emptyList()
+        return WidgetPhotos(
+            current = loadedPhotos[true].orEmpty(),
+            excluded = loadedPhotos[false].orEmpty(),
+        ).also {
+            Timber.d("Total photos found: ${it.current.size} current, ${it.excluded.size} excluded.")
         }
-
-        val pendingDeletionPhotos = getPendingDeletionPhotoIds(appWidgetId = appWidgetId)
-
-        return internalFileStorage.getWidgetPhotos(appWidgetId = appWidgetId, source = source)
-            .filter { it.name in pendingDeletionPhotos }
     }
 
-    private suspend fun getPendingDeletionPhotoIds(appWidgetId: Int): Set<String> {
-        return pendingDeletionPhotosDao.getPendingDeletionPhotos(widgetId = appWidgetId)
-            .map { it.photoId }
-            .toSet()
+    suspend fun getExcludedPhotoIds(appWidgetId: Int): Set<String> {
+        return when (getWidgetSource(appWidgetId = appWidgetId)) {
+            PhotoWidgetSource.PHOTOS -> {
+                pendingDeletionPhotosDao.getPendingDeletionPhotos(widgetId = appWidgetId)
+                    .map { it.photoId }
+                    .toSet()
+            }
+
+            PhotoWidgetSource.DIRECTORY -> {
+                excludedPhotosDao.getExcludedPhotos(widgetId = appWidgetId)
+                    .map { it.photoId }
+                    .toSet()
+            }
+        }
     }
 
     suspend fun getCropSources(appWidgetId: Int, localPhoto: LocalPhoto): Pair<Uri, Uri> {
         return internalFileStorage.getCropSources(appWidgetId = appWidgetId, localPhoto = localPhoto)
     }
 
-    suspend fun markPhotosForDeletion(appWidgetId: Int, photoNames: Set<String>) {
+    suspend fun markPhotosForDeletion(appWidgetId: Int, photoNames: Collection<String>) {
         val deletionTimestamp = System.currentTimeMillis() + DELETION_THRESHOLD_MILLIS
 
         val photos = photoNames.map { photoName ->
@@ -126,6 +138,18 @@ class PhotoWidgetStorage @Inject constructor(
 
         pendingDeletionPhotosDao.deletePhotosByWidgetId(widgetId = appWidgetId)
         pendingDeletionPhotosDao.savePendingDeletionPhotos(photos = photos)
+    }
+
+    suspend fun saveExcludedPhotos(appWidgetId: Int, photoNames: Collection<String>) {
+        val photos = photoNames.map { photoName ->
+            ExcludedWidgetPhotoDto(
+                widgetId = appWidgetId,
+                photoId = photoName,
+            )
+        }
+
+        excludedPhotosDao.deletePhotosByWidgetId(widgetId = appWidgetId)
+        excludedPhotosDao.saveExcludedPhotos(photos = photos)
     }
 
     suspend fun deletePhotos(appWidgetId: Int, photoNames: Iterable<String>) {
@@ -276,27 +300,31 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     suspend fun deleteWidgetData(appWidgetId: Int) {
-        Timber.d("Deleting data (appWidgetId=$appWidgetId)")
-        internalFileStorage.deleteWidgetData(appWidgetId = appWidgetId)
+        Timber.d("Deleting widget data (appWidgetId=$appWidgetId)")
         sharedPreferences.deleteWidgetData(appWidgetId = appWidgetId)
+        internalFileStorage.deleteWidgetData(appWidgetId = appWidgetId)
         orderDao.deleteWidgetOrder(appWidgetId = appWidgetId)
+        pendingDeletionPhotosDao.deletePhotosByWidgetId(widgetId = appWidgetId)
+        excludedPhotosDao.deletePhotosByWidgetId(widgetId = appWidgetId)
     }
 
     suspend fun deleteUnusedWidgetData(existingWidgetIds: List<Int>) {
-        val unusedWidgetIds = internalFileStorage.getWidgetIds() - existingWidgetIds.toSet()
-        val pendingDeletionIds = getPendingDeletionWidgetIds()
+        val unusedWidgetIds = internalFileStorage.getWidgetIds()
+            .plus(getPendingDeletionWidgetIds())
+            .filterNot { it == 0 || it in existingWidgetIds }
+            .distinct()
         val currentTimestamp = System.currentTimeMillis()
 
-        Timber.d("Deleting temp widget data")
+        Timber.d("Deleting draft widget data")
         deleteWidgetData(appWidgetId = 0)
 
-        for (id in unusedWidgetIds + pendingDeletionIds) {
-            Timber.d("Unused data found (appWidgetId=$id)")
+        for (id in unusedWidgetIds) {
+            Timber.d("Stale data found (appWidgetId=$id)")
 
             val deletionInterval = currentTimestamp - getWidgetDeletionTimestamp(appWidgetId = id)
             if (deletionInterval <= DELETION_THRESHOLD_MILLIS) {
-                Timber.d("Deletion threshold not reached (appWidgetId=$id)")
-                return
+                Timber.d("Deletion threshold not reached (appWidgetId=$id, interval=$deletionInterval)")
+                continue
             }
             deleteWidgetData(appWidgetId = id)
         }
@@ -325,6 +353,6 @@ class PhotoWidgetStorage @Inject constructor(
 
     private companion object {
 
-        private const val DELETION_THRESHOLD_MILLIS: Long = 7 * 24 * 60 * 60 * 1_000
+        private val DELETION_THRESHOLD_MILLIS: Long = 7.days.inWholeMilliseconds
     }
 }

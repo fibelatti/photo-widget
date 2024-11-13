@@ -40,14 +40,14 @@ class DuplicatePhotoWidgetUseCase @Inject constructor(
 
         photoWidgetStorage.deletePhotos(
             appWidgetId = newAppWidgetId,
-            photoNames = photoWidgetStorage.getPendingDeletionPhotos(appWidgetId = originalAppWidgetId).map { it.name },
+            photoNames = photoWidgetStorage.getExcludedPhotoIds(appWidgetId = originalAppWidgetId),
         )
 
         return appWidget.copy(
-            photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = newAppWidgetId),
+            photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = newAppWidgetId).current,
             currentIndex = 0,
             deletionTimestamp = -1,
-            photosPendingDeletion = emptyList(),
+            removedPhotos = emptyList(),
             isLoading = false,
         )
     }

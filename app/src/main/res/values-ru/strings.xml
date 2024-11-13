@@ -108,6 +108,7 @@
     <string name="photo_widget_configure_photos">Фотографии</string>
     <string name="photo_widget_configure_photos_from_dir">Фотографии из папки</string>
     <string name="photo_widget_configure_photos_pending_deletion">Недавно удаленные фотографии</string>
+    <string name="photo_widget_configure_photos_excluded">Удален из виджета</string>
 
     <string name="photo_widget_configure_pick_photo">Выбрать фотографии</string>
     <string name="photo_widget_configure_pick_folder">Выбрать папку</string>

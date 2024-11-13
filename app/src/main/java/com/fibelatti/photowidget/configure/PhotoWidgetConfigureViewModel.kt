@@ -115,15 +115,16 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         photoWidgetStorage.saveWidgetSource(appWidgetId = appWidgetId, source = newSource)
 
         viewModelScope.launch {
-            val photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+            val widgetPhotos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
 
             _state.update { current ->
                 current.copy(
                     photoWidget = current.photoWidget.copy(
                         source = newSource,
-                        photos = photos,
+                        photos = widgetPhotos.current,
+                        removedPhotos = widgetPhotos.excluded,
                     ),
-                    selectedPhoto = photos.firstOrNull(),
+                    selectedPhoto = widgetPhotos.current.firstOrNull(),
                     cropQueue = emptyList(),
                 )
             }
@@ -215,23 +216,11 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 return@launch
             }
 
-            val dirList = _state.value.photoWidget.syncedDir + source
+            val syncedDir = _state.value.photoWidget.syncedDir + source
 
-            photoWidgetStorage.saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = dirList)
+            photoWidgetStorage.saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = syncedDir)
 
-            val photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
-
-            _state.update { current ->
-                current.copy(
-                    photoWidget = current.photoWidget.copy(
-                        photos = photos,
-                        syncedDir = dirList,
-                    ),
-                    selectedPhoto = photos.firstOrNull(),
-                    isProcessing = false,
-                    cropQueue = emptyList(),
-                )
-            }
+            reloadDirPhotos(syncedDir = syncedDir)
         }
     }
 
@@ -239,19 +228,24 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         viewModelScope.launch {
             photoWidgetStorage.removeSyncedDir(appWidgetId = appWidgetId, dirUri = source)
 
-            val photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+            reloadDirPhotos(syncedDir = _state.value.photoWidget.syncedDir - source)
+        }
+    }
 
-            _state.update { current ->
-                current.copy(
-                    photoWidget = current.photoWidget.copy(
-                        photos = photos,
-                        syncedDir = _state.value.photoWidget.syncedDir - source,
-                    ),
-                    selectedPhoto = photos.firstOrNull(),
-                    isProcessing = false,
-                    cropQueue = emptyList(),
-                )
-            }
+    private suspend fun reloadDirPhotos(syncedDir: Collection<Uri>) {
+        val widgetPhotos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+
+        _state.update { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(
+                    photos = widgetPhotos.current,
+                    syncedDir = syncedDir.toSet(),
+                    removedPhotos = widgetPhotos.excluded,
+                ),
+                selectedPhoto = widgetPhotos.current.firstOrNull(),
+                isProcessing = false,
+                cropQueue = emptyList(),
+            )
         }
     }
 
@@ -328,14 +322,13 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     photos = updatedPhotos,
-                    photosPendingDeletion = current.photoWidget.photosPendingDeletion + removedPhoto,
+                    removedPhotos = current.photoWidget.removedPhotos + removedPhoto,
                 ),
                 selectedPhoto = if (current.selectedPhoto?.name == photo.name) {
                     updatedPhotos.firstOrNull()
                 } else {
                     current.selectedPhoto
                 },
-                markedForDeletion = current.markedForDeletion + photo.name,
             )
         }
     }
@@ -346,14 +339,13 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     photos = updatedPhotos,
-                    photosPendingDeletion = current.photoWidget.photosPendingDeletion.filterNot { it.name == photo.name },
+                    removedPhotos = current.photoWidget.removedPhotos.filterNot { it.name == photo.name },
                 ),
                 selectedPhoto = if (updatedPhotos.size == 1) {
                     updatedPhotos.firstOrNull()
                 } else {
                     current.selectedPhoto
                 },
-                markedForDeletion = current.markedForDeletion - photo.name,
             )
         }
     }
@@ -524,15 +516,27 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun widgetAdded() {
+    fun widgetAdded(appWidgetId: Int) {
         viewModelScope.launch {
             withContext(NonCancellable) {
                 restoreFromId?.let { photoWidgetStorage.deleteWidgetData(appWidgetId = it) }
 
-                photoWidgetStorage.markPhotosForDeletion(
-                    appWidgetId = appWidgetId,
-                    photoNames = _state.value.markedForDeletion,
-                )
+                val removedPhotos = _state.value.photoWidget.removedPhotos.map { it.name }
+                when (_state.value.photoWidget.source) {
+                    PhotoWidgetSource.PHOTOS -> {
+                        photoWidgetStorage.markPhotosForDeletion(
+                            appWidgetId = appWidgetId,
+                            photoNames = removedPhotos,
+                        )
+                    }
+
+                    PhotoWidgetSource.DIRECTORY -> {
+                        photoWidgetStorage.saveExcludedPhotos(
+                            appWidgetId = appWidgetId,
+                            photoNames = removedPhotos,
+                        )
+                    }
+                }
             }
         }
     }

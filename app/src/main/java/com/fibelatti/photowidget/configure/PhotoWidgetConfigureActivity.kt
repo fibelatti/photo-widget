@@ -101,7 +101,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     onDirPickerClick = ::launchFolderPicker,
                     onPhotoClick = viewModel::previewPhoto,
                     onReorderFinished = viewModel::reorderPhotos,
-                    onPendingDeletionPhotoClick = viewModel::restorePhoto,
+                    onRemovedPhotoClick = viewModel::restorePhoto,
                     onCycleModePickerClick = ::showCycleModePicker,
                     onTapActionPickerClick = ::showTapActionPicker,
                     onShapeChange = viewModel::shapeSelected,
@@ -292,7 +292,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     }
 
     private fun widgetAdded(appWidgetId: Int) {
-        viewModel.widgetAdded()
+        viewModel.widgetAdded(appWidgetId = appWidgetId)
 
         val resultValue = Intent().apply {
             this.appWidgetId = appWidgetId

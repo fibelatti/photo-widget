@@ -41,18 +41,21 @@ class LoadPhotoWidgetUseCase @Inject constructor(
 
         return flow {
             emit(widget.copy(isLoading = true))
+
+            val widgetPhotos = getWidgetPhotos(
+                appWidgetId = appWidgetId,
+                originalPhotos = widget.viewOriginalPhoto && originalPhotos,
+            )
+
             emit(
                 widget.copy(
-                    photos = getWidgetPhotos(
-                        appWidgetId = appWidgetId,
-                        originalPhotos = widget.viewOriginalPhoto && originalPhotos,
-                    ),
+                    photos = widgetPhotos.current,
                     aspectRatio = if (widget.viewOriginalPhoto && originalPhotos) {
                         PhotoWidgetAspectRatio.ORIGINAL
                     } else {
                         widget.aspectRatio
                     },
-                    photosPendingDeletion = getPendingDeletionPhotos(appWidgetId = appWidgetId),
+                    removedPhotos = widgetPhotos.excluded,
                     isLoading = false,
                 ),
             )

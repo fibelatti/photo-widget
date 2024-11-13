@@ -23,7 +23,7 @@ data class PhotoWidget(
     val verticalOffset: Int = 0,
     val padding: Int = 0,
     val deletionTimestamp: Long = -1,
-    val photosPendingDeletion: List<LocalPhoto> = emptyList(),
+    val removedPhotos: List<LocalPhoto> = emptyList(),
     val isLoading: Boolean = false,
 ) : Parcelable {
 

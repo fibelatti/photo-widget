@@ -107,6 +107,7 @@
     <string name="photo_widget_configure_photos">Fotoğraflar</string>
     <string name="photo_widget_configure_photos_from_dir">Klasör fotoğrafları</string>
     <string name="photo_widget_configure_photos_pending_deletion">Son silinen fotoğraflar</string>
+    <string name="photo_widget_configure_photos_excluded">Widget\'tan silindi</string>
 
     <string name="photo_widget_configure_pick_photo">Fotoğraf seç</string>
     <string name="photo_widget_configure_pick_folder">Klasörü seç</string>

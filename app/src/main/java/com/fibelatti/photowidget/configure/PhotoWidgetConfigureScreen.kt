@@ -134,7 +134,7 @@ fun PhotoWidgetConfigureScreen(
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     onReorderFinished: (List<LocalPhoto>) -> Unit,
-    onPendingDeletionPhotoClick: (LocalPhoto) -> Unit,
+    onRemovedPhotoClick: (LocalPhoto) -> Unit,
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
     onShapeChange: (String) -> Unit,
@@ -173,7 +173,7 @@ fun PhotoWidgetConfigureScreen(
             onDirPickerClick = onDirPickerClick,
             onPhotoClick = onPhotoClick,
             onReorderFinished = onReorderFinished,
-            onPendingDeletionPhotoClick = onPendingDeletionPhotoClick,
+            onRemovedPhotoClick = onRemovedPhotoClick,
             onCycleModePickerClick = onCycleModePickerClick,
             onTapActionPickerClick = onTapActionPickerClick,
             onShapeClick = {
@@ -280,7 +280,7 @@ private fun PhotoWidgetConfigureContent(
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     onReorderFinished: (List<LocalPhoto>) -> Unit,
-    onPendingDeletionPhotoClick: (LocalPhoto) -> Unit,
+    onRemovedPhotoClick: (LocalPhoto) -> Unit,
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
     onShapeClick: () -> Unit,
@@ -317,7 +317,7 @@ private fun PhotoWidgetConfigureContent(
                     onDirPickerClick = onDirPickerClick,
                     onPhotoClick = onPhotoClick,
                     onReorderFinished = onReorderFinished,
-                    onPendingDeletionPhotoClick = onPendingDeletionPhotoClick,
+                    onRemovedPhotoClick = onRemovedPhotoClick,
                     onAspectRatioClick = onAspectRatioClick,
                     onShapeClick = onShapeClick,
                     onCornerRadiusClick = onCornerRadiusClick,
@@ -355,7 +355,7 @@ private fun PhotoWidgetConfigureContent(
                     onDirPickerClick = onDirPickerClick,
                     onPhotoClick = onPhotoClick,
                     onReorderFinished = onReorderFinished,
-                    onPendingDeletionPhotoClick = onPendingDeletionPhotoClick,
+                    onRemovedPhotoClick = onRemovedPhotoClick,
                     onAspectRatioClick = onAspectRatioClick,
                     onShapeClick = onShapeClick,
                     onCornerRadiusClick = onCornerRadiusClick,
@@ -418,7 +418,6 @@ private fun PhotoWidgetConfigureContentViewer(
         if (selectedPhoto != null) {
             EditingControls(
                 onCropClick = { onCropClick(selectedPhoto) },
-                showRemove = PhotoWidgetSource.PHOTOS == photoWidget.source,
                 onRemoveClick = { onRemoveClick(selectedPhoto) },
                 showMoveControls = photoWidget.canSort,
                 moveLeftEnabled = photoWidget.photos.indexOf(selectedPhoto) != 0,
@@ -444,7 +443,7 @@ private fun PhotoWidgetConfigureContentSettings(
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     onReorderFinished: (List<LocalPhoto>) -> Unit,
-    onPendingDeletionPhotoClick: (LocalPhoto) -> Unit,
+    onRemovedPhotoClick: (LocalPhoto) -> Unit,
     onAspectRatioClick: () -> Unit,
     onShapeClick: () -> Unit,
     onCornerRadiusClick: () -> Unit,
@@ -483,11 +482,15 @@ private fun PhotoWidgetConfigureContentSettings(
         )
 
         AnimatedVisibility(
-            visible = photoWidget.photosPendingDeletion.isNotEmpty(),
+            visible = photoWidget.removedPhotos.isNotEmpty(),
         ) {
-            PendingDeletionPhotoPicker(
-                photos = photoWidget.photosPendingDeletion,
-                onPhotoClick = onPendingDeletionPhotoClick,
+            RemovedPhotosPicker(
+                title = when (photoWidget.source) {
+                    PhotoWidgetSource.PHOTOS -> stringResource(R.string.photo_widget_configure_photos_pending_deletion)
+                    PhotoWidgetSource.DIRECTORY -> stringResource(R.string.photo_widget_configure_photos_excluded)
+                },
+                photos = photoWidget.removedPhotos,
+                onPhotoClick = onRemovedPhotoClick,
                 aspectRatio = photoWidget.aspectRatio,
                 shapeId = photoWidget.shapeId,
                 cornerRadius = photoWidget.cornerRadius,
@@ -714,7 +717,6 @@ private fun ConfigurationControl(
 @Composable
 private fun EditingControls(
     onCropClick: () -> Unit,
-    showRemove: Boolean,
     onRemoveClick: () -> Unit,
     showMoveControls: Boolean,
     moveLeftEnabled: Boolean,
@@ -751,13 +753,11 @@ private fun EditingControls(
             )
         }
 
-        if (showRemove) {
-            IconButton(onClick = onRemoveClick) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_trash),
-                    contentDescription = stringResource(id = R.string.photo_widget_configure_menu_remove),
-                )
-            }
+        IconButton(onClick = onRemoveClick) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_trash),
+                contentDescription = stringResource(id = R.string.photo_widget_configure_menu_remove),
+            )
         }
 
         if (showMoveControls) {
@@ -966,7 +966,8 @@ private fun PhotoPicker(
 }
 
 @Composable
-private fun PendingDeletionPhotoPicker(
+private fun RemovedPhotosPicker(
+    title: String,
     photos: List<LocalPhoto>,
     onPhotoClick: (LocalPhoto) -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
@@ -979,7 +980,7 @@ private fun PendingDeletionPhotoPicker(
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
-            text = stringResource(R.string.photo_widget_configure_photos_pending_deletion),
+            text = title,
             modifier = Modifier.padding(horizontal = 16.dp),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.titleMedium,
@@ -1200,7 +1201,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onDirPickerClick = {},
             onPhotoClick = {},
             onReorderFinished = {},
-            onPendingDeletionPhotoClick = {},
+            onRemovedPhotoClick = {},
             onCycleModePickerClick = {},
             onTapActionPickerClick = {},
             onShapeChange = {},
@@ -1250,7 +1251,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onDirPickerClick = {},
             onPhotoClick = {},
             onReorderFinished = {},
-            onPendingDeletionPhotoClick = {},
+            onRemovedPhotoClick = {},
             onCycleModePickerClick = {},
             onTapActionPickerClick = {},
             onShapeChange = {},
