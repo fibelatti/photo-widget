@@ -25,9 +25,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.withIndex
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -80,6 +83,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                         ),
                         selectedPhoto = photoWidget.photos.firstOrNull(),
                         isProcessing = photoWidget.isLoading,
+                        hasEdits = sourceWidget != null,
                     )
                 }
             }
@@ -89,8 +93,16 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             } else {
                 loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
                     .onEach { photoWidget -> updateState(photoWidget) }
+                    .onCompletion { trackEdits() }
                     .launchIn(viewModelScope)
             }
+        }
+    }
+
+    private fun trackEdits() {
+        viewModelScope.launch {
+            state.withIndex().first { (index, value) -> index > 0 && !value.hasEdits }
+            _state.update { current -> current.copy(hasEdits = true) }
         }
     }
 
@@ -132,6 +144,11 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                         0F
                     } else {
                         PhotoWidget.DEFAULT_CORNER_RADIUS
+                    },
+                    borderColor = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidgetAspectRatio) {
+                        null
+                    } else {
+                        current.photoWidget.borderColor
                     },
                 ),
             )
@@ -325,11 +342,17 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
     fun restorePhoto(photo: LocalPhoto) {
         _state.update { current ->
+            val updatedPhotos = current.photoWidget.photos + photo
             current.copy(
                 photoWidget = current.photoWidget.copy(
-                    photos = current.photoWidget.photos + photo,
+                    photos = updatedPhotos,
                     photosPendingDeletion = current.photoWidget.photosPendingDeletion.filterNot { it.name == photo.name },
                 ),
+                selectedPhoto = if (updatedPhotos.size == 1) {
+                    updatedPhotos.firstOrNull()
+                } else {
+                    current.selectedPhoto
+                },
                 markedForDeletion = current.markedForDeletion - photo.name,
             )
         }
@@ -409,6 +432,17 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         _state.update { current ->
             current.copy(
                 photoWidget = current.photoWidget.copy(cornerRadius = cornerRadius),
+            )
+        }
+    }
+
+    fun borderSelected(colorHex: String?, width: Int) {
+        _state.update { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(
+                    borderColor = colorHex,
+                    borderWidth = width,
+                ),
             )
         }
     }

@@ -11,7 +11,9 @@
     <string name="photo_widget_home_new">Yeni Widget</string>
     <string name="photo_widget_home_current">Widget\'larım</string>
     <string name="photo_widget_home_settings">Ayarlar</string>
+    <string name="photo_widget_home_data_saver">Optimize edilmiş depolama</string>
     <string name="photo_widget_home_appearance">Uygulama teması</string>
+    <string name="photo_widget_home_true_black_background">Gerçek siyah arka plan</string>
     <string name="photo_widget_home_dynamic_colors">Uygulama renkleri</string>
     <string name="photo_widget_home_share">Uygulamayı paylaş</string>
     <string name="photo_widget_home_rate">Yorum yaz</string>
@@ -36,12 +38,15 @@
 
     <string name="photo_widget_home_removed_widgets_hint">Gri renkteki widget\'lar ana ekranınızdan kaldırıldı ve bir hafta sonra kalıcı olarak silinecek</string>
 
-    <string name="photo_widget_home_my_widget_action_edit">Düzenle</string>
+    <string name="photo_widget_home_my_widget_action_edit">Görüntüle / Düzenle</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Çoğalt</string>
     <string name="photo_widget_home_removed_widget_action_restore">Eski haline getirmek</string>
     <string name="photo_widget_home_removed_widget_action_delete">kalıcı olarak sil</string>
 
     <!-- Preferences -->
+    <string name="preferences_data_saver">Depolama kullanımını azaltın</string>
+    <string name="preferences_data_saver_description">Etkinleştirildiğinde, widget\'lara eklenen fotoğraflar depolama alanından tasarruf etmek için sıkıştırılır. Bu genellikle kaliteyi etkilemez, ancak fotoğraflarınız küçük metin içeriyorsa, bunu kapatmanız önerilir.\n\nBu ayar yalnızca değiştirildikten sonra eklenen fotoğrafları etkiler.\n\nSenkronize klasörler için geçerli değildir, çünkü bu fotoğraflar doğrudan cihazınızın depolama alanından okunur.</string>
+
     <string name="preferences_appearance_follow_system">Sistemi takip et</string>
     <string name="preferences_appearance_light">Aydınlık</string>
     <string name="preferences_appearance_dark">Karanlık</string>
@@ -116,7 +121,7 @@
 
     <string name="photo_widget_configure_cycling_mode_interval_description">Widget, belirli aralıklarla otomatik olarak bir sonraki fotoğrafa geçecektir:</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description">Widget, her gün belirlenen zamanlarda otomatik olarak bir sonraki fotoğrafa geçecektir:</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Widget, fotoğraflar arasında otomatik olarak geçiş yapmayacaktır. Fotoğraflar arasında geçiş yapmak için bir dokunma eylemi ayarlayın veya farklı bir mod seçin.</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Widget fotoğraflar arasında otomatik olarak geçiş yapmaz. Bir sonraki fotoğrafa geçmek için widget kenarlarına dokunun.</string>
 
     <string name="photo_widget_configure_interval_current_label">Her %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
@@ -155,6 +160,10 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android, pil ömrünü optimize etmek için arka plan çalışmalarını kısıtlar, bu da her fotoğraf arasındaki aralıkların daha uzun olmasına neden olabilir.\n\nWidget\'ların seçilen aralıkta tam olarak güncellenmesini istiyorsanız, ayarları açın ve bu izni etkinleştirin.</string>
     <string name="photo_widget_configure_interval_open_settings">Ayarları aç</string>
 
+    <string name="photo_widget_configure_border">Kenarlık</string>
+    <string name="photo_widget_configure_border_none">Yok</string>
+    <string name="photo_widget_configure_border_color">Renk</string>
+
     <string name="photo_widget_configure_offset">Ofset</string>
     <string name="photo_widget_configure_offset_current_values">Yatay: %1$d, Dikey: %2$d</string>
     <string name="photo_widget_configure_offset_current_horizontal">Yatay: %1$d</string>
@@ -168,6 +177,8 @@
     <string name="photo_widget_configure_tap_action_view_full_screen">Fotoğrafı tam ekranda görüntüle</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Galeride görüntüle</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Uygulama kısayolu</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">Döngüyü etkinleştir/devre dışı bırak</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Otomatik fotoğraf döngüsünü duraklatmak için dokunun. Devam etmek için tekrar dokunun.</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Parlaklığı otomatik olarak artır</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Orijinal fotoğrafı görüntüle (kırpma veya döndürme yok)</string>
@@ -175,6 +186,7 @@
     <string name="photo_widget_configure_tap_action_choose_app">Uygulama seç</string>
 
     <string name="photo_widget_configure_add_to_home">Ana ekrana ekle</string>
+    <string name="photo_widget_configure_save_changes">Değişiklikleri kaydet</string>
 
     <string name="photo_widget_time_picker_title">Zamanı seçin</string>
 
@@ -193,10 +205,16 @@
 
     <string name="help_article_footer">Başka bir şey mi çalışmıyor?</string>
 
+    <string name="help_email_body">Mesajınızı aşağıya yazın. Bir sorun bildiriyorsanız, sorun oluştuğunda ne yaptığınızı açıklamaya çalışın.</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Yakınlaştırmak için kıstır</string>
     <string name="photo_widget_viewer_actions_drag">Taşımak için sürükle</string>
     <string name="photo_widget_viewer_actions_tap">Kapatmak için dokun</string>
+
+    <!-- Cycling feedback -->
+    <string name="photo_widget_cycling_feedback_paused">Duraklatılan döngü</string>
+    <string name="photo_widget_cycling_feedback_resumed">Döngü devam ettirildi</string>
 
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Evet</string>

@@ -58,6 +58,16 @@ sealed interface PhotoWidgetTapAction : Parcelable {
         override val serializedName: String = "APP_SHORTCUT"
     }
 
+    @Parcelize
+    data object ToggleCycling : PhotoWidgetTapAction {
+
+        @IgnoredOnParcel
+        override val label = R.string.photo_widget_configure_tap_action_toggle_cycling
+
+        @IgnoredOnParcel
+        override val serializedName: String = "TOGGLE_CYCLING"
+    }
+
     companion object {
 
         val DEFAULT: PhotoWidgetTapAction = None
@@ -68,6 +78,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
                 ViewFullScreen(),
                 ViewInGallery,
                 AppShortcut(),
+                ToggleCycling,
             )
         }
 

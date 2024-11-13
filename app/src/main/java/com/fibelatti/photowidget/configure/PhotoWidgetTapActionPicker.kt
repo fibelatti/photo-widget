@@ -35,7 +35,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -61,6 +60,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.ui.foundation.ColumnToggleButtonGroup
 import com.fibelatti.ui.foundation.ToggleButtonGroup
 import com.fibelatti.ui.preview.DevicePreviews
@@ -195,14 +195,14 @@ private fun TapActionPickerContent(
                     ) {
                         Toggle(
                             title = stringResource(id = R.string.photo_widget_configure_tap_action_increase_brightness),
-                            enabled = value.increaseBrightness,
-                            onChange = { tapAction = value.copy(increaseBrightness = it) },
+                            checked = value.increaseBrightness,
+                            onCheckedChange = { tapAction = value.copy(increaseBrightness = it) },
                         )
 
                         Toggle(
                             title = stringResource(R.string.photo_widget_configure_tap_action_view_original_photo),
-                            enabled = value.viewOriginalPhoto,
-                            onChange = { tapAction = value.copy(viewOriginalPhoto = it) },
+                            checked = value.viewOriginalPhoto,
+                            onCheckedChange = { tapAction = value.copy(viewOriginalPhoto = it) },
                         )
                     }
                 }
@@ -222,6 +222,18 @@ private fun TapActionPickerContent(
                         onChooseApp = onChooseApp,
                         currentAppShortcut = currentAppShortcut,
                         modifier = customOptionModifier,
+                    )
+                }
+
+                is PhotoWidgetTapAction.ToggleCycling -> {
+                    Text(
+                        text = stringResource(
+                            id = R.string.photo_widget_configure_tap_action_toggle_cycling_description,
+                        ),
+                        modifier = customOptionModifier,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.labelMedium,
                     )
                 }
 
@@ -339,31 +351,6 @@ private fun TapOptionsPicker(
         },
         colors = ToggleButtonGroup.colors(unselectedButtonColor = MaterialTheme.colorScheme.surfaceContainerLow),
     )
-}
-
-@Composable
-private fun Toggle(
-    title: String,
-    enabled: Boolean,
-    onChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Switch(
-            checked = enabled,
-            onCheckedChange = onChange,
-        )
-
-        Text(
-            text = title,
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelLarge,
-        )
-    }
 }
 
 @Composable

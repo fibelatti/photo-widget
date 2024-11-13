@@ -144,6 +144,16 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         return sharedPreferences.getLong("${PreferencePrefix.NEXT_CYCLE_TIME}$appWidgetId", -1)
     }
 
+    fun saveWidgetCyclePaused(appWidgetId: Int, value: Boolean) {
+        sharedPreferences.edit {
+            putBoolean("${PreferencePrefix.CYCLE_PAUSED}$appWidgetId", value)
+        }
+    }
+
+    fun getWidgetCyclePaused(appWidgetId: Int): Boolean {
+        return sharedPreferences.getBoolean("${PreferencePrefix.CYCLE_PAUSED}$appWidgetId", false)
+    }
+
     private fun getWidgetInterval(appWidgetId: Int): PhotoWidgetLoopingInterval {
         val legacyName = sharedPreferences.getString("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId", null)
         val legacyValue = enumValueOfOrNull<LegacyPhotoWidgetLoopingInterval>(legacyName)
@@ -227,6 +237,26 @@ class PhotoWidgetSharedPreferences @Inject constructor(
             "${PreferencePrefix.CORNER_RADIUS}$appWidgetId",
             userPreferencesStorage.defaultCornerRadius,
         )
+    }
+
+    fun saveWidgetBorderColor(appWidgetId: Int, colorHex: String?, width: Int) {
+        sharedPreferences.edit {
+            if (colorHex != null) {
+                putString("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId", colorHex)
+                putInt("${PreferencePrefix.BORDER_WIDTH}$appWidgetId", width)
+            } else {
+                remove("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId")
+                remove("${PreferencePrefix.BORDER_WIDTH}$appWidgetId")
+            }
+        }
+    }
+
+    fun getWidgetBorderColorHex(appWidgetId: Int): String? {
+        return sharedPreferences.getString("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId", null)
+    }
+
+    fun getWidgetBorderWidth(appWidgetId: Int): Int {
+        return sharedPreferences.getInt("${PreferencePrefix.BORDER_WIDTH}$appWidgetId", 0)
     }
 
     fun saveWidgetOpacity(appWidgetId: Int, opacity: Float) {
@@ -363,11 +393,14 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         INTERVAL_ENABLED(value = "appwidget_interval_enabled_"),
         SCHEDULE(value = "appwidget_schedule_"),
         NEXT_CYCLE_TIME(value = "appwidget_next_cycle_time_"),
+        CYCLE_PAUSED(value = "appwidget_cycle_paused_"),
         INDEX(value = "appwidget_index_"),
         PAST_INDICES(value = "appwidget_past_indices_"),
         RATIO(value = "appwidget_aspect_ratio_"),
         SHAPE(value = "appwidget_shape_"),
         CORNER_RADIUS(value = "appwidget_corner_radius_"),
+        BORDER_COLOR_HEX(value = "appwidget_border_color_hex_"),
+        BORDER_WIDTH(value = "appwidget_border_width_"),
         OPACITY(value = "appwidget_opacity_"),
         HORIZONTAL_OFFSET(value = "appwidget_horizontal_offset_"),
         VERTICAL_OFFSET(value = "appwidget_vertical_offset_"),

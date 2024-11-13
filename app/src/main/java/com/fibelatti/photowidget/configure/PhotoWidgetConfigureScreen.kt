@@ -119,6 +119,7 @@ import sh.calvin.reorderable.rememberReorderableLazyListState
 @Composable
 fun PhotoWidgetConfigureScreen(
     photoWidget: PhotoWidget,
+    isUpdating: Boolean,
     selectedPhoto: LocalPhoto?,
     isProcessing: Boolean,
     onNavClick: () -> Unit,
@@ -138,6 +139,7 @@ fun PhotoWidgetConfigureScreen(
     onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
     onShapeChange: (String) -> Unit,
     onCornerRadiusChange: (Float) -> Unit,
+    onBorderChange: (String?, Int) -> Unit,
     onOpacityChange: (Float) -> Unit,
     onOffsetChange: (horizontalOffset: Int, verticalOffset: Int) -> Unit,
     onPaddingChange: (Int) -> Unit,
@@ -157,6 +159,7 @@ fun PhotoWidgetConfigureScreen(
 
         PhotoWidgetConfigureContent(
             photoWidget = photoWidget,
+            isUpdating = isUpdating,
             selectedPhoto = selectedPhoto,
             onNavClick = onNavClick,
             onMoveLeftClick = onMoveLeftClick,
@@ -194,6 +197,14 @@ fun PhotoWidgetConfigureScreen(
                         },
                     )
                 }.show()
+            },
+            onBorderClick = {
+                PhotoWidgetBorderPicker.show(
+                    context = localContext,
+                    currentColorHex = photoWidget.borderColor,
+                    currentWidth = photoWidget.borderWidth,
+                    onApplyClick = onBorderChange,
+                )
             },
             onOpacityClick = {
                 ComposeBottomSheetDialog(localContext) {
@@ -255,6 +266,7 @@ fun PhotoWidgetConfigureScreen(
 @Composable
 private fun PhotoWidgetConfigureContent(
     photoWidget: PhotoWidget,
+    isUpdating: Boolean,
     selectedPhoto: LocalPhoto?,
     onNavClick: () -> Unit,
     onAspectRatioClick: () -> Unit,
@@ -273,6 +285,7 @@ private fun PhotoWidgetConfigureContent(
     onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
     onShapeClick: () -> Unit,
     onCornerRadiusClick: () -> Unit,
+    onBorderClick: () -> Unit,
     onOpacityClick: () -> Unit,
     onOffsetClick: () -> Unit,
     onPaddingClick: () -> Unit,
@@ -297,6 +310,7 @@ private fun PhotoWidgetConfigureContent(
 
                 PhotoWidgetConfigureContentSettings(
                     photoWidget = photoWidget,
+                    isUpdating = isUpdating,
                     onChangeSource = onChangeSource,
                     onShuffleClick = onShuffleClick,
                     onPhotoPickerClick = onPhotoPickerClick,
@@ -307,6 +321,7 @@ private fun PhotoWidgetConfigureContent(
                     onAspectRatioClick = onAspectRatioClick,
                     onShapeClick = onShapeClick,
                     onCornerRadiusClick = onCornerRadiusClick,
+                    onBorderClick = onBorderClick,
                     onOpacityClick = onOpacityClick,
                     onOffsetClick = onOffsetClick,
                     onPaddingClick = onPaddingClick,
@@ -333,6 +348,7 @@ private fun PhotoWidgetConfigureContent(
 
                 PhotoWidgetConfigureContentSettings(
                     photoWidget = photoWidget,
+                    isUpdating = isUpdating,
                     onChangeSource = onChangeSource,
                     onShuffleClick = onShuffleClick,
                     onPhotoPickerClick = onPhotoPickerClick,
@@ -343,6 +359,7 @@ private fun PhotoWidgetConfigureContent(
                     onAspectRatioClick = onAspectRatioClick,
                     onShapeClick = onShapeClick,
                     onCornerRadiusClick = onCornerRadiusClick,
+                    onBorderClick = onBorderClick,
                     onOpacityClick = onOpacityClick,
                     onOffsetClick = onOffsetClick,
                     onPaddingClick = onPaddingClick,
@@ -378,6 +395,8 @@ private fun PhotoWidgetConfigureContentViewer(
             shapeId = photoWidget.shapeId,
             modifier = Modifier.fillMaxSize(),
             cornerRadius = photoWidget.cornerRadius,
+            borderColorHex = photoWidget.borderColor,
+            borderWidth = photoWidget.borderWidth,
             opacity = photoWidget.opacity,
         )
 
@@ -418,6 +437,7 @@ private fun PhotoWidgetConfigureContentViewer(
 @Composable
 private fun PhotoWidgetConfigureContentSettings(
     photoWidget: PhotoWidget,
+    isUpdating: Boolean,
     onChangeSource: (currentSource: PhotoWidgetSource, syncedDir: Set<Uri>) -> Unit,
     onShuffleClick: () -> Unit,
     onPhotoPickerClick: () -> Unit,
@@ -428,6 +448,7 @@ private fun PhotoWidgetConfigureContentSettings(
     onAspectRatioClick: () -> Unit,
     onShapeClick: () -> Unit,
     onCornerRadiusClick: () -> Unit,
+    onBorderClick: () -> Unit,
     onOpacityClick: () -> Unit,
     onOffsetClick: () -> Unit,
     onPaddingClick: () -> Unit,
@@ -492,6 +513,19 @@ private fun PhotoWidgetConfigureContentSettings(
                 title = stringResource(id = R.string.widget_defaults_corner_radius),
                 currentValue = photoWidget.cornerRadius.toInt().toString(),
                 onClick = onCornerRadiusClick,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+        }
+
+        if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
+            PickerDefault(
+                title = stringResource(R.string.photo_widget_configure_border),
+                currentValue = if (photoWidget.borderColor == null) {
+                    stringResource(id = R.string.photo_widget_configure_border_none)
+                } else {
+                    "#${photoWidget.borderColor}"
+                },
+                onClick = onBorderClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
         }
@@ -569,7 +603,15 @@ private fun PhotoWidgetConfigureContentSettings(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
         ) {
-            Text(text = stringResource(id = R.string.photo_widget_configure_add_to_home))
+            Text(
+                text = stringResource(
+                    id = if (isUpdating) {
+                        R.string.photo_widget_configure_save_changes
+                    } else {
+                        R.string.photo_widget_configure_add_to_home
+                    },
+                ),
+            )
         }
     }
 }
@@ -580,6 +622,8 @@ private fun PhotoWidgetViewer(
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     cornerRadius: Float,
+    borderColorHex: String?,
+    borderWidth: Int,
     opacity: Float,
     modifier: Modifier = Modifier,
 ) {
@@ -621,6 +665,8 @@ private fun PhotoWidgetViewer(
                     )
                     .padding(start = 32.dp, top = 32.dp, end = 32.dp, bottom = 48.dp)
                     .fillMaxHeight(),
+                borderColorHex = borderColorHex,
+                borderWidth = borderWidth,
             )
         }
     }
@@ -935,6 +981,7 @@ private fun PendingDeletionPhotoPicker(
         Text(
             text = stringResource(R.string.photo_widget_configure_photos_pending_deletion),
             modifier = Modifier.padding(horizontal = 16.dp),
+            color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.titleMedium,
         )
 
@@ -1043,6 +1090,8 @@ fun ShapedPhoto(
     cornerRadius: Float,
     opacity: Float,
     modifier: Modifier = Modifier,
+    borderColorHex: String? = null,
+    borderWidth: Int = 0,
     badge: @Composable BoxScope.() -> Unit = {},
     isLoading: Boolean = false,
 ) {
@@ -1054,7 +1103,7 @@ fun ShapedPhoto(
                 else -> null
             }
         },
-        dataKey = arrayOf(photo, shapeId, aspectRatio, cornerRadius, opacity),
+        dataKey = arrayOf(photo, shapeId, aspectRatio, cornerRadius, opacity, borderColorHex, borderWidth),
         isLoading = isLoading,
         contentScale = if (aspectRatio.isConstrained) {
             ContentScale.FillWidth
@@ -1068,12 +1117,16 @@ fun ShapedPhoto(
                     withPolygonalShape(
                         shapeId = shapeId,
                         opacity = opacity,
+                        borderColorHex = borderColorHex,
+                        borderWidth = borderWidth,
                     )
                 } else {
                     withRoundedCorners(
                         aspectRatio = aspectRatio,
                         radius = cornerRadius,
                         opacity = opacity,
+                        borderColorHex = borderColorHex,
+                        borderWidth = borderWidth,
                     )
                 }
             }
@@ -1132,6 +1185,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
                 shapeId = PhotoWidget.DEFAULT_SHAPE_ID,
                 cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
             ),
+            isUpdating = false,
             selectedPhoto = LocalPhoto(name = "photo-1"),
             isProcessing = false,
             onNavClick = {},
@@ -1151,6 +1205,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onTapActionPickerClick = {},
             onShapeChange = {},
             onCornerRadiusChange = {},
+            onBorderChange = { _, _ -> },
             onOpacityChange = {},
             onOffsetChange = { _, _ -> },
             onPaddingChange = {},
@@ -1180,6 +1235,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
                 cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                 opacity = 80f,
             ),
+            isUpdating = true,
             selectedPhoto = LocalPhoto(name = "photo-1"),
             isProcessing = false,
             onNavClick = {},
@@ -1199,6 +1255,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onTapActionPickerClick = {},
             onShapeChange = {},
             onCornerRadiusChange = {},
+            onBorderChange = { _, _ -> },
             onOpacityChange = {},
             onOffsetChange = { _, _ -> },
             onPaddingChange = {},

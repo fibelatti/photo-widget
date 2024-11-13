@@ -181,6 +181,7 @@ private fun ScreenContent(
                 }
                 .transformable(state = state)
                 .aspectRatio(ratio = aspectRatio.aspectRatio),
+            constrainBitmapSize = false,
         )
 
         Row(

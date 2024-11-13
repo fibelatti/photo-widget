@@ -22,6 +22,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.WidgetSizeProvider
+import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
@@ -102,13 +103,17 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
             val coroutineScope = entryPoint.coroutineScope()
             val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
+            val photoWidgetStorage = entryPoint.photoWidgetStorage()
 
             if (loadedWidgets[appWidgetId] != true) {
                 Timber.d("Dispatching pre-load remote views to AppWidgetManager")
-                appWidgetManager.updateAppWidget(
-                    /* appWidgetId = */ appWidgetId,
-                    /* views = */ RemoteViews(context.packageName, R.layout.photo_widget_placeholder),
-                )
+
+                val aspectRatio = photoWidgetStorage.getWidgetAspectRatio(appWidgetId)
+                val remoteViews = createBaseView(context = context, aspectRatio = aspectRatio).apply {
+                    setImageViewResource(R.id.iv_placeholder, R.drawable.ic_hourglass)
+                }
+
+                appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
                 loadedWidgets[appWidgetId] = true
             }
 
@@ -154,7 +159,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             recoveryMode: Boolean = false,
         ): RemoteViews {
             Timber.d("Creating remote views")
-            val currentPhoto = photoWidget.currentPhoto ?: return createErrorView(context = context)
+            val errorView = createBaseView(context = context, aspectRatio = photoWidget.aspectRatio).apply {
+                setImageViewResource(R.id.iv_placeholder, R.drawable.ic_file_not_found)
+            }
+
+            val currentPhoto = photoWidget.currentPhoto ?: return errorView
 
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
             val decoder = entryPoint.photoDecoder()
@@ -164,7 +173,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 val data = when {
                     !currentPhoto.path.isNullOrEmpty() -> currentPhoto.path
                     currentPhoto.externalUri != null -> currentPhoto.externalUri
-                    else -> return createErrorView(context = context)
+                    else -> return errorView
                 }
                 val displayMetrics: DisplayMetrics = context.resources.displayMetrics
                 val maxMemoryAllowed: Int = if (!recoveryMode) {
@@ -189,7 +198,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
                 requireNotNull(decoder.decode(data = data, maxDimension = maxDimension))
             } catch (_: Exception) {
-                return createErrorView(context = context)
+                return errorView
             }
 
             Timber.d("Transforming the bitmap")
@@ -197,6 +206,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 bitmap.withPolygonalShape(
                     shapeId = photoWidget.shapeId,
                     opacity = photoWidget.opacity,
+                    borderColorHex = photoWidget.borderColor,
+                    borderWidth = photoWidget.borderWidth,
                 )
             } else {
                 bitmap.withRoundedCorners(
@@ -207,16 +218,13 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         photoWidget.cornerRadius
                     },
                     opacity = photoWidget.opacity,
+                    borderColorHex = photoWidget.borderColor,
+                    borderWidth = photoWidget.borderWidth,
                 )
             }
 
-            val layoutId = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio) {
-                R.layout.photo_widget_fill
-            } else {
-                R.layout.photo_widget
-            }
-
-            return RemoteViews(context.packageName, layoutId).apply {
+            return createBaseView(context = context, aspectRatio = photoWidget.aspectRatio).apply {
+                setViewVisibility(R.id.iv_placeholder, View.GONE)
                 setImageViewBitmap(R.id.iv_widget, transformedBitmap)
                 setViewPadding(
                     /* viewId = */ R.id.iv_widget,
@@ -228,10 +236,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             }
         }
 
-        private fun createErrorView(context: Context): RemoteViews {
-            return RemoteViews(context.packageName, R.layout.photo_widget_placeholder).apply {
-                setImageViewResource(R.id.image_view_placeholder, R.drawable.ic_file_not_found)
+        private fun createBaseView(context: Context, aspectRatio: PhotoWidgetAspectRatio): RemoteViews {
+            val layoutId = if (PhotoWidgetAspectRatio.FILL_WIDGET == aspectRatio) {
+                R.layout.photo_widget_fill
+            } else {
+                R.layout.photo_widget
             }
+
+            return RemoteViews(context.packageName, layoutId)
         }
 
         private fun getDimensionValue(context: Context, value: Int): Int {
@@ -306,13 +318,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
                 is PhotoWidgetTapAction.ViewFullScreen -> {
                     val clickIntent = Intent(context, PhotoWidgetViewerActivity::class.java).apply {
+                        setIdentifierCompat("$appWidgetId")
                         this.appWidgetId = appWidgetId
                     }
                     return PendingIntent.getActivity(
-                        context,
-                        appWidgetId,
-                        clickIntent,
-                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        /* context = */ context,
+                        /* requestCode = */ appWidgetId,
+                        /* intent = */ clickIntent,
+                        /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
 
@@ -320,14 +333,15 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     if (externalUri == null) return null
 
                     val intent = Intent(Intent.ACTION_VIEW, externalUri).apply {
+                        setIdentifierCompat("$appWidgetId")
                         flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                     }
 
                     return PendingIntent.getActivity(
-                        context,
-                        appWidgetId,
-                        intent,
-                        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        /* context = */ context,
+                        /* requestCode = */ appWidgetId,
+                        /* intent = */ intent,
+                        /* flags = */ PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
 
@@ -348,11 +362,26 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
                     if (launchIntent == null) return null
 
+                    launchIntent.setIdentifierCompat("$appWidgetId")
+
                     return PendingIntent.getActivity(
-                        context,
-                        appWidgetId,
-                        launchIntent,
-                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        /* context = */ context,
+                        /* requestCode = */ appWidgetId,
+                        /* intent = */ launchIntent,
+                        /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                    )
+                }
+
+                is PhotoWidgetTapAction.ToggleCycling -> {
+                    val intent = Intent(context, ToggleCyclingFeedbackActivity::class.java).apply {
+                        setIdentifierCompat("$appWidgetId")
+                        this.appWidgetId = appWidgetId
+                    }
+                    return PendingIntent.getActivity(
+                        /* context = */ context,
+                        /* requestCode = */ appWidgetId,
+                        /* intent = */ intent,
+                        /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
             }
@@ -364,6 +393,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             flipBackwards: Boolean = false,
         ): PendingIntent {
             val intent = Intent(context, PhotoWidgetProvider::class.java).apply {
+                setIdentifierCompat("$appWidgetId")
                 this.appWidgetId = appWidgetId
                 this.action = if (flipBackwards) ACTION_VIEW_PREVIOUS_PHOTO else ACTION_VIEW_NEXT_PHOTO
             }

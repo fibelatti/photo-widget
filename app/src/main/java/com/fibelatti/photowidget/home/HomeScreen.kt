@@ -10,6 +10,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -89,6 +90,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.ui.ShapesBanner
 import com.fibelatti.ui.foundation.conditional
 import com.fibelatti.ui.foundation.grayScale
 import com.fibelatti.ui.preview.DevicePreviews
@@ -105,6 +107,7 @@ fun HomeScreen(
     onCurrentWidgetClick: (appWidgetId: Int) -> Unit,
     onRemovedWidgetClick: (appWidgetId: Int) -> Unit,
     onDefaultsClick: () -> Unit,
+    onDataSaverClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onSendFeedbackClick: () -> Unit,
@@ -135,7 +138,11 @@ fun HomeScreen(
                 .background(color = MaterialTheme.colorScheme.background)
                 .fillMaxSize()
                 .padding(paddingValues),
-            transitionSpec = { fadeIn() togetherWith fadeOut() },
+            transitionSpec = {
+                (fadeIn(animationSpec = tween(220)) +
+                    scaleIn(initialScale = 0.97f, animationSpec = tween(220)))
+                    .togetherWith(fadeOut(animationSpec = tween(90)))
+            },
             contentAlignment = Alignment.Center,
             label = "Home_Navigation",
         ) { destination ->
@@ -158,6 +165,7 @@ fun HomeScreen(
                 HomeNavigationDestination.SETTINGS -> {
                     SettingsScreen(
                         onDefaultsClick = onDefaultsClick,
+                        onDataSaverClick = onDataSaverClick,
                         onAppearanceClick = onAppearanceClick,
                         onColorsClick = onColorsClick,
                         onSendFeedbackClick = onSendFeedbackClick,
@@ -252,20 +260,25 @@ private fun NewWidgetScreen(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
+        ShapesBanner(
+            modifier = Modifier.align(Alignment.TopCenter),
+        )
+
         Column(
             modifier = Modifier
                 .widthIn(max = 600.dp)
                 .fillMaxWidth()
+                .padding(top = 68.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(32.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
         ) {
             AutoSizeText(
                 text = stringResource(id = R.string.photo_widget_home_title),
                 modifier = Modifier.padding(horizontal = 32.dp),
                 maxLines = 2,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
             )
 
             Text(
@@ -463,6 +476,8 @@ private fun MyWidgetsScreen(
                                     predicate = isRemoved,
                                     ifTrue = { grayScale() },
                                 ),
+                            borderColorHex = widget.borderColor,
+                            borderWidth = widget.borderWidth,
                             isLoading = widget.isLoading,
                         )
                     }
@@ -563,6 +578,7 @@ private fun MyWidgetsScreen(
 @Composable
 private fun SettingsScreen(
     onDefaultsClick: () -> Unit,
+    onDataSaverClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onSendFeedbackClick: () -> Unit,
@@ -593,6 +609,12 @@ private fun SettingsScreen(
                 icon = R.drawable.ic_default,
                 label = R.string.widget_defaults_title,
                 onClick = onDefaultsClick,
+            )
+
+            SettingsAction(
+                icon = R.drawable.ic_hard_drive,
+                label = R.string.photo_widget_home_data_saver,
+                onClick = onDataSaverClick,
             )
 
             SettingsAction(
@@ -770,6 +792,7 @@ private fun HomeScreenPreview() {
             onCurrentWidgetClick = {},
             onRemovedWidgetClick = {},
             onDefaultsClick = {},
+            onDataSaverClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
             onSendFeedbackClick = {},
@@ -837,6 +860,7 @@ private fun SettingsScreenPreview() {
     ExtendedTheme {
         SettingsScreen(
             onDefaultsClick = {},
+            onDataSaverClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
             onSendFeedbackClick = {},

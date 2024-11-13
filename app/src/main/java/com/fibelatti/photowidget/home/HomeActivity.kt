@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.home
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.compose.setContent
@@ -10,7 +11,11 @@ import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,8 +33,10 @@ import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.preferences.Appearance
+import com.fibelatti.photowidget.preferences.DataSaverPicker
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.preferences.WidgetDefaultsActivity
+import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,6 +66,7 @@ class HomeActivity : AppCompatActivity() {
                     onCurrentWidgetClick = ::showExistingWidgetMenu,
                     onRemovedWidgetClick = ::showRemovedWidgetMenu,
                     onDefaultsClick = ::showDefaults,
+                    onDataSaverClick = ::showDataSaverPicker,
                     onAppearanceClick = ::showAppearancePicker,
                     onColorsClick = ::showAppColorsPicker,
                     onSendFeedbackClick = ::sendFeedback,
@@ -184,6 +192,10 @@ class HomeActivity : AppCompatActivity() {
         startActivity(Intent(this, WidgetDefaultsActivity::class.java))
     }
 
+    private fun showDataSaverPicker() {
+        DataSaverPicker.show(context = this)
+    }
+
     private fun showAppearancePicker() {
         SelectionDialog.show(
             context = this,
@@ -208,6 +220,14 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 AppCompatDelegate.setDefaultNightMode(mode)
+            },
+            footer = {
+                Toggle(
+                    title = stringResource(R.string.photo_widget_home_true_black_background),
+                    checked = userPreferencesStorage.useTrueBlack,
+                    onCheckedChange = { newValue -> userPreferencesStorage.useTrueBlack = newValue },
+                    modifier = Modifier.padding(all = 16.dp),
+                )
             },
         )
     }
@@ -243,12 +263,21 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun sendFeedback() {
+        val emailBody = StringBuilder().apply {
+            appendLine("Android Version: ${Build.VERSION.SDK_INT}")
+            appendLine("Device Manufacturer: ${Build.MANUFACTURER}")
+            appendLine("---")
+            appendLine(getString(R.string.help_email_body))
+            appendLine()
+        }
+
         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")).apply {
             putExtra(Intent.EXTRA_EMAIL, arrayOf("appsupport@fibelatti.com"))
             putExtra(
                 Intent.EXTRA_SUBJECT,
                 "Material Photo Widget (${BuildConfig.VERSION_NAME}) — Feature request / Bug report",
             )
+            putExtra(Intent.EXTRA_TEXT, emailBody.toString())
         }
 
         startActivity(Intent.createChooser(emailIntent, getString(R.string.photo_widget_home_feedback)))
@@ -274,6 +303,7 @@ class HomeActivity : AppCompatActivity() {
     private enum class MyWidgetOptions(
         @StringRes val label: Int,
     ) {
+
         EDIT(label = R.string.photo_widget_home_my_widget_action_edit),
         DUPLICATE(label = R.string.photo_widget_home_my_widget_action_duplicate),
     }
@@ -281,6 +311,7 @@ class HomeActivity : AppCompatActivity() {
     private enum class RemovedWidgetOptions(
         @StringRes val label: Int,
     ) {
+
         RESTORE(label = R.string.photo_widget_home_removed_widget_action_restore),
         DELETE(label = R.string.photo_widget_home_removed_widget_action_delete),
     }

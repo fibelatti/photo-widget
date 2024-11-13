@@ -12,6 +12,7 @@ data class PhotoWidgetConfigureState(
     val cropQueue: List<LocalPhoto> = emptyList(),
     val messages: List<Message> = emptyList(),
     val markedForDeletion: Set<String> = emptySet(),
+    val hasEdits: Boolean = false,
 ) {
 
     sealed class Message {

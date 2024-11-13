@@ -9,6 +9,14 @@
     tools:targetApi="s">
 
     <ImageView
+        android:id="@+id/iv_placeholder"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_hourglass" />
+
+    <ImageView
         android:id="@+id/iv_widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -40,6 +40,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -180,6 +181,9 @@ private fun WidgetDefaultsScreen(
                         )
                     }
                 },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                ),
             )
         },
         contentWindowInsets = WindowInsets.safeDrawing,
@@ -601,7 +605,9 @@ private fun WidgetDefaultsScreenPreview() {
     ExtendedTheme {
         WidgetDefaultsScreen(
             userPreferences = UserPreferences(
+                dataSaver = true,
                 appearance = Appearance.FOLLOW_SYSTEM,
+                useTrueBlack = false,
                 dynamicColors = true,
                 defaultSource = PhotoWidgetSource.PHOTOS,
                 defaultShuffle = false,

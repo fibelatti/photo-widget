@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* Colored borders
+* New setting to control the compression behavior when importing photos
+
+## [v1.18.1] - 2024-11-07
+
+### Fixed
+
+* The loading icon would be visible behind transparent widgets
+
+## [v1.18.0] - 2024-11-06
+
+### Added
+
+* New tap action to pause/resume automatic photo cycling
+* New app theme option for using a true black background
+
+### Changed
+
+* Skip the unsaved changes warning when there are no changes
+* Added device details to bug reports
+
 ## [v1.17.0] - 2024-10-27
 
 ### Added

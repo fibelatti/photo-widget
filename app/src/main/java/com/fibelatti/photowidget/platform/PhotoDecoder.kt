@@ -20,14 +20,14 @@ class PhotoDecoder @Inject constructor(
 
     suspend fun decode(
         data: Any?,
-        maxDimension: Int,
+        maxDimension: Int? = null,
     ): Bitmap? = withContext(Dispatchers.IO) {
         Timber.d("Decoding $data into a bitmap (maxDimension=$maxDimension)")
 
         val request = ImageRequest.Builder(context)
             .data(data)
             .allowHardware(enable = false)
-            .size(maxDimension)
+            .apply { if (maxDimension != null) size(maxDimension) }
             .build()
 
         imageLoader.execute(request)

@@ -171,6 +171,14 @@ class PhotoWidgetStorage @Inject constructor(
         return sharedPreferences.getWidgetNextCycleTime(appWidgetId = appWidgetId)
     }
 
+    fun saveWidgetCyclePaused(appWidgetId: Int, value: Boolean) {
+        sharedPreferences.saveWidgetCyclePaused(appWidgetId = appWidgetId, value = value)
+    }
+
+    fun getWidgetCyclePaused(appWidgetId: Int): Boolean {
+        return sharedPreferences.getWidgetCyclePaused(appWidgetId = appWidgetId)
+    }
+
     fun saveWidgetIndex(appWidgetId: Int, index: Int) {
         sharedPreferences.saveWidgetIndex(appWidgetId = appWidgetId, index = index)
     }
@@ -209,6 +217,18 @@ class PhotoWidgetStorage @Inject constructor(
 
     fun getWidgetCornerRadius(appWidgetId: Int): Float {
         return sharedPreferences.getWidgetCornerRadius(appWidgetId = appWidgetId)
+    }
+
+    fun saveWidgetBorderColor(appWidgetId: Int, colorHex: String?, width: Int) {
+        sharedPreferences.saveWidgetBorderColor(appWidgetId = appWidgetId, colorHex = colorHex, width = width)
+    }
+
+    fun getWidgetBorderColorHex(appWidgetId: Int): String? {
+        return sharedPreferences.getWidgetBorderColorHex(appWidgetId = appWidgetId)
+    }
+
+    fun getWidgetBorderWidth(appWidgetId: Int): Int {
+        return sharedPreferences.getWidgetBorderWidth(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetOpacity(appWidgetId: Int, opacity: Float) {

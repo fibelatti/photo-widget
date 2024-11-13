@@ -79,6 +79,13 @@
             android:theme="@style/AppTheme.TransparentActivity" />
 
         <activity
+            android:name=".widget.ToggleCyclingFeedbackActivity"
+            android:enableOnBackInvokedCallback="false"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme.TransparentActivity" />
+
+        <activity
             android:name=".licenses.OssLicensesActivity"
             android:exported="false" />
 

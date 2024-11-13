@@ -11,7 +11,9 @@
     <string name="photo_widget_home_new">Новый виджет</string>
     <string name="photo_widget_home_current">Мои виджеты</string>
     <string name="photo_widget_home_settings">Настройки</string>
+    <string name="photo_widget_home_data_saver">Оптимизированное хранилище</string>
     <string name="photo_widget_home_appearance">Тема приложения</string>
+    <string name="photo_widget_home_true_black_background">Настоящий черный фон</string>
     <string name="photo_widget_home_dynamic_colors">Цвета приложения</string>
     <string name="photo_widget_home_share">Поделиться приложением</string>
     <string name="photo_widget_home_rate">Оставить отзыв</string>
@@ -37,12 +39,15 @@
 
     <string name="photo_widget_home_removed_widgets_hint">Затемнённые виджеты были удалены с главного экрана и будут окончательно удалены через неделю</string>
 
-    <string name="photo_widget_home_my_widget_action_edit">Редактировать</string>
+    <string name="photo_widget_home_my_widget_action_edit">Просмотреть / Редактировать</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Дублировать</string>
     <string name="photo_widget_home_removed_widget_action_restore">Восстановить</string>
     <string name="photo_widget_home_removed_widget_action_delete">Удалить навсегда</string>
 
     <!-- Preferences -->
+    <string name="preferences_data_saver">Уменьшить использование хранилища</string>
+    <string name="preferences_data_saver_description">При включении фотографии, добавленные в виджеты, сжимаются для экономии места. Обычно это не влияет на качество, но если ваши фотографии содержат мелкий текст, рекомендуется отключить эту функцию.\n\nЭта настройка влияет только на фотографии, добавленные после ее изменения.\n\nОна не применяется к синхронизированным папкам, так как эти фотографии считываются непосредственно из хранилища вашего устройства.</string>
+
     <string name="preferences_appearance_follow_system">Следовать за системой</string>
     <string name="preferences_appearance_light">Светлая</string>
     <string name="preferences_appearance_dark">Тёмная</string>
@@ -117,7 +122,7 @@
 
     <string name="photo_widget_configure_cycling_mode_interval_description">Виджет будет автоматически переключаться на следующую фотографию через следующий интервал:</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description">Виджет будет автоматически переключаться на следующую фотографию каждый день в следующие запланированные часы:</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Виджет не будет автоматически переключаться между фотографиями. Установите действие по нажатию для переключения между фотографиями или выберите другой режим.</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Виджет не будет автоматически переключаться между фотографиями. Коснитесь краев виджета, чтобы переключиться на следующую фотографию.</string>
 
     <string name="photo_widget_configure_interval_current_label">Каждые %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
@@ -161,6 +166,10 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android ограничивает фоновую работу для оптимизации времени работы от батареи, что может привести к более длительным интервалам между каждой фотографией.\n\nЕсли вы хотите, чтобы виджеты обновлялись точно в выбранный интервал, откройте настройки и включите это разрешение.</string>
     <string name="photo_widget_configure_interval_open_settings">Открыть настройки</string>
 
+    <string name="photo_widget_configure_border">Граница</string>
+    <string name="photo_widget_configure_border_none">Нет</string>
+    <string name="photo_widget_configure_border_color">Цвет</string>
+
     <string name="photo_widget_configure_offset">Смещение</string>
     <string name="photo_widget_configure_offset_current_values">Горизонтальное: %1$d, Вертикальное: %2$d</string>
     <string name="photo_widget_configure_offset_current_horizontal">Горизонтальное: %1$d</string>
@@ -174,6 +183,8 @@
     <string name="photo_widget_configure_tap_action_view_full_screen">Просмотр фотографии на весь экран</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Просмотреть в галерее</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Ярлык приложения</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">Включить/выключить цикл</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Нажмите, чтобы приостановить автоматическую смену фотографий. Нажмите еще раз, чтобы возобновить.</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Автоматически увеличить яркость</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Просмотреть оригинальную фотографию (без обрезки или поворота)</string>
@@ -181,6 +192,7 @@
     <string name="photo_widget_configure_tap_action_choose_app">Выбрать приложение</string>
 
     <string name="photo_widget_configure_add_to_home">Добавить на главный экран</string>
+    <string name="photo_widget_configure_save_changes">Сохранить изменения</string>
 
     <string name="photo_widget_time_picker_title">Выбрать время</string>
 
@@ -199,10 +211,16 @@
 
     <string name="help_article_footer">Что-то еще не работает?</string>
 
+    <string name="help_email_body">Напишите свое сообщение ниже. Если вы сообщаете о проблеме, постарайтесь описать, что вы делали, когда возникла проблема.</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Сожмите для увеличения</string>
     <string name="photo_widget_viewer_actions_drag">Перетащите для перемещения</string>
     <string name="photo_widget_viewer_actions_tap">Нажмите, чтобы закрыть</string>
+
+    <!-- Cycling feedback -->
+    <string name="photo_widget_cycling_feedback_paused">Цикл приостановлен</string>
+    <string name="photo_widget_cycling_feedback_resumed">Цикл возобновлен</string>
 
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Да</string>

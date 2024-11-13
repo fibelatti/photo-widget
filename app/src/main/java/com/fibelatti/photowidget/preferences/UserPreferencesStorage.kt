@@ -29,7 +29,9 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
 
     private val _userPreferences = MutableStateFlow(
         UserPreferences(
+            dataSaver = dataSaver,
             appearance = appearance,
+            useTrueBlack = useTrueBlack,
             dynamicColors = dynamicColors,
             defaultSource = defaultSource,
             defaultShuffle = defaultShuffle,
@@ -43,6 +45,15 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
     val userPreferences: StateFlow<UserPreferences> = _userPreferences.asStateFlow()
 
     // region App
+    var dataSaver: Boolean
+        get() {
+            return sharedPreferences.getBoolean(Preference.DATA_SAVER.value, true)
+        }
+        set(value) {
+            sharedPreferences.edit { putBoolean(Preference.DATA_SAVER.value, value) }
+            _userPreferences.update { current -> current.copy(dataSaver = value) }
+        }
+
     var appearance: Appearance
         get() {
             val name = sharedPreferences.getString(Preference.APP_APPEARANCE.value, null)
@@ -51,6 +62,15 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         set(value) {
             sharedPreferences.edit { putString(Preference.APP_APPEARANCE.value, value.name) }
             _userPreferences.update { current -> current.copy(appearance = value) }
+        }
+
+    var useTrueBlack: Boolean
+        get() {
+            return sharedPreferences.getBoolean(Preference.USE_TRUE_BLACK.value, false)
+        }
+        set(value) {
+            sharedPreferences.edit { putBoolean(Preference.USE_TRUE_BLACK.value, value) }
+            _userPreferences.update { current -> current.copy(useTrueBlack = value) }
         }
 
     var dynamicColors: Boolean
@@ -235,7 +255,9 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         }
         _userPreferences.update {
             UserPreferences(
+                dataSaver = dataSaver,
                 appearance = appearance,
+                useTrueBlack = useTrueBlack,
                 dynamicColors = dynamicColors,
                 defaultSource = defaultSource,
                 defaultShuffle = defaultShuffle,
@@ -249,7 +271,9 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
     }
 
     private enum class Preference(val value: String) {
+        DATA_SAVER(value = "user_preferences_data_saver"),
         APP_APPEARANCE(value = "user_preferences_appearance"),
+        USE_TRUE_BLACK(value = "user_preferences_use_true_black"),
         APP_DYNAMIC_COLORS(value = "user_preferences_dynamic_colors"),
 
         DEFAULT_ASPECT_RATIO(value = "default_aspect_ratio"),

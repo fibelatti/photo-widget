@@ -11,7 +11,9 @@
     <string name="photo_widget_home_new">Nouveau widget</string>
     <string name="photo_widget_home_current">Mes widgets</string>
     <string name="photo_widget_home_settings">Paramètres</string>
+    <string name="photo_widget_home_data_saver">Stockage optimisé</string>
     <string name="photo_widget_home_appearance">Thème de l\'application</string>
+    <string name="photo_widget_home_true_black_background">Fond noir véritable</string>
     <string name="photo_widget_home_dynamic_colors">Couleurs de l\'application</string>
     <string name="photo_widget_home_share">Partager l\'application</string>
     <string name="photo_widget_home_rate">Écrire un avis</string>
@@ -37,12 +39,15 @@
 
     <string name="photo_widget_home_removed_widgets_hint">Les widgets grisés ont été supprimés de votre écran d\'accueil et seront définitivement supprimés après une semaine</string>
 
-    <string name="photo_widget_home_my_widget_action_edit">Modifier</string>
+    <string name="photo_widget_home_my_widget_action_edit">Afficher / Modifier</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Dupliquer</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restaurer</string>
     <string name="photo_widget_home_removed_widget_action_delete">Supprimer définitivement</string>
 
     <!-- Preferences -->
+    <string name="preferences_data_saver">Réduire l\'utilisation du stockage</string>
+    <string name="preferences_data_saver_description">Lorsque cette option est activée, les photos ajoutées aux widgets sont compressées pour économiser de l\'espace de stockage. Cela n\'affecte généralement pas la qualité, mais si vos photos contiennent du texte de petite taille, il est recommandé de la désactiver.\n\nCe paramètre affecte uniquement les photos ajoutées après sa modification.\n\nIl ne s\'applique pas aux dossiers synchronisés, car ces photos sont lues directement à partir du stockage de votre appareil.</string>
+
     <string name="preferences_appearance_follow_system">Suivre le système</string>
     <string name="preferences_appearance_light">Clair</string>
     <string name="preferences_appearance_dark">Sombre</string>
@@ -55,7 +60,7 @@
     <string name="widget_defaults_explanation">Ces valeurs sont préchargées lorsque vous créez un nouveau widget. Elles sont utiles pour configurer plusieurs widgets avec la même configuration, sans avoir besoin d\'ajuster les paramètres à chaque fois. Notez que toute modification de ces valeurs n\'affectera pas les widgets existants.</string>
     <string name="widget_defaults_source">Source</string>
     <string name="widget_defaults_shuffle">Aléatoire</string>
-    <string name="widget_defaults_cycling">Changement de photo</string>
+    <string name="widget_defaults_cycling">Cycle des photos</string>
     <string name="widget_defaults_shape">Forme</string>
     <string name="widget_defaults_corner_radius">Arrondi</string>
     <string name="widget_defaults_opacity">Opacité</string>
@@ -110,14 +115,14 @@
     <string name="photo_widget_configure_shuffle_on">Activé</string>
     <string name="photo_widget_configure_shuffle_off">Désactivé</string>
 
-    <string name="photo_widget_configure_select_cycling_mode">Changement de photo</string>
+    <string name="photo_widget_configure_select_cycling_mode">Cycle des photos</string>
     <string name="photo_widget_configure_cycling_mode_interval">Intervalle</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Planification</string>
     <string name="photo_widget_configure_cycling_mode_disabled">Désactivé</string>
 
     <string name="photo_widget_configure_cycling_mode_interval_description">Le widget passera automatiquement à la photo suivante à l\'intervalle suivant :</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description">Le widget passera automatiquement à la photo suivante tous les jours aux horaires suivants :</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Le widget ne fera pas défiler les photos automatiquement. Configurez une action tactile pour faire défiler les photos ou choisissez un autre mode.</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Le widget ne parcourt pas automatiquement les photos. Appuyez sur les bords du widget pour passer à la photo suivante.</string>
 
     <string name="photo_widget_configure_interval_current_label">Toutes les %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
@@ -161,6 +166,10 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android limite le travail en arrière-plan pour optimiser l\'autonomie de la batterie, ce qui peut entraîner des intervalles plus longs entre chaque photo.\n\nSi vous souhaitez que les widgets se mettent à jour précisément à l\'intervalle sélectionné, ouvrez les paramètres et activez cette autorisation.</string>
     <string name="photo_widget_configure_interval_open_settings">Ouvrir les paramètres</string>
 
+    <string name="photo_widget_configure_border">Bordure</string>
+    <string name="photo_widget_configure_border_none">Aucune</string>
+    <string name="photo_widget_configure_border_color">Couleur</string>
+
     <string name="photo_widget_configure_offset">Décalage</string>
     <string name="photo_widget_configure_offset_current_values">Horizontal : %1$d, Vertical : %2$d</string>
     <string name="photo_widget_configure_offset_current_horizontal">Horizontal : %1$d</string>
@@ -174,6 +183,8 @@
     <string name="photo_widget_configure_tap_action_view_full_screen">Afficher la photo en plein écran</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Voir dans la galerie</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Raccourci vers l\'application</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">Activer/désactiver le cycle</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Appuyez pour mettre en pause le cycle automatique des photos. Appuyez à nouveau pour reprendre.</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Augmenter automatiquement la luminosité</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Voir la photo originale (sans recadrage ni rotation)</string>
@@ -181,6 +192,7 @@
     <string name="photo_widget_configure_tap_action_choose_app">Choisir une application</string>
 
     <string name="photo_widget_configure_add_to_home">Ajouter à l\'écran d\'accueil</string>
+    <string name="photo_widget_configure_save_changes">Enregistrer les modifications</string>
 
     <string name="photo_widget_time_picker_title">Sélectionnez l\'heure</string>
 
@@ -199,10 +211,16 @@
 
     <string name="help_article_footer">Autre chose ne fonctionne pas ?</string>
 
+    <string name="help_email_body">Rédigez votre message ci-dessous. Si vous signalez un problème, essayez de décrire ce que vous faisiez lorsque le problème est survenu.</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pincer pour zoomer</string>
     <string name="photo_widget_viewer_actions_drag">Faites glisser pour déplacer</string>
     <string name="photo_widget_viewer_actions_tap">Appuyez pour fermer</string>
+
+    <!-- Cycling feedback -->
+    <string name="photo_widget_cycling_feedback_paused">Cycle en pause</string>
+    <string name="photo_widget_cycling_feedback_resumed">Cycle repris</string>
 
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Oui</string>
