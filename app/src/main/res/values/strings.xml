@@ -85,6 +85,11 @@
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Any changes will be lost, go back anyway?</string>
 
+    <string name="photo_widget_configure_import_prompt">Import from another widget?</string>
+    <string name="photo_widget_configure_import_prompt_action">Choose</string>
+    <string name="photo_widget_configure_import_dialog_title">Choose widget</string>
+    <string name="photo_widget_configure_import_dialog_description">All photos and configurations will be copied to the new widget</string>
+
     <string name="photo_widget_configure_import_error">Unable to import all selected photos</string>
     <string name="photo_widget_configure_too_many_photos_error">Each synced folder can contain a maximum of 3000 photos. You can select more than one, and each subfolder is counted separately.\n\nYou cannot select your camera roll. Photos are processed one by one, and folders with many thousands result in severe performance issues in the widget editor, as well as on the home screen when switching photos.</string>
     <string name="photo_widget_configure_missing_photos_error">The widget must have at least one photo. Widgets can only be deleted directly from the home screen.</string>

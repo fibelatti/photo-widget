@@ -16,6 +16,8 @@ data class PhotoWidgetConfigureState(
 
     sealed class Message {
 
+        data object SuggestImport : Message()
+
         data object ImportFailed : Message()
 
         data object TooManyPhotos : Message()

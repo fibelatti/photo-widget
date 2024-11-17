@@ -37,7 +37,6 @@ import com.fibelatti.photowidget.preferences.DataSaverPicker
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.preferences.WidgetDefaultsActivity
 import com.fibelatti.photowidget.ui.Toggle
-import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -84,7 +83,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        homeViewModel.loadCurrentWidgets(ids = PhotoWidgetProvider.ids(context = this))
+        homeViewModel.loadCurrentWidgets()
     }
 
     @Suppress("DEPRECATION")

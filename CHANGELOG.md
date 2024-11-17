@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Colored borders
 * New setting to control the compression behavior when importing photos
+* New option to import from an existing widget when setting up another
 
 ### Changed
 

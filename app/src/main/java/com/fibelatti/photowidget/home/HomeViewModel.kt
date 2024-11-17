@@ -26,8 +26,8 @@ class HomeViewModel @Inject constructor(
     private val _currentWidgets: MutableStateFlow<List<Pair<Int, PhotoWidget>>> = MutableStateFlow(emptyList())
     val currentWidgets: StateFlow<List<Pair<Int, PhotoWidget>>> = _currentWidgets.asStateFlow()
 
-    fun loadCurrentWidgets(ids: List<Int>) {
-        val allIds = ids + photoWidgetStorage.getPendingDeletionWidgetIds()
+    fun loadCurrentWidgets() {
+        val allIds = photoWidgetStorage.getKnownWidgetIds()
         val flows = allIds.map(loadPhotoWidgetUseCase::invoke)
 
         combine(flows, Array<PhotoWidget>::toList)

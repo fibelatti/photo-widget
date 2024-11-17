@@ -33,6 +33,7 @@ import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
 
@@ -154,6 +155,11 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
     private suspend fun handleMessage(message: PhotoWidgetConfigureState.Message) {
         when (message) {
+            is PhotoWidgetConfigureState.Message.SuggestImport -> {
+                showImportFromWidgetSuggestion()
+                viewModel.messageHandled(message = message)
+            }
+
             is PhotoWidgetConfigureState.Message.ImportFailed -> {
                 MaterialAlertDialogBuilder(this)
                     .setMessage(R.string.photo_widget_configure_import_error)
@@ -202,6 +208,21 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 viewModel.messageHandled(message = message)
             }
         }
+    }
+
+    private fun showImportFromWidgetSuggestion() {
+        Snackbar.make(
+            findViewById(android.R.id.content),
+            R.string.photo_widget_configure_import_prompt,
+            Snackbar.LENGTH_LONG,
+        ).apply {
+            setAction(R.string.photo_widget_configure_import_prompt_action) {
+                ExistingWidgetPicker.show(
+                    context = this@PhotoWidgetConfigureActivity,
+                    onWidgetSelected = viewModel::importFromWidget,
+                )
+            }
+        }.show()
     }
 
     private fun showAspectRatioPicker() {

@@ -309,10 +309,7 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     suspend fun deleteUnusedWidgetData(existingWidgetIds: List<Int>) {
-        val unusedWidgetIds = internalFileStorage.getWidgetIds()
-            .plus(getPendingDeletionWidgetIds())
-            .filterNot { it == 0 || it in existingWidgetIds }
-            .distinct()
+        val unusedWidgetIds = getKnownWidgetIds().filterNot { it == 0 || it in existingWidgetIds }
         val currentTimestamp = System.currentTimeMillis()
 
         Timber.d("Deleting draft widget data")
@@ -336,8 +333,8 @@ class PhotoWidgetStorage @Inject constructor(
         pendingDeletionPhotosDao.deletePhotosBeforeTimestamp(timestamp = currentTimestamp)
     }
 
-    fun getPendingDeletionWidgetIds(): List<Int> {
-        return sharedPreferences.getPendingDeletionWidgetIds()
+    fun getKnownWidgetIds(): List<Int> {
+        return sharedPreferences.getKnownWidgetIds()
     }
 
     suspend fun renameTemporaryWidgetDir(appWidgetId: Int) {

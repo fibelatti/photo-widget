@@ -86,6 +86,11 @@
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">As alterações serão perdidas, voltar mesmo assim?</string>
 
+    <string name="photo_widget_configure_import_prompt">Importar de outro widget?</string>
+    <string name="photo_widget_configure_import_prompt_action">Escolher</string>
+    <string name="photo_widget_configure_import_dialog_title">Escolha o widget</string>
+    <string name="photo_widget_configure_import_dialog_description">Todas as fotos e configurações serão copiadas para o novo widget</string>
+
     <string name="photo_widget_configure_import_error">Não foi possível importar todas as fotos escolhidas</string>
     <string name="photo_widget_configure_too_many_photos_error">Cada pasta sincronizada pode conter no máximo 3000 fotos. Você pode selecionar mais de uma e cada subpasta é contada separadamente.\n\nVocê não pode selecionar seu rolo da câmera. As fotos são processadas uma por uma e pastas com muitos milhares resultam em problemas graves de desempenho no editor de widgets, bem como na tela inicial ao alternar fotos.</string>
     <string name="photo_widget_configure_missing_photos_error">O widget deve ter pelo menos uma foto. Os widgets só podem ser excluídos diretamente da tela inicial.</string>

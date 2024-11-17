@@ -354,10 +354,11 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         }
     }
 
-    fun getPendingDeletionWidgetIds(): List<Int> {
+    fun getKnownWidgetIds(): List<Int> {
         return sharedPreferences.all
-            .filter { (key, _) -> key.startsWith(PreferencePrefix.DELETION_TIMESTAMP.value) }
-            .mapNotNull { (key, value) -> key.substringAfterLast("_").toIntOrNull()?.takeIf { value as Long > 0 } }
+            .filter { (key, _) -> key.startsWith(PreferencePrefix.SOURCE.value) }
+            .mapNotNull { (key, _) -> key.substringAfterLast("_").toIntOrNull()?.takeIf { it > 0 } }
+            .distinct()
     }
 
     private enum class PreferencePrefix(val value: String) {

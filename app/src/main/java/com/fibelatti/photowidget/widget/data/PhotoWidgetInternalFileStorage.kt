@@ -159,14 +159,6 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
     }
 
-    suspend fun getWidgetIds(): List<Int> {
-        return withContext(Dispatchers.IO) {
-            rootDir.listFiles().orEmpty()
-                .filter { it.isDirectory }
-                .map { it.name.toInt() }
-        }
-    }
-
     suspend fun renameTemporaryWidgetDir(appWidgetId: Int) {
         withContext(Dispatchers.IO) {
             val tempDir = File("$rootDir/0")

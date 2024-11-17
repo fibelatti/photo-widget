@@ -40,7 +40,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val photoWidgetStorage: PhotoWidgetStorage,
     loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
-    duplicatePhotoWidgetUseCase: DuplicatePhotoWidgetUseCase,
+    private val duplicatePhotoWidgetUseCase: DuplicatePhotoWidgetUseCase,
     private val savePhotoWidgetUseCase: SavePhotoWidgetUseCase,
     deleteStaleDataUseCase: DeleteStaleDataUseCase,
 ) : ViewModel() {
@@ -69,33 +69,36 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 Timber.d("Restoring widget (restoreFromId=$it)")
                 duplicatePhotoWidgetUseCase(originalAppWidgetId = it, newAppWidgetId = appWidgetId)
             }
-            val updateState = { photoWidget: PhotoWidget ->
-                val resolvedAspectRatio = aspectRatio ?: photoWidget.aspectRatio
-                _state.update { current ->
-                    current.copy(
-                        photoWidget = photoWidget.copy(
-                            aspectRatio = resolvedAspectRatio,
-                            cornerRadius = if (PhotoWidgetAspectRatio.FILL_WIDGET == resolvedAspectRatio) {
-                                0F
-                            } else {
-                                PhotoWidget.DEFAULT_CORNER_RADIUS
-                            },
-                        ),
-                        selectedPhoto = photoWidget.photos.firstOrNull(),
-                        isProcessing = photoWidget.isLoading,
-                        hasEdits = sourceWidget != null,
-                    )
-                }
-            }
 
             if (sourceWidget != null) {
-                updateState(sourceWidget)
+                updateState(photoWidget = sourceWidget, hasEdits = true)
             } else {
                 loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
-                    .onEach { photoWidget -> updateState(photoWidget) }
+                    .onEach { photoWidget -> updateState(photoWidget = photoWidget, hasEdits = false) }
                     .onCompletion { trackEdits() }
                     .launchIn(viewModelScope)
             }
+
+            checkImportSuggestion()
+        }
+    }
+
+    private fun updateState(photoWidget: PhotoWidget, hasEdits: Boolean) {
+        val resolvedAspectRatio = aspectRatio ?: photoWidget.aspectRatio
+        _state.update { current ->
+            current.copy(
+                photoWidget = photoWidget.copy(
+                    aspectRatio = resolvedAspectRatio,
+                    cornerRadius = if (PhotoWidgetAspectRatio.FILL_WIDGET == resolvedAspectRatio) {
+                        0F
+                    } else {
+                        PhotoWidget.DEFAULT_CORNER_RADIUS
+                    },
+                ),
+                selectedPhoto = photoWidget.photos.firstOrNull(),
+                isProcessing = photoWidget.isLoading,
+                hasEdits = hasEdits,
+            )
         }
     }
 
@@ -103,6 +106,35 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         viewModelScope.launch {
             state.withIndex().first { (index, value) -> index > 0 && !value.hasEdits }
             _state.update { current -> current.copy(hasEdits = true) }
+        }
+    }
+
+    private fun checkImportSuggestion() {
+        viewModelScope.launch {
+            val currentPhotos = state.first { !it.isProcessing }.photoWidget.photos
+            val canImport = appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID &&
+                currentPhotos.isEmpty() &&
+                photoWidgetStorage.getKnownWidgetIds().isNotEmpty()
+
+            if (canImport) {
+                delay(1_000)
+                _state.update { current ->
+                    current.copy(messages = current.messages + PhotoWidgetConfigureState.Message.SuggestImport)
+                }
+            }
+        }
+    }
+
+    fun importFromWidget(widgetId: Int) {
+        viewModelScope.launch {
+            _state.update { current -> current.copy(isProcessing = true) }
+
+            val photoWidget = duplicatePhotoWidgetUseCase(
+                originalAppWidgetId = widgetId,
+                newAppWidgetId = appWidgetId,
+            )
+
+            updateState(photoWidget = photoWidget, hasEdits = true)
         }
     }
 

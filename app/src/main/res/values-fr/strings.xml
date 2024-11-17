@@ -86,6 +86,11 @@
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Tous les changements seront perdus, revenir quand même ?</string>
 
+    <string name="photo_widget_configure_import_prompt">Importer depuis un autre widget ?</string>
+    <string name="photo_widget_configure_import_prompt_action">Choisir</string>
+    <string name="photo_widget_configure_import_dialog_title">Choisissez le widget</string>
+    <string name="photo_widget_configure_import_dialog_description">Toutes les photos et configurations seront copiées dans le nouveau widget</string>
+
     <string name="photo_widget_configure_import_error">Impossible d\'importer toutes les photos sélectionnées</string>
     <string name="photo_widget_configure_too_many_photos_error">Chaque dossier synchronisé peut contenir un maximum de 3000 photos. Vous pouvez en sélectionner plusieurs, et chaque sous-dossier est compté séparément.\n\nVous ne pouvez pas sélectionner votre pellicule. Les photos sont traitées une par une, et les dossiers très volumineux causent de graves problèmes de performance dans l\'éditeur de widgets, ainsi que sur l\'écran d\'accueil lors du changement de photos.</string>
     <string name="photo_widget_configure_missing_photos_error">Le widget doit contenir au moins une photo. Les widgets ne peuvent être supprimés que directement depuis l\'écran d\'accueil.</string>
