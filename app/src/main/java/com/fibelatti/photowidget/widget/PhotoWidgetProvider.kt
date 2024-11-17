@@ -89,8 +89,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         // RemoteViews have a maximum allowed memory for bitmaps
         private const val MAX_WIDGET_BITMAP_MEMORY = 6_912_000
 
-        private val loadedWidgets: MutableMap<Int, Boolean> = mutableMapOf()
-
         fun ids(context: Context): List<Int> = AppWidgetManager.getInstance(context)
             .getAppWidgetIds(ComponentName(context, PhotoWidgetProvider::class.java))
             .toList()
@@ -103,19 +101,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
             val coroutineScope = entryPoint.coroutineScope()
             val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
-            val photoWidgetStorage = entryPoint.photoWidgetStorage()
-
-            if (loadedWidgets[appWidgetId] != true) {
-                Timber.d("Dispatching pre-load remote views to AppWidgetManager")
-
-                val aspectRatio = photoWidgetStorage.getWidgetAspectRatio(appWidgetId)
-                val remoteViews = createBaseView(context = context, aspectRatio = aspectRatio).apply {
-                    setImageViewResource(R.id.iv_placeholder, R.drawable.ic_hourglass)
-                }
-
-                appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
-                loadedWidgets[appWidgetId] = true
-            }
 
             coroutineScope.launch {
                 Timber.d("Loading widget data")
@@ -160,6 +145,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         ): RemoteViews {
             Timber.d("Creating remote views")
             val errorView = createBaseView(context = context, aspectRatio = photoWidget.aspectRatio).apply {
+                setViewVisibility(R.id.iv_placeholder, View.VISIBLE)
                 setImageViewResource(R.id.iv_placeholder, R.drawable.ic_file_not_found)
             }
 
