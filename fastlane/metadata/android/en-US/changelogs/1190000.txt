@@ -1,0 +1,8 @@
+This version brings the following updates:
+
+* Customize your widgets with the new colored borders
+* Hide photos from widgets that are synced with folders
+* New setting to control the image quality of imported photos
+* New option to import from an existing widget when setting up another
+
+Feedback and suggestions are always welcome, thank you for using the app!
