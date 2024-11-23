@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * It's now possible to exclude photos from widgets synced to folders
+* Updated target SDK to 35 (Android 15)
 
 ## [v1.18.1] - 2024-11-07
 
