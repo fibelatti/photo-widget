@@ -163,7 +163,7 @@
 
     <string name="photo_widget_configure_interval_grant_permission">Kesin alarm izni ver</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">Bu izin hakkında</string>
-    <string name="photo_widget_configure_interval_permission_dialog_description">Android, pil ömrünü optimize etmek için arka plan çalışmalarını kısıtlar, bu da her fotoğraf arasındaki aralıkların daha uzun olmasına neden olabilir.\n\nWidget\'ların seçilen aralıkta tam olarak güncellenmesini istiyorsanız, ayarları açın ve bu izni etkinleştirin.</string>
+    <string name="photo_widget_configure_interval_permission_dialog_description">Android, pil ömrünü optimize etmek için arka plan çalışmalarını kısıtlayabilir; bu da her fotoğraf arasındaki aralıkların uzamasıyla sonuçlanır.\n\nWidget\'ları tam olarak seçilen aralıkta güncellemek için ayarları açın ve alarmlar ile hatırlatıcılar ayarlamaya izin verin.</string>
     <string name="photo_widget_configure_interval_open_settings">Ayarları aç</string>
 
     <string name="photo_widget_configure_border">Kenarlık</string>

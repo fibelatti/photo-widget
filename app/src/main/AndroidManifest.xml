@@ -118,6 +118,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="com.fibelatti.photowidget.action.RESCHEDULE" />
+            </intent-filter>
         </receiver>
 
         <receiver

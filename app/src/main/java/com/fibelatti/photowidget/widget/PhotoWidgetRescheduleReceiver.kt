@@ -16,10 +16,11 @@ class PhotoWidgetRescheduleReceiver : BroadcastReceiver() {
         val isUpdate = Intent.ACTION_MY_PACKAGE_REPLACED == intent.action ||
             (Intent.ACTION_PACKAGE_REPLACED == intent.action &&
                 intent.data?.schemeSpecificPart == context.packageName)
+        val isManual = ACTION_RESCHEDULE == intent.action
 
-        Timber.d("Reschedule received (isBoot=$isBoot, isUpdate=$isUpdate)")
+        Timber.d("Reschedule received (isBoot=$isBoot, isUpdate=$isUpdate, isManual=$isManual)")
 
-        if (isBoot || isUpdate) {
+        if (isBoot || isUpdate || isManual) {
             val ids = PhotoWidgetProvider.ids(context).ifEmpty {
                 Timber.d("There are no widgets")
                 return
@@ -43,6 +44,15 @@ class PhotoWidgetRescheduleReceiver : BroadcastReceiver() {
                     PhotoWidgetProvider.update(context = context, appWidgetId = id)
                 }
             }
+        }
+    }
+
+    companion object {
+
+        const val ACTION_RESCHEDULE = "com.fibelatti.photowidget.action.RESCHEDULE"
+
+        fun intent(context: Context): Intent = Intent(ACTION_RESCHEDULE).apply {
+            setClassName(context.packageName, "com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver")
         }
     }
 }

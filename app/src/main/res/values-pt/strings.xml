@@ -169,7 +169,7 @@
 
     <string name="photo_widget_configure_interval_grant_permission">Dar permissão de alarme exato</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">Sobre esta permissão</string>
-    <string name="photo_widget_configure_interval_permission_dialog_description">O Android restringe atividades em segundo plano para otimizar a duração da bateria, o que pode levar a intervalos mais longos entre cada foto.\n\nSe você deseja que os widgets sejam atualizados precisamente no intervalo selecionado, abra as configurações e habilite esta permissão.</string>
+    <string name="photo_widget_configure_interval_permission_dialog_description">O Android pode restringir o trabalho em segundo plano para otimizar a duração da bateria, resultando em intervalos maiores entre cada foto.\n\nPara atualizar os widgets precisamente no intervalo selecionado, abra as configurações e permita a configuração de alarmes e lembretes.</string>
     <string name="photo_widget_configure_interval_open_settings">Abrir configurações</string>
 
     <string name="photo_widget_configure_border">Borda</string>

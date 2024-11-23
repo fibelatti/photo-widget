@@ -169,7 +169,7 @@
 
     <string name="photo_widget_configure_interval_grant_permission">Предоставить разрешение на точный будильник</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">Об этом разрешении</string>
-    <string name="photo_widget_configure_interval_permission_dialog_description">Android ограничивает фоновую работу для оптимизации времени работы от батареи, что может привести к более длительным интервалам между каждой фотографией.\n\nЕсли вы хотите, чтобы виджеты обновлялись точно в выбранный интервал, откройте настройки и включите это разрешение.</string>
+    <string name="photo_widget_configure_interval_permission_dialog_description">Android может ограничивать фоновую работу, чтобы оптимизировать время работы аккумулятора, что приводит к увеличению интервалов между снимками.\n\nЧтобы обновлять виджеты точно с выбранным интервалом, откройте настройки и разрешите установку будильников и напоминаний.</string>
     <string name="photo_widget_configure_interval_open_settings">Открыть настройки</string>
 
     <string name="photo_widget_configure_border">Граница</string>

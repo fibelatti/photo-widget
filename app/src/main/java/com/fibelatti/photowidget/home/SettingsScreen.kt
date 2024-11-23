@@ -1,8 +1,12 @@
 package com.fibelatti.photowidget.home
 
+import android.app.AlarmManager
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -31,14 +35,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.AlarmManagerCompat
+import androidx.core.content.getSystemService
 import com.fibelatti.photowidget.BuildConfig
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.configure.ExactAlarmsDialog
+import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
+import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
@@ -49,6 +59,67 @@ import com.fibelatti.ui.theme.ExtendedTheme
 fun SettingsScreen(
     onDefaultsClick: () -> Unit,
     onDataSaverClick: () -> Unit,
+    onAppearanceClick: () -> Unit,
+    onColorsClick: () -> Unit,
+    onSendFeedbackClick: () -> Unit,
+    onRateClick: () -> Unit,
+    onShareClick: () -> Unit,
+    onHelpClick: () -> Unit,
+    onPrivacyPolicyClick: () -> Unit,
+    onViewLicensesClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val localContext = LocalContext.current
+    val alarmManager: AlarmManager = remember { requireNotNull(localContext.getSystemService()) }
+
+    var canScheduleExactAlarms by remember {
+        mutableStateOf(AlarmManagerCompat.canScheduleExactAlarms(alarmManager))
+    }
+    var showExactAlarmsDialog by remember {
+        mutableStateOf(false)
+    }
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        canScheduleExactAlarms = AlarmManagerCompat.canScheduleExactAlarms(alarmManager)
+        if (canScheduleExactAlarms) {
+            localContext.sendBroadcast(PhotoWidgetRescheduleReceiver.intent(localContext))
+        }
+    }
+
+    SettingsScreen(
+        onDefaultsClick = onDefaultsClick,
+        onDataSaverClick = onDataSaverClick,
+        canScheduleExactAlarms = canScheduleExactAlarms,
+        onScheduleExactAlarmsClick = { showExactAlarmsDialog = true },
+        onAppearanceClick = onAppearanceClick,
+        onColorsClick = onColorsClick,
+        onSendFeedbackClick = onSendFeedbackClick,
+        onRateClick = onRateClick,
+        onShareClick = onShareClick,
+        onHelpClick = onHelpClick,
+        onPrivacyPolicyClick = onPrivacyPolicyClick,
+        onViewLicensesClick = onViewLicensesClick,
+        modifier = modifier,
+    )
+
+    if (showExactAlarmsDialog) {
+        ExactAlarmsDialog(
+            onDismiss = {
+                showExactAlarmsDialog = false
+            },
+            onConfirm = {
+                launcher.launch(requestScheduleExactAlarmIntent(localContext))
+                showExactAlarmsDialog = false
+            },
+        )
+    }
+}
+
+@Composable
+private fun SettingsScreen(
+    onDefaultsClick: () -> Unit,
+    onDataSaverClick: () -> Unit,
+    canScheduleExactAlarms: Boolean,
+    onScheduleExactAlarmsClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onSendFeedbackClick: () -> Unit,
@@ -86,6 +157,14 @@ fun SettingsScreen(
                 label = R.string.photo_widget_home_data_saver,
                 onClick = onDataSaverClick,
             )
+
+            AnimatedVisibility(visible = !canScheduleExactAlarms) {
+                SettingsAction(
+                    icon = R.drawable.ic_alarm,
+                    label = R.string.photo_widget_configure_interval_grant_permission,
+                    onClick = onScheduleExactAlarmsClick,
+                )
+            }
 
             SettingsAction(
                 icon = R.drawable.ic_appearance,
@@ -259,6 +338,8 @@ private fun SettingsScreenPreview() {
         SettingsScreen(
             onDefaultsClick = {},
             onDataSaverClick = {},
+            canScheduleExactAlarms = false,
+            onScheduleExactAlarmsClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
             onSendFeedbackClick = {},

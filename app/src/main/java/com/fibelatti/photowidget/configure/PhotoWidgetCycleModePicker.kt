@@ -2,8 +2,6 @@ package com.fibelatti.photowidget.configure
 
 import android.app.AlarmManager
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -27,7 +25,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
@@ -69,7 +66,9 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
+import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
@@ -94,18 +93,15 @@ object PhotoWidgetCycleModePicker {
 
             val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 canScheduleExactAlarms = AlarmManagerCompat.canScheduleExactAlarms(alarmManager)
+                if (canScheduleExactAlarms) {
+                    context.sendBroadcast(PhotoWidgetRescheduleReceiver.intent(context))
+                }
             }
 
             PhotoCycleModePickerContent(
                 cycleMode = cycleMode,
                 canScheduleExactAlarms = canScheduleExactAlarms,
-                onOpenPermission = {
-                    val intent = Intent("android.settings.REQUEST_SCHEDULE_EXACT_ALARM").apply {
-                        data = Uri.fromParts("package", context.packageName, null)
-                    }
-
-                    launcher.launch(intent)
-                },
+                onOpenPermission = { launcher.launch(requestScheduleExactAlarmIntent(context)) },
                 onApplyClick = { newMode ->
                     onApplyClick(newMode)
                     dismiss()
@@ -272,27 +268,11 @@ private fun PhotoCycleModePickerContent(
         }
 
         if (showExplainerDialog) {
-            AlertDialog(
-                onDismissRequest = { showExplainerDialog = false },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            onOpenPermission()
-                            showExplainerDialog = false
-                        },
-                    ) {
-                        Text(text = stringResource(id = R.string.photo_widget_configure_interval_open_settings))
-                    }
-                },
-                title = {
-                    Text(text = stringResource(id = R.string.photo_widget_configure_interval_permission_dialog_title))
-                },
-                text = {
-                    Text(
-                        text = stringResource(
-                            id = R.string.photo_widget_configure_interval_permission_dialog_description,
-                        ),
-                    )
+            ExactAlarmsDialog(
+                onDismiss = { showExplainerDialog = false },
+                onConfirm = {
+                    onOpenPermission()
+                    showExplainerDialog = false
                 },
             )
         }
