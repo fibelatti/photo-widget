@@ -20,54 +20,61 @@ object PhotoWidgetShapeBuilder {
         PhotoWidgetShape.Polygon(
             id = "square",
             numVertices = 4,
-            roundness = 0.05f,
+            rounding = 0.05f,
             rotation = 45f,
         ),
         PhotoWidgetShape.Polygon(
             id = "rounded-square",
             numVertices = 4,
-            roundness = 0.2f,
+            rounding = 0.2f,
             rotation = 45f,
         ),
         PhotoWidgetShape.Polygon(
             id = "squircle",
             numVertices = 4,
-            roundness = 0.6f,
+            rounding = 0.6f,
             rotation = 45f,
         ),
         PhotoWidgetShape.Polygon(
             id = "circle",
             numVertices = 8,
-            roundness = 1f,
+            rounding = 1f,
+        ),
+        PhotoWidgetShape.Star(
+            id = "daisy",
+            numVertices = 12,
+            rounding = .5f,
+            innerRadius = .5f,
+            innerRounding = 0f,
         ),
         PhotoWidgetShape.Star(
             id = "scallop",
             numVertices = 12,
-            roundness = .1f,
+            rounding = .1f,
             innerRadius = .928f,
         ),
         PhotoWidgetShape.Star(
             id = "medal",
             numVertices = 8,
-            roundness = .16f,
+            rounding = .16f,
             innerRadius = .784f,
         ),
         PhotoWidgetShape.Star(
             id = "clover",
             numVertices = 4,
-            roundness = .32f,
+            rounding = .32f,
             innerRadius = .352f,
             rotation = 45f,
         ),
         PhotoWidgetShape.Polygon(
             id = "octagon",
             numVertices = 8,
-            roundness = .16f,
+            rounding = .16f,
         ),
         PhotoWidgetShape.Polygon(
             id = "hexagon",
             numVertices = 6,
-            roundness = .16f,
+            rounding = .16f,
         ),
         PhotoWidgetShape.Custom(
             id = "heart",
@@ -119,18 +126,19 @@ object PhotoWidgetShapeBuilder {
         val polygon = when (photoWidgetShape) {
             is PhotoWidgetShape.Polygon -> RoundedPolygon(
                 numVertices = photoWidgetShape.numVertices,
-                rounding = CornerRounding(radius = photoWidgetShape.roundness),
+                rounding = CornerRounding(radius = photoWidgetShape.rounding),
             )
 
             is PhotoWidgetShape.Star -> RoundedPolygon.star(
                 numVerticesPerRadius = photoWidgetShape.numVertices,
                 innerRadius = photoWidgetShape.innerRadius,
-                rounding = CornerRounding(radius = photoWidgetShape.roundness),
+                rounding = CornerRounding(radius = photoWidgetShape.rounding),
+                innerRounding = photoWidgetShape.innerRounding?.let(::CornerRounding),
             )
 
             is PhotoWidgetShape.Custom -> RoundedPolygon(
                 vertices = photoWidgetShape.vertices,
-                rounding = CornerRounding(radius = photoWidgetShape.roundness),
+                rounding = CornerRounding(radius = photoWidgetShape.rounding),
                 perVertexRounding = photoWidgetShape.perVertexRoundness?.mapIndexed { index, value ->
                     CornerRounding(
                         radius = value,

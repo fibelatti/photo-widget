@@ -13,7 +13,7 @@ sealed class PhotoWidgetShape {
         override val id: String,
         @IntRange(from = 3)
         val numVertices: Int,
-        val roundness: Float,
+        val rounding: Float,
         override val rotation: Float = 0f,
         override val scaleX: Float = 1f,
         override val scaleY: Float = 1f,
@@ -23,8 +23,9 @@ sealed class PhotoWidgetShape {
         override val id: String,
         @IntRange(from = 3)
         val numVertices: Int,
-        val roundness: Float,
+        val rounding: Float,
         val innerRadius: Float,
+        val innerRounding: Float? = null,
         override val rotation: Float = 0f,
         override val scaleX: Float = 1f,
         override val scaleY: Float = 1f,
@@ -33,7 +34,7 @@ sealed class PhotoWidgetShape {
     data class Custom(
         override val id: String,
         val vertices: FloatArray,
-        val roundness: Float = 0f,
+        val rounding: Float = 0f,
         val perVertexRoundness: List<Float>? = null,
         val perVertexSmoothing: List<Float>? = null,
         override val rotation: Float = 0f,
@@ -54,7 +55,7 @@ sealed class PhotoWidgetShape {
 
             if (id != other.id) return false
             if (!vertices.contentEquals(other.vertices)) return false
-            if (roundness != other.roundness) return false
+            if (rounding != other.rounding) return false
             if (perVertexRoundness != other.perVertexRoundness) return false
             if (perVertexSmoothing != other.perVertexSmoothing) return false
             if (rotation != other.rotation) return false
@@ -67,7 +68,7 @@ sealed class PhotoWidgetShape {
         override fun hashCode(): Int {
             var result = id.hashCode()
             result = 31 * result + vertices.contentHashCode()
-            result = 31 * result + roundness.hashCode()
+            result = 31 * result + rounding.hashCode()
             result = 31 * result + (perVertexRoundness?.hashCode() ?: 0)
             result = 31 * result + (perVertexSmoothing?.hashCode() ?: 0)
             result = 31 * result + rotation.hashCode()
