@@ -43,9 +43,7 @@ import androidx.compose.ui.unit.sp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
-import com.fibelatti.ui.preview.DevicePreviews
-import com.fibelatti.ui.preview.LocalePreviews
-import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -247,9 +245,7 @@ private fun SourcePickerContent(
 }
 
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun SourcePickerContentPhotosPreview() {
     ExtendedTheme {
         SourcePickerContent(
@@ -263,9 +259,7 @@ private fun SourcePickerContentPhotosPreview() {
 }
 
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun SourcePickerContentDirectoryPreview() {
     ExtendedTheme {
         SourcePickerContent(

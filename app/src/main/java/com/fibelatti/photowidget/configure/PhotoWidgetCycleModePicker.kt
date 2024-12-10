@@ -69,9 +69,7 @@ import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
-import com.fibelatti.ui.preview.DevicePreviews
-import com.fibelatti.ui.preview.LocalePreviews
-import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.Calendar
@@ -609,9 +607,7 @@ fun TimePickerDialog(
 
 // region Previews
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun IntervalPreview() {
     ExtendedTheme {
         PhotoCycleModePickerContent(
@@ -629,9 +625,7 @@ private fun IntervalPreview() {
 }
 
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun ScheduleEmptyPreview() {
     ExtendedTheme {
         PhotoCycleModePickerContent(
@@ -646,9 +640,7 @@ private fun ScheduleEmptyPreview() {
 }
 
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun SchedulePreview() {
     ExtendedTheme {
         PhotoCycleModePickerContent(
@@ -668,9 +660,7 @@ private fun SchedulePreview() {
 }
 
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun DisabledPreview() {
     ExtendedTheme {
         PhotoCycleModePickerContent(

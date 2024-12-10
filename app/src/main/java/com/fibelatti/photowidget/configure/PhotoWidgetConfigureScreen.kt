@@ -107,9 +107,7 @@ import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.ui.foundation.grayScale
-import com.fibelatti.ui.preview.DevicePreviews
-import com.fibelatti.ui.preview.LocalePreviews
-import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit
@@ -1167,9 +1165,7 @@ fun ColoredShape(
 
 // region Previews
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun PhotoWidgetConfigureScreenPreview() {
     ExtendedTheme {
         PhotoWidgetConfigureScreen(
@@ -1216,9 +1212,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
 }
 
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun PhotoWidgetConfigureScreenTallPreview() {
     ExtendedTheme {
         PhotoWidgetConfigureScreen(

@@ -47,9 +47,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.ui.foundation.conditional
 import com.fibelatti.ui.foundation.grayScale
-import com.fibelatti.ui.preview.DevicePreviews
-import com.fibelatti.ui.preview.LocalePreviews
-import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 import kotlin.random.Random
 
@@ -209,9 +207,7 @@ fun MyWidgetsScreen(
 
 // region Previews
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun MyWidgetsScreenPreview() {
     ExtendedTheme {
         val allShapeIds = PhotoWidgetShapeBuilder.buildAllShapes().map { it.key.id }
@@ -242,9 +238,7 @@ private fun MyWidgetsScreenPreview() {
 }
 
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun MyWidgetsScreenEmptyPreview() {
     ExtendedTheme {
         MyWidgetsScreen(

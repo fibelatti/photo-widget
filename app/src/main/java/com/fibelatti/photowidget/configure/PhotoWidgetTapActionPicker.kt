@@ -63,9 +63,7 @@ import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.ui.foundation.ColumnToggleButtonGroup
 import com.fibelatti.ui.foundation.ToggleButtonGroup
-import com.fibelatti.ui.preview.DevicePreviews
-import com.fibelatti.ui.preview.LocalePreviews
-import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -398,9 +396,7 @@ private fun AppPicker(
 }
 
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun PhotoWidgetTapActionPickerPreview() {
     ExtendedTheme {
         TapActionPickerContent(

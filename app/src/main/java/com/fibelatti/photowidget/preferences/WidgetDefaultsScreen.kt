@@ -73,8 +73,7 @@ import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.SliderSmallThumb
-import com.fibelatti.ui.preview.DevicePreviews
-import com.fibelatti.ui.preview.LocalePreviews
+import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
@@ -598,9 +597,7 @@ fun DefaultPicker(
 
 // region Previews
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun WidgetDefaultsScreenPreview() {
     ExtendedTheme {
         WidgetDefaultsScreen(

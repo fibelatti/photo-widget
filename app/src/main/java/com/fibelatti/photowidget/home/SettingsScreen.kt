@@ -49,9 +49,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.ExactAlarmsDialog
 import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
-import com.fibelatti.ui.preview.DevicePreviews
-import com.fibelatti.ui.preview.LocalePreviews
-import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -330,9 +328,7 @@ private fun SettingsAction(
 
 // region Previews
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun SettingsScreenPreview() {
     ExtendedTheme {
         SettingsScreen(

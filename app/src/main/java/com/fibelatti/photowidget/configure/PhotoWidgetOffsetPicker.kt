@@ -45,9 +45,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.DefaultPicker
-import com.fibelatti.ui.preview.DevicePreviews
-import com.fibelatti.ui.preview.LocalePreviews
-import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
@@ -308,9 +306,7 @@ private fun PhotoWidgetOffsetControls(
 }
 
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun OffsetPickerPreview() {
     ExtendedTheme {
         PhotoWidgetOffsetPicker(

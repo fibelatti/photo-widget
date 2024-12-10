@@ -21,9 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import com.fibelatti.photowidget.R
-import com.fibelatti.ui.preview.DevicePreviews
-import com.fibelatti.ui.preview.LocalePreviews
-import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
@@ -62,9 +60,7 @@ fun LoadingIndicator(
 }
 
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun LoadingIndicatorPreview() {
     ExtendedTheme {
         LoadingIndicator()

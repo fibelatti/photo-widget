@@ -36,9 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.ui.preview.DevicePreviews
-import com.fibelatti.ui.preview.LocalePreviews
-import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
@@ -194,9 +192,7 @@ private enum class HomeNavigationDestination(
 
 // region Previews
 @Composable
-@ThemePreviews
-@LocalePreviews
-@DevicePreviews
+@AllPreviews
 private fun HomeScreenPreview() {
     ExtendedTheme {
         HomeScreen(
