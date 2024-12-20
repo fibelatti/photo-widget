@@ -189,6 +189,7 @@
     <string name="photo_widget_configure_tap_action_view_full_screen">Ver foto en pantalla completa</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Ver en galería</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Abrir una aplicación</string>
+    <string name="photo_widget_configure_tap_action_url_shortcut">Abrir un enlace</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Habilitar/deshabilitar ciclo</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Toque para pausar el ciclo automático de fotos. Toque nuevamente para reanudarlo.</string>
 

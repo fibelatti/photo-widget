@@ -313,6 +313,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     putString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", tapAction.appShortcut)
                 }
 
+                is PhotoWidgetTapAction.UrlShortcut -> {
+                    putString("${PreferencePrefix.URL_SHORTCUT}$appWidgetId", tapAction.url)
+                }
+
                 else -> Unit
             }
         }
@@ -331,6 +335,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
 
                 is PhotoWidgetTapAction.AppShortcut -> tapAction.copy(
                     appShortcut = getString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", null),
+                )
+
+                is PhotoWidgetTapAction.UrlShortcut -> tapAction.copy(
+                    url = getString("${PreferencePrefix.URL_SHORTCUT}$appWidgetId", null),
                 )
 
                 else -> tapAction
@@ -410,6 +418,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         INCREASE_BRIGHTNESS(value = "appwidget_increase_brightness_"),
         VIEW_ORIGINAL_PHOTO(value = "appwidget_view_original_photo_"),
         APP_SHORTCUT(value = "appwidget_app_shortcut_"),
+        URL_SHORTCUT(value = "appwidget_url_shortcut_"),
 
         DELETION_TIMESTAMP(value = "appwidget_deletion_timestamp_"),
         ;

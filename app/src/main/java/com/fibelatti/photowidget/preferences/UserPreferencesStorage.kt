@@ -222,6 +222,10 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                         appShortcut = getString(Preference.DEFAULT_APP_SHORTCUT.value, null),
                     )
 
+                    is PhotoWidgetTapAction.UrlShortcut -> tapAction.copy(
+                        url = getString(Preference.DEFAULT_URL_SHORTCUT.value, null),
+                    )
+
                     else -> tapAction
                 }
             }
@@ -238,6 +242,10 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
 
                     is PhotoWidgetTapAction.AppShortcut -> {
                         putString(Preference.DEFAULT_APP_SHORTCUT.value, value.appShortcut)
+                    }
+
+                    is PhotoWidgetTapAction.UrlShortcut -> {
+                        putString(Preference.DEFAULT_URL_SHORTCUT.value, value.url)
                     }
 
                     else -> Unit
@@ -298,6 +306,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         DEFAULT_INCREASE_BRIGHTNESS(value = "default_increase_brightness"),
         DEFAULT_VIEW_ORIGINAL_PHOTO(value = "default_view_original_photo"),
         DEFAULT_APP_SHORTCUT(value = "default_app_shortcut"),
+        DEFAULT_URL_SHORTCUT(value = "default_url_shortcut"),
         ;
 
         override fun toString(): String = value

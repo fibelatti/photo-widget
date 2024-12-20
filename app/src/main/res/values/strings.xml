@@ -182,7 +182,8 @@
     <string name="photo_widget_configure_tap_action_none">None</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">View photo in full screen</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">View in gallery</string>
-    <string name="photo_widget_configure_tap_action_app_shortcut">App shortcut</string>
+    <string name="photo_widget_configure_tap_action_app_shortcut">Open an app</string>
+    <string name="photo_widget_configure_tap_action_url_shortcut">Open a link</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Enable/disable cycle</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Tap to pause the automatic photo cycling. Tap again to resume.</string>
 

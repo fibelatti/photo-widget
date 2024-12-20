@@ -59,6 +59,18 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     }
 
     @Parcelize
+    data class UrlShortcut(
+        val url: String? = null,
+    ) : PhotoWidgetTapAction {
+
+        @IgnoredOnParcel
+        override val label = R.string.photo_widget_configure_tap_action_url_shortcut
+
+        @IgnoredOnParcel
+        override val serializedName: String = "URL_SHORTCUT"
+    }
+
+    @Parcelize
     data object ToggleCycling : PhotoWidgetTapAction {
 
         @IgnoredOnParcel
@@ -78,6 +90,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
                 ViewFullScreen(),
                 ViewInGallery,
                 AppShortcut(),
+                UrlShortcut(),
                 ToggleCycling,
             )
         }

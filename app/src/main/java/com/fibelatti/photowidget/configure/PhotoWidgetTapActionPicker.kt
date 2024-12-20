@@ -31,11 +31,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -51,6 +54,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -78,7 +82,7 @@ object PhotoWidgetTapActionPicker {
             var selectedApp: String? by remember(currentTapAction) {
                 mutableStateOf((currentTapAction as? PhotoWidgetTapAction.AppShortcut)?.appShortcut)
             }
-            val launcher = rememberLauncherForActivityResult(
+            val appPickerLauncher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartActivityForResult(),
             ) { result ->
                 selectedApp = result.data?.component?.packageName
@@ -88,7 +92,7 @@ object PhotoWidgetTapActionPicker {
                 currentTapAction = currentTapAction,
                 currentAppShortcut = selectedApp,
                 onChooseApp = {
-                    launcher.launch(
+                    appPickerLauncher.launch(
                         Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
                             Intent.EXTRA_INTENT,
                             Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
@@ -112,6 +116,7 @@ private fun TapActionPickerContent(
     onApplyClick: (newTapAction: PhotoWidgetTapAction) -> Unit,
 ) {
     var tapAction by remember { mutableStateOf(currentTapAction) }
+    var url by remember { mutableStateOf((currentTapAction as? PhotoWidgetTapAction.UrlShortcut)?.url.orEmpty()) }
 
     LaunchedEffect(currentAppShortcut) {
         if (currentAppShortcut != null && tapAction is PhotoWidgetTapAction.AppShortcut) {
@@ -223,6 +228,20 @@ private fun TapActionPickerContent(
                     )
                 }
 
+                is PhotoWidgetTapAction.UrlShortcut -> {
+                    TextField(
+                        value = url,
+                        onValueChange = { newValue -> url = newValue },
+                        modifier = customOptionModifier,
+                        placeholder = {
+                            Text(text = "https://...")
+                        },
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        singleLine = true,
+                        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                    )
+                }
+
                 is PhotoWidgetTapAction.ToggleCycling -> {
                     Text(
                         text = stringResource(
@@ -240,7 +259,12 @@ private fun TapActionPickerContent(
         }
 
         FilledTonalButton(
-            onClick = { onApplyClick(tapAction) },
+            onClick = {
+                if (tapAction is PhotoWidgetTapAction.UrlShortcut) {
+                    tapAction = PhotoWidgetTapAction.UrlShortcut(url = url)
+                }
+                onApplyClick(tapAction)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),

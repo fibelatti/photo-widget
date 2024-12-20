@@ -358,6 +358,20 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     )
                 }
 
+                is PhotoWidgetTapAction.UrlShortcut -> {
+                    if (tapAction.url.isNullOrBlank()) return null
+
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(tapAction.url))
+                        .setIdentifierCompat("$appWidgetId")
+
+                    return PendingIntent.getActivity(
+                        /* context = */ context,
+                        /* requestCode = */ appWidgetId,
+                        /* intent = */ intent,
+                        /* flags = */ PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                    )
+                }
+
                 is PhotoWidgetTapAction.ToggleCycling -> {
                     val intent = Intent(context, ToggleCyclingFeedbackActivity::class.java).apply {
                         setIdentifierCompat("$appWidgetId")

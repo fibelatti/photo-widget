@@ -188,7 +188,8 @@
     <string name="photo_widget_configure_tap_action_none">Нет</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Просмотр фотографии на весь экран</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Просмотреть в галерее</string>
-    <string name="photo_widget_configure_tap_action_app_shortcut">Ярлык приложения</string>
+    <string name="photo_widget_configure_tap_action_app_shortcut">Открыть приложение</string>
+    <string name="photo_widget_configure_tap_action_url_shortcut">Открыть ссылку</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Включить/выключить цикл</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Нажмите, чтобы приостановить автоматическую смену фотографий. Нажмите еще раз, чтобы возобновить.</string>
 

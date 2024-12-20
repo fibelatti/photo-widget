@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * New shape: daisy
+* New tap action: URL shortcut
 
 ## [v1.19.0] - 2024-11-23
 
