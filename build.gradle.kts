@@ -69,6 +69,15 @@ subprojects {
         }
 
         extensions.findByType(CommonExtension::class.java)?.apply {
+            val compileSdkVersion: Int by project
+            val minSdkVersion: Int by project
+
+            compileSdk = compileSdkVersion
+
+            defaultConfig {
+                minSdk = minSdkVersion
+            }
+
             compileOptions {
                 sourceCompatibility(javaVersion)
                 targetCompatibility(javaVersion)
@@ -76,7 +85,7 @@ subprojects {
         }
 
         extensions.findByType(ComposeCompilerGradlePluginExtension::class.java)?.apply {
-            stabilityConfigurationFile = rootProject.layout.projectDirectory.file("compose_compiler_config.conf")
+            stabilityConfigurationFiles.add(rootProject.layout.projectDirectory.file("compose_compiler_config.conf"))
 
             if (project.findProperty("composeCompilerReports") == "true") {
                 val destinationDir = project.layout.buildDirectory.dir("compose_compiler")

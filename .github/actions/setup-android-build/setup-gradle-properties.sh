@@ -14,7 +14,8 @@ write_common_properties() {
 
     # Gradle properties common to all build environments
     write_property "org.gradle.caching=true"
-    write_property "org.gradle.configureondemand=false"
+    write_property "org.gradle.configuration-cache=true"
+    write_property "org.gradle.configureondemand=true"
     write_property "org.gradle.daemon=false"
     write_property "org.gradle.parallel=true"
     write_property "org.gradle.logging.stacktrace=all"
@@ -24,8 +25,6 @@ write_common_properties() {
     write_property "kotlin.incremental=false"
 
     # Android properties common to all build environments
-    write_property "android.enableBuildConfigAsBytecode=false"
-    write_property "android.enableJetifier=false"
     write_property "android.useAndroidX=true"
 }
 

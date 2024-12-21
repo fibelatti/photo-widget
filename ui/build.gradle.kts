@@ -5,18 +5,10 @@ plugins {
 }
 
 android {
-    val compileSdkVersion: Int by project
-    val minSdkVersion: Int by project
-
     namespace = "com.fibelatti.ui"
-    compileSdk = compileSdkVersion
 
     buildFeatures {
         compose = true
-    }
-
-    defaultConfig {
-        minSdk = minSdkVersion
     }
 }
 
