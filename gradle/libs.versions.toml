@@ -1,7 +1,7 @@
 [versions]
 agp = "8.7.3"
 coroutines = "1.10.1"
-hilt = "2.53.1"
+hilt = "2.54"
 hiltExtensions = "1.2.0"
 kotlin = "2.1.0"
 room = "2.6.1"
