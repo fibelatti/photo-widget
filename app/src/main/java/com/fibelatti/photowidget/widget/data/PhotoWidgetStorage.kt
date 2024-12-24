@@ -68,7 +68,7 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
-    suspend fun getWidgetPhotos(appWidgetId: Int, originalPhotos: Boolean = false): WidgetPhotos {
+    suspend fun getWidgetPhotos(appWidgetId: Int): WidgetPhotos {
         Timber.d("Retrieving photos (appWidgetId=$appWidgetId)")
 
         val source = getWidgetSource(appWidgetId = appWidgetId)
@@ -78,7 +78,6 @@ class PhotoWidgetStorage @Inject constructor(
         val croppedPhotos = internalFileStorage.getWidgetPhotos(
             appWidgetId = appWidgetId,
             source = source,
-            originalPhotos = originalPhotos,
         ).associateBy { it.name }
 
         Timber.d("Cropped photos found: ${croppedPhotos.size}")

@@ -1,7 +1,6 @@
 package com.fibelatti.photowidget.widget
 
 import com.fibelatti.photowidget.model.PhotoWidget
-import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -12,10 +11,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
     private val photoWidgetStorage: PhotoWidgetStorage,
 ) {
 
-    operator fun invoke(
-        appWidgetId: Int,
-        originalPhotos: Boolean = false,
-    ): Flow<PhotoWidget> = with(photoWidgetStorage) {
+    operator fun invoke(appWidgetId: Int): Flow<PhotoWidget> = with(photoWidgetStorage) {
         Timber.d("Loading widget data (appWidgetId=$appWidgetId)")
 
         val currentIndex = getWidgetIndex(appWidgetId = appWidgetId)
@@ -42,19 +38,12 @@ class LoadPhotoWidgetUseCase @Inject constructor(
         return flow {
             emit(widget.copy(isLoading = true))
 
-            val widgetPhotos = getWidgetPhotos(
-                appWidgetId = appWidgetId,
-                originalPhotos = widget.viewOriginalPhoto && originalPhotos,
-            )
+            val widgetPhotos = getWidgetPhotos(appWidgetId = appWidgetId)
 
             emit(
                 widget.copy(
                     photos = widgetPhotos.current,
-                    aspectRatio = if (widget.viewOriginalPhoto && originalPhotos) {
-                        PhotoWidgetAspectRatio.ORIGINAL
-                    } else {
-                        widget.aspectRatio
-                    },
+                    aspectRatio = widget.aspectRatio,
                     removedPhotos = widgetPhotos.excluded,
                     isLoading = false,
                 ),

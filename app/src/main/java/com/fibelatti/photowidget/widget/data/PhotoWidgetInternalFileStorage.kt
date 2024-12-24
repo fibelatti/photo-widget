@@ -77,7 +77,11 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
                 }
 
                 return@withContext if (newFiles.all { it.exists() }) {
-                    LocalPhoto(name = newPhotoName, path = croppedPhoto.path)
+                    LocalPhoto(
+                        name = newPhotoName,
+                        croppedPhotoPath = croppedPhoto.path,
+                        originalPhotoPath = originalPhoto.path,
+                    )
                 } else {
                     null
                 }
@@ -142,24 +146,25 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
     suspend fun getWidgetPhotos(
         appWidgetId: Int,
         source: PhotoWidgetSource,
-        originalPhotos: Boolean = false,
     ): List<LocalPhoto> {
         return withContext(Dispatchers.IO) {
             val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
             val originalPhotosDir = File("$widgetDir/original")
             val originalPhotoNames = originalPhotosDir.list().orEmpty().toSet()
 
-            if (originalPhotos) {
-                originalPhotoNames.map { file -> LocalPhoto(name = file, path = "$originalPhotosDir/$file") }
-            } else {
-                val fileNameFilter = FilenameFilter { _, name ->
-                    name != "original" && (name in originalPhotoNames || PhotoWidgetSource.DIRECTORY == source)
-                }
-
-                widgetDir.list(fileNameFilter)
-                    .orEmpty()
-                    .map { file -> LocalPhoto(name = file, path = "$widgetDir/$file") }
+            val fileNameFilter = FilenameFilter { _, name ->
+                name != "original" && (name in originalPhotoNames || PhotoWidgetSource.DIRECTORY == source)
             }
+
+            widgetDir.list(fileNameFilter)
+                .orEmpty()
+                .map { file ->
+                    LocalPhoto(
+                        name = file,
+                        croppedPhotoPath = "$widgetDir/$file",
+                        originalPhotoPath = "$originalPhotosDir/$file",
+                    )
+                }
         }
     }
 

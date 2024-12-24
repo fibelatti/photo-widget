@@ -156,11 +156,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
             Timber.d("Decoding the bitmap")
             val bitmap = try {
-                val data = when {
-                    !currentPhoto.path.isNullOrEmpty() -> currentPhoto.path
-                    currentPhoto.externalUri != null -> currentPhoto.externalUri
-                    else -> return errorView
-                }
+                val data = currentPhoto.getPhotoPath() ?: return errorView
                 val displayMetrics: DisplayMetrics = context.resources.displayMetrics
                 val maxMemoryAllowed: Int = if (!recoveryMode) {
                     (displayMetrics.heightPixels * displayMetrics.widthPixels * 4 * 1.5).roundToInt()

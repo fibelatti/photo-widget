@@ -39,7 +39,7 @@ class PhotoWidgetViewerViewModel @Inject constructor(
     private var loadWidgetJob: Job? = null
 
     init {
-        loadWidgetJob = loadPhotoWidgetUseCase(appWidgetId = appWidgetId, originalPhotos = true)
+        loadWidgetJob = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
             .onEach(::updateState)
             .launchIn(viewModelScope)
     }

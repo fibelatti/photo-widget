@@ -1095,13 +1095,7 @@ fun ShapedPhoto(
     isLoading: Boolean = false,
 ) {
     AsyncPhotoViewer(
-        data = photo?.run {
-            when {
-                !path.isNullOrEmpty() -> path
-                externalUri != null -> externalUri
-                else -> null
-            }
-        },
+        data = photo?.getPhotoPath(),
         dataKey = arrayOf(photo, shapeId, aspectRatio, cornerRadius, opacity, borderColorHex, borderWidth),
         isLoading = isLoading,
         contentScale = if (aspectRatio.isConstrained) {

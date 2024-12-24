@@ -79,7 +79,12 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
                     ScreenContent(
                         photo = photoWidget.currentPhoto,
                         isLoading = photoWidget.isLoading,
-                        aspectRatio = photoWidget.aspectRatio,
+                        viewOriginalPhoto = photoWidget.viewOriginalPhoto,
+                        aspectRatio = if (photoWidget.viewOriginalPhoto) {
+                            PhotoWidgetAspectRatio.ORIGINAL
+                        } else {
+                            photoWidget.aspectRatio
+                        },
                         onDismiss = { finish() },
                         showFlipControls = state.showMoveControls,
                         onPreviousClick = { viewModel.flip(backwards = true) },
@@ -122,6 +127,7 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
 private fun ScreenContent(
     photo: LocalPhoto?,
     isLoading: Boolean,
+    viewOriginalPhoto: Boolean,
     aspectRatio: PhotoWidgetAspectRatio,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
@@ -145,13 +151,7 @@ private fun ScreenContent(
         contentAlignment = Alignment.Center,
     ) {
         AsyncPhotoViewer(
-            data = photo?.run {
-                when {
-                    !path.isNullOrEmpty() -> path
-                    externalUri != null -> externalUri
-                    else -> null
-                }
-            },
+            data = photo?.getPhotoPath(viewOriginalPhoto = viewOriginalPhoto),
             dataKey = arrayOf(photo, aspectRatio),
             isLoading = isLoading,
             contentScale = if (aspectRatio.isConstrained) {
@@ -234,6 +234,7 @@ private fun ScreenContentPreview() {
         ScreenContent(
             photo = LocalPhoto(name = "photo-1"),
             isLoading = false,
+            viewOriginalPhoto = false,
             aspectRatio = PhotoWidgetAspectRatio.SQUARE,
             onDismiss = {},
             showFlipControls = true,

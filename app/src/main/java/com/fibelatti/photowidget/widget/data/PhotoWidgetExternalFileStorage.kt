@@ -145,7 +145,7 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
                     if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
                         val localPhoto = LocalPhoto(
                             name = documentName,
-                            path = croppedPhotos[documentName]?.path,
+                            croppedPhotoPath = croppedPhotos[documentName]?.croppedPhotoPath,
                             externalUri = fileUri,
                             timestamp = documentLastModified,
                         )

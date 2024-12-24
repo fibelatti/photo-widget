@@ -311,14 +311,16 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         val cropping = _state.value.photoWidget.photos.firstOrNull { it.cropping } ?: return
 
         _state.update { current ->
+            val currentTimeMillis = System.currentTimeMillis()
+
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     photos = current.photoWidget.photos.map { photo ->
                         if (photo.name == cropping.name) {
                             photo.copy(
-                                path = path,
+                                croppedPhotoPath = path,
                                 cropping = false,
-                                timestamp = System.currentTimeMillis(),
+                                timestamp = currentTimeMillis,
                             )
                         } else {
                             photo
@@ -327,8 +329,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 ),
                 selectedPhoto = if (current.selectedPhoto?.name == cropping.name) {
                     current.selectedPhoto.copy(
-                        path = path,
-                        timestamp = System.currentTimeMillis(),
+                        croppedPhotoPath = path,
+                        cropping = false,
+                        timestamp = currentTimeMillis,
                     )
                 } else {
                     current.selectedPhoto
