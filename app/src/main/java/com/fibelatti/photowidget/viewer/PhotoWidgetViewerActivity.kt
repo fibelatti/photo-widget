@@ -232,7 +232,7 @@ private fun ScreenContent(
 private fun ScreenContentPreview() {
     ExtendedTheme {
         ScreenContent(
-            photo = LocalPhoto(name = "photo-1"),
+            photo = LocalPhoto(photoId = "photo-1"),
             isLoading = false,
             viewOriginalPhoto = false,
             aspectRatio = PhotoWidgetAspectRatio.SQUARE,

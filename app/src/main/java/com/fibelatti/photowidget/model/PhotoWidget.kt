@@ -31,7 +31,7 @@ data class PhotoWidget(
 
     val cyclingEnabled: Boolean get() = photos.size > 1 && cycleMode !is PhotoWidgetCycleMode.Disabled
 
-    val order: List<String> get() = photos.map { it.name }
+    val order: List<String> get() = photos.map { it.photoId }
 
     val canSort: Boolean get() = PhotoWidgetSource.PHOTOS == source && photos.size > 1 && !shuffle
 

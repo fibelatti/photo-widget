@@ -216,7 +216,7 @@ private fun MyWidgetsScreenPreview() {
             widgets = List(size = 10) { index ->
                 index to PhotoWidget(
                     source = PhotoWidgetSource.PHOTOS,
-                    photos = listOf(LocalPhoto(name = "photo-1")),
+                    photos = listOf(LocalPhoto(photoId = "photo-1")),
                     shuffle = false,
                     cycleMode = PhotoWidgetCycleMode.DEFAULT,
                     tapAction = PhotoWidgetTapAction.DEFAULT,

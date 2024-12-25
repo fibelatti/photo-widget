@@ -78,7 +78,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
                 return@withContext if (newFiles.all { it.exists() }) {
                     LocalPhoto(
-                        name = newPhotoName,
+                        photoId = newPhotoName,
                         croppedPhotoPath = croppedPhoto.path,
                         originalPhotoPath = originalPhoto.path,
                     )
@@ -103,13 +103,13 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
     suspend fun getCropSources(appWidgetId: Int, localPhoto: LocalPhoto): Pair<Uri, Uri> = withContext(Dispatchers.IO) {
         val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
-        val croppedPhoto = File("$widgetDir/${localPhoto.name}").apply { createNewFile() }
+        val croppedPhoto = File("$widgetDir/${localPhoto.photoId}").apply { createNewFile() }
 
         return@withContext if (localPhoto.externalUri != null) {
             localPhoto.externalUri to Uri.fromFile(croppedPhoto)
         } else {
             val originalPhotosDir = File("$widgetDir/original")
-            val originalPhoto = File("$originalPhotosDir/${localPhoto.name}").apply { mkdirs() }
+            val originalPhoto = File("$originalPhotosDir/${localPhoto.photoId}").apply { mkdirs() }
 
             if (!originalPhoto.exists()) {
                 originalPhoto.createNewFile()
@@ -123,15 +123,15 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
     }
 
-    suspend fun deleteWidgetPhoto(appWidgetId: Int, photoName: String) {
+    suspend fun deleteWidgetPhoto(appWidgetId: Int, photoId: String) {
         withContext(Dispatchers.IO) {
             val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
             val originalPhotosDir = File("$widgetDir/original")
 
-            with(File("$originalPhotosDir/$photoName")) {
+            with(File("$originalPhotosDir/$photoId")) {
                 if (exists()) delete()
             }
-            with(File("$widgetDir/$photoName")) {
+            with(File("$widgetDir/$photoId")) {
                 if (exists()) delete()
             }
         }
@@ -158,11 +158,11 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
             widgetDir.list(fileNameFilter)
                 .orEmpty()
-                .map { file ->
+                .map { fileName ->
                     LocalPhoto(
-                        name = file,
-                        croppedPhotoPath = "$widgetDir/$file",
-                        originalPhotoPath = "$originalPhotosDir/$file",
+                        photoId = fileName,
+                        croppedPhotoPath = "$widgetDir/$fileName",
+                        originalPhotoPath = "$originalPhotosDir/$fileName",
                     )
                 }
         }

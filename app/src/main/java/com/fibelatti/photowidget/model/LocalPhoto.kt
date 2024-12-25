@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class LocalPhoto(
-    val name: String,
+    val photoId: String,
     val croppedPhotoPath: String? = null,
     val originalPhotoPath: String? = null,
     val externalUri: Uri? = null,

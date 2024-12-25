@@ -63,7 +63,7 @@ class PhotoWidgetStorage @Inject constructor(
             )
         } else {
             internalFileStorage.getWidgetPhotos(appWidgetId = appWidgetId, source = source)
-                .filterNot { it.name in excludedPhotoIds }
+                .filterNot { it.photoId in excludedPhotoIds }
                 .size
         }
     }
@@ -78,7 +78,7 @@ class PhotoWidgetStorage @Inject constructor(
         val croppedPhotos = internalFileStorage.getWidgetPhotos(
             appWidgetId = appWidgetId,
             source = source,
-        ).associateBy { it.name }
+        ).associateBy { it.photoId }
 
         Timber.d("Cropped photos found: ${croppedPhotos.size}")
 
@@ -94,7 +94,10 @@ class PhotoWidgetStorage @Inject constructor(
                 ?: orderDao.getWidgetOrder(appWidgetId = appWidgetId)
 
             widgetOrder.ifEmpty(croppedPhotos::keys).mapNotNull(croppedPhotos::get)
-        }.groupBy { it.name !in excludedPhotos }
+        }.groupBy {
+            val isExcluded = it.photoId in excludedPhotos || it.photoId.substringAfterLast(SEPARATOR) in excludedPhotos
+            !isExcluded
+        }
 
         return WidgetPhotos(
             current = loadedPhotos[true].orEmpty(),
@@ -124,13 +127,13 @@ class PhotoWidgetStorage @Inject constructor(
         return internalFileStorage.getCropSources(appWidgetId = appWidgetId, localPhoto = localPhoto)
     }
 
-    suspend fun markPhotosForDeletion(appWidgetId: Int, photoNames: Collection<String>) {
+    suspend fun markPhotosForDeletion(appWidgetId: Int, photoIds: Collection<String>) {
         val deletionTimestamp = System.currentTimeMillis() + DELETION_THRESHOLD_MILLIS
 
-        val photos = photoNames.map { photoName ->
+        val photos = photoIds.map { photoId ->
             PendingDeletionWidgetPhotoDto(
                 widgetId = appWidgetId,
-                photoId = photoName,
+                photoId = photoId,
                 deletionTimestamp = deletionTimestamp,
             )
         }
@@ -139,11 +142,11 @@ class PhotoWidgetStorage @Inject constructor(
         pendingDeletionPhotosDao.savePendingDeletionPhotos(photos = photos)
     }
 
-    suspend fun saveExcludedPhotos(appWidgetId: Int, photoNames: Collection<String>) {
-        val photos = photoNames.map { photoName ->
+    suspend fun saveExcludedPhotos(appWidgetId: Int, photoIds: Collection<String>) {
+        val photos = photoIds.map { photoId ->
             ExcludedWidgetPhotoDto(
                 widgetId = appWidgetId,
-                photoId = photoName,
+                photoId = photoId,
             )
         }
 
@@ -151,9 +154,9 @@ class PhotoWidgetStorage @Inject constructor(
         excludedPhotosDao.saveExcludedPhotos(photos = photos)
     }
 
-    suspend fun deletePhotos(appWidgetId: Int, photoNames: Iterable<String>) {
-        for (photo in photoNames) {
-            internalFileStorage.deleteWidgetPhoto(appWidgetId = appWidgetId, photoName = photo)
+    suspend fun deletePhotos(appWidgetId: Int, photoIds: Iterable<String>) {
+        for (photo in photoIds) {
+            internalFileStorage.deleteWidgetPhoto(appWidgetId = appWidgetId, photoId = photo)
         }
     }
 
@@ -327,7 +330,7 @@ class PhotoWidgetStorage @Inject constructor(
 
         val photosToDelete = pendingDeletionPhotosDao.getPhotosToDelete(timestamp = currentTimestamp)
         for (photo in photosToDelete) {
-            internalFileStorage.deleteWidgetPhoto(appWidgetId = photo.widgetId, photoName = photo.photoId)
+            internalFileStorage.deleteWidgetPhoto(appWidgetId = photo.widgetId, photoId = photo.photoId)
         }
         pendingDeletionPhotosDao.deletePhotosBeforeTimestamp(timestamp = currentTimestamp)
     }
@@ -347,8 +350,10 @@ class PhotoWidgetStorage @Inject constructor(
         )
     }
 
-    private companion object {
+    companion object {
 
         private val DELETION_THRESHOLD_MILLIS: Long = 7.days.inWholeMilliseconds
+
+        const val SEPARATOR = "#mpw#"
     }
 }

@@ -864,8 +864,8 @@ private fun PhotoPicker(
                 contentPadding = PaddingValues(start = 88.dp, end = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                items(currentPhotos, key = { it.name }) { photo ->
-                    ReorderableItem(reorderableLazyListState, key = photo.name) {
+                items(currentPhotos, key = { it.photoId }) { photo ->
+                    ReorderableItem(reorderableLazyListState, key = photo.photoId) {
                         ShapedPhoto(
                             photo = photo,
                             aspectRatio = PhotoWidgetAspectRatio.SQUARE,
@@ -991,7 +991,7 @@ private fun RemovedPhotosPicker(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(photos, key = { it.name }) { photo ->
+            items(photos, key = { it.photoId }) { photo ->
                 ShapedPhoto(
                     photo = photo,
                     aspectRatio = aspectRatio,
@@ -1166,8 +1166,8 @@ private fun PhotoWidgetConfigureScreenPreview() {
             photoWidget = PhotoWidget(
                 source = PhotoWidgetSource.PHOTOS,
                 photos = listOf(
-                    LocalPhoto(name = "photo-1"),
-                    LocalPhoto(name = "photo-2"),
+                    LocalPhoto(photoId = "photo-1"),
+                    LocalPhoto(photoId = "photo-2"),
                 ),
                 shuffle = false,
                 cycleMode = PhotoWidgetCycleMode.DEFAULT,
@@ -1177,7 +1177,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
                 cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
             ),
             isUpdating = false,
-            selectedPhoto = LocalPhoto(name = "photo-1"),
+            selectedPhoto = LocalPhoto(photoId = "photo-1"),
             isProcessing = false,
             onNavClick = {},
             onMoveLeftClick = {},
@@ -1213,8 +1213,8 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             photoWidget = PhotoWidget(
                 source = PhotoWidgetSource.DIRECTORY,
                 photos = listOf(
-                    LocalPhoto(name = "photo-1"),
-                    LocalPhoto(name = "photo-2"),
+                    LocalPhoto(photoId = "photo-1"),
+                    LocalPhoto(photoId = "photo-2"),
                 ),
                 shuffle = false,
                 cycleMode = PhotoWidgetCycleMode.DEFAULT,
@@ -1225,7 +1225,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
                 opacity = 80f,
             ),
             isUpdating = true,
-            selectedPhoto = LocalPhoto(name = "photo-1"),
+            selectedPhoto = LocalPhoto(photoId = "photo-1"),
             isProcessing = false,
             onNavClick = {},
             onMoveLeftClick = {},

@@ -91,21 +91,26 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
             while (cursor.moveToNext()) {
                 val documentId = cursor.getString(0)
                 val mimeType = cursor.getString(1)
-                val documentName = cursor.getString(2).takeUnless {
-                    it.startsWith(".trashed") || it in excludedPhotoIds
-                }
+                val documentName = cursor.getString(2)
+                    .takeUnless { it.startsWith(".trashed") }
                 val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
+
+                val photoId = documentName?.let {
+                    createPhotoId(documentId = documentId, documentName = documentName)
+                        .takeUnless { it in excludedPhotoIds || documentName in excludedPhotoIds }
+                }
 
                 Timber.d(
                     "Cursor item (" +
                         "documentId=$documentId, " +
                         "mimeType=$mimeType, " +
                         "documentName=$documentName, " +
-                        "fileUri=$fileUri" +
+                        "fileUri=$fileUri, " +
+                        "photoId=$photoId" +
                         ")",
                 )
 
-                if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
+                if (photoId != null && mimeType in ALLOWED_TYPES && fileUri != null) {
                     count += 1
                 } else if (documentName?.startsWith(".") != true && mimeType == "vnd.android.document/directory") {
                     val dirCount = getPhotoCount(
@@ -133,19 +138,25 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
                     val documentName = cursor.getString(2).takeUnless { it.startsWith(".trashed") }
                     val documentLastModified = cursor.getLong(3)
                     val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
+                    val photoId = documentName?.let {
+                        createPhotoId(documentId = documentId, documentName = documentName)
+                    }
 
                     Timber.d(
                         "Cursor item (" +
                             "documentId=$documentId, " +
                             "mimeType=$mimeType, " +
                             "documentName=$documentName, " +
-                            "fileUri=$fileUri",
+                            "fileUri=$fileUri, " +
+                            "photoId=$photoId" +
+                            ")",
                     )
 
-                    if (documentName != null && mimeType in ALLOWED_TYPES && fileUri != null) {
+                    if (photoId != null && mimeType in ALLOWED_TYPES && fileUri != null) {
+                        val path = (croppedPhotos[photoId] ?: croppedPhotos[documentName])?.croppedPhotoPath
                         val localPhoto = LocalPhoto(
-                            name = documentName,
-                            croppedPhotoPath = croppedPhotos[documentName]?.croppedPhotoPath,
+                            photoId = photoId,
+                            croppedPhotoPath = path,
                             externalUri = fileUri,
                             timestamp = documentLastModified,
                         )
@@ -181,6 +192,19 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
                 /* sortOrder = */ null,
             )?.use { cursor -> block(cursor) }
         }
+    }
+
+    /**
+     * Creates a unique photo id for each photo, given their document id and name.
+     *
+     * Originally, the external document name was used as the internal id, but that can lead to
+     * issues if two files with a common parent directory have the same file name. To avoid that,
+     * the full path is used to create a unique id, replacing the usual separator with a custom
+     * one in order to split it later, maintaining backwards compatibility.
+     */
+    private fun createPhotoId(documentId: String, documentName: String): String {
+        return documentId.substringAfter(delimiter = ":", missingDelimiterValue = documentName)
+            .replace(oldValue = "/", newValue = PhotoWidgetStorage.SEPARATOR)
     }
 
     private class InvalidDirException : RuntimeException()
