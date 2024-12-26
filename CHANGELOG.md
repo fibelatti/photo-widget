@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * New shape: daisy
 * New tap action: URL shortcut
 
+### Fixed
+
+* Transparent PNGs not working as expected when optimized storage was enabled
+
 ## [v1.19.0] - 2024-11-23
 
 ### Added

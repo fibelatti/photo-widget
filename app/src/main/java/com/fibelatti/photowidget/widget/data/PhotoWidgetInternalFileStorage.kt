@@ -55,7 +55,11 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
                 if (dataSaver) {
                     decoder.decode(data = source, maxDimension = 2560)?.let { importedPhoto ->
-                        val format = if (extension == "png") Bitmap.CompressFormat.PNG else Bitmap.CompressFormat.JPEG
+                        val format = if (extension.equals("png", ignoreCase = true)) {
+                            Bitmap.CompressFormat.PNG
+                        } else {
+                            Bitmap.CompressFormat.JPEG
+                        }
                         newFiles.map { file ->
                             async {
                                 writeToFile(file) { fos -> importedPhoto.compress(format, 95, fos) }
