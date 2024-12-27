@@ -2,12 +2,12 @@
 <resources>
     <!-- Widget Host -->
     <string name="photo_widget_host_label">Fotos com forma</string>
-    <string name="photo_widget_host_description">Enfeite sua tela inicial com as suas fotos favoritas</string>
+    <string name="photo_widget_host_description">Enfeite a sua tela inicial com as suas fotos favoritas</string>
 
     <!-- Home -->
-    <string name="photo_widget_home_title">Enfeite sua tela inicial com as suas fotos favoritas</string>
+    <string name="photo_widget_home_title">Enfeite a sua tela inicial com as suas fotos favoritas</string>
     <string name="photo_widget_home_aspect_ratio">Escolha o formato do widget e clique no botão para começar. Não se preocupe, você pode alterar isso a qualquer hora!</string>
-    <string name="photo_widget_home_new_widget">Criar novo widget</string>
+    <string name="photo_widget_home_new_widget">Criar um novo widget</string>
     <string name="photo_widget_home_new">Novo Widget</string>
     <string name="photo_widget_home_current">Meus Widgets</string>
     <string name="photo_widget_home_settings">Configurações</string>
@@ -16,8 +16,8 @@
     <string name="photo_widget_home_true_black_background">Fundo preto verdadeiro</string>
     <string name="photo_widget_home_dynamic_colors">Cores do app</string>
     <string name="photo_widget_home_share">Compartilhe o app</string>
-    <string name="photo_widget_home_rate">Deixe sua avaliação</string>
-    <string name="photo_widget_home_feedback">Envie seu feedback</string>
+    <string name="photo_widget_home_rate">Deixe a sua avaliação</string>
+    <string name="photo_widget_home_feedback">Envie o seu feedback</string>
     <string name="photo_widget_home_help">Ajuda</string>
     <string name="photo_widget_home_common_issues">Problemas comuns</string>
     <string name="photo_widget_home_privacy_policy">Política de privacidade</string>
@@ -46,9 +46,9 @@
 
     <!-- Preferences -->
     <string name="preferences_data_saver">Reduzir o uso de armazenamento</string>
-    <string name="preferences_data_saver_description">Quando habilitado, as fotos adicionadas aos widgets são compactadas para economizar espaço de armazenamento. Isso geralmente não afeta a qualidade, mas se suas fotos contiverem texto pequeno, é recomendável desativá-lo.\n\nEsta configuração afeta apenas as fotos adicionadas após sua alteração.\n\nEla não se aplica a pastas sincronizadas, pois essas fotos são lidas diretamente do armazenamento do seu dispositivo.</string>
+    <string name="preferences_data_saver_description">Quando habilitado, as fotos adicionadas aos widgets são comprimidas para economizar espaço de armazenamento. Isso geralmente não afeta a qualidade, mas se suas fotos contiverem texto pequeno, é recomendável manter desativado.\n\nEsta configuração afeta apenas as fotos adicionadas alterar a configuração.\n\nEla não se aplica a pastas sincronizadas, pois essas fotos são lidas diretamente do armazenamento do seu dispositivo.</string>
 
-    <string name="preferences_appearance_follow_system">Mesmo do sistema</string>
+    <string name="preferences_appearance_follow_system">Igual ao sistema</string>
     <string name="preferences_appearance_light">Claro</string>
     <string name="preferences_appearance_dark">Escuro</string>
 
@@ -57,7 +57,7 @@
 
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Valores padrão</string>
-    <string name="widget_defaults_explanation">Esses valores são pré-carregados ao criar um novo widget. Eles são úteis para configurar vários widgets com as mesmas configurações, eliminando a necessidade de ajustar as configurações a cada vez. Observe que quaisquer alterações nesses valores não afetarão os widgets existentes.</string>
+    <string name="widget_defaults_explanation">Esses valores são usados ao criar um novo widget. Eles são úteis para configurar vários widgets com as mesmas configurações, eliminando a necessidade de ajustar as configurações a cada vez. Quaisquer alterações nesses valores não afetarão os widgets existentes.</string>
     <string name="widget_defaults_source">Origem</string>
     <string name="widget_defaults_shuffle">Embaralhar</string>
     <string name="widget_defaults_cycling">Ciclo de fotos</string>
@@ -69,7 +69,7 @@
 
     <!-- Share -->
     <string name="share_title">Compartilhe</string>
-    <string name="share_text">Enfeite sua tela inicial com suas fotos favoritas usando o Material Photo Widget. Baixe de graça em %s</string>
+    <string name="share_text">Enfeite a sua tela inicial com suas fotos favoritas usando o Material Photo Widget. Baixe de graça em %s</string>
 
     <!-- Source -->
     <string name="photo_widget_source_photos">Fotos</string>
@@ -165,11 +165,11 @@
         <item quantity="other">%d horários agendados</item>
     </plurals>
 
-    <string name="photo_widget_configure_interval_warning">The actual interval or scheduled time can vary due to restrictions imposed by Android to optimize battery life. To ensure it works as desired, grant the permission below</string>
+    <string name="photo_widget_configure_interval_warning">O intervalo real ou o tempo programado pode variar devido a restrições impostas pelo Android para otimizar a duração da bateria. Para garantir que funcione conforme desejado, conceda a permissão abaixo</string>
 
     <string name="photo_widget_configure_interval_grant_permission">Dar permissão de alarme exato</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">Sobre esta permissão</string>
-    <string name="photo_widget_configure_interval_permission_dialog_description">O Android pode restringir o trabalho em segundo plano para otimizar a duração da bateria, resultando em intervalos maiores entre cada foto.\n\nPara atualizar os widgets precisamente no intervalo selecionado, abra as configurações e permita a configuração de alarmes e lembretes.</string>
+    <string name="photo_widget_configure_interval_permission_dialog_description">O Android pode restringir tarefas em segundo plano para otimizar a duração da bateria, resultando em intervalos maiores entre cada foto.\n\nPara atualizar os widgets precisamente no intervalo selecionado, abra as configurações e permita a configuração de alarmes e lembretes.</string>
     <string name="photo_widget_configure_interval_open_settings">Abrir configurações</string>
 
     <string name="photo_widget_configure_border">Borda</string>
@@ -186,7 +186,7 @@
     <string name="photo_widget_configure_tap_action">Ação ao tocar</string>
     <string name="photo_widget_configure_tap_action_description">Escolha a ação para a área destacada em verde. Em widgets maiores que 1x1, você pode tocar nas áreas em vermelho para visualizar a foto anterior e a próxima, respectivamente.</string>
     <string name="photo_widget_configure_tap_action_none">Nenhuma</string>
-    <string name="photo_widget_configure_tap_action_view_full_screen">Ver foto em tela cheia</string>
+    <string name="photo_widget_configure_tap_action_view_full_screen">Ver a foto em tela cheia</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Ver na galeria</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Abrir um app</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Abrir um link</string>
@@ -194,7 +194,7 @@
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Toque para pausar o ciclo automático de fotos. Toque novamente para retomar.</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Aumentar o brilho automaticamente</string>
-    <string name="photo_widget_configure_tap_action_view_original_photo">Ver foto original (sem corte ou rotação)</string>
+    <string name="photo_widget_configure_tap_action_view_original_photo">Ver a foto original (sem corte ou rotação)</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Disponível para widgets baseados em pastas. Os widgets baseados em fotos usarão \"Ver foto em tela cheia\".</string>
     <string name="photo_widget_configure_tap_action_choose_app">Escolher app</string>
 
