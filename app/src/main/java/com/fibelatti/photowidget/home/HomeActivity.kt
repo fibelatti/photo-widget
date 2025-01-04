@@ -290,7 +290,7 @@ class HomeActivity : AppCompatActivity() {
         startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse("https://fibelatti.github.io/photo-widget/"),
+                Uri.parse("https://www.fibelatti.com/privacy-policy/material-photo-widget"),
             ),
         )
     }
