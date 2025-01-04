@@ -68,7 +68,7 @@ class HomeActivity : AppCompatActivity() {
                     onDataSaverClick = ::showDataSaverPicker,
                     onAppearanceClick = ::showAppearancePicker,
                     onColorsClick = ::showAppColorsPicker,
-                    onSendFeedbackClick = ::sendFeedback,
+                    onSendFeedbackClick = ::showHelp,
                     onRateClick = ::rateApp,
                     onShareClick = ::shareApp,
                     onHelpClick = ::showHelp,

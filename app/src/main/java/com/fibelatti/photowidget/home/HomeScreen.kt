@@ -110,7 +110,6 @@ fun HomeScreen(
                         onSendFeedbackClick = onSendFeedbackClick,
                         onRateClick = onRateClick,
                         onShareClick = onShareClick,
-                        onHelpClick = onHelpClick,
                         onPrivacyPolicyClick = onPrivacyPolicyClick,
                         onViewLicensesClick = onViewLicensesClick,
                     )

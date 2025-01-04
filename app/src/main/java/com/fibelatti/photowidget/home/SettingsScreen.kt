@@ -62,7 +62,6 @@ fun SettingsScreen(
     onSendFeedbackClick: () -> Unit,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
-    onHelpClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onViewLicensesClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -93,7 +92,6 @@ fun SettingsScreen(
         onSendFeedbackClick = onSendFeedbackClick,
         onRateClick = onRateClick,
         onShareClick = onShareClick,
-        onHelpClick = onHelpClick,
         onPrivacyPolicyClick = onPrivacyPolicyClick,
         onViewLicensesClick = onViewLicensesClick,
         modifier = modifier,
@@ -123,7 +121,6 @@ private fun SettingsScreen(
     onSendFeedbackClick: () -> Unit,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
-    onHelpClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onViewLicensesClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -199,12 +196,6 @@ private fun SettingsScreen(
             )
 
             HorizontalDivider()
-
-            SettingsAction(
-                icon = R.drawable.ic_help,
-                label = R.string.photo_widget_home_common_issues,
-                onClick = onHelpClick,
-            )
 
             SettingsAction(
                 icon = R.drawable.ic_privacy_policy,
@@ -341,7 +332,6 @@ private fun SettingsScreenPreview() {
             onSendFeedbackClick = {},
             onRateClick = {},
             onShareClick = {},
-            onHelpClick = {},
             onPrivacyPolicyClick = {},
             onViewLicensesClick = {},
         )

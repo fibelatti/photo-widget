@@ -15,11 +15,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,7 +53,7 @@ fun HelpScreen(
     ) {
         item {
             Text(
-                text = stringResource(id = R.string.photo_widget_home_help),
+                text = stringResource(id = R.string.photo_widget_home_common_issues),
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleLarge,
             )
@@ -73,8 +73,22 @@ fun HelpScreen(
         }
 
         item {
-            TextButton(onClick = onSendFeedbackClick) {
-                Text(text = stringResource(R.string.help_article_footer))
+            Column(
+                modifier = Modifier.padding(vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = stringResource(R.string.help_article_footer),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.labelLarge,
+                )
+
+                FilledTonalButton(
+                    onClick = onSendFeedbackClick,
+                ) {
+                    Text(text = stringResource(R.string.photo_widget_home_feedback))
+                }
             }
         }
     }
