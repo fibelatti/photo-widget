@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * New tap action: URL shortcut
 * Option to disable taps when using the pause tap action
 
+### Changed
+
+* Updated how folder photos are kept in sync with widgets to improve the
+  performance of widgets with thousands of photos
+
 ### Fixed
 
 * Transparent PNGs not working as expected when optimized storage was enabled
