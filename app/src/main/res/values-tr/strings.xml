@@ -178,7 +178,7 @@
     <string name="photo_widget_configure_padding">Dolgu</string>
 
     <string name="photo_widget_configure_tap_action">Dokunma eylemi</string>
-    <string name="photo_widget_configure_tap_action_description">Yeşil renkle vurgulanan alan için eylemi seçin. 1x1\'den büyük widget\'larda, sırasıyla önceki ve sonraki fotoğrafı görüntülemek için kırmızı alanlara dokunabilirsiniz.</string>
+    <string name="photo_widget_configure_tap_action_description">Merkez alan için eylemi seçin (yeşil renkle vurgulanmıştır). 1x1\'den büyük widget\'larda, fotoğrafları değiştirmek için kenarlara (kırmızı) dokunabilirsiniz.</string>
     <string name="photo_widget_configure_tap_action_none">Hiçbiri</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Fotoğrafı tam ekranda görüntüle</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Galeride görüntüle</string>
@@ -191,6 +191,7 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">Orijinal fotoğrafı görüntüle (kırpma veya döndürme yok)</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Klasör tabanlı widget\'lar için geçerlidir. Fotoğraf tabanlı widget\'lar bunun yerine "Fotoğrafı tam ekranda görüntüle"yi kullanacaktır.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Uygulama seç</string>
+    <string name="photo_widget_configure_tap_action_disable_tap">Döngü duraklatıldığında dokunma kenarlarını devre dışı bırakın</string>
 
     <string name="photo_widget_configure_add_to_home">Ana ekrana ekle</string>
     <string name="photo_widget_configure_save_changes">Değişiklikleri kaydet</string>

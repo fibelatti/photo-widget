@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * New shape: daisy
 * New tap action: URL shortcut
+* Option to disable taps when using the pause tap action
 
 ### Fixed
 

@@ -184,7 +184,7 @@
     <string name="photo_widget_configure_padding">Marge intérieure</string>
 
     <string name="photo_widget_configure_tap_action">Action tactile</string>
-    <string name="photo_widget_configure_tap_action_description">Choisissez l\'action pour la zone mise en surbrillance en vert. Sur les widgets plus grands que 1x1, vous pouvez appuyer sur les zones en rouge pour voir la photo précédente et la photo suivante respectivement.</string>
+    <string name="photo_widget_configure_tap_action_description">Choisissez l\'action pour la zone centrale (surlignée en vert). Sur les widgets plus grands que 1x1, vous pouvez appuyer sur les bords (en rouge) pour changer de photo.</string>
     <string name="photo_widget_configure_tap_action_none">Aucune</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Afficher la photo en plein écran</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Voir dans la galerie</string>
@@ -197,6 +197,7 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">Voir la photo originale (sans recadrage ni rotation)</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Disponible pour les widgets basés sur des dossiers. Les widgets basés sur des photos utiliseront "Afficher la photo en plein écran" à la place.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Choisir une application</string>
+    <string name="photo_widget_configure_tap_action_disable_tap">Désactiver les bords tactiles pendant que le cycle est en pause</string>
 
     <string name="photo_widget_configure_add_to_home">Ajouter à l\'écran d\'accueil</string>
     <string name="photo_widget_configure_save_changes">Enregistrer les modifications</string>

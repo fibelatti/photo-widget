@@ -184,7 +184,7 @@
     <string name="photo_widget_configure_padding">Espaçamento</string>
 
     <string name="photo_widget_configure_tap_action">Ação ao tocar</string>
-    <string name="photo_widget_configure_tap_action_description">Escolha a ação para a área destacada em verde. Em widgets maiores que 1x1, você pode tocar nas áreas em vermelho para visualizar a foto anterior e a próxima, respectivamente.</string>
+    <string name="photo_widget_configure_tap_action_description">Escolha a ação para a área central (destacada em verde). Em widgets maiores que 1x1, você pode tocar nas bordas (em vermelho) para alternar fotos.</string>
     <string name="photo_widget_configure_tap_action_none">Nenhuma</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Ver a foto em tela cheia</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Ver na galeria</string>
@@ -197,6 +197,7 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">Ver a foto original (sem corte ou rotação)</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Disponível para widgets baseados em pastas. Os widgets baseados em fotos usarão \"Ver foto em tela cheia\".</string>
     <string name="photo_widget_configure_tap_action_choose_app">Escolher app</string>
+    <string name="photo_widget_configure_tap_action_disable_tap">Desabilitar o toque nas bordas enquanto o ciclo estiver pausado</string>
 
     <string name="photo_widget_configure_add_to_home">Adicionar à tela inicial</string>
     <string name="photo_widget_configure_save_changes">Salvar alterações</string>

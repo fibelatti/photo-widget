@@ -226,6 +226,10 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                         url = getString(Preference.DEFAULT_URL_SHORTCUT.value, null),
                     )
 
+                    is PhotoWidgetTapAction.ToggleCycling -> tapAction.copy(
+                        disableTap = getBoolean(Preference.DEFAULT_DISABLE_TAP.value, false),
+                    )
+
                     else -> tapAction
                 }
             }
@@ -246,6 +250,10 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
 
                     is PhotoWidgetTapAction.UrlShortcut -> {
                         putString(Preference.DEFAULT_URL_SHORTCUT.value, value.url)
+                    }
+
+                    is PhotoWidgetTapAction.ToggleCycling -> {
+                        putBoolean(Preference.DEFAULT_DISABLE_TAP.value, value.disableTap)
                     }
 
                     else -> Unit
@@ -307,6 +315,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         DEFAULT_VIEW_ORIGINAL_PHOTO(value = "default_view_original_photo"),
         DEFAULT_APP_SHORTCUT(value = "default_app_shortcut"),
         DEFAULT_URL_SHORTCUT(value = "default_url_shortcut"),
+        DEFAULT_DISABLE_TAP(value = "default_disable_tap"),
         ;
 
         override fun toString(): String = value

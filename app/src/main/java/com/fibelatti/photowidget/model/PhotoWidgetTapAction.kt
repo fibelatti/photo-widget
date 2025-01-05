@@ -71,7 +71,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     }
 
     @Parcelize
-    data object ToggleCycling : PhotoWidgetTapAction {
+    data class ToggleCycling(
+        val disableTap: Boolean = false,
+    ) : PhotoWidgetTapAction {
 
         @IgnoredOnParcel
         override val label = R.string.photo_widget_configure_tap_action_toggle_cycling
@@ -91,7 +93,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
                 ViewInGallery,
                 AppShortcut(),
                 UrlShortcut(),
-                ToggleCycling,
+                ToggleCycling(),
             )
         }
 

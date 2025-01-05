@@ -143,7 +143,7 @@ private fun TapActionPickerContent(
             text = stringResource(R.string.photo_widget_configure_tap_action_description),
             modifier = Modifier.padding(top = 8.dp),
             color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.bodyMedium,
         )
 
         BoxWithConstraints(
@@ -215,8 +215,7 @@ private fun TapActionPickerContent(
                         text = stringResource(id = R.string.photo_widget_configure_tap_action_gallery_description),
                         modifier = customOptionModifier,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.labelMedium,
+                        style = MaterialTheme.typography.bodyMedium,
                     )
                 }
 
@@ -243,15 +242,24 @@ private fun TapActionPickerContent(
                 }
 
                 is PhotoWidgetTapAction.ToggleCycling -> {
-                    Text(
-                        text = stringResource(
-                            id = R.string.photo_widget_configure_tap_action_toggle_cycling_description,
-                        ),
+                    Column(
                         modifier = customOptionModifier,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.labelMedium,
-                    )
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Text(
+                            text = stringResource(
+                                id = R.string.photo_widget_configure_tap_action_toggle_cycling_description,
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+
+                        Toggle(
+                            title = stringResource(id = R.string.photo_widget_configure_tap_action_disable_tap),
+                            checked = value.disableTap,
+                            onCheckedChange = { tapAction = value.copy(disableTap = it) },
+                        )
+                    }
                 }
 
                 PhotoWidgetTapAction.None -> Unit
@@ -424,7 +432,7 @@ private fun AppPicker(
 private fun PhotoWidgetTapActionPickerPreview() {
     ExtendedTheme {
         TapActionPickerContent(
-            currentTapAction = PhotoWidgetTapAction.DEFAULT,
+            currentTapAction = PhotoWidgetTapAction.ToggleCycling(),
             currentAppShortcut = null,
             onChooseApp = {},
             onApplyClick = {},

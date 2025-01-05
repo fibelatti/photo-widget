@@ -36,6 +36,11 @@ class ToggleCyclingFeedbackActivity : AppCompatActivity() {
 
         photoWidgetStorage.saveWidgetCyclePaused(appWidgetId = intent.appWidgetId, value = !paused)
 
+        PhotoWidgetProvider.update(
+            context = this,
+            appWidgetId = intent.appWidgetId
+        )
+
         Toast.makeText(
             /* context = */ this,
             /* resId = */

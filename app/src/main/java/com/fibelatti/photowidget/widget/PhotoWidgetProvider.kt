@@ -101,6 +101,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
             val coroutineScope = entryPoint.coroutineScope()
             val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
+            val photoWidgetStorage = entryPoint.photoWidgetStorage()
 
             coroutineScope.launch {
                 Timber.d("Loading widget data")
@@ -122,6 +123,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     context = context,
                     appWidgetId = appWidgetId,
                     photoWidget = tempWidget ?: photoWidget,
+                    isCyclePaused = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = appWidgetId),
                 )
 
                 Timber.d("Dispatching post-load remote views to AppWidgetManager")
@@ -241,6 +243,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             context: Context,
             appWidgetId: Int,
             photoWidget: PhotoWidget,
+            isCyclePaused: Boolean,
         ) {
             val sizeProvider = WidgetSizeProvider(context = context.applicationContext)
             val (width, _) = sizeProvider.getWidgetsSize(appWidgetId = appWidgetId)
@@ -261,6 +264,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 return
             }
 
+            val shouldDisableTap = photoWidget.tapAction is PhotoWidgetTapAction.ToggleCycling &&
+                photoWidget.tapAction.disableTap &&
+                isCyclePaused
+
             views.setViewVisibility(R.id.tap_actions_layout, View.VISIBLE)
             views.setOnClickPendingIntent(
                 R.id.view_tap_left,
@@ -268,7 +275,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     context = context,
                     appWidgetId = appWidgetId,
                     flipBackwards = true,
-                ),
+                ).takeUnless { shouldDisableTap },
             )
             views.setOnClickPendingIntent(
                 R.id.view_tap_center,
@@ -285,7 +292,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     context = context,
                     appWidgetId = appWidgetId,
                     flipBackwards = false,
-                ),
+                ).takeUnless { shouldDisableTap },
             )
         }
 

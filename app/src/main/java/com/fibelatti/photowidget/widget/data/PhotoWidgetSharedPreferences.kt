@@ -317,6 +317,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     putString("${PreferencePrefix.URL_SHORTCUT}$appWidgetId", tapAction.url)
                 }
 
+                is PhotoWidgetTapAction.ToggleCycling -> {
+                    putBoolean("${PreferencePrefix.DISABLE_TAP}$appWidgetId", tapAction.disableTap)
+                }
+
                 else -> Unit
             }
         }
@@ -339,6 +343,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
 
                 is PhotoWidgetTapAction.UrlShortcut -> tapAction.copy(
                     url = getString("${PreferencePrefix.URL_SHORTCUT}$appWidgetId", null),
+                )
+
+                is PhotoWidgetTapAction.ToggleCycling -> tapAction.copy(
+                    disableTap = getBoolean("${PreferencePrefix.DISABLE_TAP}$appWidgetId", false),
                 )
 
                 else -> tapAction
@@ -419,6 +427,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         VIEW_ORIGINAL_PHOTO(value = "appwidget_view_original_photo_"),
         APP_SHORTCUT(value = "appwidget_app_shortcut_"),
         URL_SHORTCUT(value = "appwidget_url_shortcut_"),
+        DISABLE_TAP(value = "appwidget_disable_tap_"),
 
         DELETION_TIMESTAMP(value = "appwidget_deletion_timestamp_"),
         ;

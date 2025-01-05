@@ -31,7 +31,7 @@ fun Toggle(
         Text(
             text = title,
             color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }
