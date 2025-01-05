@@ -95,7 +95,7 @@
     <string name="photo_widget_configure_missing_photos_error">The widget must have at least one photo. Widgets can only be deleted directly from the home screen.</string>
 
     <string name="photo_widget_configure_menu_source">Source</string>
-    <string name="photo_widget_configure_source_description">You can select each photo or sync a widget with one or more folders. When syncing, all current and future photos will be added automatically.</string>
+    <string name="photo_widget_configure_source_description">You can choose each photo individually or sync this widget with one or more folders. When syncing, all photos in the folder are automatically added to the widget. The content is updated every 24 hours.</string>
     <string name="photo_widget_configure_source_selection_photos">Only the photos you selected will be displayed in this widget.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">This widget is not synced with any folder yet.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">This widget is synced with these folders:</string>

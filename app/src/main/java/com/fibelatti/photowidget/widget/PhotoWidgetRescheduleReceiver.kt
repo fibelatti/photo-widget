@@ -44,6 +44,8 @@ class PhotoWidgetRescheduleReceiver : BroadcastReceiver() {
                     PhotoWidgetProvider.update(context = context, appWidgetId = id)
                 }
             }
+
+            PhotoWidgetSyncReceiver.setup(context)
         }
     }
 

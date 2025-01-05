@@ -15,7 +15,10 @@ class DuplicatePhotoWidgetUseCase @Inject constructor(
         originalAppWidgetId: Int,
         newAppWidgetId: Int,
     ): PhotoWidget {
-        val appWidget = loadPhotoWidgetUseCase(appWidgetId = originalAppWidgetId).first()
+        val appWidget = loadPhotoWidgetUseCase(
+            appWidgetId = originalAppWidgetId,
+            loadFromSource = false,
+        ).first()
 
         photoWidgetStorage.saveWidgetSource(
             appWidgetId = newAppWidgetId,
@@ -43,9 +46,11 @@ class DuplicatePhotoWidgetUseCase @Inject constructor(
             photoIds = photoWidgetStorage.getExcludedPhotoIds(appWidgetId = originalAppWidgetId),
         )
 
+        val photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = newAppWidgetId).current
+
         return appWidget.copy(
-            photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = newAppWidgetId).current,
-            currentIndex = 0,
+            photos = photos,
+            currentPhoto = photos.firstOrNull(),
             deletionTimestamp = -1,
             removedPhotos = emptyList(),
             isLoading = false,

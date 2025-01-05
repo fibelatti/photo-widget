@@ -11,18 +11,25 @@ import androidx.room.Upsert
 
 @Database(
     entities = [
+        LocalPhotoDto::class,
+        DisplayedWidgetPhotoDto::class,
         PhotoWidgetOrderDto::class,
         PendingDeletionWidgetPhotoDto::class,
         ExcludedWidgetPhotoDto::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 2, to = 3),
+        AutoMigration(from = 3, to = 4),
     ],
 )
 abstract class PhotoWidgetDatabase : RoomDatabase() {
+
+    abstract fun localPhotoDao(): LocalPhotoDao
+
+    abstract fun displayedPhotoDao(): DisplayedPhotoDao
 
     abstract fun photoWidgetOrderDao(): PhotoWidgetOrderDao
 
@@ -32,8 +39,86 @@ abstract class PhotoWidgetDatabase : RoomDatabase() {
 }
 
 @Entity(
+    tableName = "local_widget_photos",
+    primaryKeys = ["widgetId", "photoId"],
+)
+data class LocalPhotoDto(
+    val widgetId: Int,
+    val photoId: String,
+    val croppedPhotoPath: String? = null,
+    val originalPhotoPath: String? = null,
+    val externalUri: String? = null,
+    val timestamp: Long = System.currentTimeMillis(),
+)
+
+@Dao
+interface LocalPhotoDao {
+
+    @Query(
+        "select lwp.* from local_widget_photos as lwp " +
+            "left join photo_widget_order pwo on lwp.photoId = pwo.photoId " +
+            "where lwp.widgetId = :widgetId " +
+            "order by pwo.photoIndex asc",
+    )
+    suspend fun getLocalPhotos(widgetId: Int): List<LocalPhotoDto>
+
+    @Query("select photoId from local_widget_photos where widgetId = :widgetId")
+    suspend fun getLocalPhotoIds(widgetId: Int): List<String>
+
+    @Upsert
+    suspend fun saveLocalPhotos(photos: Collection<LocalPhotoDto>)
+
+    @Query("delete from local_widget_photos where widgetId = :widgetId and photoId in (:photoIds)")
+    suspend fun deletePhotosByPhotoIds(widgetId: Int, photoIds: Collection<String>)
+
+    @Query("delete from local_widget_photos where widgetId = :widgetId")
+    suspend fun deletePhotosByWidgetId(widgetId: Int)
+
+    @Transaction
+    suspend fun replacePhotos(
+        widgetId: Int,
+        photos: Collection<LocalPhotoDto>,
+        idsToDelete: Collection<String>,
+    ) {
+        if (idsToDelete.isNotEmpty()) {
+            deletePhotosByPhotoIds(widgetId = widgetId, photoIds = idsToDelete)
+        }
+        saveLocalPhotos(photos = photos)
+    }
+}
+
+@Entity(
+    tableName = "displayed_widget_photos",
+    primaryKeys = ["widgetId", "photoId"],
+)
+data class DisplayedWidgetPhotoDto(
+    val widgetId: Int,
+    val photoId: String,
+    val timestamp: Long,
+)
+
+@Dao
+interface DisplayedPhotoDao {
+
+    @Query("select photoId from displayed_widget_photos where widgetId = :widgetId")
+    suspend fun getDisplayedPhotoIds(widgetId: Int): List<String>
+
+    @Query("select photoId from displayed_widget_photos where widgetId = :widgetId order by timestamp desc limit 1")
+    suspend fun getCurrentPhotoId(widgetId: Int): String?
+
+    @Upsert
+    suspend fun savePhoto(displayedWidgetPhotoDto: DisplayedWidgetPhotoDto)
+
+    @Query("delete from displayed_widget_photos where widgetId = :widgetId and photoId in (:photoIds)")
+    suspend fun deletePhotosByPhotoIds(widgetId: Int, photoIds: Collection<String>)
+
+    @Query("delete from displayed_widget_photos where widgetId = :widgetId")
+    suspend fun deletePhotosByWidgetId(widgetId: Int)
+}
+
+@Entity(
     tableName = "photo_widget_order",
-    primaryKeys = ["widgetId", "photoIndex"],
+    primaryKeys = ["widgetId", "photoId"],
 )
 data class PhotoWidgetOrderDto(
     val widgetId: Int,
@@ -44,18 +129,27 @@ data class PhotoWidgetOrderDto(
 @Dao
 interface PhotoWidgetOrderDao {
 
-    @Query("select photoId from photo_widget_order where widgetId = :appWidgetId")
-    suspend fun getWidgetOrder(appWidgetId: Int): List<String>
+    @Query("select photoId from photo_widget_order where widgetId = :widgetId order by photoIndex asc")
+    suspend fun getWidgetOrder(widgetId: Int): List<String>
 
     @Upsert
-    suspend fun saveWidgetOrder(order: List<PhotoWidgetOrderDto>)
+    suspend fun saveWidgetOrder(order: Collection<PhotoWidgetOrderDto>)
 
-    @Query("delete from photo_widget_order where widgetId = :appWidgetId")
-    suspend fun deleteWidgetOrder(appWidgetId: Int)
+    @Query("delete from photo_widget_order where widgetId = :widgetId and photoId in (:photoIds)")
+    suspend fun deletePhotosByPhotoIds(widgetId: Int, photoIds: Collection<String>)
+
+    @Query("delete from photo_widget_order where widgetId = :widgetId")
+    suspend fun deletePhotosByWidgetId(widgetId: Int)
 
     @Transaction
-    suspend fun replaceWidgetOrder(widgetId: Int, order: List<PhotoWidgetOrderDto>) {
-        deleteWidgetOrder(widgetId)
+    suspend fun replaceWidgetOrder(
+        widgetId: Int,
+        order: Collection<PhotoWidgetOrderDto>,
+        idsToDelete: Collection<String>,
+    ) {
+        if (idsToDelete.isNotEmpty()) {
+            deletePhotosByPhotoIds(widgetId = widgetId, photoIds = idsToDelete)
+        }
         saveWidgetOrder(order)
     }
 }
@@ -74,7 +168,7 @@ data class PendingDeletionWidgetPhotoDto(
 interface PendingDeletionWidgetPhotoDao {
 
     @Upsert
-    suspend fun savePendingDeletionPhotos(photos: List<PendingDeletionWidgetPhotoDto>)
+    suspend fun savePendingDeletionPhotos(photos: Collection<PendingDeletionWidgetPhotoDto>)
 
     @Query("select * from pending_deletion_widget_photos where widgetId = :widgetId")
     suspend fun getPendingDeletionPhotos(widgetId: Int): List<PendingDeletionWidgetPhotoDto>
@@ -102,7 +196,7 @@ data class ExcludedWidgetPhotoDto(
 interface ExcludedWidgetPhotoDao {
 
     @Upsert
-    suspend fun saveExcludedPhotos(photos: List<ExcludedWidgetPhotoDto>)
+    suspend fun saveExcludedPhotos(photos: Collection<ExcludedWidgetPhotoDto>)
 
     @Query("select * from excluded_widget_photos where widgetId = :widgetId")
     suspend fun getExcludedPhotos(widgetId: Int): List<ExcludedWidgetPhotoDto>

@@ -39,7 +39,7 @@ class PhotoWidgetViewerViewModel @Inject constructor(
     private var loadWidgetJob: Job? = null
 
     init {
-        loadWidgetJob = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+        loadWidgetJob = loadPhotoWidgetUseCase(appWidgetId = appWidgetId, loadFromSource = false)
             .onEach(::updateState)
             .launchIn(viewModelScope)
     }
@@ -54,7 +54,7 @@ class PhotoWidgetViewerViewModel @Inject constructor(
         loadWidgetJob = viewModelScope.launch {
             cyclePhotoUseCase(appWidgetId = appWidgetId, flipBackwards = backwards)
 
-            loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+            loadPhotoWidgetUseCase(appWidgetId = appWidgetId, loadFromSource = false)
                 .onEach(::updateState)
                 .launchIn(this)
         }

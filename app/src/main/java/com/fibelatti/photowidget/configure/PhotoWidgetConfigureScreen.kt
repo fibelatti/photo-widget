@@ -864,8 +864,8 @@ private fun PhotoPicker(
                 contentPadding = PaddingValues(start = 88.dp, end = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                items(currentPhotos, key = { it.photoId }) { photo ->
-                    ReorderableItem(reorderableLazyListState, key = photo.photoId) {
+                items(currentPhotos, key = { it }) { photo ->
+                    ReorderableItem(reorderableLazyListState, key = photo) {
                         ShapedPhoto(
                             photo = photo,
                             aspectRatio = PhotoWidgetAspectRatio.SQUARE,

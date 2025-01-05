@@ -24,13 +24,46 @@ class SavePhotoWidgetUseCase @Inject constructor(
 
         photoWidgetStorage.saveWidgetSource(appWidgetId = appWidgetId, source = photoWidget.source)
 
+        if (PhotoWidgetSource.DIRECTORY == photoWidget.source) {
+            photoWidgetStorage.saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = photoWidget.syncedDir)
+        }
+
+        photoWidgetStorage.syncWidgetPhotos(
+            appWidgetId = appWidgetId,
+            photoWidget = photoWidget,
+        )
+
+        val currentPhotoId = photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)
+        val removedPhotos = photoWidget.removedPhotos.map { it.photoId }
+
+        when {
+            currentPhotoId == null -> {
+                photoWidgetStorage.saveDisplayedPhoto(
+                    appWidgetId = appWidgetId,
+                    photoId = photoWidget.photos.first().photoId,
+                )
+            }
+            currentPhotoId in removedPhotos && photoWidget.currentPhoto?.photoId != null -> {
+                photoWidgetStorage.saveDisplayedPhoto(
+                    appWidgetId = appWidgetId,
+                    photoId = photoWidget.currentPhoto.photoId,
+                )
+            }
+        }
+
         when (photoWidget.source) {
             PhotoWidgetSource.PHOTOS -> {
-                photoWidgetStorage.saveWidgetOrder(appWidgetId = appWidgetId, order = photoWidget.order)
+                photoWidgetStorage.markPhotosForDeletion(
+                    appWidgetId = appWidgetId,
+                    photoIds = removedPhotos,
+                )
             }
 
             PhotoWidgetSource.DIRECTORY -> {
-                photoWidgetStorage.saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = photoWidget.syncedDir)
+                photoWidgetStorage.saveExcludedPhotos(
+                    appWidgetId = appWidgetId,
+                    photoIds = removedPhotos,
+                )
             }
         }
 

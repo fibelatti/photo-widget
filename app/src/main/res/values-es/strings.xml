@@ -96,7 +96,7 @@
     <string name="photo_widget_configure_missing_photos_error">El widget debe tener al menos una foto. Los widgets solo se pueden eliminar directamente desde la pantalla de inicio.</string>
 
     <string name="photo_widget_configure_menu_source">Fuente</string>
-    <string name="photo_widget_configure_source_description">Puedes seleccionar cada foto o sincronizar un widget con una o más carpetas. Al sincronizar, todas las fotos actuales y futuras se añadirán automáticamente.</string>
+    <string name="photo_widget_configure_source_description">Puedes elegir cada foto individualmente o sincronizar este widget con una o más carpetas. Al sincronizar, todas las fotos de la carpeta se agregan automáticamente al widget. El contenido se actualiza cada 24 horas.</string>
     <string name="photo_widget_configure_source_selection_photos">Solo las fotos que hayas seleccionado se mostrarán en este widget.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Este widget aún no está sincronizado con ninguna carpeta.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Este widget está sincronizado con estas carpetas:</string>

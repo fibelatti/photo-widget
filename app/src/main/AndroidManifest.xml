@@ -127,6 +127,10 @@
         <receiver
             android:name=".widget.ExactRepeatingAlarmReceiver"
             android:exported="false" />
+
+        <receiver
+            android:name=".widget.PhotoWidgetSyncReceiver"
+            android:exported="false" />
     </application>
 
 </manifest>

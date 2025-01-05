@@ -73,7 +73,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             if (sourceWidget != null) {
                 updateState(photoWidget = sourceWidget, hasEdits = true)
             } else {
-                loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+                loadPhotoWidgetUseCase(appWidgetId = appWidgetId, loadFromSource = true)
                     .onEach { photoWidget -> updateState(photoWidget = photoWidget, hasEdits = false) }
                     .onCompletion { trackEdits() }
                     .launchIn(viewModelScope)
@@ -154,6 +154,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     photoWidget = current.photoWidget.copy(
                         source = newSource,
                         photos = widgetPhotos.current,
+                        currentPhoto = widgetPhotos.current.firstOrNull(),
                         removedPhotos = widgetPhotos.excluded,
                     ),
                     selectedPhoto = widgetPhotos.current.firstOrNull(),
@@ -217,7 +218,10 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 val updatedPhotos = current.photoWidget.photos + newPhotos
 
                 current.copy(
-                    photoWidget = current.photoWidget.copy(photos = updatedPhotos),
+                    photoWidget = current.photoWidget.copy(
+                        photos = updatedPhotos,
+                        currentPhoto = current.photoWidget.currentPhoto ?: updatedPhotos.firstOrNull(),
+                    ),
                     selectedPhoto = current.selectedPhoto ?: updatedPhotos.firstOrNull(),
                     isProcessing = false,
                     cropQueue = if (shouldTriggerCrop) newPhotos else emptyList(),
@@ -271,6 +275,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     photos = widgetPhotos.current,
+                    currentPhoto = widgetPhotos.current.firstOrNull(),
                     syncedDir = syncedDir.toSet(),
                     removedPhotos = widgetPhotos.excluded,
                 ),
@@ -309,33 +314,26 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
     fun photoCropped(path: String) {
         val cropping = _state.value.photoWidget.photos.firstOrNull { it.cropping } ?: return
+        val currentTimeMillis = System.currentTimeMillis()
+        val updateMatchingPhoto = { photo: LocalPhoto ->
+            if (photo.photoId == cropping.photoId) {
+                photo.copy(
+                    croppedPhotoPath = path,
+                    cropping = false,
+                    timestamp = currentTimeMillis,
+                )
+            } else {
+                photo
+            }
+        }
 
         _state.update { current ->
-            val currentTimeMillis = System.currentTimeMillis()
-
             current.copy(
                 photoWidget = current.photoWidget.copy(
-                    photos = current.photoWidget.photos.map { photo ->
-                        if (photo.photoId == cropping.photoId) {
-                            photo.copy(
-                                croppedPhotoPath = path,
-                                cropping = false,
-                                timestamp = currentTimeMillis,
-                            )
-                        } else {
-                            photo
-                        }
-                    },
+                    photos = current.photoWidget.photos.map(updateMatchingPhoto),
+                    currentPhoto = current.photoWidget.currentPhoto?.let(updateMatchingPhoto),
                 ),
-                selectedPhoto = if (current.selectedPhoto?.photoId == cropping.photoId) {
-                    current.selectedPhoto.copy(
-                        croppedPhotoPath = path,
-                        cropping = false,
-                        timestamp = currentTimeMillis,
-                    )
-                } else {
-                    current.selectedPhoto
-                },
+                selectedPhoto = current.selectedPhoto?.let(updateMatchingPhoto),
                 cropQueue = current.cropQueue.filterNot { it.photoId == cropping.photoId },
             )
         }
@@ -354,13 +352,20 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         _state.update { current ->
             val removedPhoto = current.photoWidget.photos.first { it.photoId == photo.photoId }
             val updatedPhotos = current.photoWidget.photos.filterNot { it.photoId == photo.photoId }
+            val newIndex = current.photoWidget.photos.indexOfFirst { it.photoId == photo.photoId }
+
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     photos = updatedPhotos,
+                    currentPhoto = if (current.photoWidget.currentPhoto?.photoId == photo.photoId) {
+                        updatedPhotos.getOrNull(newIndex)
+                    } else {
+                        current.photoWidget.currentPhoto
+                    },
                     removedPhotos = current.photoWidget.removedPhotos + removedPhoto,
                 ),
                 selectedPhoto = if (current.selectedPhoto?.photoId == photo.photoId) {
-                    updatedPhotos.firstOrNull()
+                    updatedPhotos.getOrNull(newIndex)
                 } else {
                     current.selectedPhoto
                 },
@@ -374,6 +379,11 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     photos = updatedPhotos,
+                    currentPhoto = if (updatedPhotos.size == 1) {
+                        updatedPhotos.firstOrNull()
+                    } else {
+                        current.photoWidget.currentPhoto
+                    },
                     removedPhotos = current.photoWidget.removedPhotos.filterNot { it.photoId == photo.photoId },
                 ),
                 selectedPhoto = if (updatedPhotos.size == 1) {
@@ -551,27 +561,10 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun widgetAdded(appWidgetId: Int) {
+    fun widgetAdded() {
         viewModelScope.launch {
             withContext(NonCancellable) {
                 restoreFromId?.let { photoWidgetStorage.deleteWidgetData(appWidgetId = it) }
-
-                val removedPhotos = _state.value.photoWidget.removedPhotos.map { it.photoId }
-                when (_state.value.photoWidget.source) {
-                    PhotoWidgetSource.PHOTOS -> {
-                        photoWidgetStorage.markPhotosForDeletion(
-                            appWidgetId = appWidgetId,
-                            photoIds = removedPhotos,
-                        )
-                    }
-
-                    PhotoWidgetSource.DIRECTORY -> {
-                        photoWidgetStorage.saveExcludedPhotos(
-                            appWidgetId = appWidgetId,
-                            photoIds = removedPhotos,
-                        )
-                    }
-                }
             }
         }
     }

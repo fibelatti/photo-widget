@@ -95,7 +95,7 @@
     <string name="photo_widget_configure_missing_photos_error">Widget\'ta en az bir fotoğraf bulunmalıdır. Widget\'lar yalnızca doğrudan ana ekrandan silinebilir.</string>
 
     <string name="photo_widget_configure_menu_source">Kaynak</string>
-    <string name="photo_widget_configure_source_description">Her bir fotoğrafı seçebilir veya bir widget\'i bir veya daha fazla klasörle senkronize edebilirsiniz. Senkronize edildiğinde, tüm mevcut ve gelecekteki fotoğraflar otomatik olarak eklenir.</string>
+    <string name="photo_widget_configure_source_description">Her fotoğrafı ayrı ayrı seçebilir veya bu widget\'ı bir veya daha fazla klasörle senkronize edebilirsiniz. Senkronizasyon sırasında klasördeki tüm fotoğraflar otomatik olarak widget\'a eklenir. İçerik 24 saatte bir güncellenmektedir.</string>
     <string name="photo_widget_configure_source_selection_photos">Yalnızca seçtiğiniz fotoğraflar bu widget\'te görüntülenecek.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Bu widget henüz herhangi bir klasör ile senkronize edilmedi.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Bu widget şu klasörler ile senkronize edildi:</string>

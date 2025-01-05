@@ -9,7 +9,7 @@ data class PhotoWidget(
     val source: PhotoWidgetSource = PhotoWidgetSource.PHOTOS,
     val syncedDir: Set<Uri> = emptySet(),
     val photos: List<LocalPhoto> = emptyList(),
-    val currentIndex: Int = 0,
+    val currentPhoto: LocalPhoto? = null,
     val shuffle: Boolean = false,
     val cycleMode: PhotoWidgetCycleMode = PhotoWidgetCycleMode.DEFAULT,
     val tapAction: PhotoWidgetTapAction = PhotoWidgetTapAction.DEFAULT,
@@ -27,11 +27,7 @@ data class PhotoWidget(
     val isLoading: Boolean = false,
 ) : Parcelable {
 
-    val currentPhoto: LocalPhoto? get() = photos.getOrNull(currentIndex) ?: photos.firstOrNull()
-
     val cyclingEnabled: Boolean get() = photos.size > 1 && cycleMode !is PhotoWidgetCycleMode.Disabled
-
-    val order: List<String> get() = photos.map { it.photoId }
 
     val canSort: Boolean get() = PhotoWidgetSource.PHOTOS == source && photos.size > 1 && !shuffle
 

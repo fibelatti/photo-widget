@@ -14,46 +14,41 @@ class CyclePhotoUseCase @Inject constructor(
     suspend operator fun invoke(appWidgetId: Int, flipBackwards: Boolean = false) {
         Timber.d("Cycling photo (appWidgetId=$appWidgetId, flipBackwards=$flipBackwards)")
 
-        val count = photoWidgetStorage.getWidgetPhotoCount(appWidgetId = appWidgetId)
+        val widgetPhotos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId, loadFromSource = false)
+            .current
+            .map { it.photoId }
 
-        if (count < 2) return
+        if (widgetPhotos.size < 2) return
 
-        val currentIndex = photoWidgetStorage.getWidgetIndex(appWidgetId)
+        val displayedPhotos = photoWidgetStorage.getDisplayedPhotoIds(appWidgetId = appWidgetId).toMutableSet()
+
+        if (displayedPhotos.size >= widgetPhotos.size) {
+            Timber.d("All photos displayed, starting over")
+            photoWidgetStorage.clearDisplayedPhotos(appWidgetId = appWidgetId)
+            displayedPhotos.clear()
+        }
+
+        val currentPhotoId = photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)
+            ?: widgetPhotos.getOrNull(photoWidgetStorage.getWidgetIndex(appWidgetId = appWidgetId))
+        val currentIndex = widgetPhotos.indexOfFirst { it == currentPhotoId }
         val shuffle = photoWidgetStorage.getWidgetShuffle(appWidgetId = appWidgetId)
-        val nextIndex = when {
-            shuffle -> {
-                val indices = 0 until count
-                val pastIndices = photoWidgetStorage.getWidgetPastIndices(appWidgetId = appWidgetId)
-                val remaining = indices - pastIndices
 
-                if (remaining.isEmpty()) {
-                    indices.minus(currentIndex).random().also {
-                        photoWidgetStorage.saveWidgetPastIndices(
-                            appWidgetId = appWidgetId,
-                            pastIndices = setOf(it),
-                        )
-                    }
-                } else {
-                    remaining.random().also {
-                        photoWidgetStorage.saveWidgetPastIndices(
-                            appWidgetId = appWidgetId,
-                            pastIndices = pastIndices + it,
-                        )
-                    }
-                }
-            }
+        val newPhotoId = when {
+            currentPhotoId == null -> widgetPhotos.first()
+            shuffle -> widgetPhotos.subtract(displayedPhotos).random()
+            else -> widgetPhotos.get(
+                index = when {
+                    flipBackwards && currentIndex == 0 -> widgetPhotos.size - 1
+                    flipBackwards -> currentIndex - 1
+                    currentIndex == widgetPhotos.size - 1 -> 0
+                    else -> currentIndex + 1
+                }.coerceIn(0, widgetPhotos.size - 1),
+            )
+        }
 
-            flipBackwards && currentIndex == 0 -> count - 1
+        photoWidgetStorage.saveDisplayedPhoto(appWidgetId = appWidgetId, photoId = newPhotoId)
 
-            flipBackwards -> currentIndex - 1
-
-            currentIndex == count - 1 -> 0
-
-            else -> currentIndex + 1
-        }.coerceIn(0, count - 1)
-
-        Timber.d("Updating index from $currentIndex to $nextIndex")
-        photoWidgetStorage.saveWidgetIndex(appWidgetId = appWidgetId, index = nextIndex)
+        Timber.d("Updating current photo from $currentPhotoId to $newPhotoId")
 
         PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
     }

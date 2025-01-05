@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.widget.data
 
 import android.net.Uri
 import com.fibelatti.photowidget.model.LocalPhoto
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
@@ -17,6 +18,8 @@ class PhotoWidgetStorage @Inject constructor(
     private val sharedPreferences: PhotoWidgetSharedPreferences,
     private val internalFileStorage: PhotoWidgetInternalFileStorage,
     private val externalFileStorage: PhotoWidgetExternalFileStorage,
+    private val localPhotoDao: LocalPhotoDao,
+    private val displayedPhotoDao: DisplayedPhotoDao,
     private val orderDao: PhotoWidgetOrderDao,
     private val pendingDeletionPhotosDao: PendingDeletionWidgetPhotoDao,
     private val excludedPhotosDao: ExcludedWidgetPhotoDao,
@@ -52,24 +55,34 @@ class PhotoWidgetStorage @Inject constructor(
         return externalFileStorage.isValidDir(dirUri = dirUri)
     }
 
-    suspend fun getWidgetPhotoCount(appWidgetId: Int): Int {
-        val source = getWidgetSource(appWidgetId = appWidgetId)
-        val excludedPhotoIds = getExcludedPhotoIds(appWidgetId = appWidgetId)
+    suspend fun getWidgetPhotos(
+        appWidgetId: Int,
+        loadFromSource: Boolean = true,
+    ): WidgetPhotos {
+        Timber.d("Retrieving photos (appWidgetId=$appWidgetId, loadFromSource=$loadFromSource)")
 
-        return if (PhotoWidgetSource.DIRECTORY == source) {
-            externalFileStorage.getPhotoCount(
-                dirUri = getWidgetSyncDir(appWidgetId = appWidgetId),
-                excludedPhotoIds = excludedPhotoIds,
+        val excludedPhotos = getExcludedPhotoIds(appWidgetId = appWidgetId)
+
+        if (!loadFromSource) {
+            val local = getLocalWidgetPhotos(
+                appWidgetId = appWidgetId,
+                excludedPhotos = excludedPhotos,
             )
-        } else {
-            internalFileStorage.getWidgetPhotos(appWidgetId = appWidgetId, source = source)
-                .filterNot { it.photoId in excludedPhotoIds }
-                .size
+
+            if (local.current.isNotEmpty()) return local
         }
+
+        return getSourceWidgetPhotos(
+            appWidgetId = appWidgetId,
+            excludedPhotos = excludedPhotos,
+        )
     }
 
-    suspend fun getWidgetPhotos(appWidgetId: Int): WidgetPhotos {
-        Timber.d("Retrieving photos (appWidgetId=$appWidgetId)")
+    private suspend fun getSourceWidgetPhotos(
+        appWidgetId: Int,
+        excludedPhotos: Set<String>,
+    ): WidgetPhotos {
+        Timber.d("Retrieving photos from source")
 
         val source = getWidgetSource(appWidgetId = appWidgetId)
 
@@ -82,7 +95,6 @@ class PhotoWidgetStorage @Inject constructor(
 
         Timber.d("Cropped photos found: ${croppedPhotos.size}")
 
-        val excludedPhotos = getExcludedPhotoIds(appWidgetId = appWidgetId)
         val loadedPhotos = if (PhotoWidgetSource.DIRECTORY == source) {
             externalFileStorage.getPhotos(dirUri = getWidgetSyncDir(appWidgetId), croppedPhotos = croppedPhotos)
         } else {
@@ -90,10 +102,13 @@ class PhotoWidgetStorage @Inject constructor(
             // Migrate found value to the new storage
             // or retrieve it from the new storage if not found
             val widgetOrder = sharedPreferences.getWidgetOrder(appWidgetId = appWidgetId)
-                ?.also { saveWidgetOrder(appWidgetId = appWidgetId, order = it) }
-                ?: orderDao.getWidgetOrder(appWidgetId = appWidgetId)
+                ?.also { saveWidgetOrder(appWidgetId = appWidgetId, order = it.toSet()) }
+                ?: orderDao.getWidgetOrder(widgetId = appWidgetId)
 
-            widgetOrder.ifEmpty(croppedPhotos::keys).mapNotNull(croppedPhotos::get)
+            widgetOrder.ifEmpty(croppedPhotos::keys)
+                // Excluded photos weren't always saved with the order
+                .plus(excludedPhotos).distinct()
+                .mapNotNull(croppedPhotos::get)
         }.groupBy {
             val isExcluded = it.photoId in excludedPhotos || it.photoId.substringAfterLast(SEPARATOR) in excludedPhotos
             !isExcluded
@@ -105,6 +120,109 @@ class PhotoWidgetStorage @Inject constructor(
         ).also {
             Timber.d("Total photos found: ${it.current.size} current, ${it.excluded.size} excluded.")
         }
+    }
+
+    private suspend fun getLocalWidgetPhotos(
+        appWidgetId: Int,
+        excludedPhotos: Set<String>,
+    ): WidgetPhotos {
+        Timber.d("Retrieving photos from cache")
+
+        val localPhotos = localPhotoDao.getLocalPhotos(widgetId = appWidgetId)
+            .map {
+                LocalPhoto(
+                    photoId = it.photoId,
+                    croppedPhotoPath = it.croppedPhotoPath,
+                    originalPhotoPath = it.originalPhotoPath,
+                    externalUri = it.externalUri?.let(Uri::parse),
+                    timestamp = it.timestamp,
+                )
+            }
+            .groupBy {
+                val isExcluded = it.photoId in excludedPhotos ||
+                    it.photoId.substringAfterLast(SEPARATOR) in excludedPhotos
+                !isExcluded
+            }
+
+        return WidgetPhotos(
+            current = localPhotos[true].orEmpty(),
+            excluded = localPhotos[false].orEmpty(),
+        ).also {
+            Timber.d("Total local photos found: ${it.current.size} current, ${it.excluded.size} excluded.")
+        }
+    }
+
+    private suspend fun saveWidgetOrder(appWidgetId: Int, order: Set<String>) {
+        orderDao.replaceWidgetOrder(
+            widgetId = appWidgetId,
+            order = order.mapIndexed { index, photoId ->
+                PhotoWidgetOrderDto(
+                    widgetId = appWidgetId,
+                    photoIndex = index,
+                    photoId = photoId,
+                )
+            },
+            idsToDelete = orderDao.getWidgetOrder(widgetId = appWidgetId).subtract(order),
+        )
+    }
+
+    suspend fun syncWidgetPhotos(
+        appWidgetId: Int,
+        photoWidget: PhotoWidget? = null,
+    ) {
+        Timber.d("Syncing photos (appWidgetId=$appWidgetId, fromWidget=${photoWidget != null})")
+
+        val excludedPhotos: Set<String> = photoWidget?.run { removedPhotos.map { it.photoId }.toSet() }
+            ?: getExcludedPhotoIds(appWidgetId = appWidgetId)
+        val allPhotos: List<LocalPhoto> = photoWidget?.run { photos + removedPhotos }
+            ?: getSourceWidgetPhotos(appWidgetId = appWidgetId, excludedPhotos = excludedPhotos).all()
+
+        val newLocalPhotos: List<LocalPhotoDto> = allPhotos.map { localPhoto ->
+            LocalPhotoDto(
+                widgetId = appWidgetId,
+                photoId = localPhoto.photoId,
+                croppedPhotoPath = localPhoto.croppedPhotoPath,
+                originalPhotoPath = localPhoto.originalPhotoPath,
+                externalUri = localPhoto.externalUri?.toString(),
+                timestamp = localPhoto.timestamp,
+            )
+        }
+        val newPhotoIds = newLocalPhotos.map { it.photoId }.toSet()
+
+        localPhotoDao.replacePhotos(
+            widgetId = appWidgetId,
+            photos = newLocalPhotos,
+            idsToDelete = localPhotoDao.getLocalPhotoIds(widgetId = appWidgetId).subtract(newPhotoIds),
+        )
+
+        saveWidgetOrder(appWidgetId = appWidgetId, order = newPhotoIds)
+
+        displayedPhotoDao.deletePhotosByPhotoIds(
+            widgetId = appWidgetId,
+            photoIds = displayedPhotoDao.getDisplayedPhotoIds(widgetId = appWidgetId).subtract(newPhotoIds),
+        )
+    }
+
+    suspend fun getCurrentPhotoId(appWidgetId: Int): String? {
+        return displayedPhotoDao.getCurrentPhotoId(widgetId = appWidgetId)
+    }
+
+    suspend fun getDisplayedPhotoIds(appWidgetId: Int): List<String> {
+        return displayedPhotoDao.getDisplayedPhotoIds(widgetId = appWidgetId)
+    }
+
+    suspend fun clearDisplayedPhotos(appWidgetId: Int) {
+        displayedPhotoDao.deletePhotosByWidgetId(widgetId = appWidgetId)
+    }
+
+    suspend fun saveDisplayedPhoto(appWidgetId: Int, photoId: String) {
+        displayedPhotoDao.savePhoto(
+            displayedWidgetPhotoDto = DisplayedWidgetPhotoDto(
+                widgetId = appWidgetId,
+                photoId = photoId,
+                timestamp = System.currentTimeMillis(),
+            ),
+        )
     }
 
     suspend fun getExcludedPhotoIds(appWidgetId: Int): Set<String> {
@@ -160,19 +278,6 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
-    suspend fun saveWidgetOrder(appWidgetId: Int, order: List<String>) {
-        orderDao.replaceWidgetOrder(
-            widgetId = appWidgetId,
-            order = order.mapIndexed { index, photoId ->
-                PhotoWidgetOrderDto(
-                    widgetId = appWidgetId,
-                    photoIndex = index,
-                    photoId = photoId,
-                )
-            },
-        )
-    }
-
     fun saveWidgetShuffle(appWidgetId: Int, value: Boolean) {
         sharedPreferences.saveWidgetShuffle(appWidgetId = appWidgetId, value = value)
     }
@@ -205,20 +310,8 @@ class PhotoWidgetStorage @Inject constructor(
         return sharedPreferences.getWidgetCyclePaused(appWidgetId = appWidgetId)
     }
 
-    fun saveWidgetIndex(appWidgetId: Int, index: Int) {
-        sharedPreferences.saveWidgetIndex(appWidgetId = appWidgetId, index = index)
-    }
-
     fun getWidgetIndex(appWidgetId: Int): Int {
         return sharedPreferences.getWidgetIndex(appWidgetId = appWidgetId)
-    }
-
-    fun saveWidgetPastIndices(appWidgetId: Int, pastIndices: Set<Int>) {
-        sharedPreferences.saveWidgetPastIndices(appWidgetId = appWidgetId, pastIndices = pastIndices)
-    }
-
-    fun getWidgetPastIndices(appWidgetId: Int): Set<Int> {
-        return sharedPreferences.getWidgetPastIndices(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetAspectRatio(appWidgetId: Int, aspectRatio: PhotoWidgetAspectRatio) {
@@ -305,7 +398,10 @@ class PhotoWidgetStorage @Inject constructor(
         Timber.d("Deleting widget data (appWidgetId=$appWidgetId)")
         sharedPreferences.deleteWidgetData(appWidgetId = appWidgetId)
         internalFileStorage.deleteWidgetData(appWidgetId = appWidgetId)
-        orderDao.deleteWidgetOrder(appWidgetId = appWidgetId)
+
+        localPhotoDao.deletePhotosByWidgetId(widgetId = appWidgetId)
+        displayedPhotoDao.deletePhotosByWidgetId(widgetId = appWidgetId)
+        orderDao.deletePhotosByWidgetId(widgetId = appWidgetId)
         pendingDeletionPhotosDao.deletePhotosByWidgetId(widgetId = appWidgetId)
         excludedPhotosDao.deletePhotosByWidgetId(widgetId = appWidgetId)
     }

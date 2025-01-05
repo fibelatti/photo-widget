@@ -304,16 +304,15 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     }
 
     private fun addNewWidget(appWidgetId: Int) {
+        widgetAdded(appWidgetId = appWidgetId)
         PhotoWidgetProvider.update(
             context = this,
             appWidgetId = appWidgetId,
         )
-
-        widgetAdded(appWidgetId = appWidgetId)
     }
 
     private fun widgetAdded(appWidgetId: Int) {
-        viewModel.widgetAdded(appWidgetId = appWidgetId)
+        viewModel.widgetAdded()
 
         val resultValue = Intent().apply {
             this.appWidgetId = appWidgetId

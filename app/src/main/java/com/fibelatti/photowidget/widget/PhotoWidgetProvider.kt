@@ -105,7 +105,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
             coroutineScope.launch {
                 Timber.d("Loading widget data")
-                val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId).last()
+                val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId, loadFromSource = false).last()
                 val tempViews = PhotoWidgetPinnedReceiver.preview?.get()
                     ?.takeIf { photoWidget.photos.isEmpty() }
                     ?.also { PhotoWidgetPinnedReceiver.preview = null }

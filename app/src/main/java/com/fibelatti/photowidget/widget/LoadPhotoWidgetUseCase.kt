@@ -11,15 +11,16 @@ class LoadPhotoWidgetUseCase @Inject constructor(
     private val photoWidgetStorage: PhotoWidgetStorage,
 ) {
 
-    operator fun invoke(appWidgetId: Int): Flow<PhotoWidget> = with(photoWidgetStorage) {
-        Timber.d("Loading widget data (appWidgetId=$appWidgetId)")
+    operator fun invoke(
+        appWidgetId: Int,
+        loadFromSource: Boolean,
+    ): Flow<PhotoWidget> = with(photoWidgetStorage) {
+        Timber.d("Loading widget data (appWidgetId=$appWidgetId, loadFromSource=$loadFromSource)")
 
-        val currentIndex = getWidgetIndex(appWidgetId = appWidgetId)
         val (horizontalOffset, verticalOffset) = getWidgetOffset(appWidgetId = appWidgetId)
         val widget = PhotoWidget(
             source = getWidgetSource(appWidgetId = appWidgetId),
             syncedDir = getWidgetSyncDir(appWidgetId = appWidgetId),
-            currentIndex = currentIndex,
             shuffle = getWidgetShuffle(appWidgetId = appWidgetId),
             cycleMode = getWidgetCycleMode(appWidgetId = appWidgetId),
             tapAction = getWidgetTapAction(appWidgetId = appWidgetId),
@@ -38,12 +39,21 @@ class LoadPhotoWidgetUseCase @Inject constructor(
         return flow {
             emit(widget.copy(isLoading = true))
 
-            val widgetPhotos = getWidgetPhotos(appWidgetId = appWidgetId)
+            val widgetPhotos = getWidgetPhotos(
+                appWidgetId = appWidgetId,
+                loadFromSource = loadFromSource,
+            )
+            val currentPhotoId = getCurrentPhotoId(appWidgetId = appWidgetId)
+            val currentPhoto = widgetPhotos.current.run {
+                firstOrNull { it.photoId == currentPhotoId }
+                    ?: getOrNull(getWidgetIndex(appWidgetId = appWidgetId))
+                    ?: firstOrNull()
+            }
 
             emit(
                 widget.copy(
                     photos = widgetPhotos.current,
-                    aspectRatio = widget.aspectRatio,
+                    currentPhoto = currentPhoto,
                     removedPhotos = widgetPhotos.excluded,
                     isLoading = false,
                 ),

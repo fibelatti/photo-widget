@@ -49,22 +49,6 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
         }
     }
 
-    suspend fun getPhotoCount(dirUri: Set<Uri>, excludedPhotoIds: Collection<String>): Int = coroutineScope {
-        dirUri.map { uri ->
-            async {
-                val documentUri = DocumentsContract.buildDocumentUriUsingTree(
-                    /* treeUri = */ uri,
-                    /* documentId = */ DocumentsContract.getTreeDocumentId(uri),
-                )
-                getPhotoCount(
-                    documentUri = documentUri,
-                    applyValidation = false,
-                    excludedPhotoIds = excludedPhotoIds,
-                )
-            }
-        }.awaitAll().sum()
-    }
-
     suspend fun getPhotos(
         dirUri: Set<Uri>,
         croppedPhotos: Map<String, LocalPhoto>,

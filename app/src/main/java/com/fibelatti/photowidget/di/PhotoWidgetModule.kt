@@ -6,7 +6,9 @@ import androidx.room.Room
 import coil.ImageLoader
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
+import com.fibelatti.photowidget.widget.data.DisplayedPhotoDao
 import com.fibelatti.photowidget.widget.data.ExcludedWidgetPhotoDao
+import com.fibelatti.photowidget.widget.data.LocalPhotoDao
 import com.fibelatti.photowidget.widget.data.PendingDeletionWidgetPhotoDao
 import com.fibelatti.photowidget.widget.data.PhotoWidgetDatabase
 import com.fibelatti.photowidget.widget.data.PhotoWidgetOrderDao
@@ -36,6 +38,16 @@ object PhotoWidgetModule {
         klass = PhotoWidgetDatabase::class.java,
         name = "com.fibelatti.photowidget.db",
     ).build()
+
+    @Provides
+    fun localPhotoDao(
+        photoWidgetDatabase: PhotoWidgetDatabase,
+    ): LocalPhotoDao = photoWidgetDatabase.localPhotoDao()
+
+    @Provides
+    fun displayedPhotoDao(
+        photoWidgetDatabase: PhotoWidgetDatabase,
+    ): DisplayedPhotoDao = photoWidgetDatabase.displayedPhotoDao()
 
     @Provides
     fun photoWidgetOrderDao(
