@@ -1,9 +1,12 @@
 package com.fibelatti.photowidget.widget.data
 
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.webkit.MimeTypeMap
+import androidx.core.content.FileProvider
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.platform.PhotoDecoder
@@ -140,6 +143,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
     suspend fun deleteWidgetData(appWidgetId: Int) {
         withContext(Dispatchers.IO) {
             getWidgetDir(appWidgetId).deleteRecursively()
+            getCurrentPhotoDir(appWidgetId).deleteRecursively()
         }
     }
 
@@ -168,6 +172,44 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
     }
 
+    suspend fun prepareCurrentWidgetPhoto(
+        appWidgetId: Int,
+        currentPhoto: Bitmap,
+    ): Uri? = withContext(Dispatchers.IO) {
+        val launcherPackageName = getDefaultLauncherPackageName()
+        if (launcherPackageName == null) {
+            Timber.d("Unable to get launcher package name")
+            return@withContext null
+        }
+
+        val dir = getCurrentPhotoDir(appWidgetId = appWidgetId).apply {
+            listFiles()?.onEach { it.delete() }
+        }
+        // Using `currentTimeMillis` to generate unique files,
+        // otherwise the widget won't update if the same file is overwritten every time
+        val file = File("$dir/${System.currentTimeMillis()}.png")
+
+        writeToFile(file) { fos ->
+            currentPhoto.compress(Bitmap.CompressFormat.PNG, 0, fos)
+        }
+
+        val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+        Timber.d("New URI for widget with id $appWidgetId: $uri")
+
+        context.grantUriPermission(launcherPackageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        Timber.d("Granted permission for package with name: $launcherPackageName")
+
+        return@withContext uri
+    }
+
+    private fun getDefaultLauncherPackageName(): String? {
+        val intent = Intent("android.intent.action.MAIN")
+            .addCategory("android.intent.category.HOME")
+
+        return context.packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
+            ?.activityInfo?.packageName
+    }
+
     suspend fun renameTemporaryWidgetDir(appWidgetId: Int) {
         withContext(Dispatchers.IO) {
             val tempDir = File("$rootDir/0")
@@ -188,6 +230,12 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
     private suspend fun getWidgetDir(appWidgetId: Int): File = withContext(Dispatchers.IO) {
         File("$rootDir/$appWidgetId").apply {
+            mkdirs()
+        }
+    }
+
+    private suspend fun getCurrentPhotoDir(appWidgetId: Int): File = withContext(Dispatchers.IO) {
+        File("$rootDir/current_photos/$appWidgetId").apply {
             mkdirs()
         }
     }

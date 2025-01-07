@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [v1.20.0] - 2025-01-05
 
+### Changed
+
+* Change how the widget is updated to improve resource usage and tentatively
+  fix crashes that are happening on low end devices
+
 ### Added
 
 * New shape: daisy

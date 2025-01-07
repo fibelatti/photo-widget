@@ -326,6 +326,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     private suspend fun requestPin(photoWidget: PhotoWidget) {
         val remoteViews = PhotoWidgetProvider.createRemoteViews(
             context = this,
+            appWidgetId = intent.appWidgetId,
             photoWidget = photoWidget,
         )
         val previewBundle = bundleOf(

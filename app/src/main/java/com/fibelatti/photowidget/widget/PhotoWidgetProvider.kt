@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
@@ -23,11 +22,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.WidgetSizeProvider
 import com.fibelatti.photowidget.platform.setIdentifierCompat
-import com.fibelatti.photowidget.platform.withPolygonalShape
-import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
-import kotlin.math.roundToInt
-import kotlin.math.sqrt
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -86,9 +81,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         private const val ACTION_VIEW_NEXT_PHOTO = "ACTION_VIEW_NEXT_PHOTO"
         private const val ACTION_VIEW_PREVIOUS_PHOTO = "ACTION_VIEW_PREVIOUS_PHOTO"
 
-        // RemoteViews have a maximum allowed memory for bitmaps
-        private const val MAX_WIDGET_BITMAP_MEMORY = 6_912_000
-
         fun ids(context: Context): List<Int> = AppWidgetManager.getInstance(context)
             .getAppWidgetIds(ComponentName(context, PhotoWidgetProvider::class.java))
             .toList()
@@ -114,6 +106,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
                 val views = tempViews ?: createRemoteViews(
                     context = context,
+                    appWidgetId = appWidgetId,
                     photoWidget = photoWidget,
                     recoveryMode = recoveryMode,
                 )
@@ -142,74 +135,39 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
         suspend fun createRemoteViews(
             context: Context,
+            appWidgetId: Int,
             photoWidget: PhotoWidget,
             recoveryMode: Boolean = false,
         ): RemoteViews {
             Timber.d("Creating remote views")
-            val errorView = createBaseView(context = context, aspectRatio = photoWidget.aspectRatio).apply {
-                setViewVisibility(R.id.iv_placeholder, View.VISIBLE)
-                setImageViewResource(R.id.iv_placeholder, R.drawable.ic_file_not_found)
-            }
+            val baseView = createBaseView(context = context, aspectRatio = photoWidget.aspectRatio)
 
-            val currentPhoto = photoWidget.currentPhoto ?: return errorView
+            Timber.d("Preparing current photo")
+            val prepareCurrentPhotoUseCase = entryPoint<PhotoWidgetEntryPoint>(context).prepareCurrentPhotoUseCase()
+            val result = prepareCurrentPhotoUseCase(
+                appWidgetId = appWidgetId,
+                photoWidget = photoWidget,
+                recoveryMode = recoveryMode,
+            )
 
-            val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
-            val decoder = entryPoint.photoDecoder()
-
-            Timber.d("Decoding the bitmap")
-            val bitmap = try {
-                val data = currentPhoto.getPhotoPath() ?: return errorView
-                val displayMetrics: DisplayMetrics = context.resources.displayMetrics
-                val maxMemoryAllowed: Int = if (!recoveryMode) {
-                    (displayMetrics.heightPixels * displayMetrics.widthPixels * 4 * 1.5).roundToInt()
-                } else {
-                    MAX_WIDGET_BITMAP_MEMORY
+            if (result == null) {
+                Timber.d("Failed to prepare current photo")
+                return baseView.apply {
+                    setViewVisibility(R.id.iv_placeholder, View.VISIBLE)
+                    setImageViewResource(R.id.iv_placeholder, R.drawable.ic_file_not_found)
                 }
-                val maxMemoryDimension: Int = sqrt(maxMemoryAllowed / 4 / displayMetrics.density).roundToInt()
-                val maxDimension: Int = if (PhotoWidgetAspectRatio.SQUARE != photoWidget.aspectRatio) {
-                    maxMemoryDimension
-                } else {
-                    maxMemoryDimension.coerceAtMost(maximumValue = PhotoWidget.MAX_WIDGET_DIMENSION)
-                }
-
-                Timber.d(
-                    "Creating widget bitmap (" +
-                        "maxMemoryAllowed=$maxMemoryAllowed," +
-                        "maxDimension=$maxDimension," +
-                        "recoveryMode=$recoveryMode" +
-                        ")",
-                )
-
-                requireNotNull(decoder.decode(data = data, maxDimension = maxDimension))
-            } catch (_: Exception) {
-                return errorView
             }
 
-            Timber.d("Transforming the bitmap")
-            val transformedBitmap = if (PhotoWidgetAspectRatio.SQUARE == photoWidget.aspectRatio) {
-                bitmap.withPolygonalShape(
-                    shapeId = photoWidget.shapeId,
-                    opacity = photoWidget.opacity,
-                    borderColorHex = photoWidget.borderColor,
-                    borderWidth = photoWidget.borderWidth,
-                )
-            } else {
-                bitmap.withRoundedCorners(
-                    aspectRatio = photoWidget.aspectRatio,
-                    radius = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio) {
-                        0F
-                    } else {
-                        photoWidget.cornerRadius
-                    },
-                    opacity = photoWidget.opacity,
-                    borderColorHex = photoWidget.borderColor,
-                    borderWidth = photoWidget.borderWidth,
-                )
-            }
-
-            return createBaseView(context = context, aspectRatio = photoWidget.aspectRatio).apply {
+            Timber.d("Current photo prepared successfully")
+            return baseView.apply {
                 setViewVisibility(R.id.iv_placeholder, View.GONE)
-                setImageViewBitmap(R.id.iv_widget, transformedBitmap)
+
+                if (result.uri != null) {
+                    setImageViewUri(R.id.iv_widget, result.uri)
+                } else {
+                    setImageViewBitmap(R.id.iv_widget, result.fallback)
+                }
+
                 setViewPadding(
                     /* viewId = */ R.id.iv_widget,
                     /* left = */ getDimensionValue(context, photoWidget.padding + photoWidget.horizontalOffset),

@@ -6,6 +6,7 @@ import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.CyclePhotoUseCase
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
+import com.fibelatti.photowidget.widget.PrepareCurrentPhotoUseCase
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
@@ -25,6 +26,8 @@ interface PhotoWidgetEntryPoint {
     fun loadPhotoWidgetUseCase(): LoadPhotoWidgetUseCase
 
     fun savePhotoWidgetUseCase(): SavePhotoWidgetUseCase
+
+    fun prepareCurrentPhotoUseCase(): PrepareCurrentPhotoUseCase
 
     fun flipPhotoUseCase(): CyclePhotoUseCase
 
