@@ -53,8 +53,21 @@ class PhotoWidgetStorage @Inject constructor(
         return internalFileStorage.newWidgetPhoto(appWidgetId = appWidgetId, source = source)
     }
 
-    suspend fun isValidDir(dirUri: Uri): Boolean {
-        return externalFileStorage.isValidDir(dirUri = dirUri)
+    suspend fun getNewDirPhotos(dirUri: Uri): List<LocalPhoto>? {
+        if (dirUri.toString().endsWith("DCIM%2FCamera", ignoreCase = true)) {
+            return null
+        }
+
+        return try {
+            // Traverse the directory structure to ensure that all folders contains less than the limit
+            externalFileStorage.getPhotos(
+                dirUri = setOf(dirUri),
+                croppedPhotos = emptyMap(),
+                applyValidation = true,
+            )
+        } catch (_: InvalidDirException) {
+            null
+        }
     }
 
     fun getWidgetPhotos(appWidgetId: Int): Flow<WidgetPhotos> = flow {

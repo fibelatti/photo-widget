@@ -28,30 +28,10 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
         }
     }
 
-    suspend fun isValidDir(dirUri: Uri): Boolean {
-        Timber.d("Checking validity of selected dir: $dirUri")
-
-        if (dirUri.toString().endsWith("DCIM%2FCamera", ignoreCase = true)) {
-            return false
-        }
-
-        val documentUri = DocumentsContract.buildDocumentUriUsingTree(
-            /* treeUri = */ dirUri,
-            /* documentId = */ DocumentsContract.getTreeDocumentId(dirUri),
-        )
-
-        return try {
-            // Traverse the directory structure to ensure that all folders contains less than the limit
-            getPhotoCount(documentUri = documentUri, applyValidation = true, excludedPhotoIds = emptySet())
-            true
-        } catch (_: InvalidDirException) {
-            false
-        }
-    }
-
     suspend fun getPhotos(
         dirUri: Set<Uri>,
         croppedPhotos: Map<String, LocalPhoto>,
+        applyValidation: Boolean = false,
     ): List<LocalPhoto> = coroutineScope {
         dirUri.map { uri ->
             async {
@@ -59,61 +39,16 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
                     /* treeUri = */ uri,
                     /* documentId = */ DocumentsContract.getTreeDocumentId(uri),
                 )
-                getPhotos(documentUri = documentUri, croppedPhotos = croppedPhotos)
+                getPhotos(documentUri = documentUri, croppedPhotos = croppedPhotos, applyValidation = applyValidation)
             }
         }.awaitAll().flatten()
     }
 
-    private suspend fun getPhotoCount(
+    private suspend fun getPhotos(
         documentUri: Uri,
-        applyValidation: Boolean,
-        excludedPhotoIds: Collection<String>,
-    ): Int {
-        return usingCursor(documentUri = documentUri) { cursor ->
-            var count = 0
-
-            while (cursor.moveToNext()) {
-                val documentId = cursor.getString(0)
-                val mimeType = cursor.getString(1)
-                val documentName = cursor.getString(2)
-                    .takeUnless { it.startsWith(".trashed") }
-                val fileUri = DocumentsContract.buildDocumentUriUsingTree(documentUri, documentId)
-
-                val photoId = documentName?.let {
-                    createPhotoId(documentId = documentId, documentName = documentName)
-                        .takeUnless { it in excludedPhotoIds || documentName in excludedPhotoIds }
-                }
-
-                Timber.d(
-                    "Cursor item (" +
-                        "documentId=$documentId, " +
-                        "mimeType=$mimeType, " +
-                        "documentName=$documentName, " +
-                        "fileUri=$fileUri, " +
-                        "photoId=$photoId" +
-                        ")",
-                )
-
-                if (photoId != null && mimeType in ALLOWED_TYPES && fileUri != null) {
-                    count += 1
-                } else if (documentName?.startsWith(".") != true && mimeType == "vnd.android.document/directory") {
-                    val dirCount = getPhotoCount(
-                        documentUri = fileUri,
-                        applyValidation = applyValidation,
-                        excludedPhotoIds = excludedPhotoIds,
-                    )
-
-                    if (applyValidation && dirCount >= 3_000) throw InvalidDirException()
-
-                    count += dirCount
-                }
-            }
-
-            count
-        } ?: 0
-    }
-
-    private suspend fun getPhotos(documentUri: Uri, croppedPhotos: Map<String, LocalPhoto>): List<LocalPhoto> {
+        croppedPhotos: Map<String, LocalPhoto>,
+        applyValidation: Boolean = false,
+    ): List<LocalPhoto> {
         return usingCursor(documentUri = documentUri) { cursor ->
             buildList {
                 while (cursor.moveToNext()) {
@@ -146,6 +81,10 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
                         )
 
                         add(localPhoto)
+
+                        if (applyValidation && size >= 3_000) {
+                            throw InvalidDirException()
+                        }
                     } else if (documentName?.startsWith(".") != true && mimeType == "vnd.android.document/directory") {
                         addAll(getPhotos(documentUri = fileUri, croppedPhotos = croppedPhotos))
                     }
@@ -191,10 +130,10 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
             .replace(oldValue = "/", newValue = PhotoWidgetStorage.SEPARATOR)
     }
 
-    private class InvalidDirException : RuntimeException()
-
     private companion object {
 
         private val ALLOWED_TYPES = arrayOf("image/jpeg", "image/png")
     }
 }
+
+class InvalidDirException : RuntimeException()

@@ -241,7 +241,8 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { current -> current.copy(isProcessing = true) }
 
-            if (!photoWidgetStorage.isValidDir(dirUri = source)) {
+            val newDirPhotos = photoWidgetStorage.getNewDirPhotos(dirUri = source)
+            if (newDirPhotos == null) {
                 _state.update { current ->
                     current.copy(
                         isProcessing = false,
@@ -256,7 +257,19 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
             photoWidgetStorage.saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = syncedDir)
 
-            reloadDirPhotos(syncedDir = syncedDir)
+            _state.update { current ->
+                current.copy(
+                    photoWidget = current.photoWidget.copy(
+                        photos = current.photoWidget.photos + newDirPhotos,
+                        currentPhoto = current.photoWidget.currentPhoto ?: current.photoWidget.photos.firstOrNull(),
+                        syncedDir = syncedDir.toSet(),
+                        removedPhotos = current.photoWidget.removedPhotos,
+                    ),
+                    selectedPhoto = current.selectedPhoto ?: current.photoWidget.photos.firstOrNull(),
+                    isProcessing = false,
+                    cropQueue = emptyList(),
+                )
+            }
         }
     }
 
