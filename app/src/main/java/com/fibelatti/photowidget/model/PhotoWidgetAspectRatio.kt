@@ -38,7 +38,7 @@ enum class PhotoWidgetAspectRatio(
         y = 3f,
         label = R.string.photo_widget_aspect_ratio_fill_widget,
         isConstrained = false,
-    )
+    ),
     ;
 
     val aspectRatio: Float

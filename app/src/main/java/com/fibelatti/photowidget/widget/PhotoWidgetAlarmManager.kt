@@ -63,8 +63,10 @@ class PhotoWidgetAlarmManager @Inject constructor(
         if (canScheduleExactAlarms) {
             try {
                 alarmManager.setExact(
-                    /* type = */ AlarmManager.RTC,
-                    /* triggerAtMillis = */ triggerAtMillis,
+                    /* type = */
+                    AlarmManager.RTC,
+                    /* triggerAtMillis = */
+                    triggerAtMillis,
                     /* operation = */
                     ExactRepeatingAlarmReceiver.pendingIntent(
                         context = context,
@@ -91,10 +93,14 @@ class PhotoWidgetAlarmManager @Inject constructor(
 
     private fun setRepeatingAlarm(triggerAtMillis: Long, intervalMillis: Long, appWidgetId: Int) {
         alarmManager.setRepeating(
-            /* type = */ AlarmManager.RTC,
-            /* triggerAtMillis = */ triggerAtMillis,
-            /* intervalMillis = */ intervalMillis,
-            /* operation = */ PhotoWidgetProvider.flipPhotoPendingIntent(context = context, appWidgetId = appWidgetId),
+            /* type = */
+            AlarmManager.RTC,
+            /* triggerAtMillis = */
+            triggerAtMillis,
+            /* intervalMillis = */
+            intervalMillis,
+            /* operation = */
+            PhotoWidgetProvider.flipPhotoPendingIntent(context = context, appWidgetId = appWidgetId),
         )
     }
 
@@ -124,8 +130,10 @@ class PhotoWidgetAlarmManager @Inject constructor(
         if (canScheduleExactAlarms) {
             try {
                 alarmManager.setExactAndAllowWhileIdle(
-                    /* type = */ AlarmManager.RTC,
-                    /* triggerAtMillis = */ calendar.timeInMillis,
+                    /* type = */
+                    AlarmManager.RTC,
+                    /* triggerAtMillis = */
+                    calendar.timeInMillis,
                     /* operation = */
                     ExactRepeatingAlarmReceiver.pendingIntent(
                         context = context,
@@ -143,9 +151,12 @@ class PhotoWidgetAlarmManager @Inject constructor(
 
     private fun setAlarm(triggerAtMillis: Long, appWidgetId: Int) {
         alarmManager.setAndAllowWhileIdle(
-            /* type = */ AlarmManager.RTC,
-            /* triggerAtMillis = */ triggerAtMillis,
-            /* operation = */ ExactRepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId),
+            /* type = */
+            AlarmManager.RTC,
+            /* triggerAtMillis = */
+            triggerAtMillis,
+            /* operation = */
+            ExactRepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId),
         )
     }
 }
@@ -173,10 +184,14 @@ class ExactRepeatingAlarmReceiver : BroadcastReceiver() {
                 this.appWidgetId = appWidgetId
             }
             return PendingIntent.getBroadcast(
-                /* context = */ context,
-                /* requestCode = */ appWidgetId,
-                /* intent = */ intent,
-                /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                /* context = */
+                context,
+                /* requestCode = */
+                appWidgetId,
+                /* intent = */
+                intent,
+                /* flags = */
+                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
             )
         }
     }

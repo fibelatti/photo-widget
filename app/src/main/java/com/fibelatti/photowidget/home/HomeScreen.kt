@@ -78,8 +78,10 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(paddingValues),
             transitionSpec = {
-                (fadeIn(animationSpec = tween(220)) +
-                    scaleIn(initialScale = 0.97f, animationSpec = tween(220)))
+                (
+                    fadeIn(animationSpec = tween(220)) +
+                        scaleIn(initialScale = 0.97f, animationSpec = tween(220))
+                    )
                     .togetherWith(fadeOut(animationSpec = tween(90)))
             },
             contentAlignment = Alignment.Center,

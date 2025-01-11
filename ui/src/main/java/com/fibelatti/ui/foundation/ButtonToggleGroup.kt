@@ -20,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonElevation
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -397,11 +396,15 @@ object ToggleButtonGroup {
     )
 
     enum class IconPosition {
-        Start, Top, End, Bottom
+        Start,
+        Top,
+        End,
+        Bottom,
     }
 
     internal enum class Mode {
-        TextAndIcon, IconOnly,
+        TextAndIcon,
+        IconOnly,
     }
 }
 

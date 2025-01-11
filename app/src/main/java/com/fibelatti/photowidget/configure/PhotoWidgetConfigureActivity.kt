@@ -338,19 +338,26 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             this.photoWidget = photoWidget
         }
         val successCallback = PendingIntent.getBroadcast(
-            /* context = */ this,
-            /* requestCode = */ PIN_REQUEST_CODE,
-            /* intent = */ callbackIntent,
-            /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            /* context = */
+            this,
+            /* requestCode = */
+            PIN_REQUEST_CODE,
+            /* intent = */
+            callbackIntent,
+            /* flags = */
+            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
 
         PhotoWidgetPinnedReceiver.preview = WeakReference(remoteViews)
         PhotoWidgetPinnedReceiver.callbackIntent = WeakReference(callbackIntent)
 
         AppWidgetManager.getInstance(this).requestPinAppWidget(
-            /* provider = */ ComponentName(this, PhotoWidgetProvider::class.java),
-            /* extras = */ previewBundle,
-            /* successCallback = */ successCallback,
+            /* provider = */
+            ComponentName(this, PhotoWidgetProvider::class.java),
+            /* extras = */
+            previewBundle,
+            /* successCallback = */
+            successCallback,
         )
     }
 

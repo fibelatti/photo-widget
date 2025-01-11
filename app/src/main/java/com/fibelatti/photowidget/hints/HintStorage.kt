@@ -20,6 +20,5 @@ class HintStorage @Inject constructor(@ApplicationContext context: Context) {
 
     private enum class Hint(val value: String) {
         FULL_SCREEN_VIEWER(value = "hint_full_screen_viewer"),
-        ;
     }
 }

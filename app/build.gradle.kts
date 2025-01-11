@@ -12,6 +12,7 @@ plugins {
 }
 
 object AppInfo {
+
     const val APP_NAME = "Material Photo Widget"
     const val APPLICATION_ID = "com.fibelatti.photowidget"
 
@@ -20,19 +21,17 @@ object AppInfo {
     private const val VERSION_PATCH = 0
     private const val VERSION_BUILD = 0
 
-    val versionCode: Int =
-        (VERSION_MAJOR * 1_000_000)
-            .plus(VERSION_MINOR * 10_000)
-            .plus(VERSION_PATCH * 100)
-            .plus(VERSION_BUILD)
-            .also { println("versionCode: $it") }
+    val versionCode: Int = (VERSION_MAJOR * 1_000_000)
+        .plus(VERSION_MINOR * 10_000)
+        .plus(VERSION_PATCH * 100)
+        .plus(VERSION_BUILD)
+        .also { println("versionCode: $it") }
 
     @Suppress("KotlinConstantConditions")
-    val versionName: String =
-        StringBuilder("$VERSION_MAJOR.$VERSION_MINOR")
-            .apply { if (VERSION_PATCH != 0) append(".$VERSION_PATCH") }
-            .toString()
-            .also { println("versionName: $it") }
+    val versionName: String = StringBuilder("$VERSION_MAJOR.$VERSION_MINOR")
+        .apply { if (VERSION_PATCH != 0) append(".$VERSION_PATCH") }
+        .toString()
+        .also { println("versionName: $it") }
 }
 
 android {
@@ -107,11 +106,10 @@ android {
 
     androidComponents {
         onVariants { variant ->
-            val appName =
-                StringBuilder().apply {
-                    append(AppInfo.APP_NAME)
-                    if (variant.name.contains("debug", ignoreCase = true)) append(" Dev")
-                }.toString()
+            val appName = StringBuilder().apply {
+                append(AppInfo.APP_NAME)
+                if (variant.name.contains("debug", ignoreCase = true)) append(" Dev")
+            }.toString()
 
             variant.resValues.put(
                 variant.makeResValueKey("string", "app_name"),

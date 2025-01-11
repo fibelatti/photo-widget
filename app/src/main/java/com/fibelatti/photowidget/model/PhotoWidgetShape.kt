@@ -76,6 +76,5 @@ sealed class PhotoWidgetShape {
             result = 31 * result + scaleY.hashCode()
             return result
         }
-
     }
 }

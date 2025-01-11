@@ -72,7 +72,7 @@ fun ShapesBanner(
             ) {
                 isAnimating = !isAnimating
             },
-        horizontalArrangement = Arrangement.SpaceEvenly
+        horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
         polygons.forEach { roundedPolygon ->
             ColoredShape(

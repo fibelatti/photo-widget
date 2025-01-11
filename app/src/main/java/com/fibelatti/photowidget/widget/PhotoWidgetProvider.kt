@@ -169,11 +169,16 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 }
 
                 setViewPadding(
-                    /* viewId = */ R.id.iv_widget,
-                    /* left = */ getDimensionValue(context, photoWidget.padding + photoWidget.horizontalOffset),
-                    /* top = */ getDimensionValue(context, photoWidget.padding + photoWidget.verticalOffset),
-                    /* right = */ getDimensionValue(context, photoWidget.padding),
-                    /* bottom = */ getDimensionValue(context, photoWidget.padding),
+                    /* viewId = */
+                    R.id.iv_widget,
+                    /* left = */
+                    getDimensionValue(context, photoWidget.padding + photoWidget.horizontalOffset),
+                    /* top = */
+                    getDimensionValue(context, photoWidget.padding + photoWidget.verticalOffset),
+                    /* right = */
+                    getDimensionValue(context, photoWidget.padding),
+                    /* bottom = */
+                    getDimensionValue(context, photoWidget.padding),
                 )
             }
         }
@@ -190,9 +195,12 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
         private fun getDimensionValue(context: Context, value: Int): Int {
             return TypedValue.applyDimension(
-                /* unit = */ TypedValue.COMPLEX_UNIT_DIP,
-                /* value = */ value * 10f,
-                /* metrics = */ context.resources.displayMetrics,
+                /* unit = */
+                TypedValue.COMPLEX_UNIT_DIP,
+                /* value = */
+                value * 10f,
+                /* metrics = */
+                context.resources.displayMetrics,
             ).toInt()
         }
 
@@ -269,10 +277,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         this.appWidgetId = appWidgetId
                     }
                     return PendingIntent.getActivity(
-                        /* context = */ context,
-                        /* requestCode = */ appWidgetId,
-                        /* intent = */ clickIntent,
-                        /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        /* context = */
+                        context,
+                        /* requestCode = */
+                        appWidgetId,
+                        /* intent = */
+                        clickIntent,
+                        /* flags = */
+                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
 
@@ -285,10 +297,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     }
 
                     return PendingIntent.getActivity(
-                        /* context = */ context,
-                        /* requestCode = */ appWidgetId,
-                        /* intent = */ intent,
-                        /* flags = */ PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        /* context = */
+                        context,
+                        /* requestCode = */
+                        appWidgetId,
+                        /* intent = */
+                        intent,
+                        /* flags = */
+                        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
 
@@ -312,10 +328,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     launchIntent.setIdentifierCompat("$appWidgetId")
 
                     return PendingIntent.getActivity(
-                        /* context = */ context,
-                        /* requestCode = */ appWidgetId,
-                        /* intent = */ launchIntent,
-                        /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        /* context = */
+                        context,
+                        /* requestCode = */
+                        appWidgetId,
+                        /* intent = */
+                        launchIntent,
+                        /* flags = */
+                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
 
@@ -326,10 +346,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         .setIdentifierCompat("$appWidgetId")
 
                     return PendingIntent.getActivity(
-                        /* context = */ context,
-                        /* requestCode = */ appWidgetId,
-                        /* intent = */ intent,
-                        /* flags = */ PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        /* context = */
+                        context,
+                        /* requestCode = */
+                        appWidgetId,
+                        /* intent = */
+                        intent,
+                        /* flags = */
+                        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
 
@@ -339,10 +363,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         this.appWidgetId = appWidgetId
                     }
                     return PendingIntent.getActivity(
-                        /* context = */ context,
-                        /* requestCode = */ appWidgetId,
-                        /* intent = */ intent,
-                        /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        /* context = */
+                        context,
+                        /* requestCode = */
+                        appWidgetId,
+                        /* intent = */
+                        intent,
+                        /* flags = */
+                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
             }
@@ -359,10 +387,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 this.action = if (flipBackwards) ACTION_VIEW_PREVIOUS_PHOTO else ACTION_VIEW_NEXT_PHOTO
             }
             return PendingIntent.getBroadcast(
-                /* context = */ context,
-                /* requestCode = */ appWidgetId,
-                /* intent = */ intent,
-                /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                /* context = */
+                context,
+                /* requestCode = */
+                appWidgetId,
+                /* intent = */
+                intent,
+                /* flags = */
+                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
             )
         }
     }

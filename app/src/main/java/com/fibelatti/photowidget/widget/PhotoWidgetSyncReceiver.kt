@@ -51,10 +51,14 @@ class PhotoWidgetSyncReceiver : BroadcastReceiver() {
             }
 
             return PendingIntent.getBroadcast(
-                /* context = */ context,
-                /* requestCode = */ CODE,
-                /* intent = */ intent,
-                /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                /* context = */
+                context,
+                /* requestCode = */
+                CODE,
+                /* intent = */
+                intent,
+                /* flags = */
+                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
             )
         }
 
@@ -70,10 +74,14 @@ class PhotoWidgetSyncReceiver : BroadcastReceiver() {
             }
 
             alarmManager.setRepeating(
-                /* type = */ AlarmManager.RTC,
-                /* triggerAtMillis = */ calendar.timeInMillis,
-                /* intervalMillis = */ 1.days.inWholeMilliseconds,
-                /* operation = */ pendingIntent(context = context),
+                /* type = */
+                AlarmManager.RTC,
+                /* triggerAtMillis = */
+                calendar.timeInMillis,
+                /* intervalMillis = */
+                1.days.inWholeMilliseconds,
+                /* operation = */
+                pendingIntent(context = context),
             )
         }
     }

@@ -30,16 +30,32 @@ val javaVersion = JavaVersion.VERSION_17
 allprojects {
     apply<SpotlessPlugin>()
 
+    val disabledRules = listOf(
+        "ktlint_standard_blank-line-before-declaration",
+        "ktlint_standard_function-expression-body",
+        "ktlint_standard_class-signature",
+        "ktlint_standard_function-signature",
+    ).associateWith { "disabled" }
+
+    val configuredRules = mapOf(
+        "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
+        "ktlint_ignore_back_ticked_identifier" to true,
+    )
+
+    val allRules = disabledRules + configuredRules
+
     val configureSpotless: SpotlessExtension.() -> Unit = {
         kotlin {
             target("**/*.kt")
             targetExclude("**/build/**/*.kt")
+
+            ktlint().editorConfigOverride(allRules)
         }
         kotlinGradle {
             target("**/*.kts")
             targetExclude("**/build/**/*.kts")
 
-            ktlint()
+            ktlint().editorConfigOverride(allRules)
         }
         format("xml") {
             target("**/*.xml")
@@ -49,7 +65,7 @@ allprojects {
             target("*.gradle", "*.md", ".gitignore")
 
             trimTrailingWhitespace()
-            indentWithSpaces()
+            leadingTabsToSpaces()
             endWithNewline()
         }
     }
