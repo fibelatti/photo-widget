@@ -258,14 +258,16 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             photoWidgetStorage.saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = syncedDir)
 
             _state.update { current ->
+                val updatedPhotos = current.photoWidget.photos + newDirPhotos
+
                 current.copy(
                     photoWidget = current.photoWidget.copy(
-                        photos = current.photoWidget.photos + newDirPhotos,
-                        currentPhoto = current.photoWidget.currentPhoto ?: current.photoWidget.photos.firstOrNull(),
+                        photos = updatedPhotos,
+                        currentPhoto = current.photoWidget.currentPhoto ?: updatedPhotos.firstOrNull(),
                         syncedDir = syncedDir.toSet(),
                         removedPhotos = current.photoWidget.removedPhotos,
                     ),
-                    selectedPhoto = current.selectedPhoto ?: current.photoWidget.photos.firstOrNull(),
+                    selectedPhoto = current.selectedPhoto ?: updatedPhotos.firstOrNull(),
                     isProcessing = false,
                     cropQueue = emptyList(),
                 )
