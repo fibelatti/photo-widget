@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -115,6 +117,8 @@ android {
                 variant.makeResValueKey("string", "app_name"),
                 com.android.build.api.variant.ResValue(appName, null),
             )
+
+            variant.androidResources.localeFilters.addAll("en", "es", "fr", "pt", "ru", "tr")
         }
     }
 

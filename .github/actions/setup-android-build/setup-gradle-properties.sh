@@ -14,7 +14,6 @@ write_common_properties() {
 
     # Gradle properties common to all build environments
     write_property "org.gradle.caching=true"
-    write_property "org.gradle.configuration-cache=true"
     write_property "org.gradle.configureondemand=true"
     write_property "org.gradle.daemon=false"
     write_property "org.gradle.parallel=true"
