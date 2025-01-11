@@ -1,0 +1,10 @@
+This version brings the following updates:
+
+* New shape: daisy
+* New tap action: URL shortcut
+* New option to disable clicks when using the pause tap action
+* Fixed transparent PNGs not working in certain conditions
+* Improved the overall loading performance of widgets, especially the ones
+  with thousands of photos
+
+Feedback and suggestions are always welcome, thank you for using the app!
