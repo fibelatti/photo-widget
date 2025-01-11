@@ -73,7 +73,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             if (sourceWidget != null) {
                 updateState(photoWidget = sourceWidget, hasEdits = true)
             } else {
-                loadPhotoWidgetUseCase(appWidgetId = appWidgetId, loadFromSource = true)
+                loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
                     .onEach { photoWidget -> updateState(photoWidget = photoWidget, hasEdits = false) }
                     .onCompletion { trackEdits() }
                     .launchIn(viewModelScope)
@@ -146,22 +146,22 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
         photoWidgetStorage.saveWidgetSource(appWidgetId = appWidgetId, source = newSource)
 
-        viewModelScope.launch {
-            val widgetPhotos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
-
-            _state.update { current ->
-                current.copy(
-                    photoWidget = current.photoWidget.copy(
-                        source = newSource,
-                        photos = widgetPhotos.current,
-                        currentPhoto = widgetPhotos.current.firstOrNull(),
-                        removedPhotos = widgetPhotos.excluded,
-                    ),
-                    selectedPhoto = widgetPhotos.current.firstOrNull(),
-                    cropQueue = emptyList(),
-                )
+        photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+            .onEach { widgetPhotos ->
+                _state.update { current ->
+                    current.copy(
+                        photoWidget = current.photoWidget.copy(
+                            source = newSource,
+                            photos = widgetPhotos.current,
+                            currentPhoto = widgetPhotos.current.firstOrNull(),
+                            removedPhotos = widgetPhotos.excluded,
+                        ),
+                        selectedPhoto = widgetPhotos.current.firstOrNull(),
+                        cropQueue = emptyList(),
+                    )
+                }
             }
-        }
+            .launchIn(viewModelScope)
     }
 
     fun setAspectRatio(photoWidgetAspectRatio: PhotoWidgetAspectRatio) {
@@ -268,22 +268,24 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    private suspend fun reloadDirPhotos(syncedDir: Collection<Uri>) {
-        val widgetPhotos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
-
-        _state.update { current ->
-            current.copy(
-                photoWidget = current.photoWidget.copy(
-                    photos = widgetPhotos.current,
-                    currentPhoto = widgetPhotos.current.firstOrNull(),
-                    syncedDir = syncedDir.toSet(),
-                    removedPhotos = widgetPhotos.excluded,
-                ),
-                selectedPhoto = widgetPhotos.current.firstOrNull(),
-                isProcessing = false,
-                cropQueue = emptyList(),
-            )
-        }
+    private fun reloadDirPhotos(syncedDir: Collection<Uri>) {
+        photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+            .onEach { widgetPhotos ->
+                _state.update { current ->
+                    current.copy(
+                        photoWidget = current.photoWidget.copy(
+                            photos = widgetPhotos.current,
+                            currentPhoto = widgetPhotos.current.firstOrNull(),
+                            syncedDir = syncedDir.toSet(),
+                            removedPhotos = widgetPhotos.excluded,
+                        ),
+                        selectedPhoto = widgetPhotos.current.firstOrNull(),
+                        isProcessing = false,
+                        cropQueue = emptyList(),
+                    )
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     fun previewPhoto(photo: LocalPhoto) {

@@ -11,6 +11,8 @@ import com.fibelatti.photowidget.model.WidgetPhotos
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.days
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
 @Singleton
@@ -55,27 +57,25 @@ class PhotoWidgetStorage @Inject constructor(
         return externalFileStorage.isValidDir(dirUri = dirUri)
     }
 
-    suspend fun getWidgetPhotos(
-        appWidgetId: Int,
-        loadFromSource: Boolean = true,
-    ): WidgetPhotos {
-        Timber.d("Retrieving photos (appWidgetId=$appWidgetId, loadFromSource=$loadFromSource)")
+    fun getWidgetPhotos(appWidgetId: Int): Flow<WidgetPhotos> = flow {
+        Timber.d("Retrieving photos (appWidgetId=$appWidgetId)")
 
         val excludedPhotos = getExcludedPhotoIds(appWidgetId = appWidgetId)
 
-        if (!loadFromSource) {
-            val local = getLocalWidgetPhotos(
-                appWidgetId = appWidgetId,
-                excludedPhotos = excludedPhotos,
-            )
-
-            if (local.current.isNotEmpty()) return local
-        }
-
-        return getSourceWidgetPhotos(
+        val local = getLocalWidgetPhotos(
             appWidgetId = appWidgetId,
             excludedPhotos = excludedPhotos,
         )
+
+        if (local.current.isNotEmpty()) {
+            emit(local)
+        }
+
+        val source = getSourceWidgetPhotos(
+            appWidgetId = appWidgetId,
+            excludedPhotos = excludedPhotos,
+        )
+        emit(source)
     }
 
     private suspend fun getSourceWidgetPhotos(

@@ -28,9 +28,7 @@ class HomeViewModel @Inject constructor(
 
     fun loadCurrentWidgets() {
         val allIds = photoWidgetStorage.getKnownWidgetIds()
-        val flows = allIds.map { widgetId ->
-            loadPhotoWidgetUseCase(appWidgetId = widgetId, loadFromSource = false)
-        }
+        val flows = allIds.map(loadPhotoWidgetUseCase::invoke)
 
         combine(flows, Array<PhotoWidget>::toList)
             .withIndex()

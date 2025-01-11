@@ -15,8 +15,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -39,9 +38,7 @@ class PhotoWidgetViewerViewModel @Inject constructor(
     private var loadWidgetJob: Job? = null
 
     init {
-        loadWidgetJob = loadPhotoWidgetUseCase(appWidgetId = appWidgetId, loadFromSource = false)
-            .onEach(::updateState)
-            .launchIn(viewModelScope)
+        updateState()
     }
 
     override fun onCleared() {
@@ -50,23 +47,24 @@ class PhotoWidgetViewerViewModel @Inject constructor(
     }
 
     fun flip(backwards: Boolean = false) {
-        loadWidgetJob?.cancel()
-        loadWidgetJob = viewModelScope.launch {
+        viewModelScope.launch {
             cyclePhotoUseCase(appWidgetId = appWidgetId, flipBackwards = backwards)
-
-            loadPhotoWidgetUseCase(appWidgetId = appWidgetId, loadFromSource = false)
-                .onEach(::updateState)
-                .launchIn(this)
+            updateState()
         }
     }
 
-    private fun updateState(photoWidget: PhotoWidget) {
-        _state.update { current ->
-            current.copy(
-                photoWidget = photoWidget,
-                showMoveControls = photoWidget.photos.size > 1,
-                showHint = hintStorage.showFullScreenViewerHint,
-            )
+    private fun updateState() {
+        loadWidgetJob?.cancel()
+        loadWidgetJob = viewModelScope.launch {
+            val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId).first { !it.isLoading }
+
+            _state.update { current ->
+                current.copy(
+                    photoWidget = photoWidget,
+                    showMoveControls = photoWidget.photos.size > 1,
+                    showHint = hintStorage.showFullScreenViewerHint,
+                )
+            }
         }
     }
 

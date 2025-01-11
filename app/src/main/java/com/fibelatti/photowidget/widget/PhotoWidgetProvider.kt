@@ -23,7 +23,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.WidgetSizeProvider
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
-import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -97,7 +97,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
             coroutineScope.launch {
                 Timber.d("Loading widget data")
-                val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId, loadFromSource = false).last()
+                val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId).first { !it.isLoading }
                 val tempViews = PhotoWidgetPinnedReceiver.preview?.get()
                     ?.takeIf { photoWidget.photos.isEmpty() }
                     ?.also { PhotoWidgetPinnedReceiver.preview = null }

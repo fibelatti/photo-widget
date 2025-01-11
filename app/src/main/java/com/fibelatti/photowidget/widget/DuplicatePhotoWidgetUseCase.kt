@@ -5,6 +5,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
 
 class DuplicatePhotoWidgetUseCase @Inject constructor(
     private val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
@@ -15,10 +16,7 @@ class DuplicatePhotoWidgetUseCase @Inject constructor(
         originalAppWidgetId: Int,
         newAppWidgetId: Int,
     ): PhotoWidget {
-        val appWidget = loadPhotoWidgetUseCase(
-            appWidgetId = originalAppWidgetId,
-            loadFromSource = false,
-        ).first()
+        val appWidget = loadPhotoWidgetUseCase(appWidgetId = originalAppWidgetId).first()
 
         photoWidgetStorage.saveWidgetSource(
             appWidgetId = newAppWidgetId,
@@ -46,7 +44,9 @@ class DuplicatePhotoWidgetUseCase @Inject constructor(
             photoIds = photoWidgetStorage.getExcludedPhotoIds(appWidgetId = originalAppWidgetId),
         )
 
-        val photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = newAppWidgetId).current
+        val photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = newAppWidgetId)
+            .last()
+            .current
 
         return appWidget.copy(
             photos = photos,

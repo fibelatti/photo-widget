@@ -4,6 +4,7 @@ import android.content.Context
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 import timber.log.Timber
 
 class CyclePhotoUseCase @Inject constructor(
@@ -14,7 +15,8 @@ class CyclePhotoUseCase @Inject constructor(
     suspend operator fun invoke(appWidgetId: Int, flipBackwards: Boolean = false) {
         Timber.d("Cycling photo (appWidgetId=$appWidgetId, flipBackwards=$flipBackwards)")
 
-        val widgetPhotos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId, loadFromSource = false)
+        val widgetPhotos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+            .first()
             .current
             .map { it.photoId }
 
