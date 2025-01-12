@@ -17,7 +17,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -64,7 +63,6 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Brush
@@ -72,10 +70,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
-import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
@@ -84,8 +80,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.graphics.shapes.RoundedPolygon
-import androidx.graphics.shapes.toPath
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -95,7 +89,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
-import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.CornerRadiusPicker
@@ -104,8 +97,9 @@ import com.fibelatti.photowidget.preferences.OpacityPicker
 import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.photowidget.preferences.ShapeDefault
 import com.fibelatti.photowidget.preferences.ShapePicker
-import com.fibelatti.photowidget.ui.AsyncPhotoViewer
+import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.LoadingIndicator
+import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
@@ -1099,94 +1093,6 @@ fun PaddingPicker(
     }
 }
 // endregion Pickers
-
-@Composable
-fun ShapedPhoto(
-    photo: LocalPhoto?,
-    aspectRatio: PhotoWidgetAspectRatio,
-    shapeId: String,
-    cornerRadius: Float,
-    opacity: Float,
-    modifier: Modifier = Modifier,
-    blackAndWhite: Boolean = false,
-    borderColorHex: String? = null,
-    borderWidth: Int = 0,
-    badge: @Composable BoxScope.() -> Unit = {},
-    isLoading: Boolean = false,
-) {
-    AsyncPhotoViewer(
-        data = photo?.getPhotoPath(),
-        dataKey = arrayOf(
-            photo,
-            shapeId,
-            aspectRatio,
-            cornerRadius,
-            opacity,
-            blackAndWhite,
-            borderColorHex,
-            borderWidth,
-        ),
-        isLoading = isLoading,
-        contentScale = if (aspectRatio.isConstrained) {
-            ContentScale.FillWidth
-        } else {
-            ContentScale.Fit
-        },
-        modifier = modifier.aspectRatio(ratio = aspectRatio.aspectRatio),
-        transformer = { bitmap ->
-            bitmap?.run {
-                if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
-                    withPolygonalShape(
-                        shapeId = shapeId,
-                        opacity = opacity,
-                        blackAndWhite = blackAndWhite,
-                        borderColorHex = borderColorHex,
-                        borderWidth = borderWidth,
-                    )
-                } else {
-                    withRoundedCorners(
-                        aspectRatio = aspectRatio,
-                        radius = cornerRadius,
-                        opacity = opacity,
-                        blackAndWhite = blackAndWhite,
-                        borderColorHex = borderColorHex,
-                        borderWidth = borderWidth,
-                    )
-                }
-            }
-        },
-        badge = badge,
-    )
-}
-
-@Composable
-fun ColoredShape(
-    polygon: RoundedPolygon,
-    color: Color,
-    modifier: Modifier = Modifier,
-    content: @Composable BoxScope.() -> Unit = {},
-) {
-    Box(
-        modifier = modifier.drawWithContent {
-            val sizedPolygon = PhotoWidgetShapeBuilder.resizeShape(
-                roundedPolygon = polygon,
-                width = size.width,
-                height = size.height,
-            )
-
-            drawPath(
-                path = sizedPolygon
-                    .toPath()
-                    .asComposePath(),
-                color = color,
-            )
-
-            drawContent()
-        },
-        contentAlignment = Alignment.Center,
-        content = content,
-    )
-}
 
 // region Previews
 @Composable

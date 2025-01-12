@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.fibelatti.photowidget.configure.ColoredShape
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.theme.ExtendedTheme

@@ -60,7 +60,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
-import com.fibelatti.photowidget.configure.ColoredShape
 import com.fibelatti.photowidget.configure.PhotoWidgetCycleModePicker
 import com.fibelatti.photowidget.configure.PhotoWidgetTapActionPicker
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -72,6 +71,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.preview.ThemePreviews
