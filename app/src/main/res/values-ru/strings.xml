@@ -37,7 +37,8 @@
     <string name="photo_widget_home_filter_photos">Фотографии</string>
     <string name="photo_widget_home_filter_folder">Папка</string>
 
-    <string name="photo_widget_home_removed_widgets_hint">Затемнённые виджеты были удалены с главного экрана и будут окончательно удалены через неделю</string>
+    <string name="photo_widget_home_removed_label">Удаленный</string>
+    <string name="photo_widget_home_removed_widgets_hint">Удаленные виджеты больше не отображаются на главном экране и будут окончательно удалены через неделю.</string>
 
     <string name="photo_widget_home_my_widget_action_edit">Просмотреть / Редактировать</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Дублировать</string>
@@ -64,6 +65,7 @@
     <string name="widget_defaults_shape">Форма</string>
     <string name="widget_defaults_corner_radius">Закругление углов</string>
     <string name="widget_defaults_opacity">Прозрачность</string>
+    <string name="widget_defaults_black_and_white">Черно-белый</string>
     <string name="widget_defaults_tap_action">Действие при нажатии</string>
     <string name="widget_defaults_reset">Сбросить значения</string>
 

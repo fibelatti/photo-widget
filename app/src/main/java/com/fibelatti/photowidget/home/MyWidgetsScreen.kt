@@ -7,6 +7,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -45,11 +46,8 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
-import com.fibelatti.ui.foundation.conditional
-import com.fibelatti.ui.foundation.grayScale
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
-import kotlin.random.Random
 
 @Composable
 fun MyWidgetsScreen(
@@ -92,24 +90,40 @@ fun MyWidgetsScreen(
                     items(items, key = { (id, _) -> id }) { (id, widget) ->
                         val isRemoved = widget.deletionTimestamp > 0
 
-                        ShapedPhoto(
-                            photo = widget.currentPhoto,
-                            aspectRatio = widget.aspectRatio,
-                            shapeId = widget.shapeId,
-                            cornerRadius = widget.cornerRadius,
-                            opacity = if (isRemoved) 70f else widget.opacity,
+                        Box(
                             modifier = Modifier
                                 .animateItem()
                                 .fillMaxSize()
-                                .clickable { if (isRemoved) onRemovedWidgetClick(id) else onCurrentWidgetClick(id) }
-                                .conditional(
-                                    predicate = isRemoved,
-                                    ifTrue = { grayScale() },
-                                ),
-                            borderColorHex = widget.borderColor,
-                            borderWidth = widget.borderWidth,
-                            isLoading = widget.isLoading,
-                        )
+                                .clickable { if (isRemoved) onRemovedWidgetClick(id) else onCurrentWidgetClick(id) },
+                            contentAlignment = Alignment.BottomCenter,
+                        ) {
+                            ShapedPhoto(
+                                photo = widget.currentPhoto,
+                                aspectRatio = widget.aspectRatio,
+                                shapeId = widget.shapeId,
+                                cornerRadius = widget.cornerRadius,
+                                opacity = widget.opacity,
+                                modifier = Modifier.fillMaxSize(),
+                                blackAndWhite = widget.blackAndWhite,
+                                borderColorHex = widget.borderColor,
+                                borderWidth = widget.borderWidth,
+                                isLoading = widget.isLoading,
+                            )
+
+                            if (isRemoved) {
+                                Text(
+                                    text = stringResource(R.string.photo_widget_home_removed_label),
+                                    modifier = Modifier
+                                        .padding(bottom = 8.dp)
+                                        .background(
+                                            color = MaterialTheme.colorScheme.errorContainer,
+                                            shape = MaterialTheme.shapes.large,
+                                        )
+                                        .padding(horizontal = 12.dp, vertical = 4.dp),
+                                    color = MaterialTheme.colorScheme.onErrorContainer,
+                                )
+                            }
+                        }
                     }
                 }
             } else {
@@ -211,6 +225,7 @@ fun MyWidgetsScreen(
 private fun MyWidgetsScreenPreview() {
     ExtendedTheme {
         val allShapeIds = PhotoWidgetShapeBuilder.buildAllShapes().map { it.key.id }
+        val opacities = listOf(70f, 85f, 100f)
 
         MyWidgetsScreen(
             widgets = List(size = 10) { index ->
@@ -227,7 +242,7 @@ private fun MyWidgetsScreenPreview() {
                     },
                     shapeId = allShapeIds.random(),
                     cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
-                    opacity = Random.nextFloat().coerceIn(70f, 100f),
+                    opacity = opacities.random(),
                     deletionTimestamp = if (index == 3) 1 else -1,
                 )
             },

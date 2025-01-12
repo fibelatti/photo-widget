@@ -3,6 +3,8 @@ package com.fibelatti.photowidget.platform
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
@@ -21,11 +23,13 @@ fun Bitmap.withRoundedCorners(
     aspectRatio: PhotoWidgetAspectRatio,
     radius: Float = PhotoWidget.DEFAULT_CORNER_RADIUS,
     opacity: Float = PhotoWidget.DEFAULT_OPACITY,
+    blackAndWhite: Boolean = false,
     borderColorHex: String? = null,
     @IntRange(from = 0) borderWidth: Int = 0,
 ): Bitmap = withTransformation(
     aspectRatio = aspectRatio,
     opacity = opacity,
+    blackAndWhite = blackAndWhite,
     borderColorHex = borderColorHex,
     borderWidth = borderWidth,
 ) { canvas, rect, paint ->
@@ -35,11 +39,13 @@ fun Bitmap.withRoundedCorners(
 fun Bitmap.withPolygonalShape(
     shapeId: String,
     opacity: Float = PhotoWidget.DEFAULT_OPACITY,
+    blackAndWhite: Boolean = false,
     borderColorHex: String? = null,
     @IntRange(from = 0) borderWidth: Int = 0,
 ): Bitmap = withTransformation(
     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
     opacity = opacity,
+    blackAndWhite = blackAndWhite,
     borderColorHex = borderColorHex,
     borderWidth = borderWidth,
 ) { canvas, rect, paint ->
@@ -62,8 +68,9 @@ fun Bitmap.withPolygonalShape(
 private inline fun Bitmap.withTransformation(
     aspectRatio: PhotoWidgetAspectRatio,
     opacity: Float,
-    borderColorHex: String? = null,
-    @IntRange(from = 0) borderWidth: Int = 0,
+    blackAndWhite: Boolean,
+    borderColorHex: String?,
+    @IntRange(from = 0) borderWidth: Int,
     body: (Canvas, Rect, Paint) -> Unit,
 ): Bitmap {
     val source = when (aspectRatio) {
@@ -126,11 +133,20 @@ private inline fun Bitmap.withTransformation(
     body(canvas, if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) source else destination, paint)
 
     paint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.SRC_IN))
-    canvas.drawBitmap(this, source, destination, paint)
+
+    val bitmapPaint = Paint(paint)
+
+    if (blackAndWhite) {
+        val colorMatrix = ColorMatrix().apply { setSaturation(0f) }
+        val colorFilter = ColorMatrixColorFilter(colorMatrix)
+        bitmapPaint.setColorFilter(colorFilter)
+    }
+
+    canvas.drawBitmap(this, source, destination, bitmapPaint)
 
     val borderColor = runCatching { Color.parseColor("#$borderColorHex") }.getOrNull()
     if (borderColor != null && borderWidth > 0) {
-        val stroke = paint.apply {
+        val stroke = Paint(paint).apply {
             style = Paint.Style.STROKE
             color = borderColor
             strokeWidth = borderWidth.toFloat()

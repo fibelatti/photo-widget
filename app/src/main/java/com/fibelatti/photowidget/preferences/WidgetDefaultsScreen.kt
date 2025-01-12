@@ -139,6 +139,7 @@ fun WidgetDefaultsScreen(
                 )
             }.show()
         },
+        onBlackAndWhiteChange = preferencesViewModel::saveDefaultBlackAndWhite,
         onTapActionClick = {
             PhotoWidgetTapActionPicker.show(
                 context = localContext,
@@ -161,6 +162,7 @@ private fun WidgetDefaultsScreen(
     onShapeClick: () -> Unit,
     onCornerRadiusClick: () -> Unit,
     onOpacityClick: () -> Unit,
+    onBlackAndWhiteChange: (Boolean) -> Unit,
     onTapActionClick: () -> Unit,
     onClearDefaultsClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -257,6 +259,12 @@ private fun WidgetDefaultsScreen(
                 onClick = onOpacityClick,
             )
 
+            BooleanDefault(
+                title = stringResource(R.string.widget_defaults_black_and_white),
+                currentValue = userPreferences.defaultBlackAndWhite,
+                onCheckedChange = onBlackAndWhiteChange,
+            )
+
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_tap_action),
                 currentValue = stringResource(id = userPreferences.defaultTapAction.label),
@@ -283,7 +291,7 @@ private fun WidgetDefaultsScreen(
 
 // region Items
 @Composable
-private fun BooleanDefault(
+fun BooleanDefault(
     title: String,
     currentValue: Boolean,
     onCheckedChange: (Boolean) -> Unit,
@@ -612,6 +620,7 @@ private fun WidgetDefaultsScreenPreview() {
                 defaultShape = PhotoWidget.DEFAULT_SHAPE_ID,
                 defaultCornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                 defaultOpacity = PhotoWidget.DEFAULT_OPACITY,
+                defaultBlackAndWhite = false,
                 defaultTapAction = PhotoWidgetTapAction.DEFAULT,
             ),
             onNavClick = {},
@@ -621,6 +630,7 @@ private fun WidgetDefaultsScreenPreview() {
             onShapeClick = {},
             onCornerRadiusClick = {},
             onOpacityClick = {},
+            onBlackAndWhiteChange = {},
             onTapActionClick = {},
             onClearDefaultsClick = {},
         )

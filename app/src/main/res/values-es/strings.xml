@@ -37,7 +37,8 @@
     <string name="photo_widget_home_filter_photos">Fotos</string>
     <string name="photo_widget_home_filter_folder">Carpeta</string>
 
-    <string name="photo_widget_home_removed_widgets_hint">Los widgets en gris se eliminaron de su pantalla de inicio y se eliminarán permanentemente después de una semana</string>
+    <string name="photo_widget_home_removed_label">Eliminado</string>
+    <string name="photo_widget_home_removed_widgets_hint">Los widgets eliminados ya no estarán en tu pantalla de inicio y se eliminarán permanentemente después de una semana.</string>
 
     <string name="photo_widget_home_my_widget_action_edit">Ver / Editar</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicar</string>
@@ -64,6 +65,7 @@
     <string name="widget_defaults_shape">Forma</string>
     <string name="widget_defaults_corner_radius">Redondez</string>
     <string name="widget_defaults_opacity">Opacidad</string>
+    <string name="widget_defaults_black_and_white">En blanco y negro</string>
     <string name="widget_defaults_tap_action">Acción de toque</string>
     <string name="widget_defaults_reset">Restablecer valores</string>
 

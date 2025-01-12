@@ -39,6 +39,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             defaultShape = defaultShape,
             defaultCornerRadius = defaultCornerRadius,
             defaultOpacity = defaultOpacity,
+            defaultBlackAndWhite = defaultBlackAndWhite,
             defaultTapAction = defaultTapAction,
         ),
     )
@@ -206,6 +207,15 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             _userPreferences.update { current -> current.copy(defaultOpacity = value) }
         }
 
+    var defaultBlackAndWhite: Boolean
+        get() {
+            return sharedPreferences.getBoolean(Preference.DEFAULT_BLACK_AND_WHITE.value, false)
+        }
+        set(value) {
+            sharedPreferences.edit { putBoolean(Preference.DEFAULT_BLACK_AND_WHITE.value, value) }
+            _userPreferences.update { current -> current.copy(defaultBlackAndWhite = value) }
+        }
+
     var defaultTapAction: PhotoWidgetTapAction
         get() = with(sharedPreferences) {
             val name = getString(Preference.DEFAULT_TAP_ACTION.value, null)
@@ -281,6 +291,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                 defaultShape = defaultShape,
                 defaultCornerRadius = defaultCornerRadius,
                 defaultOpacity = defaultOpacity,
+                defaultBlackAndWhite = defaultBlackAndWhite,
                 defaultTapAction = defaultTapAction,
             )
         }
@@ -310,6 +321,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         DEFAULT_SHAPE(value = "default_shape"),
         DEFAULT_CORNER_RADIUS(value = "default_corner_radius"),
         DEFAULT_OPACITY(value = "default_opacity"),
+        DEFAULT_BLACK_AND_WHITE(value = "default_black_and_white"),
         DEFAULT_TAP_ACTION(value = "default_tap_action"),
         DEFAULT_INCREASE_BRIGHTNESS(value = "default_increase_brightness"),
         DEFAULT_VIEW_ORIGINAL_PHOTO(value = "default_view_original_photo"),

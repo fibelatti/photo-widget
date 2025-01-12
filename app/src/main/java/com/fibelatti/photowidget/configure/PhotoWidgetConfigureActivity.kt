@@ -109,6 +109,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     onCornerRadiusChange = viewModel::cornerRadiusSelected,
                     onBorderChange = viewModel::borderSelected,
                     onOpacityChange = viewModel::opacitySelected,
+                    onBlackAndWhiteChange = viewModel::blackAndWhiteChanged,
                     onOffsetChange = viewModel::offsetSelected,
                     onPaddingChange = viewModel::paddingSelected,
                     onAddToHomeClick = viewModel::addNewWidget,

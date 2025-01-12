@@ -371,6 +371,14 @@ class PhotoWidgetStorage @Inject constructor(
         return sharedPreferences.getWidgetOpacity(appWidgetId = appWidgetId)
     }
 
+    fun saveWidgetBlackAndWhite(appWidgetId: Int, value: Boolean) {
+        sharedPreferences.saveWidgetBlackAndWhite(appWidgetId = appWidgetId, value = value)
+    }
+
+    fun getWidgetBlackAndWhite(appWidgetId: Int): Boolean {
+        return sharedPreferences.getWidgetBlackAndWhite(appWidgetId = appWidgetId)
+    }
+
     fun saveWidgetOffset(appWidgetId: Int, horizontalOffset: Int, verticalOffset: Int) {
         sharedPreferences.saveWidgetOffset(
             appWidgetId = appWidgetId,

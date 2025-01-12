@@ -19,6 +19,7 @@ data class PhotoWidget(
     val borderColor: String? = null,
     val borderWidth: Int = 0,
     val opacity: Float = DEFAULT_OPACITY,
+    val blackAndWhite: Boolean = false,
     val horizontalOffset: Int = 0,
     val verticalOffset: Int = 0,
     val padding: Int = 0,

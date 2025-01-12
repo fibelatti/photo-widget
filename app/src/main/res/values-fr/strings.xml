@@ -37,7 +37,8 @@
     <string name="photo_widget_home_filter_photos">Photos</string>
     <string name="photo_widget_home_filter_folder">Dossier</string>
 
-    <string name="photo_widget_home_removed_widgets_hint">Les widgets grisés ont été supprimés de votre écran d\'accueil et seront définitivement supprimés après une semaine</string>
+    <string name="photo_widget_home_removed_label">Supprimé</string>
+    <string name="photo_widget_home_removed_widgets_hint">Les widgets supprimés ne sont plus sur votre écran d\'accueil et seront définitivement supprimés après une semaine</string>
 
     <string name="photo_widget_home_my_widget_action_edit">Afficher / Modifier</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Dupliquer</string>
@@ -64,6 +65,7 @@
     <string name="widget_defaults_shape">Forme</string>
     <string name="widget_defaults_corner_radius">Arrondi</string>
     <string name="widget_defaults_opacity">Opacité</string>
+    <string name="widget_defaults_black_and_white">Noir et blanc</string>
     <string name="widget_defaults_tap_action">Action au toucher</string>
     <string name="widget_defaults_reset">Réinitialiser les valeurs</string>
 

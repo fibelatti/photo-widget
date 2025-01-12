@@ -61,6 +61,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
             bitmap.withPolygonalShape(
                 shapeId = photoWidget.shapeId,
                 opacity = photoWidget.opacity,
+                blackAndWhite = photoWidget.blackAndWhite,
                 borderColorHex = photoWidget.borderColor,
                 borderWidth = photoWidget.borderWidth,
             )
@@ -73,6 +74,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                     photoWidget.cornerRadius
                 },
                 opacity = photoWidget.opacity,
+                blackAndWhite = photoWidget.blackAndWhite,
                 borderColorHex = photoWidget.borderColor,
                 borderWidth = photoWidget.borderWidth,
             )

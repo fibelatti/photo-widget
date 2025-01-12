@@ -1,8 +1,10 @@
 package com.fibelatti.photowidget.configure
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
@@ -28,8 +31,6 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.home.HomeViewModel
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
-import com.fibelatti.ui.foundation.conditional
-import com.fibelatti.ui.foundation.grayScale
 
 object ExistingWidgetPicker {
 
@@ -89,23 +90,39 @@ private fun ExistingWidgetPicker(
             items(currentWidgets, key = { (id, _) -> id }) { (id, widget) ->
                 val isRemoved = widget.deletionTimestamp > 0
 
-                ShapedPhoto(
-                    photo = widget.currentPhoto,
-                    aspectRatio = widget.aspectRatio,
-                    shapeId = widget.shapeId,
-                    cornerRadius = widget.cornerRadius,
-                    opacity = if (isRemoved) 70f else widget.opacity,
+                Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clickable { onWidgetSelected(id) }
-                        .conditional(
-                            predicate = isRemoved,
-                            ifTrue = { grayScale() },
-                        ),
-                    borderColorHex = widget.borderColor,
-                    borderWidth = widget.borderWidth,
-                    isLoading = widget.isLoading,
-                )
+                        .clickable { onWidgetSelected(id) },
+                    contentAlignment = Alignment.BottomCenter,
+                ) {
+                    ShapedPhoto(
+                        photo = widget.currentPhoto,
+                        aspectRatio = widget.aspectRatio,
+                        shapeId = widget.shapeId,
+                        cornerRadius = widget.cornerRadius,
+                        opacity = widget.opacity,
+                        modifier = Modifier.fillMaxSize(),
+                        blackAndWhite = widget.blackAndWhite,
+                        borderColorHex = widget.borderColor,
+                        borderWidth = widget.borderWidth,
+                        isLoading = widget.isLoading,
+                    )
+
+                    if (isRemoved) {
+                        Text(
+                            text = stringResource(R.string.photo_widget_home_removed_label),
+                            modifier = Modifier
+                                .padding(bottom = 8.dp)
+                                .background(
+                                    color = MaterialTheme.colorScheme.errorContainer,
+                                    shape = MaterialTheme.shapes.large,
+                                )
+                                .padding(horizontal = 12.dp, vertical = 4.dp),
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                        )
+                    }
+                }
             }
         }
     }

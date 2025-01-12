@@ -37,7 +37,8 @@
     <string name="photo_widget_home_filter_photos">Fotos</string>
     <string name="photo_widget_home_filter_folder">Pasta</string>
 
-    <string name="photo_widget_home_removed_widgets_hint">Os widgets acinzentados foram removidos da tela inicial e serão excluídos permanentemente após uma semana</string>
+    <string name="photo_widget_home_removed_label">Removido</string>
+    <string name="photo_widget_home_removed_widgets_hint">Os widgets removidos não estão mais na sua tela inicial e serão excluídos permanentemente após uma semana</string>
 
     <string name="photo_widget_home_my_widget_action_edit">Ver / Editar</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicar</string>
@@ -64,6 +65,7 @@
     <string name="widget_defaults_shape">Forma</string>
     <string name="widget_defaults_corner_radius">Arredondamento</string>
     <string name="widget_defaults_opacity">Opacidade</string>
+    <string name="widget_defaults_black_and_white">Preto e branco</string>
     <string name="widget_defaults_tap_action">Ação ao tocar</string>
     <string name="widget_defaults_reset">Redefinir valores</string>
 

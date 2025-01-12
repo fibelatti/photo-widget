@@ -509,6 +509,14 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
+    fun blackAndWhiteChanged(value: Boolean) {
+        _state.update { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(blackAndWhite = value),
+            )
+        }
+    }
+
     fun offsetSelected(horizontalOffset: Int, verticalOffset: Int) {
         _state.update { current ->
             current.copy(

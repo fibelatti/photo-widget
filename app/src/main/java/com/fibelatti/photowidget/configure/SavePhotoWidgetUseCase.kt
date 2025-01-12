@@ -115,6 +115,11 @@ class SavePhotoWidgetUseCase @Inject constructor(
             opacity = photoWidget.opacity,
         )
 
+        photoWidgetStorage.saveWidgetBlackAndWhite(
+            appWidgetId = appWidgetId,
+            value = photoWidget.blackAndWhite,
+        )
+
         photoWidgetStorage.saveWidgetOffset(
             appWidgetId = appWidgetId,
             horizontalOffset = photoWidget.horizontalOffset,

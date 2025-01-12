@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* New option for black and white widgets
+
 ## [v1.20.1] - 2025-01-11
 
 ### Changed

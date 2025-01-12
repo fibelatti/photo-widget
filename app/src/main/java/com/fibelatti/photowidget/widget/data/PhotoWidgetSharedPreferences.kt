@@ -253,6 +253,19 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         )
     }
 
+    fun saveWidgetBlackAndWhite(appWidgetId: Int, value: Boolean) {
+        sharedPreferences.edit {
+            putBoolean("${PreferencePrefix.BLACK_AND_WHITE}$appWidgetId", value)
+        }
+    }
+
+    fun getWidgetBlackAndWhite(appWidgetId: Int): Boolean {
+        return sharedPreferences.getBoolean(
+            "${PreferencePrefix.BLACK_AND_WHITE}$appWidgetId",
+            userPreferencesStorage.defaultBlackAndWhite,
+        )
+    }
+
     fun saveWidgetOffset(appWidgetId: Int, horizontalOffset: Int, verticalOffset: Int) {
         sharedPreferences.edit {
             putInt("${PreferencePrefix.HORIZONTAL_OFFSET}$appWidgetId", horizontalOffset)
@@ -400,6 +413,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         BORDER_COLOR_HEX(value = "appwidget_border_color_hex_"),
         BORDER_WIDTH(value = "appwidget_border_width_"),
         OPACITY(value = "appwidget_opacity_"),
+        BLACK_AND_WHITE(value = "appwidget_black_and_white_"),
         HORIZONTAL_OFFSET(value = "appwidget_horizontal_offset_"),
         VERTICAL_OFFSET(value = "appwidget_vertical_offset_"),
         PADDING(value = "appwidget_padding_"),

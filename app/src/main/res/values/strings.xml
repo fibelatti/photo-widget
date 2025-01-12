@@ -36,7 +36,8 @@
     <string name="photo_widget_home_filter_photos">Photos</string>
     <string name="photo_widget_home_filter_folder">Folder</string>
 
-    <string name="photo_widget_home_removed_widgets_hint">Grayed out widgets were removed from your home screen and will be permanently deleted after a week</string>
+    <string name="photo_widget_home_removed_label">Removed</string>
+    <string name="photo_widget_home_removed_widgets_hint">Removed widgets are no longer on your home screen and will be permanently deleted after one week</string>
 
     <string name="photo_widget_home_my_widget_action_edit">View / Edit</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicate</string>
@@ -63,6 +64,7 @@
     <string name="widget_defaults_shape">Shape</string>
     <string name="widget_defaults_corner_radius">Roundness</string>
     <string name="widget_defaults_opacity">Opacity</string>
+    <string name="widget_defaults_black_and_white">Black and white</string>
     <string name="widget_defaults_tap_action">Tap action</string>
     <string name="widget_defaults_reset">Reset values</string>
 
