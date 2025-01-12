@@ -556,13 +556,6 @@ private fun PhotoWidgetConfigureContentSettings(
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
-        PickerDefault(
-            title = stringResource(id = R.string.widget_defaults_tap_action),
-            currentValue = stringResource(id = photoWidget.tapAction.label),
-            onClick = { onTapActionPickerClick(photoWidget.tapAction) },
-            modifier = Modifier.padding(horizontal = 16.dp),
-        )
-
         if (photoWidget.photos.size > 1) {
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_cycling),
@@ -597,6 +590,13 @@ private fun PhotoWidgetConfigureContentSettings(
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
         }
+
+        PickerDefault(
+            title = stringResource(id = R.string.widget_defaults_tap_action),
+            currentValue = stringResource(id = photoWidget.tapAction.label),
+            onClick = { onTapActionPickerClick(photoWidget.tapAction) },
+            modifier = Modifier.padding(horizontal = 16.dp),
+        )
 
         FilledTonalButton(
             onClick = onAddToHomeClick,
