@@ -176,9 +176,9 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         appWidgetId: Int,
         currentPhoto: Bitmap,
     ): Uri? = withContext(Dispatchers.IO) {
-        val launcherPackageName = getDefaultLauncherPackageName()
-        if (launcherPackageName == null) {
-            Timber.d("Unable to get launcher package name")
+        val launcherPackages = getLauncherPackages()
+        if (launcherPackages.isEmpty()) {
+            Timber.d("No launcher packages found, unable to generate URI.")
             return@withContext null
         }
 
@@ -196,18 +196,21 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
         Timber.d("New URI for widget with id $appWidgetId: $uri")
 
-        context.grantUriPermission(launcherPackageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        Timber.d("Granted permission for package with name: $launcherPackageName")
+        for (pkg in launcherPackages) {
+            context.grantUriPermission(pkg, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            Timber.d("Granted URI permission for package: $pkg")
+        }
 
         return@withContext uri
     }
 
-    private fun getDefaultLauncherPackageName(): String? {
+    private fun getLauncherPackages(): List<String> {
         val intent = Intent("android.intent.action.MAIN")
             .addCategory("android.intent.category.HOME")
 
-        return context.packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
-            ?.activityInfo?.packageName
+        return context.packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
+            .mapNotNull { resolveInfo -> resolveInfo.activityInfo?.packageName }
+            .distinct()
     }
 
     suspend fun renameTemporaryWidgetDir(appWidgetId: Int) {

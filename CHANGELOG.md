@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * New option for black and white widgets
 
+### Fixed
+
+* Fixed an issue that could lead to a crash when trying to edit widgets synced
+  with a folder
+* Fixed an issue that could lead to a crash when requesting to add a widget to
+  the home screen
+
 ## [v1.20.1] - 2025-01-11
 
 ### Changed
