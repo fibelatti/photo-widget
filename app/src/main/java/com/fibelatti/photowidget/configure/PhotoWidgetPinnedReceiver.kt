@@ -8,6 +8,7 @@ import android.widget.RemoteViews
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import java.lang.ref.WeakReference
 import kotlinx.coroutines.launch
@@ -25,12 +26,12 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
             // Exit early if the widget was not placed
             ?: return
 
-        // A callback intent is required as it carries the widget data
-        val callbackIntent = PhotoWidgetPinnedReceiver.callbackIntent?.get() ?: return
+        // The widget data is missing, it's impossible to continue
+        val photoWidget = pendingWidget?.get() ?: return
 
         // Reset the static fields once they have been consumed
-        PhotoWidgetPinnedReceiver.callbackIntent = null
-        preview = null
+        pendingWidget = null
+        pendingRemoteViews = null
 
         val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
         val saveUseCase = entryPoint.savePhotoWidgetUseCase()
@@ -38,16 +39,10 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
 
         coroutineScope.launch {
             // Persist the widget data since it was placed on the home screen
-            saveUseCase(
-                appWidgetId = widgetId,
-                photoWidget = callbackIntent.photoWidget,
-            )
+            saveUseCase(appWidgetId = widgetId, photoWidget = photoWidget)
 
             // Update the widget UI using the updated storage data
-            PhotoWidgetProvider.update(
-                context = context,
-                appWidgetId = widgetId,
-            )
+            PhotoWidgetProvider.update(context = context, appWidgetId = widgetId)
 
             // Finally finish the configure activity since it's no longer needed
             val finishIntent = Intent(PhotoWidgetConfigureActivity.ACTION_FINISH).apply {
@@ -64,13 +59,13 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
          * `PendingIntent.getBroadcast`. Any caller that depends on this receiver should also
          * set this field, which will be used to retrieve the widget data.
          */
-        var callbackIntent: WeakReference<Intent>? = null
+        var pendingWidget: WeakReference<PhotoWidget>? = null
 
         /**
          * Workaround to `AppWidgetProvider#onUpdate` being called with the new widget ID as the
          * user begins pinning the widget, but `PhotoWidgetPinnedReceiver` haven't being called
          * yet to move the content to the new directory.
          */
-        var preview: WeakReference<RemoteViews>? = null
+        var pendingRemoteViews: WeakReference<RemoteViews>? = null
     }
 }

@@ -14,7 +14,6 @@ import android.widget.RemoteViews
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetPinnedReceiver
 import com.fibelatti.photowidget.configure.appWidgetId
-import com.fibelatti.photowidget.configure.photoWidget
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -98,10 +97,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             coroutineScope.launch {
                 Timber.d("Loading widget data")
                 val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId).first { !it.isLoading }
-                val tempViews = PhotoWidgetPinnedReceiver.preview?.get()
+                val tempViews = PhotoWidgetPinnedReceiver.pendingRemoteViews?.get()
                     ?.takeIf { photoWidget.photos.isEmpty() }
-                    ?.also { PhotoWidgetPinnedReceiver.preview = null }
-                val tempWidget = PhotoWidgetPinnedReceiver.callbackIntent?.get()?.photoWidget
+                    ?.also { PhotoWidgetPinnedReceiver.pendingRemoteViews = null }
+                val tempWidget = PhotoWidgetPinnedReceiver.pendingWidget?.get()
                     ?.takeIf { tempViews != null }
 
                 val views = tempViews ?: createRemoteViews(
