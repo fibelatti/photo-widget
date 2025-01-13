@@ -56,7 +56,9 @@ interface LocalPhotoDao {
 
     @Query(
         "select lwp.* from local_widget_photos as lwp " +
-            "left join photo_widget_order pwo on lwp.photoId = pwo.photoId " +
+            "left join photo_widget_order pwo " +
+            "on lwp.widgetId = pwo.widgetId " +
+            "and lwp.photoId = pwo.photoId " +
             "where lwp.widgetId = :widgetId " +
             "order by pwo.photoIndex asc",
     )
