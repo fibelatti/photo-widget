@@ -493,7 +493,6 @@ private fun PhotoWidgetConfigureContentSettings(
                 onPhotoClick = onRemovedPhotoClick,
                 aspectRatio = photoWidget.aspectRatio,
                 shapeId = photoWidget.shapeId,
-                cornerRadius = photoWidget.cornerRadius,
             )
         }
 
@@ -983,7 +982,6 @@ private fun RemovedPhotosPicker(
     onPhotoClick: (LocalPhoto) -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
-    cornerRadius: Float,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -1007,14 +1005,18 @@ private fun RemovedPhotosPicker(
             items(photos, key = { it.photoId }) { photo ->
                 ShapedPhoto(
                     photo = photo,
-                    aspectRatio = aspectRatio,
-                    shapeId = shapeId,
-                    cornerRadius = cornerRadius,
+                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
+                    shapeId = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
+                        shapeId
+                    } else {
+                        PhotoWidget.DEFAULT_SHAPE_ID
+                    },
+                    cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                     opacity = PhotoWidget.DEFAULT_OPACITY,
                     modifier = Modifier
                         .animateItem()
                         .fillMaxWidth()
-                        .aspectRatio(ratio = aspectRatio.aspectRatio)
+                        .aspectRatio(ratio = 1f)
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
