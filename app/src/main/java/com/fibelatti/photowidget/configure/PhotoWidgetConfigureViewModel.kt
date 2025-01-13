@@ -370,6 +370,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             val removedPhoto = current.photoWidget.photos.first { it.photoId == photo.photoId }
             val updatedPhotos = current.photoWidget.photos.filterNot { it.photoId == photo.photoId }
             val newIndex = current.photoWidget.photos.indexOfFirst { it.photoId == photo.photoId }
+                .coerceAtMost(updatedPhotos.size - 1)
 
             current.copy(
                 photoWidget = current.photoWidget.copy(
