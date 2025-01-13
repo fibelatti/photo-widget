@@ -2,7 +2,6 @@ package com.fibelatti.photowidget.widget.data
 
 import android.net.Uri
 import com.fibelatti.photowidget.model.LocalPhoto
-import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
@@ -88,6 +87,15 @@ class PhotoWidgetStorage @Inject constructor(
             appWidgetId = appWidgetId,
             excludedPhotos = excludedPhotos,
         )
+
+        if (local.current.isEmpty()) {
+            syncWidgetPhotos(
+                appWidgetId = appWidgetId,
+                currentPhotos = source.current,
+                removedPhotos = source.excluded,
+            )
+        }
+
         emit(source)
     }
 
@@ -181,13 +189,14 @@ class PhotoWidgetStorage @Inject constructor(
 
     suspend fun syncWidgetPhotos(
         appWidgetId: Int,
-        photoWidget: PhotoWidget? = null,
+        currentPhotos: List<LocalPhoto>? = null,
+        removedPhotos: List<LocalPhoto>? = null,
     ) {
-        Timber.d("Syncing photos (appWidgetId=$appWidgetId, fromWidget=${photoWidget != null})")
+        Timber.d("Syncing photos (appWidgetId=$appWidgetId, fromWidget=${currentPhotos != null})")
 
-        val excludedPhotos: Set<String> = photoWidget?.run { removedPhotos.map { it.photoId }.toSet() }
+        val excludedPhotos: Set<String> = removedPhotos?.map { it.photoId }?.toSet()
             ?: getExcludedPhotoIds(appWidgetId = appWidgetId)
-        val allPhotos: List<LocalPhoto> = photoWidget?.run { photos + removedPhotos }
+        val allPhotos: List<LocalPhoto> = currentPhotos?.plus(removedPhotos.orEmpty())
             ?: getSourceWidgetPhotos(appWidgetId = appWidgetId, excludedPhotos = excludedPhotos).all()
 
         val newLocalPhotos: List<LocalPhotoDto> = allPhotos.map { localPhoto ->

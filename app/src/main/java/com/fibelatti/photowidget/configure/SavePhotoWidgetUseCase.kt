@@ -30,7 +30,8 @@ class SavePhotoWidgetUseCase @Inject constructor(
 
         photoWidgetStorage.syncWidgetPhotos(
             appWidgetId = appWidgetId,
-            photoWidget = photoWidget,
+            currentPhotos = photoWidget.photos,
+            removedPhotos = photoWidget.removedPhotos,
         )
 
         val currentPhotoId = photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)

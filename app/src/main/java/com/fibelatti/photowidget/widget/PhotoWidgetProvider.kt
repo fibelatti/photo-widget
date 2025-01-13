@@ -22,6 +22,9 @@ import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.WidgetSizeProvider
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
+import java.lang.ref.WeakReference
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -29,12 +32,15 @@ import timber.log.Timber
 class PhotoWidgetProvider : AppWidgetProvider() {
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        Timber.d("Update requested by the system (appWidgetIds=${appWidgetIds.toList()})")
         for (appWidgetId in appWidgetIds) {
             update(context = context, appWidgetId = appWidgetId)
         }
     }
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
+        Timber.d("Deletion requested by the system (appWidgetIds=${appWidgetIds.toList()})")
+
         val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
         val storage = entryPoint.photoWidgetStorage()
         val alarmManager = entryPoint.photoWidgetAlarmManager()
@@ -72,6 +78,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         newOptions: Bundle?,
     ) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+
+        Timber.d("Options changed by the system (appWidgetId=$appWidgetId)")
         update(context = context, appWidgetId = appWidgetId)
     }
 
@@ -79,6 +87,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
         private const val ACTION_VIEW_NEXT_PHOTO = "ACTION_VIEW_NEXT_PHOTO"
         private const val ACTION_VIEW_PREVIOUS_PHOTO = "ACTION_VIEW_PREVIOUS_PHOTO"
+
+        private val updateJobMap: MutableMap<Int, WeakReference<Job>> = mutableMapOf()
 
         fun ids(context: Context): List<Int> = AppWidgetManager.getInstance(context)
             .getAppWidgetIds(ComponentName(context, PhotoWidgetProvider::class.java))
@@ -94,8 +104,12 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
             val photoWidgetStorage = entryPoint.photoWidgetStorage()
 
-            coroutineScope.launch {
-                Timber.d("Loading widget data")
+            val currentJob = updateJobMap[appWidgetId]?.get()
+            Timber.d("Current update job (isActive=${currentJob?.isActive})")
+
+            val newJob = coroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
+                currentJob?.join()
+
                 val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId).first { !it.isLoading }
                 val tempViews = PhotoWidgetPinnedReceiver.pendingRemoteViews?.get()
                     ?.takeIf { photoWidget.photos.isEmpty() }
@@ -130,6 +144,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     }
                 }
             }
+
+            updateJobMap[appWidgetId] = WeakReference(newJob)
         }
 
         suspend fun createRemoteViews(
