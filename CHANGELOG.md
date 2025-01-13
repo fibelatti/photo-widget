@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.21.1] - 2025-01-13
+
+### Fixed
+
+* Fixed a concurrency issue that could affect widgets after updating the app
+  or restarting the device
+
 ## [v1.21.0] - 2025-01-13
 
 ### Added
