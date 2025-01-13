@@ -263,7 +263,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun sendFeedback() {
         val emailBody = StringBuilder().apply {
-            appendLine("Android Version: ${Build.VERSION.SDK_INT}")
+            appendLine("Android Version: ${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})")
             appendLine("Device Manufacturer: ${Build.MANUFACTURER}")
             appendLine("---")
             appendLine(getString(R.string.help_email_body))
