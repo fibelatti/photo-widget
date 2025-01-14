@@ -8,11 +8,12 @@ import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.withIndex
 import kotlinx.coroutines.launch
@@ -23,28 +24,31 @@ class HomeViewModel @Inject constructor(
     private val photoWidgetStorage: PhotoWidgetStorage,
 ) : ViewModel() {
 
-    private val _currentWidgets: MutableStateFlow<List<Pair<Int, PhotoWidget>>> = MutableStateFlow(emptyList())
-    val currentWidgets: StateFlow<List<Pair<Int, PhotoWidget>>> = _currentWidgets.asStateFlow()
+    private val widgetIds = MutableStateFlow(emptyList<Int>())
+
+    val currentWidgets: StateFlow<List<Pair<Int, PhotoWidget>>> = widgetIds
+        .flatMapLatest { allIds ->
+            val flows = allIds.map(loadPhotoWidgetUseCase::invoke)
+            combine(flows, Array<PhotoWidget>::toList)
+        }
+        .withIndex()
+        .map { (emissionIndex, widgets) ->
+            widgets.withIndex().mapNotNull { (index, widget) ->
+                if (emissionIndex > 0 && widget.photos.isEmpty()) return@mapNotNull null
+                val widgetId = widgetIds.value.getOrNull(index) ?: return@mapNotNull null
+                widgetId to widget
+            }
+        }
+        .stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(), initialValue = emptyList())
 
     fun loadCurrentWidgets() {
-        val allIds = photoWidgetStorage.getKnownWidgetIds()
-        val flows = allIds.map(loadPhotoWidgetUseCase::invoke)
-
-        combine(flows, Array<PhotoWidget>::toList)
-            .withIndex()
-            .onEach { (emissionIndex, widgets) ->
-                _currentWidgets.value = widgets.withIndex().mapNotNull { (index, widget) ->
-                    if (emissionIndex > 0 && widget.photos.isEmpty()) return@mapNotNull null
-                    allIds[index] to widget
-                }
-            }
-            .launchIn(viewModelScope)
+        widgetIds.update { photoWidgetStorage.getKnownWidgetIds() }
     }
 
     fun deleteWidget(appWidgetId: Int) {
         viewModelScope.launch {
             photoWidgetStorage.deleteWidgetData(appWidgetId = appWidgetId)
-            _currentWidgets.update { current -> current.filter { it.first != appWidgetId } }
+            widgetIds.update { current -> current - appWidgetId }
         }
     }
 }
