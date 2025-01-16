@@ -154,9 +154,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             photoWidget: PhotoWidget,
             recoveryMode: Boolean = false,
         ): RemoteViews {
-            Timber.d("Creating remote views")
-            val baseView = createBaseView(context = context, aspectRatio = photoWidget.aspectRatio)
-
             Timber.d("Preparing current photo")
             val prepareCurrentPhotoUseCase = entryPoint<PhotoWidgetEntryPoint>(context).prepareCurrentPhotoUseCase()
             val result = prepareCurrentPhotoUseCase(
@@ -165,27 +162,43 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 recoveryMode = recoveryMode,
             )
 
+            Timber.d("Creating remote views")
+            val remoteViews = RemoteViews(context.packageName, R.layout.photo_widget)
+
             if (result == null) {
                 Timber.d("Failed to prepare current photo")
-                return baseView.apply {
+                return remoteViews.apply {
                     setViewVisibility(R.id.iv_placeholder, View.VISIBLE)
                     setImageViewResource(R.id.iv_placeholder, R.drawable.ic_file_not_found)
                 }
             }
 
             Timber.d("Current photo prepared successfully")
-            return baseView.apply {
+            return remoteViews.apply {
+                val visibleImageViewId: Int
+                val hiddenImageViewId: Int
+
+                if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio) {
+                    visibleImageViewId = R.id.iv_widget_fill
+                    hiddenImageViewId = R.id.iv_widget
+                } else {
+                    visibleImageViewId = R.id.iv_widget
+                    hiddenImageViewId = R.id.iv_widget_fill
+                }
+
+                setViewVisibility(visibleImageViewId, View.VISIBLE)
+                setViewVisibility(hiddenImageViewId, View.GONE)
                 setViewVisibility(R.id.iv_placeholder, View.GONE)
 
                 if (result.uri != null) {
-                    setImageViewUri(R.id.iv_widget, result.uri)
+                    setImageViewUri(visibleImageViewId, result.uri)
                 } else {
-                    setImageViewBitmap(R.id.iv_widget, result.fallback)
+                    setImageViewBitmap(visibleImageViewId, result.fallback)
                 }
 
                 setViewPadding(
                     /* viewId = */
-                    R.id.iv_widget,
+                    visibleImageViewId,
                     /* left = */
                     getDimensionValue(context, photoWidget.padding + photoWidget.horizontalOffset),
                     /* top = */
@@ -196,16 +209,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     getDimensionValue(context, photoWidget.padding),
                 )
             }
-        }
-
-        private fun createBaseView(context: Context, aspectRatio: PhotoWidgetAspectRatio): RemoteViews {
-            val layoutId = if (PhotoWidgetAspectRatio.FILL_WIDGET == aspectRatio) {
-                R.layout.photo_widget_fill
-            } else {
-                R.layout.photo_widget
-            }
-
-            return RemoteViews(context.packageName, layoutId)
         }
 
         private fun getDimensionValue(context: Context, value: Int): Int {

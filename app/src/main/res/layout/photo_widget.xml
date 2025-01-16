@@ -25,6 +25,15 @@
         tools:scaleType="centerCrop"
         tools:src="@drawable/widget_preview" />
 
+    <ImageView
+        android:id="@+id/iv_widget_fill"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/photo_widget_cd_host"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        tools:src="@drawable/widget_preview" />
+
     <LinearLayout
         android:id="@+id/tap_actions_layout"
         android:layout_width="match_parent"

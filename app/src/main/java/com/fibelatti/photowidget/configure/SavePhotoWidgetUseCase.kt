@@ -44,6 +44,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
                     photoId = photoWidget.photos.first().photoId,
                 )
             }
+
             currentPhotoId in removedPhotos && photoWidget.currentPhoto?.photoId != null -> {
                 photoWidgetStorage.saveDisplayedPhoto(
                     appWidgetId = appWidgetId,
@@ -129,7 +130,11 @@ class SavePhotoWidgetUseCase @Inject constructor(
 
         photoWidgetStorage.saveWidgetPadding(
             appWidgetId = appWidgetId,
-            padding = photoWidget.padding,
+            padding = if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
+                photoWidget.padding
+            } else {
+                0
+            },
         )
 
         if (photoWidget.cyclingEnabled) {

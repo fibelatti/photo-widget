@@ -557,12 +557,14 @@ private fun PhotoWidgetConfigureContentSettings(
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
-        PickerDefault(
-            title = stringResource(id = R.string.photo_widget_configure_padding),
-            currentValue = photoWidget.padding.toString(),
-            onClick = onPaddingClick,
-            modifier = Modifier.padding(horizontal = 16.dp),
-        )
+        if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
+            PickerDefault(
+                title = stringResource(id = R.string.photo_widget_configure_padding),
+                currentValue = photoWidget.padding.toString(),
+                onClick = onPaddingClick,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+        }
 
         if (photoWidget.photos.size > 1) {
             PickerDefault(

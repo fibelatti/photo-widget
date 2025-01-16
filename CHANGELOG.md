@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+* Using a custom "Padding" is no longer allowed when using "Fill Widget Area"
+
 ### Fixed
 
 * Attempt to fix widgets not working on GoodLock
+* Fix a concurrency issue that could happen when permanently removing a widget
+  from "My Widgets" before they were fully loaded
 
 ## [v1.21.1] - 2025-01-13
 
