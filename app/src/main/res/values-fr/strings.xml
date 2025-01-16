@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Widget Host -->
-    <string name="photo_widget_host_label">Photos en forme</string>
     <string name="photo_widget_host_description">Décorez votre écran d\'accueil avec vos photos préférées</string>
 
     <!-- Home -->

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Widget Host -->
-    <string name="photo_widget_host_label">Fotos com forma</string>
     <string name="photo_widget_host_description">Enfeite a sua tela inicial com as suas fotos favoritas</string>
 
     <!-- Home -->

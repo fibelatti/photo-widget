@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Widget Host -->
-    <string name="photo_widget_host_label">Shaped Photos</string>
     <string name="photo_widget_host_description">Decorate your home screen with your favorite photos</string>
 
     <!-- Home -->

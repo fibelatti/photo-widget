@@ -96,7 +96,7 @@
         <receiver
             android:name=".widget.PhotoWidgetProvider"
             android:exported="false"
-            android:label="@string/photo_widget_host_label">
+            android:label="@string/app_name">
 
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

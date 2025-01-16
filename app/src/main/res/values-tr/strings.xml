@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Widget Host -->
-    <string name="photo_widget_host_label">Şekilli Fotoğraflar</string>
     <string name="photo_widget_host_description">Ana ekranınızı favori fotoğraflarınızla süsleyin</string>
 
     <!-- Home -->
