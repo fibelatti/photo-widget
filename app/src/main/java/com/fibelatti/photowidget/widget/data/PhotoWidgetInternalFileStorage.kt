@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.webkit.MimeTypeMap
 import androidx.core.content.FileProvider
 import com.fibelatti.photowidget.model.LocalPhoto
@@ -96,6 +97,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         file.createNewFile()
         runCatching {
             FileOutputStream(file).use { fos -> operation(fos) }
+            require(file.length() > 0) { "File is empty" }
         }.onSuccess {
             Timber.d("Successfully saved to $file")
         }.onFailure {
@@ -193,10 +195,21 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
             currentPhoto.compress(Bitmap.CompressFormat.PNG, 0, fos)
         }
 
+        if (!file.exists()) {
+            Timber.d("Failed to create file, unable to generate URI.")
+            return@withContext null
+        }
+
         val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
         Timber.d("New URI for widget with id $appWidgetId: $uri")
 
-        for (pkg in launcherPackages) {
+        val packages = launcherPackages + if (Build.MANUFACTURER.equals("samsung", ignoreCase = true)) {
+            samsungPackages
+        } else {
+            emptyList()
+        }
+
+        for (pkg in packages) {
             context.grantUriPermission(pkg, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
             Timber.d("Granted URI permission for package: $pkg")
         }
@@ -241,5 +254,13 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         File("$rootDir/current_photos/$appWidgetId").apply {
             mkdirs()
         }
+    }
+
+    private companion object {
+
+        val samsungPackages: List<String> = listOf(
+            "com.samsung.android.goodlock",
+            "com.samsung.systemui.lockstar",
+        )
     }
 }

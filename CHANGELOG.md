@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+* Attempt to fix widgets not working on GoodLock
+
 ## [v1.21.1] - 2025-01-13
 
 ### Fixed
