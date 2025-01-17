@@ -12,7 +12,6 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
 import com.fibelatti.photowidget.R
-import com.fibelatti.photowidget.configure.PhotoWidgetPinnedReceiver
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
@@ -101,8 +100,9 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val appWidgetManager = AppWidgetManager.getInstance(context)
             val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
             val coroutineScope = entryPoint.coroutineScope()
-            val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
             val photoWidgetStorage = entryPoint.photoWidgetStorage()
+            val pinningCache = entryPoint.photoWidgetPinningCache()
+            val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
 
             val currentJob = updateJobMap[appWidgetId]?.get()
             Timber.d("Current update job (isActive=${currentJob?.isActive})")
@@ -110,14 +110,12 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val newJob = coroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
                 currentJob?.join()
 
-                val photoWidget = loadPhotoWidgetUseCase(appWidgetId = appWidgetId).first { !it.isLoading }
-                val tempViews = PhotoWidgetPinnedReceiver.pendingRemoteViews?.get()
-                    ?.takeIf { photoWidget.photos.isEmpty() }
-                    ?.also { PhotoWidgetPinnedReceiver.pendingRemoteViews = null }
-                val tempWidget = PhotoWidgetPinnedReceiver.pendingWidget?.get()
-                    ?.takeIf { tempViews != null }
+                val photoWidget = pinningCache.pendingWidget
+                    ?.takeIf { appWidgetId !in photoWidgetStorage.getKnownWidgetIds() }
+                    ?.also { Timber.d("Updating using the pending widget data") }
+                    ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId).first { !it.isLoading }
 
-                val views = tempViews ?: createRemoteViews(
+                val views = createRemoteViews(
                     context = context,
                     appWidgetId = appWidgetId,
                     photoWidget = photoWidget,
@@ -128,11 +126,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     views = views,
                     context = context,
                     appWidgetId = appWidgetId,
-                    photoWidget = tempWidget ?: photoWidget,
+                    photoWidget = photoWidget,
                     isCyclePaused = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = appWidgetId),
                 )
 
-                Timber.d("Dispatching post-load remote views to AppWidgetManager")
+                Timber.d("Invoking AppWidgetManager#updateAppWidget")
 
                 try {
                     appWidgetManager.updateAppWidget(appWidgetId, views)
@@ -148,7 +146,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             updateJobMap[appWidgetId] = WeakReference(newJob)
         }
 
-        suspend fun createRemoteViews(
+        private suspend fun createRemoteViews(
             context: Context,
             appWidgetId: Int,
             photoWidget: PhotoWidget,
@@ -162,7 +160,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 recoveryMode = recoveryMode,
             )
 
-            Timber.d("Creating remote views")
             val remoteViews = RemoteViews(context.packageName, R.layout.photo_widget)
 
             if (result == null) {

@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.di
 
+import com.fibelatti.photowidget.configure.PhotoWidgetPinningCache
 import com.fibelatti.photowidget.configure.SavePhotoWidgetUseCase
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
@@ -20,6 +21,8 @@ interface PhotoWidgetEntryPoint {
     fun userPreferencesStorage(): UserPreferencesStorage
 
     fun photoWidgetStorage(): PhotoWidgetStorage
+
+    fun photoWidgetPinningCache(): PhotoWidgetPinningCache
 
     fun photoWidgetAlarmManager(): PhotoWidgetAlarmManager
 

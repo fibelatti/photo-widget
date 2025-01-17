@@ -43,6 +43,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     private val duplicatePhotoWidgetUseCase: DuplicatePhotoWidgetUseCase,
     private val savePhotoWidgetUseCase: SavePhotoWidgetUseCase,
     deleteStaleDataUseCase: DeleteStaleDataUseCase,
+    private val pinningCache: PhotoWidgetPinningCache,
 ) : ViewModel() {
 
     private val appWidgetId: Int by savedStateHandle.savedState(
@@ -558,11 +559,11 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
             // The user started configuring from within the app, request to pin but they might cancel
             AppWidgetManager.INVALID_APPWIDGET_ID == appWidgetId -> {
+                pinningCache.populate(currentState.photoWidget)
+
                 _state.update { current ->
                     current.copy(
-                        messages = current.messages + PhotoWidgetConfigureState.Message.RequestPin(
-                            photoWidget = currentState.photoWidget,
-                        ),
+                        messages = current.messages + PhotoWidgetConfigureState.Message.RequestPin,
                     )
                 }
             }

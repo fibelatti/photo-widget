@@ -203,8 +203,8 @@ class PhotoWidgetStorage @Inject constructor(
             LocalPhotoDto(
                 widgetId = appWidgetId,
                 photoId = localPhoto.photoId,
-                croppedPhotoPath = localPhoto.croppedPhotoPath,
-                originalPhotoPath = localPhoto.originalPhotoPath,
+                croppedPhotoPath = localPhoto.croppedPhotoPath?.replace("widgets/0", "widgets/$appWidgetId"),
+                originalPhotoPath = localPhoto.originalPhotoPath?.replace("widgets/0", "widgets/$appWidgetId"),
                 externalUri = localPhoto.externalUri?.toString(),
                 timestamp = localPhoto.timestamp,
             )

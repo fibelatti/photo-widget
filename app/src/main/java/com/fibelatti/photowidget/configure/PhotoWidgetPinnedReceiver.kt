@@ -4,14 +4,12 @@ import android.appwidget.AppWidgetManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.widget.RemoteViews
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
-import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
-import java.lang.ref.WeakReference
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * [BroadcastReceiver] to handle the callback from [AppWidgetManager.requestPinAppWidget].
@@ -19,6 +17,8 @@ import kotlinx.coroutines.launch
 class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
+        Timber.d("Pin widget success callback received")
+
         val widgetId = intent.appWidgetId
             .takeUnless { it == AppWidgetManager.INVALID_APPWIDGET_ID }
             // Workaround Samsung devices that fail to update the intent with the actual ID
@@ -26,14 +26,14 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
             // Exit early if the widget was not placed
             ?: return
 
-        // The widget data is missing, it's impossible to continue
-        val photoWidget = pendingWidget?.get() ?: return
-
-        // Reset the static fields once they have been consumed
-        pendingWidget = null
-        pendingRemoteViews = null
-
         val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
+        val pinningCache = entryPoint.photoWidgetPinningCache()
+
+        // The widget data is missing, it's impossible to continue
+        val photoWidget = pinningCache.consume() ?: return
+
+        Timber.d("New widget ID: $widgetId")
+
         val saveUseCase = entryPoint.savePhotoWidgetUseCase()
         val coroutineScope = entryPoint.coroutineScope()
 
@@ -50,22 +50,5 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
             }
             LocalBroadcastManager.getInstance(context).sendBroadcast(finishIntent)
         }
-    }
-
-    companion object {
-
-        /**
-         * Workaround Samsung devices that fail to deliver the callback Intent provided to
-         * `PendingIntent.getBroadcast`. Any caller that depends on this receiver should also
-         * set this field, which will be used to retrieve the widget data.
-         */
-        var pendingWidget: WeakReference<PhotoWidget>? = null
-
-        /**
-         * Workaround to `AppWidgetProvider#onUpdate` being called with the new widget ID as the
-         * user begins pinning the widget, but `PhotoWidgetPinnedReceiver` haven't being called
-         * yet to move the content to the new directory.
-         */
-        var pendingRemoteViews: WeakReference<RemoteViews>? = null
     }
 }

@@ -18,12 +18,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoCropActivity.Companion.outputPath
-import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
@@ -35,7 +33,7 @@ import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.ref.WeakReference
+import timber.log.Timber
 
 @AndroidEntryPoint
 class PhotoWidgetConfigureActivity : AppCompatActivity() {
@@ -120,7 +118,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 }
 
                 LaunchedEffect(state.messages) {
-                    state.messages.firstOrNull()?.let { handleMessage(it) }
+                    state.messages.firstOrNull()?.let(::handleMessage)
                 }
             }
         }
@@ -154,7 +152,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             .show()
     }
 
-    private suspend fun handleMessage(message: PhotoWidgetConfigureState.Message) {
+    private fun handleMessage(message: PhotoWidgetConfigureState.Message) {
         when (message) {
             is PhotoWidgetConfigureState.Message.SuggestImport -> {
                 showImportFromWidgetSuggestion()
@@ -187,7 +185,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             }
 
             is PhotoWidgetConfigureState.Message.RequestPin -> {
-                requestPin(photoWidget = message.photoWidget)
+                requestPin()
                 viewModel.messageHandled(message = message)
             }
 
@@ -324,16 +322,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         finish()
     }
 
-    private suspend fun requestPin(photoWidget: PhotoWidget) {
-        val remoteViews = PhotoWidgetProvider.createRemoteViews(
-            context = this,
-            appWidgetId = intent.appWidgetId,
-            photoWidget = photoWidget,
-        )
-        val previewBundle = bundleOf(
-            AppWidgetManager.EXTRA_APPWIDGET_PREVIEW to remoteViews,
-        )
-
+    private fun requestPin() {
         val callbackIntent = Intent(this, PhotoWidgetPinnedReceiver::class.java).apply {
             setIdentifierCompat("$PIN_REQUEST_CODE")
         }
@@ -348,14 +337,12 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
 
-        PhotoWidgetPinnedReceiver.pendingRemoteViews = WeakReference(remoteViews)
-        PhotoWidgetPinnedReceiver.pendingWidget = WeakReference(photoWidget)
-
+        Timber.d("Invoking AppWidgetManager#requestPinAppWidget")
         AppWidgetManager.getInstance(this).requestPinAppWidget(
             /* provider = */
             ComponentName(this, PhotoWidgetProvider::class.java),
             /* extras = */
-            previewBundle,
+            null,
             /* successCallback = */
             successCallback,
         )
