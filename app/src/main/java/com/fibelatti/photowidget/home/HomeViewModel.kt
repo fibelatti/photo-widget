@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -29,7 +30,11 @@ class HomeViewModel @Inject constructor(
     val currentWidgets: StateFlow<List<Pair<Int, PhotoWidget>>> = widgetIds
         .flatMapLatest { allIds ->
             val flows = allIds.map(loadPhotoWidgetUseCase::invoke)
-            combine(flows, Array<PhotoWidget>::toList)
+            if (flows.isNotEmpty()) {
+                combine(flows, Array<PhotoWidget>::toList)
+            } else {
+                flowOf(emptyList())
+            }
         }
         .withIndex()
         .map { (emissionIndex, widgets) ->

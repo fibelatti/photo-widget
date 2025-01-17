@@ -14,8 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Attempt to fix widgets not working on GoodLock
-* Fix a concurrency issue that could happen when permanently removing a widget
-  from "My Widgets" before they were fully loaded
+* Fix an issue where trying to permanently delete a widget from "My Widgets"
+  would not work as expected
 
 ## [v1.21.1] - 2025-01-13
 
