@@ -20,6 +20,21 @@ class SavePhotoWidgetUseCase @Inject constructor(
     ) {
         Timber.d("Saving widget data (appWidgetId=$appWidgetId)")
 
+        saveWidgetContent(appWidgetId = appWidgetId, photoWidget = photoWidget)
+        saveWidgetAppearance(appWidgetId = appWidgetId, photoWidget = photoWidget)
+        saveWidgetBehavior(appWidgetId = appWidgetId, photoWidget = photoWidget)
+
+        if (photoWidget.cyclingEnabled) {
+            photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
+        } else {
+            photoWidgetAlarmManager.cancel(appWidgetId = appWidgetId)
+        }
+    }
+
+    private suspend fun saveWidgetContent(
+        appWidgetId: Int,
+        photoWidget: PhotoWidget,
+    ) {
         photoWidgetStorage.renameTemporaryWidgetDir(appWidgetId = appWidgetId)
 
         photoWidgetStorage.saveWidgetSource(appWidgetId = appWidgetId, source = photoWidget.source)
@@ -68,32 +83,12 @@ class SavePhotoWidgetUseCase @Inject constructor(
                 )
             }
         }
+    }
 
-        photoWidgetStorage.saveWidgetShuffle(
-            appWidgetId = appWidgetId,
-            value = photoWidget.canShuffle && photoWidget.shuffle,
-        )
-
-        val currentCycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = appWidgetId)
-        if (photoWidget.cycleMode != currentCycleMode) {
-            photoWidgetStorage.saveWidgetNextCycleTime(appWidgetId = appWidgetId, nextCycleTime = null)
-        }
-
-        photoWidgetStorage.saveWidgetCycleMode(
-            appWidgetId = appWidgetId,
-            cycleMode = photoWidget.cycleMode,
-        )
-
-        photoWidgetStorage.saveWidgetTapAction(
-            appWidgetId = appWidgetId,
-            tapAction = when {
-                photoWidget.tapAction is PhotoWidgetTapAction.ViewInGallery &&
-                    PhotoWidgetSource.PHOTOS == photoWidget.source -> PhotoWidgetTapAction.ViewFullScreen()
-
-                else -> photoWidget.tapAction
-            },
-        )
-
+    private fun saveWidgetAppearance(
+        appWidgetId: Int,
+        photoWidget: PhotoWidget,
+    ) {
         photoWidgetStorage.saveWidgetAspectRatio(
             appWidgetId = appWidgetId,
             aspectRatio = photoWidget.aspectRatio,
@@ -141,11 +136,35 @@ class SavePhotoWidgetUseCase @Inject constructor(
                 0
             },
         )
+    }
 
-        if (photoWidget.cyclingEnabled) {
-            photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
-        } else {
-            photoWidgetAlarmManager.cancel(appWidgetId = appWidgetId)
+    private fun saveWidgetBehavior(
+        appWidgetId: Int,
+        photoWidget: PhotoWidget,
+    ) {
+        photoWidgetStorage.saveWidgetShuffle(
+            appWidgetId = appWidgetId,
+            value = photoWidget.canShuffle && photoWidget.shuffle,
+        )
+
+        val currentCycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = appWidgetId)
+        if (photoWidget.cycleMode != currentCycleMode) {
+            photoWidgetStorage.saveWidgetNextCycleTime(appWidgetId = appWidgetId, nextCycleTime = null)
         }
+
+        photoWidgetStorage.saveWidgetCycleMode(
+            appWidgetId = appWidgetId,
+            cycleMode = photoWidget.cycleMode,
+        )
+
+        photoWidgetStorage.saveWidgetTapAction(
+            appWidgetId = appWidgetId,
+            tapAction = when {
+                photoWidget.tapAction is PhotoWidgetTapAction.ViewInGallery &&
+                    PhotoWidgetSource.PHOTOS == photoWidget.source -> PhotoWidgetTapAction.ViewFullScreen()
+
+                else -> photoWidget.tapAction
+            },
+        )
     }
 }
