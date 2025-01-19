@@ -134,9 +134,13 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         }
     }
 
-    fun saveWidgetNextCycleTime(appWidgetId: Int, nextCycleTime: Long) {
+    fun saveWidgetNextCycleTime(appWidgetId: Int, nextCycleTime: Long?) {
         sharedPreferences.edit {
-            putLong("${PreferencePrefix.NEXT_CYCLE_TIME}$appWidgetId", nextCycleTime)
+            if (nextCycleTime != null) {
+                putLong("${PreferencePrefix.NEXT_CYCLE_TIME}$appWidgetId", nextCycleTime)
+            } else {
+                remove("${PreferencePrefix.NEXT_CYCLE_TIME}$appWidgetId")
+            }
         }
     }
 

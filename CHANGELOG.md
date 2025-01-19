@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+* Fix changes to the cycling interval not taking effect immediately when
+  editing an existing widget
+
 ## [v1.22.0] - 2025-01-19
 
 ### Changed
