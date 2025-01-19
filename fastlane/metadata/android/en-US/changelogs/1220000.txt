@@ -1,0 +1,11 @@
+This version brings the following updates:
+
+* The widget configuration screen is now organized into categories
+* Fix an issue where trying to permanently delete a widget from "My Widgets"
+  would not work as expected
+* Attempt to fix widgets not working on GoodLock
+
+If you have a Samsung, Oppo or INFINIX phone and widgets are not working as
+expected after updating to this version, please report any issues you find.
+
+Feedback and suggestions are always welcome, thank you for using the app!

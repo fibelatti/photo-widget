@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.22.0] - 2025-01-19
+
 ### Changed
 
 * Update the widget configuration screen to organize settings into categories
@@ -14,9 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-* Attempt to fix widgets not working on GoodLock
 * Fix an issue where trying to permanently delete a widget from "My Widgets"
   would not work as expected
+* Attempt to fix widgets not working on GoodLock
 
 ## [v1.21.1] - 2025-01-13
 
