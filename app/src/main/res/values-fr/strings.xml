@@ -87,6 +87,10 @@
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Tous les changements seront perdus, revenir quand même ?</string>
 
+    <string name="photo_widget_configure_tab_content">Contenu</string>
+    <string name="photo_widget_configure_tab_appearance">Apparence</string>
+    <string name="photo_widget_configure_tab_behavior">Comportement</string>
+
     <string name="photo_widget_configure_import_prompt">Importer depuis un autre widget ?</string>
     <string name="photo_widget_configure_import_prompt_action">Choisir</string>
     <string name="photo_widget_configure_import_dialog_title">Choisissez le widget</string>
@@ -111,16 +115,12 @@
     <string name="photo_widget_configure_menu_move_left">Déplacer vers la gauche</string>
     <string name="photo_widget_configure_menu_move_right">Déplacer vers la droite</string>
 
-    <string name="photo_widget_configure_photos">Photos</string>
-    <string name="photo_widget_configure_photos_from_dir">Photos du dossier</string>
     <string name="photo_widget_configure_photos_pending_deletion">Photos récemment supprimées</string>
     <string name="photo_widget_configure_photos_excluded">Supprimé du widget</string>
 
     <string name="photo_widget_configure_pick_photo">Choisir des photos</string>
     <string name="photo_widget_configure_pick_folder">Choisir un dossier</string>
-
-    <string name="photo_widget_configure_shuffle_on">Activé</string>
-    <string name="photo_widget_configure_shuffle_off">Désactivé</string>
+    <string name="photo_widget_configure_change_source">Changer la source</string>
 
     <string name="photo_widget_configure_select_cycling_mode">Cycle des photos</string>
     <string name="photo_widget_configure_cycling_mode_interval">Intervalle</string>
@@ -242,8 +242,4 @@
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget d\'accueil Material Photo</string>
-    <string name="photo_widget_cd_change_source">Changer la source du widget</string>
-    <string name="photo_widget_cd_toggle_shuffle">Activer/désactiver le mélange</string>
-    <string name="photo_widget_cd_open_photo_picker">Ouvrir le sélecteur de photos</string>
-    <string name="photo_widget_cd_open_folder_picker">Ouvrir le sélecteur de dossiers</string>
 </resources>

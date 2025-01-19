@@ -28,9 +28,11 @@ data class PhotoWidget(
     val isLoading: Boolean = false,
 ) : Parcelable {
 
-    val cyclingEnabled: Boolean get() = photos.size > 1 && cycleMode !is PhotoWidgetCycleMode.Disabled
+    val cyclingEnabled: Boolean
+        get() = photos.size > 1 && cycleMode !is PhotoWidgetCycleMode.Disabled
 
-    val canSort: Boolean get() = PhotoWidgetSource.PHOTOS == source && photos.size > 1 && !shuffle
+    val canSort: Boolean
+        get() = PhotoWidgetSource.PHOTOS == source && photos.size > 1 && !shuffle
 
     val canShuffle: Boolean
         get() = photos.size > 1

@@ -87,6 +87,10 @@
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Все изменения будут потеряны, вернуться назад?</string>
 
+    <string name="photo_widget_configure_tab_content">Содержание</string>
+    <string name="photo_widget_configure_tab_appearance">Внешний вид</string>
+    <string name="photo_widget_configure_tab_behavior">Поведение</string>
+
     <string name="photo_widget_configure_import_prompt">Импортировать из другого виджета?</string>
     <string name="photo_widget_configure_import_prompt_action">Чтобы выбрать</string>
     <string name="photo_widget_configure_import_dialog_title">Выберите виджет</string>
@@ -111,16 +115,12 @@
     <string name="photo_widget_configure_menu_move_left">Переместить влево</string>
     <string name="photo_widget_configure_menu_move_right">Переместить вправо</string>
 
-    <string name="photo_widget_configure_photos">Фотографии</string>
-    <string name="photo_widget_configure_photos_from_dir">Фотографии из папки</string>
     <string name="photo_widget_configure_photos_pending_deletion">Недавно удаленные фотографии</string>
     <string name="photo_widget_configure_photos_excluded">Удален из виджета</string>
 
     <string name="photo_widget_configure_pick_photo">Выбрать фотографии</string>
     <string name="photo_widget_configure_pick_folder">Выбрать папку</string>
-
-    <string name="photo_widget_configure_shuffle_on">Включено</string>
-    <string name="photo_widget_configure_shuffle_off">Выключено</string>
+    <string name="photo_widget_configure_change_source">Изменить источник</string>
 
     <string name="photo_widget_configure_select_cycling_mode">Цикл фотографий</string>
     <string name="photo_widget_configure_cycling_mode_interval">Интервал</string>
@@ -242,8 +242,4 @@
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Виджет главного экрана Material Photo</string>
-    <string name="photo_widget_cd_change_source">Изменить источник виджета</string>
-    <string name="photo_widget_cd_toggle_shuffle">Переключить перемешивание</string>
-    <string name="photo_widget_cd_open_photo_picker">Открыть выбор фотографий</string>
-    <string name="photo_widget_cd_open_folder_picker">Открыть выбор папки</string>
 </resources>

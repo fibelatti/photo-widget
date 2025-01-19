@@ -86,6 +86,10 @@
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Any changes will be lost, go back anyway?</string>
 
+    <string name="photo_widget_configure_tab_content">Content</string>
+    <string name="photo_widget_configure_tab_appearance">Appearance</string>
+    <string name="photo_widget_configure_tab_behavior">Behavior</string>
+
     <string name="photo_widget_configure_import_prompt">Import from another widget?</string>
     <string name="photo_widget_configure_import_prompt_action">Choose</string>
     <string name="photo_widget_configure_import_dialog_title">Choose widget</string>
@@ -110,16 +114,12 @@
     <string name="photo_widget_configure_menu_move_left">Move left</string>
     <string name="photo_widget_configure_menu_move_right">Move right</string>
 
-    <string name="photo_widget_configure_photos">Photos</string>
-    <string name="photo_widget_configure_photos_from_dir">Folder photos</string>
     <string name="photo_widget_configure_photos_pending_deletion">Recently deleted photos</string>
     <string name="photo_widget_configure_photos_excluded">Excluded from widget</string>
 
     <string name="photo_widget_configure_pick_photo">Pick photos</string>
     <string name="photo_widget_configure_pick_folder">Pick folder</string>
-
-    <string name="photo_widget_configure_shuffle_on">On</string>
-    <string name="photo_widget_configure_shuffle_off">Off</string>
+    <string name="photo_widget_configure_change_source">Change source</string>
 
     <string name="photo_widget_configure_select_cycling_mode">Photo cycling</string>
     <string name="photo_widget_configure_cycling_mode_interval">Interval</string>
@@ -236,8 +236,4 @@
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo home screen widget</string>
-    <string name="photo_widget_cd_change_source">Change widget source</string>
-    <string name="photo_widget_cd_toggle_shuffle">Toggle shuffle</string>
-    <string name="photo_widget_cd_open_photo_picker">Open photo picker</string>
-    <string name="photo_widget_cd_open_folder_picker">Open folder picker</string>
 </resources>

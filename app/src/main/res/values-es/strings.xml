@@ -87,6 +87,10 @@
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">¿Se perderán los cambios, volver de todos modos?</string>
 
+    <string name="photo_widget_configure_tab_content">Contenido</string>
+    <string name="photo_widget_configure_tab_appearance">Apariencia</string>
+    <string name="photo_widget_configure_tab_behavior">Comportamiento</string>
+
     <string name="photo_widget_configure_import_prompt">¿Importar desde otro widget?</string>
     <string name="photo_widget_configure_import_prompt_action">Elegir</string>
     <string name="photo_widget_configure_import_dialog_title">Elige el widget</string>
@@ -111,16 +115,12 @@
     <string name="photo_widget_configure_menu_move_left">Mover a la izquierda</string>
     <string name="photo_widget_configure_menu_move_right">Mover a la derecha</string>
 
-    <string name="photo_widget_configure_photos">Fotos</string>
-    <string name="photo_widget_configure_photos_from_dir">Fotos de carpeta</string>
     <string name="photo_widget_configure_photos_pending_deletion">Fotos eliminadas recientemente</string>
     <string name="photo_widget_configure_photos_excluded">Excluido del widget</string>
 
     <string name="photo_widget_configure_pick_photo">Seleccionar fotos</string>
     <string name="photo_widget_configure_pick_folder">Seleccionar carpeta</string>
-
-    <string name="photo_widget_configure_shuffle_on">Activado</string>
-    <string name="photo_widget_configure_shuffle_off">Desactivado</string>
+    <string name="photo_widget_configure_change_source">Cambiar fuente</string>
 
     <string name="photo_widget_configure_select_cycling_mode">Ciclor de fotos</string>
     <string name="photo_widget_configure_cycling_mode_interval">Intervalo</string>
@@ -242,8 +242,4 @@
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de pantalla principal de Material Photo</string>
-    <string name="photo_widget_cd_change_source">Cambiar fuente del widget</string>
-    <string name="photo_widget_cd_toggle_shuffle">Cambiar modo aleatorio</string>
-    <string name="photo_widget_cd_open_photo_picker">Abrir selector de fotos</string>
-    <string name="photo_widget_cd_open_folder_picker">Abrir selector de carpetas</string>
 </resources>

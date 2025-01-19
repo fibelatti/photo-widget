@@ -86,6 +86,10 @@
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Değişiklikler kaybolacak, yine de geri dönmek istiyor musunuz?</string>
 
+    <string name="photo_widget_configure_tab_content">İçerik</string>
+    <string name="photo_widget_configure_tab_appearance">Görünüm</string>
+    <string name="photo_widget_configure_tab_behavior">Davranış</string>
+
     <string name="photo_widget_configure_import_prompt">Başka bir widget\'tan içe aktar?</string>
     <string name="photo_widget_configure_import_prompt_action">Seçmek</string>
     <string name="photo_widget_configure_import_dialog_title">Widget\'ı seçin</string>
@@ -110,16 +114,12 @@
     <string name="photo_widget_configure_menu_move_left">Sola taşı</string>
     <string name="photo_widget_configure_menu_move_right">Sağa taşı</string>
 
-    <string name="photo_widget_configure_photos">Fotoğraflar</string>
-    <string name="photo_widget_configure_photos_from_dir">Klasör fotoğrafları</string>
     <string name="photo_widget_configure_photos_pending_deletion">Son silinen fotoğraflar</string>
     <string name="photo_widget_configure_photos_excluded">Widget\'tan silindi</string>
 
     <string name="photo_widget_configure_pick_photo">Fotoğraf seç</string>
     <string name="photo_widget_configure_pick_folder">Klasörü seç</string>
-
-    <string name="photo_widget_configure_shuffle_on">Açık</string>
-    <string name="photo_widget_configure_shuffle_off">Kapalı</string>
+    <string name="photo_widget_configure_change_source">Kaynağı değiştir</string>
 
     <string name="photo_widget_configure_select_cycling_mode">Fotoğraf Döngüsü</string>
     <string name="photo_widget_configure_cycling_mode_interval">Aralık</string>
@@ -236,8 +236,4 @@
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo ana ekran widget\'ı</string>
-    <string name="photo_widget_cd_change_source">Widget kaynağını değiştir</string>
-    <string name="photo_widget_cd_toggle_shuffle">Karıştırmayı değiştir</string>
-    <string name="photo_widget_cd_open_photo_picker">Fotoğraf seçiciyi aç</string>
-    <string name="photo_widget_cd_open_folder_picker">Klasör seçiciyi aç</string>
 </resources>

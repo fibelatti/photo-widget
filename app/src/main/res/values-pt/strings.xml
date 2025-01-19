@@ -87,6 +87,10 @@
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">As alterações serão perdidas, voltar mesmo assim?</string>
 
+    <string name="photo_widget_configure_tab_content">Conteúdo</string>
+    <string name="photo_widget_configure_tab_appearance">Aparência</string>
+    <string name="photo_widget_configure_tab_behavior">Comportamento</string>
+
     <string name="photo_widget_configure_import_prompt">Importar de outro widget?</string>
     <string name="photo_widget_configure_import_prompt_action">Escolher</string>
     <string name="photo_widget_configure_import_dialog_title">Escolha o widget</string>
@@ -111,16 +115,12 @@
     <string name="photo_widget_configure_menu_move_left">Mover à esquerda</string>
     <string name="photo_widget_configure_menu_move_right">Mover à direita</string>
 
-    <string name="photo_widget_configure_photos">Fotos</string>
-    <string name="photo_widget_configure_photos_from_dir">Fotos da pasta</string>
     <string name="photo_widget_configure_photos_pending_deletion">Fotos apagadas recentemente</string>
     <string name="photo_widget_configure_photos_excluded">Excluídas do widget</string>
 
     <string name="photo_widget_configure_pick_photo">Escolher fotos</string>
     <string name="photo_widget_configure_pick_folder">Escolher pasta</string>
-
-    <string name="photo_widget_configure_shuffle_on">Ligado</string>
-    <string name="photo_widget_configure_shuffle_off">Desligado</string>
+    <string name="photo_widget_configure_change_source">Alterar origem</string>
 
     <string name="photo_widget_configure_select_cycling_mode">Ciclo de fotos</string>
     <string name="photo_widget_configure_cycling_mode_interval">Intervalo</string>
@@ -242,8 +242,4 @@
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de fotos da tela inicial</string>
-    <string name="photo_widget_cd_change_source">Alterar origem das fotos</string>
-    <string name="photo_widget_cd_toggle_shuffle">Alterar modo aleatório</string>
-    <string name="photo_widget_cd_open_photo_picker">Abrir a galeria</string>
-    <string name="photo_widget_cd_open_folder_picker">Escolher a pasta</string>
 </resources>

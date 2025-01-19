@@ -458,12 +458,10 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun toggleShuffle() {
+    fun saveShuffle(value: Boolean) {
         _state.update { current ->
             current.copy(
-                photoWidget = current.photoWidget.copy(
-                    shuffle = !current.photoWidget.shuffle,
-                ),
+                photoWidget = current.photoWidget.copy(shuffle = value),
             )
         }
     }

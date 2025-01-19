@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Update the widget configuration screen to organize settings into categories
 * Using a custom "Padding" is no longer allowed when using "Fill Widget Area"
 
 ### Fixed
