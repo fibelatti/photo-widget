@@ -185,7 +185,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
 
         val dir = getCurrentPhotoDir(appWidgetId = appWidgetId).apply {
-            listFiles()?.onEach { it.delete() }
+            listFiles()?.toList()?.sortedBy { it.name }?.dropLast(1)?.forEach { it.delete() }
         }
         // Using `currentTimeMillis` to generate unique files,
         // otherwise the widget won't update if the same file is overwritten every time
