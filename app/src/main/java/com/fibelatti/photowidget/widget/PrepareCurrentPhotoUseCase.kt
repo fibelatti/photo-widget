@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.DisplayMetrics
+import android.util.Size
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.PhotoDecoder
@@ -25,6 +26,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
     suspend operator fun invoke(
         appWidgetId: Int,
         photoWidget: PhotoWidget,
+        widgetSize: Size? = null,
         recoveryMode: Boolean = false,
     ): Result? {
         val currentPhotoPath: String = photoWidget.currentPhoto?.getPhotoPath() ?: return null
@@ -68,15 +70,12 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
         } else {
             bitmap.withRoundedCorners(
                 aspectRatio = photoWidget.aspectRatio,
-                radius = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio) {
-                    0F
-                } else {
-                    photoWidget.cornerRadius
-                },
+                radius = photoWidget.cornerRadius,
                 opacity = photoWidget.opacity,
                 blackAndWhite = photoWidget.blackAndWhite,
                 borderColorHex = photoWidget.borderColor,
                 borderWidth = photoWidget.borderWidth,
+                widgetSize = widgetSize,
             )
         }
 

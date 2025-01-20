@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+* Enable customizing the corner radius when using fill widget area
+
 ### Fixed
 
 * Fix changes to the cycling interval not taking effect immediately when

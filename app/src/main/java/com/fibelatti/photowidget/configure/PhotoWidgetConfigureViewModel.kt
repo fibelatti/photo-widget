@@ -90,11 +90,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             current.copy(
                 photoWidget = photoWidget.copy(
                     aspectRatio = resolvedAspectRatio,
-                    cornerRadius = if (PhotoWidgetAspectRatio.FILL_WIDGET == resolvedAspectRatio) {
-                        0F
-                    } else {
-                        PhotoWidget.DEFAULT_CORNER_RADIUS
-                    },
+                    cornerRadius = photoWidget.cornerRadius,
                 ),
                 selectedPhoto = photoWidget.photos.firstOrNull(),
                 isProcessing = photoWidget.isLoading,
@@ -175,11 +171,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     } else {
                         PhotoWidget.DEFAULT_SHAPE_ID
                     },
-                    cornerRadius = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidgetAspectRatio) {
-                        0F
-                    } else {
-                        PhotoWidget.DEFAULT_CORNER_RADIUS
-                    },
+                    cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                     borderColor = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidgetAspectRatio) {
                         null
                     } else {

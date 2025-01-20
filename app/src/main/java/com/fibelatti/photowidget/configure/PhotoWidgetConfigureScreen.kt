@@ -597,7 +597,7 @@ private fun AppearanceTab(
                 onClick = onShapeClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
-        } else if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
+        } else {
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_corner_radius),
                 currentValue = photoWidget.cornerRadius.toInt().toString(),

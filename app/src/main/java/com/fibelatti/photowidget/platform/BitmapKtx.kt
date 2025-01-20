@@ -9,6 +9,7 @@ import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
+import android.util.Size
 import androidx.annotation.IntRange
 import androidx.core.graphics.toRectF
 import androidx.graphics.shapes.toPath
@@ -26,12 +27,14 @@ fun Bitmap.withRoundedCorners(
     blackAndWhite: Boolean = false,
     borderColorHex: String? = null,
     @IntRange(from = 0) borderWidth: Int = 0,
+    widgetSize: Size? = null,
 ): Bitmap = withTransformation(
     aspectRatio = aspectRatio,
     opacity = opacity,
     blackAndWhite = blackAndWhite,
     borderColorHex = borderColorHex,
     borderWidth = borderWidth,
+    widgetSize = widgetSize,
 ) { canvas, rect, paint ->
     canvas.drawRoundRect(rect.toRectF(), radius, radius, paint)
 }
@@ -48,6 +51,7 @@ fun Bitmap.withPolygonalShape(
     blackAndWhite = blackAndWhite,
     borderColorHex = borderColorHex,
     borderWidth = borderWidth,
+    widgetSize = null,
 ) { canvas, rect, paint ->
     try {
         val shape = PhotoWidgetShapeBuilder.buildShape(
@@ -71,54 +75,10 @@ private inline fun Bitmap.withTransformation(
     blackAndWhite: Boolean,
     borderColorHex: String?,
     @IntRange(from = 0) borderWidth: Int,
+    widgetSize: Size?,
     body: (Canvas, Rect, Paint) -> Unit,
 ): Bitmap {
-    val source = when (aspectRatio) {
-        PhotoWidgetAspectRatio.SQUARE -> {
-            val size = min(height, width)
-
-            val top = (height - size) / 2
-            val left = (width - size) / 2
-
-            Rect(left, top, left + size, top + size)
-        }
-
-        PhotoWidgetAspectRatio.TALL -> {
-            val baseWidth = (height * PhotoWidgetAspectRatio.TALL.scale)
-
-            val scaledWidth = baseWidth.roundToInt().coerceAtMost(width)
-            val scaledHeight = if (baseWidth > width) {
-                ((width / baseWidth) * height).roundToInt()
-            } else {
-                height
-            }
-
-            val top = (height - scaledHeight) / 2
-            val left = (width - scaledWidth) / 2
-
-            Rect(left, top, left + scaledWidth, top + scaledHeight)
-        }
-
-        PhotoWidgetAspectRatio.WIDE -> {
-            val baseHeight = (width * PhotoWidgetAspectRatio.WIDE.scale)
-
-            val scaledHeight = baseHeight.roundToInt().coerceAtMost(height)
-            val scaledWidth = if (baseHeight > height) {
-                ((height / baseHeight) * width).roundToInt()
-            } else {
-                width
-            }
-
-            val top = (height - scaledHeight) / 2
-            val left = (width - scaledWidth) / 2
-
-            Rect(left, top, left + scaledWidth, top + scaledHeight)
-        }
-
-        PhotoWidgetAspectRatio.ORIGINAL, PhotoWidgetAspectRatio.FILL_WIDGET -> {
-            Rect(0, 0, width, height)
-        }
-    }
+    val source = sourceRect(aspectRatio = aspectRatio, widgetSize = widgetSize)
     val destination = Rect(0, 0, source.width(), source.height())
 
     val output = Bitmap.createBitmap(source.width(), source.height(), Bitmap.Config.ARGB_8888)
@@ -130,7 +90,9 @@ private inline fun Bitmap.withTransformation(
 
     canvas.drawARGB(0, 0, 0, 0)
 
-    body(canvas, if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) source else destination, paint)
+    val bodyRect = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) source else destination
+
+    body(canvas, bodyRect, paint)
 
     paint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.SRC_IN))
 
@@ -151,8 +113,100 @@ private inline fun Bitmap.withTransformation(
             color = borderColor
             strokeWidth = borderWidth.toFloat()
         }
-        body(canvas, if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) source else destination, stroke)
+        body(canvas, bodyRect, stroke)
     }
 
     return output
+}
+
+private fun Bitmap.sourceRect(
+    aspectRatio: PhotoWidgetAspectRatio,
+    widgetSize: Size? = null,
+): Rect {
+    return when (aspectRatio) {
+        PhotoWidgetAspectRatio.SQUARE -> {
+            val size = min(height, width)
+
+            val top = (height - size) / 2
+            val left = (width - size) / 2
+
+            Rect(left, top, left + size, top + size)
+        }
+
+        PhotoWidgetAspectRatio.TALL -> {
+            tallRect(width = width, height = height)
+        }
+
+        PhotoWidgetAspectRatio.WIDE -> {
+            wideRect(width = width, height = height)
+        }
+
+        PhotoWidgetAspectRatio.FILL_WIDGET -> {
+            when {
+                widgetSize == null -> {
+                    Rect(0, 0, width, height)
+                }
+
+                widgetSize.width > widgetSize.height -> {
+                    wideRect(
+                        width = width,
+                        height = height,
+                        scale = widgetSize.height / widgetSize.width.toFloat(),
+                    )
+                }
+
+                else -> {
+                    tallRect(
+                        width = width,
+                        height = height,
+                        scale = widgetSize.width / widgetSize.height.toFloat(),
+                    )
+                }
+            }
+        }
+
+        PhotoWidgetAspectRatio.ORIGINAL -> {
+            Rect(0, 0, width, height)
+        }
+    }
+}
+
+private fun tallRect(
+    width: Int,
+    height: Int,
+    scale: Float = PhotoWidgetAspectRatio.TALL.scale,
+): Rect {
+    val baseWidth = height * scale
+
+    val scaledWidth = baseWidth.roundToInt().coerceAtMost(width)
+    val scaledHeight = if (baseWidth > width) {
+        ((width / baseWidth) * height).roundToInt()
+    } else {
+        height
+    }
+
+    val top = (height - scaledHeight) / 2
+    val left = (width - scaledWidth) / 2
+
+    return Rect(left, top, left + scaledWidth, top + scaledHeight)
+}
+
+private fun wideRect(
+    width: Int,
+    height: Int,
+    scale: Float = PhotoWidgetAspectRatio.WIDE.scale,
+): Rect {
+    val baseHeight = width * scale
+
+    val scaledHeight = baseHeight.roundToInt().coerceAtMost(height)
+    val scaledWidth = if (baseHeight > height) {
+        ((height / baseHeight) * width).roundToInt()
+    } else {
+        width
+    }
+
+    val top = (height - scaledHeight) / 2
+    val left = (width - scaledWidth) / 2
+
+    return Rect(left, top, left + scaledWidth, top + scaledHeight)
 }

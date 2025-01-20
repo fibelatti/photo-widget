@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Size
 import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
@@ -154,9 +155,17 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         ): RemoteViews {
             Timber.d("Preparing current photo")
             val prepareCurrentPhotoUseCase = entryPoint<PhotoWidgetEntryPoint>(context).prepareCurrentPhotoUseCase()
+            val sizeProvider = WidgetSizeProvider(context = context.applicationContext)
+
             val result = prepareCurrentPhotoUseCase(
                 appWidgetId = appWidgetId,
                 photoWidget = photoWidget,
+                widgetSize = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio) {
+                    val (width, height) = sizeProvider.getWidgetsSize(appWidgetId = appWidgetId, convertToPx = true)
+                    Size(width, height)
+                } else {
+                    null
+                },
                 recoveryMode = recoveryMode,
             )
 
