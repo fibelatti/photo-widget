@@ -23,6 +23,8 @@ class CyclePhotoUseCase @Inject constructor(
         if (widgetPhotos.size < 2) return
 
         val displayedPhotos = photoWidgetStorage.getDisplayedPhotoIds(appWidgetId = appWidgetId).toMutableSet()
+        val currentPhotoId = photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)
+            ?: widgetPhotos.getOrNull(photoWidgetStorage.getWidgetIndex(appWidgetId = appWidgetId))
 
         if (displayedPhotos.size >= widgetPhotos.size) {
             Timber.d("All photos displayed, starting over")
@@ -30,10 +32,8 @@ class CyclePhotoUseCase @Inject constructor(
             displayedPhotos.clear()
         }
 
-        val currentPhotoId = photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)
-            ?: widgetPhotos.getOrNull(photoWidgetStorage.getWidgetIndex(appWidgetId = appWidgetId))
-        val currentIndex = widgetPhotos.indexOfFirst { it == currentPhotoId }
         val shuffle = photoWidgetStorage.getWidgetShuffle(appWidgetId = appWidgetId)
+        val currentIndex = widgetPhotos.indexOfFirst { it == currentPhotoId }
 
         val newPhotoId = when {
             currentPhotoId == null -> widgetPhotos.first()
