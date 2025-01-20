@@ -139,7 +139,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     if (!recoveryMode) {
                         update(context = context, appWidgetId = appWidgetId, recoveryMode = true)
                     } else {
-                        throw ex
+                        throw RuntimeException("Unable to update widget using recovery mode", ex)
                     }
                 }
             }
@@ -153,7 +153,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             photoWidget: PhotoWidget,
             recoveryMode: Boolean = false,
         ): RemoteViews {
-            Timber.d("Preparing current photo")
             val prepareCurrentPhotoUseCase = entryPoint<PhotoWidgetEntryPoint>(context).prepareCurrentPhotoUseCase()
             val sizeProvider = WidgetSizeProvider(context = context.applicationContext)
 

@@ -31,6 +31,15 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
     ): Result? {
         val currentPhotoPath: String = photoWidget.currentPhoto?.getPhotoPath() ?: return null
 
+        Timber.d(
+            "Preparing current photo (" +
+                "appWidgetId=$appWidgetId," +
+                "widgetSize=$widgetSize," +
+                "recoveryMode=$recoveryMode," +
+                "currentPhotoPath=$currentPhotoPath" +
+                ")",
+        )
+
         val bitmap: Bitmap = try {
             val displayMetrics: DisplayMetrics = context.resources.displayMetrics
             val maxMemoryAllowed: Int = if (!recoveryMode) {
@@ -79,10 +88,14 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
             )
         }
 
-        val uri: Uri? = photoWidgetInternalFileStorage.prepareCurrentWidgetPhoto(
-            appWidgetId = appWidgetId,
-            currentPhoto = transformedBitmap,
-        )
+        val uri: Uri? = if (recoveryMode) {
+            photoWidgetInternalFileStorage.prepareCurrentWidgetPhoto(
+                appWidgetId = appWidgetId,
+                currentPhoto = transformedBitmap,
+            )
+        } else {
+            null
+        }
 
         return Result(uri = uri, fallback = transformedBitmap)
     }
