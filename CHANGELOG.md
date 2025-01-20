@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.22.1] - 2025-01-20
+
 ### Changed
 
 * Enable customizing the corner radius when using fill widget area
@@ -15,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fix changes to the cycling interval not taking effect immediately when
   editing an existing widget
+* Revert how the current photo is sent to the system to fix an ongoing issue
+  that's affecting some phone manufacturers
+* Fix an issue that would skip the first photo once the cycling has been
+  complete
 
 ## [v1.22.0] - 2025-01-19
 

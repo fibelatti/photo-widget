@@ -1,0 +1,11 @@
+This version brings the following updates:
+
+* Organize the widget configuration screen into categories
+* Enable customizing the corner radius when using fill widget area
+* Fix an issue with widget not working on certain devices
+* Fix changes to the interval not taking effect immediately after editing a
+  widget
+* Fix an issue where trying to permanently delete a widget from "My Widgets"
+  would not work as expected
+
+Feedback and suggestions are always welcome, thank you for using the app!
