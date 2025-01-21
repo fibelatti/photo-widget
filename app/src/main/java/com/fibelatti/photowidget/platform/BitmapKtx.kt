@@ -143,7 +143,7 @@ private fun Bitmap.sourceRect(
 
         PhotoWidgetAspectRatio.FILL_WIDGET -> {
             when {
-                widgetSize == null -> {
+                widgetSize == null || widgetSize.width == 0 || widgetSize.height == 0 -> {
                     Rect(0, 0, width, height)
                 }
 

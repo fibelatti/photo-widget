@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+* Fix a crash that would sometimes happen when using "fill widget area"
+
 ## [v1.22.1] - 2025-01-20
 
 ### Changed
