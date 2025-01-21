@@ -106,9 +106,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
 
         photoWidgetStorage.saveWidgetBorderColor(
             appWidgetId = appWidgetId,
-            colorHex = photoWidget.borderColor.takeUnless {
-                PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio
-            },
+            colorHex = photoWidget.borderColor,
             width = photoWidget.borderWidth,
         )
 

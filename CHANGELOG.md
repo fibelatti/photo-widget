@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+* Enable border customization when using "fill widget area"
+
 ### Fixed
 
 * Fix a crash that would sometimes happen when using "fill widget area"

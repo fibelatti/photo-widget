@@ -172,11 +172,6 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                         PhotoWidget.DEFAULT_SHAPE_ID
                     },
                     cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
-                    borderColor = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidgetAspectRatio) {
-                        null
-                    } else {
-                        current.photoWidget.borderColor
-                    },
                 ),
             )
         }

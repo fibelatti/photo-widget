@@ -332,6 +332,7 @@ fun PickerDefault(
     currentValue: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    warning: String? = null,
 ) {
     Card(
         onClick = onClick,
@@ -361,6 +362,16 @@ fun PickerDefault(
                 textAlign = TextAlign.End,
                 style = MaterialTheme.typography.bodyMedium,
             )
+        }
+
+        if (warning != null) {
+            Text(
+                text = warning,
+                style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier.padding(horizontal = 24.dp),
+            )
+
+            Spacer(modifier = Modifier.size(8.dp))
         }
     }
 }

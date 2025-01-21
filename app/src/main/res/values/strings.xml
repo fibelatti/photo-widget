@@ -167,6 +167,8 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android can restrict background work to optimize battery life, resulting in longer intervals between each photo.\n\nTo update widgets precisely at the selected interval, open settings and allow setting alarms and reminders.</string>
     <string name="photo_widget_configure_interval_open_settings">Open settings</string>
 
+    <string name="photo_widget_configure_roundness_warning">The system may impose a minimum rounding. Adjust this value until the border looks as desired on your home screen.</string>
+
     <string name="photo_widget_configure_border">Border</string>
     <string name="photo_widget_configure_border_none">None</string>
     <string name="photo_widget_configure_border_color">Color</string>

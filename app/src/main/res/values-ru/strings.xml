@@ -173,6 +173,8 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android может ограничивать фоновую работу, чтобы оптимизировать время работы аккумулятора, что приводит к увеличению интервалов между снимками.\n\nЧтобы обновлять виджеты точно с выбранным интервалом, откройте настройки и разрешите установку будильников и напоминаний.</string>
     <string name="photo_widget_configure_interval_open_settings">Открыть настройки</string>
 
+    <string name="photo_widget_configure_roundness_warning">Система может устанавливать минимальное округление. Отрегулируйте это значение до тех пор, пока граница на главном экране не будет выглядеть так, как вам нужно.</string>
+
     <string name="photo_widget_configure_border">Граница</string>
     <string name="photo_widget_configure_border_none">Нет</string>
     <string name="photo_widget_configure_border_color">Цвет</string>

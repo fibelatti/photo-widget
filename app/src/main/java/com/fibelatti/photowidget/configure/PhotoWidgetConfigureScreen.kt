@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.configure
 
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
@@ -74,6 +75,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -598,26 +600,34 @@ private fun AppearanceTab(
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
         } else {
+            val systemWidgetRadius = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                dimensionResource(android.R.dimen.system_app_widget_background_radius)
+            } else {
+                0.dp
+            }
+            val showHint = PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio &&
+                photoWidget.borderColor != null &&
+                systemWidgetRadius > 0.dp
+
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_corner_radius),
                 currentValue = photoWidget.cornerRadius.toInt().toString(),
                 onClick = onCornerRadiusClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
+                warning = stringResource(R.string.photo_widget_configure_roundness_warning).takeIf { showHint },
             )
         }
 
-        if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
-            PickerDefault(
-                title = stringResource(R.string.photo_widget_configure_border),
-                currentValue = if (photoWidget.borderColor == null) {
-                    stringResource(id = R.string.photo_widget_configure_border_none)
-                } else {
-                    "#${photoWidget.borderColor}"
-                },
-                onClick = onBorderClick,
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
-        }
+        PickerDefault(
+            title = stringResource(R.string.photo_widget_configure_border),
+            currentValue = if (photoWidget.borderColor == null) {
+                stringResource(id = R.string.photo_widget_configure_border_none)
+            } else {
+                "#${photoWidget.borderColor}"
+            },
+            onClick = onBorderClick,
+            modifier = Modifier.padding(horizontal = 16.dp),
+        )
 
         PickerDefault(
             title = stringResource(id = R.string.widget_defaults_opacity),
