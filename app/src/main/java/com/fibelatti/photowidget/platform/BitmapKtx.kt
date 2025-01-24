@@ -12,11 +12,9 @@ import android.graphics.Rect
 import android.util.Size
 import androidx.annotation.IntRange
 import androidx.core.graphics.toRectF
-import androidx.graphics.shapes.toPath
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
-import com.fibelatti.photowidget.model.transformed
 import kotlin.math.min
 import kotlin.math.roundToInt
 
@@ -54,13 +52,14 @@ fun Bitmap.withPolygonalShape(
     widgetSize = null,
 ) { canvas, rect, paint ->
     try {
-        val shape = PhotoWidgetShapeBuilder.buildShape(
+        val path = PhotoWidgetShapeBuilder.getShapePath(
             shapeId = shapeId,
             width = width.toFloat(),
             height = height.toFloat(),
+            rectF = rect.toRectF(),
         )
 
-        canvas.drawPath(shape.transformed(bounds = rect.toRectF()).toPath(), paint)
+        canvas.drawPath(path, paint)
     } catch (e: Exception) {
         val message = "withPolygonalShape failed! " +
             "(shapeId=$shapeId, bitmap=$width, $height, rect=${rect.width()}, ${rect.height()})"

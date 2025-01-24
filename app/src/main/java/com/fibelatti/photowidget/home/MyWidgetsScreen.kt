@@ -135,9 +135,7 @@ fun MyWidgetsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     ColoredShape(
-                        polygon = remember {
-                            PhotoWidgetShapeBuilder.buildAllShapes().values.random()
-                        },
+                        shapeId = remember { PhotoWidgetShapeBuilder.shapes.random().id },
                         color = MaterialTheme.colorScheme.primaryContainer,
                         modifier = Modifier.size(120.dp),
                     )
@@ -224,7 +222,7 @@ fun MyWidgetsScreen(
 @AllPreviews
 private fun MyWidgetsScreenPreview() {
     ExtendedTheme {
-        val allShapeIds = PhotoWidgetShapeBuilder.buildAllShapes().map { it.key.id }
+        val allShapeIds = PhotoWidgetShapeBuilder.shapes.map { it.id }
         val opacities = listOf(70f, 85f, 100f)
 
         MyWidgetsScreen(

@@ -406,7 +406,7 @@ fun ShapeDefault(
             Spacer(modifier = Modifier.weight(1f))
 
             ColoredShape(
-                polygon = PhotoWidgetShapeBuilder.buildShape(shapeId = currentValue),
+                shapeId = currentValue,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(40.dp),
             )
@@ -426,10 +426,6 @@ fun ShapePicker(
         title = stringResource(id = R.string.widget_defaults_shape),
         modifier = modifier,
     ) {
-        val shapesToPolygons = remember {
-            PhotoWidgetShapeBuilder.buildAllShapes().toList()
-        }
-
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
@@ -437,7 +433,7 @@ fun ShapePicker(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(shapesToPolygons) { (shape, polygon) ->
+            items(PhotoWidgetShapeBuilder.shapes) { shape ->
                 val color by animateColorAsState(
                     targetValue = if (shape.id == selectedShapeId || selectedShapeId == null) {
                         MaterialTheme.colorScheme.primary
@@ -447,7 +443,7 @@ fun ShapePicker(
                     label = "ShapePicker_SelectedColor",
                 )
                 ColoredShape(
-                    polygon = polygon,
+                    shapeId = shape.id,
                     color = color,
                     modifier = Modifier
                         .fillMaxHeight()

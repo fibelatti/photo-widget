@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.ui.preview.DevicePreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -31,10 +30,8 @@ fun ShapesBanner(
     modifier: Modifier = Modifier,
     polygonSize: Dp = 48.dp,
 ) {
-    val polygons = remember {
-        listOf("scallop", "medal", "clover", "octagon", "hexagon")
-            .shuffled()
-            .map(PhotoWidgetShapeBuilder::buildShape)
+    val shapes = remember {
+        listOf("scallop", "medal", "clover", "octagon", "hexagon").shuffled()
     }
     var isAnimating by remember { mutableStateOf(false) }
     val transition = rememberInfiniteTransition(label = "ShapesBannerTransition")
@@ -73,9 +70,9 @@ fun ShapesBanner(
             },
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
-        polygons.forEach { roundedPolygon ->
+        shapes.forEach { shape ->
             ColoredShape(
-                polygon = roundedPolygon,
+                shapeId = shape,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .size(polygonSize)
