@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
@@ -944,8 +945,7 @@ private fun PhotoPicker(
                         ),
                     ),
                 )
-                .padding(all = 16.dp)
-                .height(36.dp),
+                .padding(all = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             OutlinedButton(
@@ -957,7 +957,8 @@ private fun PhotoPicker(
                 },
                 modifier = Modifier
                     .weight(1f)
-                    .fillMaxHeight(),
+                    .heightIn(max = 36.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
             ) {
                 AutoSizeText(
                     text = stringResource(
@@ -975,11 +976,13 @@ private fun PhotoPicker(
                 onClick = onChangeSource,
                 modifier = Modifier
                     .weight(1f)
-                    .fillMaxHeight(),
+                    .heightIn(max = 36.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
             ) {
-                Text(
+                AutoSizeText(
                     text = stringResource(R.string.photo_widget_configure_change_source),
                     textAlign = TextAlign.Center,
+                    maxLines = 1,
                 )
             }
         }
