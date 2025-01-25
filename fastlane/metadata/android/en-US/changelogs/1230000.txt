@@ -1,0 +1,7 @@
+This version brings the following updates:
+
+* New Star shape and revised Heart shape
+* Enable border customization when using "fill widget area"
+* Fix a crash that would sometimes happen when using "fill widget area"
+
+Feedback and suggestions are always welcome, thank you for using the app!
