@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fix a crash that would sometimes happen when using "fill widget area"
 
 ## [v1.22.1] - 2025-01-20
+[v1.22.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.22.1
 
 ### Changed
 
@@ -36,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   complete
 
 ## [v1.22.0] - 2025-01-19
+[v1.22.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.22.0
 
 ### Changed
 
@@ -49,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Attempt to fix widgets not working on GoodLock
 
 ## [v1.21.1] - 2025-01-13
+[v1.21.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.21.1
 
 ### Fixed
 
@@ -56,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   or restarting the device
 
 ## [v1.21.0] - 2025-01-13
+[v1.21.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.21.0
 
 ### Added
 
@@ -69,6 +73,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the home screen
 
 ## [v1.20.1] - 2025-01-11
+[v1.20.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.20.1
 
 ### Changed
 
@@ -78,6 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Update folder selection logic to avoid loading photos twice
 
 ## [v1.20.0] - 2025-01-05
+[v1.20.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.20.0
 
 ### Added
 
@@ -95,6 +101,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Transparent PNGs not working as expected when optimized storage was enabled
 
 ## [v1.19.0] - 2024-11-23
+[v1.19.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.19.0
 
 ### Added
 
@@ -109,12 +116,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Updated target SDK to 35 (Android 15)
 
 ## [v1.18.1] - 2024-11-07
+[v1.18.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.18.1
 
 ### Fixed
 
 * The loading icon would be visible behind transparent widgets
 
 ## [v1.18.0] - 2024-11-06
+[v1.18.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.18.0
 
 ### Added
 
@@ -127,6 +136,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added device details to bug reports
 
 ## [v1.17.0] - 2024-10-27
+[v1.17.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.17.0
 
 ### Added
 
@@ -146,12 +156,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fix duplicate feature not working as it should for photo widgets
 
 ## [v1.16.2] - 2024-10-23
+[v1.16.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.16.2
 
 ### Changed
 
 * Apply signing conditionally to avoid interfering with Reproducible Builds
 
 ## [v1.16.1] - 2024-10-22
+[v1.16.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.16.1
 
 ### Changed
 
@@ -159,6 +171,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Reproducible Builds
 
 ## [v1.16.0] - 2024-10-22
+[v1.16.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.16.0
 
 ### Added
 
@@ -176,12 +189,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   after a device boot
 
 ## [v1.15.2] - 2024-10-09
+[v1.15.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.15.2
 
 ### Fixed
 
 * Fix drag to reorder crash
 
 ## [v1.15.1] - 2024-10-06
+[v1.15.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.15.1
 
 ### Fixed
 
@@ -193,6 +208,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Update the shortcut used to grant exact alarm permission
 
 ## [v1.15.0] - 2024-09-29
+[v1.15.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.15.0
 
 ### Added
 
@@ -205,6 +221,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   press a photo and start dragging
 
 ## [v1.14.0] - 2024-09-14
+[v1.14.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.14.0
 
 ### Added
 
@@ -220,12 +237,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Improved pre-crop image quality when importing photos
 
 ## [v1.13.3] - 2024-08-26
+[v1.13.3]: https://github.com/fibelatti/photo-widget/releases/tag/v1.13.3
 
 ### Fixed
 
 * Fix shaped widgets crashing
 
 ## [v1.13.2] - 2024-08-25
+[v1.13.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.13.2
 
 ### Changed
 
@@ -237,6 +256,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * App shortcut tap action sometimes not working as expected
 
 ## [v1.13.1] - 2024-08-14
+[v1.13.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.13.1
 
 ### Changed
 
@@ -247,7 +267,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed a scenario where all photos of an existing widget could be deleted
 * Fixed a scenario where a broken widget was displayed on the widget list
 
-## [v1.13] - 2024-08-10
+## [v1.13.0] - 2024-08-10
+[v1.13.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.13.0
 
 ### Added
 
@@ -259,12 +280,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Made the required adjustments to support Reproducible Builds
 
 ## [v1.12.1] - 2024-07-22
+[v1.12.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.12.1
 
 ### Fixed
 
 * Fix error handling when a photo is not found
 
 ## [v1.12.0] - 2024-07-20
+[v1.12.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.12.0
 
 ### Added
 
@@ -279,6 +302,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Avoid crashing when the file cannot be found
 
 ## [v1.11.0] - 2024-07-07
+[v1.11.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.11.0
 
 ### Added
 
@@ -289,6 +313,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Make it possible to bypass the folder limit
 
 ## [v1.10.0] - 2024-06-23
+[v1.10.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.10.0
 
 ### Added
 
@@ -302,12 +327,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Declare INSTALL_SHORTCUT attempting to solve Xiaomi issues
 
 ## [v1.9.1] - 2024-06-11
+[v1.9.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.9.1
 
 ### Fixed
 
 * Intervals in seconds not working correctly
 
 ## [v1.9.0] - 2024-06-10
+[v1.9.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.9.0
 
 ### Added
 
@@ -322,6 +349,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Widgets will now include subdirectories of all synced directories
 
 ## [v1.8.3-floss] - 2024-05-22
+[v1.8.3-floss]: https://github.com/fibelatti/photo-widget/releases/tag/v1.8.3-floss
 
 ### Changed
 
@@ -330,6 +358,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Updated the button structure of the source picker dialog
 
 ## [v1.8.3] - 2024-05-18
+[v1.8.3]: https://github.com/fibelatti/photo-widget/releases/tag/v1.8.3
 
 ### Added
 
@@ -340,6 +369,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Sometimes widgets would not work correctly after a device restart
 
 ## [v1.8.2] - 2024-05-15
+[v1.8.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.8.2
 
 ### Changed
 
@@ -350,12 +380,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Crash that could happen when loading widgets
 
 ## [v1.8.1] - 2024-05-13
+[v1.8.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.8.1
 
 ### Fixed
 
 * Brightness setting now being applied correctly
 
 ## [v1.8] - 2024-05-13
+[v1.8]: https://github.com/fibelatti/photo-widget/releases/tag/v1.8
 
 ### Added
 
@@ -370,6 +402,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Share photos to an existing widget
 
 ## [v1.7] - 2024-05-04
+[v1.7]: https://github.com/fibelatti/photo-widget/releases/tag/v1.7
 
 ### Added
 
@@ -382,6 +415,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Heart shape for square widgets
 
 ## [v1.6.1] - 2024-04-17
+[v1.6.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.6.1
 
 * Folder based widgets — choose a folder to have all its photos automatically
   added to a widget
@@ -394,6 +428,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   better accommodate all controls
 
 ## [v1.6] - 2024-04-17
+[v1.6]: https://github.com/fibelatti/photo-widget/releases/tag/v1.6
 
 ### Added
 
@@ -408,6 +443,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   better accommodate all controls
 
 ## [v1.5] - 2024-03-18
+[v1.5]: https://github.com/fibelatti/photo-widget/releases/tag/v1.5
 
 ### Added
 
@@ -418,6 +454,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * No tap action — for those who just want static widgets, with no actions
 
 ## [v1.4] - 2024-02-24
+[v1.4]: https://github.com/fibelatti/photo-widget/releases/tag/v1.4
 
 ### Added
 
@@ -427,6 +464,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * More flipping intervals — every 2 and 8 hours added to the options
 
 ## [v1.3] - 2024-02-02
+[v1.3]: https://github.com/fibelatti/photo-widget/releases/tag/v1.3
 
 ### Added
 
@@ -435,12 +473,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * The app is now localized to spanish
 
 ## [v1.2] - 2024-01-25
+[v1.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.2
 
 ### Added
 
 * You can now modify the aspect ratio of existing widgets
 
 ## [v1.1.1] - 2024-01-19
+[v1.1.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.1.1
 
 ### Added
 
@@ -455,6 +495,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Handling crashes that would sometimes happen when trying to import photos
 
 ## [v1.1] - 2024-01-14
+[v1.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.1
 
 ### Added
 
@@ -468,6 +509,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Adding widgets via the app not working correctly on some Samsung devices
 
 ## [v1.0] - 2023-11-15
+[v1.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.0
 
 ### Added
 
