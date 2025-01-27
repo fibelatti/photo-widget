@@ -1,24 +1,53 @@
 <b>Material Photo Widget</b> is as simple as it can be: a home screen widget to
-display a photo or collection of photos. It is a free, no-ads, open source
-alternative for people who want to customize their home screen with their
-favorite photos.
+display your favorite photos. It is a free, no-ads, open source alternative for
+people who want to customize their home screen.
 
-It's <b>easy</b> and <b>simple</b> to add a new widget with your photos. Start
-from the app or directly from the home screen widget browser on your preferred
-launcher.
+* <i>Create a slideshow from your favorite photos</i>
+* <i>Create shortcuts to open other apps</i>
+* <i>Put your schedule on your home screen</i>
+* <i>Your membership passes one tap away</i>
+
+It's <b>easy</b> and <b>simple</b> to add a new widget with your photos.
 
 <b>FEATURES</b>
 
-* Choose each photo or sync a widget with device folders
-* Set an interval or schedule to switch photos automatically
-* Customize the tap action of each widget: view in full screen, view in
-  gallery, shortcut to open other apps
-* Customize the aspect ratio: square, tall, wide, original (same as photo) and
-  fill widget area
-* Customize square widgets with 10 different shapes
-* Customize the rounded corners of tall, wide or original widgets
+* Choose photos individually or sync with device folders
+* Set an interval or schedule to create a slideshow and switch photos
+  automatically
+* Your widgets are shortcuts — choose from the available tap actions: view in
+  full screen, view in gallery, shortcut to open other apps or links
+* Five different aspect ratios: square, tall, wide, original (same as photo)
+  and fill widget area
+* 12 different shapes
+* Colored borders
 * Customize the opacity, offset and padding to align your home screen elements
   perfectly
+
+<b>HOW TO USE</b>
+
+Open the app and tap "Create a new widget" directly from the home screen.
+Add your photos, choose the appearance and behaviors and tap "Add to home
+screen". That's it!
+
+You can also long press on your home screen, open the widget menu and search
+for "Material Photo Widget", then configure your new widget the same way.
+
+<b>MY WIDGET DOES NOT APPEAR</b>
+
+The app consumes very little power and runs on the background when needed (to
+switch photos, for example). Because it's rarely being actively used, it can
+be stopped by Android as the system prioritizes the most used apps when trying
+to optimize the battery duration.
+
+If you are facing this problem, remove any battery or memory restrictions from
+the app. You can also search for your device brand on https://dontkillmyapp.com
+and follow their instructions to improve the behavior of apps that mostly run
+on the background.
+
+Some phones can prevent apps from starting themselves after restarting the
+device, making the widget can appear broken. If that's happening, you must
+grant permission for the app to "auto start" through your settings or security
+app.
 
 <b>PERMISSIONS</b>
 
