@@ -283,16 +283,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun rateApp() {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(APP_URL)))
+        openUrl(url = APP_URL)
     }
 
     private fun openPrivacyPolicy() {
-        startActivity(
-            Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("https://www.fibelatti.com/privacy-policy/material-photo-widget"),
-            ),
-        )
+        openUrl(url = "https://www.fibelatti.com/privacy-policy/material-photo-widget")
+    }
+
+    private fun openUrl(url: String) {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
     }
 
     private fun viewOpenSourceLicenses() {
