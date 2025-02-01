@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+* Fix an issue where "View in gallery" would sometimes open an unexpected app
+
 ## [v1.23.0] - 2025-01-25
 [v1.23.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.23.0
 

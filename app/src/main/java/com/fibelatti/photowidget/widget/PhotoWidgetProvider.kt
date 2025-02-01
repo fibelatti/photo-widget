@@ -314,10 +314,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 is PhotoWidgetTapAction.ViewInGallery -> {
                     if (externalUri == null) return null
 
-                    val intent = Intent(Intent.ACTION_VIEW, externalUri).apply {
-                        setIdentifierCompat("$appWidgetId")
-                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    }
+                    val intent = Intent(Intent.ACTION_VIEW)
+                        .setDataAndType(externalUri, "image/*")
+                        .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        .setIdentifierCompat("$appWidgetId")
 
                     return PendingIntent.getActivity(
                         /* context = */
