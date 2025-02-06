@@ -32,7 +32,7 @@ interface PhotoWidgetEntryPoint {
 
     fun prepareCurrentPhotoUseCase(): PrepareCurrentPhotoUseCase
 
-    fun flipPhotoUseCase(): CyclePhotoUseCase
+    fun cyclePhotoUseCase(): CyclePhotoUseCase
 
     fun photoDecoder(): PhotoDecoder
 

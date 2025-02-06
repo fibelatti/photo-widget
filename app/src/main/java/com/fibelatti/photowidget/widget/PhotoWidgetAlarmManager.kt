@@ -166,7 +166,7 @@ class ExactRepeatingAlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         entryPoint<PhotoWidgetEntryPoint>(context).runCatching {
             coroutineScope().launch {
-                flipPhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
+                cyclePhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
                 photoWidgetStorage().saveWidgetNextCycleTime(appWidgetId = intent.appWidgetId, nextCycleTime = -1)
                 photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
             }

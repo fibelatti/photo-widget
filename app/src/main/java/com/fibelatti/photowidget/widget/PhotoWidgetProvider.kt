@@ -62,10 +62,15 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
 
                 entryPoint.coroutineScope().launch {
-                    entryPoint.flipPhotoUseCase().invoke(
+                    entryPoint.cyclePhotoUseCase().invoke(
                         appWidgetId = intent.appWidgetId,
                         flipBackwards = ACTION_VIEW_PREVIOUS_PHOTO == intent.action,
                     )
+                    entryPoint.photoWidgetStorage().saveWidgetNextCycleTime(
+                        appWidgetId = intent.appWidgetId,
+                        nextCycleTime = null,
+                    )
+                    entryPoint.photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
                 }
             }
         }
