@@ -116,7 +116,7 @@ android {
                 com.android.build.api.variant.ResValue(appName, null),
             )
 
-            variant.androidResources.localeFilters.addAll("en", "es", "fr", "pt", "ru", "tr")
+            variant.androidResources.localeFilters.addAll("en", "es", "fr", "pt", "ru", "tr", "zh")
         }
     }
 
