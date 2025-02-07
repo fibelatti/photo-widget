@@ -1,3 +1,4 @@
+(本仓库为了添加汉化,汉化还未完成)
 Material Photo Widget
 =====
 
