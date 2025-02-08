@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Widget Host -->
-    <string name="photo_widget_host_description">Decorate your home screen with your favorite photos</string>
+    <string name="photo_widget_host_description">把你最喜欢的照片放到桌面</string>
 
     <!-- Home -->
-    <string name="photo_widget_home_title">Decorate your home screen with your favorite photos</string>
-    <string name="photo_widget_home_aspect_ratio">Select the widget aspect ratio and tap the button to begin. Don\'t worry, you can change this at any time!</string>
-    <string name="photo_widget_home_new_widget">Create a new widget</string>
-    <string name="photo_widget_home_new">New Widget</string>
-    <string name="photo_widget_home_current">My Widgets</string>
+    <string name="photo_widget_home_title">把你最喜欢的照片放到桌面</string>
+    <string name="photo_widget_home_aspect_ratio">选择小部件长宽比并点击按钮开始\n 别担心，你可以随时更改！</string>
+    <string name="photo_widget_home_new_widget">新建小组建</string>
+    <string name="photo_widget_home_new">小组建</string>
+    <string name="photo_widget_home_current">我的小组建</string>
     <string name="photo_widget_home_settings">设置</string>
-    <string name="photo_widget_home_data_saver">Optimized storage</string>
-    <string name="photo_widget_home_appearance">App theme</string>
+    <string name="photo_widget_home_data_saver">优化存储</string>
+    <string name="photo_widget_home_appearance">主题</string>
     <string name="photo_widget_home_true_black_background">True black background</string>
-    <string name="photo_widget_home_dynamic_colors">App colors</string>
-    <string name="photo_widget_home_share">Share the app</string>
-    <string name="photo_widget_home_rate">Write a review</string>
-    <string name="photo_widget_home_feedback">Send your feedback</string>
-    <string name="photo_widget_home_help">Help</string>
+    <string name="photo_widget_home_dynamic_colors">颜色</string>
+    <string name="photo_widget_home_share">分享软件</string>
+    <string name="photo_widget_home_rate">评价</string>
+    <string name="photo_widget_home_feedback">反馈</string>
+    <string name="photo_widget_home_help">帮助</string>
     <string name="photo_widget_home_common_issues">Common issues</string>
-    <string name="photo_widget_home_privacy_policy">Privacy policy</string>
-    <string name="photo_widget_home_developer">Developed with ❤ by Filipe Belatti</string>
-    <string name="photo_widget_home_version">App version: %s</string>
+    <string name="photo_widget_home_privacy_policy">隐私策略</string>
+    <string name="photo_widget_home_developer">由Filipe Belatti开发❤</string>
+    <string name="photo_widget_home_version">版本号: %s</string>
     <string name="photo_widget_home_view_licenses">OSS Licenses</string>
 
     <plurals name="photo_widget_home_share_received">
@@ -55,7 +55,7 @@
     <string name="preferences_dynamic_colors_disabled">Default colors</string>
 
     <!-- Widget Defaults -->
-    <string name="widget_defaults_title">Widget defaults</string>
+    <string name="widget_defaults_title">小组建默认参数</string>
     <string name="widget_defaults_explanation">These values are pre-loaded when you create a new widget. They are useful for setting up multiple widgets with the same configuration, eliminating the need to adjust settings each time. Note that any changes to these values won’t affect existing widgets.</string>
     <string name="widget_defaults_source">Source</string>
     <string name="widget_defaults_shuffle">Shuffle</string>
@@ -77,11 +77,11 @@
 
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Aspect ratio</string>
-    <string name="photo_widget_aspect_ratio_square">Square</string>
-    <string name="photo_widget_aspect_ratio_tall">Tall</string>
-    <string name="photo_widget_aspect_ratio_wide">Wide</string>
-    <string name="photo_widget_aspect_ratio_original">Same as photo</string>
-    <string name="photo_widget_aspect_ratio_fill_widget">Fill widget area</string>
+    <string name="photo_widget_aspect_ratio_square">正方形</string>
+    <string name="photo_widget_aspect_ratio_tall">高</string>
+    <string name="photo_widget_aspect_ratio_wide">宽</string>
+    <string name="photo_widget_aspect_ratio_original">与照片一样</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">填充小部件区域</string>
 
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Any changes will be lost, go back anyway?</string>
