@@ -2,11 +2,11 @@ package com.fibelatti.photowidget.platform
 
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.core.graphics.drawable.toBitmap
-import coil.ImageLoader
-import coil.request.ErrorResult
-import coil.request.ImageRequest
-import coil.request.SuccessResult
+import coil3.ImageLoader
+import coil3.request.ErrorResult
+import coil3.request.ImageRequest
+import coil3.request.SuccessResult
+import coil3.toBitmap
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -26,17 +26,17 @@ class PhotoDecoder @Inject constructor(
 
         val request = ImageRequest.Builder(context)
             .data(data)
-            .allowHardware(enable = false)
             .apply { if (maxDimension != null) size(maxDimension) }
             .build()
 
         imageLoader.execute(request)
             .also { result ->
                 when (result) {
-                    is ErrorResult -> Timber.d("Decoding error ${result.throwable.message}")
-                    is SuccessResult -> Timber.d("Decoding success")
+                    is ErrorResult -> Timber.d("Decoding error (data=$data, message=${result.throwable.message})")
+                    is SuccessResult -> Timber.d("Decoding success (data=$data)")
                 }
             }
-            .drawable?.toBitmap()
+            .image
+            ?.toBitmap()
     }
 }
