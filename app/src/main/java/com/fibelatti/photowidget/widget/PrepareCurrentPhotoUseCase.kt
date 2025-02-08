@@ -5,25 +5,27 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.util.DisplayMetrics
 import android.util.Size
+import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.platform.PhotoDecoder
+import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.widget.data.PhotoWidgetInternalFileStorage
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import timber.log.Timber
 
 class PrepareCurrentPhotoUseCase @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val decoder: PhotoDecoder,
     private val photoWidgetInternalFileStorage: PhotoWidgetInternalFileStorage,
 ) {
 
     suspend operator fun invoke(
+        context: Context,
         appWidgetId: Int,
         photoWidget: PhotoWidget,
         widgetSize: Size? = null,
@@ -67,14 +69,22 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
             return null
         }
 
+        val borderColor = when (photoWidget.border) {
+            is PhotoWidgetBorder.None -> null
+            is PhotoWidgetBorder.Color -> "#${photoWidget.border.colorHex}".toColorInt()
+            is PhotoWidgetBorder.Dynamic -> context.getDynamicAttributeColor(
+                com.google.android.material.R.attr.colorPrimary,
+            )
+        }
+
         Timber.d("Transforming the bitmap")
         val transformedBitmap: Bitmap = if (PhotoWidgetAspectRatio.SQUARE == photoWidget.aspectRatio) {
             bitmap.withPolygonalShape(
                 shapeId = photoWidget.shapeId,
                 opacity = photoWidget.opacity,
                 blackAndWhite = photoWidget.blackAndWhite,
-                borderColorHex = photoWidget.borderColor,
-                borderWidth = photoWidget.borderWidth,
+                borderColor = borderColor,
+                borderWidth = photoWidget.border.getBorderWidth(),
             )
         } else {
             bitmap.withRoundedCorners(
@@ -82,8 +92,8 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 radius = photoWidget.cornerRadius,
                 opacity = photoWidget.opacity,
                 blackAndWhite = photoWidget.blackAndWhite,
-                borderColorHex = photoWidget.borderColor,
-                borderWidth = photoWidget.borderWidth,
+                borderColor = borderColor,
+                borderWidth = photoWidget.border.getBorderWidth(),
                 widgetSize = widgetSize,
             )
         }

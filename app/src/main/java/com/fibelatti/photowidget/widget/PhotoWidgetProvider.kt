@@ -162,6 +162,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val sizeProvider = WidgetSizeProvider(context = context.applicationContext)
 
             val result = prepareCurrentPhotoUseCase(
+                context = context,
                 appWidgetId = appWidgetId,
                 photoWidget = photoWidget,
                 widgetSize = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio) {

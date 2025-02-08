@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* Dynamic borders that match the device's theme color (Android 12 and above)
+
 ### Changed
 
 * Update the home screen with better visual cues for each aspect ratio

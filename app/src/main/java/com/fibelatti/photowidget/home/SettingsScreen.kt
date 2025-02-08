@@ -1,7 +1,6 @@
 package com.fibelatti.photowidget.home
 
 import android.app.AlarmManager
-import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
@@ -52,6 +51,7 @@ import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
+import com.google.android.material.color.DynamicColors
 
 @Composable
 fun SettingsScreen(
@@ -167,7 +167,7 @@ private fun SettingsScreen(
                 onClick = onAppearanceClick,
             )
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (DynamicColors.isDynamicColorAvailable()) {
                 SettingsAction(
                     icon = R.drawable.ic_dynamic_color,
                     label = R.string.photo_widget_home_dynamic_colors,

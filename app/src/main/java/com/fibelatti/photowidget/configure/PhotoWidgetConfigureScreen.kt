@@ -81,12 +81,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
@@ -133,7 +136,7 @@ fun PhotoWidgetConfigureScreen(
     onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
     onShapeChange: (String) -> Unit,
     onCornerRadiusChange: (Float) -> Unit,
-    onBorderChange: (String?, Int) -> Unit,
+    onBorderChange: (PhotoWidgetBorder) -> Unit,
     onOpacityChange: (Float) -> Unit,
     onBlackAndWhiteChange: (Boolean) -> Unit,
     onOffsetChange: (horizontalOffset: Int, verticalOffset: Int) -> Unit,
@@ -196,8 +199,7 @@ fun PhotoWidgetConfigureScreen(
             onBorderClick = {
                 PhotoWidgetBorderPicker.show(
                     context = localContext,
-                    currentColorHex = photoWidget.borderColor,
-                    currentWidth = photoWidget.borderWidth,
+                    currentBorder = photoWidget.border,
                     onApplyClick = onBorderChange,
                 )
             },
@@ -395,8 +397,7 @@ private fun PhotoWidgetViewer(
             shapeId = photoWidget.shapeId,
             modifier = Modifier.fillMaxSize(),
             cornerRadius = photoWidget.cornerRadius,
-            borderColorHex = photoWidget.borderColor,
-            borderWidth = photoWidget.borderWidth,
+            border = photoWidget.border,
             opacity = photoWidget.opacity,
             blackAndWhite = photoWidget.blackAndWhite,
         )
@@ -607,7 +608,7 @@ private fun AppearanceTab(
                 0.dp
             }
             val showHint = PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio &&
-                photoWidget.borderColor != null &&
+                photoWidget.border !is PhotoWidgetBorder.None &&
                 systemWidgetRadius > 0.dp
 
             PickerDefault(
@@ -621,10 +622,10 @@ private fun AppearanceTab(
 
         PickerDefault(
             title = stringResource(R.string.photo_widget_configure_border),
-            currentValue = if (photoWidget.borderColor == null) {
-                stringResource(id = R.string.photo_widget_configure_border_none)
-            } else {
-                "#${photoWidget.borderColor}"
+            currentValue = when (photoWidget.border) {
+                is PhotoWidgetBorder.None -> stringResource(id = R.string.photo_widget_configure_border_none)
+                is PhotoWidgetBorder.Color -> "#${photoWidget.border.colorHex}".toUpperCase(Locale.current)
+                is PhotoWidgetBorder.Dynamic -> stringResource(R.string.photo_widget_configure_border_dynamic)
             },
             onClick = onBorderClick,
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -739,8 +740,7 @@ private fun CurrentPhotoViewer(
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     cornerRadius: Float,
-    borderColorHex: String?,
-    borderWidth: Int,
+    border: PhotoWidgetBorder,
     opacity: Float,
     blackAndWhite: Boolean,
     modifier: Modifier = Modifier,
@@ -784,8 +784,7 @@ private fun CurrentPhotoViewer(
                     .padding(start = 32.dp, top = 32.dp, end = 32.dp, bottom = 48.dp)
                     .fillMaxHeight(),
                 blackAndWhite = blackAndWhite,
-                borderColorHex = borderColorHex,
-                borderWidth = borderWidth,
+                border = border,
             )
         }
     }
@@ -1179,7 +1178,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onTapActionPickerClick = {},
             onShapeChange = {},
             onCornerRadiusChange = {},
-            onBorderChange = { _, _ -> },
+            onBorderChange = {},
             onOpacityChange = {},
             onBlackAndWhiteChange = {},
             onOffsetChange = { _, _ -> },
@@ -1227,7 +1226,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onTapActionPickerClick = {},
             onShapeChange = {},
             onCornerRadiusChange = {},
-            onBorderChange = { _, _ -> },
+            onBorderChange = {},
             onOpacityChange = {},
             onBlackAndWhiteChange = {},
             onOffsetChange = { _, _ -> },

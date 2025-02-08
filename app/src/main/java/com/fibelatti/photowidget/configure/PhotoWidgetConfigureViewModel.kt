@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
@@ -477,13 +478,10 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun borderSelected(colorHex: String?, width: Int) {
+    fun borderSelected(border: PhotoWidgetBorder) {
         _state.update { current ->
             current.copy(
-                photoWidget = current.photoWidget.copy(
-                    borderColor = colorHex,
-                    borderWidth = width,
-                ),
+                photoWidget = current.photoWidget.copy(border = border),
             )
         }
     }

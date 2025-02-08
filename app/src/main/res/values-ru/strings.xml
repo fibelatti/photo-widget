@@ -179,7 +179,10 @@
 
     <string name="photo_widget_configure_border">Граница</string>
     <string name="photo_widget_configure_border_none">Нет</string>
-    <string name="photo_widget_configure_border_color">Цвет</string>
+    <string name="photo_widget_configure_border_dynamic">Динамичный</string>
+    <string name="photo_widget_configure_border_color">Цветной</string>
+
+    <string name="photo_widget_configure_border_explanation">Изменения произойдут во время следующего обновления виджета после того, как вы измените цвет темы телефона. Чтобы обновить все виджеты немедленно, просто откройте приложение.</string>
 
     <string name="photo_widget_configure_offset">Смещение</string>
     <string name="photo_widget_configure_offset_current_values">Горизонтальное: %1$d, Вертикальное: %2$d</string>

@@ -3,6 +3,7 @@ package com.fibelatti.photowidget
 import android.app.Application
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate
+import com.fibelatti.photowidget.platform.DynamicBorderReceiver
 import com.fibelatti.photowidget.preferences.Appearance
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
@@ -29,30 +30,31 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-
-            StrictMode.setThreadPolicy(
-                StrictMode.ThreadPolicy.Builder()
-                    .detectAll()
-                    .penaltyLog()
-                    .build(),
-            )
-
-            StrictMode.setVmPolicy(
-                StrictMode.VmPolicy.Builder()
-                    .detectAll()
-                    .penaltyLog()
-                    .build(),
-            )
-        }
-
+        setupDebugMode()
         setupNightMode()
         setupDynamicColors()
+        deleteStaleData()
+        registerReceivers()
+    }
 
-        coroutineScope.launch {
-            deleteStaleDataUseCase()
-        }
+    private fun setupDebugMode() {
+        if (!BuildConfig.DEBUG) return
+
+        Timber.plant(Timber.DebugTree())
+
+        StrictMode.setThreadPolicy(
+            StrictMode.ThreadPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build(),
+        )
+
+        StrictMode.setVmPolicy(
+            StrictMode.VmPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build(),
+        )
     }
 
     private fun setupNightMode() {
@@ -72,5 +74,15 @@ class App : Application() {
             .build()
 
         DynamicColors.applyToActivitiesIfAvailable(this, dynamicColorsOptions)
+    }
+
+    private fun deleteStaleData() {
+        coroutineScope.launch {
+            deleteStaleDataUseCase()
+        }
+    }
+
+    private fun registerReceivers() {
+        DynamicBorderReceiver.register(context = this)
     }
 }
