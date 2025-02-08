@@ -5,8 +5,7 @@
 
     <!-- Home -->
     <string name="photo_widget_home_title">Украсьте главный экран любимыми фотографиями</string>
-    <string name="photo_widget_home_aspect_ratio">Выберите соотношение сторон виджета и нажмите кнопку, чтобы начать. Не волнуйтесь, это можно изменить в любое время!</string>
-    <string name="photo_widget_home_new_widget">Создать новый виджет</string>
+    <string name="photo_widget_home_instruction">Создайте новый виджет, нажав на одну из опций. Не волнуйтесь, вы можете изменить это в любое время!</string>
     <string name="photo_widget_home_new">Новый виджет</string>
     <string name="photo_widget_home_current">Мои виджеты</string>
     <string name="photo_widget_home_settings">Настройки</string>
@@ -17,7 +16,7 @@
     <string name="photo_widget_home_share">Поделиться приложением</string>
     <string name="photo_widget_home_rate">Оставить отзыв</string>
     <string name="photo_widget_home_feedback">Отправить отзыв</string>
-    <string name="photo_widget_home_help">Помощь</string>
+    <string name="photo_widget_home_help">Что-то не работает?</string>
     <string name="photo_widget_home_common_issues">Распространённые проблемы</string>
     <string name="photo_widget_home_privacy_policy">Политика конфиденциальности</string>
     <string name="photo_widget_home_developer">Разработано с ❤ Филипом Белатти</string>
@@ -81,8 +80,11 @@
     <string name="photo_widget_aspect_ratio_square">Квадрат</string>
     <string name="photo_widget_aspect_ratio_tall">Высокий</string>
     <string name="photo_widget_aspect_ratio_wide">Широкий</string>
-    <string name="photo_widget_aspect_ratio_original">Как у фотографии</string>
-    <string name="photo_widget_aspect_ratio_fill_widget">Заполнить область виджета</string>
+    <string name="photo_widget_aspect_ratio_original">Оригинал</string>
+    <string name="photo_widget_aspect_ratio_original_description">Соответствовать каждому фото</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">Заполнить</string>
+    <string name="photo_widget_aspect_ratio_fill_widget_description">Соответствовать размеру виджета</string>
+
 
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Все изменения будут потеряны, вернуться назад?</string>

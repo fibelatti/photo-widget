@@ -5,8 +5,7 @@
 
     <!-- Home -->
     <string name="photo_widget_home_title">Ana ekranınızı favori fotoğraflarınızla süsleyin</string>
-    <string name="photo_widget_home_aspect_ratio">Widget en-boy oranını seçin ve başlamak için düğmeye dokunun. Endişelenmeyin, bunu istediğiniz zaman değiştirebilirsiniz!</string>
-    <string name="photo_widget_home_new_widget">Yeni bir widget oluştur</string>
+    <string name="photo_widget_home_instruction">Seçeneklerden birine dokunarak yeni bir widget oluşturun. Endişelenmeyin, bunu istediğiniz zaman değiştirebilirsiniz!</string>
     <string name="photo_widget_home_new">Yeni Widget</string>
     <string name="photo_widget_home_current">Widget\'larım</string>
     <string name="photo_widget_home_settings">Ayarlar</string>
@@ -17,7 +16,7 @@
     <string name="photo_widget_home_share">Uygulamayı paylaş</string>
     <string name="photo_widget_home_rate">Yorum yaz</string>
     <string name="photo_widget_home_feedback">Geri bildiriminizi gönderin</string>
-    <string name="photo_widget_home_help">Yardım</string>
+    <string name="photo_widget_home_help">Bir şey mi çalışmıyor?</string>
     <string name="photo_widget_home_common_issues">Yaygın sorunlar</string>
     <string name="photo_widget_home_privacy_policy">Gizlilik politikası</string>
     <string name="photo_widget_home_developer">❤ ile geliştiren Filipe Belatti</string>
@@ -80,8 +79,11 @@
     <string name="photo_widget_aspect_ratio_square">Kare</string>
     <string name="photo_widget_aspect_ratio_tall">Uzun</string>
     <string name="photo_widget_aspect_ratio_wide">Geniş</string>
-    <string name="photo_widget_aspect_ratio_original">Fotoğrafla aynı</string>
-    <string name="photo_widget_aspect_ratio_fill_widget">Widget alanını doldur</string>
+    <string name="photo_widget_aspect_ratio_original">Orijinal</string>
+    <string name="photo_widget_aspect_ratio_original_description">Her fotoğrafla eşleş</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">Doldur</string>
+    <string name="photo_widget_aspect_ratio_fill_widget_description">Widget boyutuna uyum sağla</string>
+
 
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Değişiklikler kaybolacak, yine de geri dönmek istiyor musunuz?</string>

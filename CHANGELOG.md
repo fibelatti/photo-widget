@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+* Update the home screen with better visual cues for each aspect ratio
+
 ### Fixed
 
 * Fix an issue where "View in gallery" would sometimes open an unexpected app

@@ -5,8 +5,7 @@
 
     <!-- Home -->
     <string name="photo_widget_home_title">Décorez votre écran d\'accueil avec vos photos préférées</string>
-    <string name="photo_widget_home_aspect_ratio">Sélectionnez le format du widget et appuyez sur le bouton pour commencer. Ne vous inquiétez pas, vous pourrez le changer à tout moment !</string>
-    <string name="photo_widget_home_new_widget">Créer un nouveau widget</string>
+    <string name="photo_widget_home_instruction">Créez un nouveau widget en appuyant sur l\'une des options. Ne vous inquiétez pas, vous pouvez modifier cela à tout moment !</string>
     <string name="photo_widget_home_new">Nouveau widget</string>
     <string name="photo_widget_home_current">Mes widgets</string>
     <string name="photo_widget_home_settings">Paramètres</string>
@@ -17,7 +16,7 @@
     <string name="photo_widget_home_share">Partager l\'application</string>
     <string name="photo_widget_home_rate">Écrire un avis</string>
     <string name="photo_widget_home_feedback">Envoyer vos commentaires</string>
-    <string name="photo_widget_home_help">Aide</string>
+    <string name="photo_widget_home_help">Quelque chose ne fonctionne pas ?</string>
     <string name="photo_widget_home_common_issues">Problèmes courants</string>
     <string name="photo_widget_home_privacy_policy">Politique de confidentialité</string>
     <string name="photo_widget_home_developer">Développé avec ❤ par Filipe Belatti</string>
@@ -81,8 +80,11 @@
     <string name="photo_widget_aspect_ratio_square">Carré</string>
     <string name="photo_widget_aspect_ratio_tall">Haut</string>
     <string name="photo_widget_aspect_ratio_wide">Large</string>
-    <string name="photo_widget_aspect_ratio_original">Identique à la photo</string>
-    <string name="photo_widget_aspect_ratio_fill_widget">Remplir la zone du widget</string>
+    <string name="photo_widget_aspect_ratio_original">Original</string>
+    <string name="photo_widget_aspect_ratio_original_description">Adapter à chaque photo</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">Remplir</string>
+    <string name="photo_widget_aspect_ratio_fill_widget_description">Adapter à la taille du widget</string>
+
 
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Tous les changements seront perdus, revenir quand même ?</string>
