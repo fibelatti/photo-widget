@@ -4,28 +4,28 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 
 @Preview(
-    name = "Regular Device",
+    name = "Phone",
     group = "Device",
     showSystemUi = true,
     showBackground = true,
     device = Devices.PIXEL_7,
 )
 @Preview(
-    name = "Landscape Device",
+    name = "Phone — Landscape",
     group = "Device",
     showSystemUi = true,
     showBackground = true,
     device = "spec:width=411dp,height=891dp,dpi=420,isRound=false,chinSize=0dp,orientation=landscape",
 )
 @Preview(
-    name = "Small Device",
+    name = "Phone — Small",
     group = "Device",
     showSystemUi = true,
     showBackground = true,
     device = Devices.NEXUS_5,
 )
 @Preview(
-    name = "Small Device (pt)",
+    name = "Phone — Small (pt)",
     group = "Device",
     showSystemUi = true,
     showBackground = true,
@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
     locale = "pt",
 )
 @Preview(
-    name = "Small Device (es)",
+    name = "Phone — Small (es)",
     group = "Device",
     showSystemUi = true,
     showBackground = true,
@@ -41,7 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
     locale = "es",
 )
 @Preview(
-    name = "Small Device (fr)",
+    name = "Phone — Small (fr)",
     group = "Device",
     showSystemUi = true,
     showBackground = true,
