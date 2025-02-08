@@ -104,7 +104,7 @@ private fun AspectRatioPicker(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 16.dp),
     ) {
-        items(PhotoWidgetAspectRatio.entries.reversed()) { item ->
+        items(PhotoWidgetAspectRatio.entries) { item ->
             AspectRatioItem(
                 item = item,
                 onClick = { onAspectRatioSelected(item) },
