@@ -81,7 +81,7 @@
     <string name="photo_widget_aspect_ratio_wide">宽</string>
 
     
-  <string name="photo_widget_aspect_ratio_wide_description" translatable="否">16:10</string>
+  <string name="photo_widget_aspect_ratio_wide_description" translatable="false">16:10</string>
       <string name="photo_widget_aspect_ratio_original">Original</string>
     <string name="photo_widget_aspect_ratio_original_description">Match each photo</string>
     <string name="photo_widget_aspect_ratio_fill_widget">Fill</string>
