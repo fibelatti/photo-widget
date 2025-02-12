@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,12 +31,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.ui.ShapesBanner
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
@@ -45,8 +51,14 @@ import com.fibelatti.ui.theme.ExtendedTheme
 fun NewWidgetScreen(
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
     onHelpClick: () -> Unit,
+    showBackgroundRestrictionHint: Boolean,
+    onBackgroundRestrictionClick: () -> Unit,
+    onDismissWarningClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val localContext = LocalContext.current
+    val localInspectionMode = LocalInspectionMode.current
+
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
@@ -89,6 +101,15 @@ fun NewWidgetScreen(
                 onClick = onHelpClick,
             ) {
                 Text(text = stringResource(R.string.photo_widget_home_help))
+            }
+
+            if (localInspectionMode || (showBackgroundRestrictionHint && localContext.isBackgroundRestricted())) {
+                BackgroundRestrictionWarning(
+                    onClick = onBackgroundRestrictionClick,
+                    modifier = Modifier.widthIn(max = 300.dp),
+                    showDismissButton = true,
+                    onDismissClick = onDismissWarningClick,
+                )
             }
         }
     }
@@ -248,6 +269,56 @@ private fun FillAspectRatioRepresentation(
     }
 }
 
+@Composable
+fun BackgroundRestrictionWarning(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    showDismissButton: Boolean = false,
+    onDismissClick: () -> Unit = {},
+) {
+    Column(
+        modifier = modifier
+            .background(
+                color = Color(0xFFFFE57F),
+                shape = MaterialTheme.shapes.medium,
+            )
+            .clickable(
+                onClick = onClick,
+                role = Role.Button,
+            )
+            .padding(vertical = 8.dp, horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_warning),
+                contentDescription = null,
+            )
+
+            Text(
+                text = stringResource(R.string.restriction_warning_hint),
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
+
+        if (showDismissButton) {
+            Text(
+                text = stringResource(R.string.photo_widget_action_got_it),
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .clickable(
+                        onClick = onDismissClick,
+                        role = Role.Button,
+                    ),
+                style = MaterialTheme.typography.labelSmall,
+            )
+        }
+    }
+}
+
 // region Previews
 @AllPreviews
 @Composable
@@ -256,6 +327,9 @@ private fun NewWidgetScreenPreview() {
         NewWidgetScreen(
             onCreateNewWidgetClick = {},
             onHelpClick = {},
+            showBackgroundRestrictionHint = true,
+            onBackgroundRestrictionClick = {},
+            onDismissWarningClick = {},
         )
     }
 }

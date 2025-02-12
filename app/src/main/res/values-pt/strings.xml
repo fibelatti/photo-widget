@@ -229,6 +229,14 @@
 
     <string name="help_email_body">Escreva sua mensagem abaixo. Se estiver relatando um problema, tente descrever o que estava fazendo quando o problema aconteceu.</string>
 
+    <string name="restriction_warning_hint">A atividade em segundo plano está restrita. Os widgets podem não funcionar corretamente. Toque para saber mais.</string>
+    <string name="restriction_warning_dialog_title">Restrições de execução em segundo plano e otimização de bateria</string>
+    <string name="restriction_warning_dialog_body_1">O Material Photo Widget precisa ser executado em segundo plano para atualizar seus widgets. Ele só roda quando necessário, mas se o uso da bateria estiver definido como "otimizado", o Android pode interromper o aplicativo, fazendo com que os widgets parem de funcionar corretamente.</string>
+    <string name="restriction_warning_dialog_body_2">Abra as configurações do aplicativo e altere o uso da bateria para Sem restrições. Se essa opção não estiver disponível, verifique as configurações de energia do telefone.</string>
+    <string name="restriction_warning_dialog_body_3">Alguns telefones são ainda mais restritivos e podem bloquear o aplicativo de iniciar automaticamente após uma reinicialização. As configurações variam conforme o dispositivo — visite https://dontkillmyapp.com para instruções específicas.</string>
+    <string name="restriction_warning_open_app_settings">Abrir configurações do aplicativo</string>
+    <string name="restriction_warning_open_power_settings">Abrir configurações de energia</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pince para ampliar</string>
     <string name="photo_widget_viewer_actions_drag">Arraste para mover</string>

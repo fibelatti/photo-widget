@@ -53,6 +53,9 @@ fun HomeScreen(
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
     onHelpClick: () -> Unit,
+    showBackgroundRestrictionHint: Boolean,
+    onBackgroundRestrictionClick: () -> Unit,
+    onDismissWarningClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onViewLicensesClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -90,6 +93,9 @@ fun HomeScreen(
                     NewWidgetScreen(
                         onCreateNewWidgetClick = onCreateNewWidgetClick,
                         onHelpClick = onHelpClick,
+                        showBackgroundRestrictionHint = showBackgroundRestrictionHint,
+                        onBackgroundRestrictionClick = onBackgroundRestrictionClick,
+                        onDismissWarningClick = onDismissWarningClick,
                     )
                 }
 
@@ -207,6 +213,9 @@ private fun HomeScreenPreview() {
             onRateClick = {},
             onShareClick = {},
             onHelpClick = {},
+            showBackgroundRestrictionHint = true,
+            onBackgroundRestrictionClick = {},
+            onDismissWarningClick = {},
             onPrivacyPolicyClick = {},
             onViewLicensesClick = {},
         )

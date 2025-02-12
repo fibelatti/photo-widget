@@ -223,6 +223,14 @@
 
     <string name="help_email_body">Mesajınızı aşağıya yazın. Bir sorun bildiriyorsanız, sorun oluştuğunda ne yaptığınızı açıklamaya çalışın.</string>
 
+    <string name="restriction_warning_hint">Arka plan etkinliği kısıtlandı. Widget\'lar düzgün çalışmayabilir. Daha fazla bilgi için dokunun.</string>
+    <string name="restriction_warning_dialog_title">Arka plan çalıştırma kısıtlamaları ve pil optimizasyonu</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widget, widget\'larınızı güncellemek için arka planda çalışmalıdır. Sadece gerektiğinde çalışır, ancak pil kullanımı "optimize edilmiş" olarak ayarlanmışsa, Android uygulamayı durdurabilir ve bu da widget\'ların düzgün çalışmamasına neden olabilir.</string>
+    <string name="restriction_warning_dialog_body_2">Uygulama ayarlarını açın ve pil kullanımını Kısıtlamasız olarak değiştirin. Bu seçenek mevcut değilse, telefonun güç ayarlarını kontrol edin.</string>
+    <string name="restriction_warning_dialog_body_3">Bazı telefonlar daha da kısıtlayıcı olabilir ve uygulamanın yeniden başlatmadan sonra otomatik olarak başlamasını engelleyebilir. Ayarlar cihaza göre değişir — özel talimatlar için https://dontkillmyapp.com adresini ziyaret edin.</string>
+    <string name="restriction_warning_open_app_settings">Uygulama ayarlarını aç</string>
+    <string name="restriction_warning_open_power_settings">Güç ayarlarını aç</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Yakınlaştırmak için kıstır</string>
     <string name="photo_widget_viewer_actions_drag">Taşımak için sürükle</string>

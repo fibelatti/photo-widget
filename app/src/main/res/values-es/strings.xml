@@ -229,6 +229,14 @@
 
     <string name="help_email_body">Escribe tu mensaje a continuación. Si estás informando un problema, intenta describir lo que estabas haciendo cuando se produjo el problema.</string>
 
+    <string name="restriction_warning_hint">La actividad en segundo plano está restringida. Es posible que los widgets no funcionen correctamente. Toca para obtener más información.</string>
+    <string name="restriction_warning_dialog_title">Restricciones de actividad en segundo plano y optimización de batería</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widget necesita ejecutarse en segundo plano para actualizar tus widgets. Solo se ejecuta cuando es necesario, pero si el uso de la batería está configurado como "optimizado", Android puede detener la aplicación, haciendo que los widgets no funcionen correctamente.</string>
+    <string name="restriction_warning_dialog_body_2">Abre la configuración de la aplicación y cambia el uso de la batería a Sin restricciones. Si esta opción no está disponible, revisa la configuración de energía del teléfono.</string>
+    <string name="restriction_warning_dialog_body_3">Algunos teléfonos son aún más restrictivos y pueden bloquear la aplicación para que no se inicie automáticamente después de un reinicio. La configuración varía según el dispositivo — visita https://dontkillmyapp.com para obtener instrucciones específicas.</string>
+    <string name="restriction_warning_open_app_settings">Abrir configuración de la aplicación</string>
+    <string name="restriction_warning_open_power_settings">Abrir configuración de energía</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pellizcar para hacer zoom</string>
     <string name="photo_widget_viewer_actions_drag">Arrastra para mover</string>
@@ -245,7 +253,7 @@
     <string name="photo_widget_action_cancel">Cancelar</string>
     <string name="photo_widget_action_apply">Aplicar</string>
     <string name="photo_widget_action_confirm">Confirmar</string>
-    <string name="photo_widget_action_got_it">Entiendo</string>
+    <string name="photo_widget_action_got_it">Lo entendí</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de pantalla principal de Material Photo</string>

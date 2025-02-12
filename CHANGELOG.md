@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Dynamic borders that match the device's theme color (Android 12 and above)
+* Background restriction warning and instructions for troubleshooting
 
 ### Changed
 

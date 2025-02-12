@@ -229,6 +229,14 @@
 
     <string name="help_email_body">Напишите свое сообщение ниже. Если вы сообщаете о проблеме, постарайтесь описать, что вы делали, когда возникла проблема.</string>
 
+    <string name="restriction_warning_hint">Фоновая активность ограничена. Виджеты могут работать некорректно. Нажмите, чтобы узнать больше.</string>
+    <string name="restriction_warning_dialog_title">Ограничения фоновой работы и оптимизация батареи</string>
+    <string name="restriction_warning_dialog_body_1">Приложению Material Photo Widget необходимо работать в фоновом режиме для обновления виджетов. Оно запускается только при необходимости, но если использование батареи установлено как "оптимизированное", Android может остановить приложение, что приведет к некорректной работе виджетов.</string>
+    <string name="restriction_warning_dialog_body_2">Откройте настройки приложения и измените использование батареи на Без ограничений. Если такой опции нет, проверьте настройки энергопотребления телефона.</string>
+    <string name="restriction_warning_dialog_body_3">Некоторые телефоны имеют еще более строгие ограничения и могут блокировать автоматический запуск приложения после перезагрузки. Настройки зависят от устройства — посетите https://dontkillmyapp.com для получения конкретных инструкций.</string>
+    <string name="restriction_warning_open_app_settings">Открыть настройки приложения</string>
+    <string name="restriction_warning_open_power_settings">Открыть настройки питания</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Сожмите для увеличения</string>
     <string name="photo_widget_viewer_actions_drag">Перетащите для перемещения</string>
@@ -245,7 +253,7 @@
     <string name="photo_widget_action_cancel">Отменить</string>
     <string name="photo_widget_action_apply">Применить</string>
     <string name="photo_widget_action_confirm">Подтвердить</string>
-    <string name="photo_widget_action_got_it">Понял</string>
+    <string name="photo_widget_action_got_it">Я понял</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Виджет главного экрана Material Photo</string>
