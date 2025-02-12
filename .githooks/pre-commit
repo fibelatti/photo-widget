@@ -1,0 +1,5 @@
+#!/bin/bash
+echo "Running Spotless"
+./gradlew spotlessApply
+git add `git diff --name-only --cached`
+exit 0

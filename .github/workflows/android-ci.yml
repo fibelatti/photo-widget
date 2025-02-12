@@ -12,14 +12,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Project Checkout
+      - name: Project checkout
         uses: actions/checkout@v4
 
-      - name: Setup Android Build
+      - name: Setup Android build
         uses: ./.github/actions/setup-android-build
 
       - name: Build
-        run: ./gradlew assemble --stacktrace
+        run: ./gradlew assemble
 
       - name: Upload APK
         if: success()
@@ -27,16 +27,29 @@ jobs:
         with:
           path: app/build/outputs/apk/debug/*.apk
 
+  code_analysis:
+    name: Code Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Project checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Android build
+        uses: ./.github/actions/setup-android-build
+
+      - name: Spotless check
+        run: ./gradlew spotlessCheck
+
   lint:
     name: Lint
     runs-on: ubuntu-latest
 
     steps:
-      - name: Project Checkout
+      - name: Project checkout
         uses: actions/checkout@v4
 
-      - name: Setup Android Build
+      - name: Setup Android build
         uses: ./.github/actions/setup-android-build
 
       - name: Build
-        run: ./gradlew lint --stacktrace
+        run: ./gradlew lint
