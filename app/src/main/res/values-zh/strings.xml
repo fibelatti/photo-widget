@@ -12,7 +12,7 @@
     <string name="photo_widget_home_settings">设置</string>
     <string name="photo_widget_home_data_saver">优化存储</string>
     <string name="photo_widget_home_appearance">主题</string>
-    <string name="photo_widget_home_true_black_background">True black background</string>
+    <string name="photo_widget_home_true_black_background">显示黑色背景</string>
     <string name="photo_widget_home_dynamic_colors">颜色</string>
     <string name="photo_widget_home_share">分享软件</string>
     <string name="photo_widget_home_rate">评价</string>
@@ -30,12 +30,12 @@
     </plurals>
 
     <!-- My Widgets -->
-    <string name="photo_widget_home_empty_widgets">You haven\'t added any widgets yet.\nWidgets added to your home screen will appear here.</string>
-    <string name="photo_widget_home_filter_all">All</string>
-    <string name="photo_widget_home_filter_photos">Photos</string>
-    <string name="photo_widget_home_filter_folder">Folder</string>
+    <string name="photo_widget_home_empty_widgets">您还没有添加任何小部件\n添加到桌面的小部件会出现在这里</string>
+    <string name="photo_widget_home_filter_all">所有</string>
+    <string name="photo_widget_home_filter_photos">图片</string>
+    <string name="photo_widget_home_filter_folder">文件夹</string>
 
-    <string name="photo_widget_home_removed_label">Removed</string>
+    <string name="photo_widget_home_removed_label">移除</string>
     <string name="photo_widget_home_removed_widgets_hint">Removed widgets are no longer on your home screen and will be permanently deleted after one week</string>
 
     <string name="photo_widget_home_my_widget_action_edit">View / Edit</string>
@@ -47,33 +47,33 @@
     <string name="preferences_data_saver">Reduce storage usage</string>
     <string name="preferences_data_saver_description">When enabled, photos added to widgets are compressed to save storage. This usually won\'t affect quality, but if your photos contain small text, it\'s recommended to turn this off.\n\nThis setting only affects photos added after it is changed.\n\nIt does not apply to synced folders, as those photos are read directly from your device storage.</string>
 
-    <string name="preferences_appearance_follow_system">Follow system</string>
-    <string name="preferences_appearance_light">Light</string>
-    <string name="preferences_appearance_dark">Dark</string>
+    <string name="preferences_appearance_follow_system">跟随系统</string>
+    <string name="preferences_appearance_light">亮色</string>
+    <string name="preferences_appearance_dark">暗色</string>
 
-    <string name="preferences_dynamic_colors_enabled">Dynamic colors</string>
-    <string name="preferences_dynamic_colors_disabled">Default colors</string>
+    <string name="preferences_dynamic_colors_enabled"> 动态颜色</string>
+    <string name="preferences_dynamic_colors_disabled">默认颜色</string>
 
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">小组建默认参数</string>
-    <string name="widget_defaults_explanation">These values are pre-loaded when you create a new widget. They are useful for setting up multiple widgets with the same configuration, eliminating the need to adjust settings each time. Note that any changes to these values won’t affect existing widgets.</string>
-    <string name="widget_defaults_source">Source</string>
+    <string name="widget_defaults_explanation">这些值是在创建新小部件时预加载的,它们对于使用相同的配置设置多个小部件非常有用，从而避免了每次调整设置的需要(注意:对这些值的任何更改都不会影响现有的小部件)</string>
+    <string name="widget_defaults_source">资源</string>
     <string name="widget_defaults_shuffle">Shuffle</string>
-    <string name="widget_defaults_cycling">Photo cycling</string>
-    <string name="widget_defaults_shape">Shape</string>
-    <string name="widget_defaults_corner_radius">Roundness</string>
-    <string name="widget_defaults_opacity">Opacity</string>
+    <string name="widget_defaults_cycling">照片循环</string>
+    <string name="widget_defaults_shape">形状</string>
+    <string name="widget_defaults_corner_radius">圆度</string>
+    <string name="widget_defaults_opacity">不透明度</string>
     <string name="widget_defaults_black_and_white">Black and white</string>
-    <string name="widget_defaults_tap_action">Tap action</string>
-    <string name="widget_defaults_reset">Reset values</string>
+    <string name="widget_defaults_tap_action">点击行为</string>
+    <string name="widget_defaults_reset">重置</string>
 
     <!-- Share -->
     <string name="share_title">Spread the word</string>
     <string name="share_text">Add your favorite photos to your home screen with Material Photo Widget. Download for free at %s</string>
 
     <!-- Source -->
-    <string name="photo_widget_source_photos">Photos</string>
-    <string name="photo_widget_source_directory">Folder</string>
+    <string name="photo_widget_source_photos">图片</string>
+    <string name="photo_widget_source_directory">文件夹</string>
 
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Aspect ratio</string>
@@ -117,7 +117,7 @@
     <string name="photo_widget_configure_photos_pending_deletion">Recently deleted photos</string>
     <string name="photo_widget_configure_photos_excluded">Excluded from widget</string>
 
-    <string name="photo_widget_configure_pick_photo">Pick photos</string>
+    <string name="photo_widget_configure_pick_photo">选择照片</string>
     <string name="photo_widget_configure_pick_folder">Pick folder</string>
     <string name="photo_widget_configure_change_source">Change source</string>
 
@@ -214,7 +214,7 @@
     <string name="help_article_title_4">The widget size is too small</string>
     <string name="help_article_body_4">After adding the widget to your home screen, you can long press it to reveal the resizing option. Then, drag its borders to adjust it to your desired size.</string>
 
-    <string name="help_article_footer">Something else is not working?</string>
+    <string name="help_article_footer">在某些地方无法正常使用?</string>
 
     <string name="help_email_body">Write your message below. If you\'re reporting an issue, try to describe what you were doing when the problem happened.</string>
 
@@ -231,8 +231,8 @@
     <string name="photo_widget_action_yes">Yes</string>
     <string name="photo_widget_action_no">No</string>
     <string name="photo_widget_action_continue">Continue</string>
-    <string name="photo_widget_action_cancel">Cancel</string>
-    <string name="photo_widget_action_apply">Apply</string>
+    <string name="photo_widget_action_cancel">取消</string>
+    <string name="photo_widget_action_apply">应用</string>
     <string name="photo_widget_action_confirm">Confirm</string>
     <string name="photo_widget_action_got_it">Got it</string>
 
