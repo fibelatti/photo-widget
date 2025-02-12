@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -69,7 +70,7 @@ fun NewWidgetScreen(
 
         Column(
             modifier = Modifier
-                .widthIn(max = 600.dp)
+                .widthIn(max = 764.dp)
                 .fillMaxWidth()
                 .padding(top = 68.dp)
                 .verticalScroll(rememberScrollState()),
@@ -330,6 +331,7 @@ private fun NewWidgetScreenPreview() {
             showBackgroundRestrictionHint = true,
             onBackgroundRestrictionClick = {},
             onDismissWarningClick = {},
+            modifier = Modifier.safeDrawingPadding(),
         )
     }
 }
