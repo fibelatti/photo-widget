@@ -105,8 +105,7 @@ private fun ExistingWidgetPicker(
                         opacity = widget.opacity,
                         modifier = Modifier.fillMaxSize(),
                         blackAndWhite = widget.blackAndWhite,
-                        borderColorHex = widget.borderColor,
-                        borderWidth = widget.borderWidth,
+                        border = widget.border,
                         isLoading = widget.isLoading,
                     )
 

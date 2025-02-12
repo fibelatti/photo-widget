@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.configure
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -31,13 +32,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -46,10 +47,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
+import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.ui.preview.ThemePreviews
@@ -57,21 +61,20 @@ import com.fibelatti.ui.theme.ExtendedTheme
 import com.github.skydoves.colorpicker.compose.BrightnessSlider
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
+import com.google.android.material.color.DynamicColors
 
 object PhotoWidgetBorderPicker {
 
     fun show(
         context: Context,
-        currentColorHex: String?,
-        currentWidth: Int,
-        onApplyClick: (String?, Int) -> Unit,
+        currentBorder: PhotoWidgetBorder,
+        onApplyClick: (PhotoWidgetBorder) -> Unit,
     ) {
         ComposeBottomSheetDialog(context) {
             BorderPickerContent(
-                currentColorHex = currentColorHex,
-                currentWidth = currentWidth,
-            ) { newColor, newWidth ->
-                onApplyClick(newColor, newWidth)
+                currentBorder = currentBorder,
+            ) { newBorder ->
+                onApplyClick(newBorder)
                 dismiss()
             }
         }.show()
@@ -80,16 +83,15 @@ object PhotoWidgetBorderPicker {
 
 @Composable
 private fun BorderPickerContent(
-    currentColorHex: String?,
-    currentWidth: Int,
-    onApplyClick: (String?, Int) -> Unit,
+    currentBorder: PhotoWidgetBorder,
+    onApplyClick: (PhotoWidgetBorder) -> Unit,
 ) {
-    var color: String? by remember { mutableStateOf(currentColorHex) }
-    var width: Int by remember { mutableIntStateOf(currentWidth) }
+    var border: PhotoWidgetBorder by remember { mutableStateOf(currentBorder) }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .animateContentSize()
             .nestedScroll(rememberNestedScrollInteropConnection())
             .verticalScroll(rememberScrollState())
             .padding(all = 16.dp),
@@ -112,10 +114,9 @@ private fun BorderPickerContent(
             )
 
             SegmentedButton(
-                selected = color == null,
+                selected = border is PhotoWidgetBorder.None,
                 onClick = {
-                    color = null
-                    width = 0
+                    border = PhotoWidgetBorder.None
                 },
                 shape = RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp),
                 border = buttonBorderColor,
@@ -127,13 +128,27 @@ private fun BorderPickerContent(
                 },
             )
 
+            if (DynamicColors.isDynamicColorAvailable()) {
+                SegmentedButton(
+                    selected = border is PhotoWidgetBorder.Dynamic,
+                    onClick = {
+                        border = PhotoWidgetBorder.Dynamic(width = 20)
+                    },
+                    shape = RectangleShape,
+                    border = buttonBorderColor,
+                    label = {
+                        Text(
+                            text = stringResource(R.string.photo_widget_configure_border_dynamic),
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                    },
+                )
+            }
+
             SegmentedButton(
-                selected = color != null,
+                selected = border is PhotoWidgetBorder.Color,
                 onClick = {
-                    if (color == null) {
-                        color = "ffffff"
-                        width = 20
-                    }
+                    border = PhotoWidgetBorder.Color(colorHex = "ffffff", width = 20)
                 },
                 shape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
                 border = buttonBorderColor,
@@ -148,17 +163,28 @@ private fun BorderPickerContent(
 
         Spacer(modifier = Modifier.size(16.dp))
 
-        if (color != null) {
-            ColorBorderContent(
-                currentColorHex = requireNotNull(color),
-                onColorChange = { color = it },
-                currentWidth = width,
-                onWidthChange = { width = it },
-            )
+        val current = border
+        @Suppress("IntroduceWhenSubject")
+        when {
+            current is PhotoWidgetBorder.Color -> {
+                ColorBorderContent(
+                    currentColorHex = current.colorHex,
+                    onColorChange = { border = current.copy(colorHex = it) },
+                    currentWidth = current.width,
+                    onWidthChange = { border = current.copy(width = it) },
+                )
+            }
+
+            current is PhotoWidgetBorder.Dynamic -> {
+                DynamicBorderContent(
+                    currentWidth = current.width,
+                    onWidthChange = { border = current.copy(width = it) },
+                )
+            }
         }
 
         FilledTonalButton(
-            onClick = { onApplyClick(color, width) },
+            onClick = { onApplyClick(border) },
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
@@ -207,7 +233,7 @@ private fun ColorBorderContent(
                     .withRoundedCorners(
                         aspectRatio = PhotoWidgetAspectRatio.SQUARE,
                         radius = PhotoWidget.DEFAULT_CORNER_RADIUS,
-                        borderColorHex = currentColorHex,
+                        borderColor = "#$currentColorHex".toColorInt(),
                         borderWidth = currentWidth,
                     )
                     .asImageBitmap(),
@@ -308,13 +334,95 @@ private fun ColorBorderContent(
 }
 
 @Composable
-@ThemePreviews
-private fun BorderPickerContentPreview() {
-    ExtendedTheme {
-        BorderPickerContent(
-            currentColorHex = "86D986",
-            currentWidth = 20,
-            onApplyClick = { _, _ -> },
+@OptIn(ExperimentalMaterial3Api::class)
+private fun DynamicBorderContent(
+    currentWidth: Int,
+    onWidthChange: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        val localContext = LocalContext.current
+        val baseBitmap = remember {
+            BitmapFactory.decodeResource(localContext.resources, R.drawable.image_sample)
+        }
+
+        Image(
+            bitmap = baseBitmap
+                .withRoundedCorners(
+                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
+                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS,
+                    borderColor = localContext.getDynamicAttributeColor(
+                        com.google.android.material.R.attr.colorPrimary,
+                    ),
+                    borderWidth = currentWidth,
+                )
+                .asImageBitmap(),
+            contentDescription = null,
+            modifier = Modifier.size(200.dp),
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Slider(
+                value = currentWidth.toFloat(),
+                onValueChange = { onWidthChange(it.toInt()) },
+                modifier = Modifier.weight(1f),
+                valueRange = 0f..40f,
+                thumb = { SliderSmallThumb() },
+            )
+
+            Text(
+                text = "$currentWidth",
+                modifier = Modifier.width(40.dp),
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.End,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
+
+        Text(
+            text = stringResource(R.string.photo_widget_configure_border_explanation),
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }
+
+// region Previews
+@Composable
+@ThemePreviews
+private fun ColorBorderPickerContentPreview() {
+    ExtendedTheme {
+        BorderPickerContent(
+            currentBorder = PhotoWidgetBorder.Color(
+                colorHex = "86D986",
+                width = 20,
+            ),
+            onApplyClick = {},
+        )
+    }
+}
+
+@Composable
+@ThemePreviews
+private fun DynamicBorderPickerContentPreview() {
+    ExtendedTheme {
+        BorderPickerContent(
+            currentBorder = PhotoWidgetBorder.Dynamic(
+                width = 20,
+            ),
+            onApplyClick = {},
+        )
+    }
+}
+// endregion Previews

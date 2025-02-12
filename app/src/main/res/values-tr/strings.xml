@@ -5,8 +5,7 @@
 
     <!-- Home -->
     <string name="photo_widget_home_title">Ana ekranınızı favori fotoğraflarınızla süsleyin</string>
-    <string name="photo_widget_home_aspect_ratio">Widget en-boy oranını seçin ve başlamak için düğmeye dokunun. Endişelenmeyin, bunu istediğiniz zaman değiştirebilirsiniz!</string>
-    <string name="photo_widget_home_new_widget">Yeni bir widget oluştur</string>
+    <string name="photo_widget_home_instruction">Seçeneklerden birine dokunarak yeni bir widget oluşturun. Endişelenmeyin, bunu istediğiniz zaman değiştirebilirsiniz!</string>
     <string name="photo_widget_home_new">Yeni Widget</string>
     <string name="photo_widget_home_current">Widget\'larım</string>
     <string name="photo_widget_home_settings">Ayarlar</string>
@@ -17,7 +16,7 @@
     <string name="photo_widget_home_share">Uygulamayı paylaş</string>
     <string name="photo_widget_home_rate">Yorum yaz</string>
     <string name="photo_widget_home_feedback">Geri bildiriminizi gönderin</string>
-    <string name="photo_widget_home_help">Yardım</string>
+    <string name="photo_widget_home_help">Bir şey mi çalışmıyor?</string>
     <string name="photo_widget_home_common_issues">Yaygın sorunlar</string>
     <string name="photo_widget_home_privacy_policy">Gizlilik politikası</string>
     <string name="photo_widget_home_developer">❤ ile geliştiren Filipe Belatti</string>
@@ -80,8 +79,11 @@
     <string name="photo_widget_aspect_ratio_square">Kare</string>
     <string name="photo_widget_aspect_ratio_tall">Uzun</string>
     <string name="photo_widget_aspect_ratio_wide">Geniş</string>
-    <string name="photo_widget_aspect_ratio_original">Fotoğrafla aynı</string>
-    <string name="photo_widget_aspect_ratio_fill_widget">Widget alanını doldur</string>
+    <string name="photo_widget_aspect_ratio_original">Orijinal</string>
+    <string name="photo_widget_aspect_ratio_original_description">Her fotoğrafla eşleş</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">Doldur</string>
+    <string name="photo_widget_aspect_ratio_fill_widget_description">Widget boyutuna uyum sağla</string>
+
 
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Değişiklikler kaybolacak, yine de geri dönmek istiyor musunuz?</string>
@@ -171,7 +173,10 @@
 
     <string name="photo_widget_configure_border">Kenarlık</string>
     <string name="photo_widget_configure_border_none">Yok</string>
-    <string name="photo_widget_configure_border_color">Renk</string>
+    <string name="photo_widget_configure_border_dynamic">Dinamik</string>
+    <string name="photo_widget_configure_border_color">Renkli</string>
+
+    <string name="photo_widget_configure_border_explanation">Telefonunuzun tema rengini değiştirdikten sonraki widget güncellemesinde değişiklikler gerçekleşecektir. Tüm widget\'ları hemen güncellemek için uygulamayı açmanız yeterlidir.</string>
 
     <string name="photo_widget_configure_offset">Ofset</string>
     <string name="photo_widget_configure_offset_current_values">Yatay: %1$d, Dikey: %2$d</string>
@@ -217,6 +222,14 @@
     <string name="help_article_footer">Başka bir şey mi çalışmıyor?</string>
 
     <string name="help_email_body">Mesajınızı aşağıya yazın. Bir sorun bildiriyorsanız, sorun oluştuğunda ne yaptığınızı açıklamaya çalışın.</string>
+
+    <string name="restriction_warning_hint">Arka plan etkinliği kısıtlandı. Widget\'lar düzgün çalışmayabilir. Daha fazla bilgi için dokunun.</string>
+    <string name="restriction_warning_dialog_title">Arka plan çalıştırma kısıtlamaları ve pil optimizasyonu</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widget, widget\'larınızı güncellemek için arka planda çalışmalıdır. Sadece gerektiğinde çalışır, ancak pil kullanımı "optimize edilmiş" olarak ayarlanmışsa, Android uygulamayı durdurabilir ve bu da widget\'ların düzgün çalışmamasına neden olabilir.</string>
+    <string name="restriction_warning_dialog_body_2">Uygulama ayarlarını açın ve pil kullanımını Kısıtlamasız olarak değiştirin. Bu seçenek mevcut değilse, telefonun güç ayarlarını kontrol edin.</string>
+    <string name="restriction_warning_dialog_body_3">Bazı telefonlar daha da kısıtlayıcı olabilir ve uygulamanın yeniden başlatmadan sonra otomatik olarak başlamasını engelleyebilir. Ayarlar cihaza göre değişir — özel talimatlar için https://dontkillmyapp.com adresini ziyaret edin.</string>
+    <string name="restriction_warning_open_app_settings">Uygulama ayarlarını aç</string>
+    <string name="restriction_warning_open_power_settings">Güç ayarlarını aç</string>
 
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Yakınlaştırmak için kıstır</string>

@@ -5,8 +5,7 @@
 
     <!-- Home -->
     <string name="photo_widget_home_title">Decorate your home screen with your favorite photos</string>
-    <string name="photo_widget_home_aspect_ratio">Select the widget aspect ratio and tap the button to begin. Don\'t worry, you can change this at any time!</string>
-    <string name="photo_widget_home_new_widget">Create a new widget</string>
+    <string name="photo_widget_home_instruction">Create a new widget by tapping one of the options. Don\'t worry, you can change this at any time!</string>
     <string name="photo_widget_home_new">New Widget</string>
     <string name="photo_widget_home_current">My Widgets</string>
     <string name="photo_widget_home_settings">Settings</string>
@@ -17,7 +16,7 @@
     <string name="photo_widget_home_share">Share the app</string>
     <string name="photo_widget_home_rate">Write a review</string>
     <string name="photo_widget_home_feedback">Send your feedback</string>
-    <string name="photo_widget_home_help">Help</string>
+    <string name="photo_widget_home_help">Something is not working?</string>
     <string name="photo_widget_home_common_issues">Common issues</string>
     <string name="photo_widget_home_privacy_policy">Privacy policy</string>
     <string name="photo_widget_home_developer">Developed with ❤ by Filipe Belatti</string>
@@ -78,10 +77,15 @@
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Aspect ratio</string>
     <string name="photo_widget_aspect_ratio_square">Square</string>
+    <string name="photo_widget_aspect_ratio_square_description" translatable="false">1:1</string>
     <string name="photo_widget_aspect_ratio_tall">Tall</string>
+    <string name="photo_widget_aspect_ratio_tall_description" translatable="false">10:16</string>
     <string name="photo_widget_aspect_ratio_wide">Wide</string>
-    <string name="photo_widget_aspect_ratio_original">Same as photo</string>
-    <string name="photo_widget_aspect_ratio_fill_widget">Fill widget area</string>
+    <string name="photo_widget_aspect_ratio_wide_description" translatable="false">16:10</string>
+    <string name="photo_widget_aspect_ratio_original">Original</string>
+    <string name="photo_widget_aspect_ratio_original_description">Match each photo</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">Fill</string>
+    <string name="photo_widget_aspect_ratio_fill_widget_description">Match the widget size</string>
 
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Any changes will be lost, go back anyway?</string>
@@ -171,7 +175,10 @@
 
     <string name="photo_widget_configure_border">Border</string>
     <string name="photo_widget_configure_border_none">None</string>
-    <string name="photo_widget_configure_border_color">Color</string>
+    <string name="photo_widget_configure_border_dynamic">Dynamic</string>
+    <string name="photo_widget_configure_border_color">Colored</string>
+
+    <string name="photo_widget_configure_border_explanation">Changes will take place during the next widget update after you change your phone\'s theme color. To update all widgets immediately, simply open the app.</string>
 
     <string name="photo_widget_configure_offset">Offset</string>
     <string name="photo_widget_configure_offset_current_values">Horizontal: %1$d, Vertical: %2$d</string>
@@ -217,6 +224,14 @@
     <string name="help_article_footer">Something else is not working?</string>
 
     <string name="help_email_body">Write your message below. If you\'re reporting an issue, try to describe what you were doing when the problem happened.</string>
+
+    <string name="restriction_warning_hint">Background activity is restricted. Widgets may not work correctly. Tap to learn more.</string>
+    <string name="restriction_warning_dialog_title">Background work restrictions and battery optimization</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widget needs to run in the background to update your widgets. It only runs when needed, but if battery usage is set to "optimized" Android may stop the app, causing widgets to stop working correctly.</string>
+    <string name="restriction_warning_dialog_body_2">Open app settings and change the battery usage to Unrestricted. If this option isn\'t available, check the phone\'s power settings.</string>
+    <string name="restriction_warning_dialog_body_3">Some phones are even more restrictive and may block the app from starting automatically after a restart. Settings vary by device — visit https://dontkillmyapp.com for specific instructions.</string>
+    <string name="restriction_warning_open_app_settings">Open app settings</string>
+    <string name="restriction_warning_open_power_settings">Open power settings</string>
 
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pinch to zoom</string>

@@ -6,6 +6,9 @@ on:
       - '*'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-signed-apk:
     name: Build Signed APK
@@ -36,6 +39,22 @@ jobs:
         with:
           name: signed-apk
           path: app/build/outputs/apk/release/*.apk
+
+      - id: version
+        name: Get version code
+        if: ${{ github.ref_type == 'tag' }}
+        run: |
+          echo "VERSION_CODE=$(./gradlew -q app:printReleaseVersionCode | tail -n 1)" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub release
+        if: ${{ github.ref_type == 'tag' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ github.ref_name }} \
+            app/build/outputs/apk/release/*.apk \
+            --title="${{ github.ref_name }}" \
+            --notes-file fastlane/metadata/android/en-US/changelogs/${{ steps.version.outputs.VERSION_CODE }}.txt
 
   build-signed-aab:
     name: Build Signed AAB

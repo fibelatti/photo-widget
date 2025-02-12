@@ -14,10 +14,7 @@ class PhotoWidgetRescheduleReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val isBoot = Intent.ACTION_BOOT_COMPLETED == intent.action
         val isUpdate = Intent.ACTION_MY_PACKAGE_REPLACED == intent.action ||
-            (
-                Intent.ACTION_PACKAGE_REPLACED == intent.action &&
-                    intent.data?.schemeSpecificPart == context.packageName
-                )
+            (Intent.ACTION_PACKAGE_REPLACED == intent.action && intent.data?.schemeSpecificPart == context.packageName)
         val isManual = ACTION_RESCHEDULE == intent.action
 
         Timber.d("Reschedule received (isBoot=$isBoot, isUpdate=$isUpdate, isManual=$isManual)")

@@ -5,8 +5,7 @@
 
     <!-- Home -->
     <string name="photo_widget_home_title">Enfeite a sua tela inicial com as suas fotos favoritas</string>
-    <string name="photo_widget_home_aspect_ratio">Escolha o formato do widget e clique no botão para começar. Não se preocupe, você pode alterar isso a qualquer hora!</string>
-    <string name="photo_widget_home_new_widget">Criar um novo widget</string>
+    <string name="photo_widget_home_instruction">Crie um novo widget tocando em uma das opções. Não se preocupe, você pode mudar isso a qualquer momento!</string>
     <string name="photo_widget_home_new">Novo Widget</string>
     <string name="photo_widget_home_current">Meus Widgets</string>
     <string name="photo_widget_home_settings">Configurações</string>
@@ -17,7 +16,7 @@
     <string name="photo_widget_home_share">Compartilhe o app</string>
     <string name="photo_widget_home_rate">Deixe a sua avaliação</string>
     <string name="photo_widget_home_feedback">Envie o seu feedback</string>
-    <string name="photo_widget_home_help">Ajuda</string>
+    <string name="photo_widget_home_help">Algo não está funcionando?</string>
     <string name="photo_widget_home_common_issues">Problemas comuns</string>
     <string name="photo_widget_home_privacy_policy">Política de privacidade</string>
     <string name="photo_widget_home_developer">Feito com ❤ por Filipe Belatti</string>
@@ -81,8 +80,11 @@
     <string name="photo_widget_aspect_ratio_square">Quadrado</string>
     <string name="photo_widget_aspect_ratio_tall">Alto</string>
     <string name="photo_widget_aspect_ratio_wide">Largo</string>
-    <string name="photo_widget_aspect_ratio_original">Igual à foto</string>
-    <string name="photo_widget_aspect_ratio_fill_widget">Preencher área</string>
+    <string name="photo_widget_aspect_ratio_original">Original</string>
+    <string name="photo_widget_aspect_ratio_original_description">Corresponder a cada foto</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">Preencher</string>
+    <string name="photo_widget_aspect_ratio_fill_widget_description">Corresponder ao tamanho do widget</string>
+
 
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">As alterações serão perdidas, voltar mesmo assim?</string>
@@ -177,7 +179,10 @@
 
     <string name="photo_widget_configure_border">Borda</string>
     <string name="photo_widget_configure_border_none">Nenhuma</string>
-    <string name="photo_widget_configure_border_color">Cor</string>
+    <string name="photo_widget_configure_border_dynamic">Dinâmica</string>
+    <string name="photo_widget_configure_border_color">Colorida</string>
+
+    <string name="photo_widget_configure_border_explanation">As alterações ocorrerão durante a próxima atualização do widget após você alterar a cor do tema do seu telefone. Para atualizar todos os widgets imediatamente, basta abrir o aplicativo.</string>
 
     <string name="photo_widget_configure_offset">Deslocamento</string>
     <string name="photo_widget_configure_offset_current_values">Horizontal: %1$d, Vertical: %2$d</string>
@@ -223,6 +228,14 @@
     <string name="help_article_footer">Encontrou algum outro problema?</string>
 
     <string name="help_email_body">Escreva sua mensagem abaixo. Se estiver relatando um problema, tente descrever o que estava fazendo quando o problema aconteceu.</string>
+
+    <string name="restriction_warning_hint">A atividade em segundo plano está restrita. Os widgets podem não funcionar corretamente. Toque para saber mais.</string>
+    <string name="restriction_warning_dialog_title">Restrições de execução em segundo plano e otimização de bateria</string>
+    <string name="restriction_warning_dialog_body_1">O Material Photo Widget precisa ser executado em segundo plano para atualizar seus widgets. Ele só roda quando necessário, mas se o uso da bateria estiver definido como "otimizado", o Android pode interromper o aplicativo, fazendo com que os widgets parem de funcionar corretamente.</string>
+    <string name="restriction_warning_dialog_body_2">Abra as configurações do aplicativo e altere o uso da bateria para Sem restrições. Se essa opção não estiver disponível, verifique as configurações de energia do telefone.</string>
+    <string name="restriction_warning_dialog_body_3">Alguns telefones são ainda mais restritivos e podem bloquear o aplicativo de iniciar automaticamente após uma reinicialização. As configurações variam conforme o dispositivo — visite https://dontkillmyapp.com para instruções específicas.</string>
+    <string name="restriction_warning_open_app_settings">Abrir configurações do aplicativo</string>
+    <string name="restriction_warning_open_power_settings">Abrir configurações de energia</string>
 
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pince para ampliar</string>

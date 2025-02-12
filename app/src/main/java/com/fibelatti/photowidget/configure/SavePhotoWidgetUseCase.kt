@@ -104,10 +104,9 @@ class SavePhotoWidgetUseCase @Inject constructor(
             cornerRadius = photoWidget.cornerRadius,
         )
 
-        photoWidgetStorage.saveWidgetBorderColor(
+        photoWidgetStorage.saveWidgetBorder(
             appWidgetId = appWidgetId,
-            colorHex = photoWidget.borderColor,
-            width = photoWidget.borderWidth,
+            border = photoWidget.border,
         )
 
         photoWidgetStorage.saveWidgetOpacity(

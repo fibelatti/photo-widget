@@ -5,8 +5,12 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetBorder
+import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 
@@ -19,11 +23,12 @@ fun ShapedPhoto(
     opacity: Float,
     modifier: Modifier = Modifier,
     blackAndWhite: Boolean = false,
-    borderColorHex: String? = null,
-    borderWidth: Int = 0,
+    border: PhotoWidgetBorder = PhotoWidgetBorder.None,
     badge: @Composable BoxScope.() -> Unit = {},
     isLoading: Boolean = false,
 ) {
+    val localContext = LocalContext.current
+
     AsyncPhotoViewer(
         data = photo?.getPhotoPath(),
         dataKey = arrayOf(
@@ -33,8 +38,7 @@ fun ShapedPhoto(
             cornerRadius,
             opacity,
             blackAndWhite,
-            borderColorHex,
-            borderWidth,
+            border,
         ),
         isLoading = isLoading,
         contentScale = if (aspectRatio.isConstrained) {
@@ -44,13 +48,22 @@ fun ShapedPhoto(
         },
         modifier = modifier.aspectRatio(ratio = aspectRatio.aspectRatio),
         transformer = { bitmap ->
+            val borderColor = when (border) {
+                is PhotoWidgetBorder.None -> null
+                is PhotoWidgetBorder.Color -> "#${border.colorHex}".toColorInt()
+                is PhotoWidgetBorder.Dynamic -> localContext.getDynamicAttributeColor(
+                    com.google.android.material.R.attr.colorPrimary,
+                )
+            }
+            val borderWidth = border.getBorderWidth()
+
             bitmap?.run {
                 if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
                     withPolygonalShape(
                         shapeId = shapeId,
                         opacity = opacity,
                         blackAndWhite = blackAndWhite,
-                        borderColorHex = borderColorHex,
+                        borderColor = borderColor,
                         borderWidth = borderWidth,
                     )
                 } else {
@@ -59,7 +72,7 @@ fun ShapedPhoto(
                         radius = cornerRadius,
                         opacity = opacity,
                         blackAndWhite = blackAndWhite,
-                        borderColorHex = borderColorHex,
+                        borderColor = borderColor,
                         borderWidth = borderWidth,
                     )
                 }

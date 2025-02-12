@@ -5,8 +5,7 @@
 
     <!-- Home -->
     <string name="photo_widget_home_title">Украсьте главный экран любимыми фотографиями</string>
-    <string name="photo_widget_home_aspect_ratio">Выберите соотношение сторон виджета и нажмите кнопку, чтобы начать. Не волнуйтесь, это можно изменить в любое время!</string>
-    <string name="photo_widget_home_new_widget">Создать новый виджет</string>
+    <string name="photo_widget_home_instruction">Создайте новый виджет, нажав на одну из опций. Не волнуйтесь, вы можете изменить это в любое время!</string>
     <string name="photo_widget_home_new">Новый виджет</string>
     <string name="photo_widget_home_current">Мои виджеты</string>
     <string name="photo_widget_home_settings">Настройки</string>
@@ -17,7 +16,7 @@
     <string name="photo_widget_home_share">Поделиться приложением</string>
     <string name="photo_widget_home_rate">Оставить отзыв</string>
     <string name="photo_widget_home_feedback">Отправить отзыв</string>
-    <string name="photo_widget_home_help">Помощь</string>
+    <string name="photo_widget_home_help">Что-то не работает?</string>
     <string name="photo_widget_home_common_issues">Распространённые проблемы</string>
     <string name="photo_widget_home_privacy_policy">Политика конфиденциальности</string>
     <string name="photo_widget_home_developer">Разработано с ❤ Филипом Белатти</string>
@@ -81,8 +80,11 @@
     <string name="photo_widget_aspect_ratio_square">Квадрат</string>
     <string name="photo_widget_aspect_ratio_tall">Высокий</string>
     <string name="photo_widget_aspect_ratio_wide">Широкий</string>
-    <string name="photo_widget_aspect_ratio_original">Как у фотографии</string>
-    <string name="photo_widget_aspect_ratio_fill_widget">Заполнить область виджета</string>
+    <string name="photo_widget_aspect_ratio_original">Оригинал</string>
+    <string name="photo_widget_aspect_ratio_original_description">Соответствовать каждому фото</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">Заполнить</string>
+    <string name="photo_widget_aspect_ratio_fill_widget_description">Соответствовать размеру виджета</string>
+
 
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Все изменения будут потеряны, вернуться назад?</string>
@@ -177,7 +179,10 @@
 
     <string name="photo_widget_configure_border">Граница</string>
     <string name="photo_widget_configure_border_none">Нет</string>
-    <string name="photo_widget_configure_border_color">Цвет</string>
+    <string name="photo_widget_configure_border_dynamic">Динамичный</string>
+    <string name="photo_widget_configure_border_color">Цветной</string>
+
+    <string name="photo_widget_configure_border_explanation">Изменения произойдут во время следующего обновления виджета после того, как вы измените цвет темы телефона. Чтобы обновить все виджеты немедленно, просто откройте приложение.</string>
 
     <string name="photo_widget_configure_offset">Смещение</string>
     <string name="photo_widget_configure_offset_current_values">Горизонтальное: %1$d, Вертикальное: %2$d</string>
@@ -224,6 +229,14 @@
 
     <string name="help_email_body">Напишите свое сообщение ниже. Если вы сообщаете о проблеме, постарайтесь описать, что вы делали, когда возникла проблема.</string>
 
+    <string name="restriction_warning_hint">Фоновая активность ограничена. Виджеты могут работать некорректно. Нажмите, чтобы узнать больше.</string>
+    <string name="restriction_warning_dialog_title">Ограничения фоновой работы и оптимизация батареи</string>
+    <string name="restriction_warning_dialog_body_1">Приложению Material Photo Widget необходимо работать в фоновом режиме для обновления виджетов. Оно запускается только при необходимости, но если использование батареи установлено как "оптимизированное", Android может остановить приложение, что приведет к некорректной работе виджетов.</string>
+    <string name="restriction_warning_dialog_body_2">Откройте настройки приложения и измените использование батареи на Без ограничений. Если такой опции нет, проверьте настройки энергопотребления телефона.</string>
+    <string name="restriction_warning_dialog_body_3">Некоторые телефоны имеют еще более строгие ограничения и могут блокировать автоматический запуск приложения после перезагрузки. Настройки зависят от устройства — посетите https://dontkillmyapp.com для получения конкретных инструкций.</string>
+    <string name="restriction_warning_open_app_settings">Открыть настройки приложения</string>
+    <string name="restriction_warning_open_power_settings">Открыть настройки питания</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Сожмите для увеличения</string>
     <string name="photo_widget_viewer_actions_drag">Перетащите для перемещения</string>
@@ -240,7 +253,7 @@
     <string name="photo_widget_action_cancel">Отменить</string>
     <string name="photo_widget_action_apply">Применить</string>
     <string name="photo_widget_action_confirm">Подтвердить</string>
-    <string name="photo_widget_action_got_it">Понял</string>
+    <string name="photo_widget_action_got_it">Я понял</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Виджет главного экрана Material Photo</string>

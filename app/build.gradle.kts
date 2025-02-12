@@ -200,3 +200,12 @@ dependencies {
     implementation(libs.timber)
     debugImplementation(libs.leakcanary)
 }
+
+/**
+ * Prints the current version code. Used for GitHub releases.
+ */
+val printReleaseVersionCode by tasks.registering {
+    doLast {
+        println(AppInfo.versionCode)
+    }
+}

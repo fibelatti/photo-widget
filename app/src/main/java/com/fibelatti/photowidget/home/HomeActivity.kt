@@ -13,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -27,9 +30,11 @@ import com.fibelatti.photowidget.configure.aspectRatio
 import com.fibelatti.photowidget.configure.duplicateFromId
 import com.fibelatti.photowidget.configure.restoreFromId
 import com.fibelatti.photowidget.configure.sharedPhotos
+import com.fibelatti.photowidget.hints.HintStorage
 import com.fibelatti.photowidget.licenses.OssLicensesActivity
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
+import com.fibelatti.photowidget.platform.BackgroundRestrictedSheetDialog
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.preferences.Appearance
@@ -49,6 +54,9 @@ class HomeActivity : AppCompatActivity() {
     @Inject
     lateinit var userPreferencesStorage: UserPreferencesStorage
 
+    @Inject
+    lateinit var hintStorage: HintStorage
+
     private var preparedIntent: Intent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +66,9 @@ class HomeActivity : AppCompatActivity() {
         setContent {
             AppTheme {
                 val currentWidgets by homeViewModel.currentWidgets.collectAsStateWithLifecycle()
+                var showBackgroundRestrictionHint by remember {
+                    mutableStateOf(hintStorage.showHomeBackgroundRestrictionsHint)
+                }
 
                 HomeScreen(
                     onCreateNewWidgetClick = ::createNewWidget,
@@ -72,6 +83,12 @@ class HomeActivity : AppCompatActivity() {
                     onRateClick = ::rateApp,
                     onShareClick = ::shareApp,
                     onHelpClick = ::showHelp,
+                    showBackgroundRestrictionHint = showBackgroundRestrictionHint,
+                    onBackgroundRestrictionClick = ::showBackgroundRestrictionDialog,
+                    onDismissWarningClick = {
+                        hintStorage.showHomeBackgroundRestrictionsHint = false
+                        showBackgroundRestrictionHint = false
+                    },
                     onPrivacyPolicyClick = ::openPrivacyPolicy,
                     onViewLicensesClick = ::viewOpenSourceLicenses,
                 )
@@ -182,9 +199,20 @@ class HomeActivity : AppCompatActivity() {
     private fun showHelp() {
         ComposeBottomSheetDialog(context = this) {
             HelpScreen(
-                onSendFeedbackClick = ::sendFeedback,
+                onBackgroundRestrictionClick = {
+                    dismiss()
+                    showBackgroundRestrictionDialog()
+                },
+                onSendFeedbackClick = {
+                    dismiss()
+                    sendFeedback()
+                },
             )
         }.show()
+    }
+
+    private fun showBackgroundRestrictionDialog() {
+        BackgroundRestrictedSheetDialog.show(context = this)
     }
 
     private fun showDefaults() {

@@ -3,6 +3,7 @@ package com.fibelatti.photowidget.widget.data
 import android.net.Uri
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
@@ -360,16 +361,12 @@ class PhotoWidgetStorage @Inject constructor(
         return sharedPreferences.getWidgetCornerRadius(appWidgetId = appWidgetId)
     }
 
-    fun saveWidgetBorderColor(appWidgetId: Int, colorHex: String?, width: Int) {
-        sharedPreferences.saveWidgetBorderColor(appWidgetId = appWidgetId, colorHex = colorHex, width = width)
+    fun saveWidgetBorder(appWidgetId: Int, border: PhotoWidgetBorder) {
+        sharedPreferences.saveWidgetBorder(appWidgetId = appWidgetId, border = border)
     }
 
-    fun getWidgetBorderColorHex(appWidgetId: Int): String? {
-        return sharedPreferences.getWidgetBorderColorHex(appWidgetId = appWidgetId)
-    }
-
-    fun getWidgetBorderWidth(appWidgetId: Int): Int {
-        return sharedPreferences.getWidgetBorderWidth(appWidgetId = appWidgetId)
+    fun getWidgetBorder(appWidgetId: Int): PhotoWidgetBorder {
+        return sharedPreferences.getWidgetBorder(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetOpacity(appWidgetId: Int, opacity: Float) {

@@ -53,6 +53,9 @@ fun HomeScreen(
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
     onHelpClick: () -> Unit,
+    showBackgroundRestrictionHint: Boolean,
+    onBackgroundRestrictionClick: () -> Unit,
+    onDismissWarningClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onViewLicensesClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -78,10 +81,8 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(paddingValues),
             transitionSpec = {
-                (
-                    fadeIn(animationSpec = tween(220)) +
-                        scaleIn(initialScale = 0.97f, animationSpec = tween(220))
-                    )
+                fadeIn(animationSpec = tween(220))
+                    .plus(scaleIn(initialScale = 0.97f, animationSpec = tween(220)))
                     .togetherWith(fadeOut(animationSpec = tween(90)))
             },
             contentAlignment = Alignment.Center,
@@ -92,6 +93,9 @@ fun HomeScreen(
                     NewWidgetScreen(
                         onCreateNewWidgetClick = onCreateNewWidgetClick,
                         onHelpClick = onHelpClick,
+                        showBackgroundRestrictionHint = showBackgroundRestrictionHint,
+                        onBackgroundRestrictionClick = onBackgroundRestrictionClick,
+                        onDismissWarningClick = onDismissWarningClick,
                     )
                 }
 
@@ -209,6 +213,9 @@ private fun HomeScreenPreview() {
             onRateClick = {},
             onShareClick = {},
             onHelpClick = {},
+            showBackgroundRestrictionHint = true,
+            onBackgroundRestrictionClick = {},
+            onDismissWarningClick = {},
             onPrivacyPolicyClick = {},
             onViewLicensesClick = {},
         )

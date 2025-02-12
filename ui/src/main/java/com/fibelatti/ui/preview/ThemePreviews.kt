@@ -8,35 +8,43 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 
 @Preview(
-    name = "Light Theme",
+    name = "Theme — Light",
     group = "Themes",
-    showSystemUi = true,
     showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_NO,
 )
 @Preview(
-    name = "Dark Theme",
+    name = "Theme — Dark",
     group = "Themes",
-    showSystemUi = true,
     showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_YES,
 )
 @Preview(
-    name = "Light Theme - Red wallpaper",
+    name = "Colors — Red wallpaper",
     group = "Dynamic Colors",
     apiLevel = Build.VERSION_CODES.S,
-    showSystemUi = true,
     showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
     wallpaper = Wallpapers.RED_DOMINATED_EXAMPLE,
 )
 @Preview(
-    name = "Dark Theme - Green wallpaper",
+    name = "Colors — Blue wallpaper",
     group = "Dynamic Colors",
     apiLevel = Build.VERSION_CODES.S,
-    showSystemUi = true,
     showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    wallpaper = Wallpapers.BLUE_DOMINATED_EXAMPLE,
+)
+@Preview(
+    name = "Colors — Green wallpaper",
+    group = "Dynamic Colors",
+    apiLevel = Build.VERSION_CODES.S,
+    showBackground = true,
     wallpaper = Wallpapers.GREEN_DOMINATED_EXAMPLE,
+)
+@Preview(
+    name = "Colors — Yellow wallpaper",
+    group = "Dynamic Colors",
+    apiLevel = Build.VERSION_CODES.S,
+    showBackground = true,
+    wallpaper = Wallpapers.YELLOW_DOMINATED_EXAMPLE,
 )
 annotation class ThemePreviews

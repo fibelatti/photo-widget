@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.core.content.edit
 import com.fibelatti.photowidget.model.LegacyPhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.minutesToLoopingInterval
@@ -224,24 +225,40 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         )
     }
 
-    fun saveWidgetBorderColor(appWidgetId: Int, colorHex: String?, width: Int) {
+    fun saveWidgetBorder(appWidgetId: Int, border: PhotoWidgetBorder) {
         sharedPreferences.edit {
-            if (colorHex != null) {
-                putString("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId", colorHex)
-                putInt("${PreferencePrefix.BORDER_WIDTH}$appWidgetId", width)
-            } else {
-                remove("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId")
-                remove("${PreferencePrefix.BORDER_WIDTH}$appWidgetId")
+            when (border) {
+                is PhotoWidgetBorder.None -> {
+                    remove("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId")
+                    remove("${PreferencePrefix.BORDER_DYNAMIC}$appWidgetId")
+                    remove("${PreferencePrefix.BORDER_WIDTH}$appWidgetId")
+                }
+
+                is PhotoWidgetBorder.Color -> {
+                    putString("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId", border.colorHex)
+                    putInt("${PreferencePrefix.BORDER_WIDTH}$appWidgetId", border.width)
+                    remove("${PreferencePrefix.BORDER_DYNAMIC}$appWidgetId")
+                }
+
+                is PhotoWidgetBorder.Dynamic -> {
+                    putBoolean("${PreferencePrefix.BORDER_DYNAMIC}$appWidgetId", true)
+                    putInt("${PreferencePrefix.BORDER_WIDTH}$appWidgetId", border.width)
+                    remove("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId")
+                }
             }
         }
     }
 
-    fun getWidgetBorderColorHex(appWidgetId: Int): String? {
-        return sharedPreferences.getString("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId", null)
-    }
+    fun getWidgetBorder(appWidgetId: Int): PhotoWidgetBorder {
+        val borderDynamic = sharedPreferences.getBoolean("${PreferencePrefix.BORDER_DYNAMIC}$appWidgetId", false)
+        val borderColorHex = sharedPreferences.getString("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId", null)
+        val borderWidth = sharedPreferences.getInt("${PreferencePrefix.BORDER_WIDTH}$appWidgetId", 0)
 
-    fun getWidgetBorderWidth(appWidgetId: Int): Int {
-        return sharedPreferences.getInt("${PreferencePrefix.BORDER_WIDTH}$appWidgetId", 0)
+        return when {
+            borderDynamic -> PhotoWidgetBorder.Dynamic(width = borderWidth)
+            borderColorHex != null -> PhotoWidgetBorder.Color(colorHex = borderColorHex, width = borderWidth)
+            else -> PhotoWidgetBorder.None
+        }
     }
 
     fun saveWidgetOpacity(appWidgetId: Int, opacity: Float) {
@@ -415,6 +432,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         SHAPE(value = "appwidget_shape_"),
         CORNER_RADIUS(value = "appwidget_corner_radius_"),
         BORDER_COLOR_HEX(value = "appwidget_border_color_hex_"),
+        BORDER_DYNAMIC(value = "appwidget_border_dynamic_"),
         BORDER_WIDTH(value = "appwidget_border_width_"),
         OPACITY(value = "appwidget_opacity_"),
         BLACK_AND_WHITE(value = "appwidget_black_and_white_"),

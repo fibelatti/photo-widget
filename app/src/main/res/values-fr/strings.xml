@@ -5,8 +5,7 @@
 
     <!-- Home -->
     <string name="photo_widget_home_title">Décorez votre écran d\'accueil avec vos photos préférées</string>
-    <string name="photo_widget_home_aspect_ratio">Sélectionnez le format du widget et appuyez sur le bouton pour commencer. Ne vous inquiétez pas, vous pourrez le changer à tout moment !</string>
-    <string name="photo_widget_home_new_widget">Créer un nouveau widget</string>
+    <string name="photo_widget_home_instruction">Créez un nouveau widget en appuyant sur l\'une des options. Ne vous inquiétez pas, vous pouvez modifier cela à tout moment !</string>
     <string name="photo_widget_home_new">Nouveau widget</string>
     <string name="photo_widget_home_current">Mes widgets</string>
     <string name="photo_widget_home_settings">Paramètres</string>
@@ -17,7 +16,7 @@
     <string name="photo_widget_home_share">Partager l\'application</string>
     <string name="photo_widget_home_rate">Écrire un avis</string>
     <string name="photo_widget_home_feedback">Envoyer vos commentaires</string>
-    <string name="photo_widget_home_help">Aide</string>
+    <string name="photo_widget_home_help">Quelque chose ne fonctionne pas ?</string>
     <string name="photo_widget_home_common_issues">Problèmes courants</string>
     <string name="photo_widget_home_privacy_policy">Politique de confidentialité</string>
     <string name="photo_widget_home_developer">Développé avec ❤ par Filipe Belatti</string>
@@ -81,8 +80,11 @@
     <string name="photo_widget_aspect_ratio_square">Carré</string>
     <string name="photo_widget_aspect_ratio_tall">Haut</string>
     <string name="photo_widget_aspect_ratio_wide">Large</string>
-    <string name="photo_widget_aspect_ratio_original">Identique à la photo</string>
-    <string name="photo_widget_aspect_ratio_fill_widget">Remplir la zone du widget</string>
+    <string name="photo_widget_aspect_ratio_original">Original</string>
+    <string name="photo_widget_aspect_ratio_original_description">Adapter à chaque photo</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">Remplir</string>
+    <string name="photo_widget_aspect_ratio_fill_widget_description">Adapter à la taille du widget</string>
+
 
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Tous les changements seront perdus, revenir quand même ?</string>
@@ -177,7 +179,10 @@
 
     <string name="photo_widget_configure_border">Bordure</string>
     <string name="photo_widget_configure_border_none">Aucune</string>
-    <string name="photo_widget_configure_border_color">Couleur</string>
+    <string name="photo_widget_configure_border_dynamic">Dynamique</string>
+    <string name="photo_widget_configure_border_color">Coloré</string>
+
+    <string name="photo_widget_configure_border_explanation">Les modifications auront lieu lors de la prochaine mise à jour du widget après avoir modifié la couleur du thème de votre téléphone. Pour mettre à jour tous les widgets immédiatement, ouvrez simplement l\'application.</string>
 
     <string name="photo_widget_configure_offset">Décalage</string>
     <string name="photo_widget_configure_offset_current_values">Horizontal : %1$d, Vertical : %2$d</string>
@@ -224,6 +229,14 @@
 
     <string name="help_email_body">Rédigez votre message ci-dessous. Si vous signalez un problème, essayez de décrire ce que vous faisiez lorsque le problème est survenu.</string>
 
+    <string name="restriction_warning_hint">L\'activité en arrière-plan est restreinte. Les widgets peuvent ne pas fonctionner correctement. Appuyez pour en savoir plus.</string>
+    <string name="restriction_warning_dialog_title">Restrictions d\'activité en arrière-plan et optimisation de la batterie</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widget doit s\'exécuter en arrière-plan pour mettre à jour vos widgets. Il ne fonctionne que lorsque c\'est nécessaire, mais si l\'utilisation de la batterie est définie sur "optimisée", Android peut arrêter l\'application, ce qui peut empêcher les widgets de fonctionner correctement.</string>
+    <string name="restriction_warning_dialog_body_2">Ouvrez les paramètres de l\'application et changez l\'utilisation de la batterie en Non restreinte. Si cette option n\'est pas disponible, vérifiez les paramètres d\'alimentation du téléphone.</string>
+    <string name="restriction_warning_dialog_body_3">Certains téléphones sont encore plus restrictifs et peuvent empêcher l\'application de se lancer automatiquement après un redémarrage. Les paramètres varient selon l\'appareil — visitez https://dontkillmyapp.com pour des instructions spécifiques.</string>
+    <string name="restriction_warning_open_app_settings">Ouvrir les paramètres de l\'application</string>
+    <string name="restriction_warning_open_power_settings">Ouvrir les paramètres d\'alimentation</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pincer pour zoomer</string>
     <string name="photo_widget_viewer_actions_drag">Faites glisser pour déplacer</string>
@@ -240,7 +253,7 @@
     <string name="photo_widget_action_cancel">Annuler</string>
     <string name="photo_widget_action_apply">Appliquer</string>
     <string name="photo_widget_action_confirm">Confirmer</string>
-    <string name="photo_widget_action_got_it">Compris</string>
+    <string name="photo_widget_action_got_it">J\'ai compris</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget d\'accueil Material Photo</string>

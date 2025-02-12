@@ -62,10 +62,15 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
 
                 entryPoint.coroutineScope().launch {
-                    entryPoint.flipPhotoUseCase().invoke(
+                    entryPoint.cyclePhotoUseCase().invoke(
                         appWidgetId = intent.appWidgetId,
                         flipBackwards = ACTION_VIEW_PREVIOUS_PHOTO == intent.action,
                     )
+                    entryPoint.photoWidgetStorage().saveWidgetNextCycleTime(
+                        appWidgetId = intent.appWidgetId,
+                        nextCycleTime = null,
+                    )
+                    entryPoint.photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
                 }
             }
         }
@@ -157,6 +162,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val sizeProvider = WidgetSizeProvider(context = context.applicationContext)
 
             val result = prepareCurrentPhotoUseCase(
+                context = context,
                 appWidgetId = appWidgetId,
                 photoWidget = photoWidget,
                 widgetSize = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio) {

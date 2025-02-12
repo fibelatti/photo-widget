@@ -3,9 +3,11 @@ package com.fibelatti.photowidget.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import coil.ImageLoader
-import coil.disk.DiskCache
-import coil.memory.MemoryCache
+import coil3.ImageLoader
+import coil3.disk.DiskCache
+import coil3.disk.directory
+import coil3.memory.MemoryCache
+import coil3.request.allowHardware
 import com.fibelatti.photowidget.widget.data.DisplayedPhotoDao
 import com.fibelatti.photowidget.widget.data.ExcludedWidgetPhotoDao
 import com.fibelatti.photowidget.widget.data.LocalPhotoDao
@@ -68,16 +70,17 @@ object PhotoWidgetModule {
     @Singleton
     fun imageLoader(@ApplicationContext context: Context): ImageLoader = ImageLoader.Builder(context)
         .memoryCache {
-            MemoryCache.Builder(context)
-                .maxSizePercent(0.25)
+            MemoryCache.Builder()
+                .maxSizePercent(context = context, percent = 0.25)
                 .build()
         }
         .diskCache {
             DiskCache.Builder()
-                .directory(context.cacheDir.resolve("image_cache"))
+                .directory(context.cacheDir.resolve(relative = "image_cache"))
                 .maxSizePercent(0.02)
                 .build()
         }
-        .interceptorDispatcher(Dispatchers.IO)
+        .interceptorCoroutineContext(Dispatchers.IO)
+        .allowHardware(enable = false)
         .build()
 }
