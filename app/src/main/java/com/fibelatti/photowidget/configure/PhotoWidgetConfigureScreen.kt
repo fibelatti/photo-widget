@@ -1093,10 +1093,7 @@ private fun PaddingPicker(
 
         Image(
             bitmap = baseBitmap
-                .withRoundedCorners(
-                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS,
-                )
+                .withRoundedCorners(aspectRatio = PhotoWidgetAspectRatio.SQUARE)
                 .asImageBitmap(),
             contentDescription = null,
             modifier = Modifier

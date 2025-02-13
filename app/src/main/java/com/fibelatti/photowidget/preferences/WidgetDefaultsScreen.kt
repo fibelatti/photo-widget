@@ -539,7 +539,6 @@ fun OpacityPicker(
             bitmap = baseBitmap
                 .withRoundedCorners(
                     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                     opacity = value,
                 )
                 .asImageBitmap(),
