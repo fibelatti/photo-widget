@@ -7,14 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.24.0] - 2025-02-13
+[v1.24.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.24.0
+
 ### Added
 
 * Dynamic borders that match the device's theme color (Android 12 and above)
 * Background restriction warning and instructions for troubleshooting
+* Fill aspect ratio warning regarding OS imposed corner radius
 
 ### Changed
 
 * Update the home screen with better visual cues for each aspect ratio
+* Review tap action picker instructions to make them clearer
 
 ### Fixed
 
