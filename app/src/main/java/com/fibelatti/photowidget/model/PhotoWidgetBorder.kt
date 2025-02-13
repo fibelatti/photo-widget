@@ -5,7 +5,9 @@ import kotlinx.parcelize.Parcelize
 
 sealed interface PhotoWidgetBorder : Parcelable {
 
-    fun getBorderWidth(): Int = when (this) {
+    fun getBorderPercent(): Float = getBorderWidth() * PERCENT_FACTOR
+
+    private fun getBorderWidth(): Int = when (this) {
         is None -> 0
         is Color -> width
         is Dynamic -> width
@@ -19,4 +21,16 @@ sealed interface PhotoWidgetBorder : Parcelable {
 
     @Parcelize
     data class Dynamic(val width: Int) : PhotoWidgetBorder
+
+    companion object {
+
+        val VALUE_RANGE: ClosedFloatingPointRange<Float> = 0F..80F
+
+        const val DEFAULT_WIDTH: Int = 40
+
+        /**
+         * Calculated based on a 400px image, where 20px was the maximum border width allowed.
+         */
+        const val PERCENT_FACTOR: Float = .00125F
+    }
 }

@@ -55,7 +55,7 @@ fun ShapedPhoto(
                     com.google.android.material.R.attr.colorPrimary,
                 )
             }
-            val borderWidth = border.getBorderWidth()
+            val borderPercent = border.getBorderPercent()
 
             bitmap?.run {
                 if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
@@ -64,7 +64,7 @@ fun ShapedPhoto(
                         opacity = opacity,
                         blackAndWhite = blackAndWhite,
                         borderColor = borderColor,
-                        borderWidth = borderWidth,
+                        borderPercent = borderPercent,
                     )
                 } else {
                     withRoundedCorners(
@@ -73,7 +73,7 @@ fun ShapedPhoto(
                         opacity = opacity,
                         blackAndWhite = blackAndWhite,
                         borderColor = borderColor,
-                        borderWidth = borderWidth,
+                        borderPercent = borderPercent,
                     )
                 }
             }

@@ -76,6 +76,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 com.google.android.material.R.attr.colorPrimary,
             )
         }
+        val borderPercent = photoWidget.border.getBorderPercent()
 
         Timber.d("Transforming the bitmap")
         val transformedBitmap: Bitmap = if (PhotoWidgetAspectRatio.SQUARE == photoWidget.aspectRatio) {
@@ -84,7 +85,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 opacity = photoWidget.opacity,
                 blackAndWhite = photoWidget.blackAndWhite,
                 borderColor = borderColor,
-                borderWidth = photoWidget.border.getBorderWidth(),
+                borderPercent = borderPercent,
             )
         } else {
             bitmap.withRoundedCorners(
@@ -93,7 +94,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 opacity = photoWidget.opacity,
                 blackAndWhite = photoWidget.blackAndWhite,
                 borderColor = borderColor,
-                borderWidth = photoWidget.border.getBorderWidth(),
+                borderPercent = borderPercent,
                 widgetSize = widgetSize,
             )
         }
