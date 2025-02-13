@@ -35,6 +35,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -47,12 +48,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -313,7 +316,7 @@ private fun TapAreaIndicator(
                 .withRoundedCorners(aspectRatio = PhotoWidgetAspectRatio.SQUARE)
                 .asImageBitmap(),
             contentDescription = null,
-            modifier = Modifier.size(200.dp),
+            modifier = Modifier.size(200.dp).alpha(.6F),
         )
 
         Row(
@@ -330,9 +333,27 @@ private fun TapAreaIndicator(
             Box(
                 modifier = Modifier
                     .weight(3f)
-                    .fillMaxHeight()
-                    .background(color = sideColor),
-            )
+                    .fillMaxHeight(),
+                contentAlignment = Alignment.CenterStart,
+            ) {
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.surfaceDim.copy(alpha = .7F),
+                            shape = MaterialTheme.shapes.medium,
+                        )
+                        .padding(all = 8.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_tap_arrow_left),
+                        modifier = Modifier.size(36.dp),
+                        tint = MaterialTheme.colorScheme.primary,
+                        contentDescription = null,
+                    )
+                }
+            }
 
             Box(
                 modifier = Modifier
@@ -344,9 +365,27 @@ private fun TapAreaIndicator(
             Box(
                 modifier = Modifier
                     .weight(3f)
-                    .fillMaxHeight()
-                    .background(color = sideColor),
-            )
+                    .fillMaxHeight(),
+                contentAlignment = Alignment.CenterEnd,
+            ) {
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.surfaceDim.copy(alpha = .7F),
+                            shape = MaterialTheme.shapes.medium,
+                        )
+                        .padding(all = 8.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_tap_arrow_right),
+                        modifier = Modifier.size(36.dp),
+                        tint = MaterialTheme.colorScheme.primary,
+                        contentDescription = null,
+                    )
+                }
+            }
         }
     }
 }
