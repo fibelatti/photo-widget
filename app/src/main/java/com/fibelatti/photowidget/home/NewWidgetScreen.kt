@@ -297,10 +297,12 @@ fun BackgroundRestrictionWarning(
             Icon(
                 painter = painterResource(R.drawable.ic_warning),
                 contentDescription = null,
+                tint = Color.Black,
             )
 
             Text(
                 text = stringResource(R.string.restriction_warning_hint),
+                color = Color.Black,
                 style = MaterialTheme.typography.bodySmall,
             )
         }
@@ -314,6 +316,7 @@ fun BackgroundRestrictionWarning(
                         onClick = onDismissClick,
                         role = Role.Button,
                     ),
+                color = Color.Black,
                 style = MaterialTheme.typography.labelSmall,
             )
         }
