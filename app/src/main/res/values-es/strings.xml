@@ -175,7 +175,8 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android puede restringir el trabajo en segundo plano para optimizar la duración de la batería, lo que resulta en intervalos más largos entre cada foto.\n\nPara actualizar los widgets con precisión en el intervalo seleccionado, abra la configuración y permita configurar alarmas y recordatorios.</string>
     <string name="photo_widget_configure_interval_open_settings">Abrir configuración</string>
 
-    <string name="photo_widget_configure_roundness_warning">El sistema podrá imponer un redondeo mínimo. Ajuste este valor hasta que el borde tenga el aspecto deseado en su pantalla de inicio.</string>
+    <string name="photo_widget_configure_roundness_warning">Los widgets de Android tienen esquinas redondeadas que no se pueden eliminar. Puedes aumentar la redondez, pero no eliminarla por completo. Para tener esquinas cuadradas, elige una proporción diferente.</string>
+    <string name="photo_widget_configure_border_warning">Puedes aumentar la redondez si el borde se corta debido a las esquinas redondeadas mínimas del widget.</string>
 
     <string name="photo_widget_configure_border">Borde</string>
     <string name="photo_widget_configure_border_none">Ninguno</string>

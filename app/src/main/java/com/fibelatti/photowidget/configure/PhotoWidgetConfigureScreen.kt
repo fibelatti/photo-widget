@@ -588,6 +588,38 @@ private fun AppearanceTab(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+        val systemWidgetRadius = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            dimensionResource(android.R.dimen.system_app_widget_background_radius)
+        } else {
+            0.dp
+        }
+        val showRoundnessWarning = PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio &&
+            systemWidgetRadius > 0.dp
+
+        if (showRoundnessWarning) {
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .background(
+                        color = Color(0xFFFFE57F),
+                        shape = MaterialTheme.shapes.medium,
+                    )
+                    .padding(vertical = 8.dp, horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_warning),
+                    contentDescription = null,
+                )
+
+                Text(
+                    text = stringResource(R.string.photo_widget_configure_roundness_warning),
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+        }
+
         PickerDefault(
             title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
             currentValue = stringResource(id = photoWidget.aspectRatio.label),
@@ -603,21 +635,14 @@ private fun AppearanceTab(
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
         } else {
-            val systemWidgetRadius = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                dimensionResource(android.R.dimen.system_app_widget_background_radius)
-            } else {
-                0.dp
-            }
-            val showHint = PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio &&
-                photoWidget.border !is PhotoWidgetBorder.None &&
-                systemWidgetRadius > 0.dp
-
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_corner_radius),
                 currentValue = photoWidget.cornerRadius.toInt().toString(),
                 onClick = onCornerRadiusClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
-                warning = stringResource(R.string.photo_widget_configure_roundness_warning).takeIf { showHint },
+                warning = stringResource(R.string.photo_widget_configure_border_warning).takeIf {
+                    showRoundnessWarning && photoWidget.border != PhotoWidgetBorder.None
+                },
             )
         }
 
