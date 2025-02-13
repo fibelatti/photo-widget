@@ -94,6 +94,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
+import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.CornerRadiusPicker
@@ -633,7 +634,7 @@ private fun AppearanceTab(
 
         PickerDefault(
             title = stringResource(id = R.string.widget_defaults_opacity),
-            currentValue = photoWidget.opacity.toInt().toString(),
+            currentValue = formatPercent(value = photoWidget.opacity, fractionDigits = 0),
             onClick = onOpacityClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )

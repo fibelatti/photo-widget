@@ -70,6 +70,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
+import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.SliderSmallThumb
@@ -255,7 +256,7 @@ private fun WidgetDefaultsScreen(
 
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_opacity),
-                currentValue = userPreferences.defaultOpacity.toInt().toString(),
+                currentValue = formatPercent(value = userPreferences.defaultOpacity, fractionDigits = 0),
                 onClick = onOpacityClick,
             )
 
@@ -562,7 +563,7 @@ fun OpacityPicker(
             )
 
             Text(
-                text = "${value.toInt()}",
+                text = formatPercent(value = value, fractionDigits = 0),
                 modifier = Modifier.width(40.dp),
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.End,
