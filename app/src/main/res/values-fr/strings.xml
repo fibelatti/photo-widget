@@ -175,7 +175,8 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android peut restreindre le travail en arrière-plan pour optimiser la durée de vie de la batterie, ce qui entraîne des intervalles plus longs entre chaque photo.\n\nPour mettre à jour les widgets précisément à l\'intervalle sélectionné, ouvrez les paramètres et autorisez le réglage des alarmes et des rappels.</string>
     <string name="photo_widget_configure_interval_open_settings">Ouvrir les paramètres</string>
 
-    <string name="photo_widget_configure_roundness_warning">Le système peut imposer un arrondi minimum. Ajustez cette valeur jusqu\'à ce que la bordure ressemble à celle souhaitée sur votre écran d\'accueil.</string>
+    <string name="photo_widget_configure_roundness_warning">Les widgets Android ont des coins arrondis qui ne peuvent pas être supprimés. Vous pouvez augmenter l\'arrondi, mais pas l\'éliminer complètement. Pour avoir des coins carrés, choisissez un rapport d\'aspect différent.</string>
+    <string name="photo_widget_configure_border_warning">Vous pouvez augmenter l\'arrondi si la bordure est coupée par les coins arrondis minimaux du widget.</string>
 
     <string name="photo_widget_configure_border">Bordure</string>
     <string name="photo_widget_configure_border_none">Aucune</string>
@@ -192,7 +193,7 @@
     <string name="photo_widget_configure_padding">Marge intérieure</string>
 
     <string name="photo_widget_configure_tap_action">Action tactile</string>
-    <string name="photo_widget_configure_tap_action_description">Choisissez l\'action pour la zone centrale (surlignée en vert). Sur les widgets plus grands que 1x1, vous pouvez appuyer sur les bords (en rouge) pour changer de photo.</string>
+    <string name="photo_widget_configure_tap_action_description">Choisissez l\'action au toucher pour la zone centrale (clignotant en vert). Sur les widgets plus grands que 1x1, vous pouvez toucher chaque côté pour changer les photos.</string>
     <string name="photo_widget_configure_tap_action_none">Aucune</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Afficher la photo en plein écran</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Voir dans la galerie</string>

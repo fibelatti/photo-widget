@@ -1,0 +1,9 @@
+This version brings the following updates:
+
+* Dynamic borders that match the device's theme color (Android 12+)
+* Fixed how borders are calculated, better matching what's seen in the picker
+* Fixed the interval behavior after tapping to switch the photo
+* Fixed "View in gallery" sometimes opening an unexpected app
+* Added troubleshooting steps when there are restrictions applied to the app
+
+Thanks for using the app!

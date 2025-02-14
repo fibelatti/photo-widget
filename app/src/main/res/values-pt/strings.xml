@@ -175,7 +175,8 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">O Android pode restringir tarefas em segundo plano para otimizar a duração da bateria, resultando em intervalos maiores entre cada foto.\n\nPara atualizar os widgets precisamente no intervalo selecionado, abra as configurações e permita a configuração de alarmes e lembretes.</string>
     <string name="photo_widget_configure_interval_open_settings">Abrir configurações</string>
 
-    <string name="photo_widget_configure_roundness_warning">O sistema pode impor um arredondamento mínimo. Reajuste esse valor até que a borda fique como desejado na sua tela inicial.</string>
+    <string name="photo_widget_configure_roundness_warning">Os widgets do Android têm cantos arredondados que não podem ser removidos. Você pode aumentar a arredondamento, mas não removê-lo completamente. Para ter cantos quadrados, escolha uma proporção diferente.</string>
+    <string name="photo_widget_configure_border_warning">Você pode aumentar a arredondamento se a borda for cortada pelos cantos arredondados mínimos do widget.</string>
 
     <string name="photo_widget_configure_border">Borda</string>
     <string name="photo_widget_configure_border_none">Nenhuma</string>
@@ -192,7 +193,7 @@
     <string name="photo_widget_configure_padding">Espaçamento</string>
 
     <string name="photo_widget_configure_tap_action">Ação ao tocar</string>
-    <string name="photo_widget_configure_tap_action_description">Escolha a ação para a área central (destacada em verde). Em widgets maiores que 1x1, você pode tocar nas bordas (em vermelho) para alternar fotos.</string>
+    <string name="photo_widget_configure_tap_action_description">Escolha a ação ao tocar na área central (piscando em verde). Em widgets maiores que 1x1, você pode tocar em cada lado para trocar as fotos.</string>
     <string name="photo_widget_configure_tap_action_none">Nenhuma</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Ver a foto em tela cheia</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Ver na galeria</string>

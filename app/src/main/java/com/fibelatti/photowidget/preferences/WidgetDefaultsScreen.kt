@@ -55,6 +55,8 @@ import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -70,6 +72,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
+import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.SliderSmallThumb
@@ -255,7 +258,7 @@ private fun WidgetDefaultsScreen(
 
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_opacity),
-                currentValue = userPreferences.defaultOpacity.toInt().toString(),
+                currentValue = formatPercent(value = userPreferences.defaultOpacity, fractionDigits = 0),
                 onClick = onOpacityClick,
             )
 
@@ -337,41 +340,45 @@ fun PickerDefault(
     Card(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
+        shape = MaterialTheme.shapes.small,
         colors = CardDefaults.cardColors().run {
             copy(containerColor = containerColor.copy(alpha = 0.6f))
         },
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = 60.dp)
                 .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.Center,
         ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                )
 
-            Spacer(modifier = Modifier.size(40.dp))
+                Spacer(modifier = Modifier.width(40.dp))
 
-            AutoSizeText(
-                text = currentValue,
-                textAlign = TextAlign.End,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        }
+                AutoSizeText(
+                    text = currentValue,
+                    textAlign = TextAlign.End,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
 
-        if (warning != null) {
-            Text(
-                text = warning,
-                style = MaterialTheme.typography.labelSmall,
-                modifier = Modifier.padding(horizontal = 24.dp),
-            )
-
-            Spacer(modifier = Modifier.size(8.dp))
+            if (warning != null) {
+                Text(
+                    text = warning,
+                    fontStyle = FontStyle.Italic,
+                    fontWeight = FontWeight.Light,
+                    style = MaterialTheme.typography.labelMedium,
+                )
+            }
         }
     }
 }
@@ -539,7 +546,6 @@ fun OpacityPicker(
             bitmap = baseBitmap
                 .withRoundedCorners(
                     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                     opacity = value,
                 )
                 .asImageBitmap(),
@@ -563,7 +569,7 @@ fun OpacityPicker(
             )
 
             Text(
-                text = "${value.toInt()}",
+                text = formatPercent(value = value, fractionDigits = 0),
                 modifier = Modifier.width(40.dp),
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.End,

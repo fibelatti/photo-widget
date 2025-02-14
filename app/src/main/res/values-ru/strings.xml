@@ -175,7 +175,8 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android может ограничивать фоновую работу, чтобы оптимизировать время работы аккумулятора, что приводит к увеличению интервалов между снимками.\n\nЧтобы обновлять виджеты точно с выбранным интервалом, откройте настройки и разрешите установку будильников и напоминаний.</string>
     <string name="photo_widget_configure_interval_open_settings">Открыть настройки</string>
 
-    <string name="photo_widget_configure_roundness_warning">Система может устанавливать минимальное округление. Отрегулируйте это значение до тех пор, пока граница на главном экране не будет выглядеть так, как вам нужно.</string>
+    <string name="photo_widget_configure_roundness_warning">Виджеты Android имеют закругленные углы, которые нельзя удалить. Вы можете увеличить закругление, но не убрать его полностью. Чтобы получить квадратные углы, выберите другой формат.</string>
+    <string name="photo_widget_configure_border_warning">Вы можете увеличить закругление, если рамка обрезается минимальным закруглением углов виджета.</string>
 
     <string name="photo_widget_configure_border">Граница</string>
     <string name="photo_widget_configure_border_none">Нет</string>
@@ -192,7 +193,7 @@
     <string name="photo_widget_configure_padding">Отступ</string>
 
     <string name="photo_widget_configure_tap_action">Действие по нажатию</string>
-    <string name="photo_widget_configure_tap_action_description">Выберите действие для центральной области (выделено зеленым). На виджетах размером больше 1x1 вы можете нажать на края (выделены красным), чтобы переключать фотографии.</string>
+    <string name="photo_widget_configure_tap_action_description">Выберите действие при нажатии на центральную область (мигает зеленым). В виджетах больше, чем 1x1, можно нажимать на каждую сторону, чтобы переключать фото.</string>
     <string name="photo_widget_configure_tap_action_none">Нет</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Просмотр фотографии на весь экран</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Просмотреть в галерее</string>

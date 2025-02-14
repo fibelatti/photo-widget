@@ -171,7 +171,8 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android can restrict background work to optimize battery life, resulting in longer intervals between each photo.\n\nTo update widgets precisely at the selected interval, open settings and allow setting alarms and reminders.</string>
     <string name="photo_widget_configure_interval_open_settings">Open settings</string>
 
-    <string name="photo_widget_configure_roundness_warning">The system may impose a minimum rounding. Adjust this value until the border looks as desired on your home screen.</string>
+    <string name="photo_widget_configure_roundness_warning">Android widgets have rounded corners that can\'t be removed. You can increase the roundness, but not remove it completely. To have square corners, choose a different aspect ratio.</string>
+    <string name="photo_widget_configure_border_warning">You can increase the roundness if the border is cut-off by the widget\'s minimum rounded corners</string>
 
     <string name="photo_widget_configure_border">Border</string>
     <string name="photo_widget_configure_border_none">None</string>
@@ -188,7 +189,7 @@
     <string name="photo_widget_configure_padding">Padding</string>
 
     <string name="photo_widget_configure_tap_action">Tap action</string>
-    <string name="photo_widget_configure_tap_action_description">Choose the action for the center area (highlighted in green). On widgets larger than 1x1, you can tap on the edges (in red) to switch photos.</string>
+    <string name="photo_widget_configure_tap_action_description">Choose the tap action for the center area (blinking green). On widgets larger than 1x1, you can tap on each side to switch photos.</string>
     <string name="photo_widget_configure_tap_action_none">None</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">View photo in full screen</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">View in gallery</string>

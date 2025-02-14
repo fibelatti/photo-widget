@@ -3,6 +3,7 @@ package com.fibelatti.photowidget.platform
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
+import timber.log.Timber
 
 class WidgetSizeProvider(private val context: Context) {
 
@@ -17,6 +18,16 @@ class WidgetSizeProvider(private val context: Context) {
             context.dip(width) to context.dip(height)
         } else {
             width to height
+        }.also {
+            Timber.d(
+                "Widget measured (" +
+                    "appWidgetId=$appWidgetId," +
+                    "convertToPx=$convertToPx," +
+                    "isPortrait=$isPortrait," +
+                    "width=${it.first}," +
+                    "height=${it.second}" +
+                    ")",
+            )
         }
     }
 

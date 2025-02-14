@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.platform
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
@@ -10,13 +11,14 @@ import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import android.util.Size
 import androidx.annotation.ColorInt
-import androidx.annotation.IntRange
+import androidx.annotation.FloatRange
 import androidx.core.graphics.toRectF
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import kotlin.math.min
 import kotlin.math.roundToInt
+import timber.log.Timber
 
 fun Bitmap.withRoundedCorners(
     aspectRatio: PhotoWidgetAspectRatio,
@@ -24,14 +26,14 @@ fun Bitmap.withRoundedCorners(
     opacity: Float = PhotoWidget.DEFAULT_OPACITY,
     blackAndWhite: Boolean = false,
     @ColorInt borderColor: Int? = null,
-    @IntRange(from = 0) borderWidth: Int = 0,
+    @FloatRange(from = 0.0) borderPercent: Float = .0F,
     widgetSize: Size? = null,
 ): Bitmap = withTransformation(
     aspectRatio = aspectRatio,
     opacity = opacity,
     blackAndWhite = blackAndWhite,
     borderColor = borderColor,
-    borderWidth = borderWidth,
+    borderPercent = borderPercent,
     widgetSize = widgetSize,
 ) { canvas, rect, paint ->
     canvas.drawRoundRect(rect.toRectF(), radius, radius, paint)
@@ -42,13 +44,13 @@ fun Bitmap.withPolygonalShape(
     opacity: Float = PhotoWidget.DEFAULT_OPACITY,
     blackAndWhite: Boolean = false,
     @ColorInt borderColor: Int? = null,
-    @IntRange(from = 0) borderWidth: Int = 0,
+    @FloatRange(from = 0.0) borderPercent: Float = .0F,
 ): Bitmap = withTransformation(
     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
     opacity = opacity,
     blackAndWhite = blackAndWhite,
     borderColor = borderColor,
-    borderWidth = borderWidth,
+    borderPercent = borderPercent,
     widgetSize = null,
 ) { canvas, rect, paint ->
     try {
@@ -73,7 +75,7 @@ private inline fun Bitmap.withTransformation(
     opacity: Float,
     blackAndWhite: Boolean,
     @ColorInt borderColor: Int?,
-    @IntRange(from = 0) borderWidth: Int,
+    @FloatRange(from = 0.0) borderPercent: Float,
     widgetSize: Size?,
     body: (Canvas, Rect, Paint) -> Unit,
 ): Bitmap {
@@ -81,37 +83,39 @@ private inline fun Bitmap.withTransformation(
     val destination = Rect(0, 0, source.width(), source.height())
 
     val output = Bitmap.createBitmap(source.width(), source.height(), Bitmap.Config.ARGB_8888)
-    val canvas = Canvas(output)
-    val paint = Paint().apply {
+    val canvas = Canvas(output).apply {
+        drawColor(Color.TRANSPARENT)
+    }
+    val basePaint = Paint().apply {
         isAntiAlias = true
         alpha = (opacity * 255 / 100).toInt()
     }
 
-    canvas.drawARGB(0, 0, 0, 0)
-
     val bodyRect = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) source else destination
 
-    body(canvas, bodyRect, paint)
+    body(canvas, bodyRect, basePaint)
 
-    paint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.SRC_IN))
+    val bitmapPaint = Paint(basePaint).apply {
+        xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
 
-    val bitmapPaint = Paint(paint)
+        if (blackAndWhite) {
+            val colorMatrix = ColorMatrix().apply { setSaturation(0f) }
+            val colorFilter = ColorMatrixColorFilter(colorMatrix)
 
-    if (blackAndWhite) {
-        val colorMatrix = ColorMatrix().apply { setSaturation(0f) }
-        val colorFilter = ColorMatrixColorFilter(colorMatrix)
-        bitmapPaint.setColorFilter(colorFilter)
+            setColorFilter(colorFilter)
+        }
     }
 
     canvas.drawBitmap(this, source, destination, bitmapPaint)
 
-    if (borderColor != null && borderWidth > 0) {
-        val stroke = Paint(paint).apply {
+    if (borderColor != null && borderPercent > 0) {
+        val strokePaint = Paint(basePaint).apply {
+            xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
             style = Paint.Style.STROKE
             color = borderColor
-            strokeWidth = borderWidth.toFloat()
+            strokeWidth = min(output.width, output.height) * borderPercent
         }
-        body(canvas, bodyRect, stroke)
+        body(canvas, bodyRect, strokePaint)
     }
 
     return output
@@ -121,6 +125,15 @@ private fun Bitmap.sourceRect(
     aspectRatio: PhotoWidgetAspectRatio,
     widgetSize: Size? = null,
 ): Rect {
+    Timber.d(
+        "Calculating source rect for bitmap (" +
+            "width=$width," +
+            "height=$height," +
+            "aspectRatio=$aspectRatio," +
+            "widgetSize=$widgetSize" +
+            ")",
+    )
+
     return when (aspectRatio) {
         PhotoWidgetAspectRatio.SQUARE -> {
             val size = min(height, width)
@@ -166,6 +179,8 @@ private fun Bitmap.sourceRect(
         PhotoWidgetAspectRatio.ORIGINAL -> {
             Rect(0, 0, width, height)
         }
+    }.also {
+        Timber.d("Output rect: $it")
     }
 }
 

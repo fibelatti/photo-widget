@@ -53,6 +53,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
+import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.SliderSmallThumb
@@ -62,6 +63,7 @@ import com.github.skydoves.colorpicker.compose.BrightnessSlider
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 import com.google.android.material.color.DynamicColors
+import kotlin.math.roundToInt
 
 object PhotoWidgetBorderPicker {
 
@@ -132,7 +134,7 @@ private fun BorderPickerContent(
                 SegmentedButton(
                     selected = border is PhotoWidgetBorder.Dynamic,
                     onClick = {
-                        border = PhotoWidgetBorder.Dynamic(width = 20)
+                        border = PhotoWidgetBorder.Dynamic(width = PhotoWidgetBorder.DEFAULT_WIDTH)
                     },
                     shape = RectangleShape,
                     border = buttonBorderColor,
@@ -148,7 +150,7 @@ private fun BorderPickerContent(
             SegmentedButton(
                 selected = border is PhotoWidgetBorder.Color,
                 onClick = {
-                    border = PhotoWidgetBorder.Color(colorHex = "ffffff", width = 20)
+                    border = PhotoWidgetBorder.Color(colorHex = "ffffff", width = PhotoWidgetBorder.DEFAULT_WIDTH)
                 },
                 shape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
                 border = buttonBorderColor,
@@ -197,7 +199,6 @@ private fun BorderPickerContent(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun ColorBorderContent(
     currentColorHex: String,
     onColorChange: (String) -> Unit,
@@ -232,9 +233,8 @@ private fun ColorBorderContent(
                 bitmap = baseBitmap
                     .withRoundedCorners(
                         aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                        radius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                         borderColor = "#$currentColorHex".toColorInt(),
-                        borderWidth = currentWidth,
+                        borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
                     )
                     .asImageBitmap(),
                 contentDescription = null,
@@ -309,32 +309,14 @@ private fun ColorBorderContent(
             )
         }
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            Slider(
-                value = currentWidth.toFloat(),
-                onValueChange = { onWidthChange(it.toInt()) },
-                modifier = Modifier.weight(1f),
-                valueRange = 0f..40f,
-                thumb = { SliderSmallThumb() },
-            )
-
-            Text(
-                text = "$currentWidth",
-                modifier = Modifier.width(40.dp),
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.End,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        }
+        BorderWidthPicker(
+            currentWidth = currentWidth,
+            onWidthChange = onWidthChange,
+        )
     }
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun DynamicBorderContent(
     currentWidth: Int,
     onWidthChange: (Int) -> Unit,
@@ -358,34 +340,17 @@ private fun DynamicBorderContent(
                     borderColor = localContext.getDynamicAttributeColor(
                         com.google.android.material.R.attr.colorPrimary,
                     ),
-                    borderWidth = currentWidth,
+                    borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
                 )
                 .asImageBitmap(),
             contentDescription = null,
             modifier = Modifier.size(200.dp),
         )
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            Slider(
-                value = currentWidth.toFloat(),
-                onValueChange = { onWidthChange(it.toInt()) },
-                modifier = Modifier.weight(1f),
-                valueRange = 0f..40f,
-                thumb = { SliderSmallThumb() },
-            )
-
-            Text(
-                text = "$currentWidth",
-                modifier = Modifier.width(40.dp),
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.End,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        }
+        BorderWidthPicker(
+            currentWidth = currentWidth,
+            onWidthChange = onWidthChange,
+        )
 
         Text(
             text = stringResource(R.string.photo_widget_configure_border_explanation),
@@ -393,6 +358,36 @@ private fun DynamicBorderContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
+            style = MaterialTheme.typography.bodyMedium,
+        )
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun BorderWidthPicker(
+    currentWidth: Int,
+    onWidthChange: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        Slider(
+            value = currentWidth.toFloat(),
+            onValueChange = { onWidthChange(it.roundToInt()) },
+            modifier = Modifier.weight(1f),
+            valueRange = PhotoWidgetBorder.VALUE_RANGE,
+            thumb = { SliderSmallThumb() },
+        )
+
+        Text(
+            text = formatPercent(value = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR * 100),
+            modifier = Modifier.width(60.dp),
+            color = MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.End,
             style = MaterialTheme.typography.bodyMedium,
         )
     }
@@ -406,7 +401,7 @@ private fun ColorBorderPickerContentPreview() {
         BorderPickerContent(
             currentBorder = PhotoWidgetBorder.Color(
                 colorHex = "86D986",
-                width = 20,
+                width = PhotoWidgetBorder.DEFAULT_WIDTH,
             ),
             onApplyClick = {},
         )
@@ -419,7 +414,7 @@ private fun DynamicBorderPickerContentPreview() {
     ExtendedTheme {
         BorderPickerContent(
             currentBorder = PhotoWidgetBorder.Dynamic(
-                width = 20,
+                width = PhotoWidgetBorder.DEFAULT_WIDTH,
             ),
             onApplyClick = {},
         )

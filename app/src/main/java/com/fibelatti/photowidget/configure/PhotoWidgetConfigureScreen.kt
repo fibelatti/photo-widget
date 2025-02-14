@@ -94,6 +94,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
+import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.CornerRadiusPicker
@@ -587,6 +588,38 @@ private fun AppearanceTab(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+        val systemWidgetRadius = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            dimensionResource(android.R.dimen.system_app_widget_background_radius)
+        } else {
+            0.dp
+        }
+        val showRoundnessWarning = PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio &&
+            systemWidgetRadius > 0.dp
+
+        if (showRoundnessWarning) {
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .background(
+                        color = Color(0xFFFFE57F),
+                        shape = MaterialTheme.shapes.medium,
+                    )
+                    .padding(vertical = 8.dp, horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_warning),
+                    contentDescription = null,
+                )
+
+                Text(
+                    text = stringResource(R.string.photo_widget_configure_roundness_warning),
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+        }
+
         PickerDefault(
             title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
             currentValue = stringResource(id = photoWidget.aspectRatio.label),
@@ -602,21 +635,14 @@ private fun AppearanceTab(
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
         } else {
-            val systemWidgetRadius = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                dimensionResource(android.R.dimen.system_app_widget_background_radius)
-            } else {
-                0.dp
-            }
-            val showHint = PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio &&
-                photoWidget.border !is PhotoWidgetBorder.None &&
-                systemWidgetRadius > 0.dp
-
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_corner_radius),
                 currentValue = photoWidget.cornerRadius.toInt().toString(),
                 onClick = onCornerRadiusClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
-                warning = stringResource(R.string.photo_widget_configure_roundness_warning).takeIf { showHint },
+                warning = stringResource(R.string.photo_widget_configure_border_warning).takeIf {
+                    showRoundnessWarning && photoWidget.border != PhotoWidgetBorder.None
+                },
             )
         }
 
@@ -633,7 +659,7 @@ private fun AppearanceTab(
 
         PickerDefault(
             title = stringResource(id = R.string.widget_defaults_opacity),
-            currentValue = photoWidget.opacity.toInt().toString(),
+            currentValue = formatPercent(value = photoWidget.opacity, fractionDigits = 0),
             onClick = onOpacityClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
@@ -1093,10 +1119,7 @@ private fun PaddingPicker(
 
         Image(
             bitmap = baseBitmap
-                .withRoundedCorners(
-                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS,
-                )
+                .withRoundedCorners(aspectRatio = PhotoWidgetAspectRatio.SQUARE)
                 .asImageBitmap(),
             contentDescription = null,
             modifier = Modifier
