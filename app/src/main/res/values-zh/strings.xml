@@ -43,8 +43,8 @@
     <string name="photo_widget_home_removed_widget_action_delete">Delete permanently</string>
 
     <!-- Preferences -->
-    <string name="preferences_data_saver">Reduce storage usage</string>
-    <string name="preferences_data_saver_description">When enabled, photos added to widgets are compressed to save storage. This usually won\'t affect quality, but if your photos contain small text, it\'s recommended to turn this off.\n\nThis setting only affects photos added after it is changed.\n\nIt does not apply to synced folders, as those photos are read directly from your device storage.</string>
+    <string name="preferences_data_saver">减少存储占用</string>
+    <string name="preferences_data_saver_description">启用后，添加到小组建中的照片会被压缩以节省存储空间。,通常不会影响照片的质量，但如果你的照片中的文字比较小，建议关闭这一功能/n此设置仅影响更改后添加的照片/n不适用于同步文件夹，因为这些照片是直接从你的设备存储中读取的</string>
 
     <string name="preferences_appearance_follow_system">跟随系统</string>
     <string name="preferences_appearance_light">亮色</string>
@@ -62,7 +62,7 @@
     <string name="widget_defaults_shape">形状</string>
     <string name="widget_defaults_corner_radius">圆度</string>
     <string name="widget_defaults_opacity">不透明度</string>
-    <string name="widget_defaults_black_and_white">Black and white</string>
+    <string name="widget_defaults_black_and_white">黑白显示</string>
     <string name="widget_defaults_tap_action">点击行为</string>
     <string name="widget_defaults_reset">重置</string>
 
@@ -82,16 +82,16 @@
 
     
   <string name="photo_widget_aspect_ratio_wide_description" translatable="false">16:10</string>
-      <string name="photo_widget_aspect_ratio_original">Original</string>
+      <string name="photo_widget_aspect_ratio_original">与照片一致</string>
     <string name="photo_widget_aspect_ratio_original_description">Match each photo</string>
     <string name="photo_widget_aspect_ratio_fill_widget">Fill</string>
     <string name="photo_widget_aspect_ratio_fill_widget_description">Match the widget size</string>
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Any changes will be lost, go back anyway?</string>
 
-    <string name="photo_widget_configure_tab_content">Content</string>
-    <string name="photo_widget_configure_tab_appearance">Appearance</string>
-    <string name="photo_widget_configure_tab_behavior">Behavior</string>
+    <string name="photo_widget_configure_tab_content">内容</string>
+    <string name="photo_widget_configure_tab_appearance">调整</string>
+    <string name="photo_widget_configure_tab_behavior">行为</string>
 
     <string name="photo_widget_configure_import_prompt">Import from another widget?</string>
     <string name="photo_widget_configure_import_prompt_action">Choose</string>
@@ -107,9 +107,9 @@
     <string name="photo_widget_configure_source_selection_photos">Only the photos you selected will be displayed in this widget.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">This widget is not synced with any folder yet.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">This widget is synced with these folders:</string>
-    <string name="photo_widget_configure_source_keep_current">Keep current source</string>
-    <string name="photo_widget_configure_source_set_directory">Set source to Folder</string>
-    <string name="photo_widget_configure_source_set_photos">Set source to Photos</string>
+    <string name="photo_widget_configure_source_keep_current">保持现在不变</string>
+    <string name="photo_widget_configure_source_set_directory">设置为文件夹</string>
+    <string name="photo_widget_configure_source_set_photos">设置为图片</string>
     <string name="photo_widget_configure_source_warning">Changing the source will replace the current photos from this widget</string>
 
     <string name="photo_widget_configure_menu_crop">Crop</string>
@@ -121,8 +121,8 @@
     <string name="photo_widget_configure_photos_excluded">Excluded from widget</string>
 
     <string name="photo_widget_configure_pick_photo">选择照片</string>
-    <string name="photo_widget_configure_pick_folder">Pick folder</string>
-    <string name="photo_widget_configure_change_source">Change source</string>
+    <string name="photo_widget_configure_pick_folder">选择文件夹</string>
+    <string name="photo_widget_configure_change_source">改变资源</string>
 
     <string name="photo_widget_configure_select_cycling_mode">Photo cycling</string>
     <string name="photo_widget_configure_cycling_mode_interval">Interval</string>
