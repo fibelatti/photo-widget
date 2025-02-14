@@ -44,7 +44,7 @@
 
     <!-- Preferences -->
     <string name="preferences_data_saver">减少存储占用</string>
-    <string name="preferences_data_saver_description">启用后，添加到小组建中的照片会被压缩以节省存储空间。,通常不会影响照片的质量，但如果你的照片中的文字比较小，建议关闭这一功能/n此设置仅影响更改后添加的照片/n不适用于同步文件夹，因为这些照片是直接从你的设备存储中读取的</string>
+    <string name="preferences_data_saver_description">启用后，添加到小组建中的照片会被压缩以节省存储空间。,通常不会影响照片的质量，但如果你的照片中的文字比较小，建议关闭这一功能\n此设置仅影响更改后添加的照片\n不适用于同步文件夹，因为这些照片是直接从你的设备存储中读取的</string>
 
     <string name="preferences_appearance_follow_system">跟随系统</string>
     <string name="preferences_appearance_light">亮色</string>
@@ -170,7 +170,7 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android can restrict background work to optimize battery life, resulting in longer intervals between each photo.\n\nTo update widgets precisely at the selected interval, open settings and allow setting alarms and reminders.</string>
     <string name="photo_widget_configure_interval_open_settings">Open settings</string>
 
-        <string name="photo_widget_configure_roundness_warning">Android小组建的圆角是无法移除的/n你可以增加圆度，但不能完全去掉/n若要使用方角，请选择不同的宽高比</string>
+        <string name="photo_widget_configure_roundness_warning">Android小组建的圆角是无法移除的\n你可以增加圆度，但不能完全去掉\n若要使用方角，请选择不同的宽高比</string>
     <string name="photo_widget_configure_border_warning">如果边框被小组建的最小圆角截断，则可以增加圆度</string>
 
     <string name="photo_widget_configure_border">Border</string>
@@ -226,8 +226,8 @@
 
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pinch to zoom</string>
-        <string name="restriction_warning_hint"></string>
-    <string name="restriction_warning_dialog_title">后台活动受到限制,小部件可能无法正常工作\n点击了解更多信息。</string>
+        <string name="restriction_warning_hint">后台活动受到限制,小部件可能无法正常工作\n点击了解更多信息</string>
+    <string name="restriction_warning_dialog_title">后台活动受到限制,小部件可能无法正常工作\n点击了解更多信息</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget needs to run in the background to update your widgets. It only runs when needed, but if battery usage is set to "optimized" Android may stop the app, causing widgets to stop working correctly.</string>
     <string name="restriction_warning_dialog_body_2">Open app settings and change the battery usage to Unrestricted. If this option isn\'t available, check the phone\'s power settings.</string>
     <string name="restriction_warning_dialog_body_3">Some phones are even more restrictive and may block the app from starting automatically after a restart. Settings vary by device — visit https://dontkillmyapp.com for specific instructions.</string>
