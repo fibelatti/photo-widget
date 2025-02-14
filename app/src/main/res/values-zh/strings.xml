@@ -170,7 +170,8 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android can restrict background work to optimize battery life, resulting in longer intervals between each photo.\n\nTo update widgets precisely at the selected interval, open settings and allow setting alarms and reminders.</string>
     <string name="photo_widget_configure_interval_open_settings">Open settings</string>
 
-    <string name="photo_widget_configure_roundness_warning">The system may impose a minimum rounding. Adjust this value until the border looks as desired on your home screen.</string>
+        <string name="photo_widget_configure_roundness_warning">Android小组建的圆角是无法移除的/n你可以增加圆度，但不能完全去掉/n若要使用方角，请选择不同的宽高比</string>
+    <string name="photo_widget_configure_border_warning">如果边框被小组建的最小圆角截断，则可以增加圆度</string>
 
     <string name="photo_widget_configure_border">Border</string>
     <string name="photo_widget_configure_border_none">None</string>
@@ -186,7 +187,7 @@
     <string name="photo_widget_configure_padding">Padding</string>
 
     <string name="photo_widget_configure_tap_action">Tap action</string>
-    <string name="photo_widget_configure_tap_action_description">Choose the action for the center area (highlighted in green). On widgets larger than 1x1, you can tap on the edges (in red) to switch photos.</string>
+    <string name="photo_widget_configure_tap_action_description">选择中间区域的点击动作（绿色闪烁）,在尺寸大于1x1的小部件上，你可以点击两侧来切换照片。</string>
     <string name="photo_widget_configure_tap_action_none">None</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">View photo in full screen</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">View in gallery</string>
@@ -225,8 +226,8 @@
 
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pinch to zoom</string>
-        <string name="restriction_warning_hint">Background activity is restricted. Widgets may not work correctly. Tap to learn more.</string>
-    <string name="restriction_warning_dialog_title">Background work restrictions and battery optimization</string>
+        <string name="restriction_warning_hint"></string>
+    <string name="restriction_warning_dialog_title">后台活动受到限制,小部件可能无法正常工作\n点击了解更多信息。</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget needs to run in the background to update your widgets. It only runs when needed, but if battery usage is set to "optimized" Android may stop the app, causing widgets to stop working correctly.</string>
     <string name="restriction_warning_dialog_body_2">Open app settings and change the battery usage to Unrestricted. If this option isn\'t available, check the phone\'s power settings.</string>
     <string name="restriction_warning_dialog_body_3">Some phones are even more restrictive and may block the app from starting automatically after a restart. Settings vary by device — visit https://dontkillmyapp.com for specific instructions.</string>
@@ -246,7 +247,7 @@
     <string name="photo_widget_action_cancel">取消</string>
     <string name="photo_widget_action_apply">应用</string>
     <string name="photo_widget_action_confirm">Confirm</string>
-    <string name="photo_widget_action_got_it">Got it</string>
+    <string name="photo_widget_action_got_it">知道了</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo home screen widget</string>
