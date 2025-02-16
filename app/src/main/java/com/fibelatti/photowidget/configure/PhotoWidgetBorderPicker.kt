@@ -338,7 +338,7 @@ private fun DynamicBorderContent(
                     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
                     radius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                     borderColor = localContext.getDynamicAttributeColor(
-                        com.google.android.material.R.attr.colorPrimary,
+                        com.google.android.material.R.attr.colorPrimaryInverse,
                     ),
                     borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
                 )
