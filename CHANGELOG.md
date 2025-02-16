@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.24.1] - 2025-02-16
+[v1.24.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.24.1
+
 ### Fixed
 
 * Fix which dynamic color is applied to the widget border
