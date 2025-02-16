@@ -7,6 +7,7 @@ import coil3.ImageLoader
 import coil3.disk.DiskCache
 import coil3.disk.directory
 import coil3.memory.MemoryCache
+import coil3.request.addLastModifiedToFileCacheKey
 import coil3.request.allowHardware
 import com.fibelatti.photowidget.widget.data.DisplayedPhotoDao
 import com.fibelatti.photowidget.widget.data.ExcludedWidgetPhotoDao
@@ -81,6 +82,7 @@ object PhotoWidgetModule {
                 .build()
         }
         .interceptorCoroutineContext(Dispatchers.IO)
+        .addLastModifiedToFileCacheKey(enable = true)
         .allowHardware(enable = false)
         .build()
 }

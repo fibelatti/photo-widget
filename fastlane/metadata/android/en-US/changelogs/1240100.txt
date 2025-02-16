@@ -1,0 +1,7 @@
+This version brings the following updates:
+
+* Fixed which dynamic color is applied to the widget border
+* Fixed folder photos showing the loading indicator after cropping
+* Updated how "View in gallery" works to try avoiding the app chooser
+
+Thanks for using the app!

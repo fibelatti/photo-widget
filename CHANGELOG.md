@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.24.1] - 2025-02-16
+[v1.24.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.24.1
+
+### Fixed
+
+* Fix which dynamic color is applied to the widget border
+* Fix cropping folder photos
+* Attempt to fix "View in gallery" showing the app chooser
+
 ## [v1.24.0] - 2025-02-13
 [v1.24.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.24.0
 
