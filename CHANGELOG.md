@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Fix which dynamic color is applied to the widget border
+* Fix cropping folder photos
 
 ## [v1.24.0] - 2025-02-13
 [v1.24.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.24.0

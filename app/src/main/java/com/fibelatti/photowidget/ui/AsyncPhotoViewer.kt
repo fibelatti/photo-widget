@@ -42,7 +42,7 @@ fun AsyncPhotoViewer(
     contentScale: ContentScale,
     modifier: Modifier = Modifier,
     constrainBitmapSize: Boolean = true,
-    transformer: (Bitmap?) -> Bitmap? = { it },
+    transformer: (Bitmap) -> Bitmap = { it },
     badge: @Composable BoxScope.() -> Unit = {},
 ) {
     BoxWithConstraints(
@@ -61,9 +61,9 @@ fun AsyncPhotoViewer(
                 },
             )
         }
-        val transformedBitmap: ImageBitmap? by remember(*dataKey) {
+        val transformedBitmap: ImageBitmap? by remember {
             derivedStateOf {
-                photoBitmap?.let { transformer(it) }?.asImageBitmap()
+                photoBitmap?.let(transformer)?.asImageBitmap()
             }
         }
 

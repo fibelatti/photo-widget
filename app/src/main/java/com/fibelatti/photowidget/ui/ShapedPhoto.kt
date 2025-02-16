@@ -32,20 +32,18 @@ fun ShapedPhoto(
     AsyncPhotoViewer(
         data = photo?.getPhotoPath(),
         dataKey = arrayOf(
-            photo,
-            shapeId,
+            photo?.photoId,
+            photo?.getPhotoPath(),
+            photo?.timestamp,
             aspectRatio,
+            shapeId,
             cornerRadius,
             opacity,
             blackAndWhite,
             border,
         ),
         isLoading = isLoading,
-        contentScale = if (aspectRatio.isConstrained) {
-            ContentScale.FillWidth
-        } else {
-            ContentScale.Fit
-        },
+        contentScale = if (aspectRatio.isConstrained) ContentScale.FillWidth else ContentScale.Fit,
         modifier = modifier.aspectRatio(ratio = aspectRatio.aspectRatio),
         transformer = { bitmap ->
             val borderColor = when (border) {
@@ -57,25 +55,23 @@ fun ShapedPhoto(
             }
             val borderPercent = border.getBorderPercent()
 
-            bitmap?.run {
-                if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
-                    withPolygonalShape(
-                        shapeId = shapeId,
-                        opacity = opacity,
-                        blackAndWhite = blackAndWhite,
-                        borderColor = borderColor,
-                        borderPercent = borderPercent,
-                    )
-                } else {
-                    withRoundedCorners(
-                        aspectRatio = aspectRatio,
-                        radius = cornerRadius,
-                        opacity = opacity,
-                        blackAndWhite = blackAndWhite,
-                        borderColor = borderColor,
-                        borderPercent = borderPercent,
-                    )
-                }
+            if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
+                bitmap.withPolygonalShape(
+                    shapeId = shapeId,
+                    opacity = opacity,
+                    blackAndWhite = blackAndWhite,
+                    borderColor = borderColor,
+                    borderPercent = borderPercent,
+                )
+            } else {
+                bitmap.withRoundedCorners(
+                    aspectRatio = aspectRatio,
+                    radius = cornerRadius,
+                    opacity = opacity,
+                    blackAndWhite = blackAndWhite,
+                    borderColor = borderColor,
+                    borderPercent = borderPercent,
+                )
             }
         },
         badge = badge,

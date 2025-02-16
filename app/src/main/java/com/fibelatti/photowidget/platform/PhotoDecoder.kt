@@ -8,6 +8,7 @@ import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import coil3.toBitmap
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.File
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -25,7 +26,7 @@ class PhotoDecoder @Inject constructor(
         Timber.d("Decoding $data into a bitmap (maxDimension=$maxDimension)")
 
         val request = ImageRequest.Builder(context)
-            .data(data)
+            .data(if (data.toString().contains(context.packageName)) File(data.toString()) else data)
             .apply { if (maxDimension != null) size(maxDimension) }
             .build()
 
