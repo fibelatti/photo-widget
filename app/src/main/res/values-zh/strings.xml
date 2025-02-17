@@ -5,9 +5,9 @@
 
     <!-- Home -->
     <string name="photo_widget_home_title">把你最喜欢的照片放到桌面</string>
-      <string name="photo_widget_home_instruction">通过点击其中一个选项新建小组建\n别担心，你可以随时更改！</string>
-    <string name="photo_widget_home_new">小组建</string>
-    <string name="photo_widget_home_current">我的小组建</string>
+      <string name="photo_widget_home_instruction">通过点击其中一个选项新建小组件\n别担心，你可以随时更改！</string>
+    <string name="photo_widget_home_new">小组件</string>
+    <string name="photo_widget_home_current">我的小组件</string>
     <string name="photo_widget_home_settings">设置</string>
     <string name="photo_widget_home_data_saver">优化存储</string>
     <string name="photo_widget_home_appearance">主题</string>
@@ -29,13 +29,13 @@
     </plurals>
 
     <!-- My Widgets -->
-    <string name="photo_widget_home_empty_widgets">您还没有添加任何小部件\n添加到桌面的小部件会出现在这里</string>
+    <string name="photo_widget_home_empty_widgets">您还没有添加任何小组件\n添加到桌面的小组件会出现在这里</string>
     <string name="photo_widget_home_filter_all">所有</string>
     <string name="photo_widget_home_filter_photos">图片</string>
     <string name="photo_widget_home_filter_folder">文件夹</string>
 
     <string name="photo_widget_home_removed_label">移除</string>
-    <string name="photo_widget_home_removed_widgets_hint">被删除的小部件将不再在桌面上，并在一周后永久删除,你可以选择保留它们</string>
+    <string name="photo_widget_home_removed_widgets_hint">被删除的小组件将不再在桌面上，并在一周后永久删除,你可以选择保留它们</string>
 
     <string name="photo_widget_home_my_widget_action_edit">View / Edit</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicate</string>
@@ -45,7 +45,7 @@
 
     <!-- Preferences -->
     <string name="preferences_data_saver">减少存储占用</string>
-    <string name="preferences_data_saver_description">启用后，添加到小组建中的照片会被压缩以节省存储空间。,通常不会影响照片的质量，但如果你的照片中的文字比较小，建议关闭这一功能\n\n此设置仅影响更改后添加的照片\n\n不适用于同步文件夹，因为这些照片是直接从你的设备存储中读取的</string>
+    <string name="preferences_data_saver_description">启用后，添加到小组件中的照片会被压缩以节省存储空间。,通常不会影响照片的质量，但如果你的照片中的文字比较小，建议关闭这一功能\n\n此设置仅影响更改后添加的照片\n\n不适用于同步文件夹，因为这些照片是直接从你的设备存储中读取的</string>
 
     <string name="preferences_appearance_follow_system">跟随系统</string>
     <string name="preferences_appearance_light">亮色</string>
@@ -55,8 +55,8 @@
     <string name="preferences_dynamic_colors_disabled">默认颜色</string>
 
     <!-- Widget Defaults -->
-    <string name="widget_defaults_title">小组建默认参数</string>
-    <string name="widget_defaults_explanation">这些值是在创建新小部件时预加载的,它们对于使用相同的配置设置多个小部件非常有用，从而避免了每次调整设置的需要(注意:对这些值的任何更改都不会影响现有的小部件)</string>
+    <string name="widget_defaults_title">小组件默认参数</string>
+    <string name="widget_defaults_explanation">这些值是在创建新小组件时预加载的,它们对于使用相同的配置设置多个小组件非常有用，从而避免了每次调整设置的需要(注意:对这些值的任何更改都不会影响现有的小组件)</string>
     <string name="widget_defaults_source">资源</string>
     <string name="widget_defaults_shuffle">Shuffle</string>
     <string name="widget_defaults_cycling">照片循环</string>
@@ -86,7 +86,7 @@
       <string name="photo_widget_aspect_ratio_original">原型</string>
     <string name="photo_widget_aspect_ratio_original_description">匹配每张照片</string>
     <string name="photo_widget_aspect_ratio_fill_widget">填充</string>
-    <string name="photo_widget_aspect_ratio_fill_widget_description">匹配小组建大小</string>
+    <string name="photo_widget_aspect_ratio_fill_widget_description">匹配小组件大小</string>
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Any changes will be lost, go back anyway?</string>
 
@@ -100,7 +100,7 @@
     <string name="photo_widget_configure_import_dialog_description">All photos and configurations will be copied to the new widget</string>
 
     <string name="photo_widget_configure_import_error">Unable to import all selected photos</string>
-    <string name="photo_widget_configure_too_many_photos_error">每个同步文件夹最多可以包含3000张照片。您可以选择多个子文件夹，并且每个子文件夹将单独计算\n\n你不能选择连拍照片,照片是一个接一个地处理的，而包含数千张照片的文件夹会导致小部件编辑器出现严重的性能问题，在切换照片时也会出现在主屏幕上</string>
+    <string name="photo_widget_configure_too_many_photos_error">每个同步文件夹最多可以包含3000张照片。您可以选择多个子文件夹，并且每个子文件夹将单独计算\n\n你不能选择连拍照片,照片是一个接一个地处理的，而包含数千张照片的文件夹会导致小组件编辑器出现严重的性能问题，在切换照片时也会出现在主屏幕上</string>
     <string name="photo_widget_configure_missing_photos_error">The widget must have at least one photo. Widgets can only be deleted directly from the home screen.</string>
 
     <string name="photo_widget_configure_menu_source">Source</string>
@@ -171,14 +171,14 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">Android can restrict background work to optimize battery life, resulting in longer intervals between each photo.\n\nTo update widgets precisely at the selected interval, open settings and allow setting alarms and reminders.</string>
     <string name="photo_widget_configure_interval_open_settings">Open settings</string>
 
-        <string name="photo_widget_configure_roundness_warning">Android小组建的圆角是无法移除的\n你可以增加圆度，但不能完全去掉\n若要使用方角，请选择不同的宽高比</string>
-    <string name="photo_widget_configure_border_warning">如果边框被小组建的最小圆角截断，则可以增加圆度</string>
+        <string name="photo_widget_configure_roundness_warning">Android小组件的圆角是无法移除的\n你可以增加圆度，但不能完全去掉\n若要使用方角，请选择不同的宽高比</string>
+    <string name="photo_widget_configure_border_warning">如果边框被小组件的最小圆角截断，则可以增加圆度</string>
 
     <string name="photo_widget_configure_border">边框</string>
     <string name="photo_widget_configure_border_none">无</string>
         <string name="photo_widget_configure_border_dynamic">主题颜色</string>
     <string name="photo_widget_configure_border_color">自主选色</string>
-    <string name="photo_widget_configure_border_explanation">更改将在您更改手机的主题颜色后的下一个小组建更新,要立即更新所有小部件，只需打开应用</string>
+    <string name="photo_widget_configure_border_explanation">更改将在您更改手机的主题颜色后的下一个小组件更新,要立即更新所有小组件，只需打开应用</string>
 
     <string name="photo_widget_configure_offset">偏移</string>
     <string name="photo_widget_configure_offset_current_values">水平: %1$d, 竖直: %2$d</string>
@@ -188,7 +188,7 @@
     <string name="photo_widget_configure_padding">内边距</string>
 
     <string name="photo_widget_configure_tap_action">点击行为</string>
-    <string name="photo_widget_configure_tap_action_description">选择中间区域的点击动作（绿色闪烁部分）,在尺寸大于1x1的小部件上，你可以点击两侧来切换照片</string>
+    <string name="photo_widget_configure_tap_action_description">选择中间区域的点击动作（绿色闪烁部分）,在尺寸大于1x1的小组件上，你可以点击两侧来切换照片</string>
     <string name="photo_widget_configure_tap_action_none">None</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">View photo in full screen</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">View in gallery</string>
@@ -209,8 +209,8 @@
     <string name="photo_widget_time_picker_title">Select time</string>
 
     <!-- Help -->
-    <string name="help_article_title_1">小组建无法添加到桌面</string>
-    <string name="help_article_body_1">如果你已经配置了一个小组建，但当你试图将它添加到桌面时没有任何反应，或者如果它已经添加但不显示所选照片，你可以尝试直接从桌面添加它。\n\n操作说明可能因Android版本、设备制造商和桌面而异，但通常情况下，流程如下：\n\n1.长按桌面上的空白处，直到弹出菜单出现。\n2.找到“小组建”选项\n3.在可用的小部件中搜索“Material Photo Widget”\n4将其拖到桌面并像往常一样配置它</string>
+    <string name="help_article_title_1">小组件无法添加到桌面</string>
+    <string name="help_article_body_1">如果你已经配置了一个小组件，但当你试图将它添加到桌面时没有任何反应，或者如果它已经添加但不显示所选照片，你可以尝试直接从桌面添加它。\n\n操作说明可能因Android版本、设备制造商和桌面而异，但通常情况下，流程如下：\n\n1.长按桌面上的空白处，直到弹出菜单出现。\n2.找到“小组件”选项\n3.在可用的小组件中搜索“Material Photo Widget”\n4将其拖到桌面并像往常一样配置它</string>
 
     <string name="help_article_title_2">Photos are not changing automatically</string>
     <string name="help_article_body_2">The selected interval or scheduled times are an approximation of when the next photo will be displayed. Android considers several factors when determining the actual time, and each device manufacturer may impose restrictions on background processes.\n\nTo ensure that the photos change exactly when you want them to, grant the app "Exact Alarms" permission and make sure no battery restrictions are applied to it in your phone\'s settings.</string>
@@ -227,8 +227,8 @@
 
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pinch to zoom</string>
-        <string name="restriction_warning_hint">后台活动受到限制,小部件可能无法正常工作\n点击了解更多信息</string>
-    <string name="restriction_warning_dialog_title">后台活动受到限制,小部件可能无法正常工作\n点击了解更多信息</string>
+        <string name="restriction_warning_hint">后台活动受到限制,小组件可能无法正常工作\n点击了解更多信息</string>
+    <string name="restriction_warning_dialog_title">后台活动受到限制,小组件可能无法正常工作\n点击了解更多信息</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget needs to run in the background to update your widgets. It only runs when needed, but if battery usage is set to "optimized" Android may stop the app, causing widgets to stop working correctly.</string>
     <string name="restriction_warning_dialog_body_2">Open app settings and change the battery usage to Unrestricted. If this option isn\'t available, check the phone\'s power settings.</string>
     <string name="restriction_warning_dialog_body_3">Some phones are even more restrictive and may block the app from starting automatically after a restart. Settings vary by device — visit https://dontkillmyapp.com for specific instructions.</string>
