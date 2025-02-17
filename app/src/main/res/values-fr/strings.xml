@@ -36,11 +36,12 @@
     <string name="photo_widget_home_filter_folder">Dossier</string>
 
     <string name="photo_widget_home_removed_label">Supprimé</string>
-    <string name="photo_widget_home_removed_widgets_hint">Les widgets supprimés ne sont plus sur votre écran d\'accueil et seront définitivement supprimés après une semaine</string>
+    <string name="photo_widget_home_removed_widgets_hint">Les widgets supprimés ne sont plus sur votre écran d\'accueil. Ils sont définitivement supprimés de l\'application après 7 jours. Vous pouvez choisir de les « Garder ».</string>
 
     <string name="photo_widget_home_my_widget_action_edit">Afficher / Modifier</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Dupliquer</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restaurer</string>
+    <string name="photo_widget_home_removed_widget_action_keep">Garder</string>
     <string name="photo_widget_home_removed_widget_action_delete">Supprimer définitivement</string>
 
     <!-- Preferences -->

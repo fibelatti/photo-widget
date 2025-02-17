@@ -106,6 +106,7 @@ import com.fibelatti.photowidget.preferences.ShapePicker
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
@@ -597,27 +598,10 @@ private fun AppearanceTab(
             systemWidgetRadius > 0.dp
 
         if (showRoundnessWarning) {
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .background(
-                        color = Color(0xFFFFE57F),
-                        shape = MaterialTheme.shapes.medium,
-                    )
-                    .padding(vertical = 8.dp, horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_warning),
-                    contentDescription = null,
-                )
-
-                Text(
-                    text = stringResource(R.string.photo_widget_configure_roundness_warning),
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            }
+            WarningSign(
+                text = stringResource(R.string.photo_widget_configure_roundness_warning),
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
         }
 
         PickerDefault(

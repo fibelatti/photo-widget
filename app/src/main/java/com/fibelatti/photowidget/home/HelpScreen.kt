@@ -34,9 +34,11 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
+import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -80,9 +82,14 @@ fun HelpScreen(
 
         if (localInspectionMode || localContext.isBackgroundRestricted()) {
             item {
-                BackgroundRestrictionWarning(
-                    onClick = onBackgroundRestrictionClick,
-                    modifier = Modifier.fillMaxWidth(),
+                WarningSign(
+                    text = stringResource(R.string.restriction_warning_hint),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            onClick = onBackgroundRestrictionClick,
+                            role = Role.Button,
+                        ),
                 )
             }
         }

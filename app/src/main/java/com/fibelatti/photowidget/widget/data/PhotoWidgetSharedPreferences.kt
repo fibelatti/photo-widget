@@ -369,9 +369,13 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         }
     }
 
-    fun saveWidgetDeletionTimestamp(appWidgetId: Int, timestamp: Long) {
+    fun saveWidgetDeletionTimestamp(appWidgetId: Int, timestamp: Long?) {
         sharedPreferences.edit {
-            putLong("${PreferencePrefix.DELETION_TIMESTAMP}$appWidgetId", timestamp)
+            if (timestamp != null) {
+                putLong("${PreferencePrefix.DELETION_TIMESTAMP}$appWidgetId", timestamp)
+            } else {
+                remove("${PreferencePrefix.DELETION_TIMESTAMP}$appWidgetId")
+            }
         }
     }
 

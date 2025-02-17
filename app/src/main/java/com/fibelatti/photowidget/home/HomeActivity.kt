@@ -33,6 +33,7 @@ import com.fibelatti.photowidget.configure.sharedPhotos
 import com.fibelatti.photowidget.hints.HintStorage
 import com.fibelatti.photowidget.licenses.OssLicensesActivity
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.BackgroundRestrictedSheetDialog
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
@@ -172,11 +173,17 @@ class HomeActivity : AppCompatActivity() {
         )
     }
 
-    private fun showRemovedWidgetMenu(appWidgetId: Int) {
+    private fun showRemovedWidgetMenu(appWidgetId: Int, status: PhotoWidgetStatus) {
         SelectionDialog.show(
             context = this,
             title = "",
-            options = RemovedWidgetOptions.entries,
+            options = buildList {
+                add(RemovedWidgetOptions.RESTORE)
+                if (PhotoWidgetStatus.KEPT != status) {
+                    add(RemovedWidgetOptions.KEEP)
+                }
+                add(RemovedWidgetOptions.DELETE)
+            },
             optionName = { option -> getString(option.label) },
             onOptionSelected = { option ->
                 when (option) {
@@ -186,6 +193,10 @@ class HomeActivity : AppCompatActivity() {
                         }
 
                         startActivity(intent)
+                    }
+
+                    RemovedWidgetOptions.KEEP -> {
+                        homeViewModel.keepWidget(appWidgetId = appWidgetId)
                     }
 
                     RemovedWidgetOptions.DELETE -> {
@@ -339,6 +350,7 @@ class HomeActivity : AppCompatActivity() {
     ) {
 
         RESTORE(label = R.string.photo_widget_home_removed_widget_action_restore),
+        KEEP(label = R.string.photo_widget_home_removed_widget_action_keep),
         DELETE(label = R.string.photo_widget_home_removed_widget_action_delete),
     }
 

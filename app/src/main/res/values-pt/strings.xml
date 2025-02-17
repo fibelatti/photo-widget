@@ -36,11 +36,12 @@
     <string name="photo_widget_home_filter_folder">Pasta</string>
 
     <string name="photo_widget_home_removed_label">Removido</string>
-    <string name="photo_widget_home_removed_widgets_hint">Os widgets removidos não estão mais na sua tela inicial e serão excluídos permanentemente após uma semana</string>
+    <string name="photo_widget_home_removed_widgets_hint">Os widgets removidos não estão mais na sua tela inicial. Eles são excluídos permanentemente do aplicativo após 7 dias. Você pode escolher "Mantê-los".</string>
 
     <string name="photo_widget_home_my_widget_action_edit">Ver / Editar</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicar</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restaurar</string>
+    <string name="photo_widget_home_removed_widget_action_keep">Manter</string>
     <string name="photo_widget_home_removed_widget_action_delete">Apagar permanentemente</string>
 
     <!-- Preferences -->

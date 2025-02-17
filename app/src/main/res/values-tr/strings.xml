@@ -35,11 +35,12 @@
     <string name="photo_widget_home_filter_folder">Klasör</string>
 
     <string name="photo_widget_home_removed_label">Kaldırıldı</string>
-    <string name="photo_widget_home_removed_widgets_hint">Kaldırılan widget\'lar artık ana ekranınızda olmayacak ve bir hafta sonra kalıcı olarak silinecek</string>
+    <string name="photo_widget_home_removed_widgets_hint">Silinen widget\'lar artık ana ekranınızda yer almayacak. 7 gün sonra uygulamadan kalıcı olarak silinirler. Bunları "Tutmayı" seçebilirsiniz.</string>
 
     <string name="photo_widget_home_my_widget_action_edit">Görüntüle / Düzenle</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Çoğalt</string>
     <string name="photo_widget_home_removed_widget_action_restore">Eski haline getirmek</string>
+    <string name="photo_widget_home_removed_widget_action_keep">Kale</string>
     <string name="photo_widget_home_removed_widget_action_delete">kalıcı olarak sil</string>
 
     <!-- Preferences -->

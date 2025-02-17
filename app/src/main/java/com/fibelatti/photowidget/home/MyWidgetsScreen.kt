@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,7 +24,6 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,9 +41,12 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
+import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.ui.ColoredShape
+import com.fibelatti.photowidget.ui.RemovedWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
+import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -53,7 +54,7 @@ import com.fibelatti.ui.theme.ExtendedTheme
 fun MyWidgetsScreen(
     widgets: List<Pair<Int, PhotoWidget>>,
     onCurrentWidgetClick: (appWidgetId: Int) -> Unit,
-    onRemovedWidgetClick: (appWidgetId: Int) -> Unit,
+    onRemovedWidgetClick: (appWidgetId: Int, PhotoWidgetStatus) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(
@@ -63,15 +64,11 @@ fun MyWidgetsScreen(
         val maxWidth = maxWidth
 
         var selectedSource: PhotoWidgetSource? by remember { mutableStateOf(null) }
-        val filteredWidgets: List<Pair<Int, PhotoWidget>> by remember(widgets) {
-            derivedStateOf {
-                widgets.filter { selectedSource == null || it.second.source == selectedSource }
-            }
+        val filteredWidgets: List<Pair<Int, PhotoWidget>> = remember(widgets) {
+            widgets.filter { selectedSource == null || it.second.source == selectedSource }
         }
-        val hasDeletedWidgets by remember(widgets) {
-            derivedStateOf {
-                filteredWidgets.any { it.second.deletionTimestamp > 0 }
-            }
+        val hasDeletedWidgets = remember(widgets) {
+            filteredWidgets.any { PhotoWidgetStatus.ACTIVE != it.second.status }
         }
 
         AnimatedContent(
@@ -83,18 +80,24 @@ fun MyWidgetsScreen(
                 LazyVerticalStaggeredGrid(
                     columns = StaggeredGridCells.Fixed(count = if (maxWidth < 600.dp) 2 else 4),
                     modifier = modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(start = 16.dp, top = 80.dp, end = 16.dp, bottom = 16.dp),
+                    contentPadding = PaddingValues(start = 16.dp, top = 80.dp, end = 16.dp, bottom = 120.dp),
                     verticalItemSpacing = 16.dp,
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     items(items, key = { (id, _) -> id }) { (id, widget) ->
-                        val isRemoved = widget.deletionTimestamp > 0
+                        val isRemoved = PhotoWidgetStatus.ACTIVE != widget.status
 
                         Box(
                             modifier = Modifier
                                 .animateItem()
                                 .fillMaxSize()
-                                .clickable { if (isRemoved) onRemovedWidgetClick(id) else onCurrentWidgetClick(id) },
+                                .clickable {
+                                    if (isRemoved) {
+                                        onRemovedWidgetClick(id, widget.status)
+                                    } else {
+                                        onCurrentWidgetClick(id)
+                                    }
+                                },
                             contentAlignment = Alignment.BottomCenter,
                         ) {
                             ShapedPhoto(
@@ -110,16 +113,9 @@ fun MyWidgetsScreen(
                             )
 
                             if (isRemoved) {
-                                Text(
-                                    text = stringResource(R.string.photo_widget_home_removed_label),
-                                    modifier = Modifier
-                                        .padding(bottom = 8.dp)
-                                        .background(
-                                            color = MaterialTheme.colorScheme.errorContainer,
-                                            shape = MaterialTheme.shapes.large,
-                                        )
-                                        .padding(horizontal = 12.dp, vertical = 4.dp),
-                                    color = MaterialTheme.colorScheme.onErrorContainer,
+                                RemovedWidgetBadge(
+                                    modifier = Modifier.padding(bottom = 8.dp),
+                                    showIcon = PhotoWidgetStatus.REMOVED == widget.status,
                                 )
                             }
                         }
@@ -197,20 +193,12 @@ fun MyWidgetsScreen(
         }
 
         if (hasDeletedWidgets) {
-            Text(
+            WarningSign(
                 text = stringResource(id = R.string.photo_widget_home_removed_widgets_hint),
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
-                    .padding(start = 32.dp, bottom = 16.dp, end = 32.dp)
-                    .background(
-                        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f),
-                        shape = RoundedCornerShape(8.dp),
-                    )
-                    .padding(all = 8.dp),
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.labelMedium,
+                    .padding(start = 32.dp, bottom = 16.dp, end = 32.dp),
             )
         }
     }
@@ -226,6 +214,12 @@ private fun MyWidgetsScreenPreview() {
 
         MyWidgetsScreen(
             widgets = List(size = 10) { index ->
+                val status = when (index) {
+                    2 -> PhotoWidgetStatus.REMOVED
+                    3 -> PhotoWidgetStatus.KEPT
+                    else -> PhotoWidgetStatus.ACTIVE
+                }
+
                 index to PhotoWidget(
                     source = PhotoWidgetSource.PHOTOS,
                     photos = listOf(LocalPhoto(photoId = "photo-1")),
@@ -240,11 +234,12 @@ private fun MyWidgetsScreenPreview() {
                     shapeId = allShapeIds.random(),
                     cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                     opacity = opacities.random(),
-                    deletionTimestamp = if (index == 3) 1 else -1,
+                    status = status,
+                    deletionTimestamp = if (PhotoWidgetStatus.REMOVED == status) 1 else -1,
                 )
             },
             onCurrentWidgetClick = {},
-            onRemovedWidgetClick = {},
+            onRemovedWidgetClick = { _, _ -> },
         )
     }
 }
@@ -256,7 +251,7 @@ private fun MyWidgetsScreenEmptyPreview() {
         MyWidgetsScreen(
             widgets = emptyList(),
             onCurrentWidgetClick = {},
-            onRemovedWidgetClick = {},
+            onRemovedWidgetClick = { _, _ -> },
         )
     }
 }
