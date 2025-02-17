@@ -1,7 +1,6 @@
 package com.fibelatti.photowidget.configure
 
 import android.content.Context
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,7 +29,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.home.HomeViewModel
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
+import com.fibelatti.photowidget.ui.RemovedWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
 
 object ExistingWidgetPicker {
@@ -89,8 +90,6 @@ private fun ExistingWidgetPicker(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             items(currentWidgets, key = { (id, _) -> id }) { (id, widget) ->
-                val isRemoved = widget.deletionTimestamp > 0
-
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -109,17 +108,10 @@ private fun ExistingWidgetPicker(
                         isLoading = widget.isLoading,
                     )
 
-                    if (isRemoved) {
-                        Text(
-                            text = stringResource(R.string.photo_widget_home_removed_label),
-                            modifier = Modifier
-                                .padding(bottom = 8.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.errorContainer,
-                                    shape = MaterialTheme.shapes.large,
-                                )
-                                .padding(horizontal = 12.dp, vertical = 4.dp),
-                            color = MaterialTheme.colorScheme.onErrorContainer,
+                    if (PhotoWidgetStatus.ACTIVE != widget.status) {
+                        RemovedWidgetBadge(
+                            modifier = Modifier.padding(bottom = 8.dp),
+                            showIcon = PhotoWidgetStatus.REMOVED == widget.status,
                         )
                     }
                 }

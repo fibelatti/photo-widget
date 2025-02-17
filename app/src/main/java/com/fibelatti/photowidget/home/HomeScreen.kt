@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -44,7 +45,7 @@ fun HomeScreen(
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
     currentWidgets: List<Pair<Int, PhotoWidget>>,
     onCurrentWidgetClick: (appWidgetId: Int) -> Unit,
-    onRemovedWidgetClick: (appWidgetId: Int) -> Unit,
+    onRemovedWidgetClick: (appWidgetId: Int, PhotoWidgetStatus) -> Unit,
     onDefaultsClick: () -> Unit,
     onDataSaverClick: () -> Unit,
     onAppearanceClick: () -> Unit,
@@ -204,7 +205,7 @@ private fun HomeScreenPreview() {
             onCreateNewWidgetClick = {},
             currentWidgets = emptyList(),
             onCurrentWidgetClick = {},
-            onRemovedWidgetClick = {},
+            onRemovedWidgetClick = { _, _ -> },
             onDefaultsClick = {},
             onDataSaverClick = {},
             onAppearanceClick = {},

@@ -36,11 +36,12 @@
     <string name="photo_widget_home_filter_folder">Папка</string>
 
     <string name="photo_widget_home_removed_label">Удаленный</string>
-    <string name="photo_widget_home_removed_widgets_hint">Удаленные виджеты больше не отображаются на главном экране и будут окончательно удалены через неделю.</string>
+    <string name="photo_widget_home_removed_widgets_hint">Удаленные виджеты больше не отображаются на главном экране. Они навсегда удаляются из приложения через 7 дней. Вы можете выбрать «Сохранить» их.</string>
 
     <string name="photo_widget_home_my_widget_action_edit">Просмотреть / Редактировать</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Дублировать</string>
     <string name="photo_widget_home_removed_widget_action_restore">Восстановить</string>
+    <string name="photo_widget_home_removed_widget_action_keep">Держать</string>
     <string name="photo_widget_home_removed_widget_action_delete">Удалить навсегда</string>
 
     <!-- Preferences -->

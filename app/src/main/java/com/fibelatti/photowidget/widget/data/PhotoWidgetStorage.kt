@@ -413,7 +413,7 @@ class PhotoWidgetStorage @Inject constructor(
         return sharedPreferences.getWidgetTapAction(appWidgetId = appWidgetId)
     }
 
-    fun saveWidgetDeletionTimestamp(appWidgetId: Int, timestamp: Long) {
+    fun saveWidgetDeletionTimestamp(appWidgetId: Int, timestamp: Long?) {
         sharedPreferences.saveWidgetDeletionTimestamp(appWidgetId = appWidgetId, timestamp = timestamp)
     }
 
@@ -442,8 +442,13 @@ class PhotoWidgetStorage @Inject constructor(
 
         for (id in unusedWidgetIds) {
             Timber.d("Stale data found (appWidgetId=$id)")
+            val deletionTimestamp = getWidgetDeletionTimestamp(appWidgetId = id)
+            if (deletionTimestamp == -1L) {
+                Timber.d("Widget was kept by the user (appWidgetId=$id)")
+                continue
+            }
 
-            val deletionInterval = currentTimestamp - getWidgetDeletionTimestamp(appWidgetId = id)
+            val deletionInterval = currentTimestamp - deletionTimestamp
             if (deletionInterval <= DELETION_THRESHOLD_MILLIS) {
                 Timber.d("Deletion threshold not reached (appWidgetId=$id, interval=$deletionInterval)")
                 continue
