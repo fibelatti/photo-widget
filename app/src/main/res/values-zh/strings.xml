@@ -17,7 +17,7 @@
     <string name="photo_widget_home_rate">评价</string>
     <string name="photo_widget_home_feedback">反馈</string>
   <string name="photo_widget_home_help">无法正常运行?</string>
-    <string name="photo_widget_home_common_issues">Common issues</string>
+    <string name="photo_widget_home_common_issues">常见问题</string>
     <string name="photo_widget_home_privacy_policy">隐私策略</string>
     <string name="photo_widget_home_developer">由Filipe Belatti开发❤</string>
     <string name="photo_widget_home_version">版本号: %s</string>
@@ -35,16 +35,17 @@
     <string name="photo_widget_home_filter_folder">文件夹</string>
 
     <string name="photo_widget_home_removed_label">移除</string>
-    <string name="photo_widget_home_removed_widgets_hint">被删除的小部件将不再在桌面上，并在一周后永久删除</string>
+    <string name="photo_widget_home_removed_widgets_hint">被删除的小部件将不再在桌面上，并在一周后永久删除,你可以选择保留它们</string>
 
     <string name="photo_widget_home_my_widget_action_edit">View / Edit</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicate</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restore</string>
+      <string name="photo_widget_home_removed_widget_action_keep">保持</string>
     <string name="photo_widget_home_removed_widget_action_delete">Delete permanently</string>
 
     <!-- Preferences -->
     <string name="preferences_data_saver">减少存储占用</string>
-    <string name="preferences_data_saver_description">启用后，添加到小组建中的照片会被压缩以节省存储空间。,通常不会影响照片的质量，但如果你的照片中的文字比较小，建议关闭这一功能\n此设置仅影响更改后添加的照片\n不适用于同步文件夹，因为这些照片是直接从你的设备存储中读取的</string>
+    <string name="preferences_data_saver_description">启用后，添加到小组建中的照片会被压缩以节省存储空间。,通常不会影响照片的质量，但如果你的照片中的文字比较小，建议关闭这一功能\n\n此设置仅影响更改后添加的照片\n\n不适用于同步文件夹，因为这些照片是直接从你的设备存储中读取的</string>
 
     <string name="preferences_appearance_follow_system">跟随系统</string>
     <string name="preferences_appearance_light">亮色</string>
@@ -75,17 +76,17 @@
     <string name="photo_widget_source_directory">文件夹</string>
 
     <!-- Aspect Ratio -->
-    <string name="photo_widget_aspect_ratio_title">Aspect ratio</string>
+    <string name="photo_widget_aspect_ratio_title">比例</string>
     <string name="photo_widget_aspect_ratio_square">正方形</string>
     <string name="photo_widget_aspect_ratio_tall">高</string>
     <string name="photo_widget_aspect_ratio_wide">宽</string>
 
     
   <string name="photo_widget_aspect_ratio_wide_description" translatable="false">16:10</string>
-      <string name="photo_widget_aspect_ratio_original">与照片一致</string>
-    <string name="photo_widget_aspect_ratio_original_description">Match each photo</string>
-    <string name="photo_widget_aspect_ratio_fill_widget">Fill</string>
-    <string name="photo_widget_aspect_ratio_fill_widget_description">Match the widget size</string>
+      <string name="photo_widget_aspect_ratio_original">原型</string>
+    <string name="photo_widget_aspect_ratio_original_description">匹配每张照片</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">填充</string>
+    <string name="photo_widget_aspect_ratio_fill_widget_description">匹配小组建大小</string>
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Any changes will be lost, go back anyway?</string>
 
@@ -173,21 +174,21 @@
         <string name="photo_widget_configure_roundness_warning">Android小组建的圆角是无法移除的\n你可以增加圆度，但不能完全去掉\n若要使用方角，请选择不同的宽高比</string>
     <string name="photo_widget_configure_border_warning">如果边框被小组建的最小圆角截断，则可以增加圆度</string>
 
-    <string name="photo_widget_configure_border">Border</string>
-    <string name="photo_widget_configure_border_none">None</string>
-        <string name="photo_widget_configure_border_dynamic">Dynamic</string>
-    <string name="photo_widget_configure_border_color">Colored</string>
-    <string name="photo_widget_configure_border_explanation">Changes will take place during the next widget update after you change your phone\'s theme color. To update all widgets immediately, simply open the app.</string>
+    <string name="photo_widget_configure_border">边框</string>
+    <string name="photo_widget_configure_border_none">无</string>
+        <string name="photo_widget_configure_border_dynamic">主题颜色</string>
+    <string name="photo_widget_configure_border_color">自主选色</string>
+    <string name="photo_widget_configure_border_explanation">更改将在您更改手机的主题颜色后的下一个小组建更新,要立即更新所有小部件，只需打开应用</string>
 
-    <string name="photo_widget_configure_offset">Offset</string>
-    <string name="photo_widget_configure_offset_current_values">Horizontal: %1$d, Vertical: %2$d</string>
-    <string name="photo_widget_configure_offset_current_horizontal">Horizontal: %1$d</string>
-    <string name="photo_widget_configure_offset_current_vertical">Vertical: %1$d</string>
+    <string name="photo_widget_configure_offset">偏移</string>
+    <string name="photo_widget_configure_offset_current_values">水平: %1$d, 竖直: %2$d</string>
+    <string name="photo_widget_configure_offset_current_horizontal">水平: %1$d</string>
+    <string name="photo_widget_configure_offset_current_vertical">竖直: %1$d</string>
 
-    <string name="photo_widget_configure_padding">Padding</string>
+    <string name="photo_widget_configure_padding">内边距</string>
 
-    <string name="photo_widget_configure_tap_action">Tap action</string>
-    <string name="photo_widget_configure_tap_action_description">选择中间区域的点击动作（绿色闪烁）,在尺寸大于1x1的小部件上，你可以点击两侧来切换照片。</string>
+    <string name="photo_widget_configure_tap_action">点击行为</string>
+    <string name="photo_widget_configure_tap_action_description">选择中间区域的点击动作（绿色闪烁部分）,在尺寸大于1x1的小部件上，你可以点击两侧来切换照片</string>
     <string name="photo_widget_configure_tap_action_none">None</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">View photo in full screen</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">View in gallery</string>
@@ -202,14 +203,14 @@
     <string name="photo_widget_configure_tap_action_choose_app">Choose app</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Disable tapping on the edges while cycling is paused</string>
 
-    <string name="photo_widget_configure_add_to_home">Add to home screen</string>
+    <string name="photo_widget_configure_add_to_home">添加到桌面</string>
     <string name="photo_widget_configure_save_changes">Save changes</string>
 
     <string name="photo_widget_time_picker_title">Select time</string>
 
     <!-- Help -->
-    <string name="help_article_title_1">Adding a widget to the home screen is not working</string>
-    <string name="help_article_body_1">If you have configured a widget and nothing happens when you try to add it to the home screen, or if it\'s added but doesn\'t display the selected photos, you can try adding it directly from your home screen.\n\nInstructions may vary depending on your Android version, device manufacturer, and home screen launcher, but generally, the process is as follows:\n\n1. Long press on an empty space on your home screen until a pop-up menu appears.\n2. Locate the "Widgets" option.\n3. Search for "Material Photo Widget" within the available widgets.\n4. Drag it to your home screen and configure it as usual.</string>
+    <string name="help_article_title_1">小组建无法添加到桌面</string>
+    <string name="help_article_body_1">如果你已经配置了一个小组建，但当你试图将它添加到桌面时没有任何反应，或者如果它已经添加但不显示所选照片，你可以尝试直接从桌面添加它。\n\n操作说明可能因Android版本、设备制造商和桌面而异，但通常情况下，流程如下：\n\n1.长按桌面上的空白处，直到弹出菜单出现。\n2.找到“小组建”选项\n3.在可用的小部件中搜索“Material Photo Widget”\n4将其拖到桌面并像往常一样配置它</string>
 
     <string name="help_article_title_2">Photos are not changing automatically</string>
     <string name="help_article_body_2">The selected interval or scheduled times are an approximation of when the next photo will be displayed. Android considers several factors when determining the actual time, and each device manufacturer may impose restrictions on background processes.\n\nTo ensure that the photos change exactly when you want them to, grant the app "Exact Alarms" permission and make sure no battery restrictions are applied to it in your phone\'s settings.</string>
