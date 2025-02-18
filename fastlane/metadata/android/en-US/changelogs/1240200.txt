@@ -1,0 +1,6 @@
+This version brings the following updates:
+
+* New option to keep widgets indefinitely after removing them
+* Fixes the editor preview not showing updates when setting up the widget
+
+Thanks for using the app!
