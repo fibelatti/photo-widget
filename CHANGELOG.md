@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * New option to keep widgets indefinitely after removing them
 
+### Fixed
+
+* Fix editor preview not showing updates when setting up the widget
+
 ## [v1.24.1] - 2025-02-16
 [v1.24.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.24.1
 
