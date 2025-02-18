@@ -12,7 +12,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,10 +60,8 @@ fun AsyncPhotoViewer(
                 },
             )
         }
-        val transformedBitmap: ImageBitmap? by remember {
-            derivedStateOf {
-                photoBitmap?.let(transformer)?.asImageBitmap()
-            }
+        val transformedBitmap: ImageBitmap? = remember(*dataKey.plus(photoBitmap)) {
+            photoBitmap?.let(transformer)?.asImageBitmap()
         }
 
         var showLoading: Boolean by remember { mutableStateOf(false) }
@@ -98,7 +95,6 @@ fun AsyncPhotoViewer(
             showLoading = isLoading || (data != null && photoBitmap == null && !showError)
         }
 
-        val finalBitmap = transformedBitmap
         when {
             showLoading -> {
                 Box(
@@ -127,9 +123,9 @@ fun AsyncPhotoViewer(
                 }
             }
 
-            finalBitmap != null -> {
+            transformedBitmap != null -> {
                 Image(
-                    bitmap = finalBitmap,
+                    bitmap = transformedBitmap,
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = contentScale,
