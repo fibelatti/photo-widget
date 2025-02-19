@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* Add support for HEIC/HEIF file format when syncing folders
+
 ## [v1.24.2] - 2025-02-18
 [v1.24.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.24.2
 
