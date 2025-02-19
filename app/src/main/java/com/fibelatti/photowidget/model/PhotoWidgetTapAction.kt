@@ -37,7 +37,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     }
 
     @Parcelize
-    data object ViewInGallery : PhotoWidgetTapAction {
+    data class ViewInGallery(
+        val galleryApp: String? = null,
+    ) : PhotoWidgetTapAction {
 
         @IgnoredOnParcel
         override val label = R.string.photo_widget_configure_tap_action_view_in_gallery
@@ -90,7 +92,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
             listOf(
                 None,
                 ViewFullScreen(),
-                ViewInGallery,
+                ViewInGallery(),
                 AppShortcut(),
                 UrlShortcut(),
                 ToggleCycling(),

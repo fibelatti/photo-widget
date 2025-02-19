@@ -324,6 +324,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     putBoolean("${PreferencePrefix.VIEW_ORIGINAL_PHOTO}$appWidgetId", tapAction.viewOriginalPhoto)
                 }
 
+                is PhotoWidgetTapAction.ViewInGallery -> {
+                    putString("${PreferencePrefix.PREFERRED_GALLERY_APP}$appWidgetId", tapAction.galleryApp)
+                }
+
                 is PhotoWidgetTapAction.AppShortcut -> {
                     putString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", tapAction.appShortcut)
                 }
@@ -350,6 +354,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 is PhotoWidgetTapAction.ViewFullScreen -> tapAction.copy(
                     increaseBrightness = getBoolean("${PreferencePrefix.INCREASE_BRIGHTNESS}$appWidgetId", false),
                     viewOriginalPhoto = getBoolean("${PreferencePrefix.VIEW_ORIGINAL_PHOTO}$appWidgetId", false),
+                )
+
+                is PhotoWidgetTapAction.ViewInGallery -> tapAction.copy(
+                    galleryApp = getString("${PreferencePrefix.PREFERRED_GALLERY_APP}$appWidgetId", null),
                 )
 
                 is PhotoWidgetTapAction.AppShortcut -> tapAction.copy(
@@ -448,6 +456,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         VIEW_ORIGINAL_PHOTO(value = "appwidget_view_original_photo_"),
         APP_SHORTCUT(value = "appwidget_app_shortcut_"),
         URL_SHORTCUT(value = "appwidget_url_shortcut_"),
+        PREFERRED_GALLERY_APP(value = "appwidget_preferred_gallery_app_"),
         DISABLE_TAP(value = "appwidget_disable_tap_"),
 
         DELETION_TIMESTAMP(value = "appwidget_deletion_timestamp_"),

@@ -196,8 +196,8 @@
     <string name="photo_widget_configure_tap_action">Действие по нажатию</string>
     <string name="photo_widget_configure_tap_action_description">Выберите действие при нажатии на центральную область (мигает зеленым). В виджетах больше, чем 1x1, можно нажимать на каждую сторону, чтобы переключать фото.</string>
     <string name="photo_widget_configure_tap_action_none">Нет</string>
-    <string name="photo_widget_configure_tap_action_view_full_screen">Просмотр фотографии на весь экран</string>
-    <string name="photo_widget_configure_tap_action_view_in_gallery">Просмотреть в галерее</string>
+    <string name="photo_widget_configure_tap_action_view_full_screen">Просмотр фото на весь экран</string>
+    <string name="photo_widget_configure_tap_action_view_in_gallery">Просмотр с помощью приложения галереи</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Открыть приложение</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Открыть ссылку</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Включить/выключить цикл</string>
@@ -205,7 +205,7 @@
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Автоматически увеличить яркость</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Просмотреть оригинальную фотографию (без обрезки или поворота)</string>
-    <string name="photo_widget_configure_tap_action_gallery_description">Доступно для виджетов на основе папок. Виджеты на основе фотографий будут использовать «Просмотр фотографии на весь экран» вместо этого.</string>
+    <string name="photo_widget_configure_tap_action_gallery_description">Доступно для виджетов на основе папок. Виджеты на основе фотографий будут использовать \"Просмотр фото на весь экран\" вместо этого. Вы также можете выбрать, какое приложение галереи использовать.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Выбрать приложение</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Отключить сенсорные края во время паузы цикла</string>
 

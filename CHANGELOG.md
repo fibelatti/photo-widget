@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Add support for HEIC/HEIF file format when syncing folders
+* Add preferred gallery picker when using "View with a gallery app"
 
 ## [v1.24.2] - 2025-02-18
 [v1.24.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.24.2

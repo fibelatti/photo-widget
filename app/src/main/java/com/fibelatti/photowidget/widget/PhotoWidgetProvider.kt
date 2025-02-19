@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Size
@@ -330,10 +329,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         .setIdentifierCompat("$appWidgetId")
 
-                    val resolveInfo = context.packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
-
-                    if (resolveInfo != null) {
-                        intent.setPackage(resolveInfo.resolvePackageName)
+                    if (tapAction.galleryApp != null) {
+                        intent.setPackage(tapAction.galleryApp)
                     }
 
                     return PendingIntent.getActivity(

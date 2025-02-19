@@ -62,6 +62,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.net.toUri
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
@@ -91,6 +92,15 @@ object PhotoWidgetTapActionPicker {
                 selectedAppShortcut = result.data?.component?.packageName
             }
 
+            var selectedGalleryApp: String? by remember {
+                mutableStateOf((currentTapAction as? PhotoWidgetTapAction.ViewInGallery)?.galleryApp)
+            }
+            val galleryAppPickerLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.StartActivityForResult(),
+            ) { result ->
+                selectedGalleryApp = result.data?.component?.packageName
+            }
+
             TapActionPickerContent(
                 currentTapAction = currentTapAction,
                 currentAppShortcut = selectedAppShortcut,
@@ -99,6 +109,15 @@ object PhotoWidgetTapActionPicker {
                         Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
                             Intent.EXTRA_INTENT,
                             Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
+                        ),
+                    )
+                },
+                currentGalleryApp = selectedGalleryApp,
+                onChooseGalleryAppClick = {
+                    galleryAppPickerLauncher.launch(
+                        Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
+                            Intent.EXTRA_INTENT,
+                            Intent(Intent.ACTION_VIEW).setDataAndType("content://sample".toUri(), "image/*"),
                         ),
                     )
                 },
@@ -116,6 +135,8 @@ private fun TapActionPickerContent(
     currentTapAction: PhotoWidgetTapAction,
     currentAppShortcut: String?,
     onChooseAppShortcutClick: () -> Unit,
+    currentGalleryApp: String?,
+    onChooseGalleryAppClick: () -> Unit,
     onApplyClick: (newTapAction: PhotoWidgetTapAction) -> Unit,
 ) {
     var tapAction by remember {
@@ -128,6 +149,8 @@ private fun TapActionPickerContent(
     LaunchedEffect(currentAppShortcut) {
         if (currentAppShortcut != null && tapAction is PhotoWidgetTapAction.AppShortcut) {
             tapAction = PhotoWidgetTapAction.AppShortcut(currentAppShortcut)
+        } else if (currentGalleryApp != null && tapAction is PhotoWidgetTapAction.ViewInGallery) {
+            tapAction = PhotoWidgetTapAction.ViewInGallery(currentGalleryApp)
         }
     }
 
@@ -218,12 +241,21 @@ private fun TapActionPickerContent(
                 }
 
                 is PhotoWidgetTapAction.ViewInGallery -> {
-                    Text(
-                        text = stringResource(id = R.string.photo_widget_configure_tap_action_gallery_description),
+                    Column(
                         modifier = customOptionModifier,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.photo_widget_configure_tap_action_gallery_description),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+
+                        AppPicker(
+                            onChooseApp = onChooseGalleryAppClick,
+                            currentAppShortcut = currentGalleryApp,
+                        )
+                    }
                 }
 
                 is PhotoWidgetTapAction.AppShortcut -> {
@@ -477,6 +509,8 @@ private fun PhotoWidgetTapActionPickerPreview() {
             currentTapAction = PhotoWidgetTapAction.ToggleCycling(),
             currentAppShortcut = null,
             onChooseAppShortcutClick = {},
+            currentGalleryApp = null,
+            onChooseGalleryAppClick = {},
             onApplyClick = {},
         )
     }
