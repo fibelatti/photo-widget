@@ -197,7 +197,7 @@
     <string name="photo_widget_configure_tap_action_description">Escolha a ação ao tocar na área central (piscando em verde). Em widgets maiores que 1x1, você pode tocar em cada lado para trocar as fotos.</string>
     <string name="photo_widget_configure_tap_action_none">Nenhuma</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Ver a foto em tela cheia</string>
-    <string name="photo_widget_configure_tap_action_view_in_gallery">Ver na galeria</string>
+    <string name="photo_widget_configure_tap_action_view_in_gallery">Ver com o aplicativo de galeria</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Abrir um app</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Abrir um link</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Habilitar/desabilitar ciclo</string>
@@ -205,7 +205,7 @@
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Aumentar o brilho automaticamente</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Ver a foto original (sem corte ou rotação)</string>
-    <string name="photo_widget_configure_tap_action_gallery_description">Disponível para widgets baseados em pastas. Os widgets baseados em fotos usarão \"Ver foto em tela cheia\".</string>
+    <string name="photo_widget_configure_tap_action_gallery_description">Disponível para widgets baseados em pastas. Widgets baseados em fotos usarão \"Ver a foto em tela cheia\" em vez disso. Você também pode escolher qual aplicativo de galeria usar.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Escolher app</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Desabilitar o toque nas bordas enquanto o ciclo estiver pausado</string>
 

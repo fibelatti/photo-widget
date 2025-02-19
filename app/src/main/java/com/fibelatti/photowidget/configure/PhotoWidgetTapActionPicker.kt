@@ -62,6 +62,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.net.toUri
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
@@ -82,23 +83,41 @@ object PhotoWidgetTapActionPicker {
         onApplyClick: (newTapAction: PhotoWidgetTapAction) -> Unit,
     ) {
         ComposeBottomSheetDialog(context) {
-            var selectedApp: String? by remember(currentTapAction) {
+            var selectedAppShortcut: String? by remember {
                 mutableStateOf((currentTapAction as? PhotoWidgetTapAction.AppShortcut)?.appShortcut)
             }
-            val appPickerLauncher = rememberLauncherForActivityResult(
+            val appShortcutPickerLauncher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartActivityForResult(),
             ) { result ->
-                selectedApp = result.data?.component?.packageName
+                selectedAppShortcut = result.data?.component?.packageName
+            }
+
+            var selectedGalleryApp: String? by remember {
+                mutableStateOf((currentTapAction as? PhotoWidgetTapAction.ViewInGallery)?.galleryApp)
+            }
+            val galleryAppPickerLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.StartActivityForResult(),
+            ) { result ->
+                selectedGalleryApp = result.data?.component?.packageName
             }
 
             TapActionPickerContent(
                 currentTapAction = currentTapAction,
-                currentAppShortcut = selectedApp,
-                onChooseApp = {
-                    appPickerLauncher.launch(
+                currentAppShortcut = selectedAppShortcut,
+                onChooseAppShortcutClick = {
+                    appShortcutPickerLauncher.launch(
                         Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
                             Intent.EXTRA_INTENT,
                             Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
+                        ),
+                    )
+                },
+                currentGalleryApp = selectedGalleryApp,
+                onChooseGalleryAppClick = {
+                    galleryAppPickerLauncher.launch(
+                        Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
+                            Intent.EXTRA_INTENT,
+                            Intent(Intent.ACTION_VIEW).setDataAndType("content://sample".toUri(), "image/*"),
                         ),
                     )
                 },
@@ -115,15 +134,23 @@ object PhotoWidgetTapActionPicker {
 private fun TapActionPickerContent(
     currentTapAction: PhotoWidgetTapAction,
     currentAppShortcut: String?,
-    onChooseApp: () -> Unit,
+    onChooseAppShortcutClick: () -> Unit,
+    currentGalleryApp: String?,
+    onChooseGalleryAppClick: () -> Unit,
     onApplyClick: (newTapAction: PhotoWidgetTapAction) -> Unit,
 ) {
-    var tapAction by remember { mutableStateOf(currentTapAction) }
-    var url by remember { mutableStateOf((currentTapAction as? PhotoWidgetTapAction.UrlShortcut)?.url.orEmpty()) }
+    var tapAction by remember {
+        mutableStateOf(currentTapAction)
+    }
+    var urlShortcut by remember {
+        mutableStateOf((currentTapAction as? PhotoWidgetTapAction.UrlShortcut)?.url.orEmpty())
+    }
 
     LaunchedEffect(currentAppShortcut) {
         if (currentAppShortcut != null && tapAction is PhotoWidgetTapAction.AppShortcut) {
             tapAction = PhotoWidgetTapAction.AppShortcut(currentAppShortcut)
+        } else if (currentGalleryApp != null && tapAction is PhotoWidgetTapAction.ViewInGallery) {
+            tapAction = PhotoWidgetTapAction.ViewInGallery(currentGalleryApp)
         }
     }
 
@@ -214,17 +241,26 @@ private fun TapActionPickerContent(
                 }
 
                 is PhotoWidgetTapAction.ViewInGallery -> {
-                    Text(
-                        text = stringResource(id = R.string.photo_widget_configure_tap_action_gallery_description),
+                    Column(
                         modifier = customOptionModifier,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.photo_widget_configure_tap_action_gallery_description),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+
+                        AppPicker(
+                            onChooseApp = onChooseGalleryAppClick,
+                            currentAppShortcut = currentGalleryApp,
+                        )
+                    }
                 }
 
                 is PhotoWidgetTapAction.AppShortcut -> {
                     AppPicker(
-                        onChooseApp = onChooseApp,
+                        onChooseApp = onChooseAppShortcutClick,
                         currentAppShortcut = currentAppShortcut,
                         modifier = customOptionModifier,
                     )
@@ -232,12 +268,10 @@ private fun TapActionPickerContent(
 
                 is PhotoWidgetTapAction.UrlShortcut -> {
                     TextField(
-                        value = url,
-                        onValueChange = { newValue -> url = newValue },
+                        value = urlShortcut,
+                        onValueChange = { newValue -> urlShortcut = newValue },
                         modifier = customOptionModifier,
-                        placeholder = {
-                            Text(text = "https://...")
-                        },
+                        placeholder = { Text(text = "https://...") },
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                         singleLine = true,
                         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
@@ -272,7 +306,7 @@ private fun TapActionPickerContent(
         FilledTonalButton(
             onClick = {
                 if (tapAction is PhotoWidgetTapAction.UrlShortcut) {
-                    tapAction = PhotoWidgetTapAction.UrlShortcut(url = url)
+                    tapAction = PhotoWidgetTapAction.UrlShortcut(url = urlShortcut)
                 }
                 onApplyClick(tapAction)
             },
@@ -303,7 +337,6 @@ private fun TapAreaIndicator(
         ),
         label = "ClickAreaIndicator_ColorAnimation",
     )
-    val sideColor = Color(0x33F44336)
 
     Box(
         modifier = modifier
@@ -316,7 +349,9 @@ private fun TapAreaIndicator(
                 .withRoundedCorners(aspectRatio = PhotoWidgetAspectRatio.SQUARE)
                 .asImageBitmap(),
             contentDescription = null,
-            modifier = Modifier.size(200.dp).alpha(.6F),
+            modifier = Modifier
+                .size(200.dp)
+                .alpha(.6F),
         )
 
         Row(
@@ -473,7 +508,9 @@ private fun PhotoWidgetTapActionPickerPreview() {
         TapActionPickerContent(
             currentTapAction = PhotoWidgetTapAction.ToggleCycling(),
             currentAppShortcut = null,
-            onChooseApp = {},
+            onChooseAppShortcutClick = {},
+            currentGalleryApp = null,
+            onChooseGalleryAppClick = {},
             onApplyClick = {},
         )
     }

@@ -197,7 +197,7 @@
     <string name="photo_widget_configure_tap_action_description">Choisissez l\'action au toucher pour la zone centrale (clignotant en vert). Sur les widgets plus grands que 1x1, vous pouvez toucher chaque côté pour changer les photos.</string>
     <string name="photo_widget_configure_tap_action_none">Aucune</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Afficher la photo en plein écran</string>
-    <string name="photo_widget_configure_tap_action_view_in_gallery">Voir dans la galerie</string>
+    <string name="photo_widget_configure_tap_action_view_in_gallery">Afficher avec l\'application de galerie</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Ouvrir une application</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Ouvrir un lien</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Activer/désactiver le cycle</string>
@@ -205,7 +205,7 @@
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Augmenter automatiquement la luminosité</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Voir la photo originale (sans recadrage ni rotation)</string>
-    <string name="photo_widget_configure_tap_action_gallery_description">Disponible pour les widgets basés sur des dossiers. Les widgets basés sur des photos utiliseront "Afficher la photo en plein écran" à la place.</string>
+    <string name="photo_widget_configure_tap_action_gallery_description">Disponible pour les widgets basés sur des dossiers. Les widgets basés sur des photos utiliseront plutôt « Afficher la photo en plein écran ». Vous pouvez également choisir l\'application de galerie à utiliser.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Choisir une application</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Désactiver les bords tactiles pendant que le cycle est en pause</string>
 

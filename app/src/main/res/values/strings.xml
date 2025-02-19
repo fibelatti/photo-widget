@@ -193,7 +193,7 @@
     <string name="photo_widget_configure_tap_action_description">Choose the tap action for the center area (blinking green). On widgets larger than 1x1, you can tap on each side to switch photos.</string>
     <string name="photo_widget_configure_tap_action_none">None</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">View photo in full screen</string>
-    <string name="photo_widget_configure_tap_action_view_in_gallery">View in gallery</string>
+    <string name="photo_widget_configure_tap_action_view_in_gallery">View with a gallery app</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Open an app</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Open a link</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Enable/disable cycle</string>
@@ -201,7 +201,7 @@
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Automatically increase brightness</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">View original photo (no crop or rotation)</string>
-    <string name="photo_widget_configure_tap_action_gallery_description">Available for folder-based widgets. Photo-based widgets will use \"View photo in full screen\" instead.</string>
+    <string name="photo_widget_configure_tap_action_gallery_description">Available for folder-based widgets. Photo-based widgets will use \"View photo in full screen\" instead. You may also choose which gallery app to use.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Choose app</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Disable tapping on the edges while cycling is paused</string>
 

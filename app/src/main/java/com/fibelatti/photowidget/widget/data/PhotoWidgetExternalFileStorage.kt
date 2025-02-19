@@ -141,7 +141,7 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
 
     private companion object {
 
-        private val ALLOWED_TYPES = arrayOf("image/jpeg", "image/png")
+        private val ALLOWED_TYPES = arrayOf("image/jpeg", "image/png", "image/heic", "image/heif")
     }
 }
 

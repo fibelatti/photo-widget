@@ -228,6 +228,10 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                         viewOriginalPhoto = getBoolean(Preference.DEFAULT_VIEW_ORIGINAL_PHOTO.value, false),
                     )
 
+                    is PhotoWidgetTapAction.ViewInGallery -> tapAction.copy(
+                        galleryApp = getString(Preference.DEFAULT_PREFERRED_GALLERY_APP.value, null),
+                    )
+
                     is PhotoWidgetTapAction.AppShortcut -> tapAction.copy(
                         appShortcut = getString(Preference.DEFAULT_APP_SHORTCUT.value, null),
                     )
@@ -252,6 +256,10 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                     is PhotoWidgetTapAction.ViewFullScreen -> {
                         putBoolean(Preference.DEFAULT_INCREASE_BRIGHTNESS.value, value.increaseBrightness)
                         putBoolean(Preference.DEFAULT_VIEW_ORIGINAL_PHOTO.value, value.viewOriginalPhoto)
+                    }
+
+                    is PhotoWidgetTapAction.ViewInGallery -> {
+                        putString(Preference.DEFAULT_PREFERRED_GALLERY_APP.value, value.galleryApp)
                     }
 
                     is PhotoWidgetTapAction.AppShortcut -> {
@@ -327,6 +335,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         DEFAULT_VIEW_ORIGINAL_PHOTO(value = "default_view_original_photo"),
         DEFAULT_APP_SHORTCUT(value = "default_app_shortcut"),
         DEFAULT_URL_SHORTCUT(value = "default_url_shortcut"),
+        DEFAULT_PREFERRED_GALLERY_APP(value = "default_preferred_gallery_app"),
         DEFAULT_DISABLE_TAP(value = "default_disable_tap"),
         ;
 
