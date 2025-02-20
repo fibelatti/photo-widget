@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add preferred gallery picker when using "View with a gallery app"
 * Add back "View next photo" tap action for 1x1 widgets
 
+### Fixed
+
+* Fix rounded corners not working on "Fill" widgets
+
 ## [v1.24.2] - 2025-02-18
 [v1.24.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.24.2
 

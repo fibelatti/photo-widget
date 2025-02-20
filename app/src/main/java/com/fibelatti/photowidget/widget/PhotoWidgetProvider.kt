@@ -18,7 +18,6 @@ import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.WidgetSizeProvider
 import com.fibelatti.photowidget.platform.setIdentifierCompat
@@ -160,9 +159,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             recoveryMode: Boolean = false,
         ): RemoteViews {
             val prepareCurrentPhotoUseCase = entryPoint<PhotoWidgetEntryPoint>(context).prepareCurrentPhotoUseCase()
-            val widgetSize = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio &&
-                photoWidget.border !is PhotoWidgetBorder.None
-            ) {
+            val widgetSize = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio) {
                 val sizeProvider = WidgetSizeProvider(context = context)
                 val (width, height) = sizeProvider.getWidgetsSize(appWidgetId = appWidgetId, convertToPx = true)
                 Size(width, height)
