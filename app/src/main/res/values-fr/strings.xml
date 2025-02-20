@@ -194,10 +194,11 @@
     <string name="photo_widget_configure_padding">Marge intérieure</string>
 
     <string name="photo_widget_configure_tap_action">Action tactile</string>
-    <string name="photo_widget_configure_tap_action_description">Choisissez l\'action au toucher pour la zone centrale (clignotant en vert). Sur les widgets plus grands que 1x1, vous pouvez toucher chaque côté pour changer les photos.</string>
+    <string name="photo_widget_configure_tap_action_description">Les widgets 1x1 peuvent avoir une action de simple appui. Cela s\'applique à la zone centrale des widgets plus grands (vert clignotant), et vous pouvez également appuyer sur les côtés pour changer de photo.</string>
     <string name="photo_widget_configure_tap_action_none">Aucune</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Afficher la photo en plein écran</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Afficher avec l\'application de galerie</string>
+    <string name="photo_widget_configure_tap_action_view_next_photo">Voir la photo suivante</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Ouvrir une application</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Ouvrir un lien</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Activer/désactiver le cycle</string>

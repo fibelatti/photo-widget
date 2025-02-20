@@ -221,6 +221,8 @@ private fun TapActionPickerContent(
                 .padding(top = 16.dp)
 
             when (value) {
+                is PhotoWidgetTapAction.None -> Unit
+
                 is PhotoWidgetTapAction.ViewFullScreen -> {
                     Column(
                         modifier = customOptionModifier,
@@ -258,25 +260,7 @@ private fun TapActionPickerContent(
                     }
                 }
 
-                is PhotoWidgetTapAction.AppShortcut -> {
-                    AppPicker(
-                        onChooseApp = onChooseAppShortcutClick,
-                        currentAppShortcut = currentAppShortcut,
-                        modifier = customOptionModifier,
-                    )
-                }
-
-                is PhotoWidgetTapAction.UrlShortcut -> {
-                    TextField(
-                        value = urlShortcut,
-                        onValueChange = { newValue -> urlShortcut = newValue },
-                        modifier = customOptionModifier,
-                        placeholder = { Text(text = "https://...") },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                        singleLine = true,
-                        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-                    )
-                }
+                is PhotoWidgetTapAction.ViewNextPhoto -> Unit
 
                 is PhotoWidgetTapAction.ToggleCycling -> {
                     Column(
@@ -299,7 +283,25 @@ private fun TapActionPickerContent(
                     }
                 }
 
-                PhotoWidgetTapAction.None -> Unit
+                is PhotoWidgetTapAction.AppShortcut -> {
+                    AppPicker(
+                        onChooseApp = onChooseAppShortcutClick,
+                        currentAppShortcut = currentAppShortcut,
+                        modifier = customOptionModifier,
+                    )
+                }
+
+                is PhotoWidgetTapAction.UrlShortcut -> {
+                    TextField(
+                        value = urlShortcut,
+                        onValueChange = { newValue -> urlShortcut = newValue },
+                        modifier = customOptionModifier,
+                        placeholder = { Text(text = "https://...") },
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        singleLine = true,
+                        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                    )
+                }
             }
         }
 

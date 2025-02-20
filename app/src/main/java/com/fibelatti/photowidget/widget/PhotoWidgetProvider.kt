@@ -345,6 +345,31 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     )
                 }
 
+                is PhotoWidgetTapAction.ViewNextPhoto -> {
+                    return flipPhotoPendingIntent(
+                        context = context,
+                        appWidgetId = appWidgetId,
+                        flipBackwards = false,
+                    )
+                }
+
+                is PhotoWidgetTapAction.ToggleCycling -> {
+                    val intent = Intent(context, ToggleCyclingFeedbackActivity::class.java).apply {
+                        setIdentifierCompat("$appWidgetId")
+                        this.appWidgetId = appWidgetId
+                    }
+                    return PendingIntent.getActivity(
+                        /* context = */
+                        context,
+                        /* requestCode = */
+                        appWidgetId,
+                        /* intent = */
+                        intent,
+                        /* flags = */
+                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                    )
+                }
+
                 is PhotoWidgetTapAction.AppShortcut -> {
                     if (tapAction.appShortcut == null) return null
 
@@ -391,23 +416,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         intent,
                         /* flags = */
                         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-                    )
-                }
-
-                is PhotoWidgetTapAction.ToggleCycling -> {
-                    val intent = Intent(context, ToggleCyclingFeedbackActivity::class.java).apply {
-                        setIdentifierCompat("$appWidgetId")
-                        this.appWidgetId = appWidgetId
-                    }
-                    return PendingIntent.getActivity(
-                        /* context = */
-                        context,
-                        /* requestCode = */
-                        appWidgetId,
-                        /* intent = */
-                        intent,
-                        /* flags = */
-                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
             }
