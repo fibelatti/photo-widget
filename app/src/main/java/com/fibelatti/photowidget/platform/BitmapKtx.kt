@@ -9,15 +9,16 @@ import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
+import android.graphics.RectF
 import android.util.Size
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
+import androidx.core.graphics.toRect
 import androidx.core.graphics.toRectF
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import kotlin.math.min
-import kotlin.math.roundToInt
 import timber.log.Timber
 
 fun Bitmap.withRoundedCorners(
@@ -134,92 +135,61 @@ private fun Bitmap.sourceRect(
             ")",
     )
 
-    return when (aspectRatio) {
-        PhotoWidgetAspectRatio.SQUARE -> {
-            val size = min(height, width)
+    return createCenteredRectWithAspectRatio(
+        bitmapWidth = width.toFloat(),
+        bitmapHeight = height.toFloat(),
+        aspectRatio = when (aspectRatio) {
+            PhotoWidgetAspectRatio.SQUARE, PhotoWidgetAspectRatio.TALL, PhotoWidgetAspectRatio.WIDE -> {
+                aspectRatio.aspectRatio
+            }
 
-            val top = (height - size) / 2
-            val left = (width - size) / 2
+            PhotoWidgetAspectRatio.ORIGINAL -> {
+                width / height.toFloat()
+            }
 
-            Rect(left, top, left + size, top + size)
-        }
-
-        PhotoWidgetAspectRatio.TALL -> {
-            tallRect(width = width, height = height)
-        }
-
-        PhotoWidgetAspectRatio.WIDE -> {
-            wideRect(width = width, height = height)
-        }
-
-        PhotoWidgetAspectRatio.FILL_WIDGET -> {
-            when {
-                widgetSize == null || widgetSize.width == 0 || widgetSize.height == 0 -> {
-                    Rect(0, 0, width, height)
-                }
-
-                widgetSize.width > widgetSize.height -> {
-                    wideRect(
-                        width = width,
-                        height = height,
-                        scale = widgetSize.height / widgetSize.width.toFloat(),
-                    )
-                }
-
-                else -> {
-                    tallRect(
-                        width = width,
-                        height = height,
-                        scale = widgetSize.width / widgetSize.height.toFloat(),
-                    )
+            PhotoWidgetAspectRatio.FILL_WIDGET -> {
+                if (widgetSize != null && widgetSize.width > 0 && widgetSize.height > 0) {
+                    widgetSize.width / widgetSize.height.toFloat()
+                } else {
+                    width / height.toFloat()
                 }
             }
-        }
-
-        PhotoWidgetAspectRatio.ORIGINAL -> {
-            Rect(0, 0, width, height)
-        }
-    }.also {
-        Timber.d("Output rect: $it")
-    }
+        },
+    ).toRect().also { Timber.d("Output rect: $it") }
 }
 
-private fun tallRect(
-    width: Int,
-    height: Int,
-    scale: Float = PhotoWidgetAspectRatio.TALL.scale,
-): Rect {
-    val baseWidth = height * scale
+/**
+ * Creates a centered rectangle with the specified aspect ratio inside a bitmap
+ *
+ * @param bitmapWidth Width of the bitmap
+ * @param bitmapHeight Height of the bitmap
+ * @param aspectRatio Width/height ratio the created rect should maintain
+ * @return A RectF centered in the bitmap with the specified aspect ratio
+ */
+fun createCenteredRectWithAspectRatio(
+    bitmapWidth: Float,
+    bitmapHeight: Float,
+    aspectRatio: Float,
+): RectF {
+    val bitmapAspectRatio = bitmapWidth / bitmapHeight
 
-    val scaledWidth = baseWidth.roundToInt().coerceAtMost(width)
-    val scaledHeight = if (baseWidth > width) {
-        ((width / baseWidth) * height).roundToInt()
+    val rectWidth: Float
+    val rectHeight: Float
+
+    // Determine if we should fit by width or height
+    if (aspectRatio > bitmapAspectRatio) {
+        // Width constrained
+        rectWidth = bitmapWidth
+        rectHeight = rectWidth / aspectRatio
     } else {
-        height
+        // Height constrained
+        rectHeight = bitmapHeight
+        rectWidth = rectHeight * aspectRatio
     }
 
-    val top = (height - scaledHeight) / 2
-    val left = (width - scaledWidth) / 2
+    // Calculate top-left position to center the rect
+    val left = (bitmapWidth - rectWidth) / 2
+    val top = (bitmapHeight - rectHeight) / 2
 
-    return Rect(left, top, left + scaledWidth, top + scaledHeight)
-}
-
-private fun wideRect(
-    width: Int,
-    height: Int,
-    scale: Float = PhotoWidgetAspectRatio.WIDE.scale,
-): Rect {
-    val baseHeight = width * scale
-
-    val scaledHeight = baseHeight.roundToInt().coerceAtMost(height)
-    val scaledWidth = if (baseHeight > height) {
-        ((height / baseHeight) * width).roundToInt()
-    } else {
-        width
-    }
-
-    val top = (height - scaledHeight) / 2
-    val left = (width - scaledWidth) / 2
-
-    return Rect(left, top, left + scaledWidth, top + scaledHeight)
+    return RectF(left, top, left + rectWidth, top + rectHeight)
 }
