@@ -88,7 +88,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget">填充</string>
     <string name="photo_widget_aspect_ratio_fill_widget_description">匹配小组件大小</string>
     <!-- Configure -->
-    <string name="photo_widget_configure_navigate_back_warning">Any changes will be lost, go back anyway?</string>
+    <string name="photo_widget_configure_navigate_back_warning">改动未保存,退出会丢失改动</string>
 
     <string name="photo_widget_configure_tab_content">内容</string>
     <string name="photo_widget_configure_tab_appearance">调整</string>
@@ -103,23 +103,23 @@
     <string name="photo_widget_configure_too_many_photos_error">每个同步文件夹最多可以包含3000张照片。您可以选择多个子文件夹，并且每个子文件夹将单独计算\n\n你不能选择连拍照片,照片是一个接一个地处理的，而包含数千张照片的文件夹会导致小组件编辑器出现严重的性能问题，在切换照片时也会出现在主屏幕上</string>
     <string name="photo_widget_configure_missing_photos_error">The widget must have at least one photo. Widgets can only be deleted directly from the home screen.</string>
 
-    <string name="photo_widget_configure_menu_source">Source</string>
-    <string name="photo_widget_configure_source_description">You can choose each photo individually or sync this widget with one or more folders. When syncing, all photos in the folder are automatically added to the widget. The content is updated every 24 hours.</string>
-    <string name="photo_widget_configure_source_selection_photos">Only the photos you selected will be displayed in this widget.</string>
+    <string name="photo_widget_configure_menu_source">资源</string>
+    <string name="photo_widget_configure_source_description">您可以单独选择每张照片,也可以将这个小组件与一个或多个文件夹同步,同步时,文件夹中的所有照片都会自动添加到小组件中,每24小时更新一次</string>
+    <string name="photo_widget_configure_source_selection_photos">只有您选择的照片才会显示在这个小组件中</string>
     <string name="photo_widget_configure_source_selection_directory_empty">This widget is not synced with any folder yet.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">This widget is synced with these folders:</string>
     <string name="photo_widget_configure_source_keep_current">保持现在不变</string>
     <string name="photo_widget_configure_source_set_directory">设置为文件夹</string>
     <string name="photo_widget_configure_source_set_photos">设置为照片</string>
-    <string name="photo_widget_configure_source_warning">Changing the source will replace the current photos from this widget</string>
+    <string name="photo_widget_configure_source_warning">更改资源将替换此小组件中的当前照片</string>
 
     <string name="photo_widget_configure_menu_crop">Crop</string>
     <string name="photo_widget_configure_menu_remove">Remove</string>
     <string name="photo_widget_configure_menu_move_left">Move left</string>
     <string name="photo_widget_configure_menu_move_right">Move right</string>
 
-    <string name="photo_widget_configure_photos_pending_deletion">Recently deleted photos</string>
-    <string name="photo_widget_configure_photos_excluded">Excluded from widget</string>
+    <string name="photo_widget_configure_photos_pending_deletion">最近删除</string>
+    <string name="photo_widget_configure_photos_excluded">被排除的照片</string>
 
     <string name="photo_widget_configure_pick_photo">选择照片</string>
     <string name="photo_widget_configure_pick_folder">选择文件夹</string>
@@ -130,9 +130,9 @@
     <string name="photo_widget_configure_cycling_mode_schedule">指定时间</string>
     <string name="photo_widget_configure_cycling_mode_disabled">关闭</string>
 
-    <string name="photo_widget_configure_cycling_mode_interval_description">The widget will switch automatically to the next photo at the following interval:</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description">The widget will switch automatically to the next photo every day at the following scheduled times:</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">The widget won\'t cycle through photos automatically. Tap the widget edges to switch to the next photo.</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">该小组件将自动切换到下一张照片的间隔：</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description">该小组件每天在以下时间时间自动切换下一张照片：</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">该小组件不会自动循环照片,点击小组件边缘切换到下一张照片</string>
 
     <string name="photo_widget_configure_interval_current_label">每 %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
@@ -151,14 +151,14 @@
         <item quantity="one">%d day</item>
         <item quantity="other">%d days</item>
     </plurals>
-    <string name="photo_widget_configure_interval_seconds_label">Seconds</string>
-    <string name="photo_widget_configure_interval_minutes_label">Minutes</string>
-    <string name="photo_widget_configure_interval_hours_label">Hours</string>
-    <string name="photo_widget_configure_interval_days_label">Days</string>
+    <string name="photo_widget_configure_interval_seconds_label">秒</string>
+    <string name="photo_widget_configure_interval_minutes_label">分</string>
+    <string name="photo_widget_configure_interval_hours_label">小时</string>
+    <string name="photo_widget_configure_interval_days_label">天</string>
 
     <string name="photo_widget_configure_schedule_placeholder">最多自动切换照片4次</string>
     <string name="photo_widget_configure_schedule_add_new">添加</string>
-    <string name="photo_widget_configure_schedule_limit_reached">最多4次</string>
+    <string name="photo_widget_configure_schedule_limit_reached">最多4个</string>
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="one">1 time selected</item>
         <item quantity="other">%d times selected</item>
@@ -194,14 +194,15 @@
      <string name="photo_widget_configure_tap_action_view_in_gallery">使用相册查看</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">打开应用</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">打开链接</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling">开启/关闭 照片轮回</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Tap to pause the automatic photo cycling. Tap again to resume.</string>
+    <string name="photo_widget_configure_tap_action_view_next_photo">显示下一张照片</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">开启/关闭 照片循环</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">点击暂停自动照片循环,再次点击可以继续</string>
 
-    <string name="photo_widget_configure_tap_action_increase_brightness">Automatically increase brightness</string>
-    <string name="photo_widget_configure_tap_action_view_original_photo">View original photo (no crop or rotation)</string>
-    <string name="photo_widget_configure_tap_action_gallery_description">可用于基于文件夹的小部件,基于照片的小组件将使用“全屏查看照片”。你也可以选择使用哪个相册</string>
+    <string name="photo_widget_configure_tap_action_increase_brightness">自动增加亮度</string>
+    <string name="photo_widget_configure_tap_action_view_original_photo">查看原始照片（没有裁剪）</string>
+    <string name="photo_widget_configure_tap_action_gallery_description">可用于基于文件夹的小组件,基于照片的小组件将使用“全屏查看照片”,你也可以选择使用哪个相册</string>
     <string name="photo_widget_configure_tap_action_choose_app">选择应用</string>
-    <string name="photo_widget_configure_tap_action_disable_tap">Disable tapping on the edges while cycling is paused</string>
+    <string name="photo_widget_configure_tap_action_disable_tap">循环暂停时，禁止点击边缘区域</string>
 
     <string name="photo_widget_configure_add_to_home">添加到桌面</string>
     <string name="photo_widget_configure_save_changes">保存更改</string>
@@ -212,14 +213,14 @@
     <string name="help_article_title_1">小组件无法添加到桌面</string>
     <string name="help_article_body_1">如果你已经配置了一个小组件，但当你试图将它添加到桌面时没有任何反应，或者如果它已经添加但不显示所选照片，你可以尝试直接从桌面添加它。\n\n操作说明可能因Android版本、设备制造商和桌面而异，但通常情况下，流程如下：\n\n1.长按桌面上的空白处，直到弹出菜单出现。\n2.找到“小组件”选项\n3.在可用的小组件中搜索“Material Photo Widget”\n4将其拖到桌面并像往常一样配置它</string>
 
-    <string name="help_article_title_2">Photos are not changing automatically</string>
-    <string name="help_article_body_2">The selected interval or scheduled times are an approximation of when the next photo will be displayed. Android considers several factors when determining the actual time, and each device manufacturer may impose restrictions on background processes.\n\nTo ensure that the photos change exactly when you want them to, grant the app "Exact Alarms" permission and make sure no battery restrictions are applied to it in your phone\'s settings.</string>
+    <string name="help_article_title_2">照片不会自动改变</string>
+    <string name="help_article_body_2">所选的间隔或计划时间与下一张照片显示时间间隔短,Android在确定实际时间时会考虑几个因素,每个设备制造商可能会对后台进程施加限制\n\n为了确保照片准时改变，授予应用程序“精确时间”权限，并确保在你的手机的电池设置中对"Material Photo Widget"是不优化</string>
 
-    <string name="help_article_title_3">The widget does not work after restarting the phone</string>
-    <string name="help_article_body_3">When your phone restarts, Android sends a signal to apps to notify them, so they can restart themselves. Unfortunately, some device manufacturers (such as Xiaomi, Redmi, Huawei, and others) block this signal.\n\nTo enable this functionality, change the "Auto Start" permission in your security app.</string>
+    <string name="help_article_title_3">重新启动手机后，小组件不工作</string>
+    <string name="help_article_body_3">当你的手机重启时，安卓会向应用程序发送一个信号，通知它们，这样它们就可以自己重启了,糟糕的是，一些设备制造商（如小米，红米，华为等）阻止了该信号\n\n要启用此功能,请允许"Material Photo Widget"自启动</string>
 
-    <string name="help_article_title_4">The widget size is too small</string>
-    <string name="help_article_body_4">After adding the widget to your home screen, you can long press it to reveal the resizing option. Then, drag its borders to adjust it to your desired size.</string>
+    <string name="help_article_title_4">某个小组件太小了</string>
+    <string name="help_article_body_4">将小组件添加到桌面后，可以长按它显示调整大小选项,然后，拖动边框到所需的大小</string>
 
     <string name="help_article_footer">在某些地方无法正常使用?</string>
 
@@ -238,12 +239,12 @@
     <string name="photo_widget_viewer_actions_tap">Tap to dismiss</string>
 
     <!-- Cycling feedback -->
-    <string name="photo_widget_cycling_feedback_paused">Cycle paused</string>
-    <string name="photo_widget_cycling_feedback_resumed">Cycle resumed</string>
+    <string name="photo_widget_cycling_feedback_paused">循环停止</string>
+    <string name="photo_widget_cycling_feedback_resumed">循环继续</string>
 
     <!-- Common Actions -->
-    <string name="photo_widget_action_yes">Yes</string>
-    <string name="photo_widget_action_no">No</string>
+    <string name="photo_widget_action_yes">退出</string>
+    <string name="photo_widget_action_no">返回</string>
     <string name="photo_widget_action_continue">Continue</string>
     <string name="photo_widget_action_cancel">取消</string>
     <string name="photo_widget_action_apply">应用</string>
