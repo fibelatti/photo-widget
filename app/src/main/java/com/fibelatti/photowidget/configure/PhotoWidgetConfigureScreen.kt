@@ -307,6 +307,7 @@ private fun PhotoWidgetConfigureContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(320.dp),
+                    editingControlsInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Start),
                 )
 
                 PhotoWidgetEditor(
@@ -346,6 +347,8 @@ private fun PhotoWidgetConfigureContent(
                     modifier = Modifier
                         .fillMaxHeight()
                         .fillMaxWidth(fraction = 0.4f),
+                    editingControlsInsets = WindowInsets.safeDrawing
+                        .only(sides = WindowInsetsSides.Start + WindowInsetsSides.Bottom),
                 )
 
                 PhotoWidgetEditor(
@@ -388,6 +391,7 @@ private fun PhotoWidgetViewer(
     onMoveLeftClick: (LocalPhoto) -> Unit,
     onMoveRightClick: (LocalPhoto) -> Unit,
     modifier: Modifier = Modifier,
+    editingControlsInsets: WindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Start),
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
@@ -431,7 +435,7 @@ private fun PhotoWidgetViewer(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 8.dp)
-                    .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Start)),
+                    .windowInsetsPadding(editingControlsInsets),
             )
         }
     }

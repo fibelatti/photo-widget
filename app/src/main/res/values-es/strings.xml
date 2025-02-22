@@ -194,10 +194,11 @@
     <string name="photo_widget_configure_padding">Espaciamiento</string>
 
     <string name="photo_widget_configure_tap_action">Acción de toque</string>
-    <string name="photo_widget_configure_tap_action_description">Elige la acción al tocar en el área central (parpadeando en verde). En widgets más grandes que 1x1, puedes tocar en cada lado para cambiar las fotos.</string>
+    <string name="photo_widget_configure_tap_action_description">Los widgets 1x1 pueden tener una acción de un solo toque. Esto se aplica al área central de los widgets más grandes (que parpadea en verde) y también puedes tocar los costados para cambiar de foto.</string>
     <string name="photo_widget_configure_tap_action_none">Ninguna</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Ver foto en pantalla completa</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Ver con la aplicación de galería</string>
+    <string name="photo_widget_configure_tap_action_view_next_photo">Ver siguiente foto</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Abrir una aplicación</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Abrir un enlace</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Habilitar/deshabilitar ciclo</string>

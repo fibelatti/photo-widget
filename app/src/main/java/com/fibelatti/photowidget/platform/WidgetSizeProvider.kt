@@ -5,17 +5,18 @@ import android.content.Context
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import timber.log.Timber
 
-class WidgetSizeProvider(private val context: Context) {
+class WidgetSizeProvider(context: Context) {
 
-    private val appWidgetManager = AppWidgetManager.getInstance(context)
+    private val appContext = context.applicationContext
+    private val appWidgetManager = AppWidgetManager.getInstance(appContext)
 
     fun getWidgetsSize(appWidgetId: Int, convertToPx: Boolean = false): Pair<Int, Int> {
-        val isPortrait = context.resources.configuration.orientation == ORIENTATION_PORTRAIT
+        val isPortrait = appContext.resources.configuration.orientation == ORIENTATION_PORTRAIT
         val width = getWidgetWidth(appWidgetId = appWidgetId, isPortrait = isPortrait)
         val height = getWidgetHeight(appWidgetId = appWidgetId, isPortrait = isPortrait)
 
         return if (convertToPx) {
-            context.dip(width) to context.dip(height)
+            appContext.dip(width) to appContext.dip(height)
         } else {
             width to height
         }.also {

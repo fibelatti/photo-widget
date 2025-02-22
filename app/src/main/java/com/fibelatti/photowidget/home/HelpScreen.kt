@@ -46,13 +46,14 @@ import com.fibelatti.ui.theme.ExtendedTheme
 fun HelpScreen(
     onBackgroundRestrictionClick: () -> Unit,
     onSendFeedbackClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     var expanded: HelpArticle? by remember { mutableStateOf(null) }
     val localContext = LocalContext.current
     val localInspectionMode = LocalInspectionMode.current
 
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .nestedScroll(rememberNestedScrollInteropConnection()),
         verticalArrangement = Arrangement.spacedBy(8.dp),

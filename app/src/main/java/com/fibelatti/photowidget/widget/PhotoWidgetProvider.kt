@@ -18,7 +18,6 @@ import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.WidgetSizeProvider
 import com.fibelatti.photowidget.platform.setIdentifierCompat
@@ -160,9 +159,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             recoveryMode: Boolean = false,
         ): RemoteViews {
             val prepareCurrentPhotoUseCase = entryPoint<PhotoWidgetEntryPoint>(context).prepareCurrentPhotoUseCase()
-            val widgetSize = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio &&
-                photoWidget.border !is PhotoWidgetBorder.None
-            ) {
+            val widgetSize = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio) {
                 val sizeProvider = WidgetSizeProvider(context = context)
                 val (width, height) = sizeProvider.getWidgetsSize(appWidgetId = appWidgetId, convertToPx = true)
                 Size(width, height)
@@ -345,6 +342,31 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     )
                 }
 
+                is PhotoWidgetTapAction.ViewNextPhoto -> {
+                    return flipPhotoPendingIntent(
+                        context = context,
+                        appWidgetId = appWidgetId,
+                        flipBackwards = false,
+                    )
+                }
+
+                is PhotoWidgetTapAction.ToggleCycling -> {
+                    val intent = Intent(context, ToggleCyclingFeedbackActivity::class.java).apply {
+                        setIdentifierCompat("$appWidgetId")
+                        this.appWidgetId = appWidgetId
+                    }
+                    return PendingIntent.getActivity(
+                        /* context = */
+                        context,
+                        /* requestCode = */
+                        appWidgetId,
+                        /* intent = */
+                        intent,
+                        /* flags = */
+                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                    )
+                }
+
                 is PhotoWidgetTapAction.AppShortcut -> {
                     if (tapAction.appShortcut == null) return null
 
@@ -391,23 +413,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         intent,
                         /* flags = */
                         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-                    )
-                }
-
-                is PhotoWidgetTapAction.ToggleCycling -> {
-                    val intent = Intent(context, ToggleCyclingFeedbackActivity::class.java).apply {
-                        setIdentifierCompat("$appWidgetId")
-                        this.appWidgetId = appWidgetId
-                    }
-                    return PendingIntent.getActivity(
-                        /* context = */
-                        context,
-                        /* requestCode = */
-                        appWidgetId,
-                        /* intent = */
-                        intent,
-                        /* flags = */
-                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
             }

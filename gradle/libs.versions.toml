@@ -6,7 +6,7 @@ hilt = "2.55"
 hiltExtensions = "1.2.0"
 kotlin = "2.1.10"
 room = "2.6.1"
-aboutLibraries = "11.6.2"
+aboutLibraries = "11.6.3"
 
 [libraries]
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
@@ -43,6 +43,8 @@ about-libraries = { module = "com.mikepenz:aboutlibraries-compose", version.ref 
 
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.14" }
+
+compose-lint-checks = { module = "com.slack.lint.compose:compose-lint-checks", version = "1.4.2" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -544,6 +544,7 @@ private fun PhotoCycleModeDisabledContent(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
+@Suppress("ComposeModifierMissing")
 fun TimePickerDialog(
     onConfirm: (TimePickerState) -> Unit,
     onDismiss: () -> Unit,

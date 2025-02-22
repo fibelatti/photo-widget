@@ -199,6 +199,8 @@ dependencies {
 
     implementation(libs.timber)
     debugImplementation(libs.leakcanary)
+
+    lintChecks(libs.compose.lint.checks)
 }
 
 /**

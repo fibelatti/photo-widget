@@ -53,7 +53,7 @@ private fun <T> SelectionDialogContent(
     title: String,
     options: List<T>,
     optionName: (T) -> String,
-    optionIcon: (T) -> Int? = { null },
+    optionIcon: (T) -> Int?,
     onOptionSelected: (T) -> Unit,
     footer: @Composable () -> Unit = {},
 ) {

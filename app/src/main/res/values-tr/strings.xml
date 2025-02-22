@@ -188,10 +188,11 @@
     <string name="photo_widget_configure_padding">Dolgu</string>
 
     <string name="photo_widget_configure_tap_action">Dokunma eylemi</string>
-    <string name="photo_widget_configure_tap_action_description">Merkez alan için dokunma eylemini seçin (yeşil yanıp sönüyor). 1x1\'den büyük widget\'larda, fotoğrafları değiştirmek için her iki tarafa dokunabilirsiniz.</string>
+    <string name="photo_widget_configure_tap_action_description">1x1 widget\'lar tek dokunuş eylemine sahip olabilir. Bu, daha büyük widget\'ların orta alanına uygulanır (yeşil yanıp söner) ve ayrıca fotoğrafları değiştirmek için yanlara da dokunabilirsiniz.</string>
     <string name="photo_widget_configure_tap_action_none">Hiçbiri</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Fotoğrafı tam ekranda görüntüle</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Galeri uygulamasıyla görüntüle</string>
+    <string name="photo_widget_configure_tap_action_view_next_photo">Sonraki fotoğrafı görüntüle</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Bir uygulama açın</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Bir bağlantı aç</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Döngüyü etkinleştir/devre dışı bırak</string>
