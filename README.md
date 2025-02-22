@@ -1,4 +1,3 @@
-(汉化还未完成)
 Material Photo Widget
 =====
 
