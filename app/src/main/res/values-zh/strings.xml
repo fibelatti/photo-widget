@@ -161,7 +161,7 @@
     <string name="photo_widget_configure_schedule_limit_reached">最多4个</string>
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="one">1 time selected</item>
-        <item quantity="other">%d times selected</item>
+        <item quantity="other">选择了%d 个时间</item>
     </plurals>
 
     <string name="photo_widget_configure_interval_warning">由于Android为优化电池而施加的限制，实际间隔或时间可能会有所不同,为了它按预期工作，请授予以下权限</string>
