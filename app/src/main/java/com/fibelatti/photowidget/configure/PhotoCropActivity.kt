@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isInvisible
@@ -28,6 +29,7 @@ class PhotoCropActivity : AppCompatActivity(), UCropFragmentCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
+        getDelegate().localNightMode = AppCompatDelegate.MODE_NIGHT_YES
         super.onCreate(savedInstanceState)
 
         setContentView(binding.root)

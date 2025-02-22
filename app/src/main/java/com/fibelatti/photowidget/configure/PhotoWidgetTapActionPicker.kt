@@ -431,7 +431,7 @@ private fun TapAreaIndicator(
 private fun TapOptionsPicker(
     currentTapAction: PhotoWidgetTapAction,
     onTapActionClick: (PhotoWidgetTapAction) -> Unit,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     ColumnToggleButtonGroup(
         items = PhotoWidgetTapAction.entries.map {

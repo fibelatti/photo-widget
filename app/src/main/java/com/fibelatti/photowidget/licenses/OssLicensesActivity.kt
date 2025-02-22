@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -38,49 +39,53 @@ class OssLicensesActivity : AppCompatActivity() {
 
         setContent {
             AppTheme {
-                OssLicensesScreen()
+                OssLicensesScreen(
+                    onBackNavClick = ::finish,
+                )
             }
         }
     }
+}
 
-    @Composable
-    @OptIn(ExperimentalFoundationApi::class)
-    private fun OssLicensesScreen() {
-        val paddingValues = WindowInsets.safeDrawing.asPaddingValues()
-
-        LibrariesContainer(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.background)
-                .padding(top = paddingValues.calculateTopPadding()),
-            librariesBlock = { ctx ->
-                Libs.Builder().withJson(ctx, R.raw.aboutlibraries).build()
-            },
-            contentPadding = paddingValues.copy(top = 0.dp),
-            colors = LibraryDefaults.libraryColors(
-                backgroundColor = MaterialTheme.colorScheme.background,
-                contentColor = MaterialTheme.colorScheme.onBackground,
-                badgeBackgroundColor = MaterialTheme.colorScheme.primaryContainer,
-                badgeContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                dialogConfirmButtonColor = MaterialTheme.colorScheme.primary,
-            ),
-            header = {
-                stickyHeader {
-                    Row(
-                        modifier = Modifier
-                            .background(color = MaterialTheme.colorScheme.background)
-                            .fillMaxWidth(),
-                    ) {
-                        IconButton(onClick = { finish() }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_back),
-                                contentDescription = "",
-                                tint = MaterialTheme.colorScheme.primary,
-                            )
-                        }
+@Composable
+@OptIn(ExperimentalFoundationApi::class)
+private fun OssLicensesScreen(
+    onBackNavClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    paddingValues: PaddingValues = WindowInsets.safeDrawing.asPaddingValues(),
+) {
+    LibrariesContainer(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background)
+            .padding(top = paddingValues.calculateTopPadding()),
+        librariesBlock = { ctx ->
+            Libs.Builder().withJson(ctx, R.raw.aboutlibraries).build()
+        },
+        contentPadding = paddingValues.copy(top = 0.dp),
+        colors = LibraryDefaults.libraryColors(
+            backgroundColor = MaterialTheme.colorScheme.background,
+            contentColor = MaterialTheme.colorScheme.onBackground,
+            badgeBackgroundColor = MaterialTheme.colorScheme.primaryContainer,
+            badgeContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            dialogConfirmButtonColor = MaterialTheme.colorScheme.primary,
+        ),
+        header = {
+            stickyHeader {
+                Row(
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.background)
+                        .fillMaxWidth(),
+                ) {
+                    IconButton(onClick = onBackNavClick) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_back),
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
                     }
                 }
-            },
-        )
-    }
+            }
+        },
+    )
 }

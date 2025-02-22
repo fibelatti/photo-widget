@@ -131,7 +131,7 @@ private fun SettingsScreen(
         var footerHeight by remember { mutableStateOf(64.dp) }
 
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
                 .padding(

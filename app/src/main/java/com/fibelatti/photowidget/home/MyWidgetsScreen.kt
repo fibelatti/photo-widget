@@ -79,7 +79,7 @@ fun MyWidgetsScreen(
             if (items.isNotEmpty()) {
                 LazyVerticalStaggeredGrid(
                     columns = StaggeredGridCells.Fixed(count = if (maxWidth < 600.dp) 2 else 4),
-                    modifier = modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(start = 16.dp, top = 80.dp, end = 16.dp, bottom = 120.dp),
                     verticalItemSpacing = 16.dp,
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
