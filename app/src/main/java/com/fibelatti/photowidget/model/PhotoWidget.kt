@@ -15,7 +15,7 @@ data class PhotoWidget(
     val tapAction: PhotoWidgetTapAction = PhotoWidgetTapAction.DEFAULT,
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
     val shapeId: String = DEFAULT_SHAPE_ID,
-    val cornerRadius: Float = DEFAULT_CORNER_RADIUS,
+    val cornerRadius: Int = DEFAULT_CORNER_RADIUS,
     val border: PhotoWidgetBorder = PhotoWidgetBorder.None,
     val opacity: Float = DEFAULT_OPACITY,
     val blackAndWhite: Boolean = false,
@@ -45,10 +45,32 @@ data class PhotoWidget(
 
     companion object {
 
+        /**
+         * This dimension establishes a safe constant for the shapes library. Certain shapes can
+         * throw an exception when larger than this.
+         */
         const val MAX_WIDGET_DIMENSION: Int = 720
 
         const val DEFAULT_SHAPE_ID = "rounded-square"
-        const val DEFAULT_CORNER_RADIUS: Float = 64f
+
+        /**
+         * Default corner radius value in DP. Both the picker and the widget provider will multiply
+         * the set value by the current screen density in order to have it represented correctly.
+         */
+        const val DEFAULT_CORNER_RADIUS: Int = 28
+
+        /**
+         * The UI picker offers a [0..100] range for simplicity, which is converted to the
+         * corresponding alpha component of [0..255] when preparing the bitmap.
+         */
         const val DEFAULT_OPACITY: Float = 100f
+
+        /**
+         * Padding and Offset values are in DP. Both the picker and the widget provider will
+         * multiply their set value by the current screen density in order to have it represented
+         * correctly, times this constant to make each step more meaningful. Using base 4 to match
+         * the Android grid.
+         */
+        const val POSITIONING_MULTIPLIER: Int = 4
     }
 }

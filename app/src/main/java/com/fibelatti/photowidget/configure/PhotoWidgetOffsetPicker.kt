@@ -42,9 +42,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.DefaultPicker
+import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -137,13 +139,19 @@ private fun PhotoWidgetOffsetViewer(
     ) {
         Image(
             bitmap = baseBitmap
-                .withRoundedCorners(aspectRatio = PhotoWidgetAspectRatio.SQUARE)
+                .withRoundedCorners(
+                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
+                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
+                )
                 .asImageBitmap(),
             contentDescription = null,
             modifier = Modifier
                 .padding(32.dp)
                 .size(200.dp)
-                .offset(x = horizontalValue.dp, y = verticalValue.dp),
+                .offset(
+                    x = (horizontalValue * PhotoWidget.POSITIONING_MULTIPLIER).dp,
+                    y = (verticalValue * PhotoWidget.POSITIONING_MULTIPLIER).dp,
+                ),
         )
     }
 }

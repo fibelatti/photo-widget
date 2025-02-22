@@ -13,7 +13,7 @@ data class UserPreferences(
     val defaultShuffle: Boolean,
     val defaultCycleMode: PhotoWidgetCycleMode,
     val defaultShape: String,
-    val defaultCornerRadius: Float,
+    val defaultCornerRadius: Int,
     val defaultOpacity: Float,
     val defaultBlackAndWhite: Boolean,
     val defaultTapAction: PhotoWidgetTapAction,

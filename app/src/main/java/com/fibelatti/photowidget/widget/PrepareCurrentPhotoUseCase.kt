@@ -90,7 +90,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
         } else {
             bitmap.withRoundedCorners(
                 aspectRatio = photoWidget.aspectRatio,
-                radius = photoWidget.cornerRadius,
+                radius = photoWidget.cornerRadius * context.resources.displayMetrics.density,
                 opacity = photoWidget.opacity,
                 blackAndWhite = photoWidget.blackAndWhite,
                 borderColor = borderColor,

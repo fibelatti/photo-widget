@@ -9,7 +9,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Size
-import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
 import com.fibelatti.photowidget.R
@@ -23,6 +22,7 @@ import com.fibelatti.photowidget.platform.WidgetSizeProvider
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
 import java.lang.ref.WeakReference
+import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
@@ -224,14 +224,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         }
 
         private fun getDimensionValue(context: Context, value: Int): Int {
-            return TypedValue.applyDimension(
-                /* unit = */
-                TypedValue.COMPLEX_UNIT_DIP,
-                /* value = */
-                value * 10f,
-                /* metrics = */
-                context.resources.displayMetrics,
-            ).toInt()
+            return (value * context.resources.displayMetrics.density * PhotoWidget.POSITIONING_MULTIPLIER).roundToInt()
         }
 
         private fun setClickPendingIntent(

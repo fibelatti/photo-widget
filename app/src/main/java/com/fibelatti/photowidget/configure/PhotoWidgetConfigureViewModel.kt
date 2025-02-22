@@ -172,7 +172,11 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     } else {
                         PhotoWidget.DEFAULT_SHAPE_ID
                     },
-                    cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
+                    cornerRadius = if (PhotoWidgetAspectRatio.SQUARE == photoWidgetAspectRatio) {
+                        PhotoWidget.DEFAULT_CORNER_RADIUS
+                    } else {
+                        current.photoWidget.cornerRadius
+                    },
                 ),
             )
         }
@@ -470,7 +474,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun cornerRadiusSelected(cornerRadius: Float) {
+    fun cornerRadiusSelected(cornerRadius: Int) {
         _state.update { current ->
             current.copy(
                 photoWidget = current.photoWidget.copy(cornerRadius = cornerRadius),

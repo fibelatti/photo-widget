@@ -353,11 +353,11 @@ class PhotoWidgetStorage @Inject constructor(
         return sharedPreferences.getWidgetShapeId(appWidgetId = appWidgetId)
     }
 
-    fun saveWidgetCornerRadius(appWidgetId: Int, cornerRadius: Float) {
+    fun saveWidgetCornerRadius(appWidgetId: Int, cornerRadius: Int) {
         sharedPreferences.saveWidgetCornerRadius(appWidgetId = appWidgetId, cornerRadius = cornerRadius)
     }
 
-    fun getWidgetCornerRadius(appWidgetId: Int): Float {
+    fun getWidgetCornerRadius(appWidgetId: Int): Int {
         return sharedPreferences.getWidgetCornerRadius(appWidgetId = appWidgetId)
     }
 

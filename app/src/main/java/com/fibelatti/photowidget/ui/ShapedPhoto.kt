@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -19,7 +20,7 @@ fun ShapedPhoto(
     photo: LocalPhoto?,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
-    cornerRadius: Float,
+    cornerRadius: Int,
     opacity: Float,
     modifier: Modifier = Modifier,
     blackAndWhite: Boolean = false,
@@ -28,6 +29,7 @@ fun ShapedPhoto(
     isLoading: Boolean = false,
 ) {
     val localContext = LocalContext.current
+    val localDensity = LocalDensity.current.density
 
     AsyncPhotoViewer(
         data = photo?.getPhotoPath(),
@@ -66,7 +68,7 @@ fun ShapedPhoto(
             } else {
                 bitmap.withRoundedCorners(
                     aspectRatio = aspectRatio,
-                    radius = cornerRadius,
+                    radius = cornerRadius * localDensity,
                     opacity = opacity,
                     blackAndWhite = blackAndWhite,
                     borderColor = borderColor,

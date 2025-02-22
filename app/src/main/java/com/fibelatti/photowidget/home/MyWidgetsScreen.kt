@@ -38,11 +38,9 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
-import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.RemovedWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
@@ -221,18 +219,13 @@ private fun MyWidgetsScreenPreview() {
                 }
 
                 index to PhotoWidget(
-                    source = PhotoWidgetSource.PHOTOS,
                     photos = listOf(LocalPhoto(photoId = "photo-1")),
-                    shuffle = false,
-                    cycleMode = PhotoWidgetCycleMode.DEFAULT,
-                    tapAction = PhotoWidgetTapAction.DEFAULT,
                     aspectRatio = when {
                         index % 3 == 0 -> PhotoWidgetAspectRatio.WIDE
                         index % 2 == 0 -> PhotoWidgetAspectRatio.TALL
                         else -> PhotoWidgetAspectRatio.SQUARE
                     },
                     shapeId = allShapeIds.random(),
-                    cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                     opacity = opacities.random(),
                     status = status,
                     deletionTimestamp = if (PhotoWidgetStatus.REMOVED == status) 1 else -1,

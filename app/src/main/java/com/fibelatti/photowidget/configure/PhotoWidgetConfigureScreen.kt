@@ -107,6 +107,7 @@ import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.photowidget.ui.WarningSign
+import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
@@ -137,7 +138,7 @@ fun PhotoWidgetConfigureScreen(
     onShuffleChange: (Boolean) -> Unit,
     onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
     onShapeChange: (String) -> Unit,
-    onCornerRadiusChange: (Float) -> Unit,
+    onCornerRadiusChange: (Int) -> Unit,
     onBorderChange: (PhotoWidgetBorder) -> Unit,
     onOpacityChange: (Float) -> Unit,
     onBlackAndWhiteChange: (Boolean) -> Unit,
@@ -753,7 +754,7 @@ private fun CurrentPhotoViewer(
     photo: LocalPhoto?,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
-    cornerRadius: Float,
+    cornerRadius: Int,
     border: PhotoWidgetBorder,
     opacity: Float,
     blackAndWhite: Boolean,
@@ -887,7 +888,7 @@ private fun PhotoPicker(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter,
     ) {
-        val haptics = LocalHapticFeedback.current
+        val localHaptics = LocalHapticFeedback.current
 
         val currentPhotos by rememberUpdatedState(photos.toMutableStateList())
         val lazyGridState = rememberLazyGridState()
@@ -895,7 +896,7 @@ private fun PhotoPicker(
             currentPhotos.apply {
                 add(index = to.index, element = removeAt(index = from.index))
             }
-            haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+            localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
         }
 
         LazyVerticalGrid(
@@ -925,11 +926,11 @@ private fun PhotoPicker(
                             .longPressDraggableHandle(
                                 enabled = canSort,
                                 onDragStarted = {
-                                    haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    localHaptics.performHapticFeedback(HapticFeedbackType.LongPress)
                                 },
                                 onDragStopped = {
                                     onReorderFinished(currentPhotos)
-                                    haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    localHaptics.performHapticFeedback(HapticFeedbackType.LongPress)
                                 },
                             )
                             .aspectRatio(ratio = 1f)
@@ -1107,12 +1108,15 @@ private fun PaddingPicker(
 
         Image(
             bitmap = baseBitmap
-                .withRoundedCorners(aspectRatio = PhotoWidgetAspectRatio.SQUARE)
+                .withRoundedCorners(
+                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
+                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
+                )
                 .asImageBitmap(),
             contentDescription = null,
             modifier = Modifier
                 .size(200.dp)
-                .padding(value.dp),
+                .padding((value * PhotoWidget.POSITIONING_MULTIPLIER).dp),
         )
 
         Row(
@@ -1158,16 +1162,9 @@ private fun PhotoWidgetConfigureScreenPreview() {
     ExtendedTheme {
         PhotoWidgetConfigureScreen(
             photoWidget = PhotoWidget(
-                source = PhotoWidgetSource.PHOTOS,
                 photos = List(20) { index ->
                     LocalPhoto(photoId = "photo-$index")
                 },
-                shuffle = false,
-                cycleMode = PhotoWidgetCycleMode.DEFAULT,
-                tapAction = PhotoWidgetTapAction.DEFAULT,
-                aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                shapeId = PhotoWidget.DEFAULT_SHAPE_ID,
-                cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
             ),
             isUpdating = false,
             selectedPhoto = LocalPhoto(photoId = "photo-0"),
@@ -1209,12 +1206,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
                 photos = List(20) { index ->
                     LocalPhoto(photoId = "photo-$index")
                 },
-                shuffle = false,
-                cycleMode = PhotoWidgetCycleMode.DEFAULT,
-                tapAction = PhotoWidgetTapAction.DEFAULT,
                 aspectRatio = PhotoWidgetAspectRatio.TALL,
-                shapeId = PhotoWidget.DEFAULT_SHAPE_ID,
-                cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                 opacity = 80f,
             ),
             isUpdating = true,

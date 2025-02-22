@@ -17,6 +17,7 @@ import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 class PhotoWidgetSharedPreferences @Inject constructor(
     @ApplicationContext context: Context,
@@ -24,6 +25,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
 ) {
 
     private val sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+    private val density = context.resources.displayMetrics.density
 
     fun saveWidgetSource(appWidgetId: Int, source: PhotoWidgetSource) {
         sharedPreferences.edit {
@@ -212,17 +214,24 @@ class PhotoWidgetSharedPreferences @Inject constructor(
             ?: userPreferencesStorage.defaultShape
     }
 
-    fun saveWidgetCornerRadius(appWidgetId: Int, cornerRadius: Float) {
+    fun saveWidgetCornerRadius(appWidgetId: Int, cornerRadius: Int) {
         sharedPreferences.edit {
-            putFloat("${PreferencePrefix.CORNER_RADIUS}$appWidgetId", cornerRadius)
+            remove("${PreferencePrefix.LEGACY_CORNER_RADIUS}$appWidgetId")
+            putInt("${PreferencePrefix.CORNER_RADIUS_DP}$appWidgetId", cornerRadius)
         }
     }
 
-    fun getWidgetCornerRadius(appWidgetId: Int): Float {
-        return sharedPreferences.getFloat(
-            "${PreferencePrefix.CORNER_RADIUS}$appWidgetId",
-            userPreferencesStorage.defaultCornerRadius,
-        )
+    fun getWidgetCornerRadius(appWidgetId: Int): Int {
+        val legacyValue = sharedPreferences.getFloat("${PreferencePrefix.LEGACY_CORNER_RADIUS}$appWidgetId", -1f)
+
+        return if (legacyValue != -1f) {
+            (legacyValue / density).roundToInt()
+        } else {
+            sharedPreferences.getInt(
+                "${PreferencePrefix.CORNER_RADIUS_DP}$appWidgetId",
+                userPreferencesStorage.defaultCornerRadius,
+            )
+        }
     }
 
     fun saveWidgetBorder(appWidgetId: Int, border: PhotoWidgetBorder) {
@@ -442,7 +451,12 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         LEGACY_PAST_INDICES(value = "appwidget_past_indices_"),
         RATIO(value = "appwidget_aspect_ratio_"),
         SHAPE(value = "appwidget_shape_"),
-        CORNER_RADIUS(value = "appwidget_corner_radius_"),
+
+        /**
+         * Key from when the corner radius was persisted in px.
+         */
+        LEGACY_CORNER_RADIUS(value = "appwidget_corner_radius_"),
+        CORNER_RADIUS_DP(value = "appwidget_corner_radius_dp_"),
         BORDER_COLOR_HEX(value = "appwidget_border_color_hex_"),
         BORDER_DYNAMIC(value = "appwidget_border_dynamic_"),
         BORDER_WIDTH(value = "appwidget_border_width_"),

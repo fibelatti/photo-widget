@@ -23,7 +23,7 @@ import timber.log.Timber
 
 fun Bitmap.withRoundedCorners(
     aspectRatio: PhotoWidgetAspectRatio,
-    radius: Float = PhotoWidget.DEFAULT_CORNER_RADIUS,
+    radius: Float,
     opacity: Float = PhotoWidget.DEFAULT_OPACITY,
     blackAndWhite: Boolean = false,
     @ColorInt borderColor: Int? = null,

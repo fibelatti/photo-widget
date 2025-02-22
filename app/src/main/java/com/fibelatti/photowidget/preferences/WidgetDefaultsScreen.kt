@@ -44,6 +44,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -76,11 +77,13 @@ import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit
+import kotlin.math.roundToInt
 
 @Composable
 fun WidgetDefaultsScreen(
@@ -465,8 +468,8 @@ fun ShapePicker(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun CornerRadiusPicker(
-    currentValue: Float,
-    onApplyClick: (newValue: Float) -> Unit,
+    currentValue: Int,
+    onApplyClick: (newValue: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DefaultPicker(
@@ -477,13 +480,13 @@ fun CornerRadiusPicker(
         val baseBitmap = remember {
             BitmapFactory.decodeResource(localContext.resources, R.drawable.image_sample)
         }
-        var value by remember(currentValue) { mutableFloatStateOf(currentValue) }
+        var value by remember(currentValue) { mutableIntStateOf(currentValue) }
 
         Image(
             bitmap = baseBitmap
                 .withRoundedCorners(
                     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                    radius = value,
+                    radius = value.dpToPx(),
                 )
                 .asImageBitmap(),
             contentDescription = null,
@@ -498,15 +501,15 @@ fun CornerRadiusPicker(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Slider(
-                value = value,
-                onValueChange = { value = it },
+                value = value.toFloat(),
+                onValueChange = { value = it.roundToInt() },
                 modifier = Modifier.weight(1f),
-                valueRange = 0f..100f,
+                valueRange = 0f..64f,
                 thumb = { SliderSmallThumb() },
             )
 
             Text(
-                text = "${value.toInt()}",
+                text = "$value",
                 modifier = Modifier.width(40.dp),
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.End,
@@ -546,6 +549,7 @@ fun OpacityPicker(
             bitmap = baseBitmap
                 .withRoundedCorners(
                     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
+                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
                     opacity = value,
                 )
                 .asImageBitmap(),

@@ -14,6 +14,7 @@ import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,6 +27,8 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         SHARED_PREFERENCES_NAME,
         Context.MODE_PRIVATE,
     )
+
+    private val density = context.resources.displayMetrics.density
 
     private val _userPreferences = MutableStateFlow(
         UserPreferences(
@@ -183,15 +186,21 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             _userPreferences.update { current -> current.copy(defaultShape = value) }
         }
 
-    var defaultCornerRadius: Float
+    var defaultCornerRadius: Int
         get() {
-            return sharedPreferences.getFloat(
-                Preference.DEFAULT_CORNER_RADIUS.value,
-                PhotoWidget.DEFAULT_CORNER_RADIUS,
-            )
+            val legacyValue = sharedPreferences.getFloat(Preference.LEGACY_DEFAULT_CORNER_RADIUS.value, -1f)
+
+            return if (legacyValue != -1f) {
+                (legacyValue / density).roundToInt()
+            } else {
+                sharedPreferences.getInt(Preference.DEFAULT_CORNER_RADIUS.value, PhotoWidget.DEFAULT_CORNER_RADIUS)
+            }
         }
         set(value) {
-            sharedPreferences.edit { putFloat(Preference.DEFAULT_CORNER_RADIUS.value, value) }
+            sharedPreferences.edit {
+                remove(Preference.LEGACY_DEFAULT_CORNER_RADIUS.value)
+                putInt(Preference.DEFAULT_CORNER_RADIUS.value, value)
+            }
             _userPreferences.update { current -> current.copy(defaultCornerRadius = value) }
         }
 
@@ -327,7 +336,12 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         DEFAULT_INTERVAL("default_interval_seconds"),
         DEFAULT_SCHEDULE("default_schedule"),
         DEFAULT_SHAPE(value = "default_shape"),
-        DEFAULT_CORNER_RADIUS(value = "default_corner_radius"),
+
+        /**
+         * Key from when the corner radius was persisted in px.
+         */
+        LEGACY_DEFAULT_CORNER_RADIUS(value = "default_corner_radius"),
+        DEFAULT_CORNER_RADIUS(value = "default_corner_radius_dp"),
         DEFAULT_OPACITY(value = "default_opacity"),
         DEFAULT_BLACK_AND_WHITE(value = "default_black_and_white"),
         DEFAULT_TAP_ACTION(value = "default_tap_action"),

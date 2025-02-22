@@ -31,7 +31,7 @@ class WidgetDefaultsViewModel @Inject constructor(
         userPreferencesStorage.defaultShape = value
     }
 
-    fun saveDefaultCornerRadius(value: Float) {
+    fun saveDefaultCornerRadius(value: Int) {
         userPreferencesStorage.defaultCornerRadius = value
     }
 

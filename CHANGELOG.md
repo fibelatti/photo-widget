@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add preferred gallery picker when using "View with a gallery app"
 * Add back "View next photo" tap action for 1x1 widgets
 
+### Changed
+
+* Update how the corner radius is calculated to better match what's seen in the
+  picker
+* Update the base multiplier used to adjust the widget padding and offset
+
 ### Fixed
 
 * Fix rounded corners not working on "Fill" widgets

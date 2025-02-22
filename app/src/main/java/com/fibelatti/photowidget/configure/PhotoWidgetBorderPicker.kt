@@ -57,6 +57,7 @@ import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 import com.github.skydoves.colorpicker.compose.BrightnessSlider
@@ -233,6 +234,7 @@ private fun ColorBorderContent(
                 bitmap = baseBitmap
                     .withRoundedCorners(
                         aspectRatio = PhotoWidgetAspectRatio.SQUARE,
+                        radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
                         borderColor = "#$currentColorHex".toColorInt(),
                         borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
                     )
@@ -336,7 +338,7 @@ private fun DynamicBorderContent(
             bitmap = baseBitmap
                 .withRoundedCorners(
                     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS,
+                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
                     borderColor = localContext.getDynamicAttributeColor(
                         com.google.android.material.R.attr.colorPrimaryInverse,
                     ),

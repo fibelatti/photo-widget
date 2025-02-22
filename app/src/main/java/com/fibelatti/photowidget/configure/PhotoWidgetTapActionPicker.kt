@@ -64,6 +64,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
@@ -71,6 +72,7 @@ import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.ui.foundation.ColumnToggleButtonGroup
 import com.fibelatti.ui.foundation.ToggleButtonGroup
+import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
@@ -348,7 +350,10 @@ private fun TapAreaIndicator(
     ) {
         Image(
             bitmap = baseBitmap
-                .withRoundedCorners(aspectRatio = PhotoWidgetAspectRatio.SQUARE)
+                .withRoundedCorners(
+                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
+                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
+                )
                 .asImageBitmap(),
             contentDescription = null,
             modifier = Modifier
