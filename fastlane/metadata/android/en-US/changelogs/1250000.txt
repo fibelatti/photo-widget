@@ -1,0 +1,10 @@
+This version brings the following updates:
+
+* Adds support for HEIC/HEIF file format when syncing folders
+* Adds preferred gallery picker when using "View with a gallery app"
+* Adds "View next photo" tap action for 1x1 widgets
+* Updates how corner radius, padding and offset are calculated to better match
+  what's seen in the picker
+* Fix rounded corners not working on "Fill" widgets
+
+Thanks for using the app!
