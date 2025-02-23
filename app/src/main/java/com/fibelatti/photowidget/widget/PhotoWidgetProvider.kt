@@ -316,7 +316,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
                     val intent = Intent(Intent.ACTION_VIEW)
                         .setDataAndType(externalUri, "image/*")
-                        .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         .setIdentifierCompat("$appWidgetId")
 
                     if (tapAction.galleryApp != null) {
