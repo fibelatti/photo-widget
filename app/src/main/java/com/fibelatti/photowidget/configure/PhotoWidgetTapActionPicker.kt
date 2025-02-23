@@ -148,7 +148,7 @@ private fun TapActionPickerContent(
         mutableStateOf((currentTapAction as? PhotoWidgetTapAction.UrlShortcut)?.url.orEmpty())
     }
 
-    LaunchedEffect(currentAppShortcut) {
+    LaunchedEffect(currentAppShortcut, currentGalleryApp) {
         if (currentAppShortcut != null && tapAction is PhotoWidgetTapAction.AppShortcut) {
             tapAction = PhotoWidgetTapAction.AppShortcut(currentAppShortcut)
         } else if (currentGalleryApp != null && tapAction is PhotoWidgetTapAction.ViewInGallery) {
