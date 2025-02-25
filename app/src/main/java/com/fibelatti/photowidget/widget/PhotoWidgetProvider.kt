@@ -25,6 +25,7 @@ import java.lang.ref.WeakReference
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -83,9 +84,27 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         newOptions: Bundle?,
     ) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
-
         Timber.d("Options changed by the system (appWidgetId=$appWidgetId)")
+        updateWidgetWithRepeatSignal(context = context, appWidgetId = appWidgetId)
+    }
+
+    /**
+     * For whatever reason, sometimes the widget size is not correct and photos will be zoomed in incorrectly when
+     * using [PhotoWidgetAspectRatio.FILL_WIDGET]. Repeating the update signal should be enough to nudge the widget to
+     * fix itself after the home screen UI has settled. A [WeakReference] of the given context is kept, and the repeated
+     * signal only goes through if the context is still around to avoid any leaks.
+     */
+    private fun updateWidgetWithRepeatSignal(context: Context, appWidgetId: Int) {
         update(context = context, appWidgetId = appWidgetId)
+
+        runCatching {
+            val ctx = WeakReference(context)
+            entryPoint<PhotoWidgetEntryPoint>(context).coroutineScope().launch {
+                delay(timeMillis = 3_000L)
+                Timber.d("Repeating options changed signal (appWidgetId=$appWidgetId)")
+                ctx.get()?.let { update(context = it, appWidgetId = appWidgetId) }
+            }
+        }
     }
 
     companion object {

@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+* Open the default gallery using a new task
+
+### Fixed
+
+* Attempt to fix an issue that causes "Fill" widgets to zoom in the image
+
 ## [v1.25.1] - 2025-02-23
 [v1.25.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.25.1
 
