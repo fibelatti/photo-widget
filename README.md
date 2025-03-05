@@ -3,7 +3,7 @@ Material Photo Widget
 
 [![Language](https://img.shields.io/badge/language-kotlin-brightgreen.svg)](https://www.github.com/fibelatti/photo-widget)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Android CI](https://github.com/fibelatti/photo-widget/workflows/Android%20CI/badge.svg)](https://github.com/fibelatti/photo-widget/actions?query=workflow%3A%22Android+CI%22)
+[![Android CI](https://github.com/fibelatti/photo-widget/actions/workflows/android-ci.yml/badge.svg?branch=main)](https://github.com/fibelatti/photo-widget/actions?query=workflow%3A%22Android+CI%22)
 
 Material Photo Widget is as simple as it can be: an Android home screen widget to display a photo or
 collection of photos. It is a free, no-ads, open source alternative for people who want to customize
