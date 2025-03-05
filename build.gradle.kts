@@ -95,8 +95,14 @@ subprojects {
             }
 
             compileOptions {
+                isCoreLibraryDesugaringEnabled = true
+
                 sourceCompatibility(javaVersion)
                 targetCompatibility(javaVersion)
+            }
+
+            dependencies {
+                "coreLibraryDesugaring"(libs.core.library.desugaring)
             }
         }
 
