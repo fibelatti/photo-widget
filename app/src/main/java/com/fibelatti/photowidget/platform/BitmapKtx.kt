@@ -13,6 +13,7 @@ import android.graphics.RectF
 import android.util.Size
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
+import androidx.core.graphics.createBitmap
 import androidx.core.graphics.toRect
 import androidx.core.graphics.toRectF
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -83,7 +84,7 @@ private inline fun Bitmap.withTransformation(
     val source = sourceRect(aspectRatio = aspectRatio, widgetSize = widgetSize)
     val destination = Rect(0, 0, source.width(), source.height())
 
-    val output = Bitmap.createBitmap(source.width(), source.height(), Bitmap.Config.ARGB_8888)
+    val output = createBitmap(source.width(), source.height())
     val canvas = Canvas(output).apply {
         drawColor(Color.TRANSPARENT)
     }

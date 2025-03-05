@@ -254,7 +254,7 @@ private fun ColorBorderContent(
                     colorHex = colorEnvelope.hexCode.drop(2)
                     onColorChange(colorHex)
                 },
-                initialColor = Color(android.graphics.Color.parseColor("#$currentColorHex")),
+                initialColor = Color("#$currentColorHex".toColorInt()),
             )
         }
 
@@ -285,7 +285,7 @@ private fun ColorBorderContent(
                         colorHex = newValue
 
                         if (colorHex.length == 6) {
-                            val androidColor = android.graphics.Color.parseColor("#$colorHex")
+                            val androidColor = "#$colorHex".toColorInt()
                             colorPickerController.selectByColor(color = Color(androidColor), fromUser = true)
                             onColorChange(colorHex)
                         }

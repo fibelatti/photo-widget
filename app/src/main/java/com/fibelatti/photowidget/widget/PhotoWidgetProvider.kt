@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.util.Size
 import android.view.View
 import android.widget.RemoteViews
+import androidx.core.net.toUri
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
@@ -414,7 +415,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 is PhotoWidgetTapAction.UrlShortcut -> {
                     if (tapAction.url.isNullOrBlank()) return null
 
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(tapAction.url))
+                    val intent = Intent(Intent.ACTION_VIEW, tapAction.url.toUri())
                         .setIdentifierCompat("$appWidgetId")
 
                     return PendingIntent.getActivity(

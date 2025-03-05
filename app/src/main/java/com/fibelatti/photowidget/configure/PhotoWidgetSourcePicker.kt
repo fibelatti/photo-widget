@@ -40,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
@@ -264,7 +265,7 @@ private fun SourcePickerContentDirectoryPreview() {
     ExtendedTheme {
         SourcePickerContent(
             currentSource = PhotoWidgetSource.DIRECTORY,
-            syncedDir = List(10) { Uri.parse("https://test/$it") }.toSet(),
+            syncedDir = List(10) { "https://test/$it".toUri() }.toSet(),
             onDirRemoved = {},
             onKeepSource = {},
             onChangeSource = {},

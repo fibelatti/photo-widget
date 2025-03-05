@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.BuildConfig
 import com.fibelatti.photowidget.R
@@ -309,7 +310,7 @@ class HomeActivity : AppCompatActivity() {
             appendLine()
         }
 
-        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")).apply {
+        val emailIntent = Intent(Intent.ACTION_SENDTO, "mailto:".toUri()).apply {
             putExtra(Intent.EXTRA_EMAIL, arrayOf("appsupport@fibelatti.com"))
             putExtra(
                 Intent.EXTRA_SUBJECT,
@@ -330,7 +331,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun openUrl(url: String) {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
     }
 
     private fun viewOpenSourceLicenses() {
