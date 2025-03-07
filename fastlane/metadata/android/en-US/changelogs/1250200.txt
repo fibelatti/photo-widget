@@ -1,0 +1,7 @@
+This version brings the following updates:
+
+* Attempt to fix an issue that causes "Fill" widgets to zoom in the image
+* Display the troubleshooting article on Samsung and Motorola when battery is
+  restricted
+
+Thanks for using the app!

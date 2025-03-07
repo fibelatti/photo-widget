@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.25.2] - 2025-03-07
+[v1.25.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.25.2
+
 ### Changed
 
 * Open the default gallery using a new task
+* Display the troubleshooting article on Samsung and Motorola when battery is
+  restricted
 
 ### Fixed
 
