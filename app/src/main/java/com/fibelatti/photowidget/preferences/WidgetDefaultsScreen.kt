@@ -107,14 +107,6 @@ fun WidgetDefaultsScreen(
                 onOptionSelected = preferencesViewModel::saveDefaultSource,
             )
         },
-        onShuffleChange = preferencesViewModel::saveDefaultShuffle,
-        onIntervalClick = {
-            PhotoWidgetCycleModePicker.show(
-                context = localContext,
-                cycleMode = preferences.defaultCycleMode,
-                onApplyClick = preferencesViewModel::saveDefaultCycleMode,
-            )
-        },
         onShapeClick = {
             ComposeBottomSheetDialog(localContext) {
                 ShapePicker(
@@ -161,6 +153,14 @@ fun WidgetDefaultsScreen(
                 onApplyClick = preferencesViewModel::saveDefaultBrightness,
             )
         },
+        onIntervalClick = {
+            PhotoWidgetCycleModePicker.show(
+                context = localContext,
+                cycleMode = preferences.defaultCycleMode,
+                onApplyClick = preferencesViewModel::saveDefaultCycleMode,
+            )
+        },
+        onShuffleChange = preferencesViewModel::saveDefaultShuffle,
         onTapActionClick = {
             PhotoWidgetTapActionPicker.show(
                 context = localContext,
@@ -178,13 +178,13 @@ private fun WidgetDefaultsScreen(
     userPreferences: UserPreferences,
     onNavClick: () -> Unit,
     onSourceClick: () -> Unit,
-    onShuffleChange: (Boolean) -> Unit,
-    onIntervalClick: () -> Unit,
     onShapeClick: () -> Unit,
     onCornerRadiusClick: () -> Unit,
     onOpacityClick: () -> Unit,
     onSaturationClick: () -> Unit,
     onBrightnessClick: () -> Unit,
+    onIntervalClick: () -> Unit,
+    onShuffleChange: (Boolean) -> Unit,
     onTapActionClick: () -> Unit,
     onClearDefaultsClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -225,10 +225,34 @@ private fun WidgetDefaultsScreen(
                 onClick = onSourceClick,
             )
 
-            BooleanDefault(
-                title = stringResource(id = R.string.widget_defaults_shuffle),
-                currentValue = userPreferences.defaultShuffle,
-                onCheckedChange = onShuffleChange,
+            ShapeDefault(
+                title = stringResource(id = R.string.widget_defaults_shape),
+                currentValue = userPreferences.defaultShape,
+                onClick = onShapeClick,
+            )
+
+            PickerDefault(
+                title = stringResource(id = R.string.widget_defaults_corner_radius),
+                currentValue = userPreferences.defaultCornerRadius.toString(),
+                onClick = onCornerRadiusClick,
+            )
+
+            PickerDefault(
+                title = stringResource(id = R.string.widget_defaults_opacity),
+                currentValue = formatPercent(value = userPreferences.defaultOpacity, fractionDigits = 0),
+                onClick = onOpacityClick,
+            )
+
+            PickerDefault(
+                title = stringResource(R.string.widget_defaults_saturation),
+                currentValue = formatPercent(value = userPreferences.defaultSaturation, fractionDigits = 0),
+                onClick = onSaturationClick,
+            )
+
+            PickerDefault(
+                title = stringResource(R.string.widget_defaults_brightness),
+                currentValue = formatPercent(value = userPreferences.defaultBrightness, fractionDigits = 0),
+                onClick = onBrightnessClick,
             )
 
             PickerDefault(
@@ -263,34 +287,10 @@ private fun WidgetDefaultsScreen(
                 onClick = onIntervalClick,
             )
 
-            ShapeDefault(
-                title = stringResource(id = R.string.widget_defaults_shape),
-                currentValue = userPreferences.defaultShape,
-                onClick = onShapeClick,
-            )
-
-            PickerDefault(
-                title = stringResource(id = R.string.widget_defaults_corner_radius),
-                currentValue = userPreferences.defaultCornerRadius.toString(),
-                onClick = onCornerRadiusClick,
-            )
-
-            PickerDefault(
-                title = stringResource(id = R.string.widget_defaults_opacity),
-                currentValue = formatPercent(value = userPreferences.defaultOpacity, fractionDigits = 0),
-                onClick = onOpacityClick,
-            )
-
-            PickerDefault(
-                title = stringResource(R.string.widget_defaults_saturation),
-                currentValue = formatPercent(value = userPreferences.defaultSaturation, fractionDigits = 0),
-                onClick = onSaturationClick,
-            )
-
-            PickerDefault(
-                title = stringResource(R.string.widget_defaults_brightness),
-                currentValue = formatPercent(value = userPreferences.defaultBrightness, fractionDigits = 0),
-                onClick = onBrightnessClick,
+            BooleanDefault(
+                title = stringResource(id = R.string.widget_defaults_shuffle),
+                currentValue = userPreferences.defaultShuffle,
+                onCheckedChange = onShuffleChange,
             )
 
             PickerDefault(
@@ -665,13 +665,13 @@ private fun WidgetDefaultsScreenPreview() {
             ),
             onNavClick = {},
             onSourceClick = {},
-            onShuffleChange = {},
-            onIntervalClick = {},
             onShapeClick = {},
             onCornerRadiusClick = {},
             onOpacityClick = {},
             onSaturationClick = {},
             onBrightnessClick = {},
+            onIntervalClick = {},
+            onShuffleChange = {},
             onTapActionClick = {},
             onClearDefaultsClick = {},
         )
