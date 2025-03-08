@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Widget Host -->
     <string name="photo_widget_host_description">Ana ekranınızı favori fotoğraflarınızla süsleyin</string>
-
     <!-- Home -->
     <string name="photo_widget_home_title">Ana ekranınızı favori fotoğraflarınızla süsleyin</string>
     <string name="photo_widget_home_instruction">Seçeneklerden birine dokunarak yeni bir widget oluşturun. Endişelenmeyin, bunu istediğiniz zaman değiştirebilirsiniz!</string>
-    <string name="photo_widget_home_new">Yeni Widget</string>
+    <string name="photo_widget_home_new">Yeni widget</string>
     <string name="photo_widget_home_current">Widget\'larım</string>
     <string name="photo_widget_home_settings">Ayarlar</string>
     <string name="photo_widget_home_data_saver">Optimize edilmiş depolama</string>
@@ -22,38 +21,30 @@
     <string name="photo_widget_home_developer">❤ ile geliştiren Filipe Belatti</string>
     <string name="photo_widget_home_version">Uygulama sürümü: %s</string>
     <string name="photo_widget_home_view_licenses">OSS Lisansları</string>
-
     <plurals name="photo_widget_home_share_received">
         <item quantity="one">1 fotoğraf alındı. Yeni bir widget oluşturun veya eklemek için mevcut birini seçin.</item>
         <item quantity="other">%d fotoğraf alındı. Yeni bir widget oluşturun veya eklemek için mevcut birini seçin.</item>
     </plurals>
-
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Henüz herhangi bir widget eklemediniz.\nAna ekranınıza eklenen widget\'lar burada görünecektir.</string>
     <string name="photo_widget_home_filter_all">Hepsi</string>
     <string name="photo_widget_home_filter_photos">Fotoğraflar</string>
     <string name="photo_widget_home_filter_folder">Klasör</string>
-
     <string name="photo_widget_home_removed_label">Kaldırıldı</string>
-    <string name="photo_widget_home_removed_widgets_hint">Silinen widget\'lar artık ana ekranınızda yer almayacak. 7 gün sonra uygulamadan kalıcı olarak silinirler. Bunları "Tutmayı" seçebilirsiniz.</string>
-
+    <string name="photo_widget_home_removed_widgets_hint">Silinen widget\'lar artık ana ekranınızda yer almayacak. 7 gün sonra uygulamadan kalıcı olarak silinirler. Bunları \"Tutmayı\" seçebilirsiniz.</string>
     <string name="photo_widget_home_my_widget_action_edit">Görüntüle / Düzenle</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Çoğalt</string>
     <string name="photo_widget_home_removed_widget_action_restore">Eski haline getirmek</string>
     <string name="photo_widget_home_removed_widget_action_keep">Kale</string>
-    <string name="photo_widget_home_removed_widget_action_delete">kalıcı olarak sil</string>
-
+    <string name="photo_widget_home_removed_widget_action_delete">Kalıcı olarak sil</string>
     <!-- Preferences -->
     <string name="preferences_data_saver">Depolama kullanımını azaltın</string>
     <string name="preferences_data_saver_description">Etkinleştirildiğinde, widget\'lara eklenen fotoğraflar depolama alanından tasarruf etmek için sıkıştırılır. Bu genellikle kaliteyi etkilemez, ancak fotoğraflarınız küçük metin içeriyorsa, bunu kapatmanız önerilir.\n\nBu ayar yalnızca değiştirildikten sonra eklenen fotoğrafları etkiler.\n\nSenkronize klasörler için geçerli değildir, çünkü bu fotoğraflar doğrudan cihazınızın depolama alanından okunur.</string>
-
     <string name="preferences_appearance_follow_system">Sistemi takip et</string>
     <string name="preferences_appearance_light">Aydınlık</string>
     <string name="preferences_appearance_dark">Karanlık</string>
-
     <string name="preferences_dynamic_colors_enabled">Dinamik renkler</string>
     <string name="preferences_dynamic_colors_disabled">Varsayılan renkler</string>
-
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Widget varsayılanları</string>
     <string name="widget_defaults_explanation">Bu değerler, yeni bir widget oluşturduğunuzda önceden yüklenir. Aynı ayarlara sahip birden fazla widget oluştururken ayarları her seferinde değiştirme ihtiyacını ortadan kaldırdığı için kullanışlıdır. Bu değerlerde yapılan değişikliklerin mevcut widget\'ları etkilemeyeceğini unutmayın.</string>
@@ -66,15 +57,12 @@
     <string name="widget_defaults_black_and_white">Siyah ve beyaz</string>
     <string name="widget_defaults_tap_action">Dokunma eylemi</string>
     <string name="widget_defaults_reset">Değerleri sıfırla</string>
-
     <!-- Share -->
     <string name="share_title">Sözü yay</string>
     <string name="share_text">Favori fotoğraflarınızı Ana ekranınıza ekleyin. Material Photo Widget ile ücretsiz indir %s</string>
-
     <!-- Source -->
     <string name="photo_widget_source_photos">Fotoğraflar</string>
     <string name="photo_widget_source_directory">Klasör</string>
-
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">En-boy oranı</string>
     <string name="photo_widget_aspect_ratio_square">Kare</string>
@@ -84,26 +72,20 @@
     <string name="photo_widget_aspect_ratio_original_description">Her fotoğrafla eşleş</string>
     <string name="photo_widget_aspect_ratio_fill_widget">Doldur</string>
     <string name="photo_widget_aspect_ratio_fill_widget_description">Widget boyutuna uyum sağla</string>
-
-
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Değişiklikler kaybolacak, yine de geri dönmek istiyor musunuz?</string>
-
     <string name="photo_widget_configure_tab_content">İçerik</string>
     <string name="photo_widget_configure_tab_appearance">Görünüm</string>
     <string name="photo_widget_configure_tab_behavior">Davranış</string>
-
     <string name="photo_widget_configure_import_prompt">Başka bir widget\'tan içe aktar?</string>
     <string name="photo_widget_configure_import_prompt_action">Seçmek</string>
     <string name="photo_widget_configure_import_dialog_title">Widget\'ı seçin</string>
     <string name="photo_widget_configure_import_dialog_description">Tüm fotoğraflar ve yapılandırmalar yeni widget\'a kopyalanacak</string>
-
     <string name="photo_widget_configure_import_error">Seçilen tüm fotoğraflar içe aktarılamadı</string>
-    <string name="photo_widget_configure_too_many_photos_error" tools:ignore="Typos">Her senkronize klasör en fazla 3000 fotoğraf içerebilir. Birden fazla seçebilirsiniz ve her alt klasör ayrı ayrı sayılır.\n\nKamera rulosunu seçemezsiniz. Fotoğraflar tek tek işlenir ve binlerce fotoğraf içeren klasörler, widget düzenleyicide ve fotoğraflar arasında geçiş yaparken ana ekranda ciddi performans sorunlarına neden olur.</string>
+    <string name="photo_widget_configure_too_many_photos_error">Her senkronize klasör en fazla 3000 fotoğraf içerebilir. Birden fazla seçebilirsiniz ve her alt klasör ayrı ayrı sayılır.\n\nKamera rulosunu seçemezsiniz. Fotoğraflar tek tek işlenir ve binlerce fotoğraf içeren klasörler, widget düzenleyicide ve fotoğraflar arasında geçiş yaparken ana ekranda ciddi performans sorunlarına neden olur.</string>
     <string name="photo_widget_configure_missing_photos_error">Widget\'ta en az bir fotoğraf bulunmalıdır. Widget\'lar yalnızca doğrudan ana ekrandan silinebilir.</string>
-
     <string name="photo_widget_configure_menu_source">Kaynak</string>
-    <string name="photo_widget_configure_source_description" tools:ignore="Typos">Her fotoğrafı ayrı ayrı seçebilir veya bu widget\'ı bir veya daha fazla klasörle senkronize edebilirsiniz. Senkronizasyon sırasında klasördeki tüm fotoğraflar otomatik olarak widget\'a eklenir. İçerik 24 saatte bir güncellenmektedir.</string>
+    <string name="photo_widget_configure_source_description">Her fotoğrafı ayrı ayrı seçebilir veya bu widget\'ı bir veya daha fazla klasörle senkronize edebilirsiniz. Senkronizasyon sırasında klasördeki tüm fotoğraflar otomatik olarak widget\'a eklenir. İçerik 24 saatte bir güncellenmektedir.</string>
     <string name="photo_widget_configure_source_selection_photos">Yalnızca seçtiğiniz fotoğraflar bu widget\'te görüntülenecek.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Bu widget henüz herhangi bir klasör ile senkronize edilmedi.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Bu widget şu klasörler ile senkronize edildi:</string>
@@ -111,28 +93,22 @@
     <string name="photo_widget_configure_source_set_directory">Kaynağı Klasör olarak ayarla</string>
     <string name="photo_widget_configure_source_set_photos">Kaynağı Fotoğraflar olarak ayarla</string>
     <string name="photo_widget_configure_source_warning">Kaynağı değiştirmek, bu widget\'teki mevcut fotoğrafları değiştirecek</string>
-
     <string name="photo_widget_configure_menu_crop">Kırp</string>
     <string name="photo_widget_configure_menu_remove">Kaldır</string>
     <string name="photo_widget_configure_menu_move_left">Sola taşı</string>
     <string name="photo_widget_configure_menu_move_right">Sağa taşı</string>
-
     <string name="photo_widget_configure_photos_pending_deletion">Son silinen fotoğraflar</string>
     <string name="photo_widget_configure_photos_excluded">Widget\'tan silindi</string>
-
     <string name="photo_widget_configure_pick_photo">Fotoğraf seç</string>
     <string name="photo_widget_configure_pick_folder">Klasörü seç</string>
     <string name="photo_widget_configure_change_source">Kaynağı değiştir</string>
-
     <string name="photo_widget_configure_select_cycling_mode">Fotoğraf Döngüsü</string>
     <string name="photo_widget_configure_cycling_mode_interval">Aralık</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Zamanlama</string>
     <string name="photo_widget_configure_cycling_mode_disabled">Devre dışı</string>
-
     <string name="photo_widget_configure_cycling_mode_interval_description">Widget, belirli aralıklarla otomatik olarak bir sonraki fotoğrafa geçecektir:</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description">Widget, her gün belirlenen zamanlarda otomatik olarak bir sonraki fotoğrafa geçecektir:</string>
     <string name="photo_widget_configure_cycling_mode_disabled_description">Widget fotoğraflar arasında otomatik olarak geçiş yapmaz. Bir sonraki fotoğrafa geçmek için widget kenarlarına dokunun.</string>
-
     <string name="photo_widget_configure_interval_current_label">Her %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d saniye</item>
@@ -154,7 +130,6 @@
     <string name="photo_widget_configure_interval_minutes_label">Dakika</string>
     <string name="photo_widget_configure_interval_hours_label">Saat</string>
     <string name="photo_widget_configure_interval_days_label">Gün</string>
-
     <string name="photo_widget_configure_schedule_placeholder">Fotoğraflarınızı otomatik olarak değiştirmek için en fazla 4 zaman belirleyin.</string>
     <string name="photo_widget_configure_schedule_add_new">Yeni ekle</string>
     <string name="photo_widget_configure_schedule_limit_reached">Maksimum 4 zaman sınırına ulaşıldı</string>
@@ -162,31 +137,23 @@
         <item quantity="one">1 zaman seçildi</item>
         <item quantity="other">%d zaman seçildi</item>
     </plurals>
-
-    <string name="photo_widget_configure_interval_warning">Gerçek aralık veya planlanan zaman, Android\'in pil ömrünü optimize etmek için uyguladığı kısıtlamalar nedeniyle değişebilir. İstediğiniz gibi çalışmasını sağlamak için aşağıdaki izni verin.</string>
-
+    <string name="photo_widget_configure_interval_warning">Gerçek aralık veya planlanan zaman, Android\'in pil ömrünü optimize etmek için uyguladığı kısıtlamalar nedeniyle değişebilir. İstediğiniz gibi çalışmasını sağlamak için aşağıdaki izni verin</string>
     <string name="photo_widget_configure_interval_grant_permission">Kesin alarm izni ver</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">Bu izin hakkında</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">Android, pil ömrünü optimize etmek için arka plan çalışmalarını kısıtlayabilir; bu da her fotoğraf arasındaki aralıkların uzamasıyla sonuçlanır.\n\nWidget\'ları tam olarak seçilen aralıkta güncellemek için ayarları açın ve alarmlar ile hatırlatıcılar ayarlamaya izin verin.</string>
     <string name="photo_widget_configure_interval_open_settings">Ayarları aç</string>
-
     <string name="photo_widget_configure_roundness_warning">Android widget\'larının köşeleri yuvarlaktır ve kaldırılmaz. Yuvarlaklığı artırabilirsiniz, ancak tamamen kaldıramazsınız. Kare köşeler için farklı bir en-boy oranı seçin.</string>
-    <string name="photo_widget_configure_border_warning">Widget\'ın minimum yuvarlak köşeleri nedeniyle kenarlık kesiliyorsa, yuvarlaklığı artırabilirsiniz.</string>
-
+    <string name="photo_widget_configure_border_warning">Widget\'ın minimum yuvarlak köşeleri nedeniyle kenarlık kesiliyorsa, yuvarlaklığı artırabilirsiniz</string>
     <string name="photo_widget_configure_border">Kenarlık</string>
     <string name="photo_widget_configure_border_none">Yok</string>
     <string name="photo_widget_configure_border_dynamic">Dinamik</string>
     <string name="photo_widget_configure_border_color">Renkli</string>
-
     <string name="photo_widget_configure_border_explanation">Telefonunuzun tema rengini değiştirdikten sonraki widget güncellemesinde değişiklikler gerçekleşecektir. Tüm widget\'ları hemen güncellemek için uygulamayı açmanız yeterlidir.</string>
-
     <string name="photo_widget_configure_offset">Ofset</string>
     <string name="photo_widget_configure_offset_current_values">Yatay: %1$d, Dikey: %2$d</string>
     <string name="photo_widget_configure_offset_current_horizontal">Yatay: %1$d</string>
     <string name="photo_widget_configure_offset_current_vertical">Dikey: %1$d</string>
-
     <string name="photo_widget_configure_padding">Dolgu</string>
-
     <string name="photo_widget_configure_tap_action">Dokunma eylemi</string>
     <string name="photo_widget_configure_tap_action_description">1x1 widget\'lar tek dokunuş eylemine sahip olabilir. Bu, daha büyük widget\'ların orta alanına uygulanır (yeşil yanıp söner) ve ayrıca fotoğrafları değiştirmek için yanlara da dokunabilirsiniz.</string>
     <string name="photo_widget_configure_tap_action_none">Hiçbiri</string>
@@ -197,52 +164,39 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">Bir bağlantı aç</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Döngüyü etkinleştir/devre dışı bırak</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Otomatik fotoğraf döngüsünü duraklatmak için dokunun. Devam etmek için tekrar dokunun.</string>
-
     <string name="photo_widget_configure_tap_action_increase_brightness">Parlaklığı otomatik olarak artır</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Orijinal fotoğrafı görüntüle (kırpma veya döndürme yok)</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Klasör tabanlı widget\'lar için kullanılabilir. Fotoğraf tabanlı widget\'lar bunun yerine \"Fotoğrafı tam ekranda görüntüle\"yi kullanır. Ayrıca hangi galeri uygulamasını kullanacağınızı da seçebilirsiniz.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Uygulama seç</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Döngü duraklatıldığında dokunma kenarlarını devre dışı bırakın</string>
-
     <string name="photo_widget_configure_add_to_home">Ana ekrana ekle</string>
     <string name="photo_widget_configure_save_changes">Değişiklikleri kaydet</string>
-
     <string name="photo_widget_time_picker_title">Zamanı seçin</string>
-
     <!-- Help -->
     <string name="help_article_title_1">Ana ekrana bir widget eklemek çalışmıyor</string>
-    <string name="help_article_body_1">Bir widget yapılandırdıysanız ve ana ekrana eklemeye çalıştığınızda hiçbir şey olmuyorsa veya eklendiği halde seçilen fotoğrafları göstermiyorsa, widget\'ı doğrudan ana ekranınızdan eklemeyi deneyebilirsiniz.\n\nTalimatlar Android sürümünüze, cihaz üreticinize ve ana ekran başlatıcınıza bağlı olarak değişiklik gösterebilir, ancak genellikle süreç şu şekildedir:\n\n1. Ana ekranınızdaki boş bir alana uzun basın ve bir açılır menü görünene kadar bekleyin.\n2. "Widget\'lar" seçeneğini bulun.\n3. Mevcut widget\'lar arasında "Material Photo Widget" arayın.\n4. Ana ekranınıza sürükleyin ve her zamanki gibi yapılandırın.</string>
-
+    <string name="help_article_body_1">Bir widget yapılandırdıysanız ve ana ekrana eklemeye çalıştığınızda hiçbir şey olmuyorsa veya eklendiği halde seçilen fotoğrafları göstermiyorsa, widget\'ı doğrudan ana ekranınızdan eklemeyi deneyebilirsiniz.\n\nTalimatlar Android sürümünüze, cihaz üreticinize ve ana ekran başlatıcınıza bağlı olarak değişiklik gösterebilir, ancak genellikle süreç şu şekildedir:\n\n1. Ana ekranınızdaki boş bir alana uzun basın ve bir açılır menü görünene kadar bekleyin.\n2. \"Widget\'lar\" seçeneğini bulun.\n3. Mevcut widget\'lar arasında \"Material Photo Widget\" arayın.\n4. Ana ekranınıza sürükleyin ve her zamanki gibi yapılandırın.</string>
     <string name="help_article_title_2">Fotoğraflar otomatik olarak değişmiyor</string>
-    <string name="help_article_body_2">Seçilen aralık veya programlanan zamanlar, bir sonraki fotoğrafın ne zaman gösterileceğine dair bir tahmindir. Android, gerçek zamanı belirlerken çeşitli faktörleri dikkate alır ve her cihaz üreticisi, arka plan işlemlerine kısıtlamalar getirebilir.\n\nFotoğrafların tam olarak istediğiniz zaman değiştiğinden emin olmak için uygulamaya "Kesin Alarmlar" izni verin ve telefonunuzun ayarlarında uygulamaya herhangi bir pil kısıtlaması uygulanmadığından emin olun.</string>
-
+    <string name="help_article_body_2">Seçilen aralık veya programlanan zamanlar, bir sonraki fotoğrafın ne zaman gösterileceğine dair bir tahmindir. Android, gerçek zamanı belirlerken çeşitli faktörleri dikkate alır ve her cihaz üreticisi, arka plan işlemlerine kısıtlamalar getirebilir.\n\nFotoğrafların tam olarak istediğiniz zaman değiştiğinden emin olmak için uygulamaya \"Kesin Alarmlar\" izni verin ve telefonunuzun ayarlarında uygulamaya herhangi bir pil kısıtlaması uygulanmadığından emin olun.</string>
     <string name="help_article_title_3">Telefon yeniden başlatıldıktan sonra widget çalışmıyor</string>
-    <string name="help_article_body_3">Telefonunuz yeniden başlatıldığında, Android uygulamalara kendilerini yeniden başlatmaları için bir sinyal gönderir. Ne yazık ki, bazı cihaz üreticileri (Xiaomi, Redmi, Huawei ve diğerleri gibi) bu sinyali engeller.\n\nBu işlevi etkinleştirmek için güvenlik uygulamanızdaki "Otomatik Başlatma" iznini değiştirin.</string>
-
+    <string name="help_article_body_3">Telefonunuz yeniden başlatıldığında, Android uygulamalara kendilerini yeniden başlatmaları için bir sinyal gönderir. Ne yazık ki, bazı cihaz üreticileri (Xiaomi, Redmi, Huawei ve diğerleri gibi) bu sinyali engeller.\n\nBu işlevi etkinleştirmek için güvenlik uygulamanızdaki \"Otomatik Başlatma\" iznini değiştirin.</string>
     <string name="help_article_title_4">Widget boyutu çok küçük</string>
     <string name="help_article_body_4">Widget\'ı ana ekranınıza ekledikten sonra, yeniden boyutlandırma seçeneğini açmak için uzun basabilirsiniz. Ardından, kenarlarını sürükleyerek istediğiniz boyuta ayarlayın.</string>
-
     <string name="help_article_footer">Başka bir şey mi çalışmıyor?</string>
-
     <string name="help_email_body">Mesajınızı aşağıya yazın. Bir sorun bildiriyorsanız, sorun oluştuğunda ne yaptığınızı açıklamaya çalışın.</string>
-
     <string name="restriction_warning_hint">Arka plan etkinliği kısıtlandı. Widget\'lar düzgün çalışmayabilir. Daha fazla bilgi için dokunun.</string>
     <string name="restriction_warning_dialog_title">Arka plan çalıştırma kısıtlamaları ve pil optimizasyonu</string>
-    <string name="restriction_warning_dialog_body_1">Material Photo Widget, widget\'larınızı güncellemek için arka planda çalışmalıdır. Sadece gerektiğinde çalışır, ancak pil kullanımı "optimize edilmiş" olarak ayarlanmışsa, Android uygulamayı durdurabilir ve bu da widget\'ların düzgün çalışmamasına neden olabilir.</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widget, widget\'larınızı güncellemek için arka planda çalışmalıdır. Sadece gerektiğinde çalışır, ancak pil kullanımı \"optimize edilmiş\" olarak ayarlanmışsa, Android uygulamayı durdurabilir ve bu da widget\'ların düzgün çalışmamasına neden olabilir.</string>
     <string name="restriction_warning_dialog_body_2">Uygulama ayarlarını açın ve pil kullanımını Kısıtlamasız olarak değiştirin. Bu seçenek mevcut değilse, telefonun güç ayarlarını kontrol edin.</string>
     <string name="restriction_warning_dialog_body_3">Bazı telefonlar daha da kısıtlayıcı olabilir ve uygulamanın yeniden başlatmadan sonra otomatik olarak başlamasını engelleyebilir. Ayarlar cihaza göre değişir — özel talimatlar için https://dontkillmyapp.com adresini ziyaret edin.</string>
     <string name="restriction_warning_open_app_settings">Uygulama ayarlarını aç</string>
     <string name="restriction_warning_open_power_settings">Güç ayarlarını aç</string>
-
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Yakınlaştırmak için kıstır</string>
     <string name="photo_widget_viewer_actions_drag">Taşımak için sürükle</string>
     <string name="photo_widget_viewer_actions_tap">Kapatmak için dokun</string>
-
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Duraklatılan döngü</string>
     <string name="photo_widget_cycling_feedback_resumed">Döngü devam ettirildi</string>
-
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Evet</string>
     <string name="photo_widget_action_no">Hayır</string>
@@ -251,7 +205,6 @@
     <string name="photo_widget_action_apply">Uygula</string>
     <string name="photo_widget_action_confirm">Onaylamak</string>
     <string name="photo_widget_action_got_it">Anladım</string>
-
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo ana ekran widget\'ı</string>
 </resources>

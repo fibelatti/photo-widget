@@ -2,7 +2,6 @@
 <resources>
     <!-- Widget Host -->
     <string name="photo_widget_host_description">Décorez votre écran d\'accueil avec vos photos préférées</string>
-
     <!-- Home -->
     <string name="photo_widget_home_title">Décorez votre écran d\'accueil avec vos photos préférées</string>
     <string name="photo_widget_home_instruction">Créez un nouveau widget en appuyant sur l\'une des options. Ne vous inquiétez pas, vous pouvez modifier cela à tout moment !</string>
@@ -22,39 +21,30 @@
     <string name="photo_widget_home_developer">Développé avec ❤ par Filipe Belatti</string>
     <string name="photo_widget_home_version">Version de l\'application : %s</string>
     <string name="photo_widget_home_view_licenses">Licences OSS</string>
-
     <plurals name="photo_widget_home_share_received">
         <item quantity="one">%d photo reçue. Créez un nouveau widget ou choisissez un existant pour l\'ajouter.</item>
-        <item quantity="many">%d photos reçues. Créez un nouveau widget ou choisissez un existant pour les ajouter.</item>
         <item quantity="other">%d photos reçues. Créez un nouveau widget ou choisissez un existant pour les ajouter.</item>
     </plurals>
-
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Vous n\'avez pas encore ajouté de widgets.\nLes widgets ajoutés à votre écran d\'accueil apparaîtront ici.</string>
     <string name="photo_widget_home_filter_all">Tous</string>
     <string name="photo_widget_home_filter_photos">Photos</string>
     <string name="photo_widget_home_filter_folder">Dossier</string>
-
     <string name="photo_widget_home_removed_label">Supprimé</string>
     <string name="photo_widget_home_removed_widgets_hint">Les widgets supprimés ne sont plus sur votre écran d\'accueil. Ils sont définitivement supprimés de l\'application après 7 jours. Vous pouvez choisir de les « Garder ».</string>
-
     <string name="photo_widget_home_my_widget_action_edit">Afficher / Modifier</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Dupliquer</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restaurer</string>
     <string name="photo_widget_home_removed_widget_action_keep">Garder</string>
     <string name="photo_widget_home_removed_widget_action_delete">Supprimer définitivement</string>
-
     <!-- Preferences -->
     <string name="preferences_data_saver">Réduire l\'utilisation du stockage</string>
     <string name="preferences_data_saver_description">Lorsque cette option est activée, les photos ajoutées aux widgets sont compressées pour économiser de l\'espace de stockage. Cela n\'affecte généralement pas la qualité, mais si vos photos contiennent du texte de petite taille, il est recommandé de la désactiver.\n\nCe paramètre affecte uniquement les photos ajoutées après sa modification.\n\nIl ne s\'applique pas aux dossiers synchronisés, car ces photos sont lues directement à partir du stockage de votre appareil.</string>
-
     <string name="preferences_appearance_follow_system">Suivre le système</string>
     <string name="preferences_appearance_light">Clair</string>
     <string name="preferences_appearance_dark">Sombre</string>
-
     <string name="preferences_dynamic_colors_enabled">Couleurs dynamiques</string>
     <string name="preferences_dynamic_colors_disabled">Couleurs par défaut</string>
-
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Valeurs par défaut du widget</string>
     <string name="widget_defaults_explanation">Ces valeurs sont préchargées lorsque vous créez un nouveau widget. Elles sont utiles pour configurer plusieurs widgets avec la même configuration, sans avoir besoin d\'ajuster les paramètres à chaque fois. Notez que toute modification de ces valeurs n\'affectera pas les widgets existants.</string>
@@ -67,15 +57,12 @@
     <string name="widget_defaults_black_and_white">Noir et blanc</string>
     <string name="widget_defaults_tap_action">Action au toucher</string>
     <string name="widget_defaults_reset">Réinitialiser les valeurs</string>
-
     <!-- Share -->
     <string name="share_title">Faire connaître</string>
     <string name="share_text">Ajoutez vos photos préférées à votre écran d\'accueil avec Material Photo Widget. Téléchargez gratuitement à %s</string>
-
     <!-- Source -->
     <string name="photo_widget_source_photos">Photos</string>
     <string name="photo_widget_source_directory">Dossier</string>
-
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Format d\'image</string>
     <string name="photo_widget_aspect_ratio_square">Carré</string>
@@ -85,24 +72,18 @@
     <string name="photo_widget_aspect_ratio_original_description">Adapter à chaque photo</string>
     <string name="photo_widget_aspect_ratio_fill_widget">Remplir</string>
     <string name="photo_widget_aspect_ratio_fill_widget_description">Adapter à la taille du widget</string>
-
-
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Tous les changements seront perdus, revenir quand même ?</string>
-
     <string name="photo_widget_configure_tab_content">Contenu</string>
     <string name="photo_widget_configure_tab_appearance">Apparence</string>
     <string name="photo_widget_configure_tab_behavior">Comportement</string>
-
     <string name="photo_widget_configure_import_prompt">Importer depuis un autre widget ?</string>
     <string name="photo_widget_configure_import_prompt_action">Choisir</string>
     <string name="photo_widget_configure_import_dialog_title">Choisissez le widget</string>
     <string name="photo_widget_configure_import_dialog_description">Toutes les photos et configurations seront copiées dans le nouveau widget</string>
-
     <string name="photo_widget_configure_import_error">Impossible d\'importer toutes les photos sélectionnées</string>
     <string name="photo_widget_configure_too_many_photos_error">Chaque dossier synchronisé peut contenir un maximum de 3000 photos. Vous pouvez en sélectionner plusieurs, et chaque sous-dossier est compté séparément.\n\nVous ne pouvez pas sélectionner votre pellicule. Les photos sont traitées une par une, et les dossiers très volumineux causent de graves problèmes de performance dans l\'éditeur de widgets, ainsi que sur l\'écran d\'accueil lors du changement de photos.</string>
     <string name="photo_widget_configure_missing_photos_error">Le widget doit contenir au moins une photo. Les widgets ne peuvent être supprimés que directement depuis l\'écran d\'accueil.</string>
-
     <string name="photo_widget_configure_menu_source">Source</string>
     <string name="photo_widget_configure_source_description">Vous pouvez choisir chaque photo individuellement ou synchroniser ce widget avec un ou plusieurs dossiers. Lors de la synchronisation, toutes les photos du dossier sont automatiquement ajoutées au widget. Le contenu est mis à jour toutes les 24 heures.</string>
     <string name="photo_widget_configure_source_selection_photos">Seules les photos sélectionnées s\'afficheront dans ce widget.</string>
@@ -112,87 +93,67 @@
     <string name="photo_widget_configure_source_set_directory">Définir la source comme Dossier</string>
     <string name="photo_widget_configure_source_set_photos">Définir la source comme Photos</string>
     <string name="photo_widget_configure_source_warning">Changer la source remplacera les photos actuelles de ce widget</string>
-
     <string name="photo_widget_configure_menu_crop">Rogner</string>
     <string name="photo_widget_configure_menu_remove">Supprimer</string>
     <string name="photo_widget_configure_menu_move_left">Déplacer vers la gauche</string>
     <string name="photo_widget_configure_menu_move_right">Déplacer vers la droite</string>
-
     <string name="photo_widget_configure_photos_pending_deletion">Photos récemment supprimées</string>
     <string name="photo_widget_configure_photos_excluded">Supprimé du widget</string>
-
     <string name="photo_widget_configure_pick_photo">Choisir des photos</string>
     <string name="photo_widget_configure_pick_folder">Choisir un dossier</string>
     <string name="photo_widget_configure_change_source">Changer la source</string>
-
     <string name="photo_widget_configure_select_cycling_mode">Cycle des photos</string>
     <string name="photo_widget_configure_cycling_mode_interval">Intervalle</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Planification</string>
     <string name="photo_widget_configure_cycling_mode_disabled">Désactivé</string>
-
     <string name="photo_widget_configure_cycling_mode_interval_description">Le widget passera automatiquement à la photo suivante à l\'intervalle suivant :</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description">Le widget passera automatiquement à la photo suivante tous les jours aux horaires suivants :</string>
     <string name="photo_widget_configure_cycling_mode_disabled_description">Le widget ne parcourt pas automatiquement les photos. Appuyez sur les bords du widget pour passer à la photo suivante.</string>
-
     <string name="photo_widget_configure_interval_current_label">Toutes les %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d seconde</item>
-        <item quantity="many">%d secondes</item>
         <item quantity="other">%d secondes</item>
     </plurals>
     <plurals name="photo_widget_configure_interval_current_minutes">
-        <item quantity="one">%d minute</item>
-        <item quantity="many">%d minutes</item>
+        <item quantity="one">%d minute</item>
         <item quantity="other">%d minutes</item>
     </plurals>
     <plurals name="photo_widget_configure_interval_current_hours">
         <item quantity="one">%d heure</item>
-        <item quantity="many">%d heures</item>
         <item quantity="other">%d heures</item>
     </plurals>
     <plurals name="photo_widget_configure_interval_current_days">
         <item quantity="one">%d jour</item>
-        <item quantity="many">%d jours</item>
         <item quantity="other">%d jours</item>
     </plurals>
     <string name="photo_widget_configure_interval_seconds_label">Secondes</string>
     <string name="photo_widget_configure_interval_minutes_label">Minutes</string>
     <string name="photo_widget_configure_interval_hours_label">Heures</string>
     <string name="photo_widget_configure_interval_days_label">Jours</string>
-
     <string name="photo_widget_configure_schedule_placeholder">Programmez jusqu\'à 4 horaires pour changer vos photos automatiquement.</string>
     <string name="photo_widget_configure_schedule_add_new">Ajouter un nouvel horaire</string>
-    <string name="photo_widget_configure_schedule_limit_reached">Limite de 4 horaires atteinte</string>
+    <string name="photo_widget_configure_schedule_limit_reached">Limite de 4 horaires atteintes</string>
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="one">%d horaire sélectionné</item>
-        <item quantity="many">%d horaires sélectionnés</item>
         <item quantity="other">%d horaires sélectionnés</item>
     </plurals>
-
     <string name="photo_widget_configure_interval_warning">L\'intervalle ou l\'horaire réel peut varier en raison des restrictions imposées par Android pour optimiser l\'autonomie de la batterie. Pour garantir le bon fonctionnement, accordez l\'autorisation ci-dessous</string>
-
     <string name="photo_widget_configure_interval_grant_permission">Accorder l\'autorisation d\'alarme exacte</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">À propos de cette autorisation</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">Android peut restreindre le travail en arrière-plan pour optimiser la durée de vie de la batterie, ce qui entraîne des intervalles plus longs entre chaque photo.\n\nPour mettre à jour les widgets précisément à l\'intervalle sélectionné, ouvrez les paramètres et autorisez le réglage des alarmes et des rappels.</string>
     <string name="photo_widget_configure_interval_open_settings">Ouvrir les paramètres</string>
-
     <string name="photo_widget_configure_roundness_warning">Les widgets Android ont des coins arrondis qui ne peuvent pas être supprimés. Vous pouvez augmenter l\'arrondi, mais pas l\'éliminer complètement. Pour avoir des coins carrés, choisissez un rapport d\'aspect différent.</string>
-    <string name="photo_widget_configure_border_warning">Vous pouvez augmenter l\'arrondi si la bordure est coupée par les coins arrondis minimaux du widget.</string>
-
+    <string name="photo_widget_configure_border_warning">Vous pouvez augmenter l\'arrondi si la bordure est coupée par les coins arrondis minimaux du widget</string>
     <string name="photo_widget_configure_border">Bordure</string>
     <string name="photo_widget_configure_border_none">Aucune</string>
     <string name="photo_widget_configure_border_dynamic">Dynamique</string>
     <string name="photo_widget_configure_border_color">Coloré</string>
-
     <string name="photo_widget_configure_border_explanation">Les modifications auront lieu lors de la prochaine mise à jour du widget après avoir modifié la couleur du thème de votre téléphone. Pour mettre à jour tous les widgets immédiatement, ouvrez simplement l\'application.</string>
-
     <string name="photo_widget_configure_offset">Décalage</string>
     <string name="photo_widget_configure_offset_current_values">Horizontal : %1$d, Vertical : %2$d</string>
     <string name="photo_widget_configure_offset_current_horizontal">Horizontal : %1$d</string>
     <string name="photo_widget_configure_offset_current_vertical">Vertical : %1$d</string>
-
     <string name="photo_widget_configure_padding">Marge intérieure</string>
-
     <string name="photo_widget_configure_tap_action">Action tactile</string>
     <string name="photo_widget_configure_tap_action_description">Les widgets 1x1 peuvent avoir une action de simple appui. Cela s\'applique à la zone centrale des widgets plus grands (vert clignotant), et vous pouvez également appuyer sur les côtés pour changer de photo.</string>
     <string name="photo_widget_configure_tap_action_none">Aucune</string>
@@ -203,52 +164,39 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">Ouvrir un lien</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Activer/désactiver le cycle</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Appuyez pour mettre en pause le cycle automatique des photos. Appuyez à nouveau pour reprendre.</string>
-
     <string name="photo_widget_configure_tap_action_increase_brightness">Augmenter automatiquement la luminosité</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Voir la photo originale (sans recadrage ni rotation)</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Disponible pour les widgets basés sur des dossiers. Les widgets basés sur des photos utiliseront plutôt « Afficher la photo en plein écran ». Vous pouvez également choisir l\'application de galerie à utiliser.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Choisir une application</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Désactiver les bords tactiles pendant que le cycle est en pause</string>
-
     <string name="photo_widget_configure_add_to_home">Ajouter à l\'écran d\'accueil</string>
     <string name="photo_widget_configure_save_changes">Enregistrer les modifications</string>
-
     <string name="photo_widget_time_picker_title">Sélectionnez l\'heure</string>
-
     <!-- Help -->
     <string name="help_article_title_1">L\'ajout d\'un widget à l\'écran d\'accueil ne fonctionne pas</string>
-    <string name="help_article_body_1">Si vous avez configuré un widget et que rien ne se passe lorsque vous essayez de l\'ajouter à l\'écran d\'accueil, ou s\'il est ajouté mais n\'affiche pas les photos sélectionnées, essayez de l\'ajouter directement depuis votre écran d\'accueil.\n\nLes instructions peuvent varier en fonction de votre version Android, du fabricant de votre appareil et du lanceur d\'écran d\'accueil, mais en général, le processus est le suivant :\n\n1. Appuyez longuement sur un espace vide de votre écran d\'accueil jusqu\'à ce qu\'un menu contextuel apparaisse.\n2. Trouvez l\'option "Widgets".\n3. Recherchez "Material Photo Widget" dans les widgets disponibles.\n4. Faites-le glisser vers votre écran d\'accueil et configurez-le comme d\'habitude.</string>
-
+    <string name="help_article_body_1">Si vous avez configuré un widget et que rien ne se passe lorsque vous essayez de l\'ajouter à l\'écran d\'accueil, ou s\'il est ajouté mais n\'affiche pas les photos sélectionnées, essayez de l\'ajouter directement depuis votre écran d\'accueil.\n\nLes instructions peuvent varier en fonction de votre version Android, du fabricant de votre appareil et du lanceur d\'écran d\'accueil, mais en général, le processus est le suivant :\n\n1. Appuyez longuement sur un espace vide de votre écran d\'accueil jusqu\'à ce qu\'un menu contextuel apparaisse.\n2. Trouvez l\'option \"Widgets\".\n3. Recherchez \"Material Photo Widget\" dans les widgets disponibles.\n4. Faites-le glisser vers votre écran d\'accueil et configurez-le comme d\'habitude.</string>
     <string name="help_article_title_2">Les photos ne changent pas automatiquement</string>
-    <string name="help_article_body_2">L\'intervalle sélectionné ou les horaires programmés sont une approximation du moment où la photo suivante sera affichée. Android prend en compte plusieurs facteurs pour déterminer l\'heure exacte, et chaque fabricant peut imposer des restrictions sur les processus en arrière-plan.\n\nPour que les photos changent exactement au moment souhaité, accordez à l\'application l\'autorisation "Alarmes exactes" et assurez-vous qu\'aucune restriction de batterie ne lui est appliquée dans les paramètres de votre téléphone.</string>
-
+    <string name="help_article_body_2">L\'intervalle sélectionné ou les horaires programmés sont une approximation du moment où la photo suivante sera affichée. Android prend en compte plusieurs facteurs pour déterminer l\'heure exacte, et chaque fabricant peut imposer des restrictions sur les processus en arrière-plan.\n\nPour que les photos changent exactement au moment souhaité, accordez à l\'application l\'autorisation \"Alarmes exactes\" et assurez-vous qu\'aucune restriction de batterie ne lui est appliquée dans les paramètres de votre téléphone.</string>
     <string name="help_article_title_3">Le widget ne fonctionne pas après le redémarrage du téléphone</string>
-    <string name="help_article_body_3">Lors du redémarrage de votre téléphone, Android envoie un signal aux applications pour les notifier afin qu\'elles puissent redémarrer elles-mêmes. Malheureusement, certains fabricants (comme Xiaomi, Redmi, Huawei, et d\'autres) bloquent ce signal.\n\nPour activer cette fonctionnalité, modifiez l\'autorisation "Démarrage automatique" dans votre application de sécurité.</string>
-
+    <string name="help_article_body_3">Lors du redémarrage de votre téléphone, Android envoie un signal aux applications pour les notifier afin qu\'elles puissent redémarrer elles-mêmes. Malheureusement, certains fabricants (comme Xiaomi, Redmi, Huawei, et d\'autres) bloquent ce signal.\n\nPour activer cette fonctionnalité, modifiez l\'autorisation \"Démarrage automatique\" dans votre application de sécurité.</string>
     <string name="help_article_title_4">La taille du widget est trop petite</string>
     <string name="help_article_body_4">Après avoir ajouté le widget à votre écran d\'accueil, vous pouvez appuyer longuement dessus pour faire apparaître l\'option de redimensionnement. Ensuite, faites glisser ses bordures pour l\'ajuster à la taille souhaitée.</string>
-
     <string name="help_article_footer">Autre chose ne fonctionne pas ?</string>
-
     <string name="help_email_body">Rédigez votre message ci-dessous. Si vous signalez un problème, essayez de décrire ce que vous faisiez lorsque le problème est survenu.</string>
-
     <string name="restriction_warning_hint">L\'activité en arrière-plan est restreinte. Les widgets peuvent ne pas fonctionner correctement. Appuyez pour en savoir plus.</string>
     <string name="restriction_warning_dialog_title">Restrictions d\'activité en arrière-plan et optimisation de la batterie</string>
-    <string name="restriction_warning_dialog_body_1">Material Photo Widget doit s\'exécuter en arrière-plan pour mettre à jour vos widgets. Il ne fonctionne que lorsque c\'est nécessaire, mais si l\'utilisation de la batterie est définie sur "optimisée", Android peut arrêter l\'application, ce qui peut empêcher les widgets de fonctionner correctement.</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widget doit s\'exécuter en arrière-plan pour mettre à jour vos widgets. Il ne fonctionne que lorsque c\'est nécessaire, mais si l\'utilisation de la batterie est définie sur \"optimisée\", Android peut arrêter l\'application, ce qui peut empêcher les widgets de fonctionner correctement.</string>
     <string name="restriction_warning_dialog_body_2">Ouvrez les paramètres de l\'application et changez l\'utilisation de la batterie en Non restreinte. Si cette option n\'est pas disponible, vérifiez les paramètres d\'alimentation du téléphone.</string>
     <string name="restriction_warning_dialog_body_3">Certains téléphones sont encore plus restrictifs et peuvent empêcher l\'application de se lancer automatiquement après un redémarrage. Les paramètres varient selon l\'appareil — visitez https://dontkillmyapp.com pour des instructions spécifiques.</string>
     <string name="restriction_warning_open_app_settings">Ouvrir les paramètres de l\'application</string>
     <string name="restriction_warning_open_power_settings">Ouvrir les paramètres d\'alimentation</string>
-
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pincer pour zoomer</string>
     <string name="photo_widget_viewer_actions_drag">Faites glisser pour déplacer</string>
     <string name="photo_widget_viewer_actions_tap">Appuyez pour fermer</string>
-
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Cycle en pause</string>
     <string name="photo_widget_cycling_feedback_resumed">Cycle repris</string>
-
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Oui</string>
     <string name="photo_widget_action_no">Non</string>
@@ -257,7 +205,6 @@
     <string name="photo_widget_action_apply">Appliquer</string>
     <string name="photo_widget_action_confirm">Confirmer</string>
     <string name="photo_widget_action_got_it">J\'ai compris</string>
-
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget d\'accueil Material Photo</string>
 </resources>

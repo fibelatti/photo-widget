@@ -2,4 +2,8 @@
 <lint>
     <!-- Collection stability is configured via compose_compiler_config.conf -->
     <issue id="ComposeUnstableCollections" severity="ignore" />
+
+    <!-- Translations are managed through Crowdin, so these need to be ignored -->
+    <issue id="MissingQuantity" severity="ignore" />
+    <issue id="Typos" severity="ignore" />
 </lint>
