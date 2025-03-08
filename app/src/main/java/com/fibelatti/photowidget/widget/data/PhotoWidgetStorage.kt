@@ -238,6 +238,10 @@ class PhotoWidgetStorage @Inject constructor(
         displayedPhotoDao.deletePhotosByWidgetId(widgetId = appWidgetId)
     }
 
+    suspend fun clearMostRecentPhoto(appWidgetId: Int) {
+        displayedPhotoDao.deleteMostRecentPhoto(widgetId = appWidgetId)
+    }
+
     suspend fun saveDisplayedPhoto(appWidgetId: Int, photoId: String) {
         displayedPhotoDao.savePhoto(
             displayedWidgetPhotoDto = DisplayedWidgetPhotoDto(

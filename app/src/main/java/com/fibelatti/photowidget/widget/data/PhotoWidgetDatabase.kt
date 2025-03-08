@@ -116,6 +116,14 @@ interface DisplayedPhotoDao {
 
     @Query("delete from displayed_widget_photos where widgetId = :widgetId")
     suspend fun deletePhotosByWidgetId(widgetId: Int)
+
+    @Query(
+        "delete from displayed_widget_photos " +
+            "where widgetId = :widgetId " +
+            "and photoId = (select photoId from displayed_widget_photos " +
+            "where widgetId = :widgetId order by timestamp desc limit 1)",
+    )
+    suspend fun deleteMostRecentPhoto(widgetId: Int)
 }
 
 @Entity(
