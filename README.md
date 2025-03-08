@@ -53,6 +53,13 @@ Contributing
 
 Anyone is welcome to submit bug reports, feature requests and improvement ideas. Submit yours using the [provided templates](https://github.com/fibelatti/photo-widget/issues/new/choose).
 
+Translations
+--------
+
+App translations are sourced through [Crowdin](https://crowdin.com/project/material-photo-widget).
+
+If you spot a mistake or would like to see the app localized to your language feel free to submit your contribution.
+
 License
 --------
 
