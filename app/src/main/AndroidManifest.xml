@@ -95,7 +95,7 @@
 
         <receiver
             android:name=".widget.PhotoWidgetProvider"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/app_name">
 
             <intent-filter>
