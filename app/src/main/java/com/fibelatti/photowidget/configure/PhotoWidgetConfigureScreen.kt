@@ -141,7 +141,7 @@ fun PhotoWidgetConfigureScreen(
     onCornerRadiusChange: (Int) -> Unit,
     onBorderChange: (PhotoWidgetBorder) -> Unit,
     onOpacityChange: (Float) -> Unit,
-    onBlackAndWhiteChange: (Boolean) -> Unit,
+    onSaturationChange: (Float) -> Unit,
     onOffsetChange: (horizontalOffset: Int, verticalOffset: Int) -> Unit,
     onPaddingChange: (Int) -> Unit,
     onAddToHomeClick: () -> Unit,
@@ -217,7 +217,13 @@ fun PhotoWidgetConfigureScreen(
                     )
                 }.show()
             },
-            onBlackAndWhiteChange = onBlackAndWhiteChange,
+            onSaturationClick = {
+                PhotoWidgetSaturationPicker.show(
+                    context = localContext,
+                    currentSaturation = photoWidget.saturation,
+                    onApplyClick = onSaturationChange,
+                )
+            },
             onOffsetClick = {
                 ComposeBottomSheetDialog(localContext) {
                     PhotoWidgetOffsetPicker(
@@ -288,7 +294,7 @@ private fun PhotoWidgetConfigureContent(
     onCornerRadiusClick: () -> Unit,
     onBorderClick: () -> Unit,
     onOpacityClick: () -> Unit,
-    onBlackAndWhiteChange: (Boolean) -> Unit,
+    onSaturationClick: () -> Unit,
     onOffsetClick: () -> Unit,
     onPaddingClick: () -> Unit,
     onAddToHomeClick: () -> Unit,
@@ -325,7 +331,7 @@ private fun PhotoWidgetConfigureContent(
                     onCornerRadiusClick = onCornerRadiusClick,
                     onBorderClick = onBorderClick,
                     onOpacityClick = onOpacityClick,
-                    onBlackAndWhiteChange = onBlackAndWhiteChange,
+                    onSaturationClick = onSaturationClick,
                     onOffsetClick = onOffsetClick,
                     onPaddingClick = onPaddingClick,
                     onCycleModePickerClick = onCycleModePickerClick,
@@ -366,7 +372,7 @@ private fun PhotoWidgetConfigureContent(
                     onCornerRadiusClick = onCornerRadiusClick,
                     onBorderClick = onBorderClick,
                     onOpacityClick = onOpacityClick,
-                    onBlackAndWhiteChange = onBlackAndWhiteChange,
+                    onSaturationClick = onSaturationClick,
                     onOffsetClick = onOffsetClick,
                     onPaddingClick = onPaddingClick,
                     onCycleModePickerClick = onCycleModePickerClick,
@@ -406,7 +412,7 @@ private fun PhotoWidgetViewer(
             cornerRadius = photoWidget.cornerRadius,
             border = photoWidget.border,
             opacity = photoWidget.opacity,
-            blackAndWhite = photoWidget.blackAndWhite,
+            saturation = photoWidget.saturation,
         )
 
         IconButton(
@@ -457,7 +463,7 @@ private fun PhotoWidgetEditor(
     onCornerRadiusClick: () -> Unit,
     onBorderClick: () -> Unit,
     onOpacityClick: () -> Unit,
-    onBlackAndWhiteChange: (Boolean) -> Unit,
+    onSaturationClick: () -> Unit,
     onOffsetClick: () -> Unit,
     onPaddingClick: () -> Unit,
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
@@ -508,7 +514,7 @@ private fun PhotoWidgetEditor(
                         onCornerRadiusClick = onCornerRadiusClick,
                         onBorderClick = onBorderClick,
                         onOpacityClick = onOpacityClick,
-                        onBlackAndWhiteChange = onBlackAndWhiteChange,
+                        onSaturationClick = onSaturationClick,
                         onOffsetClick = onOffsetClick,
                         onPaddingClick = onPaddingClick,
                         modifier = tabContentModifier,
@@ -572,7 +578,7 @@ private fun ContentTab(
         onRemovedPhotoClick = onRemovedPhotoClick,
         aspectRatio = photoWidget.aspectRatio,
         shapeId = photoWidget.shapeId,
-        blackAndWhite = photoWidget.blackAndWhite,
+        saturation = photoWidget.saturation,
         modifier = modifier.fillMaxSize(),
     )
 }
@@ -585,7 +591,7 @@ private fun AppearanceTab(
     onCornerRadiusClick: () -> Unit,
     onBorderClick: () -> Unit,
     onOpacityClick: () -> Unit,
-    onBlackAndWhiteChange: (Boolean) -> Unit,
+    onSaturationClick: () -> Unit,
     onOffsetClick: () -> Unit,
     onPaddingClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -626,7 +632,7 @@ private fun AppearanceTab(
         } else {
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_corner_radius),
-                currentValue = photoWidget.cornerRadius.toInt().toString(),
+                currentValue = photoWidget.cornerRadius.toString(),
                 onClick = onCornerRadiusClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
                 warning = stringResource(R.string.photo_widget_configure_border_warning).takeIf {
@@ -653,10 +659,10 @@ private fun AppearanceTab(
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
-        BooleanDefault(
-            title = stringResource(R.string.widget_defaults_black_and_white),
-            currentValue = photoWidget.blackAndWhite,
-            onCheckedChange = onBlackAndWhiteChange,
+        PickerDefault(
+            title = stringResource(R.string.widget_defaults_saturation),
+            currentValue = formatPercent(value = photoWidget.saturation, fractionDigits = 0),
+            onClick = onSaturationClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -757,7 +763,7 @@ private fun CurrentPhotoViewer(
     cornerRadius: Int,
     border: PhotoWidgetBorder,
     opacity: Float,
-    blackAndWhite: Boolean,
+    saturation: Float,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -791,14 +797,14 @@ private fun CurrentPhotoViewer(
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
                 cornerRadius = cornerRadius,
-                opacity = opacity,
                 modifier = Modifier
                     .windowInsetsPadding(
                         WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Start),
                     )
                     .padding(start = 32.dp, top = 32.dp, end = 32.dp, bottom = 48.dp)
                     .fillMaxHeight(),
-                blackAndWhite = blackAndWhite,
+                opacity = opacity,
+                saturation = saturation,
                 border = border,
             )
         }
@@ -881,7 +887,7 @@ private fun PhotoPicker(
     onRemovedPhotoClick: (LocalPhoto) -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
-    blackAndWhite: Boolean,
+    saturation: Float,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -920,7 +926,6 @@ private fun PhotoPicker(
                             PhotoWidget.DEFAULT_SHAPE_ID
                         },
                         cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
-                        opacity = PhotoWidget.DEFAULT_OPACITY,
                         modifier = Modifier
                             .animateItem()
                             .longPressDraggableHandle(
@@ -940,7 +945,7 @@ private fun PhotoPicker(
                                 role = Role.Image,
                                 onClick = { onPhotoClick(photo) },
                             ),
-                        blackAndWhite = blackAndWhite,
+                        saturation = saturation,
                     )
                 }
             }
@@ -1071,7 +1076,6 @@ private fun RemovedPhotosPicker(
                         PhotoWidget.DEFAULT_SHAPE_ID
                     },
                     cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
-                    opacity = PhotoWidget.DEFAULT_OPACITY,
                     modifier = Modifier
                         .animateItem()
                         .fillMaxWidth()
@@ -1082,7 +1086,7 @@ private fun RemovedPhotosPicker(
                             role = Role.Image,
                             onClick = { onPhotoClick(photo) },
                         ),
-                    blackAndWhite = true,
+                    saturation = 0f,
                 )
             }
         }
@@ -1188,7 +1192,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onCornerRadiusChange = {},
             onBorderChange = {},
             onOpacityChange = {},
-            onBlackAndWhiteChange = {},
+            onSaturationChange = {},
             onOffsetChange = { _, _ -> },
             onPaddingChange = {},
             onAddToHomeClick = {},
@@ -1231,7 +1235,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onCornerRadiusChange = {},
             onBorderChange = {},
             onOpacityChange = {},
-            onBlackAndWhiteChange = {},
+            onSaturationChange = {},
             onOffsetChange = { _, _ -> },
             onPaddingChange = {},
             onAddToHomeClick = {},

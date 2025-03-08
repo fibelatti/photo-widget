@@ -83,7 +83,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
             bitmap.withPolygonalShape(
                 shapeId = photoWidget.shapeId,
                 opacity = photoWidget.opacity,
-                blackAndWhite = photoWidget.blackAndWhite,
+                saturation = photoWidget.saturation,
                 borderColor = borderColor,
                 borderPercent = borderPercent,
             )
@@ -92,7 +92,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 aspectRatio = photoWidget.aspectRatio,
                 radius = photoWidget.cornerRadius * context.resources.displayMetrics.density,
                 opacity = photoWidget.opacity,
-                blackAndWhite = photoWidget.blackAndWhite,
+                saturation = photoWidget.saturation,
                 borderColor = borderColor,
                 borderPercent = borderPercent,
                 widgetSize = widgetSize,

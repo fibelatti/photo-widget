@@ -42,7 +42,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             defaultShape = defaultShape,
             defaultCornerRadius = defaultCornerRadius,
             defaultOpacity = defaultOpacity,
-            defaultBlackAndWhite = defaultBlackAndWhite,
+            defaultSaturation = defaultSaturation,
             defaultTapAction = defaultTapAction,
         ),
     )
@@ -216,13 +216,24 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             _userPreferences.update { current -> current.copy(defaultOpacity = value) }
         }
 
-    var defaultBlackAndWhite: Boolean
+    var defaultSaturation: Float
         get() {
-            return sharedPreferences.getBoolean(Preference.DEFAULT_BLACK_AND_WHITE.value, false)
+            val defaultBlackAndWhite = sharedPreferences.getBoolean(
+                Preference.LEGACY_DEFAULT_BLACK_AND_WHITE.value,
+                false,
+            )
+
+            return sharedPreferences.getFloat(
+                Preference.DEFAULT_SATURATION.value,
+                if (defaultBlackAndWhite) 0f else PhotoWidget.DEFAULT_SATURATION,
+            )
         }
         set(value) {
-            sharedPreferences.edit { putBoolean(Preference.DEFAULT_BLACK_AND_WHITE.value, value) }
-            _userPreferences.update { current -> current.copy(defaultBlackAndWhite = value) }
+            sharedPreferences.edit {
+                putFloat(Preference.DEFAULT_SATURATION.value, value)
+                remove(Preference.LEGACY_DEFAULT_BLACK_AND_WHITE.value)
+            }
+            _userPreferences.update { current -> current.copy(defaultSaturation = value) }
         }
 
     var defaultTapAction: PhotoWidgetTapAction
@@ -308,7 +319,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                 defaultShape = defaultShape,
                 defaultCornerRadius = defaultCornerRadius,
                 defaultOpacity = defaultOpacity,
-                defaultBlackAndWhite = defaultBlackAndWhite,
+                defaultSaturation = defaultSaturation,
                 defaultTapAction = defaultTapAction,
             )
         }
@@ -343,7 +354,12 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         LEGACY_DEFAULT_CORNER_RADIUS(value = "default_corner_radius"),
         DEFAULT_CORNER_RADIUS(value = "default_corner_radius_dp"),
         DEFAULT_OPACITY(value = "default_opacity"),
-        DEFAULT_BLACK_AND_WHITE(value = "default_black_and_white"),
+        DEFAULT_SATURATION(value = "default_saturation"),
+
+        /**
+         * Key from when the black and white was persisted, before the saturation was introduced.
+         */
+        LEGACY_DEFAULT_BLACK_AND_WHITE(value = "default_black_and_white"),
         DEFAULT_TAP_ACTION(value = "default_tap_action"),
         DEFAULT_INCREASE_BRIGHTNESS(value = "default_increase_brightness"),
         DEFAULT_VIEW_ORIGINAL_PHOTO(value = "default_view_original_photo"),
@@ -357,6 +373,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
     }
 
     private companion object {
+
         const val SHARED_PREFERENCES_NAME = "com.fibelatti.photowidget.UserPreferences"
     }
 }

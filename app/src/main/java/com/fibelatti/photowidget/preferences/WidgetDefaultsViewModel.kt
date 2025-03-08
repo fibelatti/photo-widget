@@ -39,8 +39,8 @@ class WidgetDefaultsViewModel @Inject constructor(
         userPreferencesStorage.defaultOpacity = value
     }
 
-    fun saveDefaultBlackAndWhite(value: Boolean) {
-        userPreferencesStorage.defaultBlackAndWhite = value
+    fun saveDefaultSaturation(value: Float) {
+        userPreferencesStorage.defaultSaturation = value
     }
 
     fun saveDefaultTapAction(tapAction: PhotoWidgetTapAction) {

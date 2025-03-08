@@ -283,16 +283,22 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         )
     }
 
-    fun saveWidgetBlackAndWhite(appWidgetId: Int, value: Boolean) {
+    fun saveWidgetSaturation(appWidgetId: Int, saturation: Float) {
         sharedPreferences.edit {
-            putBoolean("${PreferencePrefix.BLACK_AND_WHITE}$appWidgetId", value)
+            putFloat("${PreferencePrefix.SATURATION}$appWidgetId", saturation)
+            remove("${PreferencePrefix.LEGACY_BLACK_AND_WHITE}$appWidgetId")
         }
     }
 
-    fun getWidgetBlackAndWhite(appWidgetId: Int): Boolean {
-        return sharedPreferences.getBoolean(
-            "${PreferencePrefix.BLACK_AND_WHITE}$appWidgetId",
-            userPreferencesStorage.defaultBlackAndWhite,
+    fun getWidgetSaturation(appWidgetId: Int): Float {
+        val blackAndWhite = sharedPreferences.getBoolean(
+            "${PreferencePrefix.LEGACY_BLACK_AND_WHITE}$appWidgetId",
+            false,
+        )
+
+        return sharedPreferences.getFloat(
+            "${PreferencePrefix.SATURATION}$appWidgetId",
+            if (blackAndWhite) 0f else userPreferencesStorage.defaultSaturation,
         )
     }
 
@@ -461,7 +467,12 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         BORDER_DYNAMIC(value = "appwidget_border_dynamic_"),
         BORDER_WIDTH(value = "appwidget_border_width_"),
         OPACITY(value = "appwidget_opacity_"),
-        BLACK_AND_WHITE(value = "appwidget_black_and_white_"),
+        SATURATION(value = "appwidget_saturation_"),
+
+        /**
+         * Key from when the black and white was persisted, before the saturation was introduced.
+         */
+        LEGACY_BLACK_AND_WHITE(value = "appwidget_black_and_white_"),
         HORIZONTAL_OFFSET(value = "appwidget_horizontal_offset_"),
         VERTICAL_OFFSET(value = "appwidget_vertical_offset_"),
         PADDING(value = "appwidget_padding_"),

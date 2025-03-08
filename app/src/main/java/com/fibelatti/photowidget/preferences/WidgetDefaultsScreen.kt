@@ -64,6 +64,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetCycleModePicker
+import com.fibelatti.photowidget.configure.PhotoWidgetSaturationPicker
 import com.fibelatti.photowidget.configure.PhotoWidgetTapActionPicker
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -145,7 +146,13 @@ fun WidgetDefaultsScreen(
                 )
             }.show()
         },
-        onBlackAndWhiteChange = preferencesViewModel::saveDefaultBlackAndWhite,
+        onSaturationClick = {
+            PhotoWidgetSaturationPicker.show(
+                context = localContext,
+                currentSaturation = preferences.defaultSaturation,
+                onApplyClick = preferencesViewModel::saveDefaultSaturation,
+            )
+        },
         onTapActionClick = {
             PhotoWidgetTapActionPicker.show(
                 context = localContext,
@@ -168,7 +175,7 @@ private fun WidgetDefaultsScreen(
     onShapeClick: () -> Unit,
     onCornerRadiusClick: () -> Unit,
     onOpacityClick: () -> Unit,
-    onBlackAndWhiteChange: (Boolean) -> Unit,
+    onSaturationClick: () -> Unit,
     onTapActionClick: () -> Unit,
     onClearDefaultsClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -255,7 +262,7 @@ private fun WidgetDefaultsScreen(
 
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_corner_radius),
-                currentValue = userPreferences.defaultCornerRadius.toInt().toString(),
+                currentValue = userPreferences.defaultCornerRadius.toString(),
                 onClick = onCornerRadiusClick,
             )
 
@@ -265,10 +272,10 @@ private fun WidgetDefaultsScreen(
                 onClick = onOpacityClick,
             )
 
-            BooleanDefault(
-                title = stringResource(R.string.widget_defaults_black_and_white),
-                currentValue = userPreferences.defaultBlackAndWhite,
-                onCheckedChange = onBlackAndWhiteChange,
+            PickerDefault(
+                title = stringResource(R.string.widget_defaults_saturation),
+                currentValue = formatPercent(value = userPreferences.defaultSaturation, fractionDigits = 0),
+                onClick = onSaturationClick,
             )
 
             PickerDefault(
@@ -637,7 +644,7 @@ private fun WidgetDefaultsScreenPreview() {
                 defaultShape = PhotoWidget.DEFAULT_SHAPE_ID,
                 defaultCornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                 defaultOpacity = PhotoWidget.DEFAULT_OPACITY,
-                defaultBlackAndWhite = false,
+                defaultSaturation = PhotoWidget.DEFAULT_SATURATION,
                 defaultTapAction = PhotoWidgetTapAction.DEFAULT,
             ),
             onNavClick = {},
@@ -647,7 +654,7 @@ private fun WidgetDefaultsScreenPreview() {
             onShapeClick = {},
             onCornerRadiusClick = {},
             onOpacityClick = {},
-            onBlackAndWhiteChange = {},
+            onSaturationClick = {},
             onTapActionClick = {},
             onClearDefaultsClick = {},
         )

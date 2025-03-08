@@ -26,14 +26,14 @@ fun Bitmap.withRoundedCorners(
     aspectRatio: PhotoWidgetAspectRatio,
     radius: Float,
     opacity: Float = PhotoWidget.DEFAULT_OPACITY,
-    blackAndWhite: Boolean = false,
+    saturation: Float = PhotoWidget.DEFAULT_SATURATION,
     @ColorInt borderColor: Int? = null,
     @FloatRange(from = 0.0) borderPercent: Float = .0F,
     widgetSize: Size? = null,
 ): Bitmap = withTransformation(
     aspectRatio = aspectRatio,
     opacity = opacity,
-    blackAndWhite = blackAndWhite,
+    saturation = saturation,
     borderColor = borderColor,
     borderPercent = borderPercent,
     widgetSize = widgetSize,
@@ -44,13 +44,13 @@ fun Bitmap.withRoundedCorners(
 fun Bitmap.withPolygonalShape(
     shapeId: String,
     opacity: Float = PhotoWidget.DEFAULT_OPACITY,
-    blackAndWhite: Boolean = false,
+    saturation: Float = PhotoWidget.DEFAULT_SATURATION,
     @ColorInt borderColor: Int? = null,
     @FloatRange(from = 0.0) borderPercent: Float = .0F,
 ): Bitmap = withTransformation(
     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
     opacity = opacity,
-    blackAndWhite = blackAndWhite,
+    saturation = saturation,
     borderColor = borderColor,
     borderPercent = borderPercent,
     widgetSize = null,
@@ -75,7 +75,7 @@ fun Bitmap.withPolygonalShape(
 private inline fun Bitmap.withTransformation(
     aspectRatio: PhotoWidgetAspectRatio,
     opacity: Float,
-    blackAndWhite: Boolean,
+    saturation: Float,
     @ColorInt borderColor: Int?,
     @FloatRange(from = 0.0) borderPercent: Float,
     widgetSize: Size?,
@@ -100,12 +100,10 @@ private inline fun Bitmap.withTransformation(
     val bitmapPaint = Paint(basePaint).apply {
         xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
 
-        if (blackAndWhite) {
-            val colorMatrix = ColorMatrix().apply { setSaturation(0f) }
-            val colorFilter = ColorMatrixColorFilter(colorMatrix)
+        val colorMatrix = ColorMatrix().apply { setSaturation(saturation / 100) }
+        val colorFilter = ColorMatrixColorFilter(colorMatrix)
 
-            setColorFilter(colorFilter)
-        }
+        setColorFilter(colorFilter)
     }
 
     canvas.drawBitmap(this, source, destination, bitmapPaint)

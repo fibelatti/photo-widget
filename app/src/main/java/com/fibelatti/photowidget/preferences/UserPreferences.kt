@@ -15,6 +15,6 @@ data class UserPreferences(
     val defaultShape: String,
     val defaultCornerRadius: Int,
     val defaultOpacity: Float,
-    val defaultBlackAndWhite: Boolean,
+    val defaultSaturation: Float,
     val defaultTapAction: PhotoWidgetTapAction,
 )

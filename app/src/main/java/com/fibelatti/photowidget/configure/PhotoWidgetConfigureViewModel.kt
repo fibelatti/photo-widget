@@ -498,10 +498,10 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun blackAndWhiteChanged(value: Boolean) {
+    fun saturationSelected(saturation: Float) {
         _state.update { current ->
             current.copy(
-                photoWidget = current.photoWidget.copy(blackAndWhite = value),
+                photoWidget = current.photoWidget.copy(saturation = saturation),
             )
         }
     }

@@ -18,7 +18,7 @@ data class PhotoWidget(
     val cornerRadius: Int = DEFAULT_CORNER_RADIUS,
     val border: PhotoWidgetBorder = PhotoWidgetBorder.None,
     val opacity: Float = DEFAULT_OPACITY,
-    val blackAndWhite: Boolean = false,
+    val saturation: Float = DEFAULT_SATURATION,
     val horizontalOffset: Int = 0,
     val verticalOffset: Int = 0,
     val padding: Int = 0,
@@ -64,6 +64,12 @@ data class PhotoWidget(
          * corresponding alpha component of [0..255] when preparing the bitmap.
          */
         const val DEFAULT_OPACITY: Float = 100f
+
+        /**
+         * The UI picker offers a [0..100] range for simplicity, which is converted to the
+         * corresponding saturation component of [0..1] when preparing the bitmap.
+         */
+        const val DEFAULT_SATURATION: Float = 100f
 
         /**
          * Padding and Offset values are in DP. Both the picker and the widget provider will
