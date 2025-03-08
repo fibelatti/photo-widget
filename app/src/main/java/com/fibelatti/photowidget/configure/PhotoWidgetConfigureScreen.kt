@@ -142,6 +142,7 @@ fun PhotoWidgetConfigureScreen(
     onBorderChange: (PhotoWidgetBorder) -> Unit,
     onOpacityChange: (Float) -> Unit,
     onSaturationChange: (Float) -> Unit,
+    onBrightnessChange: (Float) -> Unit,
     onOffsetChange: (horizontalOffset: Int, verticalOffset: Int) -> Unit,
     onPaddingChange: (Int) -> Unit,
     onAddToHomeClick: () -> Unit,
@@ -224,6 +225,13 @@ fun PhotoWidgetConfigureScreen(
                     onApplyClick = onSaturationChange,
                 )
             },
+            onBrightnessClick = {
+                PhotoWidgetBrightnessPicker.show(
+                    context = localContext,
+                    currentBrightness = photoWidget.brightness,
+                    onApplyClick = onBrightnessChange,
+                )
+            },
             onOffsetClick = {
                 ComposeBottomSheetDialog(localContext) {
                     PhotoWidgetOffsetPicker(
@@ -295,6 +303,7 @@ private fun PhotoWidgetConfigureContent(
     onBorderClick: () -> Unit,
     onOpacityClick: () -> Unit,
     onSaturationClick: () -> Unit,
+    onBrightnessClick: () -> Unit,
     onOffsetClick: () -> Unit,
     onPaddingClick: () -> Unit,
     onAddToHomeClick: () -> Unit,
@@ -332,6 +341,7 @@ private fun PhotoWidgetConfigureContent(
                     onBorderClick = onBorderClick,
                     onOpacityClick = onOpacityClick,
                     onSaturationClick = onSaturationClick,
+                    onBrightnessClick = onBrightnessClick,
                     onOffsetClick = onOffsetClick,
                     onPaddingClick = onPaddingClick,
                     onCycleModePickerClick = onCycleModePickerClick,
@@ -373,6 +383,7 @@ private fun PhotoWidgetConfigureContent(
                     onBorderClick = onBorderClick,
                     onOpacityClick = onOpacityClick,
                     onSaturationClick = onSaturationClick,
+                    onBrightnessClick = onBrightnessClick,
                     onOffsetClick = onOffsetClick,
                     onPaddingClick = onPaddingClick,
                     onCycleModePickerClick = onCycleModePickerClick,
@@ -413,6 +424,7 @@ private fun PhotoWidgetViewer(
             border = photoWidget.border,
             opacity = photoWidget.opacity,
             saturation = photoWidget.saturation,
+            brightness = photoWidget.brightness,
         )
 
         IconButton(
@@ -464,6 +476,7 @@ private fun PhotoWidgetEditor(
     onBorderClick: () -> Unit,
     onOpacityClick: () -> Unit,
     onSaturationClick: () -> Unit,
+    onBrightnessClick: () -> Unit,
     onOffsetClick: () -> Unit,
     onPaddingClick: () -> Unit,
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
@@ -515,6 +528,7 @@ private fun PhotoWidgetEditor(
                         onBorderClick = onBorderClick,
                         onOpacityClick = onOpacityClick,
                         onSaturationClick = onSaturationClick,
+                        onBrightnessClick = onBrightnessClick,
                         onOffsetClick = onOffsetClick,
                         onPaddingClick = onPaddingClick,
                         modifier = tabContentModifier,
@@ -579,6 +593,7 @@ private fun ContentTab(
         aspectRatio = photoWidget.aspectRatio,
         shapeId = photoWidget.shapeId,
         saturation = photoWidget.saturation,
+        brightness = photoWidget.brightness,
         modifier = modifier.fillMaxSize(),
     )
 }
@@ -592,6 +607,7 @@ private fun AppearanceTab(
     onBorderClick: () -> Unit,
     onOpacityClick: () -> Unit,
     onSaturationClick: () -> Unit,
+    onBrightnessClick: () -> Unit,
     onOffsetClick: () -> Unit,
     onPaddingClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -663,6 +679,13 @@ private fun AppearanceTab(
             title = stringResource(R.string.widget_defaults_saturation),
             currentValue = formatPercent(value = photoWidget.saturation, fractionDigits = 0),
             onClick = onSaturationClick,
+            modifier = Modifier.padding(horizontal = 16.dp),
+        )
+
+        PickerDefault(
+            title = stringResource(R.string.widget_defaults_brightness),
+            currentValue = formatPercent(value = photoWidget.brightness, fractionDigits = 0),
+            onClick = onBrightnessClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -764,6 +787,7 @@ private fun CurrentPhotoViewer(
     border: PhotoWidgetBorder,
     opacity: Float,
     saturation: Float,
+    brightness: Float,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -805,6 +829,7 @@ private fun CurrentPhotoViewer(
                     .fillMaxHeight(),
                 opacity = opacity,
                 saturation = saturation,
+                brightness = brightness,
                 border = border,
             )
         }
@@ -888,6 +913,7 @@ private fun PhotoPicker(
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     saturation: Float,
+    brightness: Float,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -946,6 +972,7 @@ private fun PhotoPicker(
                                 onClick = { onPhotoClick(photo) },
                             ),
                         saturation = saturation,
+                        brightness = brightness,
                     )
                 }
             }
@@ -1193,6 +1220,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onBorderChange = {},
             onOpacityChange = {},
             onSaturationChange = {},
+            onBrightnessChange = {},
             onOffsetChange = { _, _ -> },
             onPaddingChange = {},
             onAddToHomeClick = {},
@@ -1236,6 +1264,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onBorderChange = {},
             onOpacityChange = {},
             onSaturationChange = {},
+            onBrightnessChange = {},
             onOffsetChange = { _, _ -> },
             onPaddingChange = {},
             onAddToHomeClick = {},

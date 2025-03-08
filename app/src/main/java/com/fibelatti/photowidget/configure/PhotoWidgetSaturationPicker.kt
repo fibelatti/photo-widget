@@ -46,8 +46,45 @@ object PhotoWidgetSaturationPicker {
         onApplyClick: (Float) -> Unit,
     ) {
         ComposeBottomSheetDialog(context) {
-            SaturationPicker(
+            ColorMatrixPicker(
+                title = stringResource(R.string.widget_defaults_saturation),
+                valueRange = 0f..100f,
                 currentValue = currentSaturation,
+                onCurrentValueChange = { value ->
+                    ColorMatrix().apply { setToSaturation(value / 100) }
+                },
+                onApplyClick = { newValue ->
+                    onApplyClick(newValue)
+                    dismiss()
+                },
+            )
+        }.show()
+    }
+}
+
+object PhotoWidgetBrightnessPicker {
+
+    fun show(
+        context: Context,
+        currentBrightness: Float,
+        onApplyClick: (Float) -> Unit,
+    ) {
+        ComposeBottomSheetDialog(context) {
+            ColorMatrixPicker(
+                title = stringResource(R.string.widget_defaults_saturation),
+                valueRange = -100f..100f,
+                currentValue = currentBrightness,
+                onCurrentValueChange = { value ->
+                    val brightness = value * 255 / 100
+                    val colorMatrix = floatArrayOf(
+                        1f, 0f, 0f, 0f, brightness,
+                        0f, 1f, 0f, 0f, brightness,
+                        0f, 0f, 1f, 0f, brightness,
+                        0f, 0f, 0f, 1f, 0f,
+                    )
+
+                    ColorMatrix(colorMatrix)
+                },
                 onApplyClick = { newValue ->
                     onApplyClick(newValue)
                     dismiss()
@@ -59,13 +96,16 @@ object PhotoWidgetSaturationPicker {
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun SaturationPicker(
+private fun ColorMatrixPicker(
+    title: String,
+    valueRange: ClosedFloatingPointRange<Float>,
     currentValue: Float,
+    onCurrentValueChange: (Float) -> ColorMatrix,
     onApplyClick: (newValue: Float) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DefaultPicker(
-        title = stringResource(R.string.widget_defaults_saturation),
+        title = title,
         modifier = modifier,
     ) {
         val localContext = LocalContext.current
@@ -83,7 +123,7 @@ private fun SaturationPicker(
                 .asImageBitmap(),
             contentDescription = null,
             modifier = Modifier.size(200.dp),
-            colorFilter = ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(value / 100) }),
+            colorFilter = ColorFilter.colorMatrix(onCurrentValueChange(value)),
         )
 
         Row(
@@ -97,13 +137,13 @@ private fun SaturationPicker(
                 value = value,
                 onValueChange = { value = it },
                 modifier = Modifier.weight(1f),
-                valueRange = 0f..100f,
+                valueRange = valueRange,
                 thumb = { SliderSmallThumb() },
             )
 
             Text(
                 text = formatPercent(value = value, fractionDigits = 0),
-                modifier = Modifier.width(40.dp),
+                modifier = Modifier.width(48.dp),
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.End,
                 style = MaterialTheme.typography.labelLarge,

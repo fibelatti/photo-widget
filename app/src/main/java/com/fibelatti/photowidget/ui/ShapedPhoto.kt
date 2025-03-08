@@ -25,6 +25,7 @@ fun ShapedPhoto(
     modifier: Modifier = Modifier,
     opacity: Float = PhotoWidget.DEFAULT_OPACITY,
     saturation: Float = PhotoWidget.DEFAULT_SATURATION,
+    brightness: Float = PhotoWidget.DEFAULT_BRIGHTNESS,
     border: PhotoWidgetBorder = PhotoWidgetBorder.None,
     badge: @Composable BoxScope.() -> Unit = {},
     isLoading: Boolean = false,
@@ -43,6 +44,7 @@ fun ShapedPhoto(
             cornerRadius,
             opacity,
             saturation,
+            brightness,
             border,
         ),
         isLoading = isLoading,
@@ -63,6 +65,7 @@ fun ShapedPhoto(
                     shapeId = shapeId,
                     opacity = opacity,
                     saturation = saturation,
+                    brightness = brightness,
                     borderColor = borderColor,
                     borderPercent = borderPercent,
                 )
@@ -72,6 +75,7 @@ fun ShapedPhoto(
                     radius = cornerRadius * localDensity,
                     opacity = opacity,
                     saturation = saturation,
+                    brightness = brightness,
                     borderColor = borderColor,
                     borderPercent = borderPercent,
                 )

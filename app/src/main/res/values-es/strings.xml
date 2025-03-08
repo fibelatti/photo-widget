@@ -55,6 +55,7 @@
     <string name="widget_defaults_corner_radius">Redondez</string>
     <string name="widget_defaults_opacity">Opacidad</string>
     <string name="widget_defaults_saturation">Saturación</string>
+    <string name="widget_defaults_brightness">Brillo</string>
     <string name="widget_defaults_tap_action">Acción de toque</string>
     <string name="widget_defaults_reset">Restablecer valores</string>
     <!-- Share -->

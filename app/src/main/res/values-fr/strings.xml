@@ -55,6 +55,7 @@
     <string name="widget_defaults_corner_radius">Arrondi</string>
     <string name="widget_defaults_opacity">Opacité</string>
     <string name="widget_defaults_saturation">Saturation</string>
+    <string name="widget_defaults_brightness">Luminosité</string>
     <string name="widget_defaults_tap_action">Action au toucher</string>
     <string name="widget_defaults_reset">Réinitialiser les valeurs</string>
     <!-- Share -->

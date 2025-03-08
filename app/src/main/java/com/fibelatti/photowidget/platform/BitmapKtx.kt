@@ -27,6 +27,7 @@ fun Bitmap.withRoundedCorners(
     radius: Float,
     opacity: Float = PhotoWidget.DEFAULT_OPACITY,
     saturation: Float = PhotoWidget.DEFAULT_SATURATION,
+    brightness: Float = PhotoWidget.DEFAULT_BRIGHTNESS,
     @ColorInt borderColor: Int? = null,
     @FloatRange(from = 0.0) borderPercent: Float = .0F,
     widgetSize: Size? = null,
@@ -34,6 +35,7 @@ fun Bitmap.withRoundedCorners(
     aspectRatio = aspectRatio,
     opacity = opacity,
     saturation = saturation,
+    brightness = brightness,
     borderColor = borderColor,
     borderPercent = borderPercent,
     widgetSize = widgetSize,
@@ -45,12 +47,14 @@ fun Bitmap.withPolygonalShape(
     shapeId: String,
     opacity: Float = PhotoWidget.DEFAULT_OPACITY,
     saturation: Float = PhotoWidget.DEFAULT_SATURATION,
+    brightness: Float = PhotoWidget.DEFAULT_BRIGHTNESS,
     @ColorInt borderColor: Int? = null,
     @FloatRange(from = 0.0) borderPercent: Float = .0F,
 ): Bitmap = withTransformation(
     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
     opacity = opacity,
     saturation = saturation,
+    brightness = brightness,
     borderColor = borderColor,
     borderPercent = borderPercent,
     widgetSize = null,
@@ -76,6 +80,7 @@ private inline fun Bitmap.withTransformation(
     aspectRatio: PhotoWidgetAspectRatio,
     opacity: Float,
     saturation: Float,
+    brightness: Float,
     @ColorInt borderColor: Int?,
     @FloatRange(from = 0.0) borderPercent: Float,
     widgetSize: Size?,
@@ -100,7 +105,18 @@ private inline fun Bitmap.withTransformation(
     val bitmapPaint = Paint(basePaint).apply {
         xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
 
-        val colorMatrix = ColorMatrix().apply { setSaturation(saturation / 100) }
+        val brightnessComponent = brightness * 255 / 100
+        val brightnessMatrix = floatArrayOf(
+            1f, 0f, 0f, 0f, brightnessComponent,
+            0f, 1f, 0f, 0f, brightnessComponent,
+            0f, 0f, 1f, 0f, brightnessComponent,
+            0f, 0f, 0f, 1f, 0f,
+        )
+
+        val colorMatrix = ColorMatrix().apply {
+            setSaturation(saturation / 100)
+            postConcat(ColorMatrix(brightnessMatrix))
+        }
         val colorFilter = ColorMatrixColorFilter(colorMatrix)
 
         setColorFilter(colorFilter)

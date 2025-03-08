@@ -302,6 +302,19 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         )
     }
 
+    fun saveWidgetBrightness(appWidgetId: Int, brightness: Float) {
+        sharedPreferences.edit {
+            putFloat("${PreferencePrefix.BRIGHTNESS}$appWidgetId", brightness)
+        }
+    }
+
+    fun getWidgetBrightness(appWidgetId: Int): Float {
+        return sharedPreferences.getFloat(
+            "${PreferencePrefix.BRIGHTNESS}$appWidgetId",
+            userPreferencesStorage.defaultBrightness,
+        )
+    }
+
     fun saveWidgetOffset(appWidgetId: Int, horizontalOffset: Int, verticalOffset: Int) {
         sharedPreferences.edit {
             putInt("${PreferencePrefix.HORIZONTAL_OFFSET}$appWidgetId", horizontalOffset)
@@ -468,6 +481,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         BORDER_WIDTH(value = "appwidget_border_width_"),
         OPACITY(value = "appwidget_opacity_"),
         SATURATION(value = "appwidget_saturation_"),
+        BRIGHTNESS(value = "appwidget_brightness_"),
 
         /**
          * Key from when the black and white was persisted, before the saturation was introduced.

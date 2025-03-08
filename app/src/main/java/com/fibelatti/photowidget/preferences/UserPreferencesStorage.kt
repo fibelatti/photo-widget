@@ -43,6 +43,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             defaultCornerRadius = defaultCornerRadius,
             defaultOpacity = defaultOpacity,
             defaultSaturation = defaultSaturation,
+            defaultBrightness = defaultBrightness,
             defaultTapAction = defaultTapAction,
         ),
     )
@@ -236,6 +237,18 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             _userPreferences.update { current -> current.copy(defaultSaturation = value) }
         }
 
+    var defaultBrightness: Float
+        get() {
+            return sharedPreferences.getFloat(
+                Preference.DEFAULT_BRIGHTNESS.value,
+                PhotoWidget.DEFAULT_BRIGHTNESS,
+            )
+        }
+        set(value) {
+            sharedPreferences.edit { putFloat(Preference.DEFAULT_BRIGHTNESS.value, value) }
+            _userPreferences.update { current -> current.copy(defaultBrightness = value) }
+        }
+
     var defaultTapAction: PhotoWidgetTapAction
         get() = with(sharedPreferences) {
             val name = getString(Preference.DEFAULT_TAP_ACTION.value, null)
@@ -320,6 +333,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                 defaultCornerRadius = defaultCornerRadius,
                 defaultOpacity = defaultOpacity,
                 defaultSaturation = defaultSaturation,
+                defaultBrightness = defaultBrightness,
                 defaultTapAction = defaultTapAction,
             )
         }
@@ -355,6 +369,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         DEFAULT_CORNER_RADIUS(value = "default_corner_radius_dp"),
         DEFAULT_OPACITY(value = "default_opacity"),
         DEFAULT_SATURATION(value = "default_saturation"),
+        DEFAULT_BRIGHTNESS(value = "default_brightness"),
 
         /**
          * Key from when the black and white was persisted, before the saturation was introduced.

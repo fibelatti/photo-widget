@@ -506,6 +506,14 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
+    fun brightnessSelected(brightness: Float) {
+        _state.update { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(brightness = brightness),
+            )
+        }
+    }
+
     fun offsetSelected(horizontalOffset: Int, verticalOffset: Int) {
         _state.update { current ->
             current.copy(

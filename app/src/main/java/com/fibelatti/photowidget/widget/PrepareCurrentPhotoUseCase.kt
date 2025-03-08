@@ -84,6 +84,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 shapeId = photoWidget.shapeId,
                 opacity = photoWidget.opacity,
                 saturation = photoWidget.saturation,
+                brightness = photoWidget.brightness,
                 borderColor = borderColor,
                 borderPercent = borderPercent,
             )
@@ -93,6 +94,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 radius = photoWidget.cornerRadius * context.resources.displayMetrics.density,
                 opacity = photoWidget.opacity,
                 saturation = photoWidget.saturation,
+                brightness = photoWidget.brightness,
                 borderColor = borderColor,
                 borderPercent = borderPercent,
                 widgetSize = widgetSize,

@@ -106,6 +106,7 @@ fun MyWidgetsScreen(
                                 modifier = Modifier.fillMaxSize(),
                                 opacity = widget.opacity,
                                 saturation = widget.saturation,
+                                brightness = widget.brightness,
                                 border = widget.border,
                                 isLoading = widget.isLoading,
                             )

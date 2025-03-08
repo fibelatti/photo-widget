@@ -63,6 +63,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.configure.PhotoWidgetBrightnessPicker
 import com.fibelatti.photowidget.configure.PhotoWidgetCycleModePicker
 import com.fibelatti.photowidget.configure.PhotoWidgetSaturationPicker
 import com.fibelatti.photowidget.configure.PhotoWidgetTapActionPicker
@@ -153,6 +154,13 @@ fun WidgetDefaultsScreen(
                 onApplyClick = preferencesViewModel::saveDefaultSaturation,
             )
         },
+        onBrightnessClick = {
+            PhotoWidgetBrightnessPicker.show(
+                context = localContext,
+                currentBrightness = preferences.defaultBrightness,
+                onApplyClick = preferencesViewModel::saveDefaultBrightness,
+            )
+        },
         onTapActionClick = {
             PhotoWidgetTapActionPicker.show(
                 context = localContext,
@@ -176,6 +184,7 @@ private fun WidgetDefaultsScreen(
     onCornerRadiusClick: () -> Unit,
     onOpacityClick: () -> Unit,
     onSaturationClick: () -> Unit,
+    onBrightnessClick: () -> Unit,
     onTapActionClick: () -> Unit,
     onClearDefaultsClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -276,6 +285,12 @@ private fun WidgetDefaultsScreen(
                 title = stringResource(R.string.widget_defaults_saturation),
                 currentValue = formatPercent(value = userPreferences.defaultSaturation, fractionDigits = 0),
                 onClick = onSaturationClick,
+            )
+
+            PickerDefault(
+                title = stringResource(R.string.widget_defaults_brightness),
+                currentValue = formatPercent(value = userPreferences.defaultBrightness, fractionDigits = 0),
+                onClick = onBrightnessClick,
             )
 
             PickerDefault(
@@ -581,7 +596,7 @@ fun OpacityPicker(
 
             Text(
                 text = formatPercent(value = value, fractionDigits = 0),
-                modifier = Modifier.width(40.dp),
+                modifier = Modifier.width(48.dp),
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.End,
                 style = MaterialTheme.typography.labelLarge,
@@ -645,6 +660,7 @@ private fun WidgetDefaultsScreenPreview() {
                 defaultCornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                 defaultOpacity = PhotoWidget.DEFAULT_OPACITY,
                 defaultSaturation = PhotoWidget.DEFAULT_SATURATION,
+                defaultBrightness = PhotoWidget.DEFAULT_BRIGHTNESS,
                 defaultTapAction = PhotoWidgetTapAction.DEFAULT,
             ),
             onNavClick = {},
@@ -655,6 +671,7 @@ private fun WidgetDefaultsScreenPreview() {
             onCornerRadiusClick = {},
             onOpacityClick = {},
             onSaturationClick = {},
+            onBrightnessClick = {},
             onTapActionClick = {},
             onClearDefaultsClick = {},
         )

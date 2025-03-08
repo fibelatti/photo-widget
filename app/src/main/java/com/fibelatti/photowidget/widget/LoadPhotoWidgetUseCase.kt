@@ -56,6 +56,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             border = getWidgetBorder(appWidgetId = appWidgetId),
             opacity = getWidgetOpacity(appWidgetId = appWidgetId),
             saturation = getWidgetSaturation(appWidgetId = appWidgetId),
+            brightness = getWidgetBrightness(appWidgetId = appWidgetId),
             horizontalOffset = horizontalOffset,
             verticalOffset = verticalOffset,
             padding = getWidgetPadding(appWidgetId = appWidgetId),
