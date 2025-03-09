@@ -591,7 +591,6 @@ private fun ContentTab(
         onRemovedPhotoClick = onRemovedPhotoClick,
         aspectRatio = photoWidget.aspectRatio,
         shapeId = photoWidget.shapeId,
-        colors = photoWidget.colors,
         modifier = modifier.fillMaxSize(),
     )
 }
@@ -906,7 +905,6 @@ private fun PhotoPicker(
     onRemovedPhotoClick: (LocalPhoto) -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
-    colors: PhotoWidgetColors,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -964,7 +962,6 @@ private fun PhotoPicker(
                                 role = Role.Image,
                                 onClick = { onPhotoClick(photo) },
                             ),
-                        colors = colors.copy(opacity = 100f),
                     )
                 }
             }
