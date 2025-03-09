@@ -9,9 +9,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.model.LocalPhoto
-import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
+import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
@@ -23,9 +23,7 @@ fun ShapedPhoto(
     shapeId: String,
     cornerRadius: Int,
     modifier: Modifier = Modifier,
-    opacity: Float = PhotoWidget.DEFAULT_OPACITY,
-    saturation: Float = PhotoWidget.DEFAULT_SATURATION,
-    brightness: Float = PhotoWidget.DEFAULT_BRIGHTNESS,
+    colors: PhotoWidgetColors = PhotoWidgetColors(),
     border: PhotoWidgetBorder = PhotoWidgetBorder.None,
     badge: @Composable BoxScope.() -> Unit = {},
     isLoading: Boolean = false,
@@ -42,9 +40,7 @@ fun ShapedPhoto(
             aspectRatio,
             shapeId,
             cornerRadius,
-            opacity,
-            saturation,
-            brightness,
+            colors,
             border,
         ),
         isLoading = isLoading,
@@ -63,9 +59,7 @@ fun ShapedPhoto(
             if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
                 bitmap.withPolygonalShape(
                     shapeId = shapeId,
-                    opacity = opacity,
-                    saturation = saturation,
-                    brightness = brightness,
+                    colors = colors,
                     borderColor = borderColor,
                     borderPercent = borderPercent,
                 )
@@ -73,9 +67,7 @@ fun ShapedPhoto(
                 bitmap.withRoundedCorners(
                     aspectRatio = aspectRatio,
                     radius = cornerRadius * localDensity,
-                    opacity = opacity,
-                    saturation = saturation,
-                    brightness = brightness,
+                    colors = colors,
                     borderColor = borderColor,
                     borderPercent = borderPercent,
                 )

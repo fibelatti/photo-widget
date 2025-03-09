@@ -16,8 +16,8 @@ import androidx.annotation.FloatRange
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.toRect
 import androidx.core.graphics.toRectF
-import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import kotlin.math.min
 import timber.log.Timber
@@ -25,17 +25,13 @@ import timber.log.Timber
 fun Bitmap.withRoundedCorners(
     aspectRatio: PhotoWidgetAspectRatio,
     radius: Float,
-    opacity: Float = PhotoWidget.DEFAULT_OPACITY,
-    saturation: Float = PhotoWidget.DEFAULT_SATURATION,
-    brightness: Float = PhotoWidget.DEFAULT_BRIGHTNESS,
+    colors: PhotoWidgetColors = PhotoWidgetColors(),
     @ColorInt borderColor: Int? = null,
     @FloatRange(from = 0.0) borderPercent: Float = .0F,
     widgetSize: Size? = null,
 ): Bitmap = withTransformation(
     aspectRatio = aspectRatio,
-    opacity = opacity,
-    saturation = saturation,
-    brightness = brightness,
+    colors = colors,
     borderColor = borderColor,
     borderPercent = borderPercent,
     widgetSize = widgetSize,
@@ -45,16 +41,12 @@ fun Bitmap.withRoundedCorners(
 
 fun Bitmap.withPolygonalShape(
     shapeId: String,
-    opacity: Float = PhotoWidget.DEFAULT_OPACITY,
-    saturation: Float = PhotoWidget.DEFAULT_SATURATION,
-    brightness: Float = PhotoWidget.DEFAULT_BRIGHTNESS,
+    colors: PhotoWidgetColors = PhotoWidgetColors(),
     @ColorInt borderColor: Int? = null,
     @FloatRange(from = 0.0) borderPercent: Float = .0F,
 ): Bitmap = withTransformation(
     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-    opacity = opacity,
-    saturation = saturation,
-    brightness = brightness,
+    colors = colors,
     borderColor = borderColor,
     borderPercent = borderPercent,
     widgetSize = null,
@@ -78,9 +70,7 @@ fun Bitmap.withPolygonalShape(
 
 private inline fun Bitmap.withTransformation(
     aspectRatio: PhotoWidgetAspectRatio,
-    opacity: Float,
-    saturation: Float,
-    brightness: Float,
+    colors: PhotoWidgetColors,
     @ColorInt borderColor: Int?,
     @FloatRange(from = 0.0) borderPercent: Float,
     widgetSize: Size?,
@@ -95,7 +85,7 @@ private inline fun Bitmap.withTransformation(
     }
     val basePaint = Paint().apply {
         isAntiAlias = true
-        alpha = (opacity * 255 / 100).toInt()
+        alpha = (colors.opacity * 255 / 100).toInt()
     }
 
     val bodyRect = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) source else destination
@@ -105,16 +95,16 @@ private inline fun Bitmap.withTransformation(
     val bitmapPaint = Paint(basePaint).apply {
         xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
 
-        val brightnessComponent = brightness * 255 / 100
+        val brightness = colors.brightness * 255 / 100
         val brightnessMatrix = floatArrayOf(
-            1f, 0f, 0f, 0f, brightnessComponent,
-            0f, 1f, 0f, 0f, brightnessComponent,
-            0f, 0f, 1f, 0f, brightnessComponent,
+            1f, 0f, 0f, 0f, brightness,
+            0f, 1f, 0f, 0f, brightness,
+            0f, 0f, 1f, 0f, brightness,
             0f, 0f, 0f, 1f, 0f,
         )
 
         val colorMatrix = ColorMatrix().apply {
-            setSaturation(saturation / 100)
+            setSaturation(colors.saturation / 100)
             postConcat(ColorMatrix(brightnessMatrix))
         }
         val colorFilter = ColorMatrixColorFilter(colorMatrix)

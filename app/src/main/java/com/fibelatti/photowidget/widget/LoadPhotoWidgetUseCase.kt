@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.widget
 
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -54,9 +55,11 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             shapeId = getWidgetShapeId(appWidgetId = appWidgetId),
             cornerRadius = getWidgetCornerRadius(appWidgetId = appWidgetId),
             border = getWidgetBorder(appWidgetId = appWidgetId),
-            opacity = getWidgetOpacity(appWidgetId = appWidgetId),
-            saturation = getWidgetSaturation(appWidgetId = appWidgetId),
-            brightness = getWidgetBrightness(appWidgetId = appWidgetId),
+            colors = PhotoWidgetColors(
+                opacity = getWidgetOpacity(appWidgetId = appWidgetId),
+                saturation = getWidgetSaturation(appWidgetId = appWidgetId),
+                brightness = getWidgetBrightness(appWidgetId = appWidgetId),
+            ),
             horizontalOffset = horizontalOffset,
             verticalOffset = verticalOffset,
             padding = getWidgetPadding(appWidgetId = appWidgetId),

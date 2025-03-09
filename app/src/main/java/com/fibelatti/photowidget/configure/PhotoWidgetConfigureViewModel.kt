@@ -493,7 +493,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     fun opacitySelected(opacity: Float) {
         _state.update { current ->
             current.copy(
-                photoWidget = current.photoWidget.copy(opacity = opacity),
+                photoWidget = current.photoWidget.copy(
+                    colors = current.photoWidget.colors.copy(opacity = opacity),
+                ),
             )
         }
     }
@@ -501,7 +503,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     fun saturationSelected(saturation: Float) {
         _state.update { current ->
             current.copy(
-                photoWidget = current.photoWidget.copy(saturation = saturation),
+                photoWidget = current.photoWidget.copy(
+                    colors = current.photoWidget.colors.copy(saturation = saturation),
+                ),
             )
         }
     }
@@ -509,7 +513,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     fun brightnessSelected(brightness: Float) {
         _state.update { current ->
             current.copy(
-                photoWidget = current.photoWidget.copy(brightness = brightness),
+                photoWidget = current.photoWidget.copy(
+                    colors = current.photoWidget.colors.copy(brightness = brightness),
+                ),
             )
         }
     }

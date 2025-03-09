@@ -69,6 +69,7 @@ import com.fibelatti.photowidget.configure.PhotoWidgetSaturationPicker
 import com.fibelatti.photowidget.configure.PhotoWidgetTapActionPicker
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
@@ -572,7 +573,7 @@ fun OpacityPicker(
                 .withRoundedCorners(
                     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
                     radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
-                    opacity = value,
+                    colors = PhotoWidgetColors(opacity = value),
                 )
                 .asImageBitmap(),
             contentDescription = null,

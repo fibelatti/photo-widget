@@ -90,6 +90,7 @@ import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
+import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
@@ -210,7 +211,7 @@ fun PhotoWidgetConfigureScreen(
             onOpacityClick = {
                 ComposeBottomSheetDialog(localContext) {
                     OpacityPicker(
-                        currentValue = photoWidget.opacity,
+                        currentValue = photoWidget.colors.opacity,
                         onApplyClick = { newValue ->
                             onOpacityChange(newValue)
                             dismiss()
@@ -221,14 +222,14 @@ fun PhotoWidgetConfigureScreen(
             onSaturationClick = {
                 PhotoWidgetSaturationPicker.show(
                     context = localContext,
-                    currentSaturation = photoWidget.saturation,
+                    currentSaturation = photoWidget.colors.saturation,
                     onApplyClick = onSaturationChange,
                 )
             },
             onBrightnessClick = {
                 PhotoWidgetBrightnessPicker.show(
                     context = localContext,
-                    currentBrightness = photoWidget.brightness,
+                    currentBrightness = photoWidget.colors.brightness,
                     onApplyClick = onBrightnessChange,
                 )
             },
@@ -422,9 +423,7 @@ private fun PhotoWidgetViewer(
             modifier = Modifier.fillMaxSize(),
             cornerRadius = photoWidget.cornerRadius,
             border = photoWidget.border,
-            opacity = photoWidget.opacity,
-            saturation = photoWidget.saturation,
-            brightness = photoWidget.brightness,
+            colors = photoWidget.colors,
         )
 
         IconButton(
@@ -592,8 +591,7 @@ private fun ContentTab(
         onRemovedPhotoClick = onRemovedPhotoClick,
         aspectRatio = photoWidget.aspectRatio,
         shapeId = photoWidget.shapeId,
-        saturation = photoWidget.saturation,
-        brightness = photoWidget.brightness,
+        colors = photoWidget.colors,
         modifier = modifier.fillMaxSize(),
     )
 }
@@ -670,21 +668,21 @@ private fun AppearanceTab(
 
         PickerDefault(
             title = stringResource(id = R.string.widget_defaults_opacity),
-            currentValue = formatPercent(value = photoWidget.opacity, fractionDigits = 0),
+            currentValue = formatPercent(value = photoWidget.colors.opacity, fractionDigits = 0),
             onClick = onOpacityClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
         PickerDefault(
             title = stringResource(R.string.widget_defaults_saturation),
-            currentValue = formatPercent(value = photoWidget.saturation, fractionDigits = 0),
+            currentValue = formatPercent(value = photoWidget.colors.saturation, fractionDigits = 0),
             onClick = onSaturationClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
         PickerDefault(
             title = stringResource(R.string.widget_defaults_brightness),
-            currentValue = formatPercent(value = photoWidget.brightness, fractionDigits = 0),
+            currentValue = formatPercent(value = photoWidget.colors.brightness, fractionDigits = 0),
             onClick = onBrightnessClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
@@ -785,23 +783,21 @@ private fun CurrentPhotoViewer(
     shapeId: String,
     cornerRadius: Int,
     border: PhotoWidgetBorder,
-    opacity: Float,
-    saturation: Float,
-    brightness: Float,
+    colors: PhotoWidgetColors,
     modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center,
     ) {
-        val colors = listOf(
+        val gradientColors = listOf(
             Color.White,
             MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f),
         )
 
         val largeRadialGradient = object : ShaderBrush() {
             override fun createShader(size: Size): Shader = RadialGradientShader(
-                colors = colors,
+                colors = gradientColors,
                 center = size.center,
                 radius = maxOf(size.height, size.width),
                 colorStops = listOf(0f, 0.9f),
@@ -827,9 +823,7 @@ private fun CurrentPhotoViewer(
                     )
                     .padding(start = 32.dp, top = 32.dp, end = 32.dp, bottom = 48.dp)
                     .fillMaxHeight(),
-                opacity = opacity,
-                saturation = saturation,
-                brightness = brightness,
+                colors = colors,
                 border = border,
             )
         }
@@ -912,8 +906,7 @@ private fun PhotoPicker(
     onRemovedPhotoClick: (LocalPhoto) -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
-    saturation: Float,
-    brightness: Float,
+    colors: PhotoWidgetColors,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -971,8 +964,7 @@ private fun PhotoPicker(
                                 role = Role.Image,
                                 onClick = { onPhotoClick(photo) },
                             ),
-                        saturation = saturation,
-                        brightness = brightness,
+                        colors = colors.copy(opacity = 100f),
                     )
                 }
             }
@@ -1113,7 +1105,7 @@ private fun RemovedPhotosPicker(
                             role = Role.Image,
                             onClick = { onPhotoClick(photo) },
                         ),
-                    saturation = 0f,
+                    colors = PhotoWidgetColors(saturation = 0f),
                 )
             }
         }
@@ -1193,9 +1185,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
     ExtendedTheme {
         PhotoWidgetConfigureScreen(
             photoWidget = PhotoWidget(
-                photos = List(20) { index ->
-                    LocalPhoto(photoId = "photo-$index")
-                },
+                photos = List(20) { index -> LocalPhoto(photoId = "photo-$index") },
             ),
             isUpdating = false,
             selectedPhoto = LocalPhoto(photoId = "photo-0"),
@@ -1235,11 +1225,9 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
         PhotoWidgetConfigureScreen(
             photoWidget = PhotoWidget(
                 source = PhotoWidgetSource.DIRECTORY,
-                photos = List(20) { index ->
-                    LocalPhoto(photoId = "photo-$index")
-                },
+                photos = List(20) { index -> LocalPhoto(photoId = "photo-$index") },
                 aspectRatio = PhotoWidgetAspectRatio.TALL,
-                opacity = 80f,
+                colors = PhotoWidgetColors(opacity = 80f),
             ),
             isUpdating = true,
             selectedPhoto = LocalPhoto(photoId = "photo-0"),

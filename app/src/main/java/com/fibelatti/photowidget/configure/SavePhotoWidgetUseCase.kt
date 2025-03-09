@@ -111,17 +111,17 @@ class SavePhotoWidgetUseCase @Inject constructor(
 
         photoWidgetStorage.saveWidgetOpacity(
             appWidgetId = appWidgetId,
-            opacity = photoWidget.opacity,
+            opacity = photoWidget.colors.opacity,
         )
 
         photoWidgetStorage.saveWidgetSaturation(
             appWidgetId = appWidgetId,
-            saturation = photoWidget.saturation,
+            saturation = photoWidget.colors.saturation,
         )
 
         photoWidgetStorage.saveWidgetBrightness(
             appWidgetId = appWidgetId,
-            brightness = photoWidget.brightness,
+            brightness = photoWidget.colors.brightness,
         )
 
         photoWidgetStorage.saveWidgetOffset(
