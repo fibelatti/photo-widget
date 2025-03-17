@@ -1,0 +1,7 @@
+This version brings the following updates:
+
+* New saturation and brightness pickers to customize your widgets
+* New ability to "lock" widgets with the current photo in-app
+* Updates the behavior of tapping to view the previews photo when shuffle is on
+
+Thanks for using the app!
