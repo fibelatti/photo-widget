@@ -71,7 +71,7 @@ object PhotoWidgetBrightnessPicker {
     ) {
         ComposeBottomSheetDialog(context) {
             ColorMatrixPicker(
-                title = stringResource(R.string.widget_defaults_saturation),
+                title = stringResource(R.string.widget_defaults_brightness),
                 valueRange = -100f..100f,
                 currentValue = currentBrightness,
                 onCurrentValueChange = { value ->
