@@ -337,6 +337,14 @@ class PhotoWidgetStorage @Inject constructor(
         return sharedPreferences.getWidgetCyclePaused(appWidgetId = appWidgetId)
     }
 
+    fun saveWidgetLockedInApp(appWidgetId: Int, value: Boolean) {
+        sharedPreferences.saveWidgetLockedInApp(appWidgetId = appWidgetId, value = value)
+    }
+
+    fun getWidgetLockedInApp(appWidgetId: Int): Boolean {
+        return sharedPreferences.getWidgetLockedInApp(appWidgetId = appWidgetId)
+    }
+
     fun getWidgetIndex(appWidgetId: Int): Int {
         return sharedPreferences.getWidgetIndex(appWidgetId = appWidgetId)
     }

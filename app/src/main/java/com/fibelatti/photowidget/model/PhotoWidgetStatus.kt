@@ -8,6 +8,11 @@ enum class PhotoWidgetStatus {
     ACTIVE,
 
     /**
+     * The widget is currently added to a home screen, but the current photo is locked.
+     */
+    LOCKED,
+
+    /**
      * The widget was removed from a home screen and will be permanently deleted soon.
      */
     REMOVED,
@@ -17,4 +22,8 @@ enum class PhotoWidgetStatus {
      * chooses to.
      */
     KEPT,
+    ;
+
+    val isRemoved: Boolean
+        get() = REMOVED == this || KEPT == this
 }

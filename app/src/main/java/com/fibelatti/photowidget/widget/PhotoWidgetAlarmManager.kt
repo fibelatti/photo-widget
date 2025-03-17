@@ -34,6 +34,11 @@ class PhotoWidgetAlarmManager @Inject constructor(
     fun setup(appWidgetId: Int) {
         Timber.d("Setting alarm for widget (appWidgetId=$appWidgetId)")
 
+        if (photoWidgetStorage.getWidgetLockedInApp(appWidgetId = appWidgetId)) {
+            Timber.d("Widget locked in-app. Skipping alarm setup.")
+            return
+        }
+
         when (val cycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = appWidgetId)) {
             is PhotoWidgetCycleMode.Interval -> setupIntervalAlarm(cycleMode = cycleMode, appWidgetId = appWidgetId)
             is PhotoWidgetCycleMode.Schedule -> setupScheduleAlarm(cycleMode = cycleMode, appWidgetId = appWidgetId)

@@ -44,7 +44,7 @@ import com.fibelatti.ui.theme.ExtendedTheme
 fun HomeScreen(
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
     currentWidgets: List<Pair<Int, PhotoWidget>>,
-    onCurrentWidgetClick: (appWidgetId: Int) -> Unit,
+    onCurrentWidgetClick: (appWidgetId: Int, canLock: Boolean, isLocked: Boolean) -> Unit,
     onRemovedWidgetClick: (appWidgetId: Int, PhotoWidgetStatus) -> Unit,
     onDefaultsClick: () -> Unit,
     onDataSaverClick: () -> Unit,
@@ -204,7 +204,7 @@ private fun HomeScreenPreview() {
         HomeScreen(
             onCreateNewWidgetClick = {},
             currentWidgets = emptyList(),
-            onCurrentWidgetClick = {},
+            onCurrentWidgetClick = { _, _, _ -> },
             onRemovedWidgetClick = { _, _ -> },
             onDefaultsClick = {},
             onDataSaverClick = {},

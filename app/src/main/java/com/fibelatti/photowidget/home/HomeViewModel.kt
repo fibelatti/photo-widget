@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
+import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,6 +31,7 @@ class HomeViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
     private val photoWidgetStorage: PhotoWidgetStorage,
+    private val photoWidgetAlarmManager: PhotoWidgetAlarmManager,
 ) : ViewModel() {
 
     private val widgetIds = MutableStateFlow(emptyList<Int>())
@@ -52,9 +54,12 @@ class HomeViewModel @Inject constructor(
             widgets.withIndex().mapNotNull { (index, widget) ->
                 if (emissionIndex > 0 && widget.photos.isEmpty()) return@mapNotNull null
                 val widgetId = widgetIds.value.getOrNull(index) ?: return@mapNotNull null
+                val isLocked = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = widgetId)
+
                 widgetId to widget.copy(
                     status = when {
                         widget.deletionTimestamp > 0L -> PhotoWidgetStatus.REMOVED
+                        widgetId in providerIds && isLocked -> PhotoWidgetStatus.LOCKED
                         widgetId in providerIds -> PhotoWidgetStatus.ACTIVE
                         else -> PhotoWidgetStatus.KEPT
                     },
@@ -66,6 +71,26 @@ class HomeViewModel @Inject constructor(
     fun loadCurrentWidgets() {
         viewModelScope.launch {
             widgetIds.update { photoWidgetStorage.getKnownWidgetIds() }
+            updateSignal.send(Unit)
+        }
+    }
+
+    fun lockWidget(appWidgetId: Int) {
+        viewModelScope.launch {
+            photoWidgetStorage.saveWidgetLockedInApp(appWidgetId = appWidgetId, value = true)
+            photoWidgetAlarmManager.cancel(appWidgetId = appWidgetId)
+            PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+
+            updateSignal.send(Unit)
+        }
+    }
+
+    fun unlockWidget(appWidgetId: Int) {
+        viewModelScope.launch {
+            photoWidgetStorage.saveWidgetLockedInApp(appWidgetId = appWidgetId, value = false)
+            photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
+            PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+
             updateSignal.send(Unit)
         }
     }

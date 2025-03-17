@@ -12,12 +12,15 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
@@ -145,7 +148,7 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun showExistingWidgetMenu(appWidgetId: Int) {
+    private fun showExistingWidgetMenu(appWidgetId: Int, canLock: Boolean, isLocked: Boolean) {
         preparedIntent?.let {
             val intent = it.apply { this.appWidgetId = appWidgetId }
 
@@ -159,17 +162,41 @@ class HomeActivity : AppCompatActivity() {
         SelectionDialog.show(
             context = this,
             title = "",
-            options = MyWidgetOptions.entries,
+            options = MyWidgetOptions.options(canLock = canLock, isLocked = isLocked),
             optionName = { option -> getString(option.label) },
             onOptionSelected = { option ->
-                val intent = Intent(this, PhotoWidgetConfigureActivity::class.java).apply {
-                    when (option) {
-                        MyWidgetOptions.EDIT -> this.appWidgetId = appWidgetId
-                        MyWidgetOptions.DUPLICATE -> this.duplicateFromId = appWidgetId
-                    }
-                }
+                when (option) {
+                    MyWidgetOptions.EDIT -> {
+                        val intent = Intent(this, PhotoWidgetConfigureActivity::class.java).apply {
+                            this.appWidgetId = appWidgetId
+                        }
 
-                startActivity(intent)
+                        startActivity(intent)
+                    }
+
+                    MyWidgetOptions.DUPLICATE -> {
+                        val intent = Intent(this, PhotoWidgetConfigureActivity::class.java).apply {
+                            this.duplicateFromId = appWidgetId
+                        }
+
+                        startActivity(intent)
+                    }
+
+                    MyWidgetOptions.LOCK -> homeViewModel.lockWidget(appWidgetId = appWidgetId)
+
+                    MyWidgetOptions.UNLOCK -> homeViewModel.unlockWidget(appWidgetId = appWidgetId)
+                }
+            },
+            footer = {
+                if (canLock) {
+                    Text(
+                        text = stringResource(R.string.photo_widget_home_my_widget_lock_explainer),
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
             },
         )
     }
@@ -344,6 +371,22 @@ class HomeActivity : AppCompatActivity() {
 
         EDIT(label = R.string.photo_widget_home_my_widget_action_edit),
         DUPLICATE(label = R.string.photo_widget_home_my_widget_action_duplicate),
+        LOCK(label = R.string.photo_widget_home_my_widget_action_lock),
+        UNLOCK(label = R.string.photo_widget_home_my_widget_action_unlock),
+        ;
+
+        companion object {
+
+            fun options(canLock: Boolean, isLocked: Boolean): List<MyWidgetOptions> = buildList {
+                add(EDIT)
+                add(DUPLICATE)
+
+                when {
+                    canLock && isLocked -> add(UNLOCK)
+                    canLock -> add(LOCK)
+                }
+            }
+        }
     }
 
     private enum class RemovedWidgetOptions(

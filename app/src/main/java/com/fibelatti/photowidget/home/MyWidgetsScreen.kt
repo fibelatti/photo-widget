@@ -31,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -43,7 +44,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.ui.ColoredShape
-import com.fibelatti.photowidget.ui.RemovedWidgetBadge
+import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.ui.preview.AllPreviews
@@ -52,7 +53,7 @@ import com.fibelatti.ui.theme.ExtendedTheme
 @Composable
 fun MyWidgetsScreen(
     widgets: List<Pair<Int, PhotoWidget>>,
-    onCurrentWidgetClick: (appWidgetId: Int) -> Unit,
+    onCurrentWidgetClick: (appWidgetId: Int, canLock: Boolean, isLocked: Boolean) -> Unit,
     onRemovedWidgetClick: (appWidgetId: Int, PhotoWidgetStatus) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -67,7 +68,7 @@ fun MyWidgetsScreen(
             widgets.filter { selectedSource == null || it.second.source == selectedSource }
         }
         val hasDeletedWidgets = remember(widgets) {
-            filteredWidgets.any { PhotoWidgetStatus.ACTIVE != it.second.status }
+            filteredWidgets.any { it.second.status.isRemoved }
         }
 
         AnimatedContent(
@@ -84,17 +85,19 @@ fun MyWidgetsScreen(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     items(items, key = { (id, _) -> id }) { (id, widget) ->
-                        val isRemoved = PhotoWidgetStatus.ACTIVE != widget.status
-
                         Box(
                             modifier = Modifier
                                 .animateItem()
                                 .fillMaxSize()
                                 .clickable {
-                                    if (isRemoved) {
+                                    if (widget.status.isRemoved) {
                                         onRemovedWidgetClick(id, widget.status)
                                     } else {
-                                        onCurrentWidgetClick(id)
+                                        onCurrentWidgetClick(
+                                            id,
+                                            widget.cyclingEnabled,
+                                            PhotoWidgetStatus.LOCKED == widget.status,
+                                        )
                                     }
                                 },
                             contentAlignment = Alignment.BottomCenter,
@@ -110,11 +113,26 @@ fun MyWidgetsScreen(
                                 isLoading = widget.isLoading,
                             )
 
-                            if (isRemoved) {
-                                RemovedWidgetBadge(
-                                    modifier = Modifier.padding(bottom = 8.dp),
-                                    showIcon = PhotoWidgetStatus.REMOVED == widget.status,
-                                )
+                            when {
+                                PhotoWidgetStatus.LOCKED == widget.status -> {
+                                    MyWidgetBadge(
+                                        text = stringResource(R.string.photo_widget_home_locked_label),
+                                        backgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                                        contentColor = MaterialTheme.colorScheme.onSurface,
+                                        modifier = Modifier.padding(bottom = 8.dp),
+                                    )
+                                }
+
+                                widget.status.isRemoved -> {
+                                    MyWidgetBadge(
+                                        text = stringResource(R.string.photo_widget_home_removed_label),
+                                        backgroundColor = MaterialTheme.colorScheme.errorContainer,
+                                        contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                                        modifier = Modifier.padding(bottom = 8.dp),
+                                        icon = painterResource(R.drawable.ic_trash_clock)
+                                            .takeIf { PhotoWidgetStatus.REMOVED == widget.status },
+                                    )
+                                }
                             }
                         }
                     }
@@ -231,7 +249,7 @@ private fun MyWidgetsScreenPreview() {
                     deletionTimestamp = if (PhotoWidgetStatus.REMOVED == status) 1 else -1,
                 )
             },
-            onCurrentWidgetClick = {},
+            onCurrentWidgetClick = { _, _, _ -> },
             onRemovedWidgetClick = { _, _ -> },
         )
     }
@@ -243,7 +261,7 @@ private fun MyWidgetsScreenEmptyPreview() {
     ExtendedTheme {
         MyWidgetsScreen(
             widgets = emptyList(),
-            onCurrentWidgetClick = {},
+            onCurrentWidgetClick = { _, _, _ -> },
             onRemovedWidgetClick = { _, _ -> },
         )
     }

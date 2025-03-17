@@ -30,10 +30,14 @@
     <string name="photo_widget_home_filter_all">Todos</string>
     <string name="photo_widget_home_filter_photos">Fotos</string>
     <string name="photo_widget_home_filter_folder">Carpeta</string>
+    <string name="photo_widget_home_locked_label">Bloqueado</string>
     <string name="photo_widget_home_removed_label">Eliminado</string>
     <string name="photo_widget_home_removed_widgets_hint">Los widgets eliminados ya no aparecen en la pantalla de inicio. Se eliminan de forma permanente de la aplicación después de 7 días. Puedes elegir \"Mantener\" ellos.</string>
     <string name="photo_widget_home_my_widget_action_edit">Ver / Editar</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicar</string>
+    <string name="photo_widget_home_my_widget_action_lock">Bloquear con la foto actual</string>
+    <string name="photo_widget_home_my_widget_action_unlock">Desbloquear widget</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">Las fotos no cambiarán automáticamente ni al tocar si el widget está bloqueado</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restaurar</string>
     <string name="photo_widget_home_removed_widget_action_keep">Mantener</string>
     <string name="photo_widget_home_removed_widget_action_delete">Borrar permanentemente</string>
@@ -164,7 +168,7 @@
     <string name="photo_widget_configure_tap_action_app_shortcut">Abrir una aplicación</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Abrir un enlace</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Habilitar/deshabilitar ciclo</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Toque para pausar el ciclo automático de fotos. Toque nuevamente para reanudarlo.</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Toca para pausar el ciclo automático de fotos. Toca de nuevo para reanudar. Esta acción no tiene efecto si el widget está bloqueado.</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Aumentar automáticamente el brillo</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Ver foto original (sin recorte ni rotación)</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Disponible para widgets basados en carpetas. Los widgets basados en fotos usarán \"Ver foto en pantalla completa\". También puedes elegir qué aplicación de galería usar.</string>

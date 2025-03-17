@@ -11,38 +11,37 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
-import com.fibelatti.photowidget.R
 
 @Composable
-fun RemovedWidgetBadge(
+fun MyWidgetBadge(
+    text: String,
+    backgroundColor: Color,
+    contentColor: Color,
     modifier: Modifier = Modifier,
-    showIcon: Boolean = true,
+    icon: Painter? = null,
 ) {
     Row(
         modifier = modifier
-            .background(
-                color = MaterialTheme.colorScheme.errorContainer,
-                shape = MaterialTheme.shapes.large,
-            )
+            .background(color = backgroundColor, shape = MaterialTheme.shapes.large)
             .padding(horizontal = 12.dp, vertical = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = stringResource(R.string.photo_widget_home_removed_label),
-            color = MaterialTheme.colorScheme.onErrorContainer,
+            text = text,
+            color = contentColor,
             style = MaterialTheme.typography.labelLarge,
         )
 
-        if (showIcon) {
+        if (icon != null) {
             Icon(
-                painter = painterResource(R.drawable.ic_trash_clock),
+                painter = icon,
                 contentDescription = null,
                 modifier = Modifier.size(20.dp),
-                tint = MaterialTheme.colorScheme.onErrorContainer,
+                tint = contentColor,
             )
         }
     }

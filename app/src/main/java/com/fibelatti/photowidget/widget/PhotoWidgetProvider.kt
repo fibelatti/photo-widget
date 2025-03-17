@@ -153,6 +153,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     context = context,
                     appWidgetId = appWidgetId,
                     photoWidget = photoWidget,
+                    isLocked = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = appWidgetId),
                     isCyclePaused = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = appWidgetId),
                 )
 
@@ -252,24 +253,28 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             context: Context,
             appWidgetId: Int,
             photoWidget: PhotoWidget,
+            isLocked: Boolean,
             isCyclePaused: Boolean,
         ) {
             val sizeProvider = WidgetSizeProvider(context = context)
             val (width, _) = sizeProvider.getWidgetsSize(appWidgetId = appWidgetId)
+            val mainClickPendingIntent = getClickPendingIntent(
+                context = context,
+                appWidgetId = appWidgetId,
+                tapAction = photoWidget.tapAction,
+                externalUri = photoWidget.currentPhoto?.externalUri,
+            ).takeUnless {
+                isLocked &&
+                    (
+                        photoWidget.tapAction is PhotoWidgetTapAction.ViewNextPhoto ||
+                            photoWidget.tapAction is PhotoWidgetTapAction.ToggleCycling
+                        )
+            }
 
             if (width < 100) {
                 // The widget is too narrow to handle 3 different click areas
                 views.setViewVisibility(R.id.tap_actions_layout, View.GONE)
-                views.setOnClickPendingIntent(
-                    R.id.iv_widget,
-                    getClickPendingIntent(
-                        context = context,
-                        appWidgetId = appWidgetId,
-                        tapAction = photoWidget.tapAction,
-                        externalUri = photoWidget.currentPhoto?.externalUri,
-                    ),
-                )
-
+                views.setOnClickPendingIntent(R.id.iv_widget, mainClickPendingIntent)
                 return
             }
 
@@ -284,24 +289,16 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     context = context,
                     appWidgetId = appWidgetId,
                     flipBackwards = true,
-                ).takeUnless { shouldDisableTap },
+                ).takeUnless { isLocked || shouldDisableTap },
             )
-            views.setOnClickPendingIntent(
-                R.id.view_tap_center,
-                getClickPendingIntent(
-                    context = context,
-                    appWidgetId = appWidgetId,
-                    tapAction = photoWidget.tapAction,
-                    externalUri = photoWidget.currentPhoto?.externalUri,
-                ),
-            )
+            views.setOnClickPendingIntent(R.id.view_tap_center, mainClickPendingIntent)
             views.setOnClickPendingIntent(
                 R.id.view_tap_right,
                 flipPhotoPendingIntent(
                     context = context,
                     appWidgetId = appWidgetId,
                     flipBackwards = false,
-                ).takeUnless { shouldDisableTap },
+                ).takeUnless { isLocked || shouldDisableTap },
             )
         }
 

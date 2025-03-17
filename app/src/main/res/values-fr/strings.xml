@@ -30,10 +30,14 @@
     <string name="photo_widget_home_filter_all">Tous</string>
     <string name="photo_widget_home_filter_photos">Photos</string>
     <string name="photo_widget_home_filter_folder">Dossier</string>
+    <string name="photo_widget_home_locked_label">Verrouillé</string>
     <string name="photo_widget_home_removed_label">Supprimé</string>
     <string name="photo_widget_home_removed_widgets_hint">Les widgets supprimés ne sont plus sur votre écran d\'accueil. Ils sont définitivement supprimés de l\'application après 7 jours. Vous pouvez choisir de les « Garder ».</string>
     <string name="photo_widget_home_my_widget_action_edit">Afficher / Modifier</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Dupliquer</string>
+    <string name="photo_widget_home_my_widget_action_lock">Verrouiller avec la photo actuelle</string>
+    <string name="photo_widget_home_my_widget_action_unlock">Déverrouiller le widget</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">Les photos ne changeront pas automatiquement ni au toucher si le widget est verrouillé</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restaurer</string>
     <string name="photo_widget_home_removed_widget_action_keep">Garder</string>
     <string name="photo_widget_home_removed_widget_action_delete">Supprimer définitivement</string>
@@ -164,7 +168,7 @@
     <string name="photo_widget_configure_tap_action_app_shortcut">Ouvrir une application</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Ouvrir un lien</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Activer/désactiver le cycle</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Appuyez pour mettre en pause le cycle automatique des photos. Appuyez à nouveau pour reprendre.</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Appuyez pour suspendre le défilement automatique des photos. Appuyez à nouveau pour reprendre. Cette action n\'a aucun effet si le widget est verrouillé.</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Augmenter automatiquement la luminosité</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Voir la photo originale (sans recadrage ni rotation)</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Disponible pour les widgets basés sur des dossiers. Les widgets basés sur des photos utiliseront plutôt « Afficher la photo en plein écran ». Vous pouvez également choisir l\'application de galerie à utiliser.</string>

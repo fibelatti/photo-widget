@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -31,7 +32,7 @@ import com.fibelatti.photowidget.home.HomeViewModel
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
-import com.fibelatti.photowidget.ui.RemovedWidgetBadge
+import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
 
 object ExistingWidgetPicker {
@@ -107,10 +108,14 @@ private fun ExistingWidgetPicker(
                         isLoading = widget.isLoading,
                     )
 
-                    if (PhotoWidgetStatus.ACTIVE != widget.status) {
-                        RemovedWidgetBadge(
+                    if (widget.status.isRemoved) {
+                        MyWidgetBadge(
+                            text = stringResource(R.string.photo_widget_home_removed_label),
+                            backgroundColor = MaterialTheme.colorScheme.errorContainer,
+                            contentColor = MaterialTheme.colorScheme.onErrorContainer,
                             modifier = Modifier.padding(bottom = 8.dp),
-                            showIcon = PhotoWidgetStatus.REMOVED == widget.status,
+                            icon = painterResource(R.drawable.ic_trash_clock)
+                                .takeIf { PhotoWidgetStatus.REMOVED == widget.status },
                         )
                     }
                 }

@@ -161,6 +161,16 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         return sharedPreferences.getBoolean("${PreferencePrefix.CYCLE_PAUSED}$appWidgetId", false)
     }
 
+    fun saveWidgetLockedInApp(appWidgetId: Int, value: Boolean) {
+        sharedPreferences.edit {
+            putBoolean("${PreferencePrefix.LOCKED_IN_APP}$appWidgetId", value)
+        }
+    }
+
+    fun getWidgetLockedInApp(appWidgetId: Int): Boolean {
+        return sharedPreferences.getBoolean("${PreferencePrefix.LOCKED_IN_APP}$appWidgetId", false)
+    }
+
     private fun getWidgetInterval(appWidgetId: Int): PhotoWidgetLoopingInterval {
         val legacyName = sharedPreferences.getString("${PreferencePrefix.LEGACY_INTERVAL}$appWidgetId", null)
         val legacyValue = enumValueOfOrNull<LegacyPhotoWidgetLoopingInterval>(legacyName)
@@ -466,6 +476,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         SCHEDULE(value = "appwidget_schedule_"),
         NEXT_CYCLE_TIME(value = "appwidget_next_cycle_time_"),
         CYCLE_PAUSED(value = "appwidget_cycle_paused_"),
+        LOCKED_IN_APP(value = "appwidget_locked_in_app_"),
         LEGACY_INDEX(value = "appwidget_index_"),
         LEGACY_PAST_INDICES(value = "appwidget_past_indices_"),
         RATIO(value = "appwidget_aspect_ratio_"),

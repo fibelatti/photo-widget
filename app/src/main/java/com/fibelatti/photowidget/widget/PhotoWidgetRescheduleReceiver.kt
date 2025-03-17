@@ -33,10 +33,11 @@ class PhotoWidgetRescheduleReceiver : BroadcastReceiver() {
             coroutineScope.launch {
                 for (id in ids) {
                     val cycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = id)
-                    val paused = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = id)
-                    Timber.d("Processing widget (id=$id, cycleMode=$cycleMode, paused=$paused)")
+                    val isLocked = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = id)
+                    val isPaused = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = id)
+                    Timber.d("Processing widget (id=$id,cycleMode=$cycleMode,isLocked=$isLocked,isPaused=$isPaused)")
 
-                    if (cycleMode !is PhotoWidgetCycleMode.Disabled && !paused) {
+                    if (cycleMode !is PhotoWidgetCycleMode.Disabled && !isLocked && !isPaused) {
                         photoWidgetAlarmManager.setup(appWidgetId = id)
                     }
 

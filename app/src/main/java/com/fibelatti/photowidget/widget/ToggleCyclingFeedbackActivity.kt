@@ -26,6 +26,11 @@ class ToggleCyclingFeedbackActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (photoWidgetStorage.getWidgetLockedInApp(appWidgetId = intent.appWidgetId)) {
+            finish()
+            return
+        }
+
         val paused = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = intent.appWidgetId)
 
         if (paused) {

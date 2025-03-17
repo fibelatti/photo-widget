@@ -30,10 +30,14 @@
     <string name="photo_widget_home_filter_all">Todos</string>
     <string name="photo_widget_home_filter_photos">Fotos</string>
     <string name="photo_widget_home_filter_folder">Pasta</string>
+    <string name="photo_widget_home_locked_label">Travado</string>
     <string name="photo_widget_home_removed_label">Removido</string>
     <string name="photo_widget_home_removed_widgets_hint">Os widgets removidos não estão mais na sua tela inicial. Eles são excluídos permanentemente do aplicativo após 7 dias. Você pode escolher \"Mantê-los\".</string>
     <string name="photo_widget_home_my_widget_action_edit">Ver / Editar</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicar</string>
+    <string name="photo_widget_home_my_widget_action_lock">Travar com a foto atual</string>
+    <string name="photo_widget_home_my_widget_action_unlock">Destravar widget</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">As fotos não irão mudar automaticamente ou ao tocar caso o widget esteja travado</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restaurar</string>
     <string name="photo_widget_home_removed_widget_action_keep">Manter</string>
     <string name="photo_widget_home_removed_widget_action_delete">Apagar permanentemente</string>
@@ -164,7 +168,7 @@
     <string name="photo_widget_configure_tap_action_app_shortcut">Abrir um app</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Abrir um link</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Habilitar/desabilitar ciclo</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Toque para pausar o ciclo automático de fotos. Toque novamente para retomar.</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Toque para pausar a rotação automática de fotos. Toque novamente para retomar. Esta ação não tem efeito caso o widget esteja travado.</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Aumentar o brilho automaticamente</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Ver a foto original (sem corte ou rotação)</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Disponível para widgets baseados em pastas. Widgets baseados em fotos usarão \"Ver a foto em tela cheia\" em vez disso. Você também pode escolher qual aplicativo de galeria usar.</string>
