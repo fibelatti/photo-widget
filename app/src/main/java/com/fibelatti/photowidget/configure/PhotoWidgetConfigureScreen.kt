@@ -96,6 +96,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.formatPercent
+import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.CornerRadiusPicker
@@ -674,14 +675,14 @@ private fun AppearanceTab(
 
         PickerDefault(
             title = stringResource(R.string.widget_defaults_saturation),
-            currentValue = formatPercent(value = photoWidget.colors.saturation, fractionDigits = 0),
+            currentValue = formatRangeValue(value = PhotoWidgetColors.pickerSaturation(photoWidget.colors.saturation)),
             onClick = onSaturationClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
         PickerDefault(
             title = stringResource(R.string.widget_defaults_brightness),
-            currentValue = formatPercent(value = photoWidget.colors.brightness, fractionDigits = 0),
+            currentValue = formatRangeValue(value = photoWidget.colors.brightness),
             onClick = onBrightnessClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )

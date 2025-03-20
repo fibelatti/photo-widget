@@ -31,8 +31,9 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
-import com.fibelatti.photowidget.platform.formatPercent
+import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.DefaultPicker
 import com.fibelatti.photowidget.ui.SliderSmallThumb
@@ -48,13 +49,13 @@ object PhotoWidgetSaturationPicker {
         ComposeBottomSheetDialog(context) {
             ColorMatrixPicker(
                 title = stringResource(R.string.widget_defaults_saturation),
-                valueRange = 0f..100f,
-                currentValue = currentSaturation,
+                valueRange = -100f..100f,
+                currentValue = PhotoWidgetColors.pickerSaturation(currentSaturation),
                 onCurrentValueChange = { value ->
-                    ColorMatrix().apply { setToSaturation(value / 100) }
+                    ColorMatrix().apply { setToSaturation(PhotoWidgetColors.persistenceSaturation(value) / 100) }
                 },
                 onApplyClick = { newValue ->
-                    onApplyClick(newValue)
+                    onApplyClick(PhotoWidgetColors.persistenceSaturation(newValue))
                     dismiss()
                 },
             )
@@ -142,7 +143,7 @@ private fun ColorMatrixPicker(
             )
 
             Text(
-                text = formatPercent(value = value, fractionDigits = 0),
+                text = formatRangeValue(value = value),
                 modifier = Modifier.width(48.dp),
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.End,

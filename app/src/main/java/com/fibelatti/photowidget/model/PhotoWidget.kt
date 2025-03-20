@@ -54,25 +54,27 @@ data class PhotoWidget(
 
         /**
          * Default corner radius value in DP. Both the picker and the widget provider will multiply
-         * the set value by the current screen density in order to have it represented correctly.
+         * the selected value by the current screen density in order to represent it correctly.
          */
         const val DEFAULT_CORNER_RADIUS: Int = 28
 
         /**
-         * The UI picker offers a [0..100] range for simplicity, which is converted to the
-         * corresponding alpha component of [0..255] when preparing the bitmap.
+         * The UI picker offers a [0..100] range which is converted to the corresponding alpha
+         * component of [0..255] when preparing the bitmap.
          */
         const val DEFAULT_OPACITY: Float = 100f
 
         /**
-         * The UI picker offers a [0..100] range for simplicity, which is converted to the
-         * corresponding saturation component of [0..1] when preparing the bitmap.
+         * The UI picker offers a [-100..100] range which is converted to the persisted range of
+         * [0..200] and to the corresponding saturation component of [0..2] when preparing the
+         * bitmap. In that range, 1 is identity which is why the default value is 100.
+         * The UI takes care of subtracting/adding as needed.
          */
         const val DEFAULT_SATURATION: Float = 100f
 
         /**
-         * The UI picker offers a [-100..100] range for simplicity, which is converted to the
-         * corresponding brightness component of [-255..255] when preparing the bitmap.
+         * The UI picker offers a [-100..100] range which is converted to the corresponding
+         * brightness component of [-255..255] when preparing the bitmap.
          */
         const val DEFAULT_BRIGHTNESS: Float = 0f
 

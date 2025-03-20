@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+* Update saturation picker to allow increasing the saturation
+
 ## [v1.26.1] - 2025-03-17
 [v1.26.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.26.1
 

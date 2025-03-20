@@ -77,6 +77,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.platform.formatPercent
+import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.SliderSmallThumb
@@ -246,13 +247,15 @@ private fun WidgetDefaultsScreen(
 
             PickerDefault(
                 title = stringResource(R.string.widget_defaults_saturation),
-                currentValue = formatPercent(value = userPreferences.defaultSaturation, fractionDigits = 0),
+                currentValue = formatRangeValue(
+                    value = PhotoWidgetColors.pickerSaturation(userPreferences.defaultSaturation),
+                ),
                 onClick = onSaturationClick,
             )
 
             PickerDefault(
                 title = stringResource(R.string.widget_defaults_brightness),
-                currentValue = formatPercent(value = userPreferences.defaultBrightness, fractionDigits = 0),
+                currentValue = formatRangeValue(value = userPreferences.defaultBrightness),
                 onClick = onBrightnessClick,
             )
 
