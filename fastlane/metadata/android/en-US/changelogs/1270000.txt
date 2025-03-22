@@ -1,0 +1,6 @@
+This version brings the following updates:
+
+* New square aspect ratio with support for rounded corners
+* Update saturation picker to allow increasing the saturation
+
+Thanks for using the app!
