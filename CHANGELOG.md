@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* New square aspect ratio with support for rounded corners
+
 ### Changed
 
 * Update saturation picker to allow increasing the saturation

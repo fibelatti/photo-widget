@@ -64,8 +64,9 @@ fun Modifier.fadingEdges(
 
 fun Modifier.fadingEdges(
     scrollState: ScrollableState,
-    topEdgeHeight: Dp = 72.dp,
-    bottomEdgeHeight: Dp = 72.dp,
+    startEdgeSize: Dp = 64.dp,
+    endEdgeSize: Dp = 64.dp,
+    isHorizontal: Boolean = false,
 ): Modifier {
     return this then Modifier
         .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
@@ -74,22 +75,38 @@ fun Modifier.fadingEdges(
 
             if (scrollState.canScrollBackward) {
                 drawRect(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(Color.Transparent, Color.Black),
-                        startY = 0f,
-                        endY = topEdgeHeight.toPx(),
-                    ),
+                    brush = if (isHorizontal) {
+                        Brush.horizontalGradient(
+                            colors = listOf(Color.Transparent, Color.Black),
+                            startX = 0f,
+                            endX = startEdgeSize.toPx(),
+                        )
+                    } else {
+                        Brush.verticalGradient(
+                            colors = listOf(Color.Transparent, Color.Black),
+                            startY = 0f,
+                            endY = startEdgeSize.toPx(),
+                        )
+                    },
                     blendMode = BlendMode.DstIn,
                 )
             }
 
             if (scrollState.canScrollForward) {
                 drawRect(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(Color.Black, Color.Transparent),
-                        startY = size.height - bottomEdgeHeight.toPx(),
-                        endY = size.height,
-                    ),
+                    brush = if (isHorizontal) {
+                        Brush.horizontalGradient(
+                            colors = listOf(Color.Black, Color.Transparent),
+                            startX = size.width - endEdgeSize.toPx(),
+                            endX = size.width,
+                        )
+                    } else {
+                        Brush.verticalGradient(
+                            colors = listOf(Color.Black, Color.Transparent),
+                            startY = size.height - endEdgeSize.toPx(),
+                            endY = size.height,
+                        )
+                    },
                     blendMode = BlendMode.DstIn,
                 )
             }

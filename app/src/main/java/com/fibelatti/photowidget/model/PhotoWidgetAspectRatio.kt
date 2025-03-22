@@ -2,8 +2,6 @@ package com.fibelatti.photowidget.model
 
 import androidx.annotation.StringRes
 import com.fibelatti.photowidget.R
-import kotlin.math.max
-import kotlin.math.min
 
 enum class PhotoWidgetAspectRatio(
     val x: Float,
@@ -13,7 +11,23 @@ enum class PhotoWidgetAspectRatio(
     val isConstrained: Boolean = true,
 ) {
 
+    /**
+     * A square aspect ratio that supports shapes, but not rounded corners.
+     *
+     * The enum name was kept unchanged when [ROUNDED_SQUARE] was introduced for backwards
+     * compatibility since it is persisted to local storage.
+     */
     SQUARE(
+        x = 1f,
+        y = 1f,
+        label = R.string.photo_widget_aspect_ratio_shape,
+        description = R.string.photo_widget_aspect_ratio_shape_description,
+    ),
+
+    /**
+     * A square aspect ratio that supports rounded corners, but not shapes.
+     */
+    ROUNDED_SQUARE(
         x = 1f,
         y = 1f,
         label = R.string.photo_widget_aspect_ratio_square,
@@ -49,7 +63,4 @@ enum class PhotoWidgetAspectRatio(
 
     val aspectRatio: Float
         get() = x / y
-
-    val scale: Float
-        get() = min(x, y) / max(x, y)
 }

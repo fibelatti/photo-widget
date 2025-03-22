@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
@@ -28,6 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,9 +42,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
+import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.ShapesBanner
 import com.fibelatti.photowidget.ui.WarningSign
+import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
@@ -125,8 +130,16 @@ private fun AspectRatioPicker(
     onAspectRatioSelected: (PhotoWidgetAspectRatio) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val state = rememberLazyListState()
+
     LazyRow(
-        modifier = modifier,
+        modifier = modifier.fadingEdges(
+            scrollState = state,
+            startEdgeSize = 24.dp,
+            endEdgeSize = 24.dp,
+            isHorizontal = true,
+        ),
+        state = state,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 16.dp),
     ) {
@@ -136,17 +149,10 @@ private fun AspectRatioPicker(
                 onClick = { onAspectRatioSelected(item) },
                 itemRepresentation = {
                     when (item) {
-                        PhotoWidgetAspectRatio.SQUARE, PhotoWidgetAspectRatio.TALL, PhotoWidgetAspectRatio.WIDE -> {
-                            DefaultAspectRatioItemRepresentation(item = item)
-                        }
-
-                        PhotoWidgetAspectRatio.ORIGINAL -> {
-                            OriginalAspectRatioRepresentation()
-                        }
-
-                        PhotoWidgetAspectRatio.FILL_WIDGET -> {
-                            FillAspectRatioRepresentation()
-                        }
+                        PhotoWidgetAspectRatio.SQUARE -> ShapedAspectRatioItemRepresentation()
+                        PhotoWidgetAspectRatio.ORIGINAL -> OriginalAspectRatioRepresentation()
+                        PhotoWidgetAspectRatio.FILL_WIDGET -> FillAspectRatioRepresentation()
+                        else -> DefaultAspectRatioItemRepresentation(item = item)
                     }
                 },
             )
@@ -216,6 +222,21 @@ private fun DefaultAspectRatioItemRepresentation(
                 color = MaterialTheme.colorScheme.onSurface,
                 shape = MaterialTheme.shapes.small,
             ),
+    )
+}
+
+@Composable
+private fun ShapedAspectRatioItemRepresentation(
+    modifier: Modifier = Modifier,
+) {
+    ColoredShape(
+        shapeId = remember {
+            PhotoWidgetShapeBuilder.shapes
+                .filterNot { it.id.contains("square") }
+                .random().id
+        },
+        color = MaterialTheme.colorScheme.onSurface,
+        modifier = modifier.fillMaxSize(),
     )
 }
 

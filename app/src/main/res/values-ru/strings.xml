@@ -71,7 +71,9 @@
     <string name="photo_widget_source_photos">Фотографии</string>
     <string name="photo_widget_source_directory">Папка</string>
     <!-- Aspect Ratio -->
-    <string name="photo_widget_aspect_ratio_title">Соотношение сторон</string>
+    <string name="photo_widget_aspect_ratio_title">Формат</string>
+    <string name="photo_widget_aspect_ratio_shape">Фигуры</string>
+    <string name="photo_widget_aspect_ratio_shape_description">Фигуры Material You</string>
     <string name="photo_widget_aspect_ratio_square">Квадрат</string>
     <string name="photo_widget_aspect_ratio_tall">Высокий</string>
     <string name="photo_widget_aspect_ratio_wide">Широкий</string>

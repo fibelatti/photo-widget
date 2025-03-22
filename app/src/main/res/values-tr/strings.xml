@@ -69,7 +69,9 @@
     <string name="photo_widget_source_photos">Fotoğraflar</string>
     <string name="photo_widget_source_directory">Klasör</string>
     <!-- Aspect Ratio -->
-    <string name="photo_widget_aspect_ratio_title">En-boy oranı</string>
+    <string name="photo_widget_aspect_ratio_title">Biçim</string>
+    <string name="photo_widget_aspect_ratio_shape">Şekiller</string>
+    <string name="photo_widget_aspect_ratio_shape_description">Material You şekilleri</string>
     <string name="photo_widget_aspect_ratio_square">Kare</string>
     <string name="photo_widget_aspect_ratio_tall">Uzun</string>
     <string name="photo_widget_aspect_ratio_wide">Geniş</string>

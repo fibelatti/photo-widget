@@ -69,7 +69,9 @@
     <string name="photo_widget_source_photos">Fotos</string>
     <string name="photo_widget_source_directory">Carpeta</string>
     <!-- Aspect Ratio -->
-    <string name="photo_widget_aspect_ratio_title">Proporción</string>
+    <string name="photo_widget_aspect_ratio_title">Formato</string>
+    <string name="photo_widget_aspect_ratio_shape">Formas</string>
+    <string name="photo_widget_aspect_ratio_shape_description">Formas de Material You</string>
     <string name="photo_widget_aspect_ratio_square">Cuadrado</string>
     <string name="photo_widget_aspect_ratio_tall">Alto</string>
     <string name="photo_widget_aspect_ratio_wide">Ancho</string>

@@ -69,7 +69,9 @@
     <string name="photo_widget_source_photos">Photos</string>
     <string name="photo_widget_source_directory">Dossier</string>
     <!-- Aspect Ratio -->
-    <string name="photo_widget_aspect_ratio_title">Format d\'image</string>
+    <string name="photo_widget_aspect_ratio_title">Format</string>
+    <string name="photo_widget_aspect_ratio_shape">Formes</string>
+    <string name="photo_widget_aspect_ratio_shape_description">Formes Material You</string>
     <string name="photo_widget_aspect_ratio_square">Carré</string>
     <string name="photo_widget_aspect_ratio_tall">Haut</string>
     <string name="photo_widget_aspect_ratio_wide">Large</string>
