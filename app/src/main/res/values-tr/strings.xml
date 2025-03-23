@@ -33,6 +33,7 @@
     <string name="photo_widget_home_locked_label">Kilitli</string>
     <string name="photo_widget_home_removed_label">Kaldırıldı</string>
     <string name="photo_widget_home_removed_widgets_hint">Silinen widget\'lar artık ana ekranınızda yer almayacak. 7 gün sonra uygulamadan kalıcı olarak silinirler. Bunları \"Tutmayı\" seçebilirsiniz.</string>
+    <string name="photo_widget_home_my_widget_action_sync">Klasör fotoğraflarıyla senkronize et</string>
     <string name="photo_widget_home_my_widget_action_edit">Görüntüle / Düzenle</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Çoğalt</string>
     <string name="photo_widget_home_my_widget_action_lock">Geçerli fotoğrafla kilitle</string>
@@ -41,6 +42,7 @@
     <string name="photo_widget_home_removed_widget_action_restore">Eski haline getirmek</string>
     <string name="photo_widget_home_removed_widget_action_keep">Kale</string>
     <string name="photo_widget_home_removed_widget_action_delete">Kalıcı olarak sil</string>
+    <string name="photo_widget_home_my_widget_syncing_feedback">Klasörden son fotoğraflar getiriliyor…</string>
     <!-- Preferences -->
     <string name="preferences_data_saver">Depolama kullanımını azaltın</string>
     <string name="preferences_data_saver_description">Etkinleştirildiğinde, widget\'lara eklenen fotoğraflar depolama alanından tasarruf etmek için sıkıştırılır. Bu genellikle kaliteyi etkilemez, ancak fotoğraflarınız küçük metin içeriyorsa, bunu kapatmanız önerilir.\n\nBu ayar yalnızca değiştirildikten sonra eklenen fotoğrafları etkiler.\n\nSenkronize klasörler için geçerli değildir, çünkü bu fotoğraflar doğrudan cihazınızın depolama alanından okunur.</string>

@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -148,7 +149,7 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun showExistingWidgetMenu(appWidgetId: Int, canLock: Boolean, isLocked: Boolean) {
+    private fun showExistingWidgetMenu(appWidgetId: Int, canSync: Boolean, canLock: Boolean, isLocked: Boolean) {
         preparedIntent?.let {
             val intent = it.apply { this.appWidgetId = appWidgetId }
 
@@ -162,10 +163,17 @@ class HomeActivity : AppCompatActivity() {
         SelectionDialog.show(
             context = this,
             title = "",
-            options = MyWidgetOptions.options(canLock = canLock, isLocked = isLocked),
+            options = MyWidgetOptions.options(canSync = canSync, canLock = canLock, isLocked = isLocked),
             optionName = { option -> getString(option.label) },
             onOptionSelected = { option ->
                 when (option) {
+                    MyWidgetOptions.SYNC_PHOTOS -> {
+                        homeViewModel.syncPhotos(appWidgetId = appWidgetId)
+
+                        Toast.makeText(this, R.string.photo_widget_home_my_widget_syncing_feedback, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
                     MyWidgetOptions.EDIT -> {
                         val intent = Intent(this, PhotoWidgetConfigureActivity::class.java).apply {
                             this.appWidgetId = appWidgetId
@@ -369,6 +377,7 @@ class HomeActivity : AppCompatActivity() {
         @StringRes val label: Int,
     ) {
 
+        SYNC_PHOTOS(label = R.string.photo_widget_home_my_widget_action_sync),
         EDIT(label = R.string.photo_widget_home_my_widget_action_edit),
         DUPLICATE(label = R.string.photo_widget_home_my_widget_action_duplicate),
         LOCK(label = R.string.photo_widget_home_my_widget_action_lock),
@@ -377,7 +386,11 @@ class HomeActivity : AppCompatActivity() {
 
         companion object {
 
-            fun options(canLock: Boolean, isLocked: Boolean): List<MyWidgetOptions> = buildList {
+            fun options(canSync: Boolean, canLock: Boolean, isLocked: Boolean): List<MyWidgetOptions> = buildList {
+                if (canSync) {
+                    add(SYNC_PHOTOS)
+                }
+
                 add(EDIT)
                 add(DUPLICATE)
 

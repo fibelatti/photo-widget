@@ -33,6 +33,7 @@
     <string name="photo_widget_home_locked_label">Travado</string>
     <string name="photo_widget_home_removed_label">Removido</string>
     <string name="photo_widget_home_removed_widgets_hint">Os widgets removidos não estão mais na sua tela inicial. Eles são excluídos permanentemente do aplicativo após 7 dias. Você pode escolher \"Mantê-los\".</string>
+    <string name="photo_widget_home_my_widget_action_sync">Sincronizar com fotos da pasta</string>
     <string name="photo_widget_home_my_widget_action_edit">Ver / Editar</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicar</string>
     <string name="photo_widget_home_my_widget_action_lock">Travar com a foto atual</string>
@@ -41,6 +42,7 @@
     <string name="photo_widget_home_removed_widget_action_restore">Restaurar</string>
     <string name="photo_widget_home_removed_widget_action_keep">Manter</string>
     <string name="photo_widget_home_removed_widget_action_delete">Apagar permanentemente</string>
+    <string name="photo_widget_home_my_widget_syncing_feedback">Obtendo as últimas fotos da pasta…</string>
     <!-- Preferences -->
     <string name="preferences_data_saver">Reduzir o uso de armazenamento</string>
     <string name="preferences_data_saver_description">Quando habilitado, as fotos adicionadas aos widgets são comprimidas para economizar espaço de armazenamento. Isso geralmente não afeta a qualidade, mas se suas fotos contiverem texto pequeno, é recomendável manter desativado.\n\nEsta configuração afeta apenas as fotos adicionadas alterar a configuração.\n\nEla não se aplica a pastas sincronizadas, pois essas fotos são lidas diretamente do armazenamento do seu dispositivo.</string>

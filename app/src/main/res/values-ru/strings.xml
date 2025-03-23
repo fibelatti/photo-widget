@@ -35,6 +35,7 @@
     <string name="photo_widget_home_locked_label">Заблокировано</string>
     <string name="photo_widget_home_removed_label">Удаленный</string>
     <string name="photo_widget_home_removed_widgets_hint">Удаленные виджеты больше не отображаются на главном экране. Они навсегда удаляются из приложения через 7 дней. Вы можете выбрать «Сохранить» их.</string>
+    <string name="photo_widget_home_my_widget_action_sync">Синхронизировать с папкой photos</string>
     <string name="photo_widget_home_my_widget_action_edit">Просмотреть / Редактировать</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Дублировать</string>
     <string name="photo_widget_home_my_widget_action_lock">Заблокировать с текущим фото</string>
@@ -43,6 +44,7 @@
     <string name="photo_widget_home_removed_widget_action_restore">Восстановить</string>
     <string name="photo_widget_home_removed_widget_action_keep">Держать</string>
     <string name="photo_widget_home_removed_widget_action_delete">Удалить навсегда</string>
+    <string name="photo_widget_home_my_widget_syncing_feedback">Извлечение последних фотографий из папки…</string>
     <!-- Preferences -->
     <string name="preferences_data_saver">Уменьшить использование хранилища</string>
     <string name="preferences_data_saver_description">При включении фотографии, добавленные в виджеты, сжимаются для экономии места. Обычно это не влияет на качество, но если ваши фотографии содержат мелкий текст, рекомендуется отключить эту функцию.\n\nЭта настройка влияет только на фотографии, добавленные после ее изменения.\n\nОна не применяется к синхронизированным папкам, так как эти фотографии считываются непосредственно из хранилища вашего устройства.</string>

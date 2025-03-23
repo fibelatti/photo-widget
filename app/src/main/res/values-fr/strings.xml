@@ -33,6 +33,7 @@
     <string name="photo_widget_home_locked_label">Verrouillé</string>
     <string name="photo_widget_home_removed_label">Supprimé</string>
     <string name="photo_widget_home_removed_widgets_hint">Les widgets supprimés ne sont plus sur votre écran d\'accueil. Ils sont définitivement supprimés de l\'application après 7 jours. Vous pouvez choisir de les « Garder ».</string>
+    <string name="photo_widget_home_my_widget_action_sync">Synchroniser avec les photos du dossier</string>
     <string name="photo_widget_home_my_widget_action_edit">Afficher / Modifier</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Dupliquer</string>
     <string name="photo_widget_home_my_widget_action_lock">Verrouiller avec la photo actuelle</string>
@@ -41,6 +42,7 @@
     <string name="photo_widget_home_removed_widget_action_restore">Restaurer</string>
     <string name="photo_widget_home_removed_widget_action_keep">Garder</string>
     <string name="photo_widget_home_removed_widget_action_delete">Supprimer définitivement</string>
+    <string name="photo_widget_home_my_widget_syncing_feedback">Récupération des dernières photos du dossier…</string>
     <!-- Preferences -->
     <string name="preferences_data_saver">Réduire l\'utilisation du stockage</string>
     <string name="preferences_data_saver_description">Lorsque cette option est activée, les photos ajoutées aux widgets sont compressées pour économiser de l\'espace de stockage. Cela n\'affecte généralement pas la qualité, mais si vos photos contiennent du texte de petite taille, il est recommandé de la désactiver.\n\nCe paramètre affecte uniquement les photos ajoutées après sa modification.\n\nIl ne s\'applique pas aux dossiers synchronisés, car ces photos sont lues directement à partir du stockage de votre appareil.</string>

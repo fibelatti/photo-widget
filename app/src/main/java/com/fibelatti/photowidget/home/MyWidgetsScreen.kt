@@ -53,7 +53,7 @@ import com.fibelatti.ui.theme.ExtendedTheme
 @Composable
 fun MyWidgetsScreen(
     widgets: List<Pair<Int, PhotoWidget>>,
-    onCurrentWidgetClick: (appWidgetId: Int, canLock: Boolean, isLocked: Boolean) -> Unit,
+    onCurrentWidgetClick: (appWidgetId: Int, canSync: Boolean, canLock: Boolean, isLocked: Boolean) -> Unit,
     onRemovedWidgetClick: (appWidgetId: Int, PhotoWidgetStatus) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -94,8 +94,13 @@ fun MyWidgetsScreen(
                                         onRemovedWidgetClick(id, widget.status)
                                     } else {
                                         onCurrentWidgetClick(
+                                            /* appWidgetId = */
                                             id,
+                                            /* canSync = */
+                                            widget.source == PhotoWidgetSource.DIRECTORY,
+                                            /* canLock = */
                                             widget.cyclingEnabled,
+                                            /* isLocked = */
                                             PhotoWidgetStatus.LOCKED == widget.status,
                                         )
                                     }
@@ -249,7 +254,7 @@ private fun MyWidgetsScreenPreview() {
                     deletionTimestamp = if (PhotoWidgetStatus.REMOVED == status) 1 else -1,
                 )
             },
-            onCurrentWidgetClick = { _, _, _ -> },
+            onCurrentWidgetClick = { _, _, _, _ -> },
             onRemovedWidgetClick = { _, _ -> },
         )
     }
@@ -261,7 +266,7 @@ private fun MyWidgetsScreenEmptyPreview() {
     ExtendedTheme {
         MyWidgetsScreen(
             widgets = emptyList(),
-            onCurrentWidgetClick = { _, _, _ -> },
+            onCurrentWidgetClick = { _, _, _, _ -> },
             onRemovedWidgetClick = { _, _ -> },
         )
     }

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
@@ -12,6 +13,8 @@ import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -32,6 +35,7 @@ class HomeViewModel @Inject constructor(
     private val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
     private val photoWidgetStorage: PhotoWidgetStorage,
     private val photoWidgetAlarmManager: PhotoWidgetAlarmManager,
+    private val scope: CoroutineScope,
 ) : ViewModel() {
 
     private val widgetIds = MutableStateFlow(emptyList<Int>())
@@ -72,6 +76,14 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             widgetIds.update { photoWidgetStorage.getKnownWidgetIds() }
             updateSignal.send(Unit)
+        }
+    }
+
+    fun syncPhotos(appWidgetId: Int) {
+        scope.launch(NonCancellable) {
+            if (PhotoWidgetSource.DIRECTORY == photoWidgetStorage.getWidgetSource(appWidgetId = appWidgetId)) {
+                photoWidgetStorage.syncWidgetPhotos(appWidgetId = appWidgetId)
+            }
         }
     }
 
