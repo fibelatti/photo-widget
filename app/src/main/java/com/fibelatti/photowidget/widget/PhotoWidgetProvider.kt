@@ -33,31 +33,9 @@ import timber.log.Timber
 
 class PhotoWidgetProvider : AppWidgetProvider() {
 
-    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        Timber.d("Update requested by the system (appWidgetIds=${appWidgetIds.toList()})")
-        for (appWidgetId in appWidgetIds) {
-            update(context = context, appWidgetId = appWidgetId)
-        }
-    }
-
-    override fun onDeleted(context: Context, appWidgetIds: IntArray) {
-        Timber.d("Deletion requested by the system (appWidgetIds=${appWidgetIds.toList()})")
-
-        val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
-        val storage = entryPoint.photoWidgetStorage()
-        val alarmManager = entryPoint.photoWidgetAlarmManager()
-
-        for (appWidgetId in appWidgetIds) {
-            storage.saveWidgetDeletionTimestamp(
-                appWidgetId = appWidgetId,
-                timestamp = System.currentTimeMillis(),
-            )
-            alarmManager.cancel(appWidgetId = appWidgetId)
-        }
-    }
-
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
+        Timber.d("Intent received (action=${intent.action})")
 
         if (ACTION_VIEW_NEXT_PHOTO == intent.action || ACTION_VIEW_PREVIOUS_PHOTO == intent.action) {
             runCatching {
@@ -78,6 +56,13 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         }
     }
 
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        Timber.d("Update requested by the system (appWidgetIds=${appWidgetIds.toList()})")
+        for (appWidgetId in appWidgetIds) {
+            update(context = context, appWidgetId = appWidgetId)
+        }
+    }
+
     override fun onAppWidgetOptionsChanged(
         context: Context,
         appWidgetManager: AppWidgetManager,
@@ -87,6 +72,22 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
         Timber.d("Options changed by the system (appWidgetId=$appWidgetId)")
         updateWidgetWithRepeatSignal(context = context, appWidgetId = appWidgetId)
+    }
+
+    override fun onDeleted(context: Context, appWidgetIds: IntArray) {
+        Timber.d("Deletion requested by the system (appWidgetIds=${appWidgetIds.toList()})")
+
+        val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
+        val storage = entryPoint.photoWidgetStorage()
+        val alarmManager = entryPoint.photoWidgetAlarmManager()
+
+        for (appWidgetId in appWidgetIds) {
+            storage.saveWidgetDeletionTimestamp(
+                appWidgetId = appWidgetId,
+                timestamp = System.currentTimeMillis(),
+            )
+            alarmManager.cancel(appWidgetId = appWidgetId)
+        }
     }
 
     /**

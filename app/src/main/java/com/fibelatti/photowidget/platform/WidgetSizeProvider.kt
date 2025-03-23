@@ -3,6 +3,7 @@ package com.fibelatti.photowidget.platform
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
+import com.fibelatti.photowidget.R
 import timber.log.Timber
 
 class WidgetSizeProvider(context: Context) {
@@ -12,8 +13,11 @@ class WidgetSizeProvider(context: Context) {
 
     fun getWidgetsSize(appWidgetId: Int, convertToPx: Boolean = false): Pair<Int, Int> {
         val isPortrait = appContext.resources.configuration.orientation == ORIENTATION_PORTRAIT
-        val width = getWidgetWidth(appWidgetId = appWidgetId, isPortrait = isPortrait)
-        val height = getWidgetHeight(appWidgetId = appWidgetId, isPortrait = isPortrait)
+        val isTablet = appContext.resources.getBoolean(R.bool.is_tablet)
+        val measureAsPortrait = isPortrait || !isTablet
+
+        val width = getWidgetWidth(appWidgetId = appWidgetId, isPortrait = measureAsPortrait)
+        val height = getWidgetHeight(appWidgetId = appWidgetId, isPortrait = measureAsPortrait)
 
         return if (convertToPx) {
             appContext.dip(width) to appContext.dip(height)
@@ -25,6 +29,8 @@ class WidgetSizeProvider(context: Context) {
                     "appWidgetId=$appWidgetId," +
                     "convertToPx=$convertToPx," +
                     "isPortrait=$isPortrait," +
+                    "isTablet=$isTablet," +
+                    "measureAsPortrait=$measureAsPortrait," +
                     "width=${it.first}," +
                     "height=${it.second}" +
                     ")",
