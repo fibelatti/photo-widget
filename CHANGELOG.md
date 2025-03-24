@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Add "sync" button to the My Widgets menu to fetch folder photos on demand
 
+### Changed
+
+* Update configure screen to use the visual format picker
+
 ## [v1.27.0] - 2025-03-22
 [v1.27.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.27.0
 

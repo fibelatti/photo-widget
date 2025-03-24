@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -74,7 +75,7 @@ fun NewWidgetScreen(
 
         Column(
             modifier = Modifier
-                .widthIn(max = 764.dp)
+                .widthIn(max = 840.dp)
                 .fillMaxWidth()
                 .padding(top = 68.dp)
                 .verticalScroll(rememberScrollState()),
@@ -97,9 +98,19 @@ fun NewWidgetScreen(
                 style = MaterialTheme.typography.bodyMedium,
             )
 
+            val state = rememberLazyListState()
+
             AspectRatioPicker(
                 onAspectRatioSelected = onCreateNewWidgetClick,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fadingEdges(
+                        scrollState = state,
+                        startEdgeSize = 24.dp,
+                        endEdgeSize = 24.dp,
+                        isHorizontal = true,
+                    ),
+                state = state,
             )
 
             TextButton(
@@ -126,19 +137,13 @@ fun NewWidgetScreen(
 }
 
 @Composable
-private fun AspectRatioPicker(
+fun AspectRatioPicker(
     onAspectRatioSelected: (PhotoWidgetAspectRatio) -> Unit,
     modifier: Modifier = Modifier,
+    state: LazyListState = rememberLazyListState(),
 ) {
-    val state = rememberLazyListState()
-
     LazyRow(
-        modifier = modifier.fadingEdges(
-            scrollState = state,
-            startEdgeSize = 24.dp,
-            endEdgeSize = 24.dp,
-            isHorizontal = true,
-        ),
+        modifier = modifier,
         state = state,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 16.dp),

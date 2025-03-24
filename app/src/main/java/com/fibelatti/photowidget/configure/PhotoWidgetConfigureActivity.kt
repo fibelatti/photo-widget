@@ -27,7 +27,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.AppTheme
-import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -226,12 +225,9 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     }
 
     private fun showAspectRatioPicker() {
-        SelectionDialog.show(
+        PhotoWidgetAspectRatioPicker.show(
             context = this,
-            title = getString(R.string.photo_widget_aspect_ratio_title),
-            options = PhotoWidgetAspectRatio.entries,
-            optionName = { option -> getString(option.label) },
-            onOptionSelected = viewModel::setAspectRatio,
+            onAspectRatioSelected = viewModel::setAspectRatio,
         )
     }
 
