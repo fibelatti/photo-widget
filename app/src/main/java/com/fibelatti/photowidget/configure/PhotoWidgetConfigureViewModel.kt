@@ -93,7 +93,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     aspectRatio = resolvedAspectRatio,
                     cornerRadius = photoWidget.cornerRadius,
                 ),
-                selectedPhoto = photoWidget.photos.firstOrNull(),
+                selectedPhoto = photoWidget.currentPhoto ?: photoWidget.photos.firstOrNull(),
                 isProcessing = photoWidget.isLoading,
                 hasEdits = hasEdits,
             )
@@ -287,7 +287,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                             syncedDir = syncedDir.toSet(),
                             removedPhotos = widgetPhotos.excluded,
                         ),
-                        selectedPhoto = widgetPhotos.current.firstOrNull(),
+                        selectedPhoto = current.selectedPhoto ?: widgetPhotos.current.firstOrNull(),
                         isProcessing = false,
                         cropQueue = emptyList(),
                     )
