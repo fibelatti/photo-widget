@@ -16,6 +16,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -82,36 +83,38 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             AppTheme {
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
-                PhotoWidgetConfigureScreen(
-                    photoWidget = state.photoWidget,
-                    isUpdating = intent.appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID,
-                    selectedPhoto = state.selectedPhoto,
-                    isProcessing = state.isProcessing,
-                    onNavClick = onBackPressedDispatcher::onBackPressed,
-                    onAspectRatioClick = ::showAspectRatioPicker,
-                    onCropClick = viewModel::requestCrop,
-                    onRemoveClick = viewModel::photoRemoved,
-                    onMoveLeftClick = viewModel::moveLeft,
-                    onMoveRightClick = viewModel::moveRight,
-                    onChangeSource = ::showSourcePicker,
-                    onPhotoPickerClick = ::launchPhotoPicker,
-                    onDirPickerClick = ::launchFolderPicker,
-                    onPhotoClick = viewModel::previewPhoto,
-                    onReorderFinished = viewModel::reorderPhotos,
-                    onRemovedPhotoClick = viewModel::restorePhoto,
-                    onCycleModePickerClick = ::showCycleModePicker,
-                    onShuffleChange = viewModel::saveShuffle,
-                    onTapActionPickerClick = ::showTapActionPicker,
-                    onShapeChange = viewModel::shapeSelected,
-                    onCornerRadiusChange = viewModel::cornerRadiusSelected,
-                    onBorderChange = viewModel::borderSelected,
-                    onOpacityChange = viewModel::opacitySelected,
-                    onSaturationChange = viewModel::saturationSelected,
-                    onBrightnessChange = viewModel::brightnessSelected,
-                    onOffsetChange = viewModel::offsetSelected,
-                    onPaddingChange = viewModel::paddingSelected,
-                    onAddToHomeClick = viewModel::addNewWidget,
-                )
+                CompositionLocalProvider(LocalSamplePhoto provides state.selectedPhoto) {
+                    PhotoWidgetConfigureScreen(
+                        photoWidget = state.photoWidget,
+                        isUpdating = intent.appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID,
+                        selectedPhoto = state.selectedPhoto,
+                        isProcessing = state.isProcessing,
+                        onNavClick = onBackPressedDispatcher::onBackPressed,
+                        onAspectRatioClick = ::showAspectRatioPicker,
+                        onCropClick = viewModel::requestCrop,
+                        onRemoveClick = viewModel::photoRemoved,
+                        onMoveLeftClick = viewModel::moveLeft,
+                        onMoveRightClick = viewModel::moveRight,
+                        onChangeSource = ::showSourcePicker,
+                        onPhotoPickerClick = ::launchPhotoPicker,
+                        onDirPickerClick = ::launchFolderPicker,
+                        onPhotoClick = viewModel::previewPhoto,
+                        onReorderFinished = viewModel::reorderPhotos,
+                        onRemovedPhotoClick = viewModel::restorePhoto,
+                        onCycleModePickerClick = ::showCycleModePicker,
+                        onShuffleChange = viewModel::saveShuffle,
+                        onTapActionPickerClick = ::showTapActionPicker,
+                        onShapeChange = viewModel::shapeSelected,
+                        onCornerRadiusChange = viewModel::cornerRadiusSelected,
+                        onBorderChange = viewModel::borderSelected,
+                        onOpacityChange = viewModel::opacitySelected,
+                        onSaturationChange = viewModel::saturationSelected,
+                        onBrightnessChange = viewModel::brightnessSelected,
+                        onOffsetChange = viewModel::offsetSelected,
+                        onPaddingChange = viewModel::paddingSelected,
+                        onAddToHomeClick = viewModel::addNewWidget,
+                    )
+                }
 
                 LaunchedEffect(state.hasEdits) {
                     onBackPressedCallback.isEnabled = state.hasEdits

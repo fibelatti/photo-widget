@@ -1,7 +1,6 @@
 package com.fibelatti.photowidget.configure
 
 import android.content.Context
-import android.graphics.BitmapFactory
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -31,6 +30,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,8 +49,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
-import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.formatPercent
@@ -70,15 +70,18 @@ object PhotoWidgetBorderPicker {
 
     fun show(
         context: Context,
+        localPhoto: LocalPhoto?,
         currentBorder: PhotoWidgetBorder,
         onApplyClick: (PhotoWidgetBorder) -> Unit,
     ) {
         ComposeBottomSheetDialog(context) {
-            BorderPickerContent(
-                currentBorder = currentBorder,
-            ) { newBorder ->
-                onApplyClick(newBorder)
-                dismiss()
+            CompositionLocalProvider(LocalSamplePhoto provides localPhoto) {
+                BorderPickerContent(
+                    currentBorder = currentBorder,
+                ) { newBorder ->
+                    onApplyClick(newBorder)
+                    dismiss()
+                }
             }
         }.show()
     }
@@ -211,10 +214,6 @@ private fun ColorBorderContent(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        val localContext = LocalContext.current
-        val baseBitmap = remember {
-            BitmapFactory.decodeResource(localContext.resources, R.drawable.image_sample)
-        }
         val colorPickerController = rememberColorPickerController()
         var colorHex by remember { mutableStateOf(currentColorHex) }
         val hexChars = remember {
@@ -231,9 +230,8 @@ private fun ColorBorderContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
-                bitmap = baseBitmap
+                bitmap = rememberSampleBitmap()
                     .withRoundedCorners(
-                        aspectRatio = PhotoWidgetAspectRatio.SQUARE,
                         radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
                         borderColor = "#$currentColorHex".toColorInt(),
                         borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
@@ -330,14 +328,10 @@ private fun DynamicBorderContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         val localContext = LocalContext.current
-        val baseBitmap = remember {
-            BitmapFactory.decodeResource(localContext.resources, R.drawable.image_sample)
-        }
 
         Image(
-            bitmap = baseBitmap
+            bitmap = rememberSampleBitmap()
                 .withRoundedCorners(
-                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
                     radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
                     borderColor = localContext.getDynamicAttributeColor(
                         com.google.android.material.R.attr.colorPrimaryInverse,

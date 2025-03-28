@@ -3,7 +3,6 @@ package com.fibelatti.photowidget.configure
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -65,7 +64,6 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
-import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.withRoundedCorners
@@ -327,10 +325,6 @@ private fun TapActionPickerContent(
 private fun TapAreaIndicator(
     modifier: Modifier = Modifier,
 ) {
-    val localContext = LocalContext.current
-    val baseBitmap = remember {
-        BitmapFactory.decodeResource(localContext.resources, R.drawable.image_sample)
-    }
     val infiniteTransition = rememberInfiniteTransition(label = "ClickAreaIndicator_InfiniteTransition")
     val color by infiniteTransition.animateColor(
         initialValue = Color(0x664CAF50),
@@ -349,11 +343,8 @@ private fun TapAreaIndicator(
         contentAlignment = Alignment.Center,
     ) {
         Image(
-            bitmap = baseBitmap
-                .withRoundedCorners(
-                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
-                )
+            bitmap = rememberSampleBitmap()
+                .withRoundedCorners(radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx())
                 .asImageBitmap(),
             contentDescription = null,
             modifier = Modifier

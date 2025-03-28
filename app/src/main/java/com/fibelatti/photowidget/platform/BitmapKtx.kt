@@ -23,8 +23,8 @@ import kotlin.math.min
 import timber.log.Timber
 
 fun Bitmap.withRoundedCorners(
-    aspectRatio: PhotoWidgetAspectRatio,
     radius: Float,
+    aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.ROUNDED_SQUARE,
     colors: PhotoWidgetColors = PhotoWidgetColors(),
     @ColorInt borderColor: Int? = null,
     @FloatRange(from = 0.0) borderPercent: Float = .0F,

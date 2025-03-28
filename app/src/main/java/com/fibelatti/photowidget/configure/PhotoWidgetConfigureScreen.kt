@@ -1,6 +1,5 @@
 package com.fibelatti.photowidget.configure
 
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
@@ -56,6 +55,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -193,36 +193,42 @@ fun PhotoWidgetConfigureScreen(
             },
             onCornerRadiusClick = {
                 ComposeBottomSheetDialog(localContext) {
-                    CornerRadiusPicker(
-                        currentValue = photoWidget.cornerRadius,
-                        onApplyClick = { newValue ->
-                            onCornerRadiusChange(newValue)
-                            dismiss()
-                        },
-                    )
+                    CompositionLocalProvider(LocalSamplePhoto provides selectedPhoto) {
+                        CornerRadiusPicker(
+                            currentValue = photoWidget.cornerRadius,
+                            onApplyClick = { newValue ->
+                                onCornerRadiusChange(newValue)
+                                dismiss()
+                            },
+                        )
+                    }
                 }.show()
             },
             onBorderClick = {
                 PhotoWidgetBorderPicker.show(
                     context = localContext,
+                    localPhoto = selectedPhoto,
                     currentBorder = photoWidget.border,
                     onApplyClick = onBorderChange,
                 )
             },
             onOpacityClick = {
                 ComposeBottomSheetDialog(localContext) {
-                    OpacityPicker(
-                        currentValue = photoWidget.colors.opacity,
-                        onApplyClick = { newValue ->
-                            onOpacityChange(newValue)
-                            dismiss()
-                        },
-                    )
+                    CompositionLocalProvider(LocalSamplePhoto provides selectedPhoto) {
+                        OpacityPicker(
+                            currentValue = photoWidget.colors.opacity,
+                            onApplyClick = { newValue ->
+                                onOpacityChange(newValue)
+                                dismiss()
+                            },
+                        )
+                    }
                 }.show()
             },
             onSaturationClick = {
                 PhotoWidgetSaturationPicker.show(
                     context = localContext,
+                    localPhoto = selectedPhoto,
                     currentSaturation = photoWidget.colors.saturation,
                     onApplyClick = onSaturationChange,
                 )
@@ -230,31 +236,36 @@ fun PhotoWidgetConfigureScreen(
             onBrightnessClick = {
                 PhotoWidgetBrightnessPicker.show(
                     context = localContext,
+                    localPhoto = selectedPhoto,
                     currentBrightness = photoWidget.colors.brightness,
                     onApplyClick = onBrightnessChange,
                 )
             },
             onOffsetClick = {
                 ComposeBottomSheetDialog(localContext) {
-                    PhotoWidgetOffsetPicker(
-                        horizontalOffset = photoWidget.horizontalOffset,
-                        verticalOffset = photoWidget.verticalOffset,
-                        onApplyClick = { newHorizontalOffset, newVerticalOffset ->
-                            onOffsetChange(newHorizontalOffset, newVerticalOffset)
-                            dismiss()
-                        },
-                    )
+                    CompositionLocalProvider(LocalSamplePhoto provides selectedPhoto) {
+                        PhotoWidgetOffsetPicker(
+                            horizontalOffset = photoWidget.horizontalOffset,
+                            verticalOffset = photoWidget.verticalOffset,
+                            onApplyClick = { newHorizontalOffset, newVerticalOffset ->
+                                onOffsetChange(newHorizontalOffset, newVerticalOffset)
+                                dismiss()
+                            },
+                        )
+                    }
                 }.show()
             },
             onPaddingClick = {
                 ComposeBottomSheetDialog(localContext) {
-                    PaddingPicker(
-                        currentValue = photoWidget.padding,
-                        onApplyClick = { newValue ->
-                            onPaddingChange(newValue)
-                            dismiss()
-                        },
-                    )
+                    CompositionLocalProvider(LocalSamplePhoto provides selectedPhoto) {
+                        PaddingPicker(
+                            currentValue = photoWidget.padding,
+                            onApplyClick = { newValue ->
+                                onPaddingChange(newValue)
+                                dismiss()
+                            },
+                        )
+                    }
                 }.show()
             },
             onAddToHomeClick = onAddToHomeClick,
@@ -1121,18 +1132,11 @@ private fun PaddingPicker(
         title = stringResource(id = R.string.photo_widget_configure_padding),
         modifier = modifier,
     ) {
-        val localContext = LocalContext.current
-        val baseBitmap = remember {
-            BitmapFactory.decodeResource(localContext.resources, R.drawable.image_sample)
-        }
         var value by remember(currentValue) { mutableIntStateOf(currentValue) }
 
         Image(
-            bitmap = baseBitmap
-                .withRoundedCorners(
-                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
-                )
+            bitmap = rememberSampleBitmap()
+                .withRoundedCorners(radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx())
                 .asImageBitmap(),
             contentDescription = null,
             modifier = Modifier

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Update configure screen to use the visual format picker
 * Open configure screen in the current photo when editing a widget
+* Show the selected photo when configuring aspects of the widget
 
 ### Fixed
 

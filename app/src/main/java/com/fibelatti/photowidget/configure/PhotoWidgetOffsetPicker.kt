@@ -1,6 +1,5 @@
 package com.fibelatti.photowidget.configure
 
-import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,7 +41,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
-import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.DefaultPicker
 import com.fibelatti.ui.foundation.dpToPx
@@ -129,20 +126,13 @@ private fun PhotoWidgetOffsetViewer(
     verticalValue: Int,
     modifier: Modifier = Modifier,
 ) {
-    val localContext = LocalContext.current
-    val baseBitmap = remember {
-        BitmapFactory.decodeResource(localContext.resources, R.drawable.image_sample)
-    }
     Box(
         modifier = modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center,
     ) {
         Image(
-            bitmap = baseBitmap
-                .withRoundedCorners(
-                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
-                )
+            bitmap = rememberSampleBitmap()
+                .withRoundedCorners(radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx())
                 .asImageBitmap(),
             contentDescription = null,
             modifier = Modifier
