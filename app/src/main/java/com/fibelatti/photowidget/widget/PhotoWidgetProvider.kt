@@ -265,17 +265,18 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 tapAction = photoWidget.tapAction,
                 externalUri = photoWidget.currentPhoto?.externalUri,
             ).takeUnless {
-                isLocked &&
-                    (
-                        photoWidget.tapAction is PhotoWidgetTapAction.ViewNextPhoto ||
-                            photoWidget.tapAction is PhotoWidgetTapAction.ToggleCycling
-                        )
+                val photoChangingAction = photoWidget.tapAction is PhotoWidgetTapAction.ViewNextPhoto ||
+                    photoWidget.tapAction is PhotoWidgetTapAction.ToggleCycling
+
+                isLocked && photoChangingAction
             }
 
+            views.setOnClickPendingIntent(R.id.view_tap_center, mainClickPendingIntent)
+
             if (width < 100) {
-                // The widget is too narrow to handle 3 different click areas
-                views.setViewVisibility(R.id.tap_actions_layout, View.GONE)
-                views.setOnClickPendingIntent(R.id.iv_widget, mainClickPendingIntent)
+                // The widget is too narrow to handle 3 different click actions
+                views.setOnClickPendingIntent(R.id.view_tap_left, mainClickPendingIntent)
+                views.setOnClickPendingIntent(R.id.view_tap_right, mainClickPendingIntent)
                 return
             }
 
@@ -283,7 +284,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 photoWidget.tapAction.disableTap &&
                 isCyclePaused
 
-            views.setViewVisibility(R.id.tap_actions_layout, View.VISIBLE)
             views.setOnClickPendingIntent(
                 R.id.view_tap_left,
                 flipPhotoPendingIntent(
@@ -292,7 +292,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     flipBackwards = true,
                 ).takeUnless { isLocked || shouldDisableTap },
             )
-            views.setOnClickPendingIntent(R.id.view_tap_center, mainClickPendingIntent)
             views.setOnClickPendingIntent(
                 R.id.view_tap_right,
                 flipPhotoPendingIntent(
