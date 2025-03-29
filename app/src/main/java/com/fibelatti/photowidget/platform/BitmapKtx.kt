@@ -167,7 +167,7 @@ private fun Bitmap.sourceRect(
  * @param aspectRatio Width/height ratio the created rect should maintain
  * @return A RectF centered in the bitmap with the specified aspect ratio
  */
-fun createCenteredRectWithAspectRatio(
+private fun createCenteredRectWithAspectRatio(
     bitmapWidth: Float,
     bitmapHeight: Float,
     aspectRatio: Float,

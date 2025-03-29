@@ -10,6 +10,8 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.platform.PhotoDecoder
+import com.fibelatti.photowidget.platform.colorForType
+import com.fibelatti.photowidget.platform.getColorPalette
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
@@ -75,6 +77,8 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
             is PhotoWidgetBorder.Dynamic -> context.getDynamicAttributeColor(
                 com.google.android.material.R.attr.colorPrimaryInverse,
             )
+
+            is PhotoWidgetBorder.MatchPhoto -> getColorPalette(bitmap).colorForType(photoWidget.border.type)
         }
         val borderPercent = photoWidget.border.getBorderPercent()
 

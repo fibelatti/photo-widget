@@ -1,9 +1,11 @@
 package com.fibelatti.photowidget.configure
 
 import android.content.Context
+import android.graphics.Bitmap
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -17,18 +19,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -37,13 +40,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -53,17 +57,20 @@ import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
+import com.fibelatti.photowidget.platform.colorForType
 import com.fibelatti.photowidget.platform.formatPercent
+import com.fibelatti.photowidget.platform.getColorPalette
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.ui.foundation.ColumnToggleButtonGroup
+import com.fibelatti.ui.foundation.ToggleButtonGroup
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 import com.github.skydoves.colorpicker.compose.BrightnessSlider
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
-import com.google.android.material.color.DynamicColors
 import kotlin.math.roundToInt
 
 object PhotoWidgetBorderPicker {
@@ -93,6 +100,7 @@ private fun BorderPickerContent(
     onApplyClick: (PhotoWidgetBorder) -> Unit,
 ) {
     var border: PhotoWidgetBorder by remember { mutableStateOf(currentBorder) }
+    val sampleBitmap = rememberSampleBitmap()
 
     Column(
         modifier = Modifier
@@ -112,68 +120,31 @@ private fun BorderPickerContent(
 
         Spacer(modifier = Modifier.size(8.dp))
 
-        SingleChoiceSegmentedButtonRow(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            val buttonBorderColor = SegmentedButtonDefaults.borderStroke(
-                color = SegmentedButtonDefaults.colors().activeBorderColor,
-            )
-
-            SegmentedButton(
-                selected = border is PhotoWidgetBorder.None,
-                onClick = {
-                    border = PhotoWidgetBorder.None
-                },
-                shape = RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp),
-                border = buttonBorderColor,
-                label = {
-                    Text(
-                        text = stringResource(R.string.photo_widget_configure_border_none),
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                },
-            )
-
-            if (DynamicColors.isDynamicColorAvailable()) {
-                SegmentedButton(
-                    selected = border is PhotoWidgetBorder.Dynamic,
-                    onClick = {
-                        border = PhotoWidgetBorder.Dynamic(width = PhotoWidgetBorder.DEFAULT_WIDTH)
-                    },
-                    shape = RectangleShape,
-                    border = buttonBorderColor,
-                    label = {
-                        Text(
-                            text = stringResource(R.string.photo_widget_configure_border_dynamic),
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                    },
+        ColumnToggleButtonGroup(
+            items = PhotoWidgetBorder.entries.map {
+                ToggleButtonGroup.Item(
+                    id = it.serializedName,
+                    text = stringResource(id = it.label),
                 )
-            }
-
-            SegmentedButton(
-                selected = border is PhotoWidgetBorder.Color,
-                onClick = {
-                    border = PhotoWidgetBorder.Color(colorHex = "ffffff", width = PhotoWidgetBorder.DEFAULT_WIDTH)
-                },
-                shape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
-                border = buttonBorderColor,
-                label = {
-                    Text(
-                        text = stringResource(R.string.photo_widget_configure_border_color),
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                },
-            )
-        }
+            },
+            onButtonClick = { item ->
+                border = PhotoWidgetBorder.fromSerializedName(item.id)
+            },
+            modifier = Modifier.fillMaxWidth(),
+            selectedIndex = PhotoWidgetBorder.entries.indexOfFirst {
+                it.serializedName == border.serializedName
+            },
+            colors = ToggleButtonGroup.colors(unselectedButtonColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        )
 
         Spacer(modifier = Modifier.size(16.dp))
 
-        val current = border
-        @Suppress("IntroduceWhenSubject")
-        when {
-            current is PhotoWidgetBorder.Color -> {
+        when (val current = border) {
+            is PhotoWidgetBorder.None -> Unit
+
+            is PhotoWidgetBorder.Color -> {
                 ColorBorderContent(
+                    sampleBitmap = sampleBitmap,
                     currentColorHex = current.colorHex,
                     onColorChange = { border = current.copy(colorHex = it) },
                     currentWidth = current.width,
@@ -181,8 +152,19 @@ private fun BorderPickerContent(
                 )
             }
 
-            current is PhotoWidgetBorder.Dynamic -> {
+            is PhotoWidgetBorder.Dynamic -> {
                 DynamicBorderContent(
+                    sampleBitmap = sampleBitmap,
+                    currentWidth = current.width,
+                    onWidthChange = { border = current.copy(width = it) },
+                )
+            }
+
+            is PhotoWidgetBorder.MatchPhoto -> {
+                MatchPhotoBorderContent(
+                    sampleBitmap = sampleBitmap,
+                    currentType = current.type,
+                    onTypeChange = { border = current.copy(type = it) },
                     currentWidth = current.width,
                     onWidthChange = { border = current.copy(width = it) },
                 )
@@ -204,6 +186,7 @@ private fun BorderPickerContent(
 
 @Composable
 private fun ColorBorderContent(
+    sampleBitmap: Bitmap,
     currentColorHex: String,
     onColorChange: (String) -> Unit,
     currentWidth: Int,
@@ -230,7 +213,7 @@ private fun ColorBorderContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
-                bitmap = rememberSampleBitmap()
+                bitmap = sampleBitmap
                     .withRoundedCorners(
                         radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
                         borderColor = "#$currentColorHex".toColorInt(),
@@ -318,6 +301,7 @@ private fun ColorBorderContent(
 
 @Composable
 private fun DynamicBorderContent(
+    sampleBitmap: Bitmap,
     currentWidth: Int,
     onWidthChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -330,7 +314,7 @@ private fun DynamicBorderContent(
         val localContext = LocalContext.current
 
         Image(
-            bitmap = rememberSampleBitmap()
+            bitmap = sampleBitmap
                 .withRoundedCorners(
                     radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
                     borderColor = localContext.getDynamicAttributeColor(
@@ -356,6 +340,92 @@ private fun DynamicBorderContent(
                 .padding(bottom = 8.dp),
             style = MaterialTheme.typography.bodyMedium,
         )
+    }
+}
+
+@Composable
+private fun MatchPhotoBorderContent(
+    sampleBitmap: Bitmap,
+    currentType: PhotoWidgetBorder.MatchPhoto.Type,
+    onTypeChange: (PhotoWidgetBorder.MatchPhoto.Type) -> Unit,
+    currentWidth: Int,
+    onWidthChange: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        val colorPalette = remember(sampleBitmap) { getColorPalette(sampleBitmap) }
+
+        Image(
+            bitmap = sampleBitmap
+                .withRoundedCorners(
+                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
+                    borderColor = colorPalette.colorForType(currentType),
+                    borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
+                )
+                .asImageBitmap(),
+            contentDescription = null,
+            modifier = Modifier.size(200.dp),
+        )
+
+        val radioTypes = PhotoWidgetBorder.MatchPhoto.Type.entries
+        val (selectedType, onTypeSelected) = remember { mutableStateOf(currentType) }
+
+        BorderWidthPicker(
+            currentWidth = currentWidth,
+            onWidthChange = onWidthChange,
+        )
+
+        Column(
+            modifier = Modifier.selectableGroup(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            radioTypes.forEach { type ->
+                Row(
+                    modifier = Modifier
+                        .height(40.dp)
+                        .clip(MaterialTheme.shapes.large)
+                        .selectable(
+                            selected = (type == selectedType),
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(),
+                            role = Role.RadioButton,
+                            onClick = {
+                                onTypeSelected(type)
+                                onTypeChange(type)
+                            },
+                        )
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    RadioButton(
+                        selected = (type == selectedType),
+                        onClick = null,
+                    )
+                    Text(
+                        text = when (type) {
+                            PhotoWidgetBorder.MatchPhoto.Type.MONOCHROMATIC -> {
+                                stringResource(R.string.photo_widget_configure_border_color_wheel_monochromatic)
+                            }
+
+                            PhotoWidgetBorder.MatchPhoto.Type.COMPLEMENTARY -> {
+                                stringResource(R.string.photo_widget_configure_border_color_wheel_complementary)
+                            }
+
+                            PhotoWidgetBorder.MatchPhoto.Type.ANALOGOUS -> {
+                                stringResource(R.string.photo_widget_configure_border_color_wheel_analogous)
+                            }
+                        },
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+                }
+            }
+        }
     }
 }
 

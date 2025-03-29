@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Add "sync" button to the My Widgets menu to fetch folder photos on demand
+* New border type that matches the current photo
 
 ### Changed
 

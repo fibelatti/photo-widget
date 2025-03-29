@@ -672,6 +672,21 @@ private fun AppearanceTab(
                 is PhotoWidgetBorder.None -> stringResource(id = R.string.photo_widget_configure_border_none)
                 is PhotoWidgetBorder.Color -> "#${photoWidget.border.colorHex}".toUpperCase(Locale.current)
                 is PhotoWidgetBorder.Dynamic -> stringResource(R.string.photo_widget_configure_border_dynamic)
+                is PhotoWidgetBorder.MatchPhoto -> {
+                    when (photoWidget.border.type) {
+                        PhotoWidgetBorder.MatchPhoto.Type.MONOCHROMATIC -> {
+                            stringResource(R.string.photo_widget_configure_border_color_wheel_monochromatic)
+                        }
+
+                        PhotoWidgetBorder.MatchPhoto.Type.COMPLEMENTARY -> {
+                            stringResource(R.string.photo_widget_configure_border_color_wheel_complementary)
+                        }
+
+                        PhotoWidgetBorder.MatchPhoto.Type.ANALOGOUS -> {
+                            stringResource(R.string.photo_widget_configure_border_color_wheel_analogous)
+                        }
+                    }
+                }
             },
             onClick = onBorderClick,
             modifier = Modifier.padding(horizontal = 16.dp),

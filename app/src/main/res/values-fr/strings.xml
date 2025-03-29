@@ -157,6 +157,10 @@
     <string name="photo_widget_configure_border_none">Aucune</string>
     <string name="photo_widget_configure_border_dynamic">Dynamique</string>
     <string name="photo_widget_configure_border_color">Coloré</string>
+    <string name="photo_widget_configure_border_color_wheel">Correspondante</string>
+    <string name="photo_widget_configure_border_color_wheel_monochromatic">Monochromatique</string>
+    <string name="photo_widget_configure_border_color_wheel_complementary">Complémentaire</string>
+    <string name="photo_widget_configure_border_color_wheel_analogous">Analogue</string>
     <string name="photo_widget_configure_border_explanation">Les modifications auront lieu lors de la prochaine mise à jour du widget après avoir modifié la couleur du thème de votre téléphone. Pour mettre à jour tous les widgets immédiatement, ouvrez simplement l\'application.</string>
     <string name="photo_widget_configure_offset">Décalage</string>
     <string name="photo_widget_configure_offset_current_values">Horizontal : %1$d, Vertical : %2$d</string>

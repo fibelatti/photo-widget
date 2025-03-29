@@ -177,6 +177,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.graphics.shapes)
     implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.palette)
 
     // Compose
     implementation(platform(libs.compose.bom))

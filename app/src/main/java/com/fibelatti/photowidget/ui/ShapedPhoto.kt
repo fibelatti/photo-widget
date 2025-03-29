@@ -12,6 +12,8 @@ import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
+import com.fibelatti.photowidget.platform.colorForType
+import com.fibelatti.photowidget.platform.getColorPalette
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
@@ -53,6 +55,8 @@ fun ShapedPhoto(
                 is PhotoWidgetBorder.Dynamic -> localContext.getDynamicAttributeColor(
                     com.google.android.material.R.attr.colorPrimaryInverse,
                 )
+
+                is PhotoWidgetBorder.MatchPhoto -> getColorPalette(bitmap).colorForType(border.type)
             }
             val borderPercent = border.getBorderPercent()
 
