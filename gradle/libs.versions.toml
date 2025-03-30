@@ -61,3 +61,4 @@ room = { id = "androidx.room", version.ref = "room" }
 spotless = { id = "com.diffplug.spotless", version = "7.0.3" }
 cache-fix = { id = "org.gradle.android.cache-fix", version = "3.0.1" }
 about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }
+licensee = { id = "app.cash.licensee", version = "1.13.0" }

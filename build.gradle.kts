@@ -17,6 +17,7 @@ plugins {
     alias(libs.plugins.spotless) apply false
     alias(libs.plugins.cache.fix) apply false
     alias(libs.plugins.about.libraries) apply false
+    alias(libs.plugins.licensee) apply false
 }
 
 buildscript {

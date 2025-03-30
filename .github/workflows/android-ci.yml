@@ -53,3 +53,16 @@ jobs:
 
       - name: Build
         run: ./gradlew lint
+
+  license-check:
+    name: License Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Project checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Android build
+        uses: ./.github/actions/setup-android-build
+
+      - name: Build
+        run: ./gradlew licensee
