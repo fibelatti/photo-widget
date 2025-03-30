@@ -408,16 +408,16 @@ private fun MatchPhotoBorderContent(
                     )
                     Text(
                         text = when (type) {
-                            PhotoWidgetBorder.MatchPhoto.Type.MONOCHROMATIC -> {
-                                stringResource(R.string.photo_widget_configure_border_color_wheel_monochromatic)
+                            PhotoWidgetBorder.MatchPhoto.Type.DOMINANT -> {
+                                stringResource(R.string.photo_widget_configure_border_color_palette_dominant)
                             }
 
-                            PhotoWidgetBorder.MatchPhoto.Type.COMPLEMENTARY -> {
-                                stringResource(R.string.photo_widget_configure_border_color_wheel_complementary)
+                            PhotoWidgetBorder.MatchPhoto.Type.VIBRANT -> {
+                                stringResource(R.string.photo_widget_configure_border_color_palette_vibrant)
                             }
 
-                            PhotoWidgetBorder.MatchPhoto.Type.ANALOGOUS -> {
-                                stringResource(R.string.photo_widget_configure_border_color_wheel_analogous)
+                            PhotoWidgetBorder.MatchPhoto.Type.MUTED -> {
+                                stringResource(R.string.photo_widget_configure_border_color_palette_muted)
                             }
                         },
                         color = MaterialTheme.colorScheme.onSurface,

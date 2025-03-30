@@ -157,10 +157,10 @@
     <string name="photo_widget_configure_border_none">Yok</string>
     <string name="photo_widget_configure_border_dynamic">Dinamik</string>
     <string name="photo_widget_configure_border_color">Renkli</string>
-    <string name="photo_widget_configure_border_color_wheel">Karşılık gelen</string>
-    <string name="photo_widget_configure_border_color_wheel_monochromatic">Monokromatik</string>
-    <string name="photo_widget_configure_border_color_wheel_complementary">Tamamlayıcı</string>
-    <string name="photo_widget_configure_border_color_wheel_analogous">Analog</string>
+    <string name="photo_widget_configure_border_color_palette">Palet</string>
+    <string name="photo_widget_configure_border_color_palette_dominant">Baskın renk</string>
+    <string name="photo_widget_configure_border_color_palette_vibrant">Canlı renk</string>
+    <string name="photo_widget_configure_border_color_palette_muted">Soluk renk</string>
     <string name="photo_widget_configure_border_explanation">Telefonunuzun tema rengini değiştirdikten sonraki widget güncellemesinde değişiklikler gerçekleşecektir. Tüm widget\'ları hemen güncellemek için uygulamayı açmanız yeterlidir.</string>
     <string name="photo_widget_configure_offset">Ofset</string>
     <string name="photo_widget_configure_offset_current_values">Yatay: %1$d, Dikey: %2$d</string>

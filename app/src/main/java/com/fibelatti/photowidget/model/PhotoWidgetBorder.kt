@@ -57,15 +57,15 @@ sealed interface PhotoWidgetBorder : Parcelable {
     data class MatchPhoto(val width: Int, val type: Type) : PhotoWidgetBorder {
 
         @IgnoredOnParcel
-        override val label = R.string.photo_widget_configure_border_color_wheel
+        override val label = R.string.photo_widget_configure_border_color_palette
 
         @IgnoredOnParcel
         override val serializedName: String = "MATCH_PHOTO"
 
         enum class Type {
-            MONOCHROMATIC,
-            COMPLEMENTARY,
-            ANALOGOUS,
+            DOMINANT,
+            VIBRANT,
+            MUTED,
         }
     }
 
@@ -88,7 +88,7 @@ sealed interface PhotoWidgetBorder : Parcelable {
                     add(Dynamic(width = DEFAULT_WIDTH))
                 }
 
-                add(MatchPhoto(type = PhotoWidgetBorder.MatchPhoto.Type.MONOCHROMATIC, width = DEFAULT_WIDTH))
+                add(MatchPhoto(type = PhotoWidgetBorder.MatchPhoto.Type.DOMINANT, width = DEFAULT_WIDTH))
 
                 add(Color(colorHex = "ffffff", width = DEFAULT_WIDTH))
             }

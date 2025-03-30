@@ -189,10 +189,10 @@
     <string name="photo_widget_configure_border_none">None</string>
     <string name="photo_widget_configure_border_dynamic">Dynamic</string>
     <string name="photo_widget_configure_border_color">Colored</string>
-    <string name="photo_widget_configure_border_color_wheel">Matching</string>
-    <string name="photo_widget_configure_border_color_wheel_monochromatic">Monochromatic</string>
-    <string name="photo_widget_configure_border_color_wheel_complementary">Complementary</string>
-    <string name="photo_widget_configure_border_color_wheel_analogous">Analogous</string>
+    <string name="photo_widget_configure_border_color_palette">Palette</string>
+    <string name="photo_widget_configure_border_color_palette_dominant">Dominant color</string>
+    <string name="photo_widget_configure_border_color_palette_vibrant">Vibrant color</string>
+    <string name="photo_widget_configure_border_color_palette_muted">Muted color</string>
 
     <string name="photo_widget_configure_border_explanation">Changes will take place during the next widget update after you change your phone\'s theme color. To update all widgets immediately, simply open the app.</string>
 
