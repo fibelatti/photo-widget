@@ -1,0 +1,7 @@
+This version brings the following updates:
+
+* New border type that matches the current photo
+* New "sync" button in the My Widgets menu to fetch folder photos on demand
+* Fixes the tap action not working on tiny widgets
+
+Thanks for using the app!

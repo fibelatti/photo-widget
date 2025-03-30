@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.28.1] - 2025-03-30
+[v1.28.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.28.1
+
+### Changed
+
+* Update palette border type to use dominant, vibrant and muted colors instead
+
 ## [v1.28.0] - 2025-03-29
 [v1.28.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.28.0
 
