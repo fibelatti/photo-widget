@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "Running Spotless"
+./gradlew spotlessCheck
+exit 0
