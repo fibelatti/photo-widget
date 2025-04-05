@@ -43,6 +43,7 @@ import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.BackgroundRestrictedSheetDialog
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
+import com.fibelatti.photowidget.platform.widgetPinningNotAvailable
 import com.fibelatti.photowidget.preferences.Appearance
 import com.fibelatti.photowidget.preferences.DataSaverPicker
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
@@ -140,6 +141,16 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun createNewWidget(aspectRatio: PhotoWidgetAspectRatio) {
+        if (widgetPinningNotAvailable()) {
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.photo_widget_home_pinning_not_supported_title)
+                .setMessage(R.string.photo_widget_home_pinning_not_supported_message)
+                .setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+                .show()
+
+            return
+        }
+
         val intent = (preparedIntent ?: Intent(this, PhotoWidgetConfigureActivity::class.java)).apply {
             this.aspectRatio = aspectRatio
         }

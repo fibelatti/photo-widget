@@ -27,6 +27,8 @@
         <item quantity="many">Получено %d фотографий. Создайте новый виджет или выберите существующий, чтобы добавить их.</item>
         <item quantity="other">Получено %d фотографий. Создайте новый виджет или выберите существующий, чтобы добавить их.</item>
     </plurals>
+    <string name="photo_widget_home_pinning_not_supported_title">Добавьте виджет прямо с главного экрана</string>
+    <string name="photo_widget_home_pinning_not_supported_message">1. Нажмите и удерживайте пустое место\n\n2. Выберите меню виджетов\n\n3. Найдите Material Photo Widget\n\n4. Настройте и сохраните!</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Вы ещё не добавили ни одного виджета.\nДобавленные на главный экран виджеты появятся здесь.</string>
     <string name="photo_widget_home_filter_all">Все</string>

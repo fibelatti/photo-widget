@@ -25,6 +25,8 @@
         <item quantity="one">1 fotoğraf alındı. Yeni bir widget oluşturun veya eklemek için mevcut birini seçin.</item>
         <item quantity="other">%d fotoğraf alındı. Yeni bir widget oluşturun veya eklemek için mevcut birini seçin.</item>
     </plurals>
+    <string name="photo_widget_home_pinning_not_supported_title">Ana ekranınızdan doğrudan bir widget ekleyin</string>
+    <string name="photo_widget_home_pinning_not_supported_message">1. Boş bir alana dokunup basılı tutun\n\n2. Widget menüsünü seçin\n\n3. Material Photo Widget\'ı arayın\n\n4. Yapılandırın ve kaydedin!</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Henüz herhangi bir widget eklemediniz.\nAna ekranınıza eklenen widget\'lar burada görünecektir.</string>
     <string name="photo_widget_home_filter_all">Hepsi</string>

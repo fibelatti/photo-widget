@@ -70,3 +70,13 @@ fun Context.isBackgroundRestricted(checkUnrestrictedBattery: Boolean = false): B
 
     return isRestrictive || isBackgroundRestricted || isBatteryUsageRestricted
 }
+
+fun widgetPinningNotAvailable(): Boolean {
+    val manufacturer = Build.MANUFACTURER.lowercase()
+    val notAvailable = listOf(
+        "oppo",
+        "realme",
+    )
+
+    return manufacturer in notAvailable
+}

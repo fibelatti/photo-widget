@@ -28,6 +28,9 @@
         <item quantity="other">%d photos received. Create a new widget or choose an existing one to add them.</item>
     </plurals>
 
+    <string name="photo_widget_home_pinning_not_supported_title">Add a widget directly from your home screen</string>
+    <string name="photo_widget_home_pinning_not_supported_message">1. Tap and hold an empty space\n\n2. Choose the widgets menu\n\n3. Search for Material Photo Widget\n\n4. Configure and save!</string>
+
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">You haven\'t added any widgets yet.\nWidgets added to your home screen will appear here.</string>
     <string name="photo_widget_home_filter_all">All</string>

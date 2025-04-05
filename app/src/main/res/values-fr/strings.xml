@@ -25,6 +25,8 @@
         <item quantity="one">%d photo reçue. Créez un nouveau widget ou choisissez un existant pour l\'ajouter.</item>
         <item quantity="other">%d photos reçues. Créez un nouveau widget ou choisissez un existant pour les ajouter.</item>
     </plurals>
+    <string name="photo_widget_home_pinning_not_supported_title">Ajoutez un widget directement depuis votre écran d\'accueil</string>
+    <string name="photo_widget_home_pinning_not_supported_message">1. Appuyez longuement sur un espace vide\n\n2. Choisissez le menu des widgets\n\n3. Recherchez Material Photo Widget\n\n4. Configurez et enregistrez !</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Vous n\'avez pas encore ajouté de widgets.\nLes widgets ajoutés à votre écran d\'accueil apparaîtront ici.</string>
     <string name="photo_widget_home_filter_all">Tous</string>
