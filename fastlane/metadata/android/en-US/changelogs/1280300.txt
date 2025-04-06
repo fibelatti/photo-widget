@@ -1,0 +1,6 @@
+This version brings the following updates:
+
+* Fixes widgets being wrongly zoomed in on tablets when using the Fill format
+* Adds troubleshooting steps for Oppo and Realme phones
+
+Thanks for using the app!

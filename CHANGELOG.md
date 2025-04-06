@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.28.3] - 2025-04-06
+[v1.28.3]: https://github.com/fibelatti/photo-widget/releases/tag/v1.28.3
+
+### Changed
+
+* Always measure Fill widgets as if in portrait mode
+
 ## [v1.28.2] - 2025-04-05
 [v1.28.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.28.2
 
