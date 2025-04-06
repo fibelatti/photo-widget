@@ -14,7 +14,7 @@ class WidgetSizeProvider(context: Context) {
     fun getWidgetsSize(appWidgetId: Int, convertToPx: Boolean = false): Pair<Int, Int> {
         val isPortrait = appContext.resources.configuration.orientation == ORIENTATION_PORTRAIT
         val isTablet = appContext.resources.getBoolean(R.bool.is_tablet)
-        val measureAsPortrait = isPortrait || !isTablet
+        val measureAsPortrait = true // Temporarily always measuring as portrait to investigate the zooming issue
 
         val width = getWidgetWidth(appWidgetId = appWidgetId, isPortrait = measureAsPortrait)
         val height = getWidgetHeight(appWidgetId = appWidgetId, isPortrait = measureAsPortrait)
@@ -38,6 +38,7 @@ class WidgetSizeProvider(context: Context) {
         }
     }
 
+    @Suppress("SameParameterValue")
     private fun getWidgetWidth(appWidgetId: Int, isPortrait: Boolean): Int {
         return if (isPortrait) {
             getWidgetSizeInDp(appWidgetId, AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
@@ -46,6 +47,7 @@ class WidgetSizeProvider(context: Context) {
         }
     }
 
+    @Suppress("SameParameterValue")
     private fun getWidgetHeight(appWidgetId: Int, isPortrait: Boolean): Int {
         return if (isPortrait) {
             getWidgetSizeInDp(appWidgetId, AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)
