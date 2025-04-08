@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.R
@@ -325,6 +326,10 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     }
 
     private fun requestPin() {
+        if (lifecycle.currentState != Lifecycle.State.RESUMED) {
+            return
+        }
+
         val callbackIntent = Intent(this, PhotoWidgetPinnedReceiver::class.java).apply {
             setIdentifierCompat("$PIN_REQUEST_CODE")
         }
