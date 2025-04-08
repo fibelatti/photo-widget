@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -67,6 +68,8 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
         override fun onReceive(context: Context, intent: Intent) {
             Timber.d("Broadcast received (action=${intent.action})")
+
+            Toast.makeText(this@PhotoWidgetConfigureActivity, R.string.photo_widget_configure_widget_pinned, Toast.LENGTH_SHORT).show()
 
             if (ACTION_FINISH == intent.action) {
                 widgetAdded(appWidgetId = intent.appWidgetId)

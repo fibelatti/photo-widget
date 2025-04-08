@@ -186,6 +186,7 @@
     <string name="photo_widget_configure_tap_action_disable_tap">Döngü duraklatıldığında dokunma kenarlarını devre dışı bırakın</string>
     <string name="photo_widget_configure_add_to_home">Ana ekrana ekle</string>
     <string name="photo_widget_configure_save_changes">Değişiklikleri kaydet</string>
+    <string name="photo_widget_configure_widget_pinned">Widget eklendi! Ana ekranınızı kontrol edin…</string>
     <string name="photo_widget_time_picker_title">Zamanı seçin</string>
     <!-- Help -->
     <string name="help_article_title_1">Ana ekrana bir widget eklemek çalışmıyor</string>

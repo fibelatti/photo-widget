@@ -186,6 +186,7 @@
     <string name="photo_widget_configure_tap_action_disable_tap">Desactivar los bordes táctiles mientras el ciclo está en pausa</string>
     <string name="photo_widget_configure_add_to_home">Agregar a la pantalla principal</string>
     <string name="photo_widget_configure_save_changes">Guardar cambios</string>
+    <string name="photo_widget_configure_widget_pinned">¡Widget añadido! Revisa tu pantalla de inicio…</string>
     <string name="photo_widget_time_picker_title">Seleccione la hora</string>
     <!-- Help -->
     <string name="help_article_title_1">Agregar un widget a la pantalla de inicio no está funcionando</string>

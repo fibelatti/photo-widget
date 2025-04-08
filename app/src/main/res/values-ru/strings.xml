@@ -198,6 +198,7 @@
     <string name="photo_widget_configure_tap_action_disable_tap">Отключить сенсорные края во время паузы цикла</string>
     <string name="photo_widget_configure_add_to_home">Добавить на главный экран</string>
     <string name="photo_widget_configure_save_changes">Сохранить изменения</string>
+    <string name="photo_widget_configure_widget_pinned">Виджет добавлен! Проверьте домашний экран…</string>
     <string name="photo_widget_time_picker_title">Выбрать время</string>
     <!-- Help -->
     <string name="help_article_title_1">Не получается добавить виджет на главный экран</string>

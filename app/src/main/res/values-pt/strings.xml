@@ -186,6 +186,7 @@
     <string name="photo_widget_configure_tap_action_disable_tap">Desabilitar o toque nas bordas enquanto o ciclo estiver pausado</string>
     <string name="photo_widget_configure_add_to_home">Adicionar à tela inicial</string>
     <string name="photo_widget_configure_save_changes">Salvar alterações</string>
+    <string name="photo_widget_configure_widget_pinned">Widget adicionado! Verifique sua tela inicial…</string>
     <string name="photo_widget_time_picker_title">Escolha o horário</string>
     <!-- Help -->
     <string name="help_article_title_1">Adicionar um widget à tela inicial não está funcionando</string>

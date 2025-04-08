@@ -226,6 +226,8 @@
     <string name="photo_widget_configure_add_to_home">Add to home screen</string>
     <string name="photo_widget_configure_save_changes">Save changes</string>
 
+    <string name="photo_widget_configure_widget_pinned">Widget added! Check your home screen…</string>
+
     <string name="photo_widget_time_picker_title">Select time</string>
 
     <!-- Help -->
