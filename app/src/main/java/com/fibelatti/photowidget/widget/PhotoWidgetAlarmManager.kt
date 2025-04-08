@@ -2,15 +2,14 @@ package com.fibelatti.photowidget.widget
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.getSystemService
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
-import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
+import com.fibelatti.photowidget.platform.EntryPointBroadcastReceiver
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -166,10 +165,12 @@ class PhotoWidgetAlarmManager @Inject constructor(
     }
 }
 
-class ExactRepeatingAlarmReceiver : BroadcastReceiver() {
+class ExactRepeatingAlarmReceiver : EntryPointBroadcastReceiver() {
 
-    override fun onReceive(context: Context, intent: Intent) {
-        entryPoint<PhotoWidgetEntryPoint>(context).runCatching {
+    override fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
+        Timber.d("Working... (appWidgetId=${intent.appWidgetId})")
+
+        entryPoint.runCatching {
             coroutineScope().launch {
                 cyclePhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
                 photoWidgetStorage().saveWidgetNextCycleTime(appWidgetId = intent.appWidgetId, nextCycleTime = -1)

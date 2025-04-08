@@ -8,10 +8,13 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Size
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.net.toUri
+import androidx.core.os.postDelayed
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
@@ -33,24 +36,36 @@ import timber.log.Timber
 
 class PhotoWidgetProvider : AppWidgetProvider() {
 
+    private val handler: Handler = Handler(Looper.getMainLooper())
+
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-        Timber.d("Intent received (action=${intent.action})")
 
-        if (ACTION_VIEW_NEXT_PHOTO == intent.action || ACTION_VIEW_PREVIOUS_PHOTO == intent.action) {
+        Timber.d("Broadcast received (action=${intent.action}, appWidgetId=${intent.appWidgetId})")
+
+        val acceptedAction = ACTION_VIEW_NEXT_PHOTO == intent.action ||
+            ACTION_VIEW_PREVIOUS_PHOTO == intent.action
+
+        if (!acceptedAction) {
+            return
+        }
+
+        handler.postDelayed(delayInMillis = 300) {
             runCatching {
-                val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
-
-                entryPoint.coroutineScope().launch {
-                    entryPoint.cyclePhotoUseCase().invoke(
-                        appWidgetId = intent.appWidgetId,
-                        flipBackwards = ACTION_VIEW_PREVIOUS_PHOTO == intent.action,
-                    )
-                    entryPoint.photoWidgetStorage().saveWidgetNextCycleTime(
-                        appWidgetId = intent.appWidgetId,
-                        nextCycleTime = null,
-                    )
-                    entryPoint.photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
+                with(entryPoint<PhotoWidgetEntryPoint>(context)) {
+                    coroutineScope().launch {
+                        cyclePhotoUseCase().invoke(
+                            appWidgetId = intent.appWidgetId,
+                            flipBackwards = ACTION_VIEW_PREVIOUS_PHOTO == intent.action,
+                        )
+                        photoWidgetStorage().saveWidgetNextCycleTime(
+                            appWidgetId = intent.appWidgetId,
+                            nextCycleTime = null,
+                        )
+                        photoWidgetAlarmManager().setup(
+                            appWidgetId = intent.appWidgetId,
+                        )
+                    }
                 }
             }
         }
@@ -58,8 +73,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         Timber.d("Update requested by the system (appWidgetIds=${appWidgetIds.toList()})")
-        for (appWidgetId in appWidgetIds) {
-            update(context = context, appWidgetId = appWidgetId)
+
+        handler.postDelayed(delayInMillis = 300) {
+            for (appWidgetId in appWidgetIds) {
+                update(context = context, appWidgetId = appWidgetId)
+            }
         }
     }
 
@@ -69,24 +87,25 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         appWidgetId: Int,
         newOptions: Bundle?,
     ) {
-        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
         Timber.d("Options changed by the system (appWidgetId=$appWidgetId)")
-        updateWidgetWithRepeatSignal(context = context, appWidgetId = appWidgetId)
+
+        handler.postDelayed(delayInMillis = 300) {
+            updateWidgetWithRepeatSignal(context = context, appWidgetId = appWidgetId)
+        }
     }
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
-        Timber.d("Deletion requested by the system (appWidgetIds=${appWidgetIds.toList()})")
+        Timber.d("Delete requested by the system (appWidgetIds=${appWidgetIds.toList()})")
 
-        val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
-        val storage = entryPoint.photoWidgetStorage()
-        val alarmManager = entryPoint.photoWidgetAlarmManager()
+        handler.postDelayed(delayInMillis = 300) {
+            val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
+            val storage = entryPoint.photoWidgetStorage()
+            val alarmManager = entryPoint.photoWidgetAlarmManager()
 
-        for (appWidgetId in appWidgetIds) {
-            storage.saveWidgetDeletionTimestamp(
-                appWidgetId = appWidgetId,
-                timestamp = System.currentTimeMillis(),
-            )
-            alarmManager.cancel(appWidgetId = appWidgetId)
+            for (appWidgetId in appWidgetIds) {
+                storage.saveWidgetDeletionTimestamp(appWidgetId = appWidgetId, timestamp = System.currentTimeMillis())
+                alarmManager.cancel(appWidgetId = appWidgetId)
+            }
         }
     }
 

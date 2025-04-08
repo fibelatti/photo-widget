@@ -65,7 +65,9 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     private val finishReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == ACTION_FINISH) {
+            Timber.d("Broadcast received (action=${intent.action})")
+
+            if (ACTION_FINISH == intent.action) {
                 widgetAdded(appWidgetId = intent.appWidgetId)
             }
         }

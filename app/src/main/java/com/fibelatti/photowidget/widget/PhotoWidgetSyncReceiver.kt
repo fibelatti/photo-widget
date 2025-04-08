@@ -2,13 +2,12 @@ package com.fibelatti.photowidget.widget
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.getSystemService
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
-import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidgetSource
+import com.fibelatti.photowidget.platform.EntryPointBroadcastReceiver
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import java.util.Calendar
 import kotlin.time.Duration.Companion.days
@@ -16,15 +15,17 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class PhotoWidgetSyncReceiver : BroadcastReceiver() {
+class PhotoWidgetSyncReceiver : EntryPointBroadcastReceiver() {
 
-    override fun onReceive(context: Context, intent: Intent) {
+    override fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
+        Timber.d("Working...")
+
         val ids = PhotoWidgetProvider.ids(context).ifEmpty {
             Timber.d("There are no widgets")
             return
         }
 
-        entryPoint<PhotoWidgetEntryPoint>(context).runCatching {
+        entryPoint.runCatching {
             val photoWidgetStorage = photoWidgetStorage()
             val coroutineScope = coroutineScope()
 

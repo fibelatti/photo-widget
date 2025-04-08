@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
-import com.fibelatti.photowidget.di.entryPoint
+import com.fibelatti.photowidget.platform.EntryPointBroadcastReceiver
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -14,10 +14,10 @@ import timber.log.Timber
 /**
  * [BroadcastReceiver] to handle the callback from [AppWidgetManager.requestPinAppWidget].
  */
-class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
+class PhotoWidgetPinnedReceiver : EntryPointBroadcastReceiver() {
 
-    override fun onReceive(context: Context, intent: Intent) {
-        Timber.d("Pin widget success callback received")
+    override fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
+        Timber.d("Working... (appWidgetId=${intent.appWidgetId})")
 
         val widgetId = intent.appWidgetId
             .takeUnless { it == AppWidgetManager.INVALID_APPWIDGET_ID }
@@ -26,7 +26,6 @@ class PhotoWidgetPinnedReceiver : BroadcastReceiver() {
             // Exit early if the widget was not placed
             ?: return
 
-        val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
         val pinningCache = entryPoint.photoWidgetPinningCache()
 
         // The widget data is missing, it's impossible to continue
