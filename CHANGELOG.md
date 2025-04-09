@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.28.4] - 2025-04-09
+[v1.28.4]: https://github.com/fibelatti/photo-widget/releases/tag/v1.28.4
+
+### Changed
+
+* Show a confirmation message when the widget was added to the home screen
+* Update resizing logic that's affecting Fill widgets
+
+### Fixed
+
+* Crashes when handling certain callbacks from the system
+
 ## [v1.28.3] - 2025-04-06
 [v1.28.3]: https://github.com/fibelatti/photo-widget/releases/tag/v1.28.3
 
