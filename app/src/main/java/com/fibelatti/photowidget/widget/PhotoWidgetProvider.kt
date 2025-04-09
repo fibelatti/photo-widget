@@ -20,7 +20,9 @@ import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidget.Companion.DEFAULT_CORNER_RADIUS
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.WidgetSizeProvider
 import com.fibelatti.photowidget.platform.setIdentifierCompat
@@ -29,7 +31,6 @@ import java.lang.ref.WeakReference
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -76,7 +77,9 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
         handler.postDelayed(delayInMillis = 300) {
             for (appWidgetId in appWidgetIds) {
-                update(context = context, appWidgetId = appWidgetId)
+                val widgetOptions: Bundle? = appWidgetManager.getAppWidgetOptions(appWidgetId)
+
+                update(context = context, appWidgetId = appWidgetId, widgetOptions = widgetOptions)
             }
         }
     }
@@ -90,7 +93,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         Timber.d("Options changed by the system (appWidgetId=$appWidgetId)")
 
         handler.postDelayed(delayInMillis = 300) {
-            updateWidgetWithRepeatSignal(context = context, appWidgetId = appWidgetId)
+            update(context = context, appWidgetId = appWidgetId, widgetOptions = newOptions)
         }
     }
 
@@ -109,25 +112,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         }
     }
 
-    /**
-     * For whatever reason, sometimes the widget size is not correct and photos will be zoomed in incorrectly when
-     * using [PhotoWidgetAspectRatio.FILL_WIDGET]. Repeating the update signal should be enough to nudge the widget to
-     * fix itself after the home screen UI has settled. A [WeakReference] of the given context is kept, and the repeated
-     * signal only goes through if the context is still around to avoid any leaks.
-     */
-    private fun updateWidgetWithRepeatSignal(context: Context, appWidgetId: Int) {
-        update(context = context, appWidgetId = appWidgetId)
-
-        runCatching {
-            val ctx = WeakReference(context)
-            entryPoint<PhotoWidgetEntryPoint>(context).coroutineScope().launch {
-                delay(timeMillis = 3_000L)
-                Timber.d("Repeating options changed signal (appWidgetId=$appWidgetId)")
-                ctx.get()?.let { update(context = it, appWidgetId = appWidgetId) }
-            }
-        }
-    }
-
     companion object {
 
         private const val ACTION_VIEW_NEXT_PHOTO = "ACTION_VIEW_NEXT_PHOTO"
@@ -140,7 +124,12 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             .toList()
             .also { Timber.d("Provider widget IDs: $it") }
 
-        fun update(context: Context, appWidgetId: Int, recoveryMode: Boolean = false) {
+        fun update(
+            context: Context,
+            appWidgetId: Int,
+            widgetOptions: Bundle? = null,
+            recoveryMode: Boolean = false,
+        ) {
             Timber.d("Updating widget (appWidgetId=$appWidgetId)")
 
             val appWidgetManager = AppWidgetManager.getInstance(context)
@@ -150,21 +139,22 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val pinningCache = entryPoint.photoWidgetPinningCache()
             val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
 
-            val currentJob = updateJobMap[appWidgetId]?.get()
+            val currentJob: Job? = updateJobMap[appWidgetId]?.get()
             Timber.d("Current update job (isActive=${currentJob?.isActive})")
 
-            val newJob = coroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
+            val newJob: Job = coroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
                 currentJob?.join()
 
-                val photoWidget = pinningCache.pendingWidget
+                val photoWidget: PhotoWidget = pinningCache.pendingWidget
                     ?.takeIf { appWidgetId !in photoWidgetStorage.getKnownWidgetIds() }
                     ?.also { Timber.d("Updating using the pending widget data") }
                     ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId).first { !it.isLoading }
 
-                val views = createRemoteViews(
+                val views: RemoteViews = createRemoteViews(
                     context = context,
                     appWidgetId = appWidgetId,
                     photoWidget = photoWidget,
+                    widgetOptions = widgetOptions,
                     recoveryMode = recoveryMode,
                 )
 
@@ -175,6 +165,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     photoWidget = photoWidget,
                     isLocked = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = appWidgetId),
                     isCyclePaused = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = appWidgetId),
+                    widgetOptions = widgetOptions,
                 )
 
                 Timber.d("Invoking AppWidgetManager#updateAppWidget")
@@ -197,12 +188,19 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             context: Context,
             appWidgetId: Int,
             photoWidget: PhotoWidget,
+            widgetOptions: Bundle?,
             recoveryMode: Boolean = false,
         ): RemoteViews {
             val prepareCurrentPhotoUseCase = entryPoint<PhotoWidgetEntryPoint>(context).prepareCurrentPhotoUseCase()
-            val widgetSize = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio) {
+
+            val shouldMeasure = PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio &&
+                (photoWidget.border !is PhotoWidgetBorder.None || photoWidget.cornerRadius != DEFAULT_CORNER_RADIUS)
+            val widgetSize = if (shouldMeasure && widgetOptions != null) {
                 val sizeProvider = WidgetSizeProvider(context = context)
-                val (width, height) = sizeProvider.getWidgetsSize(appWidgetId = appWidgetId, convertToPx = true)
+                val (width, height) = sizeProvider.getWidgetsSize(
+                    widgetOptions = widgetOptions,
+                    convertToPx = true,
+                )
                 Size(width, height)
             } else {
                 null
@@ -275,9 +273,15 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             photoWidget: PhotoWidget,
             isLocked: Boolean,
             isCyclePaused: Boolean,
+            widgetOptions: Bundle?,
         ) {
-            val sizeProvider = WidgetSizeProvider(context = context)
-            val (width, _) = sizeProvider.getWidgetsSize(appWidgetId = appWidgetId)
+            val multiActionSupported = if (widgetOptions != null) {
+                val sizeProvider = WidgetSizeProvider(context = context)
+                val (width, _) = sizeProvider.getWidgetsSize(widgetOptions = widgetOptions)
+                width > 100
+            } else {
+                true
+            }
             val mainClickPendingIntent = getClickPendingIntent(
                 context = context,
                 appWidgetId = appWidgetId,
@@ -292,7 +296,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
             views.setOnClickPendingIntent(R.id.view_tap_center, mainClickPendingIntent)
 
-            if (width < 100) {
+            if (!multiActionSupported) {
                 // The widget is too narrow to handle 3 different click actions
                 views.setOnClickPendingIntent(R.id.view_tap_left, mainClickPendingIntent)
                 views.setOnClickPendingIntent(R.id.view_tap_right, mainClickPendingIntent)

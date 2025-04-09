@@ -137,7 +137,7 @@
             android:exported="false" />
 
         <receiver
-            android:name=".platform.DynamicBorderReceiver"
+            android:name=".platform.ConfigurationChangedReceiver"
             android:exported="false">
 
             <intent-filter>

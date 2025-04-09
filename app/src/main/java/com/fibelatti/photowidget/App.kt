@@ -3,7 +3,7 @@ package com.fibelatti.photowidget
 import android.app.Application
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate
-import com.fibelatti.photowidget.platform.DynamicBorderReceiver
+import com.fibelatti.photowidget.platform.ConfigurationChangedReceiver
 import com.fibelatti.photowidget.preferences.Appearance
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
@@ -83,6 +83,6 @@ class App : Application() {
     }
 
     private fun registerReceivers() {
-        DynamicBorderReceiver.register(context = this)
+        ConfigurationChangedReceiver.register(context = this)
     }
 }
