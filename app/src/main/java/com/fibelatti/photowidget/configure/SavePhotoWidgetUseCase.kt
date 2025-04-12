@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.configure
 
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
@@ -101,12 +102,20 @@ class SavePhotoWidgetUseCase @Inject constructor(
 
         photoWidgetStorage.saveWidgetCornerRadius(
             appWidgetId = appWidgetId,
-            cornerRadius = photoWidget.cornerRadius,
+            cornerRadius = if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
+                photoWidget.cornerRadius
+            } else {
+                PhotoWidget.DEFAULT_CORNER_RADIUS
+            },
         )
 
         photoWidgetStorage.saveWidgetBorder(
             appWidgetId = appWidgetId,
-            border = photoWidget.border,
+            border = if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
+                photoWidget.border
+            } else {
+                PhotoWidgetBorder.None
+            },
         )
 
         photoWidgetStorage.saveWidgetOpacity(

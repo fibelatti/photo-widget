@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * New tap action: choose the next photo
 
+### Changed
+
+* Fill widgets can no longer have their borders and corners customized
+
 ## [v1.28.4] - 2025-04-09
 [v1.28.4]: https://github.com/fibelatti/photo-widget/releases/tag/v1.28.4
 

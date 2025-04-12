@@ -172,10 +172,17 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     } else {
                         PhotoWidget.DEFAULT_SHAPE_ID
                     },
-                    cornerRadius = if (PhotoWidgetAspectRatio.SQUARE == photoWidgetAspectRatio) {
+                    cornerRadius = if (PhotoWidgetAspectRatio.SQUARE == photoWidgetAspectRatio ||
+                        PhotoWidgetAspectRatio.FILL_WIDGET == photoWidgetAspectRatio
+                    ) {
                         PhotoWidget.DEFAULT_CORNER_RADIUS
                     } else {
                         current.photoWidget.cornerRadius
+                    },
+                    border = if (PhotoWidgetAspectRatio.FILL_WIDGET == photoWidgetAspectRatio) {
+                        PhotoWidgetBorder.None
+                    } else {
+                        current.photoWidget.border
                     },
                 ),
             )

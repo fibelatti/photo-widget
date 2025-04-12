@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Size
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.net.toUri
@@ -21,9 +20,7 @@ import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
-import com.fibelatti.photowidget.model.PhotoWidget.Companion.DEFAULT_CORNER_RADIUS
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.WidgetSizeProvider
 import com.fibelatti.photowidget.platform.setIdentifierCompat
@@ -155,7 +152,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     context = context,
                     appWidgetId = appWidgetId,
                     photoWidget = photoWidget,
-                    widgetOptions = widgetOptions,
                     recoveryMode = recoveryMode,
                 )
 
@@ -189,29 +185,13 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             context: Context,
             appWidgetId: Int,
             photoWidget: PhotoWidget,
-            widgetOptions: Bundle?,
             recoveryMode: Boolean = false,
         ): RemoteViews {
             val prepareCurrentPhotoUseCase = entryPoint<PhotoWidgetEntryPoint>(context).prepareCurrentPhotoUseCase()
-
-            val shouldMeasure = PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio &&
-                (photoWidget.border !is PhotoWidgetBorder.None || photoWidget.cornerRadius != DEFAULT_CORNER_RADIUS)
-            val widgetSize = if (shouldMeasure && widgetOptions != null) {
-                val sizeProvider = WidgetSizeProvider(context = context)
-                val (width, height) = sizeProvider.getWidgetsSize(
-                    widgetOptions = widgetOptions,
-                    convertToPx = true,
-                )
-                Size(width, height)
-            } else {
-                null
-            }
-
             val result = prepareCurrentPhotoUseCase(
                 context = context,
                 appWidgetId = appWidgetId,
                 photoWidget = photoWidget,
-                widgetSize = widgetSize,
                 recoveryMode = recoveryMode,
             )
 

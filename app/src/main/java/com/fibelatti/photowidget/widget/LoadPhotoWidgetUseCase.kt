@@ -1,6 +1,8 @@
 package com.fibelatti.photowidget.widget
 
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import javax.inject.Inject
@@ -44,17 +46,29 @@ class LoadPhotoWidgetUseCase @Inject constructor(
     }
 
     private fun loadWidgetData(appWidgetId: Int): PhotoWidget = with(photoWidgetStorage) {
-        val (horizontalOffset, verticalOffset) = getWidgetOffset(appWidgetId = appWidgetId)
+        val (horizontalOffset: Int, verticalOffset: Int) = getWidgetOffset(appWidgetId = appWidgetId)
+        val aspectRatio: PhotoWidgetAspectRatio = getWidgetAspectRatio(appWidgetId = appWidgetId)
+        val cornerRadius: Int = if (PhotoWidgetAspectRatio.FILL_WIDGET == aspectRatio) {
+            PhotoWidget.DEFAULT_CORNER_RADIUS
+        } else {
+            getWidgetCornerRadius(appWidgetId = appWidgetId)
+        }
+        val border: PhotoWidgetBorder = if (PhotoWidgetAspectRatio.FILL_WIDGET == aspectRatio) {
+            PhotoWidgetBorder.None
+        } else {
+            getWidgetBorder(appWidgetId = appWidgetId)
+        }
+
         return PhotoWidget(
             source = getWidgetSource(appWidgetId = appWidgetId),
             syncedDir = getWidgetSyncDir(appWidgetId = appWidgetId),
             shuffle = getWidgetShuffle(appWidgetId = appWidgetId),
             cycleMode = getWidgetCycleMode(appWidgetId = appWidgetId),
             tapAction = getWidgetTapAction(appWidgetId = appWidgetId),
-            aspectRatio = getWidgetAspectRatio(appWidgetId = appWidgetId),
+            aspectRatio = aspectRatio,
             shapeId = getWidgetShapeId(appWidgetId = appWidgetId),
-            cornerRadius = getWidgetCornerRadius(appWidgetId = appWidgetId),
-            border = getWidgetBorder(appWidgetId = appWidgetId),
+            cornerRadius = cornerRadius,
+            border = border,
             colors = PhotoWidgetColors(
                 opacity = getWidgetOpacity(appWidgetId = appWidgetId),
                 saturation = getWidgetSaturation(appWidgetId = appWidgetId),

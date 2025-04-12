@@ -1,7 +1,6 @@
 package com.fibelatti.photowidget.configure
 
 import android.net.Uri
-import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
@@ -76,7 +75,6 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -108,7 +106,6 @@ import com.fibelatti.photowidget.preferences.ShapePicker
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.ui.SliderSmallThumb
-import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.AllPreviews
@@ -625,21 +622,6 @@ private fun AppearanceTab(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        val systemWidgetRadius = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            dimensionResource(android.R.dimen.system_app_widget_background_radius)
-        } else {
-            0.dp
-        }
-        val showRoundnessWarning = PhotoWidgetAspectRatio.FILL_WIDGET == photoWidget.aspectRatio &&
-            systemWidgetRadius > 0.dp
-
-        if (showRoundnessWarning) {
-            WarningSign(
-                text = stringResource(R.string.photo_widget_configure_roundness_warning),
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
-        }
-
         PickerDefault(
             title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
             currentValue = stringResource(id = photoWidget.aspectRatio.label),
@@ -654,43 +636,42 @@ private fun AppearanceTab(
                 onClick = onShapeClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
-        } else {
+        } else if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_corner_radius),
                 currentValue = photoWidget.cornerRadius.toString(),
                 onClick = onCornerRadiusClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
-                warning = stringResource(R.string.photo_widget_configure_border_warning).takeIf {
-                    showRoundnessWarning && photoWidget.border != PhotoWidgetBorder.None
-                },
             )
         }
 
-        PickerDefault(
-            title = stringResource(R.string.photo_widget_configure_border),
-            currentValue = when (photoWidget.border) {
-                is PhotoWidgetBorder.None -> stringResource(id = R.string.photo_widget_configure_border_none)
-                is PhotoWidgetBorder.Color -> "#${photoWidget.border.colorHex}".toUpperCase(Locale.current)
-                is PhotoWidgetBorder.Dynamic -> stringResource(R.string.photo_widget_configure_border_dynamic)
-                is PhotoWidgetBorder.MatchPhoto -> {
-                    when (photoWidget.border.type) {
-                        PhotoWidgetBorder.MatchPhoto.Type.DOMINANT -> {
-                            stringResource(R.string.photo_widget_configure_border_color_palette_dominant)
-                        }
+        if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
+            PickerDefault(
+                title = stringResource(R.string.photo_widget_configure_border),
+                currentValue = when (photoWidget.border) {
+                    is PhotoWidgetBorder.None -> stringResource(id = R.string.photo_widget_configure_border_none)
+                    is PhotoWidgetBorder.Color -> "#${photoWidget.border.colorHex}".toUpperCase(Locale.current)
+                    is PhotoWidgetBorder.Dynamic -> stringResource(R.string.photo_widget_configure_border_dynamic)
+                    is PhotoWidgetBorder.MatchPhoto -> {
+                        when (photoWidget.border.type) {
+                            PhotoWidgetBorder.MatchPhoto.Type.DOMINANT -> {
+                                stringResource(R.string.photo_widget_configure_border_color_palette_dominant)
+                            }
 
-                        PhotoWidgetBorder.MatchPhoto.Type.VIBRANT -> {
-                            stringResource(R.string.photo_widget_configure_border_color_palette_vibrant)
-                        }
+                            PhotoWidgetBorder.MatchPhoto.Type.VIBRANT -> {
+                                stringResource(R.string.photo_widget_configure_border_color_palette_vibrant)
+                            }
 
-                        PhotoWidgetBorder.MatchPhoto.Type.MUTED -> {
-                            stringResource(R.string.photo_widget_configure_border_color_palette_muted)
+                            PhotoWidgetBorder.MatchPhoto.Type.MUTED -> {
+                                stringResource(R.string.photo_widget_configure_border_color_palette_muted)
+                            }
                         }
                     }
-                }
-            },
-            onClick = onBorderClick,
-            modifier = Modifier.padding(horizontal = 16.dp),
-        )
+                },
+                onClick = onBorderClick,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+        }
 
         PickerDefault(
             title = stringResource(id = R.string.widget_defaults_opacity),
