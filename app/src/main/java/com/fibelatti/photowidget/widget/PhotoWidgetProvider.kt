@@ -16,6 +16,7 @@ import android.widget.RemoteViews
 import androidx.core.net.toUri
 import androidx.core.os.postDelayed
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.chooser.PhotoWidgetChooserActivity
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
@@ -289,6 +290,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 externalUri = photoWidget.currentPhoto?.externalUri,
             ).takeUnless {
                 val photoChangingAction = photoWidget.tapAction is PhotoWidgetTapAction.ViewNextPhoto ||
+                    photoWidget.tapAction is PhotoWidgetTapAction.ChooseNextPhoto ||
                     photoWidget.tapAction is PhotoWidgetTapAction.ToggleCycling
 
                 isLocked && photoChangingAction
@@ -381,6 +383,23 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         context = context,
                         appWidgetId = appWidgetId,
                         flipBackwards = false,
+                    )
+                }
+
+                is PhotoWidgetTapAction.ChooseNextPhoto -> {
+                    val clickIntent = Intent(context, PhotoWidgetChooserActivity::class.java).apply {
+                        setIdentifierCompat("$appWidgetId")
+                        this.appWidgetId = appWidgetId
+                    }
+                    return PendingIntent.getActivity(
+                        /* context = */
+                        context,
+                        /* requestCode = */
+                        appWidgetId,
+                        /* intent = */
+                        clickIntent,
+                        /* flags = */
+                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }
 

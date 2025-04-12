@@ -175,6 +175,7 @@
     <string name="photo_widget_configure_tap_action_view_full_screen">Ver foto en pantalla completa</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Ver con la aplicación de galería</string>
     <string name="photo_widget_configure_tap_action_view_next_photo">Ver siguiente foto</string>
+    <string name="photo_widget_configure_tap_action_choose_next_photo">Elige la siguiente foto</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Abrir una aplicación</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Abrir un enlace</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Habilitar/deshabilitar ciclo</string>

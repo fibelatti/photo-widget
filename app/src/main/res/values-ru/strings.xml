@@ -187,6 +187,7 @@
     <string name="photo_widget_configure_tap_action_view_full_screen">Просмотр фото на весь экран</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Просмотр с помощью приложения галереи</string>
     <string name="photo_widget_configure_tap_action_view_next_photo">Посмотреть следующее фото</string>
+    <string name="photo_widget_configure_tap_action_choose_next_photo">Выбрать следующее фото</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Открыть приложение</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Открыть ссылку</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Включить/выключить цикл</string>

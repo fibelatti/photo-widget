@@ -175,6 +175,7 @@
     <string name="photo_widget_configure_tap_action_view_full_screen">Fotoğrafı tam ekranda görüntüle</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Galeri uygulamasıyla görüntüle</string>
     <string name="photo_widget_configure_tap_action_view_next_photo">Sonraki fotoğrafı görüntüle</string>
+    <string name="photo_widget_configure_tap_action_choose_next_photo">Sonraki fotoğrafı seçin</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Bir uygulama açın</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Bir bağlantı aç</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Döngüyü etkinleştir/devre dışı bırak</string>

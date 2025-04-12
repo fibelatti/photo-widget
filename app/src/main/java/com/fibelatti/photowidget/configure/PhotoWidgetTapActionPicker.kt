@@ -262,6 +262,8 @@ private fun TapActionPickerContent(
 
                 is PhotoWidgetTapAction.ViewNextPhoto -> Unit
 
+                is PhotoWidgetTapAction.ChooseNextPhoto -> Unit
+
                 is PhotoWidgetTapAction.ToggleCycling -> {
                     Column(
                         modifier = customOptionModifier,
