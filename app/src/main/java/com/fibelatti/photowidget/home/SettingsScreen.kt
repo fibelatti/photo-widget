@@ -178,8 +178,8 @@ private fun SettingsScreen(
             HorizontalDivider()
 
             SettingsAction(
-                icon = R.drawable.ic_feedback,
-                label = R.string.photo_widget_home_feedback,
+                icon = R.drawable.ic_question,
+                label = R.string.photo_widget_home_help,
                 onClick = onSendFeedbackClick,
             )
 

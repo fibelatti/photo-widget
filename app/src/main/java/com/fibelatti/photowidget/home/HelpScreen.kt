@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -45,7 +44,6 @@ import com.fibelatti.ui.theme.ExtendedTheme
 @Composable
 fun HelpScreen(
     onBackgroundRestrictionClick: () -> Unit,
-    onSendFeedbackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var expanded: HelpArticle? by remember { mutableStateOf(null) }
@@ -92,26 +90,6 @@ fun HelpScreen(
                             role = Role.Button,
                         ),
                 )
-            }
-        }
-
-        item {
-            Column(
-                modifier = Modifier.padding(vertical = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    text = stringResource(R.string.help_article_footer),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.labelLarge,
-                )
-
-                FilledTonalButton(
-                    onClick = onSendFeedbackClick,
-                ) {
-                    Text(text = stringResource(R.string.photo_widget_home_feedback))
-                }
             }
         }
     }
@@ -189,7 +167,6 @@ private fun HelpScreenPreview() {
     ExtendedTheme {
         HelpScreen(
             onBackgroundRestrictionClick = {},
-            onSendFeedbackClick = {},
         )
     }
 }

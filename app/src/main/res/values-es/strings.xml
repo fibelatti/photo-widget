@@ -14,7 +14,6 @@
     <string name="photo_widget_home_dynamic_colors">Colores de la aplicación</string>
     <string name="photo_widget_home_share">Comparte la aplicación</string>
     <string name="photo_widget_home_rate">Escribe una reseña</string>
-    <string name="photo_widget_home_feedback">Envía tus comentarios</string>
     <string name="photo_widget_home_help">¿Algo no está funcionando?</string>
     <string name="photo_widget_home_common_issues">Problemas comunes</string>
     <string name="photo_widget_home_privacy_policy">Política de privacidad</string>
@@ -198,8 +197,6 @@
     <string name="help_article_body_3">Cuando tu teléfono se reinicia, Android envía una señal a las aplicaciones para notificarlas, permitiéndoles reiniciarse solas. Desafortunadamente, algunos fabricantes de dispositivos (como Xiaomi, Redmi, Huawei y otros) bloquean esta señal.\n\nPara activar esta funcionalidad, cambia el permiso de \"Inicio Automático\" en tu aplicación de seguridad.</string>
     <string name="help_article_title_4">El widget es demasiado pequeño</string>
     <string name="help_article_body_4">Después de agregar el widget a tu pantalla de inicio, puedes mantenerlo presionado por algunos segundos para revelar la opción de cambiar el tamaño. Luego, arrastra los bordes para ajustarlo al tamaño deseado.</string>
-    <string name="help_article_footer">¿Algo más no está funcionando?</string>
-    <string name="help_email_body">Escribe tu mensaje a continuación. Si estás informando un problema, intenta describir lo que estabas haciendo cuando se produjo el problema.</string>
     <string name="restriction_warning_hint">La actividad en segundo plano está restringida. Es posible que los widgets no funcionen correctamente. Toca para obtener más información.</string>
     <string name="restriction_warning_dialog_title">Restricciones de actividad en segundo plano y optimización de batería</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget necesita ejecutarse en segundo plano para actualizar tus widgets. Solo se ejecuta cuando es necesario, pero si el uso de la batería está configurado como \"optimizado\", Android puede detener la aplicación, haciendo que los widgets no funcionen correctamente.</string>

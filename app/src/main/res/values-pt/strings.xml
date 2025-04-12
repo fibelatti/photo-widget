@@ -14,7 +14,6 @@
     <string name="photo_widget_home_dynamic_colors">Cores do app</string>
     <string name="photo_widget_home_share">Compartilhe o app</string>
     <string name="photo_widget_home_rate">Deixe a sua avaliação</string>
-    <string name="photo_widget_home_feedback">Envie o seu feedback</string>
     <string name="photo_widget_home_help">Algo não está funcionando?</string>
     <string name="photo_widget_home_common_issues">Problemas comuns</string>
     <string name="photo_widget_home_privacy_policy">Política de privacidade</string>
@@ -198,8 +197,6 @@
     <string name="help_article_body_3">Quando seu telefone reinicia, o Android envia um sinal para os aplicativos para notificá-los, permitindo que eles reiniciem sozinhos. Infelizmente, alguns fabricantes de dispositivos (como Xiaomi, Redmi, Huawei e outros) bloqueiam esse sinal.\n\nPara ativar essa funcionalidade, altere a permissão \"Início Automático\" no seu aplicativo de segurança.</string>
     <string name="help_article_title_4">O widget está muito pequeno</string>
     <string name="help_article_body_4">Após adicionar o widget à sua tela inicial, você pode pressioná-lo por alguns segundos para revelar a opção de tamanho. Em seguida, arraste as bordas para ajustá-lo ao tamanho desejado.</string>
-    <string name="help_article_footer">Encontrou algum outro problema?</string>
-    <string name="help_email_body">Escreva a sua mensagem abaixo. Se estiver relatando um problema, tente descrever o que você estava fazendo quando o problema aconteceu.</string>
     <string name="restriction_warning_hint">A atividade em segundo plano está restrita. Os widgets podem não funcionar corretamente. Toque para saber mais.</string>
     <string name="restriction_warning_dialog_title">Restrições de execução em segundo plano e otimização de bateria</string>
     <string name="restriction_warning_dialog_body_1">O Material Photo Widget precisa ser executado em segundo plano para atualizar seus widgets. Ele só roda quando necessário, mas se o uso da bateria estiver definido como \"otimizado\", o Android pode interromper o aplicativo, fazendo com que os widgets parem de funcionar corretamente.</string>

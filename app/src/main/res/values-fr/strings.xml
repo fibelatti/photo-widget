@@ -14,7 +14,6 @@
     <string name="photo_widget_home_dynamic_colors">Couleurs de l\'application</string>
     <string name="photo_widget_home_share">Partager l\'application</string>
     <string name="photo_widget_home_rate">Écrire un avis</string>
-    <string name="photo_widget_home_feedback">Envoyer vos commentaires</string>
     <string name="photo_widget_home_help">Quelque chose ne fonctionne pas ?</string>
     <string name="photo_widget_home_common_issues">Problèmes courants</string>
     <string name="photo_widget_home_privacy_policy">Politique de confidentialité</string>
@@ -198,8 +197,6 @@
     <string name="help_article_body_3">Lors du redémarrage de votre téléphone, Android envoie un signal aux applications pour les notifier afin qu\'elles puissent redémarrer elles-mêmes. Malheureusement, certains fabricants (comme Xiaomi, Redmi, Huawei, et d\'autres) bloquent ce signal.\n\nPour activer cette fonctionnalité, modifiez l\'autorisation \"Démarrage automatique\" dans votre application de sécurité.</string>
     <string name="help_article_title_4">La taille du widget est trop petite</string>
     <string name="help_article_body_4">Après avoir ajouté le widget à votre écran d\'accueil, vous pouvez appuyer longuement dessus pour faire apparaître l\'option de redimensionnement. Ensuite, faites glisser ses bordures pour l\'ajuster à la taille souhaitée.</string>
-    <string name="help_article_footer">Autre chose ne fonctionne pas ?</string>
-    <string name="help_email_body">Rédigez votre message ci-dessous. Si vous signalez un problème, essayez de décrire ce que vous faisiez lorsque le problème est survenu.</string>
     <string name="restriction_warning_hint">L\'activité en arrière-plan est restreinte. Les widgets peuvent ne pas fonctionner correctement. Appuyez pour en savoir plus.</string>
     <string name="restriction_warning_dialog_title">Restrictions d\'activité en arrière-plan et optimisation de la batterie</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget doit s\'exécuter en arrière-plan pour mettre à jour vos widgets. Il ne fonctionne que lorsque c\'est nécessaire, mais si l\'utilisation de la batterie est définie sur \"optimisée\", Android peut arrêter l\'application, ce qui peut empêcher les widgets de fonctionner correctement.</string>

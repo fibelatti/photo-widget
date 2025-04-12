@@ -14,7 +14,6 @@
     <string name="photo_widget_home_dynamic_colors">Uygulama renkleri</string>
     <string name="photo_widget_home_share">Uygulamayı paylaş</string>
     <string name="photo_widget_home_rate">Yorum yaz</string>
-    <string name="photo_widget_home_feedback">Geri bildiriminizi gönderin</string>
     <string name="photo_widget_home_help">Bir şey mi çalışmıyor?</string>
     <string name="photo_widget_home_common_issues">Yaygın sorunlar</string>
     <string name="photo_widget_home_privacy_policy">Gizlilik politikası</string>
@@ -198,8 +197,6 @@
     <string name="help_article_body_3">Telefonunuz yeniden başlatıldığında, Android uygulamalara kendilerini yeniden başlatmaları için bir sinyal gönderir. Ne yazık ki, bazı cihaz üreticileri (Xiaomi, Redmi, Huawei ve diğerleri gibi) bu sinyali engeller.\n\nBu işlevi etkinleştirmek için güvenlik uygulamanızdaki \"Otomatik Başlatma\" iznini değiştirin.</string>
     <string name="help_article_title_4">Widget boyutu çok küçük</string>
     <string name="help_article_body_4">Widget\'ı ana ekranınıza ekledikten sonra, yeniden boyutlandırma seçeneğini açmak için uzun basabilirsiniz. Ardından, kenarlarını sürükleyerek istediğiniz boyuta ayarlayın.</string>
-    <string name="help_article_footer">Başka bir şey mi çalışmıyor?</string>
-    <string name="help_email_body">Mesajınızı aşağıya yazın. Bir sorun bildiriyorsanız, sorun oluştuğunda ne yaptığınızı açıklamaya çalışın.</string>
     <string name="restriction_warning_hint">Arka plan etkinliği kısıtlandı. Widget\'lar düzgün çalışmayabilir. Daha fazla bilgi için dokunun.</string>
     <string name="restriction_warning_dialog_title">Arka plan çalıştırma kısıtlamaları ve pil optimizasyonu</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget, widget\'larınızı güncellemek için arka planda çalışmalıdır. Sadece gerektiğinde çalışır, ancak pil kullanımı \"optimize edilmiş\" olarak ayarlanmışsa, Android uygulamayı durdurabilir ve bu da widget\'ların düzgün çalışmamasına neden olabilir.</string>

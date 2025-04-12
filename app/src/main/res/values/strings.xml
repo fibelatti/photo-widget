@@ -15,7 +15,6 @@
     <string name="photo_widget_home_dynamic_colors">App colors</string>
     <string name="photo_widget_home_share">Share the app</string>
     <string name="photo_widget_home_rate">Write a review</string>
-    <string name="photo_widget_home_feedback">Send your feedback</string>
     <string name="photo_widget_home_help">Something is not working?</string>
     <string name="photo_widget_home_common_issues">Common issues</string>
     <string name="photo_widget_home_privacy_policy">Privacy policy</string>
@@ -243,10 +242,6 @@
 
     <string name="help_article_title_4">The widget size is too small</string>
     <string name="help_article_body_4">After adding the widget to your home screen, you can long press it to reveal the resizing option. Then, drag its borders to adjust it to your desired size.</string>
-
-    <string name="help_article_footer">Something else is not working?</string>
-
-    <string name="help_email_body">Write your message below. If you\'re reporting an issue, try to describe what you were doing when the problem happened.</string>
 
     <string name="restriction_warning_hint">Background activity is restricted. Widgets may not work correctly. Tap to learn more.</string>
     <string name="restriction_warning_dialog_title">Background work restrictions and battery optimization</string>

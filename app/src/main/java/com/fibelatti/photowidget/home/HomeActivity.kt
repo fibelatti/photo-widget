@@ -2,7 +2,6 @@ package com.fibelatti.photowidget.home
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.widget.Toast
@@ -27,7 +26,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.fibelatti.photowidget.BuildConfig
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.configure.appWidgetId
@@ -261,10 +259,6 @@ class HomeActivity : AppCompatActivity() {
                     dismiss()
                     showBackgroundRestrictionDialog()
                 },
-                onSendFeedbackClick = {
-                    dismiss()
-                    sendFeedback()
-                },
             )
         }.show()
     }
@@ -345,27 +339,6 @@ class HomeActivity : AppCompatActivity() {
             .setChooserTitle(R.string.share_title)
             .setText(getString(R.string.share_text, APP_URL))
             .startChooser()
-    }
-
-    private fun sendFeedback() {
-        val emailBody = StringBuilder().apply {
-            appendLine("Android Version: ${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})")
-            appendLine("Device Manufacturer: ${Build.MANUFACTURER}")
-            appendLine("---")
-            appendLine(getString(R.string.help_email_body))
-            appendLine()
-        }
-
-        val emailIntent = Intent(Intent.ACTION_SENDTO, "mailto:".toUri()).apply {
-            putExtra(Intent.EXTRA_EMAIL, arrayOf("appsupport@fibelatti.com"))
-            putExtra(
-                Intent.EXTRA_SUBJECT,
-                "Material Photo Widget (${BuildConfig.VERSION_NAME}) — Feature request / Bug report",
-            )
-            putExtra(Intent.EXTRA_TEXT, emailBody.toString())
-        }
-
-        startActivity(Intent.createChooser(emailIntent, getString(R.string.photo_widget_home_feedback)))
     }
 
     private fun rateApp() {

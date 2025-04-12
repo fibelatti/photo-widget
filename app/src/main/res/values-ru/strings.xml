@@ -14,7 +14,6 @@
     <string name="photo_widget_home_dynamic_colors">Цвета приложения</string>
     <string name="photo_widget_home_share">Поделиться приложением</string>
     <string name="photo_widget_home_rate">Оставить отзыв</string>
-    <string name="photo_widget_home_feedback">Отправить отзыв</string>
     <string name="photo_widget_home_help">Что-то не работает?</string>
     <string name="photo_widget_home_common_issues">Распространённые проблемы</string>
     <string name="photo_widget_home_privacy_policy">Политика конфиденциальности</string>
@@ -210,8 +209,6 @@
     <string name="help_article_body_3">Когда ваш телефон перезагружается, Android отправляет сигнал приложениям, чтобы уведомить их, чтобы они могли перезапуститься. К сожалению, некоторые производители устройств (такие как Xiaomi, Redmi, Huawei и другие) блокируют этот сигнал.\n\nЧтобы включить эту функциональность, измените разрешение «Автозапуск» в вашем приложении безопасности.</string>
     <string name="help_article_title_4">Размер виджета слишком мал</string>
     <string name="help_article_body_4">После добавления виджета на главный экран вы можете нажать на него и удерживать, чтобы открыть опцию изменения размера. Затем перетащите его границы, чтобы настроить его на нужный размер.</string>
-    <string name="help_article_footer">Что-то еще не работает?</string>
-    <string name="help_email_body">Напишите свое сообщение ниже. Если вы сообщаете о проблеме, постарайтесь описать, что вы делали, когда возникла проблема.</string>
     <string name="restriction_warning_hint">Фоновая активность ограничена. Виджеты могут работать некорректно. Нажмите, чтобы узнать больше.</string>
     <string name="restriction_warning_dialog_title">Ограничения фоновой работы и оптимизация батареи</string>
     <string name="restriction_warning_dialog_body_1">Приложению Material Photo Widget необходимо работать в фоновом режиме для обновления виджетов. Оно запускается только при необходимости, но если использование батареи установлено как \"оптимизированное\", Android может остановить приложение, что приведет к некорректной работе виджетов.</string>
