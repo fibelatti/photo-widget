@@ -173,8 +173,8 @@
     <string name="photo_widget_configure_tap_action_none">Nenhuma</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">Ver a foto em tela cheia</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">Ver com o aplicativo de galeria</string>
-    <string name="photo_widget_configure_tap_action_view_next_photo">Escolher a próxima foto</string>
-    <string name="photo_widget_configure_tap_action_choose_next_photo">Choose next photo</string>
+    <string name="photo_widget_configure_tap_action_view_next_photo">Ver a próxima foto</string>
+    <string name="photo_widget_configure_tap_action_choose_next_photo">Escolher a próxima foto</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Abrir um app</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Abrir um link</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Habilitar/desabilitar ciclo</string>
