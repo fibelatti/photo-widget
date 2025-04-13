@@ -285,9 +285,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 return
             }
 
-            val shouldDisableTap = photoWidget.tapAction is PhotoWidgetTapAction.ToggleCycling &&
-                photoWidget.tapAction.disableTap &&
-                isCyclePaused
+            val shouldDisableTap = (photoWidget.tapActionDisableTap && isCyclePaused) ||
+                photoWidget.tapActionDisableSideActions
 
             views.setOnClickPendingIntent(
                 R.id.view_tap_left,

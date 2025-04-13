@@ -5,15 +5,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -211,99 +207,82 @@ private fun TapActionPickerContent(
             }
         }
 
-        AnimatedContent(
-            targetState = tapAction,
-            transitionSpec = { fadeIn() togetherWith fadeOut() },
-            label = "TapAction_CustomOptions",
-        ) { value ->
-            val customOptionModifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp)
+        val customOptionModifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp)
 
-            when (value) {
-                is PhotoWidgetTapAction.None -> Unit
+        when (val value = tapAction) {
+            is PhotoWidgetTapAction.None -> Unit
 
-                is PhotoWidgetTapAction.ViewFullScreen -> {
-                    Column(
-                        modifier = customOptionModifier,
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        Toggle(
-                            title = stringResource(id = R.string.photo_widget_configure_tap_action_increase_brightness),
-                            checked = value.increaseBrightness,
-                            onCheckedChange = { tapAction = value.copy(increaseBrightness = it) },
-                        )
+            is PhotoWidgetTapAction.ViewFullScreen -> {
+                ViewFullScreenCustomizationContent(
+                    value = value,
+                    onValueChange = { tapAction = it },
+                    modifier = customOptionModifier,
+                )
+            }
 
-                        Toggle(
-                            title = stringResource(R.string.photo_widget_configure_tap_action_view_original_photo),
-                            checked = value.viewOriginalPhoto,
-                            onCheckedChange = { tapAction = value.copy(viewOriginalPhoto = it) },
-                        )
-                    }
-                }
+            is PhotoWidgetTapAction.ViewInGallery -> {
+                Column(
+                    modifier = customOptionModifier,
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.photo_widget_configure_tap_action_gallery_description),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
 
-                is PhotoWidgetTapAction.ViewInGallery -> {
-                    Column(
-                        modifier = customOptionModifier,
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.photo_widget_configure_tap_action_gallery_description),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            style = MaterialTheme.typography.bodyMedium,
-                        )
-
-                        AppPicker(
-                            onChooseApp = onChooseGalleryAppClick,
-                            currentAppShortcut = currentGalleryApp,
-                        )
-                    }
-                }
-
-                is PhotoWidgetTapAction.ViewNextPhoto -> Unit
-
-                is PhotoWidgetTapAction.ChooseNextPhoto -> Unit
-
-                is PhotoWidgetTapAction.ToggleCycling -> {
-                    Column(
-                        modifier = customOptionModifier,
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        Text(
-                            text = stringResource(
-                                id = R.string.photo_widget_configure_tap_action_toggle_cycling_description,
-                            ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            style = MaterialTheme.typography.bodyMedium,
-                        )
-
-                        Toggle(
-                            title = stringResource(id = R.string.photo_widget_configure_tap_action_disable_tap),
-                            checked = value.disableTap,
-                            onCheckedChange = { tapAction = value.copy(disableTap = it) },
-                        )
-                    }
-                }
-
-                is PhotoWidgetTapAction.AppShortcut -> {
                     AppPicker(
-                        onChooseApp = onChooseAppShortcutClick,
-                        currentAppShortcut = currentAppShortcut,
-                        modifier = customOptionModifier,
+                        onChooseApp = onChooseGalleryAppClick,
+                        currentAppShortcut = currentGalleryApp,
                     )
                 }
+            }
 
-                is PhotoWidgetTapAction.UrlShortcut -> {
-                    TextField(
-                        value = urlShortcut,
-                        onValueChange = { newValue -> urlShortcut = newValue },
-                        modifier = customOptionModifier,
-                        placeholder = { Text(text = "https://...") },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                        singleLine = true,
-                        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+            is PhotoWidgetTapAction.ViewNextPhoto -> Unit
+
+            is PhotoWidgetTapAction.ChooseNextPhoto -> Unit
+
+            is PhotoWidgetTapAction.ToggleCycling -> {
+                Column(
+                    modifier = customOptionModifier,
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Text(
+                        text = stringResource(
+                            id = R.string.photo_widget_configure_tap_action_toggle_cycling_description,
+                        ),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+
+                    Toggle(
+                        title = stringResource(id = R.string.photo_widget_configure_tap_action_disable_tap),
+                        checked = value.disableTap,
+                        onCheckedChange = { tapAction = value.copy(disableTap = it) },
                     )
                 }
+            }
+
+            is PhotoWidgetTapAction.AppShortcut -> {
+                AppPicker(
+                    onChooseApp = onChooseAppShortcutClick,
+                    currentAppShortcut = currentAppShortcut,
+                    modifier = customOptionModifier,
+                )
+            }
+
+            is PhotoWidgetTapAction.UrlShortcut -> {
+                TextField(
+                    value = urlShortcut,
+                    onValueChange = { newValue -> urlShortcut = newValue },
+                    modifier = customOptionModifier,
+                    placeholder = { Text(text = "https://...") },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    singleLine = true,
+                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                )
             }
         }
 
@@ -498,6 +477,48 @@ private fun AppPicker(
                 style = MaterialTheme.typography.labelLarge,
             )
         }
+    }
+}
+
+@Composable
+private fun ViewFullScreenCustomizationContent(
+    value: PhotoWidgetTapAction.ViewFullScreen,
+    onValueChange: (PhotoWidgetTapAction.ViewFullScreen) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Toggle(
+            title = stringResource(id = R.string.photo_widget_configure_tap_action_increase_brightness),
+            checked = value.increaseBrightness,
+            onCheckedChange = { onValueChange(value.copy(increaseBrightness = it)) },
+        )
+
+        Toggle(
+            title = stringResource(R.string.photo_widget_configure_tap_action_view_original_photo),
+            checked = value.viewOriginalPhoto,
+            onCheckedChange = { onValueChange(value.copy(viewOriginalPhoto = it)) },
+        )
+
+        Toggle(
+            title = stringResource(R.string.photo_widget_configure_tap_action_do_not_shuffle),
+            checked = value.noShuffle,
+            onCheckedChange = { onValueChange(value.copy(noShuffle = it)) },
+        )
+
+        Toggle(
+            title = stringResource(R.string.photo_widget_configure_tap_action_keep_current_photo),
+            checked = value.keepCurrentPhoto,
+            onCheckedChange = { onValueChange(value.copy(keepCurrentPhoto = it)) },
+        )
+
+        Toggle(
+            title = stringResource(R.string.photo_widget_configure_tap_action_disable_side_actions),
+            checked = value.disableSideActions,
+            onCheckedChange = { onValueChange(value.copy(disableSideActions = it)) },
+        )
     }
 }
 

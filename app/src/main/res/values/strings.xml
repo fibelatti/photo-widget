@@ -219,6 +219,9 @@
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Automatically increase brightness</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">View original photo (no crop or rotation)</string>
+    <string name="photo_widget_configure_tap_action_do_not_shuffle">Do not shuffle when using the viewer buttons</string>
+    <string name="photo_widget_configure_tap_action_keep_current_photo">Do not change the current photo when using the viewer buttons</string>
+    <string name="photo_widget_configure_tap_action_disable_side_actions">Disable tapping on the edges on the home screen</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Available for folder-based widgets. Photo-based widgets will use \"View photo in full screen\" instead. You may also choose which gallery app to use.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Choose app</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Disable tapping on the edges while cycling is paused</string>

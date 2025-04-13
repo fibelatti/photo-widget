@@ -12,36 +12,63 @@ class CyclePhotoUseCase @Inject constructor(
     private val photoWidgetStorage: PhotoWidgetStorage,
 ) {
 
-    suspend operator fun invoke(appWidgetId: Int, flipBackwards: Boolean = false) {
-        Timber.d("Cycling photo (appWidgetId=$appWidgetId, flipBackwards=$flipBackwards)")
+    /**
+     * Cycles through the photos in the widget.
+     *
+     * @param appWidgetId The ID of the widget to update.
+     * @param flipBackwards Whether to cycle backwards or forwards.
+     * @param noShuffle Whether to disregard the widget shuffle setting.
+     * @param skipSaving Whether to skip saving the result of the operation.
+     * @param currentPhoto The ID of the current photo being displayed by the widget.
+     * @return The ID of the new photo to display.
+     */
+    suspend operator fun invoke(
+        appWidgetId: Int,
+        flipBackwards: Boolean = false,
+        noShuffle: Boolean = false,
+        skipSaving: Boolean = false,
+        currentPhoto: String? = null,
+    ): String {
+        Timber.d(
+            "Cycling photo (" +
+                "appWidgetId=$appWidgetId," +
+                "flipBackwards=$flipBackwards," +
+                "noShuffle=$noShuffle," +
+                "skipSaving=$skipSaving," +
+                "currentPhoto=$currentPhoto" +
+                ")",
+        )
 
         val widgetPhotos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
             .first()
             .current
             .map { it.photoId }
 
-        if (widgetPhotos.size < 2) return
+        if (widgetPhotos.size < 2) return widgetPhotos.first()
 
         val displayedPhotos = photoWidgetStorage.getDisplayedPhotoIds(appWidgetId = appWidgetId).toMutableSet()
 
-        if (!flipBackwards && displayedPhotos.size >= widgetPhotos.size) {
+        if (!flipBackwards && displayedPhotos.size >= widgetPhotos.size && !skipSaving) {
             Timber.d("All photos displayed, starting over")
             photoWidgetStorage.clearDisplayedPhotos(appWidgetId = appWidgetId)
             displayedPhotos.clear()
         }
 
         val currentPhotoId: suspend () -> String? = {
-            photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)
+            currentPhoto
+                ?: photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)
                 ?: widgetPhotos.getOrNull(photoWidgetStorage.getWidgetIndex(appWidgetId = appWidgetId))
         }
-        val shuffle: Boolean = photoWidgetStorage.getWidgetShuffle(appWidgetId = appWidgetId)
+        val shuffle: Boolean = photoWidgetStorage.getWidgetShuffle(appWidgetId = appWidgetId) && !noShuffle
         val nextRandomPhoto: () -> String = { widgetPhotos.subtract(displayedPhotos).random() }
 
         val newPhotoId: String = when {
             currentPhotoId() == null -> widgetPhotos.first()
 
             shuffle && flipBackwards -> {
-                photoWidgetStorage.clearMostRecentPhoto(appWidgetId = appWidgetId)
+                if (!skipSaving) {
+                    photoWidgetStorage.clearMostRecentPhoto(appWidgetId = appWidgetId)
+                }
                 currentPhotoId() ?: nextRandomPhoto()
             }
 
@@ -61,10 +88,13 @@ class CyclePhotoUseCase @Inject constructor(
             }
         }
 
-        photoWidgetStorage.saveDisplayedPhoto(appWidgetId = appWidgetId, photoId = newPhotoId)
-
         Timber.d("Updating current photo to $newPhotoId")
 
-        PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+        if (!skipSaving) {
+            photoWidgetStorage.saveDisplayedPhoto(appWidgetId = appWidgetId, photoId = newPhotoId)
+            PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+        }
+
+        return newPhotoId
     }
 }

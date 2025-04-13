@@ -382,6 +382,9 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 is PhotoWidgetTapAction.ViewFullScreen -> {
                     putBoolean("${PreferencePrefix.INCREASE_BRIGHTNESS}$appWidgetId", tapAction.increaseBrightness)
                     putBoolean("${PreferencePrefix.VIEW_ORIGINAL_PHOTO}$appWidgetId", tapAction.viewOriginalPhoto)
+                    putBoolean("${PreferencePrefix.NO_SHUFFLE}$appWidgetId", tapAction.noShuffle)
+                    putBoolean("${PreferencePrefix.KEEP_CURRENT_PHOTO}$appWidgetId", tapAction.keepCurrentPhoto)
+                    putBoolean("${PreferencePrefix.DISABLE_SIDE_ACTIONS}$appWidgetId", tapAction.disableSideActions)
                 }
 
                 is PhotoWidgetTapAction.ViewInGallery -> {
@@ -414,6 +417,9 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 is PhotoWidgetTapAction.ViewFullScreen -> tapAction.copy(
                     increaseBrightness = getBoolean("${PreferencePrefix.INCREASE_BRIGHTNESS}$appWidgetId", false),
                     viewOriginalPhoto = getBoolean("${PreferencePrefix.VIEW_ORIGINAL_PHOTO}$appWidgetId", false),
+                    noShuffle = getBoolean("${PreferencePrefix.NO_SHUFFLE}$appWidgetId", false),
+                    keepCurrentPhoto = getBoolean("${PreferencePrefix.KEEP_CURRENT_PHOTO}$appWidgetId", false),
+                    disableSideActions = getBoolean("${PreferencePrefix.DISABLE_SIDE_ACTIONS}$appWidgetId", false),
                 )
 
                 is PhotoWidgetTapAction.ViewInGallery -> tapAction.copy(
@@ -527,6 +533,9 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         TAP_ACTION(value = "appwidget_tap_action_"),
         INCREASE_BRIGHTNESS(value = "appwidget_increase_brightness_"),
         VIEW_ORIGINAL_PHOTO(value = "appwidget_view_original_photo_"),
+        NO_SHUFFLE(value = "appwidget_no_shuffle_"),
+        KEEP_CURRENT_PHOTO(value = "appwidget_keep_current_photo_"),
+        DISABLE_SIDE_ACTIONS(value = "appwidget_disable_side_actions_"),
         APP_SHORTCUT(value = "appwidget_app_shortcut_"),
         URL_SHORTCUT(value = "appwidget_url_shortcut_"),
         PREFERRED_GALLERY_APP(value = "appwidget_preferred_gallery_app_"),

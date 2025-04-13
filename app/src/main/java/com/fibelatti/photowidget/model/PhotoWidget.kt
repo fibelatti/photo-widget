@@ -36,11 +36,23 @@ data class PhotoWidget(
     val canShuffle: Boolean
         get() = photos.size > 1
 
-    val increaseBrightness: Boolean
+    val tapActionIncreaseBrightness: Boolean
         get() = (tapAction as? PhotoWidgetTapAction.ViewFullScreen)?.increaseBrightness == true
 
-    val viewOriginalPhoto: Boolean
+    val tapActionViewOriginalPhoto: Boolean
         get() = (tapAction as? PhotoWidgetTapAction.ViewFullScreen)?.viewOriginalPhoto == true
+
+    val tapActionNoShuffle: Boolean
+        get() = (tapAction as? PhotoWidgetTapAction.ViewFullScreen)?.noShuffle == true
+
+    val tapActionKeepCurrentPhoto: Boolean
+        get() = (tapAction as? PhotoWidgetTapAction.ViewFullScreen)?.keepCurrentPhoto == true
+
+    val tapActionDisableSideActions: Boolean
+        get() = (tapAction as? PhotoWidgetTapAction.ViewFullScreen)?.disableSideActions == true
+
+    val tapActionDisableTap: Boolean
+        get() = (tapAction as? PhotoWidgetTapAction.ToggleCycling)?.disableTap == true
 
     companion object {
 

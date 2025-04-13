@@ -181,6 +181,9 @@
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Toque para pausar a rotação automática de fotos. Toque novamente para retomar. Esta ação não tem efeito caso o widget esteja travado.</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Aumentar o brilho automaticamente</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Ver a foto original (sem corte ou rotação)</string>
+    <string name="photo_widget_configure_tap_action_do_not_shuffle">Não embaralhar ao usar os botões do visualizador</string>
+    <string name="photo_widget_configure_tap_action_keep_current_photo">Não alterar a foto atual ao usar os botões do visualizador</string>
+    <string name="photo_widget_configure_tap_action_disable_side_actions">Desativar toques nas bordas da tela inicial</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Disponível para widgets baseados em pastas. Widgets baseados em fotos usarão \"Ver a foto em tela cheia\" em vez disso. Você também pode escolher qual aplicativo de galeria usar.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Escolher o app</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Desabilitar o toque nas bordas enquanto o ciclo estiver pausado</string>

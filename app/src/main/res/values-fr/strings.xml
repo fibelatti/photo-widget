@@ -181,6 +181,9 @@
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Appuyez pour suspendre le défilement automatique des photos. Appuyez à nouveau pour reprendre. Cette action n\'a aucun effet si le widget est verrouillé.</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Augmenter automatiquement la luminosité</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Voir la photo originale (sans recadrage ni rotation)</string>
+    <string name="photo_widget_configure_tap_action_do_not_shuffle">Ne pas mélanger lors de l\'utilisation des boutons de la visionneuse</string>
+    <string name="photo_widget_configure_tap_action_keep_current_photo">Ne pas modifier la photo actuelle lors de l\'utilisation des boutons de la visionneuse</string>
+    <string name="photo_widget_configure_tap_action_disable_side_actions">Désactiver les appuis sur le bord de l\'écran d\'accueil</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Disponible pour les widgets basés sur des dossiers. Les widgets basés sur des photos utiliseront plutôt « Afficher la photo en plein écran ». Vous pouvez également choisir l\'application de galerie à utiliser.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Choisir une application</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Désactiver les bords tactiles pendant que le cycle est en pause</string>

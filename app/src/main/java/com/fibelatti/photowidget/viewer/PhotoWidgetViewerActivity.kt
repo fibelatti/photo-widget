@@ -71,7 +71,7 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
 
                 state.photoWidget?.let { photoWidget ->
                     LaunchedEffect(Unit) {
-                        if (photoWidget.increaseBrightness) {
+                        if (photoWidget.tapActionIncreaseBrightness) {
                             setScreenBrightness(value = 0.9f)
                         }
                     }
@@ -79,13 +79,13 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
                     ScreenContent(
                         photo = photoWidget.currentPhoto,
                         isLoading = photoWidget.isLoading,
-                        viewOriginalPhoto = photoWidget.viewOriginalPhoto,
-                        aspectRatio = if (photoWidget.viewOriginalPhoto) {
+                        viewOriginalPhoto = photoWidget.tapActionViewOriginalPhoto,
+                        aspectRatio = if (photoWidget.tapActionViewOriginalPhoto) {
                             PhotoWidgetAspectRatio.ORIGINAL
                         } else {
                             photoWidget.aspectRatio
                         },
-                        onDismiss = { finish() },
+                        onDismiss = ::finish,
                         showFlipControls = state.showMoveControls,
                         onPreviousClick = { viewModel.flip(backwards = true) },
                         onNextClick = { viewModel.flip() },

@@ -193,6 +193,9 @@
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Нажмите, чтобы приостановить автоматическую смену фото. Нажмите снова, чтобы возобновить. Это действие не имеет эффекта, если виджет заблокирован.</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Автоматически увеличить яркость</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Просмотреть оригинальную фотографию (без обрезки или поворота)</string>
+    <string name="photo_widget_configure_tap_action_do_not_shuffle">Не перемешивать при использовании кнопок просмотра</string>
+    <string name="photo_widget_configure_tap_action_keep_current_photo">Не менять текущую фотографию при использовании кнопок просмотра</string>
+    <string name="photo_widget_configure_tap_action_disable_side_actions">Отключить нажатия на края главного экрана</string>
     <string name="photo_widget_configure_tap_action_gallery_description">Доступно для виджетов на основе папок. Виджеты на основе фотографий будут использовать \"Просмотр фото на весь экран\" вместо этого. Вы также можете выбрать, какое приложение галереи использовать.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Выбрать приложение</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Отключить сенсорные края во время паузы цикла</string>

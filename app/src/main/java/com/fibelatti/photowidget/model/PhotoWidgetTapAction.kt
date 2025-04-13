@@ -17,7 +17,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     data object None : PhotoWidgetTapAction {
 
         @IgnoredOnParcel
-        override val label = R.string.photo_widget_configure_tap_action_none
+        override val label: Int = R.string.photo_widget_configure_tap_action_none
 
         @IgnoredOnParcel
         override val serializedName: String = "NONE"
@@ -27,10 +27,13 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     data class ViewFullScreen(
         val increaseBrightness: Boolean = false,
         val viewOriginalPhoto: Boolean = false,
+        val noShuffle: Boolean = false,
+        val keepCurrentPhoto: Boolean = false,
+        val disableSideActions: Boolean = false,
     ) : PhotoWidgetTapAction {
 
         @IgnoredOnParcel
-        override val label = R.string.photo_widget_configure_tap_action_view_full_screen
+        override val label: Int = R.string.photo_widget_configure_tap_action_view_full_screen
 
         @IgnoredOnParcel
         override val serializedName: String = "VIEW_FULL_SCREEN"
@@ -42,7 +45,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     ) : PhotoWidgetTapAction {
 
         @IgnoredOnParcel
-        override val label = R.string.photo_widget_configure_tap_action_view_in_gallery
+        override val label: Int = R.string.photo_widget_configure_tap_action_view_in_gallery
 
         @IgnoredOnParcel
         override val serializedName: String = "VIEW_IN_GALLERY"
@@ -52,7 +55,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     data object ViewNextPhoto : PhotoWidgetTapAction {
 
         @IgnoredOnParcel
-        override val label = R.string.photo_widget_configure_tap_action_view_next_photo
+        override val label: Int = R.string.photo_widget_configure_tap_action_view_next_photo
 
         @IgnoredOnParcel
         override val serializedName: String = "VIEW_NEXT_PHOTO"
@@ -62,7 +65,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     data object ChooseNextPhoto : PhotoWidgetTapAction {
 
         @IgnoredOnParcel
-        override val label = R.string.photo_widget_configure_tap_action_choose_next_photo
+        override val label: Int = R.string.photo_widget_configure_tap_action_choose_next_photo
 
         @IgnoredOnParcel
         override val serializedName: String = "CHOOSE_NEXT_PHOTO"
@@ -74,7 +77,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     ) : PhotoWidgetTapAction {
 
         @IgnoredOnParcel
-        override val label = R.string.photo_widget_configure_tap_action_app_shortcut
+        override val label: Int = R.string.photo_widget_configure_tap_action_app_shortcut
 
         @IgnoredOnParcel
         override val serializedName: String = "APP_SHORTCUT"
@@ -86,7 +89,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     ) : PhotoWidgetTapAction {
 
         @IgnoredOnParcel
-        override val label = R.string.photo_widget_configure_tap_action_url_shortcut
+        override val label: Int = R.string.photo_widget_configure_tap_action_url_shortcut
 
         @IgnoredOnParcel
         override val serializedName: String = "URL_SHORTCUT"
@@ -98,7 +101,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     ) : PhotoWidgetTapAction {
 
         @IgnoredOnParcel
-        override val label = R.string.photo_widget_configure_tap_action_toggle_cycling
+        override val label: Int = R.string.photo_widget_configure_tap_action_toggle_cycling
 
         @IgnoredOnParcel
         override val serializedName: String = "TOGGLE_CYCLING"

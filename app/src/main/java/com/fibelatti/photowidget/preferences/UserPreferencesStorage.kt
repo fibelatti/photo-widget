@@ -259,6 +259,9 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                     is PhotoWidgetTapAction.ViewFullScreen -> tapAction.copy(
                         increaseBrightness = getBoolean(Preference.DEFAULT_INCREASE_BRIGHTNESS.value, false),
                         viewOriginalPhoto = getBoolean(Preference.DEFAULT_VIEW_ORIGINAL_PHOTO.value, false),
+                        noShuffle = getBoolean(Preference.DEFAULT_NO_SHUFFLE.value, false),
+                        keepCurrentPhoto = getBoolean(Preference.DEFAULT_KEEP_CURRENT_PHOTO.value, false),
+                        disableSideActions = getBoolean(Preference.DEFAULT_DISABLE_SIDE_ACTIONS.value, false),
                     )
 
                     is PhotoWidgetTapAction.ViewInGallery -> tapAction.copy(
@@ -289,6 +292,9 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                     is PhotoWidgetTapAction.ViewFullScreen -> {
                         putBoolean(Preference.DEFAULT_INCREASE_BRIGHTNESS.value, value.increaseBrightness)
                         putBoolean(Preference.DEFAULT_VIEW_ORIGINAL_PHOTO.value, value.viewOriginalPhoto)
+                        putBoolean(Preference.DEFAULT_NO_SHUFFLE.value, value.noShuffle)
+                        putBoolean(Preference.DEFAULT_KEEP_CURRENT_PHOTO.value, value.keepCurrentPhoto)
+                        putBoolean(Preference.DEFAULT_DISABLE_SIDE_ACTIONS.value, value.disableSideActions)
                     }
 
                     is PhotoWidgetTapAction.ViewInGallery -> {
@@ -378,6 +384,9 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         DEFAULT_TAP_ACTION(value = "default_tap_action"),
         DEFAULT_INCREASE_BRIGHTNESS(value = "default_increase_brightness"),
         DEFAULT_VIEW_ORIGINAL_PHOTO(value = "default_view_original_photo"),
+        DEFAULT_NO_SHUFFLE(value = "default_no_shuffle"),
+        DEFAULT_KEEP_CURRENT_PHOTO(value = "default_keep_current_photo"),
+        DEFAULT_DISABLE_SIDE_ACTIONS(value = "default_disable_side_actions"),
         DEFAULT_APP_SHORTCUT(value = "default_app_shortcut"),
         DEFAULT_URL_SHORTCUT(value = "default_url_shortcut"),
         DEFAULT_PREFERRED_GALLERY_APP(value = "default_preferred_gallery_app"),
