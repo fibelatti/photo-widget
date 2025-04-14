@@ -152,8 +152,6 @@
     <string name="photo_widget_configure_interval_permission_dialog_title">Bu izin hakkında</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">Android, pil ömrünü optimize etmek için arka plan çalışmalarını kısıtlayabilir; bu da her fotoğraf arasındaki aralıkların uzamasıyla sonuçlanır.\n\nWidget\'ları tam olarak seçilen aralıkta güncellemek için ayarları açın ve alarmlar ile hatırlatıcılar ayarlamaya izin verin.</string>
     <string name="photo_widget_configure_interval_open_settings">Ayarları aç</string>
-    <string name="photo_widget_configure_roundness_warning">Android widget\'larının köşeleri yuvarlaktır ve kaldırılmaz. Yuvarlaklığı artırabilirsiniz, ancak tamamen kaldıramazsınız. Kare köşeler için farklı bir en-boy oranı seçin.</string>
-    <string name="photo_widget_configure_border_warning">Widget\'ın minimum yuvarlak köşeleri nedeniyle kenarlık kesiliyorsa, yuvarlaklığı artırabilirsiniz</string>
     <string name="photo_widget_configure_border">Kenarlık</string>
     <string name="photo_widget_configure_border_none">Yok</string>
     <string name="photo_widget_configure_border_dynamic">Dinamik</string>

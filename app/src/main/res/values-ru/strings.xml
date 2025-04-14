@@ -164,8 +164,6 @@
     <string name="photo_widget_configure_interval_permission_dialog_title">Об этом разрешении</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">Android может ограничивать фоновую работу, чтобы оптимизировать время работы аккумулятора, что приводит к увеличению интервалов между снимками.\n\nЧтобы обновлять виджеты точно с выбранным интервалом, откройте настройки и разрешите установку будильников и напоминаний.</string>
     <string name="photo_widget_configure_interval_open_settings">Открыть настройки</string>
-    <string name="photo_widget_configure_roundness_warning">Виджеты Android имеют закругленные углы, которые нельзя удалить. Вы можете увеличить закругление, но не убрать его полностью. Чтобы получить квадратные углы, выберите другой формат.</string>
-    <string name="photo_widget_configure_border_warning">Вы можете увеличить закругление, если рамка обрезается минимальным закруглением углов виджета</string>
     <string name="photo_widget_configure_border">Граница</string>
     <string name="photo_widget_configure_border_none">Нет</string>
     <string name="photo_widget_configure_border_dynamic">Динамичный</string>
