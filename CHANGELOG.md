@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.29.0] - 2025-04-14
+[v1.29.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.29.0
+
 ### Added
 
 * New tap action: choose the next photo

@@ -1,0 +1,7 @@
+This version brings the following updates:
+
+* New tap action: choose the next photo
+* New options to the "View photo in full screen" tap action
+* Fill widgets can no longer have their borders and corners customized
+
+Thanks for using the app!
