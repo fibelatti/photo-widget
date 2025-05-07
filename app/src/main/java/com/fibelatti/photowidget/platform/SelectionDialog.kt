@@ -1,7 +1,6 @@
 package com.fibelatti.photowidget.platform
 
 import android.content.Context
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -48,7 +47,6 @@ object SelectionDialog {
 }
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 private fun <T> SelectionDialogContent(
     title: String,
     options: List<T>,

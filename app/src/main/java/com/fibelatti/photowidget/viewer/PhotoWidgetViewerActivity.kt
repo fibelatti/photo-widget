@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.animateZoomBy
@@ -123,7 +122,6 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
 }
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 private fun ScreenContent(
     photo: LocalPhoto?,
     isLoading: Boolean,

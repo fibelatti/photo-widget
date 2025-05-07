@@ -2,7 +2,6 @@ package com.fibelatti.photowidget.configure
 
 import android.content.Context
 import android.net.Uri
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -75,7 +74,6 @@ object PhotoWidgetSourcePicker {
 }
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 private fun SourcePickerContent(
     currentSource: PhotoWidgetSource,
     syncedDir: Set<Uri>,

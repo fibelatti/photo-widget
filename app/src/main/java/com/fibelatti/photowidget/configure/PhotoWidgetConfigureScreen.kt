@@ -927,7 +927,7 @@ private fun PhotoPicker(
             currentPhotos.apply {
                 add(index = to.index, element = removeAt(index = from.index))
             }
-            localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+            localHaptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
         }
 
         LazyVerticalGrid(
@@ -956,11 +956,11 @@ private fun PhotoPicker(
                             .longPressDraggableHandle(
                                 enabled = canSort,
                                 onDragStarted = {
-                                    localHaptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    localHaptics.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate)
                                 },
                                 onDragStopped = {
                                     onReorderFinished(currentPhotos)
-                                    localHaptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    localHaptics.performHapticFeedback(HapticFeedbackType.GestureEnd)
                                 },
                             )
                             .aspectRatio(ratio = 1f)

@@ -185,7 +185,7 @@ private fun PhotoWidgetOffsetControls(
                             indication = null,
                         ) {
                             onVerticalValueChange(verticalValue - 1)
-                            localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                            localHaptics.performHapticFeedback(HapticFeedbackType.VirtualKey)
                         },
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
@@ -202,7 +202,7 @@ private fun PhotoWidgetOffsetControls(
                             indication = null,
                         ) {
                             onVerticalValueChange(verticalValue + 1)
-                            localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                            localHaptics.performHapticFeedback(HapticFeedbackType.VirtualKey)
                         },
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
@@ -227,7 +227,7 @@ private fun PhotoWidgetOffsetControls(
                             indication = null,
                         ) {
                             onHorizontalValueChange(horizontalValue - 1)
-                            localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                            localHaptics.performHapticFeedback(HapticFeedbackType.VirtualKey)
                         },
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
@@ -244,7 +244,7 @@ private fun PhotoWidgetOffsetControls(
                             indication = null,
                         ) {
                             onHorizontalValueChange(horizontalValue + 1)
-                            localHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                            localHaptics.performHapticFeedback(HapticFeedbackType.VirtualKey)
                         },
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 )

@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -27,6 +26,7 @@ import com.fibelatti.ui.foundation.copy
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
+import com.mikepenz.aboutlibraries.ui.compose.libraryColors
 import com.mikepenz.aboutlibraries.util.withJson
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,7 +48,6 @@ class OssLicensesActivity : AppCompatActivity() {
 }
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 private fun OssLicensesScreen(
     onBackNavClick: () -> Unit,
     modifier: Modifier = Modifier,
