@@ -38,6 +38,6 @@ fun AutoSizeText(
         autoSize = TextAutoSize.StepBased(
             minFontSize = minTextSize,
             maxFontSize = style.fontSize,
-        )
+        ),
     )
 }
