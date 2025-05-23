@@ -183,7 +183,9 @@
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Görüntüleyici düğmelerini kullanırken karıştırma yapmayın</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">Görüntüleyici düğmelerini kullanırken geçerli fotoğrafı değiştirme</string>
     <string name="photo_widget_configure_tap_action_disable_side_actions">Ana ekran kenar dokunuşlarını devre dışı bırak</string>
-    <string name="photo_widget_configure_tap_action_gallery_description">Klasör tabanlı widget\'lar için kullanılabilir. Fotoğraf tabanlı widget\'lar bunun yerine \"Fotoğrafı tam ekranda görüntüle\"yi kullanır. Ayrıca hangi galeri uygulamasını kullanacağınızı da seçebilirsiniz.</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Klasör tabanlı widget\'larla uyumlu olan fotoğraf tabanlı widget\'lar bunun yerine "Fotoğrafı tam ekranda görüntüle" seçeneğini kullanacaktır.</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_warning">Bu eylem, mevcut fotoğrafı galeri uygulamasıyla açar. Diğer fotoğrafları görüntülemek veya onlara geçmek mümkün olmayacaktır.</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Hangi galeri uygulamasını kullanacağınızı da seçebilirsiniz.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Uygulama seç</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Döngü duraklatıldığında dokunma kenarlarını devre dışı bırakın</string>
     <string name="photo_widget_configure_add_to_home">Ana ekrana ekle</string>

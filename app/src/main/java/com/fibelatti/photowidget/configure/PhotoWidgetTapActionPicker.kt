@@ -52,9 +52,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
@@ -228,7 +232,29 @@ private fun TapActionPickerContent(
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     Text(
-                        text = stringResource(id = R.string.photo_widget_configure_tap_action_gallery_description),
+                        text = buildAnnotatedString {
+                            append(
+                                stringResource(
+                                    R.string.photo_widget_configure_tap_action_gallery_description_compatibility,
+                                ),
+                            )
+                            appendLine()
+                            appendLine()
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                append(
+                                    stringResource(
+                                        R.string.photo_widget_configure_tap_action_gallery_description_warning,
+                                    ),
+                                )
+                            }
+                            appendLine()
+                            appendLine()
+                            append(
+                                stringResource(
+                                    R.string.photo_widget_configure_tap_action_gallery_description_app_selection,
+                                ),
+                            )
+                        },
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium,
                     )

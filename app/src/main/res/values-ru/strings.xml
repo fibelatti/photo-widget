@@ -195,7 +195,9 @@
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Не перемешивать при использовании кнопок просмотра</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">Не менять текущую фотографию при использовании кнопок просмотра</string>
     <string name="photo_widget_configure_tap_action_disable_side_actions">Отключить нажатия на края главного экрана</string>
-    <string name="photo_widget_configure_tap_action_gallery_description">Доступно для виджетов на основе папок. Виджеты на основе фотографий будут использовать \"Просмотр фото на весь экран\" вместо этого. Вы также можете выбрать, какое приложение галереи использовать.</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Совместимо с виджетами на основе папок, виджеты на основе фотографий будут использовать «Просмотреть фото на весь экран» вместо этого.</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_warning">Это действие откроет текущую фотографию через приложение галереи. Невозможно будет просматривать или переходить к другим фотографиям.</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Вы также можете выбрать, какое приложение галереи использовать.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Выбрать приложение</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Отключить сенсорные края во время паузы цикла</string>
     <string name="photo_widget_configure_add_to_home">Добавить на главный экран</string>
