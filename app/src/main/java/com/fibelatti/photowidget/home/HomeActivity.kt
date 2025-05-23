@@ -84,6 +84,7 @@ class HomeActivity : AppCompatActivity() {
                     onDataSaverClick = ::showDataSaverPicker,
                     onAppearanceClick = ::showAppearancePicker,
                     onColorsClick = ::showAppColorsPicker,
+                    onAppLanguageClick = ::showTranslationsDialog,
                     onSendFeedbackClick = ::showHelp,
                     onRateClick = ::rateApp,
                     onShareClick = ::shareApp,
@@ -331,6 +332,17 @@ class HomeActivity : AppCompatActivity() {
                 ActivityCompat.recreate(this)
             },
         )
+    }
+
+    private fun showTranslationsDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.translations_dialog_title)
+            .setMessage(R.string.translations_dialog_body)
+            .setPositiveButton(R.string.translations_dialog_positive_action) { _, _ ->
+                openUrl("https://crowdin.com/project/material-photo-widget")
+            }
+            .setNegativeButton(R.string.translations_dialog_negative_action) { _, _ -> }
+            .show()
     }
 
     private fun shareApp() {

@@ -12,6 +12,7 @@
     <string name="photo_widget_home_appearance">Uygulama teması</string>
     <string name="photo_widget_home_true_black_background">Gerçek siyah arka plan</string>
     <string name="photo_widget_home_dynamic_colors">Uygulama renkleri</string>
+    <string name="photo_widget_home_translations">Uygulama dili</string>
     <string name="photo_widget_home_share">Uygulamayı paylaş</string>
     <string name="photo_widget_home_rate">Yorum yaz</string>
     <string name="photo_widget_home_help">Bir şey mi çalışmıyor?</string>
@@ -205,6 +206,11 @@
     <string name="restriction_warning_dialog_body_3">Bazı telefonlar daha da kısıtlayıcı olabilir ve uygulamanın yeniden başlatmadan sonra otomatik olarak başlamasını engelleyebilir. Ayarlar cihaza göre değişir — özel talimatlar için https://dontkillmyapp.com adresini ziyaret edin.</string>
     <string name="restriction_warning_open_app_settings">Uygulama ayarlarını aç</string>
     <string name="restriction_warning_open_power_settings">Güç ayarlarını aç</string>
+    <!-- Translations -->
+    <string name="translations_dialog_title">Kendi dilinize çeviriye yardım edin!</string>
+    <string name="translations_dialog_body">Bu uygulama birkaç dili destekliyor ve sizin yardımınızla daha da iyi olabilir. Otomatik çeviriler her zaman doğru olmayabilir, bu yüzden daha fazla dili birlikte ekleyebiliriz.</string>
+    <string name="translations_dialog_positive_action">Crowdin\'i Aç</string>
+    <string name="translations_dialog_negative_action">Şimdi değil</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Yakınlaştırmak için kıstır</string>
     <string name="photo_widget_viewer_actions_drag">Taşımak için sürükle</string>

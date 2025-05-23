@@ -12,6 +12,7 @@
     <string name="photo_widget_home_appearance">Тема приложения</string>
     <string name="photo_widget_home_true_black_background">Настоящий черный фон</string>
     <string name="photo_widget_home_dynamic_colors">Цвета приложения</string>
+    <string name="photo_widget_home_translations">Язык приложения</string>
     <string name="photo_widget_home_share">Поделиться приложением</string>
     <string name="photo_widget_home_rate">Оставить отзыв</string>
     <string name="photo_widget_home_help">Что-то не работает?</string>
@@ -217,6 +218,11 @@
     <string name="restriction_warning_dialog_body_3">Некоторые телефоны имеют еще более строгие ограничения и могут блокировать автоматический запуск приложения после перезагрузки. Настройки зависят от устройства — посетите https://dontkillmyapp.com для получения конкретных инструкций.</string>
     <string name="restriction_warning_open_app_settings">Открыть настройки приложения</string>
     <string name="restriction_warning_open_power_settings">Открыть настройки питания</string>
+    <!-- Translations -->
+    <string name="translations_dialog_title">Помогите перевести на ваш язык!</string>
+    <string name="translations_dialog_body">Это приложение поддерживает несколько языков, и ваша помощь сделает его еще лучше. Автоматический перевод не всегда точен, поэтому мы можем работать вместе как сообщество, чтобы добавить больше языков.</string>
+    <string name="translations_dialog_positive_action">Открыть Crowdin</string>
+    <string name="translations_dialog_negative_action">Не сейчас</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Сожмите для увеличения</string>
     <string name="photo_widget_viewer_actions_drag">Перетащите для перемещения</string>

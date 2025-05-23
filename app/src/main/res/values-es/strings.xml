@@ -9,10 +9,11 @@
     <string name="photo_widget_home_current">Mis Widgets</string>
     <string name="photo_widget_home_settings">Ajustes</string>
     <string name="photo_widget_home_data_saver">Almacenamiento optimizado</string>
-    <string name="photo_widget_home_appearance">Tema de la aplicación</string>
+    <string name="photo_widget_home_appearance">Tema de la app</string>
     <string name="photo_widget_home_true_black_background">Fondo negro verdadero</string>
-    <string name="photo_widget_home_dynamic_colors">Colores de la aplicación</string>
-    <string name="photo_widget_home_share">Comparte la aplicación</string>
+    <string name="photo_widget_home_dynamic_colors">Colores de la app</string>
+    <string name="photo_widget_home_translations">Idioma de la app</string>
+    <string name="photo_widget_home_share">Comparte la app</string>
     <string name="photo_widget_home_rate">Escribe una reseña</string>
     <string name="photo_widget_home_help">¿Algo no está funcionando?</string>
     <string name="photo_widget_home_common_issues">Problemas comunes</string>
@@ -205,6 +206,11 @@
     <string name="restriction_warning_dialog_body_3">Algunos teléfonos son aún más restrictivos y pueden bloquear la aplicación para que no se inicie automáticamente después de un reinicio. La configuración varía según el dispositivo — visita https://dontkillmyapp.com para obtener instrucciones específicas.</string>
     <string name="restriction_warning_open_app_settings">Abrir configuración de la aplicación</string>
     <string name="restriction_warning_open_power_settings">Abrir configuración de energía</string>
+    <!-- Translations -->
+    <string name="translations_dialog_title">¡Ayuda a traducir a tu idioma!</string>
+    <string name="translations_dialog_body">Esta app admite algunos idiomas, y tu ayuda puede hacerla aún mejor. Las traducciones automáticas no siempre son precisas, así que podemos trabajar juntos como comunidad para añadir más idiomas.</string>
+    <string name="translations_dialog_positive_action">Abrir Crowdin</string>
+    <string name="translations_dialog_negative_action">Ahora no</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pellizcar para hacer zoom</string>
     <string name="photo_widget_viewer_actions_drag">Arrastra para mover</string>

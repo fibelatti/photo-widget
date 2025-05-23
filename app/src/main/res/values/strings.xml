@@ -13,6 +13,7 @@
     <string name="photo_widget_home_appearance">App theme</string>
     <string name="photo_widget_home_true_black_background">True black background</string>
     <string name="photo_widget_home_dynamic_colors">App colors</string>
+    <string name="photo_widget_home_translations">App language</string>
     <string name="photo_widget_home_share">Share the app</string>
     <string name="photo_widget_home_rate">Write a review</string>
     <string name="photo_widget_home_help">Something is not working?</string>
@@ -250,6 +251,12 @@
     <string name="restriction_warning_dialog_body_3">Some phones are even more restrictive and may block the app from starting automatically after a restart. Settings vary by device — visit https://dontkillmyapp.com for specific instructions.</string>
     <string name="restriction_warning_open_app_settings">Open app settings</string>
     <string name="restriction_warning_open_power_settings">Open power settings</string>
+
+    <!-- Translations -->
+    <string name="translations_dialog_title">Help translate to your language!</string>
+    <string name="translations_dialog_body">This app supports a few languages, and your help can make it even better. Automatic translations aren\'t always accurate, so we can work together as a community to make more languages available.</string>
+    <string name="translations_dialog_positive_action">Open Crowdin</string>
+    <string name="translations_dialog_negative_action">Not now</string>
 
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pinch to zoom</string>

@@ -12,6 +12,7 @@
     <string name="photo_widget_home_appearance">Thème de l\'application</string>
     <string name="photo_widget_home_true_black_background">Fond noir véritable</string>
     <string name="photo_widget_home_dynamic_colors">Couleurs de l\'application</string>
+    <string name="photo_widget_home_translations">Langue de l\'application</string>
     <string name="photo_widget_home_share">Partager l\'application</string>
     <string name="photo_widget_home_rate">Écrire un avis</string>
     <string name="photo_widget_home_help">Quelque chose ne fonctionne pas ?</string>
@@ -205,6 +206,11 @@
     <string name="restriction_warning_dialog_body_3">Certains téléphones sont encore plus restrictifs et peuvent empêcher l\'application de se lancer automatiquement après un redémarrage. Les paramètres varient selon l\'appareil — visitez https://dontkillmyapp.com pour des instructions spécifiques.</string>
     <string name="restriction_warning_open_app_settings">Ouvrir les paramètres de l\'application</string>
     <string name="restriction_warning_open_power_settings">Ouvrir les paramètres d\'alimentation</string>
+    <!-- Translations -->
+    <string name="translations_dialog_title">Aidez à traduire dans votre langue !</string>
+    <string name="translations_dialog_body">Cette application prend en charge quelques langues, et votre aide peut la rendre encore meilleure. Les traductions automatiques ne sont pas toujours exactes, alors travaillons ensemble en tant que communauté pour en ajouter d\'autres.</string>
+    <string name="translations_dialog_positive_action">Ouvrir Crowdin</string>
+    <string name="translations_dialog_negative_action">Pas maintenant</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pincer pour zoomer</string>
     <string name="photo_widget_viewer_actions_drag">Faites glisser pour déplacer</string>

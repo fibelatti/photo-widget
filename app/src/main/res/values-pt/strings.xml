@@ -12,6 +12,7 @@
     <string name="photo_widget_home_appearance">Tema do app</string>
     <string name="photo_widget_home_true_black_background">Fundo preto verdadeiro</string>
     <string name="photo_widget_home_dynamic_colors">Cores do app</string>
+    <string name="photo_widget_home_translations">Idioma do app</string>
     <string name="photo_widget_home_share">Compartilhe o app</string>
     <string name="photo_widget_home_rate">Deixe a sua avaliação</string>
     <string name="photo_widget_home_help">Algo não está funcionando?</string>
@@ -205,6 +206,11 @@
     <string name="restriction_warning_dialog_body_3">Alguns telefones são ainda mais restritivos e podem bloquear o aplicativo de iniciar automaticamente após uma reinicialização. As configurações variam conforme o dispositivo — visite https://dontkillmyapp.com para instruções específicas.</string>
     <string name="restriction_warning_open_app_settings">Abrir configurações do aplicativo</string>
     <string name="restriction_warning_open_power_settings">Abrir configurações de energia</string>
+    <!-- Translations -->
+    <string name="translations_dialog_title">Ajude a traduzir para o seu idioma!</string>
+    <string name="translations_dialog_body">Este app suporta alguns idiomas, e a sua ajuda pode torná-lo ainda melhor. As traduções automáticas nem sempre são precisas, então podemos trabalhar juntos como comunidade para disponibilizar mais idiomas.</string>
+    <string name="translations_dialog_positive_action">Abrir Crowdin</string>
+    <string name="translations_dialog_negative_action">Agora não</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_actions_pinch">Pince para ampliar</string>
     <string name="photo_widget_viewer_actions_drag">Arraste para mover</string>

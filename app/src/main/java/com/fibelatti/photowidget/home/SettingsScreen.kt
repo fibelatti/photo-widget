@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -59,6 +60,7 @@ fun SettingsScreen(
     onDataSaverClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
+    onAppLanguageClick: () -> Unit,
     onSendFeedbackClick: () -> Unit,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
@@ -89,6 +91,7 @@ fun SettingsScreen(
         onScheduleExactAlarmsClick = { showExactAlarmsDialog = true },
         onAppearanceClick = onAppearanceClick,
         onColorsClick = onColorsClick,
+        onAppLanguageClick = onAppLanguageClick,
         onSendFeedbackClick = onSendFeedbackClick,
         onRateClick = onRateClick,
         onShareClick = onShareClick,
@@ -118,6 +121,7 @@ private fun SettingsScreen(
     onScheduleExactAlarmsClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
+    onAppLanguageClick: () -> Unit,
     onSendFeedbackClick: () -> Unit,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
@@ -167,13 +171,19 @@ private fun SettingsScreen(
                 onClick = onAppearanceClick,
             )
 
-            if (DynamicColors.isDynamicColorAvailable()) {
+            if (DynamicColors.isDynamicColorAvailable() || LocalInspectionMode.current) {
                 SettingsAction(
                     icon = R.drawable.ic_dynamic_color,
                     label = R.string.photo_widget_home_dynamic_colors,
                     onClick = onColorsClick,
                 )
             }
+
+            SettingsAction(
+                icon = R.drawable.ic_translation,
+                label = R.string.photo_widget_home_translations,
+                onClick = onAppLanguageClick,
+            )
 
             HorizontalDivider()
 
@@ -329,6 +339,7 @@ private fun SettingsScreenPreview() {
             onScheduleExactAlarmsClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
+            onAppLanguageClick = {},
             onSendFeedbackClick = {},
             onRateClick = {},
             onShareClick = {},
