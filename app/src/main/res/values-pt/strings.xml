@@ -183,7 +183,7 @@
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Não embaralhar ao usar os botões do visualizador</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">Não alterar a foto atual ao usar os botões do visualizador</string>
     <string name="photo_widget_configure_tap_action_disable_side_actions">Desativar toques nas bordas da tela inicial</string>
-    <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Compatível com widgets baseados em pastas, widgets baseados em fotos usarão "Ver foto em tela cheia" em vez disso.</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Compatível com widgets baseados em pastas, widgets baseados em fotos usarão \"Ver foto em tela cheia\" em vez disso.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Esta ação abre a foto atual usando o app de galeria. Não será possível visualizar ou navegar para outras fotos.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Você também pode escolher qual app de galeria usar.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Escolher o app</string>
