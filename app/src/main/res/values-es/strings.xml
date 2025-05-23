@@ -183,7 +183,7 @@
     <string name="photo_widget_configure_tap_action_do_not_shuffle">No barajar al usar los botones del visor</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">No cambiar la foto actual al usar los botones del visor</string>
     <string name="photo_widget_configure_tap_action_disable_side_actions">Desactivar toques en el borde de la pantalla de inicio</string>
-    <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Compatible con widgets basados en carpetas, los widgets basados en fotos usarán "Ver foto en pantalla completa" en su lugar.</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Compatible con widgets basados en carpetas, los widgets basados en fotos usarán \"Ver foto en pantalla completa\" en su lugar.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Esta acción abre la foto actual usando la aplicación de galería. No será posible ver ni navegar a otras fotos.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">También puedes elegir qué aplicación de galería usar.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Elige la aplicación</string>
