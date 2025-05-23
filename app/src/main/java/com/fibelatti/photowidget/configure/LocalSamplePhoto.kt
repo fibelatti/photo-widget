@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.configure
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
@@ -24,13 +26,14 @@ val LocalSamplePhoto = staticCompositionLocalOf<LocalPhoto?> { null }
 @Composable
 fun rememberSampleBitmap(): Bitmap {
     val localContext: Context = LocalContext.current
+    val localResources: Resources = LocalResources.current
     val localPhoto: LocalPhoto? = LocalSamplePhoto.current
     val decoder: PhotoDecoder by remember {
         lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
     }
 
     var bitmap: Bitmap by remember {
-        mutableStateOf(BitmapFactory.decodeResource(localContext.resources, R.drawable.image_sample))
+        mutableStateOf(BitmapFactory.decodeResource(localResources, R.drawable.image_sample))
     }
 
     LaunchedEffect(localPhoto) {
