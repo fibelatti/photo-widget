@@ -169,7 +169,7 @@ private fun ScreenContent(
         }
 
         AnimatedVisibility(
-            visible = isBackgroundVisible,
+            visible = showFlipControls && isBackgroundVisible,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .safeDrawingPadding()
