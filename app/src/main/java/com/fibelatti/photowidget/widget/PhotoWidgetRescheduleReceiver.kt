@@ -13,7 +13,8 @@ class PhotoWidgetRescheduleReceiver : EntryPointBroadcastReceiver() {
     override fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
         Timber.d("Working...")
 
-        val isBoot = Intent.ACTION_BOOT_COMPLETED == intent.action
+        val isBoot = Intent.ACTION_BOOT_COMPLETED == intent.action ||
+            Intent.ACTION_LOCKED_BOOT_COMPLETED == intent.action
         val isUpdate = Intent.ACTION_MY_PACKAGE_REPLACED == intent.action ||
             (Intent.ACTION_PACKAGE_REPLACED == intent.action && intent.data?.schemeSpecificPart == context.packageName)
         val isManual = ACTION_RESCHEDULE == intent.action
