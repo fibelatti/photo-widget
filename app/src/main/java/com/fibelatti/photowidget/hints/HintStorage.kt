@@ -12,12 +12,6 @@ class HintStorage @Inject constructor(@ApplicationContext context: Context) {
         Context.MODE_PRIVATE,
     )
 
-    var showFullScreenViewerHint: Boolean
-        get() = sharedPreferences.getBoolean(Hint.FULL_SCREEN_VIEWER.value, true)
-        set(value) {
-            sharedPreferences.edit { putBoolean(Hint.FULL_SCREEN_VIEWER.value, value) }
-        }
-
     var showHomeBackgroundRestrictionsHint: Boolean
         get() = sharedPreferences.getBoolean(Hint.HOME_BACKGROUND_RESTRICTIONS.value, true)
         set(value) {
@@ -25,7 +19,6 @@ class HintStorage @Inject constructor(@ApplicationContext context: Context) {
         }
 
     private enum class Hint(val value: String) {
-        FULL_SCREEN_VIEWER(value = "hint_full_screen_viewer"),
         HOME_BACKGROUND_RESTRICTIONS(value = "hint_home_background_restrictions"),
     }
 }

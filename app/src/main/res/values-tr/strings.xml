@@ -214,9 +214,7 @@
     <string name="translations_dialog_positive_action">Crowdin\'i Aç</string>
     <string name="translations_dialog_negative_action">Şimdi değil</string>
     <!-- Viewer -->
-    <string name="photo_widget_viewer_actions_pinch">Yakınlaştırmak için kıstır</string>
-    <string name="photo_widget_viewer_actions_drag">Taşımak için sürükle</string>
-    <string name="photo_widget_viewer_actions_tap">Kapatmak için dokun</string>
+    <string name="photo_widget_viewer_all_photos">Tüm fotoğraflar</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Duraklatılan döngü</string>
     <string name="photo_widget_cycling_feedback_resumed">Döngü devam ettirildi</string>
@@ -228,6 +226,7 @@
     <string name="photo_widget_action_apply">Uygula</string>
     <string name="photo_widget_action_confirm">Onaylamak</string>
     <string name="photo_widget_action_got_it">Anladım</string>
+    <string name="photo_widget_action_dismiss">Kapatmak için</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo ana ekran widget\'ı</string>
 </resources>

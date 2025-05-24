@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Updated the explanation for the "View with a gallery app" tap action
+* Improved the full screen viewer
 
 ## [v1.29.0] - 2025-04-14
 [v1.29.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.29.0

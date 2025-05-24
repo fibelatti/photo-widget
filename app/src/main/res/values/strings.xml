@@ -261,9 +261,7 @@
     <string name="translations_dialog_negative_action">Not now</string>
 
     <!-- Viewer -->
-    <string name="photo_widget_viewer_actions_pinch">Pinch to zoom</string>
-    <string name="photo_widget_viewer_actions_drag">Drag to move</string>
-    <string name="photo_widget_viewer_actions_tap">Tap to dismiss</string>
+    <string name="photo_widget_viewer_all_photos">All photos</string>
 
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Cycle paused</string>
@@ -277,6 +275,7 @@
     <string name="photo_widget_action_apply">Apply</string>
     <string name="photo_widget_action_confirm">Confirm</string>
     <string name="photo_widget_action_got_it">Got it</string>
+    <string name="photo_widget_action_dismiss">Dismiss</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo home screen widget</string>

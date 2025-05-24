@@ -1,10 +1,11 @@
 package com.fibelatti.photowidget.chooser
 
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -23,10 +24,13 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,7 +64,6 @@ class PhotoWidgetChooserActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
-        fadeIn()
         super.onCreate(savedInstanceState)
 
         setContent {
@@ -90,19 +93,6 @@ class PhotoWidgetChooserActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun fadeIn() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            overrideActivityTransition(
-                OVERRIDE_TRANSITION_OPEN,
-                android.R.anim.fade_in,
-                android.R.anim.fade_out,
-            )
-        } else {
-            @Suppress("DEPRECATION")
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        }
-    }
 }
 
 @Composable
@@ -114,12 +104,22 @@ private fun ScreenContent(
     onBackgroundClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var isBackgroundVisible: Boolean by remember { mutableStateOf(false) }
+    val backgroundAlpha: Float by animateFloatAsState(
+        targetValue = if (isBackgroundVisible) .8f else 0f,
+        animationSpec = tween(600),
+    )
+
+    LaunchedEffect(Unit) {
+        isBackgroundVisible = true
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = Color.Black.copy(alpha = 0.8f))
-            .safeDrawingPadding()
+            .background(color = Color.Black.copy(alpha = backgroundAlpha))
             .clickable(onClick = onBackgroundClick)
+            .safeDrawingPadding()
             .padding(horizontal = 48.dp, vertical = 64.dp),
         contentAlignment = Alignment.Center,
     ) {

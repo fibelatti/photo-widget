@@ -214,9 +214,7 @@
     <string name="translations_dialog_positive_action">Abrir Crowdin</string>
     <string name="translations_dialog_negative_action">Ahora no</string>
     <!-- Viewer -->
-    <string name="photo_widget_viewer_actions_pinch">Pellizcar para hacer zoom</string>
-    <string name="photo_widget_viewer_actions_drag">Arrastra para mover</string>
-    <string name="photo_widget_viewer_actions_tap">Toca para cerrar</string>
+    <string name="photo_widget_viewer_all_photos">Todas las fotos</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Ciclo pausado</string>
     <string name="photo_widget_cycling_feedback_resumed">Ciclo reanudado</string>
@@ -228,6 +226,7 @@
     <string name="photo_widget_action_apply">Aplicar</string>
     <string name="photo_widget_action_confirm">Confirmar</string>
     <string name="photo_widget_action_got_it">Lo entendí</string>
+    <string name="photo_widget_action_dismiss">Cerrar</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de pantalla principal de Material Photo</string>
 </resources>

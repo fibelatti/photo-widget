@@ -226,9 +226,7 @@
     <string name="translations_dialog_positive_action">Открыть Crowdin</string>
     <string name="translations_dialog_negative_action">Не сейчас</string>
     <!-- Viewer -->
-    <string name="photo_widget_viewer_actions_pinch">Сожмите для увеличения</string>
-    <string name="photo_widget_viewer_actions_drag">Перетащите для перемещения</string>
-    <string name="photo_widget_viewer_actions_tap">Нажмите, чтобы закрыть</string>
+    <string name="photo_widget_viewer_all_photos">Все фото</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Цикл приостановлен</string>
     <string name="photo_widget_cycling_feedback_resumed">Цикл возобновлен</string>
@@ -240,6 +238,7 @@
     <string name="photo_widget_action_apply">Применить</string>
     <string name="photo_widget_action_confirm">Подтвердить</string>
     <string name="photo_widget_action_got_it">Я понял</string>
+    <string name="photo_widget_action_dismiss">Закрыть</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Виджет главного экрана Material Photo</string>
 </resources>

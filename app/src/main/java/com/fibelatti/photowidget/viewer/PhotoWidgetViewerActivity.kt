@@ -1,71 +1,69 @@
 package com.fibelatti.photowidget.viewer
 
-import android.os.Build
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.gestures.animateZoomBy
-import androidx.compose.foundation.gestures.rememberTransformableState
-import androidx.compose.foundation.gestures.transformable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.chooser.PhotoWidgetChooserActivity
+import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
+import com.fibelatti.ui.imageviewer.ZoomableImageViewer
+import com.fibelatti.ui.imageviewer.rememberZoomableImageViewerState
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PhotoWidgetViewerActivity : AppCompatActivity() {
+
+    private val viewModel: PhotoWidgetViewerViewModel by viewModels()
 
     private var currentScreenBrightness: Float? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
-        fadeIn()
         super.onCreate(savedInstanceState)
 
         setContent {
             AppTheme {
-                val viewModel: PhotoWidgetViewerViewModel = hiltViewModel()
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
                 state.photoWidget?.let { photoWidget ->
@@ -84,28 +82,25 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
                         } else {
                             photoWidget.aspectRatio
                         },
-                        onDismiss = ::finish,
+                        onDismissClick = ::finish,
                         showFlipControls = state.showMoveControls,
                         onPreviousClick = { viewModel.flip(backwards = true) },
                         onNextClick = { viewModel.flip() },
-                        showHint = state.showHint,
+                        onAllPhotosClick = {
+                            val clickIntent = Intent(this, PhotoWidgetChooserActivity::class.java).apply {
+                                this.appWidgetId = intent.appWidgetId
+                            }
+                            startActivity(clickIntent)
+                        },
                     )
                 }
             }
         }
     }
 
-    private fun fadeIn() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            overrideActivityTransition(
-                OVERRIDE_TRANSITION_OPEN,
-                android.R.anim.fade_in,
-                android.R.anim.fade_out,
-            )
-        } else {
-            @Suppress("DEPRECATION")
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        }
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadData()
     }
 
     override fun onDestroy() {
@@ -121,105 +116,125 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
     }
 }
 
+private const val ANIM_DURATION: Int = 600
+
 @Composable
 private fun ScreenContent(
     photo: LocalPhoto?,
     isLoading: Boolean,
     viewOriginalPhoto: Boolean,
     aspectRatio: PhotoWidgetAspectRatio,
-    onDismiss: () -> Unit,
+    onDismissClick: () -> Unit,
     modifier: Modifier = Modifier,
     showFlipControls: Boolean = false,
     onPreviousClick: () -> Unit = {},
     onNextClick: () -> Unit = {},
-    showHint: Boolean = true,
+    onAllPhotosClick: () -> Unit = {},
 ) {
-    var scale by remember { mutableFloatStateOf(1.1f) }
-    var offset by remember { mutableStateOf(Offset.Zero) }
-    val state = rememberTransformableState { zoomChange, offsetChange, _ ->
-        scale = (scale * zoomChange).coerceIn(1f, 4f)
-        offset += offsetChange
+    var isBackgroundVisible: Boolean by remember { mutableStateOf(false) }
+    val backgroundAlpha: Float by animateFloatAsState(
+        targetValue = if (isBackgroundVisible) .8f else 0f,
+        animationSpec = tween(ANIM_DURATION),
+    )
+
+    val imageViewerState = rememberZoomableImageViewerState(
+        minimumScale = 1f,
+        maximumScale = 4f,
+        onDragToDismiss = onDismissClick,
+    )
+
+    LaunchedEffect(Unit) {
+        isBackgroundVisible = true
     }
-    val scope = rememberCoroutineScope()
 
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = Color.Black.copy(alpha = 0.8f)),
+            .background(color = Color.Black.copy(alpha = backgroundAlpha)),
         contentAlignment = Alignment.Center,
     ) {
-        AsyncPhotoViewer(
-            data = photo?.getPhotoPath(viewOriginalPhoto = viewOriginalPhoto),
-            dataKey = arrayOf(photo, aspectRatio),
-            isLoading = isLoading,
-            contentScale = if (aspectRatio.isConstrained) {
-                ContentScale.FillWidth
-            } else {
-                ContentScale.Fit
-            },
-            modifier = Modifier
-                .combinedClickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = onDismiss,
-                    onDoubleClick = {
-                        scope.launch {
-                            state.animateZoomBy(if (scale > 2f) 0.5f else 2f)
-                            if (scale > 2f) offset = Offset.Zero
-                        }
-                    },
-                )
-                .graphicsLayer {
-                    scaleX = scale
-                    scaleY = scale
-                    translationX = offset.x
-                    translationY = offset.y
-                }
-                .transformable(state = state)
-                .aspectRatio(ratio = aspectRatio.aspectRatio),
-            constrainBitmapSize = false,
-        )
+        ZoomableImageViewer(state = imageViewerState) {
+            AsyncPhotoViewer(
+                data = photo?.getPhotoPath(viewOriginalPhoto = viewOriginalPhoto),
+                dataKey = arrayOf(photo, aspectRatio),
+                isLoading = isLoading,
+                contentScale = if (aspectRatio.isConstrained) {
+                    ContentScale.FillWidth
+                } else {
+                    ContentScale.Fit
+                },
+                modifier = Modifier.aspectRatio(ratio = aspectRatio.aspectRatio),
+                constrainBitmapSize = false,
+            )
+        }
 
-        Row(
+        AnimatedVisibility(
+            visible = isBackgroundVisible,
             modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .padding(start = 32.dp, end = 32.dp, bottom = 48.dp),
-            verticalAlignment = Alignment.CenterVertically,
+                .align(Alignment.TopEnd)
+                .safeDrawingPadding()
+                .padding(all = 16.dp),
+            enter = fadeIn(animationSpec = tween(ANIM_DURATION, delayMillis = 200)) + slideInVertically(
+                animationSpec = tween(ANIM_DURATION),
+                initialOffsetY = { -it },
+            ),
         ) {
-            if (showFlipControls) {
-                FilledTonalIconButton(onClick = onPreviousClick) {
-                    Icon(painterResource(id = R.drawable.ic_chevron_left), contentDescription = null)
-                }
+            FilledTonalButton(
+                onClick = onAllPhotosClick,
+            ) {
+                Text(text = stringResource(R.string.photo_widget_viewer_all_photos))
             }
+        }
 
-            if (showHint) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(2.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.photo_widget_viewer_actions_pinch),
-                        style = MaterialTheme.typography.labelSmall.copy(color = Color.LightGray),
-                    )
-                    Text(
-                        text = stringResource(id = R.string.photo_widget_viewer_actions_drag),
-                        style = MaterialTheme.typography.labelSmall.copy(color = Color.LightGray),
-                    )
-                    Text(
-                        text = stringResource(id = R.string.photo_widget_viewer_actions_tap),
-                        style = MaterialTheme.typography.labelSmall.copy(color = Color.LightGray),
-                    )
-                }
-            } else {
-                Spacer(modifier = Modifier.weight(1f))
+        AnimatedVisibility(
+            visible = isBackgroundVisible,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .safeDrawingPadding()
+                .padding(start = 32.dp, end = 32.dp, bottom = 16.dp),
+            enter = fadeIn(animationSpec = tween(ANIM_DURATION, delayMillis = 200)) + slideInVertically(
+                animationSpec = tween(ANIM_DURATION),
+                initialOffsetY = { it },
+            ),
+        ) {
+            Controls(
+                showFlipControls = showFlipControls,
+                onPreviousClick = onPreviousClick,
+                onDismiss = onDismissClick,
+                onNextClick = onNextClick,
+            )
+        }
+    }
+}
+
+@Composable
+private fun Controls(
+    showFlipControls: Boolean,
+    onPreviousClick: () -> Unit,
+    onDismiss: () -> Unit,
+    onNextClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        if (showFlipControls) {
+            FilledTonalIconButton(onClick = onPreviousClick) {
+                Icon(painterResource(id = R.drawable.ic_chevron_left), contentDescription = null)
             }
+        }
 
-            if (showFlipControls) {
-                FilledTonalIconButton(onClick = onNextClick) {
-                    Icon(painterResource(id = R.drawable.ic_chevron_right), contentDescription = null)
-                }
+        FilledTonalButton(
+            onClick = onDismiss,
+        ) {
+            Text(text = stringResource(R.string.photo_widget_action_dismiss))
+        }
+
+        if (showFlipControls) {
+            FilledTonalIconButton(onClick = onNextClick) {
+                Icon(painterResource(id = R.drawable.ic_chevron_right), contentDescription = null)
             }
         }
     }
@@ -234,7 +249,7 @@ private fun ScreenContentPreview() {
             isLoading = false,
             viewOriginalPhoto = false,
             aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-            onDismiss = {},
+            onDismissClick = {},
             showFlipControls = true,
         )
     }

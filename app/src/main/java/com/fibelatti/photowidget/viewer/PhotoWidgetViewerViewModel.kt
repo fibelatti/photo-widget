@@ -37,13 +37,8 @@ class PhotoWidgetViewerViewModel @Inject constructor(
 
     private var loadWidgetJob: Job? = null
 
-    init {
+    fun loadData() {
         updateState()
-    }
-
-    override fun onCleared() {
-        hintStorage.showFullScreenViewerHint = false
-        super.onCleared()
     }
 
     fun flip(backwards: Boolean = false) {
@@ -74,7 +69,6 @@ class PhotoWidgetViewerViewModel @Inject constructor(
                 current.copy(
                     photoWidget = photoWidget,
                     showMoveControls = photoWidget.photos.size > 1,
-                    showHint = hintStorage.showFullScreenViewerHint,
                 )
             }
         }
@@ -83,6 +77,5 @@ class PhotoWidgetViewerViewModel @Inject constructor(
     data class State(
         val photoWidget: PhotoWidget? = null,
         val showMoveControls: Boolean = false,
-        val showHint: Boolean = true,
     )
 }
