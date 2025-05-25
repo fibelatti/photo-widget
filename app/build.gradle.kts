@@ -20,7 +20,7 @@ object AppInfo {
     private const val VERSION_MAJOR = 1
     private const val VERSION_MINOR = 30
     private const val VERSION_PATCH = 0
-    private const val VERSION_BUILD = 0
+    private const val VERSION_BUILD = 1
 
     val versionCode: Int = (VERSION_MAJOR * 1_000_000)
         .plus(VERSION_MINOR * 10_000)
