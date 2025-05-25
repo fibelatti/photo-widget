@@ -1,0 +1,7 @@
+This version brings the following updates:
+
+* Multiple tap actions: choose a tap action for each area of the widget
+* Select the ordering type of widgets synced to folders
+* Improved the gestures and features of the full screen photo viewer
+
+Thanks for using the app!
