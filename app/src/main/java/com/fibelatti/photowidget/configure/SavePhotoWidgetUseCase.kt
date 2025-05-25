@@ -158,6 +158,11 @@ class SavePhotoWidgetUseCase @Inject constructor(
             value = photoWidget.canShuffle && photoWidget.shuffle,
         )
 
+        photoWidgetStorage.saveWidgetSorting(
+            appWidgetId = appWidgetId,
+            sorting = photoWidget.directorySorting,
+        )
+
         val currentCycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = appWidgetId)
         if (photoWidget.cycleMode != currentCycleMode) {
             photoWidgetStorage.saveWidgetNextCycleTime(appWidgetId = appWidgetId, nextCycleTime = null)

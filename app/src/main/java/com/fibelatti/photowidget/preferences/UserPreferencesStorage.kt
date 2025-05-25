@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.preferences
 
 import android.content.Context
 import androidx.core.content.edit
+import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
@@ -38,6 +39,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             dynamicColors = dynamicColors,
             defaultSource = defaultSource,
             defaultShuffle = defaultShuffle,
+            defaultDirectorySorting = defaultDirectorySorting,
             defaultCycleMode = defaultCycleMode,
             defaultShape = defaultShape,
             defaultCornerRadius = defaultCornerRadius,
@@ -106,6 +108,16 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         set(value) {
             sharedPreferences.edit { putBoolean(Preference.DEFAULT_SHUFFLE.value, value) }
             _userPreferences.update { current -> current.copy(defaultShuffle = value) }
+        }
+
+    var defaultDirectorySorting: DirectorySorting
+        get() {
+            val name = sharedPreferences.getString(Preference.DEFAULT_DIR_SORTING.value, null)
+            return enumValueOfOrNull<DirectorySorting>(name) ?: DirectorySorting.NEWEST_FIRST
+        }
+        set(value) {
+            sharedPreferences.edit { putString(Preference.DEFAULT_DIR_SORTING.value, value.name) }
+            _userPreferences.update { current -> current.copy(defaultDirectorySorting = value) }
         }
 
     var defaultCycleMode: PhotoWidgetCycleMode
@@ -334,6 +346,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                 dynamicColors = dynamicColors,
                 defaultSource = defaultSource,
                 defaultShuffle = defaultShuffle,
+                defaultDirectorySorting = defaultDirectorySorting,
                 defaultCycleMode = defaultCycleMode,
                 defaultShape = defaultShape,
                 defaultCornerRadius = defaultCornerRadius,
@@ -354,6 +367,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         DEFAULT_ASPECT_RATIO(value = "default_aspect_ratio"),
         DEFAULT_SOURCE(value = "default_source"),
         DEFAULT_SHUFFLE(value = "default_shuffle"),
+        DEFAULT_DIR_SORTING(value = "default_directory_sorting"),
         DEFAULT_INTERVAL_ENABLED(value = "default_interval_enabled"),
 
         /**

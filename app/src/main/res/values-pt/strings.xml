@@ -192,6 +192,11 @@
     <string name="photo_widget_configure_save_changes">Salvar alterações</string>
     <string name="photo_widget_configure_widget_pinned">Widget adicionado! Verifique sua tela inicial…</string>
     <string name="photo_widget_time_picker_title">Escolha o horário</string>
+    <string name="photo_widget_directory_sort_title">Ordenar fotos</string>
+    <string name="photo_widget_directory_sort_newest_first">Mais recentes primeiro</string>
+    <string name="photo_widget_directory_sort_oldest_first">Mais antigas primeiro</string>
+    <string name="photo_widget_directory_sort_explanation">A ordenação usa a data da última modificação do arquivo de imagem original e se aplica apenas a widgets sincronizados com pastas.</string>
+
     <!-- Help -->
     <string name="help_article_title_1">Adicionar um widget à tela inicial não está funcionando</string>
     <string name="help_article_body_1">Se você configurou um widget e nada acontece ao tentar adicioná-lo à tela inicial, ou se ele foi adicionado, mas não exibe as fotos selecionadas, você pode tentar adicioná-lo diretamente da sua tela inicial.\n\nAs instruções podem variar dependendo da versão do Android, do fabricante do dispositivo e do launcher da tela inicial, mas geralmente o processo é o seguinte:\n\n1. Pressione e segure um espaço vazio na sua tela inicial até que um menu pop-up apareça.\n2. Localize a opção \"Widgets\".\n3. Procure por \"Material Photo Widget\" dentro dos widgets disponíveis.\n4. Arraste-o para sua tela inicial e configure-o como de costume.</string>

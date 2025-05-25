@@ -192,6 +192,10 @@
     <string name="photo_widget_configure_save_changes">Enregistrer les modifications</string>
     <string name="photo_widget_configure_widget_pinned">Widget ajouté ! Consultez votre écran d\'accueil…</string>
     <string name="photo_widget_time_picker_title">Sélectionnez l\'heure</string>
+    <string name="photo_widget_directory_sort_title">Trier les photos</string>
+    <string name="photo_widget_directory_sort_newest_first">Les plus récentes en premier</string>
+    <string name="photo_widget_directory_sort_oldest_first">Les plus anciennes en premier</string>
+    <string name="photo_widget_directory_sort_explanation">Le tri utilise la date de dernière modification du fichier image original et s\'applique uniquement aux widgets synchronisés avec des dossiers.</string>
     <!-- Help -->
     <string name="help_article_title_1">L\'ajout d\'un widget à l\'écran d\'accueil ne fonctionne pas</string>
     <string name="help_article_body_1">Si vous avez configuré un widget et que rien ne se passe lorsque vous essayez de l\'ajouter à l\'écran d\'accueil, ou s\'il est ajouté mais n\'affiche pas les photos sélectionnées, essayez de l\'ajouter directement depuis votre écran d\'accueil.\n\nLes instructions peuvent varier en fonction de votre version Android, du fabricant de votre appareil et du lanceur d\'écran d\'accueil, mais en général, le processus est le suivant :\n\n1. Appuyez longuement sur un espace vide de votre écran d\'accueil jusqu\'à ce qu\'un menu contextuel apparaisse.\n2. Trouvez l\'option \"Widgets\".\n3. Recherchez \"Material Photo Widget\" dans les widgets disponibles.\n4. Faites-le glisser vers votre écran d\'accueil et configurez-le comme d\'habitude.</string>

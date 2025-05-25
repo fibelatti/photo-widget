@@ -62,11 +62,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.configure.DirectorySortingPicker
 import com.fibelatti.photowidget.configure.PhotoWidgetBrightnessPicker
 import com.fibelatti.photowidget.configure.PhotoWidgetCycleModePicker
 import com.fibelatti.photowidget.configure.PhotoWidgetSaturationPicker
 import com.fibelatti.photowidget.configure.PhotoWidgetTapActionPicker
 import com.fibelatti.photowidget.configure.rememberSampleBitmap
+import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
@@ -162,6 +164,12 @@ fun WidgetDefaultsScreen(
             )
         },
         onShuffleChange = preferencesViewModel::saveDefaultShuffle,
+        onSortClick = {
+            DirectorySortingPicker.show(
+                context = localContext,
+                onItemClick = preferencesViewModel::saveDefaultSorting,
+            )
+        },
         onTapActionClick = {
             PhotoWidgetTapActionPicker.show(
                 context = localContext,
@@ -186,6 +194,7 @@ private fun WidgetDefaultsScreen(
     onBrightnessClick: () -> Unit,
     onIntervalClick: () -> Unit,
     onShuffleChange: (Boolean) -> Unit,
+    onSortClick: () -> Unit,
     onTapActionClick: () -> Unit,
     onClearDefaultsClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -294,6 +303,12 @@ private fun WidgetDefaultsScreen(
                 title = stringResource(id = R.string.widget_defaults_shuffle),
                 currentValue = userPreferences.defaultShuffle,
                 onCheckedChange = onShuffleChange,
+            )
+
+            PickerDefault(
+                title = stringResource(R.string.photo_widget_directory_sort_title),
+                currentValue = stringResource(id = userPreferences.defaultDirectorySorting.label),
+                onClick = onSortClick,
             )
 
             PickerDefault(
@@ -646,6 +661,7 @@ private fun WidgetDefaultsScreenPreview() {
                 dynamicColors = true,
                 defaultSource = PhotoWidgetSource.PHOTOS,
                 defaultShuffle = false,
+                defaultDirectorySorting = DirectorySorting.NEWEST_FIRST,
                 defaultCycleMode = PhotoWidgetCycleMode.DEFAULT,
                 defaultShape = PhotoWidget.DEFAULT_SHAPE_ID,
                 defaultCornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
@@ -663,6 +679,7 @@ private fun WidgetDefaultsScreenPreview() {
             onBrightnessClick = {},
             onIntervalClick = {},
             onShuffleChange = {},
+            onSortClick = {},
             onTapActionClick = {},
             onClearDefaultsClick = {},
         )

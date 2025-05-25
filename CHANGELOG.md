@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * In-app link to Crowdin (crowdsourced localization)
+* Customization option to sort the directory photos
 
 ### Changed
 

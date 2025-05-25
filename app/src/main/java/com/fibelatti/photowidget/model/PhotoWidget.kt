@@ -11,6 +11,7 @@ data class PhotoWidget(
     val photos: List<LocalPhoto> = emptyList(),
     val currentPhoto: LocalPhoto? = null,
     val shuffle: Boolean = false,
+    val directorySorting: DirectorySorting = DirectorySorting.NEWEST_FIRST,
     val cycleMode: PhotoWidgetCycleMode = PhotoWidgetCycleMode.DEFAULT,
     val tapAction: PhotoWidgetTapAction = PhotoWidgetTapAction.DEFAULT,
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,

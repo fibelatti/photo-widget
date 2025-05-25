@@ -3,6 +3,7 @@ package com.fibelatti.photowidget.widget.data
 import android.content.Context
 import android.net.Uri
 import androidx.core.content.edit
+import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.LegacyPhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
@@ -78,6 +79,18 @@ class PhotoWidgetSharedPreferences @Inject constructor(
             "${PreferencePrefix.SHUFFLE}$appWidgetId",
             userPreferencesStorage.defaultShuffle,
         )
+    }
+
+    fun saveWidgetSorting(appWidgetId: Int, sorting: DirectorySorting) {
+        sharedPreferences.edit {
+            putString("${PreferencePrefix.DIR_SORTING}$appWidgetId", sorting.name)
+        }
+    }
+
+    fun getWidgetSorting(appWidgetId: Int): DirectorySorting {
+        val name = sharedPreferences.getString("${PreferencePrefix.DIR_SORTING}$appWidgetId", null)
+
+        return enumValueOfOrNull<DirectorySorting>(name) ?: userPreferencesStorage.defaultDirectorySorting
     }
 
     fun saveWidgetCycleMode(appWidgetId: Int, cycleMode: PhotoWidgetCycleMode) {
@@ -485,6 +498,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
 
         LEGACY_ORDER(value = "appwidget_order_"),
         SHUFFLE(value = "appwidget_shuffle_"),
+        DIR_SORTING(value = "appwidget_dir_sorting_"),
 
         /**
          * Key from when the interval was persisted as [LegacyPhotoWidgetLoopingInterval].

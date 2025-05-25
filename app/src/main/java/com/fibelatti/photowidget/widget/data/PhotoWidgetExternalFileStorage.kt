@@ -1,10 +1,12 @@
 package com.fibelatti.photowidget.widget.data
 
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.provider.DocumentsContract
+import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.LocalPhoto
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -19,7 +21,7 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
     @ApplicationContext context: Context,
 ) {
 
-    private val contentResolver = context.contentResolver
+    private val contentResolver: ContentResolver = context.contentResolver
 
     fun takePersistableUriPermission(dirUri: Set<Uri>) {
         val newDir = dirUri - contentResolver.persistedUriPermissions.map { it.uri }.toSet()
@@ -31,9 +33,10 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
     suspend fun getPhotos(
         dirUri: Set<Uri>,
         croppedPhotos: Map<String, LocalPhoto>,
+        sorting: DirectorySorting,
         applyValidation: Boolean = false,
     ): List<LocalPhoto> = coroutineScope {
-        dirUri.map { uri ->
+        val photos: List<LocalPhoto> = dirUri.map { uri ->
             async {
                 val documentUri = DocumentsContract.buildDocumentUriUsingTree(
                     /* treeUri = */
@@ -44,6 +47,11 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
                 getPhotos(documentUri = documentUri, croppedPhotos = croppedPhotos, applyValidation = applyValidation)
             }
         }.awaitAll().flatten()
+
+        return@coroutineScope when (sorting) {
+            DirectorySorting.NEWEST_FIRST -> photos.sortedByDescending { it.timestamp }
+            DirectorySorting.OLDEST_FIRST -> photos.sortedBy { it.timestamp }
+        }
     }
 
     private suspend fun getPhotos(
@@ -91,7 +99,7 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
                         addAll(getPhotos(documentUri = fileUri, croppedPhotos = croppedPhotos))
                     }
                 }
-            }.sortedByDescending { it.timestamp }
+            }
         }.orEmpty()
     }
 

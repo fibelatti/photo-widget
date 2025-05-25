@@ -113,6 +113,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                         onRemovedPhotoClick = viewModel::restorePhoto,
                         onCycleModePickerClick = ::showCycleModePicker,
                         onShuffleChange = viewModel::saveShuffle,
+                        onSortChange = viewModel::saveSorting,
                         onTapActionPickerClick = ::showTapActionPicker,
                         onShapeChange = viewModel::shapeSelected,
                         onCornerRadiusChange = viewModel::cornerRadiusSelected,

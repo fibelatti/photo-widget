@@ -63,6 +63,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             source = getWidgetSource(appWidgetId = appWidgetId),
             syncedDir = getWidgetSyncDir(appWidgetId = appWidgetId),
             shuffle = getWidgetShuffle(appWidgetId = appWidgetId),
+            directorySorting = getWidgetSorting(appWidgetId = appWidgetId),
             cycleMode = getWidgetCycleMode(appWidgetId = appWidgetId),
             tapAction = getWidgetTapAction(appWidgetId = appWidgetId),
             aspectRatio = aspectRatio,

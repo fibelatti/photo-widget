@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.aspectRatio
@@ -84,6 +85,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -135,6 +137,7 @@ fun PhotoWidgetConfigureScreen(
     onRemovedPhotoClick: (LocalPhoto) -> Unit,
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onShuffleChange: (Boolean) -> Unit,
+    onSortChange: (DirectorySorting) -> Unit,
     onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
     onShapeChange: (String) -> Unit,
     onCornerRadiusChange: (Int) -> Unit,
@@ -176,6 +179,12 @@ fun PhotoWidgetConfigureScreen(
             onRemovedPhotoClick = onRemovedPhotoClick,
             onCycleModePickerClick = onCycleModePickerClick,
             onShuffleChange = onShuffleChange,
+            onSortClick = {
+                DirectorySortingPicker.show(
+                    context = localContext,
+                    onItemClick = onSortChange,
+                )
+            },
             onTapActionPickerClick = onTapActionPickerClick,
             onShapeClick = {
                 ComposeBottomSheetDialog(localContext) {
@@ -307,6 +316,7 @@ private fun PhotoWidgetConfigureContent(
     onRemovedPhotoClick: (LocalPhoto) -> Unit,
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onShuffleChange: (Boolean) -> Unit,
+    onSortClick: () -> Unit,
     onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
     onShapeClick: () -> Unit,
     onCornerRadiusClick: () -> Unit,
@@ -356,6 +366,7 @@ private fun PhotoWidgetConfigureContent(
                     onPaddingClick = onPaddingClick,
                     onCycleModePickerClick = onCycleModePickerClick,
                     onShuffleChange = onShuffleChange,
+                    onSortClick = onSortClick,
                     onTapActionPickerClick = onTapActionPickerClick,
                     onAddToHomeClick = onAddToHomeClick,
                     contentWindowInsets = WindowInsets.navigationBars,
@@ -398,6 +409,7 @@ private fun PhotoWidgetConfigureContent(
                     onPaddingClick = onPaddingClick,
                     onCycleModePickerClick = onCycleModePickerClick,
                     onShuffleChange = onShuffleChange,
+                    onSortClick = onSortClick,
                     onTapActionPickerClick = onTapActionPickerClick,
                     onAddToHomeClick = onAddToHomeClick,
                     contentWindowInsets = WindowInsets.systemBars
@@ -489,6 +501,7 @@ private fun PhotoWidgetEditor(
     onPaddingClick: () -> Unit,
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onShuffleChange: (Boolean) -> Unit,
+    onSortClick: () -> Unit,
     onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -548,6 +561,7 @@ private fun PhotoWidgetEditor(
                         photoWidget = photoWidget,
                         onCycleModePickerClick = onCycleModePickerClick,
                         onShuffleChange = onShuffleChange,
+                        onSortClick = onSortClick,
                         onTapActionPickerClick = onTapActionPickerClick,
                         modifier = tabContentModifier,
                     )
@@ -721,12 +735,14 @@ private fun BehaviorTab(
     photoWidget: PhotoWidget,
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onShuffleChange: (Boolean) -> Unit,
+    onSortClick: () -> Unit,
     onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
     ) {
         if (photoWidget.photos.size > 1) {
             PickerDefault(
@@ -759,24 +775,36 @@ private fun BehaviorTab(
                     }
                 },
                 onClick = { onCycleModePickerClick(photoWidget.cycleMode) },
-                modifier = Modifier.padding(horizontal = 16.dp),
             )
         }
 
         if (photoWidget.canShuffle) {
+            Spacer(modifier = Modifier.height(12.dp))
+
             BooleanDefault(
                 title = stringResource(R.string.widget_defaults_shuffle),
                 currentValue = photoWidget.shuffle,
                 onCheckedChange = onShuffleChange,
-                modifier = Modifier.padding(horizontal = 16.dp),
             )
         }
+
+        AnimatedVisibility(
+            visible = PhotoWidgetSource.DIRECTORY == photoWidget.source && !photoWidget.shuffle,
+        ) {
+            PickerDefault(
+                title = stringResource(R.string.photo_widget_directory_sort_title),
+                currentValue = stringResource(id = photoWidget.directorySorting.label),
+                onClick = onSortClick,
+                modifier = Modifier.padding(top = 12.dp),
+            )
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         PickerDefault(
             title = stringResource(id = R.string.widget_defaults_tap_action),
             currentValue = stringResource(id = photoWidget.tapAction.label),
             onClick = { onTapActionPickerClick(photoWidget.tapAction) },
-            modifier = Modifier.padding(horizontal = 16.dp),
         )
     }
 }
@@ -1202,6 +1230,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onRemovedPhotoClick = {},
             onCycleModePickerClick = {},
             onShuffleChange = {},
+            onSortChange = {},
             onTapActionPickerClick = {},
             onShapeChange = {},
             onCornerRadiusChange = {},
@@ -1244,6 +1273,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onRemovedPhotoClick = {},
             onCycleModePickerClick = {},
             onShuffleChange = {},
+            onSortChange = {},
             onTapActionPickerClick = {},
             onShapeChange = {},
             onCornerRadiusChange = {},

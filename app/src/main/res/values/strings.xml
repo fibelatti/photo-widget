@@ -233,6 +233,11 @@
 
     <string name="photo_widget_time_picker_title">Select time</string>
 
+    <string name="photo_widget_directory_sort_title">Sort photos</string>
+    <string name="photo_widget_directory_sort_newest_first">Newest first</string>
+    <string name="photo_widget_directory_sort_oldest_first">Oldest first</string>
+    <string name="photo_widget_directory_sort_explanation">Sorting uses the last modified date of the original image file and only applies to widgets synced with folders.</string>
+
     <!-- Help -->
     <string name="help_article_title_1">Adding a widget to the home screen is not working</string>
     <string name="help_article_body_1">If you have configured a widget and nothing happens when you try to add it to the home screen, or if it\'s added but doesn\'t display the selected photos, you can try adding it directly from your home screen.\n\nInstructions may vary depending on your Android version, device manufacturer, and home screen launcher, but generally, the process is as follows:\n\n1. Long press on an empty space on your home screen until a pop-up menu appears.\n2. Locate the "Widgets" option.\n3. Search for "Material Photo Widget" within the available widgets.\n4. Drag it to your home screen and configure it as usual.</string>

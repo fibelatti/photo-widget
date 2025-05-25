@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.widget.data
 
 import android.net.Uri
+import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
@@ -53,7 +54,7 @@ class PhotoWidgetStorage @Inject constructor(
         return internalFileStorage.newWidgetPhoto(appWidgetId = appWidgetId, source = source)
     }
 
-    suspend fun getNewDirPhotos(dirUri: Uri): List<LocalPhoto>? {
+    suspend fun getNewDirPhotos(dirUri: Uri, sorting: DirectorySorting): List<LocalPhoto>? {
         if (dirUri.toString().endsWith("DCIM%2FCamera", ignoreCase = true)) {
             return null
         }
@@ -63,6 +64,7 @@ class PhotoWidgetStorage @Inject constructor(
             externalFileStorage.getPhotos(
                 dirUri = setOf(dirUri),
                 croppedPhotos = emptyMap(),
+                sorting = sorting,
                 applyValidation = true,
             )
         } catch (_: InvalidDirException) {
@@ -118,7 +120,11 @@ class PhotoWidgetStorage @Inject constructor(
         Timber.d("Cropped photos found: ${croppedPhotos.size}")
 
         val loadedPhotos = if (PhotoWidgetSource.DIRECTORY == source) {
-            externalFileStorage.getPhotos(dirUri = getWidgetSyncDir(appWidgetId), croppedPhotos = croppedPhotos)
+            externalFileStorage.getPhotos(
+                dirUri = getWidgetSyncDir(appWidgetId),
+                croppedPhotos = croppedPhotos,
+                sorting = getWidgetSorting(appWidgetId),
+            )
         } else {
             // Check for legacy storage value
             // Migrate found value to the new storage
@@ -311,6 +317,14 @@ class PhotoWidgetStorage @Inject constructor(
 
     fun getWidgetShuffle(appWidgetId: Int): Boolean {
         return sharedPreferences.getWidgetShuffle(appWidgetId = appWidgetId)
+    }
+
+    fun saveWidgetSorting(appWidgetId: Int, sorting: DirectorySorting) {
+        sharedPreferences.saveWidgetSorting(appWidgetId = appWidgetId, sorting = sorting)
+    }
+
+    fun getWidgetSorting(appWidgetId: Int): DirectorySorting {
+        return sharedPreferences.getWidgetSorting(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetCycleMode(appWidgetId: Int, cycleMode: PhotoWidgetCycleMode) {
