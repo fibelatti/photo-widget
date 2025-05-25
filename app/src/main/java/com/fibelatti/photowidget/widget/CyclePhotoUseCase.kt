@@ -44,7 +44,10 @@ class CyclePhotoUseCase @Inject constructor(
             .current
             .map { it.photoId }
 
-        if (widgetPhotos.size < 2) return widgetPhotos.first()
+        when {
+            widgetPhotos.isEmpty() -> return ""
+            widgetPhotos.size == 1 -> return widgetPhotos.first()
+        }
 
         val displayedPhotos = photoWidgetStorage.getDisplayedPhotoIds(appWidgetId = appWidgetId).toMutableSet()
 

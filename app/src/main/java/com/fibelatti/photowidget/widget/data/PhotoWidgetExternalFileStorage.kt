@@ -24,8 +24,8 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
     private val contentResolver: ContentResolver = context.contentResolver
 
     fun takePersistableUriPermission(dirUri: Set<Uri>) {
-        val newDir = dirUri - contentResolver.persistedUriPermissions.map { it.uri }.toSet()
-        for (dir in newDir) {
+        for (dir in dirUri) {
+            Timber.d("Taking persistable uri permission for $dir")
             contentResolver.takePersistableUriPermission(dir, Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
     }
