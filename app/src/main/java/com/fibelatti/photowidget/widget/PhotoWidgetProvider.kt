@@ -263,46 +263,47 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             } else {
                 true
             }
-            val mainClickPendingIntent = getClickPendingIntent(
+            val shouldDisableTap = photoWidget.tapActionDisableTap && isCyclePaused
+
+            val centerClickPendingIntent = getClickPendingIntent(
                 context = context,
                 appWidgetId = appWidgetId,
-                tapAction = photoWidget.tapAction,
+                tapAction = photoWidget.tapActions.center,
+                isLocked = isLocked,
+                shouldDisableTap = shouldDisableTap,
                 externalUri = photoWidget.currentPhoto?.externalUri,
-            ).takeUnless {
-                val photoChangingAction = photoWidget.tapAction is PhotoWidgetTapAction.ViewNextPhoto ||
-                    photoWidget.tapAction is PhotoWidgetTapAction.ChooseNextPhoto ||
-                    photoWidget.tapAction is PhotoWidgetTapAction.ToggleCycling
+            )
 
-                isLocked && photoChangingAction
-            }
-
-            views.setOnClickPendingIntent(R.id.view_tap_center, mainClickPendingIntent)
+            views.setOnClickPendingIntent(R.id.view_tap_center, centerClickPendingIntent)
 
             if (!multiActionSupported) {
                 // The widget is too narrow to handle 3 different click actions
-                views.setOnClickPendingIntent(R.id.view_tap_left, mainClickPendingIntent)
-                views.setOnClickPendingIntent(R.id.view_tap_right, mainClickPendingIntent)
+                views.setOnClickPendingIntent(R.id.view_tap_left, centerClickPendingIntent)
+                views.setOnClickPendingIntent(R.id.view_tap_right, centerClickPendingIntent)
                 return
             }
 
-            val shouldDisableTap = (photoWidget.tapActionDisableTap && isCyclePaused) ||
-                photoWidget.tapActionDisableSideActions
-
             views.setOnClickPendingIntent(
                 R.id.view_tap_left,
-                flipPhotoPendingIntent(
+                getClickPendingIntent(
                     context = context,
                     appWidgetId = appWidgetId,
-                    flipBackwards = true,
-                ).takeUnless { isLocked || shouldDisableTap },
+                    tapAction = photoWidget.tapActions.left,
+                    isLocked = isLocked,
+                    shouldDisableTap = shouldDisableTap,
+                    externalUri = photoWidget.currentPhoto?.externalUri,
+                ),
             )
             views.setOnClickPendingIntent(
                 R.id.view_tap_right,
-                flipPhotoPendingIntent(
+                getClickPendingIntent(
                     context = context,
                     appWidgetId = appWidgetId,
-                    flipBackwards = false,
-                ).takeUnless { isLocked || shouldDisableTap },
+                    tapAction = photoWidget.tapActions.right,
+                    isLocked = isLocked,
+                    shouldDisableTap = shouldDisableTap,
+                    externalUri = photoWidget.currentPhoto?.externalUri,
+                ),
             )
         }
 
@@ -310,8 +311,36 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             context: Context,
             appWidgetId: Int,
             tapAction: PhotoWidgetTapAction,
+            isLocked: Boolean,
+            shouldDisableTap: Boolean,
             externalUri: Uri?,
         ): PendingIntent? {
+            Timber.d(
+                "Determining click intent (" +
+                    "appWidgetId=$appWidgetId," +
+                    "tapAction=$tapAction," +
+                    "isLocked=$isLocked," +
+                    "shouldDisableTap=$shouldDisableTap," +
+                    "externalUri=$externalUri" +
+                    ")",
+            )
+
+            val photoChangingAction = tapAction is PhotoWidgetTapAction.ViewNextPhoto ||
+                tapAction is PhotoWidgetTapAction.ViewPreviousPhoto ||
+                tapAction is PhotoWidgetTapAction.ChooseNextPhoto ||
+                tapAction is PhotoWidgetTapAction.ToggleCycling
+
+            val shouldIgnoreAction = when {
+                shouldDisableTap && tapAction !is PhotoWidgetTapAction.ToggleCycling -> true
+                photoChangingAction -> isLocked
+                else -> false
+            }
+
+            if (shouldIgnoreAction) {
+                Timber.d("Ignoring action")
+                return null
+            }
+
             when (tapAction) {
                 is PhotoWidgetTapAction.None -> return null
 
@@ -358,10 +387,18 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 }
 
                 is PhotoWidgetTapAction.ViewNextPhoto -> {
-                    return flipPhotoPendingIntent(
+                    return changePhotoPendingIntent(
                         context = context,
                         appWidgetId = appWidgetId,
                         flipBackwards = false,
+                    )
+                }
+
+                is PhotoWidgetTapAction.ViewPreviousPhoto -> {
+                    return changePhotoPendingIntent(
+                        context = context,
+                        appWidgetId = appWidgetId,
+                        flipBackwards = true,
                     )
                 }
 
@@ -450,7 +487,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             }
         }
 
-        fun flipPhotoPendingIntent(
+        fun changePhotoPendingIntent(
             context: Context,
             appWidgetId: Int,
             flipBackwards: Boolean = false,

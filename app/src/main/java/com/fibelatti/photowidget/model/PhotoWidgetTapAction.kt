@@ -29,7 +29,6 @@ sealed interface PhotoWidgetTapAction : Parcelable {
         val viewOriginalPhoto: Boolean = false,
         val noShuffle: Boolean = false,
         val keepCurrentPhoto: Boolean = false,
-        val disableSideActions: Boolean = false,
     ) : PhotoWidgetTapAction {
 
         @IgnoredOnParcel
@@ -59,6 +58,16 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
         @IgnoredOnParcel
         override val serializedName: String = "VIEW_NEXT_PHOTO"
+    }
+
+    @Parcelize
+    data object ViewPreviousPhoto : PhotoWidgetTapAction {
+
+        @IgnoredOnParcel
+        override val label: Int = R.string.photo_widget_configure_tap_action_view_previous_photo
+
+        @IgnoredOnParcel
+        override val serializedName: String = "VIEW_PREVIOUS_PHOTO"
     }
 
     @Parcelize
@@ -117,6 +126,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
                 ViewFullScreen(),
                 ViewInGallery(),
                 ViewNextPhoto,
+                ViewPreviousPhoto,
                 ChooseNextPhoto,
                 ToggleCycling(),
                 AppShortcut(),

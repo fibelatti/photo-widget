@@ -58,6 +58,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -66,7 +67,6 @@ import com.fibelatti.photowidget.configure.DirectorySortingPicker
 import com.fibelatti.photowidget.configure.PhotoWidgetBrightnessPicker
 import com.fibelatti.photowidget.configure.PhotoWidgetCycleModePicker
 import com.fibelatti.photowidget.configure.PhotoWidgetSaturationPicker
-import com.fibelatti.photowidget.configure.PhotoWidgetTapActionPicker
 import com.fibelatti.photowidget.configure.rememberSampleBitmap
 import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -74,7 +74,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.platform.formatPercent
@@ -170,13 +169,6 @@ fun WidgetDefaultsScreen(
                 onItemClick = preferencesViewModel::saveDefaultSorting,
             )
         },
-        onTapActionClick = {
-            PhotoWidgetTapActionPicker.show(
-                context = localContext,
-                currentTapAction = preferences.defaultTapAction,
-                onApplyClick = preferencesViewModel::saveDefaultTapAction,
-            )
-        },
         onClearDefaultsClick = preferencesViewModel::clearDefaults,
     )
 }
@@ -195,7 +187,6 @@ private fun WidgetDefaultsScreen(
     onIntervalClick: () -> Unit,
     onShuffleChange: (Boolean) -> Unit,
     onSortClick: () -> Unit,
-    onTapActionClick: () -> Unit,
     onClearDefaultsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -311,12 +302,6 @@ private fun WidgetDefaultsScreen(
                 onClick = onSortClick,
             )
 
-            PickerDefault(
-                title = stringResource(id = R.string.widget_defaults_tap_action),
-                currentValue = stringResource(id = userPreferences.defaultTapAction.label),
-                onClick = onTapActionClick,
-            )
-
             OutlinedButton(
                 onClick = onClearDefaultsClick,
                 modifier = Modifier.padding(top = 16.dp),
@@ -409,8 +394,10 @@ fun PickerDefault(
 
                 AutoSizeText(
                     text = currentValue,
-                    textAlign = TextAlign.End,
                     style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.End,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 3,
                 )
             }
 
@@ -668,7 +655,6 @@ private fun WidgetDefaultsScreenPreview() {
                 defaultOpacity = PhotoWidget.DEFAULT_OPACITY,
                 defaultSaturation = PhotoWidget.DEFAULT_SATURATION,
                 defaultBrightness = PhotoWidget.DEFAULT_BRIGHTNESS,
-                defaultTapAction = PhotoWidgetTapAction.DEFAULT,
             ),
             onNavClick = {},
             onSourceClick = {},
@@ -680,7 +666,6 @@ private fun WidgetDefaultsScreenPreview() {
             onIntervalClick = {},
             onShuffleChange = {},
             onSortClick = {},
-            onTapActionClick = {},
             onClearDefaultsClick = {},
         )
     }

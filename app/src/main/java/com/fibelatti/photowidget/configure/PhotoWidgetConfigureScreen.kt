@@ -93,7 +93,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
@@ -138,7 +138,7 @@ fun PhotoWidgetConfigureScreen(
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onShuffleChange: (Boolean) -> Unit,
     onSortChange: (DirectorySorting) -> Unit,
-    onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
+    onTapActionPickerClick: (PhotoWidgetTapActions) -> Unit,
     onShapeChange: (String) -> Unit,
     onCornerRadiusChange: (Int) -> Unit,
     onBorderChange: (PhotoWidgetBorder) -> Unit,
@@ -317,7 +317,7 @@ private fun PhotoWidgetConfigureContent(
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onShuffleChange: (Boolean) -> Unit,
     onSortClick: () -> Unit,
-    onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
+    onTapActionPickerClick: (PhotoWidgetTapActions) -> Unit,
     onShapeClick: () -> Unit,
     onCornerRadiusClick: () -> Unit,
     onBorderClick: () -> Unit,
@@ -502,7 +502,7 @@ private fun PhotoWidgetEditor(
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onShuffleChange: (Boolean) -> Unit,
     onSortClick: () -> Unit,
-    onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
+    onTapActionPickerClick: (PhotoWidgetTapActions) -> Unit,
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
     contentWindowInsets: WindowInsets = WindowInsets.navigationBars,
@@ -736,7 +736,7 @@ private fun BehaviorTab(
     onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
     onShuffleChange: (Boolean) -> Unit,
     onSortClick: () -> Unit,
-    onTapActionPickerClick: (PhotoWidgetTapAction) -> Unit,
+    onTapActionPickerClick: (PhotoWidgetTapActions) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -803,8 +803,14 @@ private fun BehaviorTab(
 
         PickerDefault(
             title = stringResource(id = R.string.widget_defaults_tap_action),
-            currentValue = stringResource(id = photoWidget.tapAction.label),
-            onClick = { onTapActionPickerClick(photoWidget.tapAction) },
+            currentValue = buildString {
+                append(stringResource(id = photoWidget.tapActions.left.label))
+                append(", ")
+                append(stringResource(id = photoWidget.tapActions.center.label))
+                append(", ")
+                append(stringResource(id = photoWidget.tapActions.right.label))
+            },
+            onClick = { onTapActionPickerClick(photoWidget.tapActions) },
         )
     }
 }

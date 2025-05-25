@@ -12,7 +12,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.platform.savedState
 import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
 import com.fibelatti.photowidget.widget.DuplicatePhotoWidgetUseCase
@@ -492,10 +492,10 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun tapActionSelected(tapAction: PhotoWidgetTapAction) {
+    fun tapActionSelected(tapActions: PhotoWidgetTapActions) {
         _state.update { current ->
             current.copy(
-                photoWidget = current.photoWidget.copy(tapAction = tapAction),
+                photoWidget = current.photoWidget.copy(tapActions = tapActions),
             )
         }
     }

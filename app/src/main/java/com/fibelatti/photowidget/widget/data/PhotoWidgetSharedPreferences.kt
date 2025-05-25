@@ -13,6 +13,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.minu
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.secondsToLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
@@ -387,9 +388,31 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         return sharedPreferences.getInt("${PreferencePrefix.PADDING}$appWidgetId", 0)
     }
 
-    fun saveWidgetTapAction(appWidgetId: Int, tapAction: PhotoWidgetTapAction) {
+    fun saveWidgetTapAction(
+        appWidgetId: Int,
+        tapAction: PhotoWidgetTapAction,
+        tapActionArea: TapActionArea,
+    ) {
+        val mainPrefKey = when (tapActionArea) {
+            TapActionArea.LEFT -> "${PreferencePrefix.TAP_ACTION_LEFT}$appWidgetId"
+            TapActionArea.CENTER -> "${PreferencePrefix.TAP_ACTION_CENTER}$appWidgetId"
+            TapActionArea.RIGHT -> "${PreferencePrefix.TAP_ACTION_RIGHT}$appWidgetId"
+        }
+
+        val appShortcutKey = when (tapActionArea) {
+            TapActionArea.LEFT -> "${PreferencePrefix.APP_SHORTCUT_LEFT}$appWidgetId"
+            TapActionArea.CENTER -> "${PreferencePrefix.APP_SHORTCUT_CENTER}$appWidgetId"
+            TapActionArea.RIGHT -> "${PreferencePrefix.APP_SHORTCUT_RIGHT}$appWidgetId"
+        }
+
+        val urlShortcutKey = when (tapActionArea) {
+            TapActionArea.LEFT -> "${PreferencePrefix.URL_SHORTCUT_LEFT}$appWidgetId"
+            TapActionArea.CENTER -> "${PreferencePrefix.URL_SHORTCUT_CENTER}$appWidgetId"
+            TapActionArea.RIGHT -> "${PreferencePrefix.URL_SHORTCUT_RIGHT}$appWidgetId"
+        }
+
         sharedPreferences.edit {
-            putString("${PreferencePrefix.TAP_ACTION}$appWidgetId", tapAction.serializedName)
+            putString(mainPrefKey, tapAction.serializedName)
 
             when (tapAction) {
                 is PhotoWidgetTapAction.ViewFullScreen -> {
@@ -397,7 +420,6 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     putBoolean("${PreferencePrefix.VIEW_ORIGINAL_PHOTO}$appWidgetId", tapAction.viewOriginalPhoto)
                     putBoolean("${PreferencePrefix.NO_SHUFFLE}$appWidgetId", tapAction.noShuffle)
                     putBoolean("${PreferencePrefix.KEEP_CURRENT_PHOTO}$appWidgetId", tapAction.keepCurrentPhoto)
-                    putBoolean("${PreferencePrefix.DISABLE_SIDE_ACTIONS}$appWidgetId", tapAction.disableSideActions)
                 }
 
                 is PhotoWidgetTapAction.ViewInGallery -> {
@@ -405,11 +427,11 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 }
 
                 is PhotoWidgetTapAction.AppShortcut -> {
-                    putString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", tapAction.appShortcut)
+                    putString(appShortcutKey, tapAction.appShortcut)
                 }
 
                 is PhotoWidgetTapAction.UrlShortcut -> {
-                    putString("${PreferencePrefix.URL_SHORTCUT}$appWidgetId", tapAction.url)
+                    putString(urlShortcutKey, tapAction.url)
                 }
 
                 is PhotoWidgetTapAction.ToggleCycling -> {
@@ -421,9 +443,33 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         }
     }
 
-    fun getWidgetTapAction(appWidgetId: Int): PhotoWidgetTapAction = with(sharedPreferences) {
-        val name = getString("${PreferencePrefix.TAP_ACTION}$appWidgetId", null)
-            ?: return userPreferencesStorage.defaultTapAction
+    fun getWidgetTapAction(
+        appWidgetId: Int,
+        tapActionArea: TapActionArea,
+    ): PhotoWidgetTapAction = with(sharedPreferences) {
+        val mainPrefKey = when (tapActionArea) {
+            TapActionArea.LEFT -> "${PreferencePrefix.TAP_ACTION_LEFT}$appWidgetId"
+            TapActionArea.CENTER -> "${PreferencePrefix.TAP_ACTION_CENTER}$appWidgetId"
+            TapActionArea.RIGHT -> "${PreferencePrefix.TAP_ACTION_RIGHT}$appWidgetId"
+        }
+
+        val appShortcutKey = when (tapActionArea) {
+            TapActionArea.LEFT -> "${PreferencePrefix.APP_SHORTCUT_LEFT}$appWidgetId"
+            TapActionArea.CENTER -> "${PreferencePrefix.APP_SHORTCUT_CENTER}$appWidgetId"
+            TapActionArea.RIGHT -> "${PreferencePrefix.APP_SHORTCUT_RIGHT}$appWidgetId"
+        }
+
+        val urlShortcutKey = when (tapActionArea) {
+            TapActionArea.LEFT -> "${PreferencePrefix.URL_SHORTCUT_LEFT}$appWidgetId"
+            TapActionArea.CENTER -> "${PreferencePrefix.URL_SHORTCUT_CENTER}$appWidgetId"
+            TapActionArea.RIGHT -> "${PreferencePrefix.URL_SHORTCUT_RIGHT}$appWidgetId"
+        }
+
+        val name = getString(mainPrefKey, null) ?: return when (tapActionArea) {
+            TapActionArea.LEFT -> PhotoWidgetTapAction.ViewPreviousPhoto
+            TapActionArea.CENTER -> PhotoWidgetTapAction.ViewFullScreen()
+            TapActionArea.RIGHT -> PhotoWidgetTapAction.ViewNextPhoto
+        }
 
         return PhotoWidgetTapAction.fromSerializedName(name).let { tapAction ->
             when (tapAction) {
@@ -432,7 +478,6 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     viewOriginalPhoto = getBoolean("${PreferencePrefix.VIEW_ORIGINAL_PHOTO}$appWidgetId", false),
                     noShuffle = getBoolean("${PreferencePrefix.NO_SHUFFLE}$appWidgetId", false),
                     keepCurrentPhoto = getBoolean("${PreferencePrefix.KEEP_CURRENT_PHOTO}$appWidgetId", false),
-                    disableSideActions = getBoolean("${PreferencePrefix.DISABLE_SIDE_ACTIONS}$appWidgetId", false),
                 )
 
                 is PhotoWidgetTapAction.ViewInGallery -> tapAction.copy(
@@ -440,11 +485,11 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 )
 
                 is PhotoWidgetTapAction.AppShortcut -> tapAction.copy(
-                    appShortcut = getString("${PreferencePrefix.APP_SHORTCUT}$appWidgetId", null),
+                    appShortcut = getString(appShortcutKey, null),
                 )
 
                 is PhotoWidgetTapAction.UrlShortcut -> tapAction.copy(
-                    url = getString("${PreferencePrefix.URL_SHORTCUT}$appWidgetId", null),
+                    url = getString(urlShortcutKey, null),
                 )
 
                 is PhotoWidgetTapAction.ToggleCycling -> tapAction.copy(
@@ -544,14 +589,19 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         HORIZONTAL_OFFSET(value = "appwidget_horizontal_offset_"),
         VERTICAL_OFFSET(value = "appwidget_vertical_offset_"),
         PADDING(value = "appwidget_padding_"),
-        TAP_ACTION(value = "appwidget_tap_action_"),
+        TAP_ACTION_LEFT(value = "appwidget_tap_action_left_"),
+        TAP_ACTION_CENTER(value = "appwidget_tap_action_"),
+        TAP_ACTION_RIGHT(value = "appwidget_tap_action_right_"),
         INCREASE_BRIGHTNESS(value = "appwidget_increase_brightness_"),
         VIEW_ORIGINAL_PHOTO(value = "appwidget_view_original_photo_"),
         NO_SHUFFLE(value = "appwidget_no_shuffle_"),
         KEEP_CURRENT_PHOTO(value = "appwidget_keep_current_photo_"),
-        DISABLE_SIDE_ACTIONS(value = "appwidget_disable_side_actions_"),
-        APP_SHORTCUT(value = "appwidget_app_shortcut_"),
-        URL_SHORTCUT(value = "appwidget_url_shortcut_"),
+        APP_SHORTCUT_LEFT(value = "appwidget_app_shortcut_left_"),
+        APP_SHORTCUT_CENTER(value = "appwidget_app_shortcut_"),
+        APP_SHORTCUT_RIGHT(value = "appwidget_app_shortcut_right_"),
+        URL_SHORTCUT_LEFT(value = "appwidget_url_shortcut_left_"),
+        URL_SHORTCUT_CENTER(value = "appwidget_url_shortcut_"),
+        URL_SHORTCUT_RIGHT(value = "appwidget_url_shortcut_right_"),
         PREFERRED_GALLERY_APP(value = "appwidget_preferred_gallery_app_"),
         DISABLE_TAP(value = "appwidget_disable_tap_"),
 

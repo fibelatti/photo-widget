@@ -28,7 +28,7 @@ import com.fibelatti.photowidget.configure.PhotoCropActivity.Companion.outputPat
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
@@ -304,11 +304,11 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     }
 
     private fun showTapActionPicker(
-        tapAction: PhotoWidgetTapAction,
+        tapActions: PhotoWidgetTapActions,
     ) {
         PhotoWidgetTapActionPicker.show(
             context = this,
-            currentTapAction = tapAction,
+            currentTapActions = tapActions,
             onApplyClick = viewModel::tapActionSelected,
         )
     }

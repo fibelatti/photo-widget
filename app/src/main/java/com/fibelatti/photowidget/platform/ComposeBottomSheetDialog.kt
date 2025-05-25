@@ -14,10 +14,16 @@ class ComposeBottomSheetDialog(
     content: @Composable ComposeBottomSheetDialog.() -> Unit,
 ) : BottomSheetDialog(context, R.style.AppTheme_BottomSheetDialog) {
 
+    var skipCollapsed: Boolean
+        get() = behavior.skipCollapsed
+        set(value) {
+            behavior.skipCollapsed = value
+        }
+
     init {
         behavior.peekHeight = 1200.dp.value.toInt()
-        behavior.skipCollapsed = true
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        skipCollapsed = true
 
         setViewTreeOwners()
 

@@ -204,11 +204,15 @@
     <string name="photo_widget_configure_padding">Padding</string>
 
     <string name="photo_widget_configure_tap_action">Tap action</string>
-    <string name="photo_widget_configure_tap_action_description">1x1 widgets can have a single tap action. This is applied to the middle area of larger widgets (blinking green), and you can also tap the sides to switch photos.</string>
+    <string name="photo_widget_configure_tap_action_description">Customize the tap action of each area. 1x1 widgets will use only the center tap action.</string>
+    <string name="photo_widget_configure_tap_action_area_left">Left</string>
+    <string name="photo_widget_configure_tap_action_area_center">Center</string>
+    <string name="photo_widget_configure_tap_action_area_right">Right</string>
     <string name="photo_widget_configure_tap_action_none">None</string>
     <string name="photo_widget_configure_tap_action_view_full_screen">View photo in full screen</string>
     <string name="photo_widget_configure_tap_action_view_in_gallery">View with a gallery app</string>
     <string name="photo_widget_configure_tap_action_view_next_photo">View next photo</string>
+    <string name="photo_widget_configure_tap_action_view_previous_photo">View previous photo</string>
     <string name="photo_widget_configure_tap_action_choose_next_photo">Choose next photo</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Open an app</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Open a link</string>
@@ -219,12 +223,13 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">View original photo (no crop or rotation)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Do not shuffle when using the viewer buttons</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">Do not change the current photo when using the viewer buttons</string>
-    <string name="photo_widget_configure_tap_action_disable_side_actions">Disable tapping on the edges on the home screen</string>
     <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Compatible with folder-based widgets, photo-based widgets will use \"View photo in full screen\" instead.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">This action opens the current photo using the gallery app. It won\'t be possible to view or navigate to other photos.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">You may also choose which gallery app to use.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Choose app</string>
-    <string name="photo_widget_configure_tap_action_disable_tap">Disable tapping on the edges while cycling is paused</string>
+    <string name="photo_widget_configure_tap_action_disable_tap">Disable other tapping areas while cycling is paused</string>
+    <string name="photo_widget_configure_tap_action_shared_preferences">These preferences are used by all areas that use this tap action.</string>
+    <string name="photo_widget_configure_tap_action_shared_selected_app">The selected app is used by all areas that use this tap action.</string>
 
     <string name="photo_widget_configure_add_to_home">Add to home screen</string>
     <string name="photo_widget_configure_save_changes">Save changes</string>

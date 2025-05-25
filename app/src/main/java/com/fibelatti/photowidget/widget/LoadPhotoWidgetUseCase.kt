@@ -4,6 +4,8 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
+import com.fibelatti.photowidget.model.PhotoWidgetTapActions
+import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -65,7 +67,11 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             shuffle = getWidgetShuffle(appWidgetId = appWidgetId),
             directorySorting = getWidgetSorting(appWidgetId = appWidgetId),
             cycleMode = getWidgetCycleMode(appWidgetId = appWidgetId),
-            tapAction = getWidgetTapAction(appWidgetId = appWidgetId),
+            tapActions = PhotoWidgetTapActions(
+                left = getWidgetTapAction(appWidgetId = appWidgetId, tapActionArea = TapActionArea.LEFT),
+                center = getWidgetTapAction(appWidgetId = appWidgetId, tapActionArea = TapActionArea.CENTER),
+                right = getWidgetTapAction(appWidgetId = appWidgetId, tapActionArea = TapActionArea.RIGHT),
+            ),
             aspectRatio = aspectRatio,
             shapeId = getWidgetShapeId(appWidgetId = appWidgetId),
             cornerRadius = cornerRadius,

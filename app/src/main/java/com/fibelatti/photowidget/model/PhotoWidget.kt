@@ -13,7 +13,7 @@ data class PhotoWidget(
     val shuffle: Boolean = false,
     val directorySorting: DirectorySorting = DirectorySorting.NEWEST_FIRST,
     val cycleMode: PhotoWidgetCycleMode = PhotoWidgetCycleMode.DEFAULT,
-    val tapAction: PhotoWidgetTapAction = PhotoWidgetTapAction.DEFAULT,
+    val tapActions: PhotoWidgetTapActions = PhotoWidgetTapActions(),
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
     val shapeId: String = DEFAULT_SHAPE_ID,
     val cornerRadius: Int = DEFAULT_CORNER_RADIUS,
@@ -38,22 +38,19 @@ data class PhotoWidget(
         get() = photos.size > 1
 
     val tapActionIncreaseBrightness: Boolean
-        get() = (tapAction as? PhotoWidgetTapAction.ViewFullScreen)?.increaseBrightness == true
+        get() = tapActions.increaseBrightness
 
     val tapActionViewOriginalPhoto: Boolean
-        get() = (tapAction as? PhotoWidgetTapAction.ViewFullScreen)?.viewOriginalPhoto == true
+        get() = tapActions.viewOriginalPhoto
 
     val tapActionNoShuffle: Boolean
-        get() = (tapAction as? PhotoWidgetTapAction.ViewFullScreen)?.noShuffle == true
+        get() = tapActions.noShuffle
 
     val tapActionKeepCurrentPhoto: Boolean
-        get() = (tapAction as? PhotoWidgetTapAction.ViewFullScreen)?.keepCurrentPhoto == true
-
-    val tapActionDisableSideActions: Boolean
-        get() = (tapAction as? PhotoWidgetTapAction.ViewFullScreen)?.disableSideActions == true
+        get() = tapActions.keepCurrentPhoto
 
     val tapActionDisableTap: Boolean
-        get() = (tapAction as? PhotoWidgetTapAction.ToggleCycling)?.disableTap == true
+        get() = tapActions.disableTap
 
     companion object {
 

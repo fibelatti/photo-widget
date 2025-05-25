@@ -9,7 +9,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.minutesToLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.secondsToLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -46,7 +45,6 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             defaultOpacity = defaultOpacity,
             defaultSaturation = defaultSaturation,
             defaultBrightness = defaultBrightness,
-            defaultTapAction = defaultTapAction,
         ),
     )
     val userPreferences: StateFlow<UserPreferences> = _userPreferences.asStateFlow()
@@ -260,76 +258,6 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             sharedPreferences.edit { putFloat(Preference.DEFAULT_BRIGHTNESS.value, value) }
             _userPreferences.update { current -> current.copy(defaultBrightness = value) }
         }
-
-    var defaultTapAction: PhotoWidgetTapAction
-        get() = with(sharedPreferences) {
-            val name = getString(Preference.DEFAULT_TAP_ACTION.value, null)
-                ?: return PhotoWidgetTapAction.DEFAULT
-
-            return PhotoWidgetTapAction.fromSerializedName(name).let { tapAction ->
-                when (tapAction) {
-                    is PhotoWidgetTapAction.ViewFullScreen -> tapAction.copy(
-                        increaseBrightness = getBoolean(Preference.DEFAULT_INCREASE_BRIGHTNESS.value, false),
-                        viewOriginalPhoto = getBoolean(Preference.DEFAULT_VIEW_ORIGINAL_PHOTO.value, false),
-                        noShuffle = getBoolean(Preference.DEFAULT_NO_SHUFFLE.value, false),
-                        keepCurrentPhoto = getBoolean(Preference.DEFAULT_KEEP_CURRENT_PHOTO.value, false),
-                        disableSideActions = getBoolean(Preference.DEFAULT_DISABLE_SIDE_ACTIONS.value, false),
-                    )
-
-                    is PhotoWidgetTapAction.ViewInGallery -> tapAction.copy(
-                        galleryApp = getString(Preference.DEFAULT_PREFERRED_GALLERY_APP.value, null),
-                    )
-
-                    is PhotoWidgetTapAction.AppShortcut -> tapAction.copy(
-                        appShortcut = getString(Preference.DEFAULT_APP_SHORTCUT.value, null),
-                    )
-
-                    is PhotoWidgetTapAction.UrlShortcut -> tapAction.copy(
-                        url = getString(Preference.DEFAULT_URL_SHORTCUT.value, null),
-                    )
-
-                    is PhotoWidgetTapAction.ToggleCycling -> tapAction.copy(
-                        disableTap = getBoolean(Preference.DEFAULT_DISABLE_TAP.value, false),
-                    )
-
-                    else -> tapAction
-                }
-            }
-        }
-        set(value) {
-            sharedPreferences.edit {
-                putString(Preference.DEFAULT_TAP_ACTION.value, value.serializedName)
-
-                when (value) {
-                    is PhotoWidgetTapAction.ViewFullScreen -> {
-                        putBoolean(Preference.DEFAULT_INCREASE_BRIGHTNESS.value, value.increaseBrightness)
-                        putBoolean(Preference.DEFAULT_VIEW_ORIGINAL_PHOTO.value, value.viewOriginalPhoto)
-                        putBoolean(Preference.DEFAULT_NO_SHUFFLE.value, value.noShuffle)
-                        putBoolean(Preference.DEFAULT_KEEP_CURRENT_PHOTO.value, value.keepCurrentPhoto)
-                        putBoolean(Preference.DEFAULT_DISABLE_SIDE_ACTIONS.value, value.disableSideActions)
-                    }
-
-                    is PhotoWidgetTapAction.ViewInGallery -> {
-                        putString(Preference.DEFAULT_PREFERRED_GALLERY_APP.value, value.galleryApp)
-                    }
-
-                    is PhotoWidgetTapAction.AppShortcut -> {
-                        putString(Preference.DEFAULT_APP_SHORTCUT.value, value.appShortcut)
-                    }
-
-                    is PhotoWidgetTapAction.UrlShortcut -> {
-                        putString(Preference.DEFAULT_URL_SHORTCUT.value, value.url)
-                    }
-
-                    is PhotoWidgetTapAction.ToggleCycling -> {
-                        putBoolean(Preference.DEFAULT_DISABLE_TAP.value, value.disableTap)
-                    }
-
-                    else -> Unit
-                }
-            }
-            _userPreferences.update { current -> current.copy(defaultTapAction = value) }
-        }
     // endregion Defaults
 
     fun clearDefaults() {
@@ -353,7 +281,6 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                 defaultOpacity = defaultOpacity,
                 defaultSaturation = defaultSaturation,
                 defaultBrightness = defaultBrightness,
-                defaultTapAction = defaultTapAction,
             )
         }
     }
@@ -363,8 +290,6 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         APP_APPEARANCE(value = "user_preferences_appearance"),
         USE_TRUE_BLACK(value = "user_preferences_use_true_black"),
         APP_DYNAMIC_COLORS(value = "user_preferences_dynamic_colors"),
-
-        DEFAULT_ASPECT_RATIO(value = "default_aspect_ratio"),
         DEFAULT_SOURCE(value = "default_source"),
         DEFAULT_SHUFFLE(value = "default_shuffle"),
         DEFAULT_DIR_SORTING(value = "default_directory_sorting"),
@@ -395,16 +320,6 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
          * Key from when the black and white was persisted, before the saturation was introduced.
          */
         LEGACY_DEFAULT_BLACK_AND_WHITE(value = "default_black_and_white"),
-        DEFAULT_TAP_ACTION(value = "default_tap_action"),
-        DEFAULT_INCREASE_BRIGHTNESS(value = "default_increase_brightness"),
-        DEFAULT_VIEW_ORIGINAL_PHOTO(value = "default_view_original_photo"),
-        DEFAULT_NO_SHUFFLE(value = "default_no_shuffle"),
-        DEFAULT_KEEP_CURRENT_PHOTO(value = "default_keep_current_photo"),
-        DEFAULT_DISABLE_SIDE_ACTIONS(value = "default_disable_side_actions"),
-        DEFAULT_APP_SHORTCUT(value = "default_app_shortcut"),
-        DEFAULT_URL_SHORTCUT(value = "default_url_shortcut"),
-        DEFAULT_PREFERRED_GALLERY_APP(value = "default_preferred_gallery_app"),
-        DEFAULT_DISABLE_TAP(value = "default_disable_tap"),
         ;
 
         override fun toString(): String = value

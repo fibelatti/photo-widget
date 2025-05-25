@@ -8,6 +8,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.WidgetPhotos
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -439,12 +440,19 @@ class PhotoWidgetStorage @Inject constructor(
         return sharedPreferences.getWidgetPadding(appWidgetId = appWidgetId)
     }
 
-    fun saveWidgetTapAction(appWidgetId: Int, tapAction: PhotoWidgetTapAction) {
-        sharedPreferences.saveWidgetTapAction(appWidgetId = appWidgetId, tapAction = tapAction)
+    fun saveWidgetTapAction(appWidgetId: Int, tapAction: PhotoWidgetTapAction, tapActionArea: TapActionArea) {
+        sharedPreferences.saveWidgetTapAction(
+            appWidgetId = appWidgetId,
+            tapAction = tapAction,
+            tapActionArea = tapActionArea,
+        )
     }
 
-    fun getWidgetTapAction(appWidgetId: Int): PhotoWidgetTapAction {
-        return sharedPreferences.getWidgetTapAction(appWidgetId = appWidgetId)
+    fun getWidgetTapAction(appWidgetId: Int, tapActionArea: TapActionArea): PhotoWidgetTapAction {
+        return sharedPreferences.getWidgetTapAction(
+            appWidgetId = appWidgetId,
+            tapActionArea = tapActionArea,
+        )
     }
 
     fun saveWidgetDeletionTimestamp(appWidgetId: Int, timestamp: Long?) {
