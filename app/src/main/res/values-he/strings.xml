@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Widget Host -->
+    <string name="photo_widget_host_description">עצב את מסך הבית שלך עם התמונות האהובות עליך</string>
+    <!-- Home -->
+    <string name="photo_widget_home_title">עצב את מסך הבית שלך עם התמונות האהובות עליך</string>
+    <string name="photo_widget_home_instruction">צור ווידג\'ט חדש על ידי לחיצה על אחת מהאפשרויות. אל דאגה, תוכל לשנות זאת בכל עת!</string>
+    <string name="photo_widget_home_new">ווידגט חדש</string>
+    <string name="photo_widget_home_current">הווידג\'טים שלי</string>
+    <string name="photo_widget_home_settings">הגדרות</string>
+    <string name="photo_widget_home_data_saver">אחסון אופטימלי</string>
+    <string name="photo_widget_home_appearance">עיצוב</string>
+    <string name="photo_widget_home_true_black_background">רקע שחור אמיתי</string>
+    <string name="photo_widget_home_dynamic_colors">צבעי אפליקציה</string>
+    <string name="photo_widget_home_translations">שפת האפליקציה</string>
+    <string name="photo_widget_home_share">שתף את האפליקציה</string>
+    <string name="photo_widget_home_rate">כתיבת ביקורת</string>
+    <string name="photo_widget_home_help">משהו לא עובד?</string>
+    <string name="photo_widget_home_common_issues">בעיות נפוצות</string>
+    <string name="photo_widget_home_privacy_policy">מדיניות פרטיות</string>
+    <string name="photo_widget_home_developer">פותח עם ❤ על ידי Filipe Belatti</string>
+    <string name="photo_widget_home_version">גרסת אפליקציה: %s</string>
+    <string name="photo_widget_home_view_licenses">רישיונות OSS</string>
+    <plurals name="photo_widget_home_share_received">
+        <item quantity="one">התקבלה תמונה אחת. צור ווידג\'ט חדש או בחר ווידג\'ט קיים כדי להוסיף אותו.</item>
+        <item quantity="two">%d תמונות התקבלו. צור ווידג\'ט חדש או בחר ווידג\'ט קיים כדי להוסיף אותם.</item>
+        <item quantity="many">%d תמונות התקבלו. צור ווידג\'ט חדש או בחר ווידג\'ט קיים כדי להוסיף אותם.</item>
+        <item quantity="other">%d תמונות התקבלו. צור ווידג\'ט חדש או בחר ווידג\'ט קיים כדי להוסיף אותם.</item>
+    </plurals>
+    <string name="photo_widget_home_pinning_not_supported_title">הוסף ווידג\'ט ישירות ממסך הבית שלך</string>
+    <string name="photo_widget_home_pinning_not_supported_message">1. הקש והחזק שטח ריק\n\n2. בחר את תפריט הווידג\'טים\n\n3. חפש את Material Photo Widget\n\n4. הגדר ושמור!</string>
+    <!-- My Widgets -->
+    <string name="photo_widget_home_empty_widgets">עדיין לא הוספת ווידג\'טים.\nווידג\'טים שתוסיף למסך הבית שלך יופיעו כאן.</string>
+    <string name="photo_widget_home_filter_all">הכל</string>
+    <string name="photo_widget_home_filter_photos">תמונות</string>
+    <string name="photo_widget_home_filter_folder">תיקייה</string>
+    <string name="photo_widget_home_locked_label">נעול</string>
+    <string name="photo_widget_home_removed_label">הוסר</string>
+    <string name="photo_widget_home_removed_widgets_hint">ווידג\'טים שהוסרו אינם מופיעים עוד במסך הבית. הם נמחקים לצמיתות מהאפליקציה לאחר 7 ימים. ניתן לבחור \"לשמור\" אותם.</string>
+    <string name="photo_widget_home_my_widget_action_sync">סנכרון עם תמונות בתיקייה</string>
+    <string name="photo_widget_home_my_widget_action_edit">צפייה/ עריכה</string>
+    <string name="photo_widget_home_my_widget_action_duplicate">שכפול</string>
+    <string name="photo_widget_home_my_widget_action_lock">נעילה עם התמונה הנוכחית</string>
+    <string name="photo_widget_home_my_widget_action_unlock">שיחרור נעילת הווידג\'ט</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">תמונות לא ישתנו אוטומטית או בהקשה כאשר הווידג\'ט נעול</string>
+    <string name="photo_widget_home_removed_widget_action_restore">שחזור</string>
+    <string name="photo_widget_home_removed_widget_action_keep">שמור</string>
+    <string name="photo_widget_home_removed_widget_action_delete">מחיקה לצמיתות</string>
+    <string name="photo_widget_home_my_widget_syncing_feedback">מאחזר את התמונות האחרונות מהתיקייה…</string>
+    <!-- Preferences -->
+    <string name="preferences_data_saver">צמצום ניצול האחסון</string>
+    <string name="preferences_data_saver_description">כאשר הגדרה זו מופעלת, תמונות שנוספות לווידג\'טים ידחסו כדי לחסוך באחסון. בדרך כלל זה לא ישפיע על האיכות, אך אם התמונות שלך מכילות טקסט קטן, מומלץ לכבות את זה.\n\nהגדרה זו משפיעה רק על תמונות שנוספו לאחר שינוי הגדרה זו.\n\nזה לא חל על תיקיות מסונכרנות, מכיוון שתמונות אלו נקראות ישירות מאחסון המכשיר שלך.</string>
+    <string name="preferences_appearance_follow_system">מערכת</string>
+    <string name="preferences_appearance_light">מואר</string>
+    <string name="preferences_appearance_dark">כהה</string>
+    <string name="preferences_dynamic_colors_enabled">צבעים דינמיים</string>
+    <string name="preferences_dynamic_colors_disabled">צבעי ברירת מחדל</string>
+    <!-- Widget Defaults -->
+    <string name="widget_defaults_title">ברירות מחדל של ווידג\'ט</string>
+    <string name="widget_defaults_explanation">ערכים אלה נטענים מראש בעת יצירת ווידג\'ט חדש. הם שימושיים להגדרת ווידג\'טים מרובים עם אותה תצורה, ומבטלים את הצורך להתאים הגדרות בכל פעם. שים לב שכל שינוי בערכים אלה לא ישפיע על ווידג\'טים קיימים.</string>
+    <string name="widget_defaults_source">מקור</string>
+    <string name="widget_defaults_shuffle">ערבוב</string>
+    <string name="widget_defaults_cycling">חזרה על תמונה</string>
+    <string name="widget_defaults_shape">צורה</string>
+    <string name="widget_defaults_corner_radius">מעוגל</string>
+    <string name="widget_defaults_opacity">שקיפות</string>
+    <string name="widget_defaults_saturation">רוויה</string>
+    <string name="widget_defaults_brightness">בהירות</string>
+    <string name="widget_defaults_tap_action">פעולת הקשה</string>
+    <string name="widget_defaults_reset">איפוס ערכים</string>
+    <!-- Share -->
+    <string name="share_title">ספר לחברים</string>
+    <string name="share_text">הוסף את התמונות האהובות עליך למסך הבית שלך בעזרת Material Photo Widget. הורד בחינם ב- %s</string>
+    <!-- Source -->
+    <string name="photo_widget_source_photos">תמונות</string>
+    <string name="photo_widget_source_directory">תיקייה</string>
+    <!-- Aspect Ratio -->
+    <string name="photo_widget_aspect_ratio_title">פורמט</string>
+    <string name="photo_widget_aspect_ratio_shape">צורות</string>
+    <string name="photo_widget_aspect_ratio_shape_description">צורות Material You</string>
+    <string name="photo_widget_aspect_ratio_square">מרובע</string>
+    <string name="photo_widget_aspect_ratio_tall">גבוה</string>
+    <string name="photo_widget_aspect_ratio_wide">רחב</string>
+    <string name="photo_widget_aspect_ratio_original">מקורי</string>
+    <string name="photo_widget_aspect_ratio_original_description">התאם כל תמונה</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">מילוי</string>
+    <string name="photo_widget_aspect_ratio_fill_widget_description">התאם את גודל הווידג\'ט</string>
+    <!-- Configure -->
+    <string name="photo_widget_configure_navigate_back_warning">כל השינויים יאבדו, לחזור בכל זאת?</string>
+    <string name="photo_widget_configure_tab_content">תוכן</string>
+    <string name="photo_widget_configure_tab_appearance">נראות</string>
+    <string name="photo_widget_configure_tab_behavior">התנהגות</string>
+    <string name="photo_widget_configure_import_prompt">לייבא מווידג\'ט אחר?</string>
+    <string name="photo_widget_configure_import_prompt_action">בחר</string>
+    <string name="photo_widget_configure_import_dialog_title">בחר ווידג\'ט</string>
+    <string name="photo_widget_configure_import_dialog_description">כל התמונות והתצורות יועתקו לוידג\'ט החדש</string>
+    <string name="photo_widget_configure_import_error">לא ניתן לייבא את כל התמונות שנבחרו</string>
+    <string name="photo_widget_configure_too_many_photos_error">כל תיקייה מסונכרנת יכולה להכיל עד 3000 תמונות. ניתן לבחור יותר מתיקייה אחת, וכל תת-תיקייה נספרת בנפרד.\n\nלא ניתן לבחור את סרט הצילום. התמונות מעובדות אחת אחת, ותיקיות עם המון (אלפים) תמונות גורמות לבעיות ביצועים רציניות בעורך הווידג\'טים, כמו גם במסך הבית בעת החלפת תמונות.</string>
+    <string name="photo_widget_configure_missing_photos_error">הווידג\'ט חייב לכלול לפחות תמונה אחת. ניתן למחוק ווידג\'טים ממסך הבית בלבד.</string>
+    <string name="photo_widget_configure_menu_source">מקור</string>
+    <string name="photo_widget_configure_source_description">ניתן לבחור כל תמונה בנפרד או לסנכרן ווידג\'ט זה עם תיקייה אחת או יותר. בעת הסנכרון, כל התמונות בתיקייה מתווספות אוטומטית לוידג\'ט. התוכן מתעדכן כל 24 שעות.</string>
+    <string name="photo_widget_configure_source_selection_photos">רק התמונות שבחרת יוצגו בווידג\'ט זה.</string>
+    <string name="photo_widget_configure_source_selection_directory_empty">ווידג\'ט זה עדיין לא מסונכרן עם אף תיקייה.</string>
+    <string name="photo_widget_configure_source_selection_directory_non_empty">ווידג\'ט זה מסונכרן עם התיקיות הבאות:</string>
+    <string name="photo_widget_configure_source_keep_current">השאר את המקור הנוכחי</string>
+    <string name="photo_widget_configure_source_set_directory">הגדר את המקור לתיקייה</string>
+    <string name="photo_widget_configure_source_set_photos">הגדר את המקור לתמונות</string>
+    <string name="photo_widget_configure_source_warning">שינוי המקור יחליף את התמונות הנוכחיות מהווידג\'ט הזה</string>
+    <string name="photo_widget_configure_menu_crop">חתוך</string>
+    <string name="photo_widget_configure_menu_remove">הסר</string>
+    <string name="photo_widget_configure_menu_move_left">הזז שמאלה</string>
+    <string name="photo_widget_configure_menu_move_right">הזז ימינה</string>
+    <string name="photo_widget_configure_photos_pending_deletion">תמונות שנמחקו לאחרונה</string>
+    <string name="photo_widget_configure_photos_excluded">החרג מהווידג\'ט</string>
+    <string name="photo_widget_configure_pick_photo">בחר תמונות</string>
+    <string name="photo_widget_configure_pick_folder">בחר תיקיה</string>
+    <string name="photo_widget_configure_change_source">שנה מקור</string>
+    <string name="photo_widget_configure_select_cycling_mode">חזרה על תמונה</string>
+    <string name="photo_widget_configure_cycling_mode_interval">מרווח זמן</string>
+    <string name="photo_widget_configure_cycling_mode_schedule">תזמון</string>
+    <string name="photo_widget_configure_cycling_mode_disabled">מושבת</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">הווידג\'ט יעבור אוטומטית לתמונה הבאה מרווחי זמן הבאים:</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description">הווידג\'ט יעבור אוטומטית לתמונה הבאה בכל יום בזמנים המתוזמנים הבאים:</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">הווידג\'ט לא יעבור בין תמונות באופן אוטומטי. הקש על קצוות הווידג\'ט כדי לעבור לתמונה הבאה.</string>
+    <string name="photo_widget_configure_interval_current_label">כל %s</string>
+    <plurals name="photo_widget_configure_interval_current_seconds">
+        <item quantity="one">שנייה %d</item>
+        <item quantity="two">%d שניות</item>
+        <item quantity="many">%d שניות</item>
+        <item quantity="other">%d שניות</item>
+    </plurals>
+    <plurals name="photo_widget_configure_interval_current_minutes">
+        <item quantity="one">דקה %d</item>
+        <item quantity="two">%d דקות</item>
+        <item quantity="many">%d דקות</item>
+        <item quantity="other">%d דקות</item>
+    </plurals>
+    <plurals name="photo_widget_configure_interval_current_hours">
+        <item quantity="one">שעה %d</item>
+        <item quantity="two">%d שעות</item>
+        <item quantity="many">%d שעות</item>
+        <item quantity="other">%d שעות</item>
+    </plurals>
+    <plurals name="photo_widget_configure_interval_current_days">
+        <item quantity="one">יום %d</item>
+        <item quantity="two">%d ימים</item>
+        <item quantity="many">%d ימים</item>
+        <item quantity="other">%d ימים</item>
+    </plurals>
+    <string name="photo_widget_configure_interval_seconds_label">שניות</string>
+    <string name="photo_widget_configure_interval_minutes_label">דקות</string>
+    <string name="photo_widget_configure_interval_hours_label">שעות</string>
+    <string name="photo_widget_configure_interval_days_label">ימים</string>
+    <string name="photo_widget_configure_schedule_placeholder">קבע עד 4 זמנים כדי להחלפת תמונות באופן אוטומטי.</string>
+    <string name="photo_widget_configure_schedule_add_new">הוסף חדש</string>
+    <string name="photo_widget_configure_schedule_limit_reached">הגעתם למקסימום של 4 פעמים</string>
+    <plurals name="photo_widget_configure_schedule_times">
+        <item quantity="one">נבחר פעם אחת</item>
+        <item quantity="two">נבחרו %d פעמים</item>
+        <item quantity="many">נבחרו %d פעמים</item>
+        <item quantity="other">נבחרו %d פעמים</item>
+    </plurals>
+    <string name="photo_widget_configure_interval_warning">זמן המרווח בפועל או הזמן שתוזמן עשויים להשתנות עקב הגבלות אנדרואיד שנועדו כדי לייעל את חיי הסוללה. כדי להבטיח שהכל יעבוד כצפוי, הענק את ההרשאה למטה</string>
+    <string name="photo_widget_configure_interval_grant_permission">הענק הרשאת שעון מעורר ותזכורות</string>
+    <string name="photo_widget_configure_interval_permission_dialog_title">אודות הרשאה זו</string>
+    <string name="photo_widget_configure_interval_permission_dialog_description">אנדרואיד יכולה להגביל עבודה ברקע כדי לייעל את חיי הסוללה, וכתוצאה מכך מרווחים ארוכים יותר בין כל תמונה.\n\nכדי לעדכן ווידג\'טים בדיוק במרווח הזמן שנבחר, פתח את ההגדרות ואפשר הגדרת שעון מעורר ותזכורות.</string>
+    <string name="photo_widget_configure_interval_open_settings">פתח הגדרות</string>
+    <string name="photo_widget_configure_border">גבול</string>
+    <string name="photo_widget_configure_border_none">ללא</string>
+    <string name="photo_widget_configure_border_dynamic">דינמי</string>
+    <string name="photo_widget_configure_border_color">צבעוני</string>
+    <string name="photo_widget_configure_border_color_palette">לוח צבעים</string>
+    <string name="photo_widget_configure_border_color_palette_dominant">צבע דומיננטי</string>
+    <string name="photo_widget_configure_border_color_palette_vibrant">צבע עז</string>
+    <string name="photo_widget_configure_border_color_palette_muted">צבע עמום</string>
+    <string name="photo_widget_configure_border_explanation">השינויים יבוצעו במהלך עדכון הווידג\'ט הבא לאחר שתשנה את צבע ערכת הנושא של הטלפון שלך. כדי לעדכן את כל הווידג\'טים באופן מיידי, פשוט פתח את האפליקציה.</string>
+    <string name="photo_widget_configure_offset">קיזוז</string>
+    <string name="photo_widget_configure_offset_current_values">אופקי: %1$d, אנכי: %2$d</string>
+    <string name="photo_widget_configure_offset_current_horizontal">אופקי: %1$d</string>
+    <string name="photo_widget_configure_offset_current_vertical">אנכי: %1$d</string>
+    <string name="photo_widget_configure_padding">ריפוד</string>
+    <string name="photo_widget_configure_tap_action">פעולת הקשה</string>
+    <string name="photo_widget_configure_tap_action_description">התאם אישית את פעולת ההקשה של כל אזור. ווידג\'טים של 1x1 ישתמשו רק בפעולת ההקשה המרכזית.</string>
+    <string name="photo_widget_configure_tap_action_area_left">שמאל</string>
+    <string name="photo_widget_configure_tap_action_area_center">מרכז</string>
+    <string name="photo_widget_configure_tap_action_area_right">ימין</string>
+    <string name="photo_widget_configure_tap_action_none">ללא</string>
+    <string name="photo_widget_configure_tap_action_view_full_screen">הצגת תמונה במסך מלא</string>
+    <string name="photo_widget_configure_tap_action_view_in_gallery">הצגה באמצעות אפליקציית גלריה</string>
+    <string name="photo_widget_configure_tap_action_view_next_photo">צפייה בתמונה הבאה</string>
+    <string name="photo_widget_configure_tap_action_view_previous_photo">צפייה בתמונה הקודמת</string>
+    <string name="photo_widget_configure_tap_action_choose_next_photo">בחר את התמונה הבאה</string>
+    <string name="photo_widget_configure_tap_action_app_shortcut">פתח אפליקציה</string>
+    <string name="photo_widget_configure_tap_action_url_shortcut">פתח קישור</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">הפעלה/השבתה של מחזור</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">הקש כדי להשהות את מחזור התמונות האוטומטי. הקש שוב כדי לחדש. לפעולה זו אין השפעה אם הווידג\'ט נעול.</string>
+    <string name="photo_widget_configure_tap_action_increase_brightness">הגברת בהירות באופן אוטומטי</string>
+    <string name="photo_widget_configure_tap_action_view_original_photo">צפה בתמונה המקורית (ללא חיתוך או סיבוב)</string>
+    <string name="photo_widget_configure_tap_action_do_not_shuffle">אל תבצע הפעלה אקראית בעת שימוש בכפתורי הצפייה</string>
+    <string name="photo_widget_configure_tap_action_keep_current_photo">אל תשנה את התמונה הנוכחית בעת שימוש בכפתורי התצוגה</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_compatibility">תואם לווידג\'טים מבוססי תיקיות, ווידג\'טים מבוססי תמונות ישתמשו במקום זאת באפשרות \"הצג תמונה במסך מלא\".</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_warning">פעולה זו פותחת את התמונה הנוכחית באמצעות אפליקציית הגלריה. לא ניתן יהיה לצפות בתמונות אחרות או לנווט אליהן.</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_app_selection">באפשרותך גם לבחור באיזו אפליקציית גלריה להשתמש.</string>
+    <string name="photo_widget_configure_tap_action_choose_app">בחר אפליקציה</string>
+    <string name="photo_widget_configure_tap_action_disable_tap">השבת אזורי הקשה אחרים בזמן שהחזרה מושהית</string>
+    <string name="photo_widget_configure_tap_action_shared_preferences">העדפות אלה משמשות את כל האזורים המשתמשים בפעולת הקשה זו.</string>
+    <string name="photo_widget_configure_tap_action_shared_selected_app">האפליקציה שנבחרה נמצאת בשימוש על ידי כל האזורים המשתמשים בפעולת הקשה זו.</string>
+    <string name="photo_widget_configure_add_to_home">הוספה למסך הבית</string>
+    <string name="photo_widget_configure_save_changes">שמור שינויים</string>
+    <string name="photo_widget_configure_widget_pinned">הווידג\'ט נוסף! בדוק את מסך הבית שלך…</string>
+    <string name="photo_widget_time_picker_title">בחר זמן</string>
+    <string name="photo_widget_directory_sort_title">מיין תמונות</string>
+    <string name="photo_widget_directory_sort_newest_first">החדש ביותר קודם</string>
+    <string name="photo_widget_directory_sort_oldest_first">הישן ביותר קודם</string>
+    <string name="photo_widget_directory_sort_explanation">מיין משתמש בתאריך השינוי האחרון של קובץ התמונה המקורי והחל רק על ווידג\'טים המסונכרנים עם תיקיות.</string>
+    <!-- Help -->
+    <string name="help_article_title_1">הוספת ווידג\'ט למסך הבית לא עובדת</string>
+    <string name="help_article_body_1">אם הגדרת ווידג\'ט ושום דבר לא קורה כשאתה מנסה להוסיף אותו למסך הבית, או אם הוא נוסף אבל לא מציג את התמונות שבחרת, תוכל לנסות להוסיף אותו ישירות ממסך הבית שלך.\n\nההוראות יכולות להשתנות בהתאם לגרסת האנדרואיד שלך, יצרן המכשיר ומפעיל מסך הבית, אבל באופן כללי, התהליך הוא כדלקמן:\n\n1. לחץ לחיצה ארוכה על מקום ריק במסך הבית שלך עד שיופיע תפריט קופץ.\n2. אתר את האפשרות \"ווידג\'טים\".\n3. חפש \"Material Photo Widget\" בתוך הווידג\'טים הזמינים.\n4. גרור אותו למסך הבית שלך והגדר אותו כרגיל.</string>
+    <string name="help_article_title_2">תמונות לא ישתנו אוטומטית</string>
+    <string name="help_article_body_2">המרווח שנבחר או הזמנים המתוזמנים הם קירוב למועד שבו התמונה הבאה תוצג. אנדרואיד מתחשבת במספר גורמים בעת קביעת הזמן בפועל, וכל יצרן מכשיר עשוי להטיל הגבלות על תהליכים ברקע.\n\nכדי להבטיח שהתמונות ישתנו בדיוק בזמן הרצוי, הענק לאפליקציה הרשאה \"התראות מדויקות\" וודא שלא חלות עליה הגבלות סוללה בהגדרות הטלפון שלך.</string>
+    <string name="help_article_title_3">הווידג\'ט לא עובד לאחר הפעלה מחדש של הטלפון</string>
+    <string name="help_article_body_3">כאשר הטלפון שלך מופעל מחדש, אנדרואיד שולח אות לאפליקציות כדי להודיע ​​להן, כדי שיוכלו להפעיל מחדש את עצמן. למרבה הצער, חלק מיצרני המכשירים (כגון Xiaomi, Redmi, Huawei ואחרים) חוסמים אות זה.\n\nכדי להפעיל פונקציונליות זו, שנה את ההרשאה \"הפעלה אוטומטית\" באפליקציית האבטחה שלך.</string>
+    <string name="help_article_title_4">גודל הווידג\'ט קטן מדי</string>
+    <string name="help_article_body_4">לאחר הוספת הווידג\'ט למסך הבית, ניתן ללחוץ עליו לחיצה ארוכה כדי לחשוף את אפשרות שינוי הגודל. לאחר מכן, גררו את גבולותיו כדי להתאים אותו לגודל הרצוי.</string>
+    <string name="restriction_warning_hint">פעילות ברקע מוגבלת. ייתכן שווידג\'טים לא יפעלו כראוי. הקש למידע נוסף.</string>
+    <string name="restriction_warning_dialog_title">הגבלות עבודה ברקע ואופטימיזציה של סוללה</string>
+    <string name="restriction_warning_dialog_body_1">יישומון התמונות של Material Photo צריך לפעול ברקע כדי לעדכן את הווידג\'טים שלך. הוא פועל רק בעת הצורך, אך אם צריכת הסוללה מוגדרת ל\"אופטימלית\", ייתכן שאנדרואיד יעצור את האפליקציה, מה שיגרום לוידג\'טים להפסיק לפעול כראוי.</string>
+    <string name="restriction_warning_dialog_body_2">פתח את הגדרות האפליקציה ושנה את צריכת הסוללה ל\"ללא הגבלה\". אם אפשרות זו אינה זמינה, בדוק את הגדרות צריכת החשמל של הטלפון.</string>
+    <string name="restriction_warning_dialog_body_3">חלק מהטלפונים מגבילים אף יותר ועשויים לחסום את ההפעלה האוטומטית של האפליקציה לאחר הפעלה מחדש. ההגדרות משתנות בהתאם למכשיר - בקרו באתר https://dontkillmyapp.com לקבלת הוראות ספציפיות.</string>
+    <string name="restriction_warning_open_app_settings">פתח את הגדרות האפליקציה</string>
+    <string name="restriction_warning_open_power_settings">פתח הגדרות צריכת חשמל</string>
+    <!-- Translations -->
+    <string name="translations_dialog_title">עזור לתרגם לשפה שלך!</string>
+    <string name="translations_dialog_body">אפליקציה זו תומכת בכמה שפות, והעזרה שלך יכולה לשפר אותה עוד יותר. תרגומים אוטומטיים אינם תמיד מדויקים, לכן נוכל לעבוד יחד כקהילה כדי להפוך שפות נוספות לזמינות.</string>
+    <string name="translations_dialog_positive_action">פתח Crowdin</string>
+    <string name="translations_dialog_negative_action">לא כעת</string>
+    <!-- Viewer -->
+    <string name="photo_widget_viewer_all_photos">כל התמונות</string>
+    <!-- Cycling feedback -->
+    <string name="photo_widget_cycling_feedback_paused">המחזור מושהה</string>
+    <string name="photo_widget_cycling_feedback_resumed">המחזור חודש</string>
+    <!-- Common Actions -->
+    <string name="photo_widget_action_yes">כן</string>
+    <string name="photo_widget_action_no">לא</string>
+    <string name="photo_widget_action_continue">המשך</string>
+    <string name="photo_widget_action_cancel">ביטול</string>
+    <string name="photo_widget_action_apply">החל</string>
+    <string name="photo_widget_action_confirm">אישור</string>
+    <string name="photo_widget_action_got_it">הבנתי</string>
+    <string name="photo_widget_action_dismiss">התעלם</string>
+    <!-- Content Description -->
+    <string name="photo_widget_cd_host">ווידג\'ט מסך הבית של Material Photo</string>
+</resources>
