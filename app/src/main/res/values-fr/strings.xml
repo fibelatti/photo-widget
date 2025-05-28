@@ -186,7 +186,7 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">Voir la photo originale (sans recadrage ni rotation)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Ne pas mélanger lors de l\'utilisation des boutons de la visionneuse</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">Ne pas modifier la photo actuelle lors de l\'utilisation des boutons de la visionneuse</string>
-    <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Compatible avec les widgets basés sur les dossiers, les widgets photo utiliseront plutôt "Afficher la photo en plein écran".</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Compatible avec les widgets basés sur les dossiers, les widgets photo utiliseront plutôt \"Afficher la photo en plein écran\".</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Cette action ouvre la photo actuelle avec l\'application galerie. Il ne sera pas possible de voir ou de naviguer vers d\'autres photos.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Vous pouvez également choisir quelle application galerie utiliser.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Choisir une application</string>
