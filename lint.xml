@@ -9,6 +9,7 @@
     <!-- Translations are managed through Crowdin, so these need to be ignored -->
     <issue id="MissingQuantity" severity="ignore" />
     <issue id="Typos" severity="ignore" />
+    <issue id="UnusedQuantity" severity="ignore" />
 
     <issue id="BinaryOperationInTimber" severity="ignore" />
 </lint>
