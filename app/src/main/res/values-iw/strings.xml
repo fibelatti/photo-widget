@@ -231,7 +231,7 @@
     <string name="restriction_warning_open_power_settings">פתח הגדרות צריכת חשמל</string>
     <!-- Translations -->
     <string name="translations_dialog_title">עזור לתרגם לשפה שלך!</string>
-    <string name="translations_dialog_body">אפליקציה זו תומכת בכמה שפות, והעזרה שלך יכולה לשפר אותה עוד יותר. תרגומים אוטומטיים אינם תמיד מדויקים, לכן נוכל לעבוד יחד כקהילה כדי להפוך שפות נוספות לזמינות.</string>
+    <string name="translations_dialog_body">אפליקציה זו משתמשת בגישה קהילתית לתרגומים, והעזרה שלך יכולה לשפר אותה. אתה יכול לתרום אם תרצה לראות שפה חדשה זמינה, או אם הבחנת במשהו שלא נראה טוב.</string>
     <string name="translations_dialog_positive_action">פתח Crowdin</string>
     <string name="translations_dialog_negative_action">לא כעת</string>
     <!-- Viewer -->

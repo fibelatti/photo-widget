@@ -219,7 +219,7 @@
     <string name="restriction_warning_open_power_settings">Güç ayarlarını aç</string>
     <!-- Translations -->
     <string name="translations_dialog_title">Kendi dilinize çeviriye yardım edin!</string>
-    <string name="translations_dialog_body">Bu uygulama birkaç dili destekliyor ve sizin yardımınızla daha da iyi olabilir. Otomatik çeviriler her zaman doğru olmayabilir, bu yüzden daha fazla dili birlikte ekleyebiliriz.</string>
+    <string name="translations_dialog_body">Bu uygulama çeviriler için topluluk odaklı bir yaklaşım kullanır ve sizin yardımınız onu daha iyi hale getirebilir. Yeni bir dilin kullanılabilir olmasını istiyorsanız veya doğru görünmeyen bir şey fark ettiyseniz katkıda bulunabilirsiniz.</string>
     <string name="translations_dialog_positive_action">Crowdin\'i Aç</string>
     <string name="translations_dialog_negative_action">Şimdi değil</string>
     <!-- Viewer -->

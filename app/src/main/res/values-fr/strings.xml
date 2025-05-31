@@ -219,7 +219,7 @@
     <string name="restriction_warning_open_power_settings">Ouvrir les paramètres d\'alimentation</string>
     <!-- Translations -->
     <string name="translations_dialog_title">Aidez à traduire dans votre langue !</string>
-    <string name="translations_dialog_body">Cette application prend en charge quelques langues, et votre aide peut la rendre encore meilleure. Les traductions automatiques ne sont pas toujours exactes, alors travaillons ensemble en tant que communauté pour en ajouter d\'autres.</string>
+    <string name="translations_dialog_body">Cette application utilise une approche communautaire pour les traductions, et votre aide peut l\'améliorer. Vous pouvez contribuer si vous souhaitez qu'une nouvelle langue soit disponible ou si vous remarquez une anomalie.</string>
     <string name="translations_dialog_positive_action">Ouvrir Crowdin</string>
     <string name="translations_dialog_negative_action">Pas maintenant</string>
     <!-- Viewer -->

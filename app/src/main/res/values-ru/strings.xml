@@ -231,7 +231,7 @@
     <string name="restriction_warning_open_power_settings">Открыть настройки питания</string>
     <!-- Translations -->
     <string name="translations_dialog_title">Помогите перевести на ваш язык!</string>
-    <string name="translations_dialog_body">Это приложение поддерживает несколько языков, и ваша помощь сделает его еще лучше. Автоматический перевод не всегда точен, поэтому мы можем работать вместе как сообщество, чтобы добавить больше языков.</string>
+    <string name="translations_dialog_body">Это приложение использует подход сообщества для переводов, и ваша помощь может сделать его лучше. Вы можете внести свой вклад, если хотите увидеть новый доступный язык или заметили что-то, что выглядит неправильно.</string>
     <string name="translations_dialog_positive_action">Открыть Crowdin</string>
     <string name="translations_dialog_negative_action">Не сейчас</string>
     <!-- Viewer -->

@@ -219,7 +219,7 @@
     <string name="restriction_warning_open_power_settings">Abrir configurações de energia</string>
     <!-- Translations -->
     <string name="translations_dialog_title">Ajude a traduzir para o seu idioma!</string>
-    <string name="translations_dialog_body">Este app suporta alguns idiomas, e a sua ajuda pode torná-lo ainda melhor. As traduções automáticas nem sempre são precisas, então podemos trabalhar juntos como comunidade para disponibilizar mais idiomas.</string>
+    <string name="translations_dialog_body">Este aplicativo utiliza uma abordagem de tradução orientada pela comunidade, e sua ajuda pode melhorá-lo. Você pode contribuir se quiser ver um novo idioma disponível ou se notar algo que não parece certo.</string>
     <string name="translations_dialog_positive_action">Abrir Crowdin</string>
     <string name="translations_dialog_negative_action">Agora não</string>
     <!-- Viewer -->
