@@ -51,12 +51,12 @@ app.
 
 <b>PERMISSIONS</b>
 
-* INSTALL_SHORTCUT — Declared to ensure that widgets can be placed correctly on
-  Xiaomi and Redmi devices
-* RECEIVE_BOOT_COMPLETED — Used to ensure that widgets function correctly after
-  the device is rebooted
-* SCHEDULE_EXACT_ALARM (optional) — Used to ensure that widgets are updated
-  precisely at the selected interval or schedule
+* RECEIVE_BOOT_COMPLETED — This permission is needed to restore widgets after a
+  device restart. Some device manufacturers prevent this from happening, and
+  you must manually allow it through the "auto-start" setting on your phone.
+* SCHEDULE_EXACT_ALARM (optional) — This is an optional permission that is
+  needed if you would like to use shorter intervals to switch photos, ensuring
+  that they follow the selected schedule exactly.
 
 The app does not require any storage permissions. Photos and directories are
 selected using the native pickers and stored within the app to keep data
