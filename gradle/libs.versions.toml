@@ -17,7 +17,7 @@ appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.1" }
 activity = { module = "androidx.activity:activity", version = "1.10.1" }
 core-ktx = { module = "androidx.core:core-ktx", version = "1.16.0" }
 material = { module = "com.google.android.material:material", version = "1.12.0" }
-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version = "2.9.0" }
+lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version = "2.9.1" }
 graphics-shapes = { module = "androidx.graphics:graphics-shapes", version = "1.0.1" }
 palette = { module = "androidx.palette:palette-ktx", version = "1.0.0" }
 
