@@ -39,7 +39,7 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
 ucrop = { module = "com.github.yalantis:ucrop", version = "2.2.10" }
 coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
-reorderable = { module = "sh.calvin.reorderable:reorderable", version = "2.4.3" }
+reorderable = { module = "sh.calvin.reorderable:reorderable", version = "2.5.1" }
 colorpicker-compose = { module = "com.github.skydoves:colorpicker-compose", version = "1.1.2" }
 
 about-libraries = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "aboutLibraries" }
