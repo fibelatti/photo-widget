@@ -2,6 +2,8 @@
 <resources>
     <!-- Widget Host -->
     <string name="photo_widget_host_description">Украсьте главный экран любимыми фотографиями</string>
+    <string name="photo_widget_host_loading">Загрузка виджета…</string>
+    <string name="photo_widget_host_failed">Не удалось загрузить\nПопробовать снова?</string>
     <!-- Home -->
     <string name="photo_widget_home_title">Украсьте главный экран любимыми фотографиями</string>
     <string name="photo_widget_home_instruction">Создайте новый виджет, нажав на одну из опций. Не волнуйтесь, вы можете изменить это в любое время!</string>

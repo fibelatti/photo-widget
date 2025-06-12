@@ -2,6 +2,8 @@
 <resources>
     <!-- Widget Host -->
     <string name="photo_widget_host_description">Décorez votre écran d\'accueil avec vos photos préférées</string>
+    <string name="photo_widget_host_loading">Chargement du widget…</string>
+    <string name="photo_widget_host_failed">Échec du chargement\nRéessayer ?</string>
     <!-- Home -->
     <string name="photo_widget_home_title">Décorez votre écran d\'accueil avec vos photos préférées</string>
     <string name="photo_widget_home_instruction">Créez un nouveau widget en appuyant sur l\'une des options. Ne vous inquiétez pas, vous pouvez modifier cela à tout moment !</string>

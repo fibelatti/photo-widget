@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:configure="com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity"
     android:description="@string/photo_widget_host_description"
+    android:initialLayout="@layout/photo_widget"
     android:minWidth="40dp"
     android:minHeight="40dp"
     android:previewImage="@drawable/widget_preview"

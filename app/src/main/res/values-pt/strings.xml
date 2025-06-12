@@ -2,6 +2,8 @@
 <resources>
     <!-- Widget Host -->
     <string name="photo_widget_host_description">Enfeite a sua tela inicial com as suas fotos favoritas</string>
+    <string name="photo_widget_host_loading">Carregando widget…</string>
+    <string name="photo_widget_host_failed">Falha ao carregar\nTentar novamente?</string>
     <!-- Home -->
     <string name="photo_widget_home_title">Enfeite a sua tela inicial com as suas fotos favoritas</string>
     <string name="photo_widget_home_instruction">Crie um widget tocando em uma das opções. Não se preocupe, pode mudar isso a qualquer momento!</string>

@@ -2,6 +2,8 @@
 <resources>
     <!-- Widget Host -->
     <string name="photo_widget_host_description">Decorate your home screen with your favorite photos</string>
+    <string name="photo_widget_host_loading">Loading widget…</string>
+    <string name="photo_widget_host_failed">Loading failed\nTry again?</string>
 
     <!-- Home -->
     <string name="photo_widget_home_title">Decorate your home screen with your favorite photos</string>

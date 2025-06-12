@@ -16,6 +16,7 @@ import androidx.core.net.toUri
 import androidx.core.os.postDelayed
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.chooser.PhotoWidgetChooserActivity
+import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
@@ -199,10 +200,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
             if (result == null) {
                 Timber.d("Failed to prepare current photo")
-                return remoteViews.apply {
-                    setViewVisibility(R.id.iv_placeholder, View.VISIBLE)
-                    setImageViewResource(R.id.iv_placeholder, R.drawable.ic_file_not_found)
-                }
+                return errorRemoteViews(
+                    context = context,
+                    appWidgetId = appWidgetId,
+                    remoteViews = remoteViews,
+                )
             }
 
             Timber.d("Current photo prepared successfully")
@@ -218,9 +220,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     hiddenImageViewId = R.id.iv_widget_fill
                 }
 
+                setViewVisibility(R.id.placeholder_layout, View.GONE)
                 setViewVisibility(visibleImageViewId, View.VISIBLE)
                 setViewVisibility(hiddenImageViewId, View.GONE)
-                setViewVisibility(R.id.iv_placeholder, View.GONE)
+                setViewVisibility(R.id.tap_actions_layout, View.VISIBLE)
 
                 if (result.uri != null) {
                     setImageViewUri(visibleImageViewId, result.uri)
@@ -240,6 +243,39 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     /* bottom = */
                     getDimensionValue(context, photoWidget.padding),
                 )
+            }
+        }
+
+        private fun errorRemoteViews(
+            context: Context,
+            appWidgetId: Int,
+            remoteViews: RemoteViews,
+        ): RemoteViews {
+            val clickIntent = Intent(context, PhotoWidgetConfigureActivity::class.java).apply {
+                setIdentifierCompat("$appWidgetId")
+                this.appWidgetId = appWidgetId
+            }
+            val pendingIntent = PendingIntent.getActivity(
+                /* context = */
+                context,
+                /* requestCode = */
+                appWidgetId,
+                /* intent = */
+                clickIntent,
+                /* flags = */
+                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
+
+            return remoteViews.apply {
+                setViewVisibility(R.id.placeholder_layout, View.VISIBLE)
+                setViewVisibility(R.id.iv_widget, View.GONE)
+                setViewVisibility(R.id.iv_widget_fill, View.GONE)
+                setViewVisibility(R.id.tap_actions_layout, View.GONE)
+
+                setImageViewResource(R.id.iv_placeholder, R.drawable.ic_file_not_found)
+                setTextViewText(R.id.tv_placeholder, context.getString(R.string.photo_widget_host_failed))
+
+                setOnClickPendingIntent(R.id.placeholder_layout, pendingIntent)
             }
         }
 

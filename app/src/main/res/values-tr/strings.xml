@@ -2,6 +2,8 @@
 <resources>
     <!-- Widget Host -->
     <string name="photo_widget_host_description">Ana ekranınızı favori fotoğraflarınızla süsleyin</string>
+    <string name="photo_widget_host_loading">Widget yükleniyor…</string>
+    <string name="photo_widget_host_failed">Yükleme başarısız\nTekrar denensin mi?</string>
     <!-- Home -->
     <string name="photo_widget_home_title">Ana ekranınızı favori fotoğraflarınızla süsleyin</string>
     <string name="photo_widget_home_instruction">Seçeneklerden birine dokunarak yeni bir widget oluşturun. Endişelenmeyin, bunu istediğiniz zaman değiştirebilirsiniz!</string>

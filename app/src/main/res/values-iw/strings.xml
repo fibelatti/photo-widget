@@ -2,6 +2,8 @@
 <resources>
     <!-- Widget Host -->
     <string name="photo_widget_host_description">עצב את מסך הבית שלך עם התמונות האהובות עליך</string>
+    <string name="photo_widget_host_loading">טוען ווידג\'ט…</string>
+    <string name="photo_widget_host_failed">הטעינה נכשלה\nלנסות שוב?</string>
     <!-- Home -->
     <string name="photo_widget_home_title">עצב את מסך הבית שלך עם התמונות האהובות עליך</string>
     <string name="photo_widget_home_instruction">צור ווידג\'ט חדש על ידי לחיצה על אחת מהאפשרויות. אל דאגה, תוכל לשנות זאת בכל עת!</string>

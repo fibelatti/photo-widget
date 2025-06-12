@@ -8,14 +8,36 @@
     tools:layout_width="400dp"
     tools:targetApi="s">
 
-    <ImageView
-        android:id="@+id/iv_placeholder"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:importantForAccessibility="no"
-        android:src="@drawable/ic_hourglass"
-        android:visibility="gone" />
+    <LinearLayout
+        android:id="@+id/placeholder_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:background="@drawable/rounded_transparent_white_background"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_placeholder"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_hourglass" />
+
+        <TextView
+            android:id="@+id/tv_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@string/photo_widget_host_loading"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/iv_widget"
