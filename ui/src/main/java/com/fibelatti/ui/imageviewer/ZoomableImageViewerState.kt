@@ -112,7 +112,7 @@ class ZoomableImageViewerState(
         }
     }
 
-    internal suspend fun animateToStandard() {
+    suspend fun animateToStandard() {
         val layoutSize: Size = layoutSize
         if (layoutSize == Size.Zero) return
         val targetWidth: Float = standardWidth

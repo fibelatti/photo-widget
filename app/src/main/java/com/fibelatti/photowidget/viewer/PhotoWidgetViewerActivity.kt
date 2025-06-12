@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -50,6 +51,7 @@ import com.fibelatti.ui.imageviewer.rememberZoomableImageViewerState
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class PhotoWidgetViewerActivity : AppCompatActivity() {
@@ -154,18 +156,29 @@ private fun ScreenContent(
         contentAlignment = Alignment.Center,
     ) {
         ZoomableImageViewer(state = imageViewerState) {
+            var measuredRatio by remember { mutableFloatStateOf(aspectRatio.aspectRatio) }
+            var didMeasure by remember { mutableStateOf(false) }
+
             AsyncPhotoViewer(
                 data = photo?.getPhotoPath(viewOriginalPhoto = viewOriginalPhoto),
                 dataKey = arrayOf(photo, aspectRatio),
                 isLoading = isLoading,
-                contentScale = if (aspectRatio.isConstrained) {
-                    ContentScale.FillWidth
-                } else {
-                    ContentScale.Fit
-                },
-                modifier = Modifier.aspectRatio(ratio = aspectRatio.aspectRatio),
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier.aspectRatio(ratio = measuredRatio),
                 constrainBitmapSize = false,
+                transformer = { bitmap ->
+                    measuredRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
+                    didMeasure = true
+                    bitmap
+                },
             )
+
+            LaunchedEffect(measuredRatio, didMeasure) {
+                if (didMeasure) {
+                    delay(100)
+                    imageViewerState.animateToStandard()
+                }
+            }
         }
 
         AnimatedVisibility(
@@ -217,7 +230,7 @@ private fun Controls(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (showFlipControls) {
