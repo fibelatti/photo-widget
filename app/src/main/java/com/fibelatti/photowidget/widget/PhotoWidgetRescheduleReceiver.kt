@@ -5,12 +5,11 @@ import android.content.Intent
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.platform.EntryPointBroadcastReceiver
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class PhotoWidgetRescheduleReceiver : EntryPointBroadcastReceiver() {
 
-    override fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
+    override suspend fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
         Timber.d("Working...")
 
         val isBoot = Intent.ACTION_BOOT_COMPLETED == intent.action ||
@@ -25,26 +24,23 @@ class PhotoWidgetRescheduleReceiver : EntryPointBroadcastReceiver() {
                 return
             }
 
-            val coroutineScope = entryPoint.coroutineScope()
+            PhotoWidgetSyncReceiver.setup(context)
+
             val photoWidgetStorage = entryPoint.photoWidgetStorage()
             val photoWidgetAlarmManager = entryPoint.photoWidgetAlarmManager()
 
-            coroutineScope.launch {
-                for (id in ids) {
-                    val cycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = id)
-                    val isLocked = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = id)
-                    val isPaused = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = id)
-                    Timber.d("Processing widget (id=$id,cycleMode=$cycleMode,isLocked=$isLocked,isPaused=$isPaused)")
+            for (id in ids) {
+                val cycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = id)
+                val isLocked = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = id)
+                val isPaused = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = id)
+                Timber.d("Processing widget (id=$id,cycleMode=$cycleMode,isLocked=$isLocked,isPaused=$isPaused)")
 
-                    if (cycleMode !is PhotoWidgetCycleMode.Disabled && !isLocked && !isPaused) {
-                        photoWidgetAlarmManager.setup(appWidgetId = id)
-                    }
-
-                    PhotoWidgetProvider.update(context = context, appWidgetId = id)
+                if (cycleMode !is PhotoWidgetCycleMode.Disabled && !isLocked && !isPaused) {
+                    photoWidgetAlarmManager.setup(appWidgetId = id)
                 }
-            }
 
-            PhotoWidgetSyncReceiver.setup(context)
+                PhotoWidgetProvider.update(context = context, appWidgetId = id)
+            }
         }
     }
 

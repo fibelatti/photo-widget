@@ -9,7 +9,7 @@ import timber.log.Timber
 
 class ConfigurationChangedReceiver : EntryPointBroadcastReceiver() {
 
-    override fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
+    override suspend fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
         Timber.d("Working...")
 
         val acceptedAction = Intent.ACTION_CONFIGURATION_CHANGED == intent.action ||

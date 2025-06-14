@@ -24,6 +24,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.WidgetSizeProvider
+import com.fibelatti.photowidget.platform.goAsync
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
 import java.lang.ref.WeakReference
@@ -50,23 +51,19 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             return
         }
 
-        handler.postDelayed(delayInMillis = 300) {
-            runCatching {
-                with(entryPoint<PhotoWidgetEntryPoint>(context)) {
-                    coroutineScope().launch {
-                        cyclePhotoUseCase().invoke(
-                            appWidgetId = intent.appWidgetId,
-                            flipBackwards = ACTION_VIEW_PREVIOUS_PHOTO == intent.action,
-                        )
-                        photoWidgetStorage().saveWidgetNextCycleTime(
-                            appWidgetId = intent.appWidgetId,
-                            nextCycleTime = null,
-                        )
-                        photoWidgetAlarmManager().setup(
-                            appWidgetId = intent.appWidgetId,
-                        )
-                    }
-                }
+        goAsync {
+            entryPoint<PhotoWidgetEntryPoint>(context).run {
+                cyclePhotoUseCase().invoke(
+                    appWidgetId = intent.appWidgetId,
+                    flipBackwards = ACTION_VIEW_PREVIOUS_PHOTO == intent.action,
+                )
+                photoWidgetStorage().saveWidgetNextCycleTime(
+                    appWidgetId = intent.appWidgetId,
+                    nextCycleTime = null,
+                )
+                photoWidgetAlarmManager().setup(
+                    appWidgetId = intent.appWidgetId,
+                )
             }
         }
     }

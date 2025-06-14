@@ -17,7 +17,7 @@ import timber.log.Timber
 
 class PhotoWidgetSyncReceiver : EntryPointBroadcastReceiver() {
 
-    override fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
+    override suspend fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
         Timber.d("Working...")
 
         val ids = PhotoWidgetProvider.ids(context).ifEmpty {
@@ -25,16 +25,14 @@ class PhotoWidgetSyncReceiver : EntryPointBroadcastReceiver() {
             return
         }
 
-        entryPoint.runCatching {
-            val photoWidgetStorage = photoWidgetStorage()
-            val coroutineScope = coroutineScope()
+        val photoWidgetStorage = entryPoint.photoWidgetStorage()
+        val coroutineScope = entryPoint.coroutineScope()
 
-            for (id in ids) {
-                val source = photoWidgetStorage.getWidgetSource(appWidgetId = id)
-                if (PhotoWidgetSource.DIRECTORY == source) {
-                    coroutineScope.launch(NonCancellable) {
-                        photoWidgetStorage.syncWidgetPhotos(appWidgetId = id)
-                    }
+        for (id in ids) {
+            val source = photoWidgetStorage.getWidgetSource(appWidgetId = id)
+            if (PhotoWidgetSource.DIRECTORY == source) {
+                coroutineScope.launch(NonCancellable) {
+                    photoWidgetStorage.syncWidgetPhotos(appWidgetId = id)
                 }
             }
         }

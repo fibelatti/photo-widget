@@ -16,7 +16,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Calendar
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @Singleton
@@ -167,15 +166,13 @@ class PhotoWidgetAlarmManager @Inject constructor(
 
 class ExactRepeatingAlarmReceiver : EntryPointBroadcastReceiver() {
 
-    override fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
+    override suspend fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
         Timber.d("Working... (appWidgetId=${intent.appWidgetId})")
 
-        entryPoint.runCatching {
-            coroutineScope().launch {
-                cyclePhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
-                photoWidgetStorage().saveWidgetNextCycleTime(appWidgetId = intent.appWidgetId, nextCycleTime = -1)
-                photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
-            }
+        entryPoint.run {
+            cyclePhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
+            photoWidgetStorage().saveWidgetNextCycleTime(appWidgetId = intent.appWidgetId, nextCycleTime = -1)
+            photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
         }
     }
 

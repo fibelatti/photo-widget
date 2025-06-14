@@ -8,7 +8,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.platform.EntryPointBroadcastReceiver
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -16,7 +15,7 @@ import timber.log.Timber
  */
 class PhotoWidgetPinnedReceiver : EntryPointBroadcastReceiver() {
 
-    override fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
+    override suspend fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
         Timber.d("Working... (appWidgetId=${intent.appWidgetId})")
 
         val widgetId = intent.appWidgetId
@@ -34,20 +33,17 @@ class PhotoWidgetPinnedReceiver : EntryPointBroadcastReceiver() {
         Timber.d("New widget ID: $widgetId")
 
         val saveUseCase = entryPoint.savePhotoWidgetUseCase()
-        val coroutineScope = entryPoint.coroutineScope()
 
-        coroutineScope.launch {
-            // Persist the widget data since it was placed on the home screen
-            saveUseCase(appWidgetId = widgetId, photoWidget = photoWidget)
+        // Persist the widget data since it was placed on the home screen
+        saveUseCase(appWidgetId = widgetId, photoWidget = photoWidget)
 
-            // Update the widget UI using the updated storage data
-            PhotoWidgetProvider.update(context = context, appWidgetId = widgetId)
+        // Update the widget UI using the updated storage data
+        PhotoWidgetProvider.update(context = context, appWidgetId = widgetId)
 
-            // Finally finish the configure activity since it's no longer needed
-            val finishIntent = Intent(PhotoWidgetConfigureActivity.ACTION_FINISH).apply {
-                this.appWidgetId = widgetId
-            }
-            LocalBroadcastManager.getInstance(context).sendBroadcast(finishIntent)
+        // Finally finish the configure activity since it's no longer needed
+        val finishIntent = Intent(PhotoWidgetConfigureActivity.ACTION_FINISH).apply {
+            this.appWidgetId = widgetId
         }
+        LocalBroadcastManager.getInstance(context).sendBroadcast(finishIntent)
     }
 }
