@@ -24,6 +24,7 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -64,8 +65,10 @@ fun MyWidgetsScreen(
         val maxWidth = maxWidth
 
         var selectedSource: PhotoWidgetSource? by remember { mutableStateOf(null) }
-        val filteredWidgets: List<Pair<Int, PhotoWidget>> = remember(widgets) {
-            widgets.filter { selectedSource == null || it.second.source == selectedSource }
+        val filteredWidgets: List<Pair<Int, PhotoWidget>> by remember(widgets) {
+            derivedStateOf {
+                widgets.filter { selectedSource == null || it.second.source == selectedSource }
+            }
         }
         val hasDeletedWidgets = remember(widgets) {
             filteredWidgets.any { it.second.status.isRemoved }
