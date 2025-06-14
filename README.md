@@ -1,4 +1,4 @@
-Material Photo Widget
+Material Photo Widget 🖼️
 =====
 
 [![Language](https://img.shields.io/badge/language-kotlin-brightgreen.svg)](https://www.github.com/fibelatti/photo-widget)
@@ -29,14 +29,12 @@ Downloads
 Features
 --------
 
-* 5 aspect ratios: square, tall, wide, original and fill widget
-* Customize your square widgets with 10 different shapes
-* Customize the rounded corners of your tall, wide or original widgets
-* Customize the opacity, offset and padding
-* Choose each photo or sync the widget with device folders
-* Set an optional interval and have photos flip automatically
-* Choose the tap action of each widget: none, view next photo, view in full
-  screen or open another app
+* Choose photos individually or sync with device folders
+* Set an interval or schedule to create a slideshow and switch photos automatically
+* Your widgets are shortcuts — customize tap actions for each of your widgets, viewing your photos in full screen, opening an app or URL
+* Customizable borders, opacity, saturation, brightness, offset and padding to create your perfect home screen
+* 6 formats to choose from: Shapes, Square, Tall, Wide, Original and Fill
+* 28 different shapes
 
 About the project
 --------
@@ -44,7 +42,7 @@ About the project
 Photo Widget is a playground to study and explore modern Android development.
 
 Explored topics:
-- Clean & beautiful UI built with Jetpack Compose and Google's [material design three](https://m3.material.io/) guidelines, with support for Material You theming
+- Clean & beautiful UI built with Jetpack Compose and [M3 Expressive](https://m3.material.io/)
 - Android Jetpack, including Jetpack Compose
 - Home screen widgets
 

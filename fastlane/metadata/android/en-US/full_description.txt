@@ -14,14 +14,12 @@ It's <b>easy</b> and <b>simple</b> to add a new widget with your photos.
 * Choose photos individually or sync with device folders
 * Set an interval or schedule to create a slideshow and switch photos
   automatically
-* Your widgets are shortcuts — choose from the available tap actions: view in
-  full screen, view in gallery, shortcut to open other apps or links
-* Five different aspect ratios: square, tall, wide, original (same as photo)
-  and fill widget area
-* 12 different shapes
-* Colored borders
-* Customize the opacity, offset and padding to align your home screen elements
-  perfectly
+* Your widgets are shortcuts — customize tap actions for each of your widgets,
+  viewing your photos in full screen, opening an app or URL
+* Customizable borders, opacity, saturation, brightness, offset and padding to
+  create your perfect home screen
+* 6 formats to choose from: Shapes, Square, Tall, Wide, Original and Fill
+* 28 different shapes
 
 <b>HOW TO USE</b>
 
