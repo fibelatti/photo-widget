@@ -1,8 +1,12 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.fibelatti.photowidget.model
 
 import android.graphics.Matrix
 import android.graphics.Path
 import android.graphics.RectF
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialShapes
 import androidx.graphics.shapes.CornerRounding
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.star
@@ -27,16 +31,55 @@ object PhotoWidgetShapeBuilder {
             rounding = 0.2f,
             rotation = 45f,
         ),
-        PhotoWidgetShape.Polygon(
+        PhotoWidgetShape.Material(
             id = "squircle",
-            numVertices = 4,
-            rounding = 0.6f,
-            rotation = 45f,
+            roundedPolygon = MaterialShapes.Square,
         ),
-        PhotoWidgetShape.Polygon(
+        PhotoWidgetShape.Material(
+            id = "slanted",
+            roundedPolygon = MaterialShapes.Slanted,
+        ),
+        PhotoWidgetShape.Material(
+            id = "arch",
+            roundedPolygon = MaterialShapes.Arch,
+        ),
+        PhotoWidgetShape.Material(
+            id = "ghostish",
+            roundedPolygon = MaterialShapes.Ghostish,
+        ),
+        PhotoWidgetShape.Material(
+            id = "fan",
+            roundedPolygon = MaterialShapes.Fan,
+        ),
+        PhotoWidgetShape.Material(
             id = "circle",
-            numVertices = 8,
-            rounding = 1f,
+            roundedPolygon = MaterialShapes.Circle,
+        ),
+        PhotoWidgetShape.Material(
+            id = "oval",
+            roundedPolygon = MaterialShapes.Oval,
+        ),
+        PhotoWidgetShape.Material(
+            id = "pill",
+            roundedPolygon = MaterialShapes.Pill,
+        ),
+        PhotoWidgetShape.Material(
+            id = "bun",
+            roundedPolygon = MaterialShapes.Bun,
+            enabled = false, // Scaling is broken
+        ),
+        PhotoWidgetShape.Material(
+            id = "diamond",
+            roundedPolygon = MaterialShapes.Diamond,
+            enabled = false, // Scaling is broken
+        ),
+        PhotoWidgetShape.Material(
+            id = "gem",
+            roundedPolygon = MaterialShapes.Gem,
+        ),
+        PhotoWidgetShape.Material(
+            id = "clover-8-leaf",
+            roundedPolygon = MaterialShapes.Clover8Leaf,
         ),
         PhotoWidgetShape.Star(
             id = "daisy",
@@ -45,25 +88,42 @@ object PhotoWidgetShapeBuilder {
             innerRadius = .5f,
             innerRounding = 0f,
         ),
-        PhotoWidgetShape.Star(
-            id = "scallop",
-            numVertices = 12,
-            rounding = .1f,
-            innerRadius = .928f,
+        PhotoWidgetShape.Material(
+            id = "soft-boom",
+            roundedPolygon = MaterialShapes.SoftBoom,
+            enabled = false, // Doesn't show much of the photo
         ),
-        PhotoWidgetShape.Star(
-            id = "medal",
-            numVertices = 8,
-            rounding = .16f,
-            innerRadius = .784f,
+        PhotoWidgetShape.Material(
+            id = "flower",
+            roundedPolygon = MaterialShapes.Flower,
         ),
-        PhotoWidgetShape.Star(
+        PhotoWidgetShape.Material(
             id = "clover",
-            numVertices = 4,
-            rounding = .32f,
-            innerRadius = .352f,
-            innerRounding = .32f,
-            rotation = 45f,
+            roundedPolygon = MaterialShapes.Cookie4Sided,
+        ),
+        PhotoWidgetShape.Material(
+            id = "cookie-6-sided",
+            roundedPolygon = MaterialShapes.Cookie6Sided,
+        ),
+        PhotoWidgetShape.Material(
+            id = "cookie-7-sided",
+            roundedPolygon = MaterialShapes.Cookie7Sided,
+        ),
+        PhotoWidgetShape.Material(
+            id = "cookie-9-sided",
+            roundedPolygon = MaterialShapes.Cookie9Sided,
+        ),
+        PhotoWidgetShape.Material(
+            id = "scallop",
+            roundedPolygon = MaterialShapes.Cookie12Sided,
+        ),
+        PhotoWidgetShape.Material(
+            id = "medal",
+            roundedPolygon = MaterialShapes.Sunny,
+        ),
+        PhotoWidgetShape.Material(
+            id = "soft-burst",
+            roundedPolygon = MaterialShapes.SoftBurst,
         ),
         PhotoWidgetShape.Polygon(
             id = "octagon",
@@ -75,9 +135,37 @@ object PhotoWidgetShapeBuilder {
             numVertices = 6,
             rounding = .16f,
         ),
+        PhotoWidgetShape.Material(
+            id = "clam-shell",
+            roundedPolygon = MaterialShapes.ClamShell,
+            enabled = false, // Scaling is broken
+        ),
         PhotoWidgetShape.Simple(id = "heart"),
+        PhotoWidgetShape.Material(
+            id = "puffy",
+            roundedPolygon = MaterialShapes.Puffy,
+            enabled = false, // Scaling is broken
+        ),
+        PhotoWidgetShape.Material(
+            id = "puffy-diamond",
+            roundedPolygon = MaterialShapes.PuffyDiamond,
+        ),
         PhotoWidgetShape.Simple(id = "star"),
-    )
+        PhotoWidgetShape.Material(
+            id = "burst",
+            roundedPolygon = MaterialShapes.Burst,
+        ),
+        PhotoWidgetShape.Material(
+            id = "pixel-circle",
+            roundedPolygon = MaterialShapes.PixelCircle,
+        ),
+    ).filter { it.enabled }
+
+    init {
+        require(shapes.size == shapes.distinctBy { it.id }.size) {
+            "Shape IDs must be unique!"
+        }
+    }
 
     fun getShapePath(
         shapeId: String,
@@ -117,12 +205,20 @@ object PhotoWidgetShapeBuilder {
                     innerRounding = photoWidgetShape.innerRounding?.let(::CornerRounding),
                 )
             }
+
+            is PhotoWidgetShape.Material -> {
+                photoWidgetShape.roundedPolygon
+            }
         }
 
         return polygon.transformed(
             matrix = Matrix().apply {
-                postRotate(photoWidgetShape.rotation)
-                postScale(photoWidgetShape.scaleX, photoWidgetShape.scaleY)
+                if (!photoWidgetShape.rotation.isNaN()) {
+                    postRotate(photoWidgetShape.rotation)
+                }
+                if (!photoWidgetShape.scaleX.isNaN() && !photoWidgetShape.scaleY.isNaN()) {
+                    postScale(photoWidgetShape.scaleX, photoWidgetShape.scaleY)
+                }
             },
         ).transformed(
             width = width,

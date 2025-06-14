@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.fibelatti.photowidget.configure
 
 import android.content.Context
@@ -7,6 +9,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
@@ -29,12 +32,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonGroupDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -47,7 +50,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -72,6 +74,7 @@ import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.ui.foundation.ColumnToggleButtonGroup
+import com.fibelatti.ui.foundation.ConnectedButtonRowItem
 import com.fibelatti.ui.foundation.ToggleButtonGroup
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.preview.AllPreviews
@@ -296,8 +299,9 @@ private fun TapActionPickerContent(
                 .padding(top = 16.dp),
         )
 
-        FilledTonalButton(
+        Button(
             onClick = onApplyClick,
+            shapes = ButtonDefaults.shapes(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
@@ -313,52 +317,30 @@ private fun TapAreaSelector(
     onSelectedAreaChange: (TapActionArea) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    SingleChoiceSegmentedButtonRow(
+    Row(
         modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
     ) {
-        val borderColor = SegmentedButtonDefaults.borderStroke(SegmentedButtonDefaults.colors().activeBorderColor)
+        TapActionArea.entries.forEachIndexed { index, area ->
+            val weight by animateFloatAsState(
+                targetValue = if (area == selectedArea) 1.2f else 1f,
+            )
 
-        SegmentedButton(
-            selected = TapActionArea.LEFT == selectedArea,
-            onClick = { onSelectedAreaChange(TapActionArea.LEFT) },
-            shape = RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp),
-            border = borderColor,
-            icon = {},
-            label = {
-                Text(
-                    text = stringResource(id = R.string.photo_widget_configure_tap_action_area_left),
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            },
-        )
-
-        SegmentedButton(
-            selected = TapActionArea.CENTER == selectedArea,
-            onClick = { onSelectedAreaChange(TapActionArea.CENTER) },
-            shape = RectangleShape,
-            border = borderColor,
-            icon = {},
-            label = {
-                Text(
-                    text = stringResource(id = R.string.photo_widget_configure_tap_action_area_center),
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            },
-        )
-
-        SegmentedButton(
-            selected = TapActionArea.RIGHT == selectedArea,
-            onClick = { onSelectedAreaChange(TapActionArea.RIGHT) },
-            shape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
-            border = borderColor,
-            icon = {},
-            label = {
-                Text(
-                    text = stringResource(id = R.string.photo_widget_configure_tap_action_area_right),
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            },
-        )
+            ConnectedButtonRowItem(
+                checked = area == selectedArea,
+                onCheckedChange = { onSelectedAreaChange(area) },
+                itemIndex = index,
+                itemCount = TapActionArea.entries.size,
+                label = stringResource(
+                    when (area) {
+                        TapActionArea.LEFT -> R.string.photo_widget_configure_tap_action_area_left
+                        TapActionArea.CENTER -> R.string.photo_widget_configure_tap_action_area_center
+                        TapActionArea.RIGHT -> R.string.photo_widget_configure_tap_action_area_right
+                    },
+                ),
+                modifier = Modifier.weight(weight),
+            )
+        }
     }
 }
 
@@ -458,6 +440,7 @@ private fun TapOptionsPicker(
             it.serializedName == currentTapAction.serializedName
         },
         colors = ToggleButtonGroup.colors(unselectedButtonColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        iconPosition = ToggleButtonGroup.IconPosition.End,
     )
 }
 
@@ -538,6 +521,7 @@ private fun AppPicker(
     ) {
         OutlinedButton(
             onClick = onChooseAppClick,
+            shapes = ButtonDefaults.shapes(),
         ) {
             Text(text = stringResource(id = R.string.photo_widget_configure_tap_action_choose_app))
         }

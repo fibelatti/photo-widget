@@ -24,8 +24,10 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Slider
@@ -95,6 +97,7 @@ object PhotoWidgetBorderPicker {
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private fun BorderPickerContent(
     currentBorder: PhotoWidgetBorder,
     onApplyClick: (PhotoWidgetBorder) -> Unit,
@@ -135,6 +138,7 @@ private fun BorderPickerContent(
                 it.serializedName == border.serializedName
             },
             colors = ToggleButtonGroup.colors(unselectedButtonColor = MaterialTheme.colorScheme.surfaceContainerLow),
+            iconPosition = ToggleButtonGroup.IconPosition.End,
         )
 
         Spacer(modifier = Modifier.size(16.dp))
@@ -171,8 +175,9 @@ private fun BorderPickerContent(
             }
         }
 
-        FilledTonalButton(
+        Button(
             onClick = { onApplyClick(border) },
+            shapes = ButtonDefaults.shapes(),
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.fibelatti.photowidget.home
 
 import android.app.AlarmManager
@@ -8,22 +10,26 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +46,7 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.AlarmManagerCompat
@@ -139,9 +146,7 @@ private fun SettingsScreen(
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
                 .padding(
-                    start = 16.dp,
                     top = 16.dp,
-                    end = 16.dp,
                     bottom = footerHeight + 16.dp,
                 ),
         ) {
@@ -255,6 +260,7 @@ private fun SettingsFooter(
                 .align(Alignment.CenterHorizontally)
                 .padding(bottom = 2.dp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontFamily = FontFamily.Monospace,
             style = MaterialTheme.typography.labelLarge,
         )
 
@@ -271,18 +277,21 @@ private fun SettingsFooter(
             Text(
                 text = stringResource(R.string.photo_widget_home_version, BuildConfig.VERSION_NAME),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontFamily = FontFamily.Monospace,
                 style = MaterialTheme.typography.labelMedium,
             )
 
             Text(
                 text = "—",
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontFamily = FontFamily.Monospace,
                 style = MaterialTheme.typography.labelMedium,
             )
 
             Text(
                 text = stringResource(id = R.string.photo_widget_home_view_licenses),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontFamily = FontFamily.Monospace,
                 style = MaterialTheme.typography.labelMedium,
             )
         }
@@ -296,18 +305,13 @@ private fun SettingsAction(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    TextButton(
+        onClick = onClick,
+        shapes = ButtonDefaults.shapes(),
         modifier = modifier
             .fillMaxWidth()
-            .height(60.dp)
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = onClick,
-                role = Role.Button,
-            ),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
+            .heightIn(min = 60.dp)
+            .minimumInteractiveComponentSize(),
     ) {
         Icon(
             painter = painterResource(id = icon),
@@ -315,6 +319,8 @@ private fun SettingsAction(
             modifier = Modifier.size(24.dp),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+
+        Spacer(modifier = Modifier.size(16.dp))
 
         AutoSizeText(
             text = stringResource(id = label),

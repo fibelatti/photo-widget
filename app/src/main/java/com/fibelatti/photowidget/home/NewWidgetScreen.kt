@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.fibelatti.photowidget.home
 
 import androidx.compose.foundation.background
@@ -23,8 +25,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,6 +43,8 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
@@ -70,14 +76,16 @@ fun NewWidgetScreen(
         contentAlignment = Alignment.Center,
     ) {
         ShapesBanner(
-            modifier = Modifier.align(Alignment.TopCenter),
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(vertical = 10.dp),
         )
 
         Column(
             modifier = Modifier
                 .widthIn(max = 840.dp)
                 .fillMaxWidth()
-                .padding(top = 68.dp)
+                .padding(top = 72.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(24.dp),
@@ -87,7 +95,8 @@ fun NewWidgetScreen(
                 modifier = Modifier.padding(horizontal = 32.dp),
                 maxLines = 2,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.headlineLargeEmphasized
+                    .copy(fontFamily = FontFamily.Cursive, fontWeight = FontWeight.Bold),
             )
 
             Text(
@@ -115,6 +124,7 @@ fun NewWidgetScreen(
 
             TextButton(
                 onClick = onHelpClick,
+                shapes = ButtonDefaults.shapes(),
             ) {
                 Text(text = stringResource(R.string.photo_widget_home_help))
             }

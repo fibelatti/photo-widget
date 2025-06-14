@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -47,6 +49,7 @@ object SelectionDialog {
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private fun <T> SelectionDialogContent(
     title: String,
     options: List<T>,
@@ -77,6 +80,7 @@ private fun <T> SelectionDialogContent(
         items(options) { option ->
             FilledTonalButton(
                 onClick = { onOptionSelected(option) },
+                shapes = ButtonDefaults.shapes(),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(

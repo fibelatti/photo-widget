@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.model
 
 import androidx.annotation.IntRange
+import androidx.graphics.shapes.RoundedPolygon
 
 sealed class PhotoWidgetShape {
 
@@ -8,12 +9,16 @@ sealed class PhotoWidgetShape {
     abstract val rotation: Float
     abstract val scaleX: Float
     abstract val scaleY: Float
+    abstract val enabled: Boolean
 
-    data class Simple(override val id: String) : PhotoWidgetShape() {
+    data class Simple(
+        override val id: String,
+    ) : PhotoWidgetShape() {
 
-        override val rotation: Float = 0f
-        override val scaleX: Float = 1f
-        override val scaleY: Float = 1f
+        override val rotation: Float = Float.NaN
+        override val scaleX: Float = Float.NaN
+        override val scaleY: Float = Float.NaN
+        override val enabled: Boolean = true
     }
 
     data class Polygon(
@@ -24,7 +29,10 @@ sealed class PhotoWidgetShape {
         override val rotation: Float = 0f,
         override val scaleX: Float = 1f,
         override val scaleY: Float = 1f,
-    ) : PhotoWidgetShape()
+    ) : PhotoWidgetShape() {
+
+        override val enabled: Boolean = true
+    }
 
     data class Star(
         override val id: String,
@@ -36,5 +44,19 @@ sealed class PhotoWidgetShape {
         override val rotation: Float = 0f,
         override val scaleX: Float = 1f,
         override val scaleY: Float = 1f,
-    ) : PhotoWidgetShape()
+    ) : PhotoWidgetShape() {
+
+        override val enabled: Boolean = true
+    }
+
+    data class Material(
+        override val id: String,
+        val roundedPolygon: RoundedPolygon,
+        override val enabled: Boolean = true,
+    ) : PhotoWidgetShape() {
+
+        override val rotation: Float = Float.NaN
+        override val scaleX: Float = Float.NaN
+        override val scaleY: Float = Float.NaN
+    }
 }

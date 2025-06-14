@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.fibelatti.photowidget.configure
 
 import android.app.AlarmManager
@@ -6,12 +8,14 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -23,17 +27,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonGroup
+import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -49,13 +53,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -69,8 +71,8 @@ import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
+import com.fibelatti.ui.foundation.ConnectedButtonRowItem
 import com.fibelatti.ui.preview.AllPreviews
-import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
@@ -137,58 +139,51 @@ private fun PhotoCycleModePickerContent(
 
         Spacer(modifier = Modifier.size(8.dp))
 
-        SingleChoiceSegmentedButtonRow(
+        Row(
             modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
         ) {
-            val borderColor = SegmentedButtonDefaults.borderStroke(SegmentedButtonDefaults.colors().activeBorderColor)
+            val items = remember {
+                mapOf(
+                    PhotoWidgetCycleMode.Interval::class to R.string.photo_widget_configure_cycling_mode_interval,
+                    PhotoWidgetCycleMode.Schedule::class to R.string.photo_widget_configure_cycling_mode_schedule,
+                    PhotoWidgetCycleMode.Disabled::class to R.string.photo_widget_configure_cycling_mode_disabled,
+                )
+            }
 
-            SegmentedButton(
-                selected = mode is PhotoWidgetCycleMode.Interval,
-                onClick = {
-                    mode = PhotoWidgetCycleMode.Interval(
-                        loopingInterval = (cycleMode as? PhotoWidgetCycleMode.Interval)?.loopingInterval
-                            ?: PhotoWidgetLoopingInterval.ONE_DAY,
-                    )
-                },
-                shape = RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp),
-                border = borderColor,
-                label = {
-                    Text(
-                        text = stringResource(R.string.photo_widget_configure_cycling_mode_interval),
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                },
-            )
+            items.onEachIndexed { index, (modeClass, label) ->
+                val weight by animateFloatAsState(
+                    targetValue = if (mode::class == modeClass) 1.2f else 1f,
+                )
 
-            SegmentedButton(
-                selected = mode is PhotoWidgetCycleMode.Schedule,
-                onClick = {
-                    mode = PhotoWidgetCycleMode.Schedule(
-                        triggers = (cycleMode as? PhotoWidgetCycleMode.Schedule)?.triggers.orEmpty(),
-                    )
-                },
-                shape = RectangleShape,
-                border = borderColor,
-                label = {
-                    Text(
-                        text = stringResource(R.string.photo_widget_configure_cycling_mode_schedule),
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                },
-            )
+                ConnectedButtonRowItem(
+                    checked = mode::class == modeClass,
+                    onCheckedChange = {
+                        mode = when (modeClass) {
+                            PhotoWidgetCycleMode.Interval::class -> {
+                                PhotoWidgetCycleMode.Interval(
+                                    loopingInterval = (cycleMode as? PhotoWidgetCycleMode.Interval)?.loopingInterval
+                                        ?: PhotoWidgetLoopingInterval.ONE_DAY,
+                                )
+                            }
 
-            SegmentedButton(
-                selected = mode is PhotoWidgetCycleMode.Disabled,
-                onClick = { mode = PhotoWidgetCycleMode.Disabled },
-                shape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
-                border = borderColor,
-                label = {
-                    Text(
-                        text = stringResource(R.string.photo_widget_configure_cycling_mode_disabled),
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                },
-            )
+                            PhotoWidgetCycleMode.Schedule::class -> {
+                                PhotoWidgetCycleMode.Schedule(
+                                    triggers = (cycleMode as? PhotoWidgetCycleMode.Schedule)?.triggers.orEmpty(),
+                                )
+                            }
+
+                            PhotoWidgetCycleMode.Disabled::class -> PhotoWidgetCycleMode.Disabled
+
+                            else -> mode
+                        }
+                    },
+                    itemIndex = index,
+                    itemCount = items.size,
+                    label = stringResource(label),
+                    modifier = Modifier.weight(weight),
+                )
+            }
         }
 
         Spacer(modifier = Modifier.size(8.dp))
@@ -254,6 +249,7 @@ private fun PhotoCycleModePickerContent(
 
                 OutlinedButton(
                     onClick = { showExplainerDialog = true },
+                    shapes = ButtonDefaults.shapes(),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Text(
@@ -320,90 +316,70 @@ private fun PhotoCycleModeIntervalContent(
             )
         }
 
-        SingleChoiceSegmentedButtonRow(
+        Row(
             modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
         ) {
-            val borderColor = SegmentedButtonDefaults.borderStroke(SegmentedButtonDefaults.colors().activeBorderColor)
+            val items = remember {
+                mapOf(
+                    TimeUnit.SECONDS to R.string.photo_widget_configure_interval_seconds_label,
+                    TimeUnit.MINUTES to R.string.photo_widget_configure_interval_minutes_label,
+                    TimeUnit.HOURS to R.string.photo_widget_configure_interval_hours_label,
+                    TimeUnit.DAYS to R.string.photo_widget_configure_interval_days_label,
+                )
+            }
 
-            SegmentedButton(
-                selected = TimeUnit.SECONDS == interval.timeUnit,
-                onClick = {
-                    interval = interval.copy(
-                        repeatInterval = interval.repeatInterval.coerceAtLeast(
-                            minimumValue = PhotoWidgetLoopingInterval.MIN_SECONDS,
-                        ),
-                        timeUnit = TimeUnit.SECONDS,
-                    )
-                },
-                shape = RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp),
-                border = borderColor,
-                label = {
-                    AutoSizeText(
-                        text = stringResource(id = R.string.photo_widget_configure_interval_seconds_label),
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                },
-            )
+            items.onEachIndexed { index, (timeUnit, label) ->
+                val weight by animateFloatAsState(
+                    targetValue = if (interval.timeUnit == timeUnit) 1.2f else 1f,
+                )
 
-            SegmentedButton(
-                selected = TimeUnit.MINUTES == interval.timeUnit,
-                onClick = { interval = interval.copy(timeUnit = TimeUnit.MINUTES) },
-                shape = RectangleShape,
-                border = borderColor,
-                label = {
-                    AutoSizeText(
-                        text = stringResource(id = R.string.photo_widget_configure_interval_minutes_label),
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                },
-            )
+                ConnectedButtonRowItem(
+                    checked = timeUnit == interval.timeUnit,
+                    onCheckedChange = {
+                        interval = when (timeUnit) {
+                            TimeUnit.SECONDS -> {
+                                interval.copy(
+                                    repeatInterval = interval.repeatInterval.coerceAtLeast(
+                                        minimumValue = PhotoWidgetLoopingInterval.MIN_SECONDS,
+                                    ),
+                                    timeUnit = TimeUnit.SECONDS,
+                                )
+                            }
 
-            SegmentedButton(
-                selected = TimeUnit.HOURS == interval.timeUnit,
-                onClick = {
-                    interval = interval.copy(
-                        repeatInterval = interval.repeatInterval.coerceAtMost(
-                            maximumValue = PhotoWidgetLoopingInterval.MAX_HOURS,
-                        ),
-                        timeUnit = TimeUnit.HOURS,
-                    )
-                },
-                shape = RectangleShape,
-                border = borderColor,
-                label = {
-                    AutoSizeText(
-                        text = stringResource(id = R.string.photo_widget_configure_interval_hours_label),
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                },
-            )
+                            TimeUnit.MINUTES -> {
+                                interval.copy(timeUnit = TimeUnit.MINUTES)
+                            }
 
-            SegmentedButton(
-                selected = TimeUnit.DAYS == interval.timeUnit,
-                onClick = { interval = interval.copy(timeUnit = TimeUnit.DAYS) },
-                shape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
-                border = borderColor,
-                label = {
-                    AutoSizeText(
-                        text = stringResource(R.string.photo_widget_configure_interval_days_label),
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                },
-            )
+                            TimeUnit.HOURS -> {
+                                interval.copy(
+                                    repeatInterval = interval.repeatInterval.coerceAtMost(
+                                        maximumValue = PhotoWidgetLoopingInterval.MAX_HOURS,
+                                    ),
+                                    timeUnit = TimeUnit.HOURS,
+                                )
+                            }
+
+                            TimeUnit.DAYS -> {
+                                interval.copy(timeUnit = TimeUnit.DAYS)
+                            }
+
+                            else -> interval
+                        }
+                    },
+                    itemIndex = index,
+                    itemCount = items.size,
+                    label = stringResource(id = label),
+                    modifier = Modifier.weight(weight),
+                )
+            }
         }
 
-        FilledTonalButton(
+        Button(
             onClick = {
                 onApplyClick(PhotoWidgetCycleMode.Interval(loopingInterval = interval))
             },
+            shapes = ButtonDefaults.shapes(),
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
@@ -475,6 +451,7 @@ private fun PhotoCycleModeScheduleContent(
         if (triggers.size < 4) {
             TextButton(
                 onClick = { showTimePickerDialog = true },
+                shapes = ButtonDefaults.shapes(),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(text = stringResource(R.string.photo_widget_configure_schedule_add_new))
@@ -488,8 +465,9 @@ private fun PhotoCycleModeScheduleContent(
             )
         }
 
-        FilledTonalButton(
+        Button(
             onClick = { onApplyClick(PhotoWidgetCycleMode.Schedule(triggers = triggers.toSet())) },
+            shapes = ButtonDefaults.shapes(),
             modifier = Modifier.fillMaxWidth(),
             enabled = triggers.isNotEmpty(),
         ) {
@@ -529,8 +507,9 @@ private fun PhotoCycleModeDisabledContent(
             style = MaterialTheme.typography.labelMedium,
         )
 
-        FilledTonalButton(
+        Button(
             onClick = { onApplyClick(PhotoWidgetCycleMode.Disabled) },
+            shapes = ButtonDefaults.shapes(),
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
@@ -585,21 +564,48 @@ fun TimePickerDialog(
 
                 TimePicker(state = timePickerState)
 
-                Row(
+                ButtonGroup(
+                    overflowIndicator = {},
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(40.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    TextButton(
-                        onClick = onDismiss,
-                    ) {
-                        Text(text = stringResource(R.string.photo_widget_action_cancel))
-                    }
-                    TextButton(
-                        onClick = { onConfirm(timePickerState) },
-                    ) {
-                        Text(text = stringResource(R.string.photo_widget_action_confirm))
-                    }
+                    customItem(
+                        buttonGroupContent = {
+                            val interactionSource = remember { MutableInteractionSource() }
+
+                            TextButton(
+                                onClick = onDismiss,
+                                shapes = ButtonDefaults.shapes(),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .animateWidth(interactionSource),
+                                interactionSource = interactionSource,
+                            ) {
+                                Text(text = stringResource(R.string.photo_widget_action_cancel))
+                            }
+                        },
+                        menuContent = {},
+                    )
+
+                    customItem(
+                        buttonGroupContent = {
+                            val interactionSource = remember { MutableInteractionSource() }
+
+                            Button(
+                                onClick = { onConfirm(timePickerState) },
+                                shapes = ButtonDefaults.shapes(),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .animateWidth(interactionSource),
+                                interactionSource = interactionSource,
+                            ) {
+                                Text(text = stringResource(R.string.photo_widget_action_confirm))
+                            }
+                        },
+                        menuContent = {},
+                    )
                 }
             }
         }

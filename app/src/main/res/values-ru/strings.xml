@@ -34,8 +34,6 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Вы ещё не добавили ни одного виджета.\nДобавленные на главный экран виджеты появятся здесь.</string>
     <string name="photo_widget_home_filter_all">Все</string>
-    <string name="photo_widget_home_filter_photos">Фотографии</string>
-    <string name="photo_widget_home_filter_folder">Папка</string>
     <string name="photo_widget_home_locked_label">Заблокировано</string>
     <string name="photo_widget_home_removed_label">Удаленный</string>
     <string name="photo_widget_home_removed_widgets_hint">Удаленные виджеты больше не отображаются на главном экране. Они навсегда удаляются из приложения через 7 дней. Вы можете выбрать «Сохранить» их.</string>

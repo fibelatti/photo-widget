@@ -1,10 +1,10 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.fibelatti.photowidget.configure
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -18,8 +18,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -102,6 +106,7 @@ fun PhotoWidgetOffsetPicker(
                 horizontalValue = 0
                 verticalValue = 0
             },
+            shapes = ButtonDefaults.shapes(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -109,8 +114,9 @@ fun PhotoWidgetOffsetPicker(
             Text(text = stringResource(id = R.string.widget_defaults_reset))
         }
 
-        FilledTonalButton(
+        Button(
             onClick = { onApplyClick(horizontalValue, verticalValue) },
+            shapes = ButtonDefaults.shapes(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -168,86 +174,74 @@ private fun PhotoWidgetOffsetControls(
             Column(
                 modifier = Modifier
                     .height(144.dp)
-                    .width(48.dp)
-                    .background(
-                        color = MaterialTheme.colorScheme.primaryContainer,
-                        shape = MaterialTheme.shapes.medium,
-                    ),
+                    .width(48.dp),
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_chevron_down),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .rotate(180f)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                        ) {
-                            onVerticalValueChange(verticalValue - 1)
-                            localHaptics.performHapticFeedback(HapticFeedbackType.VirtualKey)
-                        },
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
+                FilledTonalIconButton(
+                    onClick = {
+                        onVerticalValueChange(verticalValue - 1)
+                        localHaptics.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                    },
+                    shapes = IconButtonDefaults.shapes(),
+                    modifier = Modifier.size(48.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_chevron_down),
+                        contentDescription = null,
+                        modifier = Modifier.rotate(180f),
+                    )
+                }
 
                 Spacer(modifier = Modifier.size(48.dp))
 
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_chevron_down),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                        ) {
-                            onVerticalValueChange(verticalValue + 1)
-                            localHaptics.performHapticFeedback(HapticFeedbackType.VirtualKey)
-                        },
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
+                FilledTonalIconButton(
+                    onClick = {
+                        onVerticalValueChange(verticalValue + 1)
+                        localHaptics.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                    },
+                    shapes = IconButtonDefaults.shapes(),
+                    modifier = Modifier.size(48.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_chevron_down),
+                        contentDescription = null,
+                    )
+                }
             }
 
             Row(
                 modifier = Modifier
                     .width(144.dp)
-                    .height(48.dp)
-                    .background(
-                        color = MaterialTheme.colorScheme.primaryContainer,
-                        shape = MaterialTheme.shapes.medium,
-                    ),
+                    .height(48.dp),
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_chevron_left),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                        ) {
-                            onHorizontalValueChange(horizontalValue - 1)
-                            localHaptics.performHapticFeedback(HapticFeedbackType.VirtualKey)
-                        },
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
+                FilledTonalIconButton(
+                    onClick = {
+                        onHorizontalValueChange(horizontalValue - 1)
+                        localHaptics.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                    },
+                    shapes = IconButtonDefaults.shapes(),
+                    modifier = Modifier.size(48.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_chevron_left),
+                        contentDescription = null,
+                    )
+                }
 
                 Spacer(modifier = Modifier.size(48.dp))
 
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_chevron_right),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                        ) {
-                            onHorizontalValueChange(horizontalValue + 1)
-                            localHaptics.performHapticFeedback(HapticFeedbackType.VirtualKey)
-                        },
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
+                FilledTonalIconButton(
+                    onClick = {
+                        onHorizontalValueChange(horizontalValue + 1)
+                        localHaptics.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                    },
+                    shapes = IconButtonDefaults.shapes(),
+                    modifier = Modifier.size(48.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_chevron_right),
+                        contentDescription = null,
+                    )
+                }
             }
         }
 

@@ -34,8 +34,6 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">עדיין לא הוספת ווידג\'טים.\nווידג\'טים שתוסיף למסך הבית שלך יופיעו כאן.</string>
     <string name="photo_widget_home_filter_all">הכל</string>
-    <string name="photo_widget_home_filter_photos">תמונות</string>
-    <string name="photo_widget_home_filter_folder">תיקייה</string>
     <string name="photo_widget_home_locked_label">נעול</string>
     <string name="photo_widget_home_removed_label">הוסר</string>
     <string name="photo_widget_home_removed_widgets_hint">ווידג\'טים שהוסרו אינם מופיעים עוד במסך הבית. הם נמחקים לצמיתות מהאפליקציה לאחר 7 ימים. ניתן לבחור \"לשמור\" אותם.</string>

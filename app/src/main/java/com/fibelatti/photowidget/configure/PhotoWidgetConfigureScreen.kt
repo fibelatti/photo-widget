@@ -1,8 +1,9 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.fibelatti.photowidget.configure
 
 import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -43,10 +44,13 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonGroup
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -449,6 +453,7 @@ private fun PhotoWidgetViewer(
 
         IconButton(
             onClick = onNavClick,
+            shapes = IconButtonDefaults.shapes(),
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .safeDrawingPadding(),
@@ -569,8 +574,9 @@ private fun PhotoWidgetEditor(
             }
         }
 
-        FilledTonalButton(
+        Button(
             onClick = onAddToHomeClick,
+            shapes = ButtonDefaults.shapes(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -880,51 +886,83 @@ private fun EditingControls(
     onMoveRightClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier = modifier
-            .background(
-                color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f),
-                shape = RoundedCornerShape(size = 24.dp),
-            )
-            .animateContentSize(),
+    val interactionSources: Array<MutableInteractionSource> = remember {
+        Array(size = 4) { MutableInteractionSource() }
+    }
+
+    ButtonGroup(
+        overflowIndicator = {},
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         if (showMoveControls) {
-            IconButton(
-                onClick = onMoveLeftClick,
-                enabled = moveLeftEnabled,
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_chevron_left),
-                    contentDescription = stringResource(id = R.string.photo_widget_configure_menu_move_left),
-                )
-            }
-        }
-
-        IconButton(onClick = onCropClick) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_crop),
-                contentDescription = stringResource(id = R.string.photo_widget_configure_menu_crop),
+            customItem(
+                buttonGroupContent = {
+                    FilledTonalIconButton(
+                        onClick = onMoveLeftClick,
+                        modifier = Modifier.animateWidth(interactionSources[0]),
+                        interactionSource = interactionSources[0],
+                        enabled = moveLeftEnabled,
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_chevron_left),
+                            contentDescription = stringResource(id = R.string.photo_widget_configure_menu_move_left),
+                        )
+                    }
+                },
+                menuContent = {},
             )
         }
 
-        IconButton(onClick = onRemoveClick) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_trash),
-                contentDescription = stringResource(id = R.string.photo_widget_configure_menu_remove),
-            )
-        }
+        customItem(
+            buttonGroupContent = {
+                FilledTonalIconButton(
+                    onClick = onCropClick,
+                    modifier = Modifier.animateWidth(interactionSources[1]),
+                    interactionSource = interactionSources[1],
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_crop),
+                        contentDescription = stringResource(id = R.string.photo_widget_configure_menu_crop),
+                    )
+                }
+            },
+            menuContent = {},
+        )
+
+        customItem(
+            buttonGroupContent = {
+                FilledTonalIconButton(
+                    onClick = onRemoveClick,
+                    modifier = Modifier.animateWidth(interactionSources[2]),
+                    interactionSource = interactionSources[2],
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_trash),
+                        contentDescription = stringResource(id = R.string.photo_widget_configure_menu_remove),
+                    )
+                }
+            },
+            menuContent = {},
+        )
 
         if (showMoveControls) {
-            IconButton(
-                onClick = onMoveRightClick,
-                enabled = moveRightEnabled,
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_chevron_right),
-                    contentDescription = stringResource(id = R.string.photo_widget_configure_menu_move_right),
-                )
-            }
+            customItem(
+                buttonGroupContent = {
+                    FilledTonalIconButton(
+                        onClick = onMoveRightClick,
+                        modifier = Modifier.animateWidth(interactionSources[3]),
+                        enabled = moveRightEnabled,
+                        interactionSource = interactionSources[3],
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_chevron_right),
+                            contentDescription = stringResource(id = R.string.photo_widget_configure_menu_move_right),
+                        )
+                    }
+                },
+                menuContent = {},
+            )
         }
     }
 }
@@ -1007,7 +1045,8 @@ private fun PhotoPicker(
             }
         }
 
-        Row(
+        ButtonGroup(
+            overflowIndicator = {},
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .fillMaxWidth()
@@ -1023,43 +1062,63 @@ private fun PhotoPicker(
                 .padding(all = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            OutlinedButton(
-                onClick = {
-                    when (source) {
-                        PhotoWidgetSource.PHOTOS -> onPhotoPickerClick()
-                        PhotoWidgetSource.DIRECTORY -> onDirPickerClick()
+            customItem(
+                buttonGroupContent = {
+                    val interactionSource = remember { MutableInteractionSource() }
+
+                    OutlinedButton(
+                        onClick = {
+                            when (source) {
+                                PhotoWidgetSource.PHOTOS -> onPhotoPickerClick()
+                                PhotoWidgetSource.DIRECTORY -> onDirPickerClick()
+                            }
+                        },
+                        shapes = ButtonDefaults.shapes(),
+                        modifier = Modifier
+                            .weight(1f)
+                            .heightIn(max = 36.dp)
+                            .animateWidth(interactionSource),
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
+                        interactionSource = interactionSource,
+                    ) {
+                        AutoSizeText(
+                            text = stringResource(
+                                id = when (source) {
+                                    PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_pick_photo
+                                    PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_pick_folder
+                                },
+                            ),
+                            textAlign = TextAlign.Center,
+                            maxLines = 1,
+                        )
                     }
                 },
-                modifier = Modifier
-                    .weight(1f)
-                    .heightIn(max = 36.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-            ) {
-                AutoSizeText(
-                    text = stringResource(
-                        id = when (source) {
-                            PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_pick_photo
-                            PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_pick_folder
-                        },
-                    ),
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                )
-            }
+                menuContent = {},
+            )
 
-            OutlinedButton(
-                onClick = onChangeSource,
-                modifier = Modifier
-                    .weight(1f)
-                    .heightIn(max = 36.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-            ) {
-                AutoSizeText(
-                    text = stringResource(R.string.photo_widget_configure_change_source),
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                )
-            }
+            customItem(
+                buttonGroupContent = {
+                    val interactionSource = remember { MutableInteractionSource() }
+
+                    OutlinedButton(
+                        onClick = onChangeSource,
+                        shapes = ButtonDefaults.shapes(),
+                        modifier = Modifier
+                            .weight(1f)
+                            .heightIn(max = 36.dp)
+                            .animateWidth(interactionSource),
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
+                        interactionSource = interactionSource,
+                    ) {
+                        AutoSizeText(
+                            text = stringResource(R.string.photo_widget_configure_change_source),
+                            textAlign = TextAlign.Center,
+                            maxLines = 1,
+                        )
+                    }
+                },
+                menuContent = {},
+            )
         }
 
         AnimatedVisibility(
@@ -1196,8 +1255,9 @@ private fun PaddingPicker(
             )
         }
 
-        FilledTonalButton(
+        Button(
             onClick = { onApplyClick(value) },
+            shapes = ButtonDefaults.shapes(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),

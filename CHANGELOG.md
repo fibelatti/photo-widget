@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* Many new shapes
+
+### Changed
+
+* Updated the UI with new Material Expressive elements
+
 ### Fixed
 
 * Certain images having unexpected borders in the full screen viewer

@@ -32,8 +32,6 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Vous n\'avez pas encore ajouté de widgets.\nLes widgets ajoutés à votre écran d\'accueil apparaîtront ici.</string>
     <string name="photo_widget_home_filter_all">Tous</string>
-    <string name="photo_widget_home_filter_photos">Photos</string>
-    <string name="photo_widget_home_filter_folder">Dossier</string>
     <string name="photo_widget_home_locked_label">Verrouillé</string>
     <string name="photo_widget_home_removed_label">Supprimé</string>
     <string name="photo_widget_home_removed_widgets_hint">Les widgets supprimés ne sont plus sur votre écran d\'accueil. Ils sont définitivement supprimés de l\'application après 7 jours. Vous pouvez choisir de les « Garder ».</string>

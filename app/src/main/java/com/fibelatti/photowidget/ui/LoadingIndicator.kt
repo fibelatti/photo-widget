@@ -1,26 +1,14 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.fibelatti.photowidget.ui
 
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.StartOffset
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ContainedLoadingIndicator
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialShapes
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.res.painterResource
-import com.fibelatti.photowidget.R
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -28,35 +16,33 @@ import com.fibelatti.ui.theme.ExtendedTheme
 fun LoadingIndicator(
     modifier: Modifier = Modifier,
 ) {
-    Box(
+    ContainedLoadingIndicator(
         modifier = modifier
             .fillMaxSize()
-            .aspectRatio(ratio = 1f)
-            .background(color = MaterialTheme.colorScheme.primaryContainer, shape = CircleShape),
-        contentAlignment = Alignment.Center,
-    ) {
-        val infiniteTransition = rememberInfiniteTransition(label = "LoadingIndicator_Transition")
+            .aspectRatio(ratio = 1f),
+        polygons = LoadingIndicator.Polygons,
+    )
+}
 
-        val rotation by infiniteTransition.animateFloat(
-            initialValue = 0f,
-            targetValue = 180f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(durationMillis = 2_000, easing = LinearEasing),
-                repeatMode = RepeatMode.Restart,
-                initialStartOffset = StartOffset(offsetMillis = 300),
-            ),
-            label = "LoadingIndicator_Rotation",
-        )
+object LoadingIndicator {
 
-        Icon(
-            painter = painterResource(id = R.drawable.ic_hourglass),
-            contentDescription = "",
-            modifier = Modifier
-                .fillMaxSize(fraction = 0.6f)
-                .rotate(rotation),
-            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-        )
-    }
+    val Polygons = listOf(
+        MaterialShapes.SoftBurst,
+        MaterialShapes.Cookie9Sided,
+        MaterialShapes.Pentagon,
+        MaterialShapes.Pill,
+        MaterialShapes.Sunny,
+        MaterialShapes.Cookie4Sided,
+        MaterialShapes.Oval,
+        MaterialShapes.Gem,
+        MaterialShapes.Clover8Leaf,
+        MaterialShapes.Puffy,
+        MaterialShapes.Diamond,
+        MaterialShapes.Cookie4Sided,
+        MaterialShapes.SoftBoom,
+        MaterialShapes.Flower,
+        MaterialShapes.Ghostish,
+    )
 }
 
 @Composable

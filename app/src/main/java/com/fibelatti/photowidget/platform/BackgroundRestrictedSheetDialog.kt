@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +39,7 @@ object BackgroundRestrictedSheetDialog {
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private fun BackgroundPickerContent(
     onOpenAppSettingsClick: () -> Unit,
     onOpenPowerOptimizationSettings: () -> Unit,
@@ -82,6 +85,7 @@ private fun BackgroundPickerContent(
 
         FilledTonalButton(
             onClick = onOpenAppSettingsClick,
+            shapes = ButtonDefaults.shapes(),
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(text = stringResource(R.string.restriction_warning_open_app_settings))
@@ -89,6 +93,7 @@ private fun BackgroundPickerContent(
 
         FilledTonalButton(
             onClick = onOpenPowerOptimizationSettings,
+            shapes = ButtonDefaults.shapes(),
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(text = stringResource(R.string.restriction_warning_open_power_settings))

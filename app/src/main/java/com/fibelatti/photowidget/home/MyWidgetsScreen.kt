@@ -1,6 +1,8 @@
 package com.fibelatti.photowidget.home
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,12 +20,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonGroupDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -31,9 +33,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
@@ -52,6 +56,7 @@ import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
+@OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalSharedTransitionApi::class)
 fun MyWidgetsScreen(
     widgets: List<Pair<Int, PhotoWidget>>,
     onCurrentWidgetClick: (appWidgetId: Int, canSync: Boolean, canLock: Boolean, isLocked: Boolean) -> Unit,
@@ -64,6 +69,7 @@ fun MyWidgetsScreen(
     ) {
         val maxWidth = maxWidth
 
+        val options = listOf(null, PhotoWidgetSource.PHOTOS, PhotoWidgetSource.DIRECTORY)
         var selectedSource: PhotoWidgetSource? by remember { mutableStateOf(null) }
         val filteredWidgets: List<Pair<Int, PhotoWidget>> by remember(widgets) {
             derivedStateOf {
@@ -169,51 +175,32 @@ fun MyWidgetsScreen(
             }
         }
 
-        SingleChoiceSegmentedButtonRow(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
         ) {
-            val borderColor = SegmentedButtonDefaults.borderStroke(SegmentedButtonDefaults.colors().activeBorderColor)
+            options.forEachIndexed { index, source ->
+                val weight by animateFloatAsState(
+                    targetValue = if (selectedSource == source) 1.5f else 1f,
+                )
 
-            SegmentedButton(
-                selected = selectedSource == null,
-                onClick = { selectedSource = null },
-                shape = RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp),
-                border = borderColor,
-                label = {
-                    Text(
-                        text = stringResource(id = R.string.photo_widget_home_filter_all),
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                },
-            )
-
-            SegmentedButton(
-                selected = PhotoWidgetSource.PHOTOS == selectedSource,
-                onClick = { selectedSource = PhotoWidgetSource.PHOTOS },
-                shape = RectangleShape,
-                border = borderColor,
-                label = {
-                    Text(
-                        text = stringResource(id = R.string.photo_widget_home_filter_photos),
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                },
-            )
-
-            SegmentedButton(
-                selected = PhotoWidgetSource.DIRECTORY == selectedSource,
-                onClick = { selectedSource = PhotoWidgetSource.DIRECTORY },
-                shape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
-                border = borderColor,
-                label = {
-                    Text(
-                        text = stringResource(id = R.string.photo_widget_home_filter_folder),
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                },
-            )
+                ToggleButton(
+                    checked = selectedSource == source,
+                    onCheckedChange = { selectedSource = source },
+                    modifier = Modifier
+                        .weight(weight)
+                        .semantics { role = Role.RadioButton },
+                    shapes = when (index) {
+                        0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
+                        options.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
+                        else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
+                    },
+                ) {
+                    Text(stringResource(source?.label ?: R.string.photo_widget_home_filter_all))
+                }
+            }
         }
 
         if (hasDeletedWidgets) {

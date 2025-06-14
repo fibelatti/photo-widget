@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.fibelatti.photowidget.preferences
 
 import androidx.compose.animation.animateColorAsState
@@ -10,8 +12,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,18 +20,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -41,6 +46,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -197,7 +203,10 @@ private fun WidgetDefaultsScreen(
                     Text(text = stringResource(id = R.string.widget_defaults_title))
                 },
                 navigationIcon = {
-                    IconButton(onClick = onNavClick) {
+                    IconButton(
+                        onClick = onNavClick,
+                        shapes = IconButtonDefaults.shapes(),
+                    ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_back),
                             contentDescription = "",
@@ -304,6 +313,7 @@ private fun WidgetDefaultsScreen(
 
             OutlinedButton(
                 onClick = onClearDefaultsClick,
+                shapes = ButtonDefaults.shapes(),
                 modifier = Modifier.padding(top = 16.dp),
             ) {
                 Text(text = stringResource(id = R.string.widget_defaults_reset))
@@ -463,12 +473,20 @@ fun ShapePicker(
         title = stringResource(id = R.string.widget_defaults_shape),
         modifier = modifier,
     ) {
-        LazyRow(
+        val state = rememberLazyGridState()
+        val shapeSize = 80.dp
+        val spacing = 8.dp
+        val rowCount = 4
+
+        LazyHorizontalGrid(
+            rows = GridCells.Fixed(count = rowCount),
             modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp),
+                .height(height = (shapeSize * rowCount) + (spacing * (rowCount - 1)))
+                .fillMaxWidth(),
+            state = state,
             contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(spacing),
+            verticalArrangement = Arrangement.spacedBy(spacing),
         ) {
             items(PhotoWidgetShapeBuilder.shapes) { shape ->
                 val color by animateColorAsState(
@@ -483,10 +501,18 @@ fun ShapePicker(
                     shapeId = shape.id,
                     color = color,
                     modifier = Modifier
-                        .fillMaxHeight()
-                        .aspectRatio(ratio = 1f)
+                        .size(shapeSize)
                         .clickable { onClick(shape.id) },
                 )
+            }
+        }
+
+        LaunchedEffect(Unit) {
+            val selectedIndex = PhotoWidgetShapeBuilder.shapes.indexOfFirst { it.id == selectedShapeId }
+            val visibleCount = state.layoutInfo.visibleItemsInfo.size
+
+            if (selectedIndex > visibleCount) {
+                state.scrollToItem(index = selectedIndex)
             }
         }
     }
@@ -537,8 +563,9 @@ fun CornerRadiusPicker(
             )
         }
 
-        FilledTonalButton(
+        Button(
             onClick = { onApplyClick(value) },
+            shapes = ButtonDefaults.shapes(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -596,8 +623,9 @@ fun OpacityPicker(
             )
         }
 
-        FilledTonalButton(
+        Button(
             onClick = { onApplyClick(value) },
+            shapes = ButtonDefaults.shapes(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),

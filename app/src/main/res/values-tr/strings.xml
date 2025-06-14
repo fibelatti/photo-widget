@@ -32,8 +32,6 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Henüz herhangi bir widget eklemediniz.\nAna ekranınıza eklenen widget\'lar burada görünecektir.</string>
     <string name="photo_widget_home_filter_all">Hepsi</string>
-    <string name="photo_widget_home_filter_photos">Fotoğraflar</string>
-    <string name="photo_widget_home_filter_folder">Klasör</string>
     <string name="photo_widget_home_locked_label">Kilitli</string>
     <string name="photo_widget_home_removed_label">Kaldırıldı</string>
     <string name="photo_widget_home_removed_widgets_hint">Silinen widget\'lar artık ana ekranınızda yer almayacak. 7 gün sonra uygulamadan kalıcı olarak silinirler. Bunları \"Tutmayı\" seçebilirsiniz.</string>

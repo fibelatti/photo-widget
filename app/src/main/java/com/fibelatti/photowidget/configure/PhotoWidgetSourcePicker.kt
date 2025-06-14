@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonGroup
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -74,6 +78,7 @@ object PhotoWidgetSourcePicker {
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private fun SourcePickerContent(
     currentSource: PhotoWidgetSource,
     syncedDir: Set<Uri>,
@@ -193,43 +198,64 @@ private fun SourcePickerContent(
                 .align(Alignment.BottomCenter),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Row(
+            ButtonGroup(
+                overflowIndicator = {},
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
                     .height(IntrinsicSize.Max),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                OutlinedButton(
-                    onClick = onKeepSource,
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight(),
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.photo_widget_configure_source_keep_current),
-                        fontSize = 12.sp,
-                        textAlign = TextAlign.Center,
-                    )
-                }
+                customItem(
+                    buttonGroupContent = {
+                        val interactionSource = remember { MutableInteractionSource() }
 
-                FilledTonalButton(
-                    onClick = onChangeSource,
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight(),
-                ) {
-                    Text(
-                        text = stringResource(
-                            id = when (currentSource) {
-                                PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_source_set_directory
-                                PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_source_set_photos
-                            },
-                        ),
-                        fontSize = 12.sp,
-                        textAlign = TextAlign.Center,
-                    )
-                }
+                        OutlinedButton(
+                            onClick = onKeepSource,
+                            shapes = ButtonDefaults.shapes(),
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .animateWidth(interactionSource),
+                            interactionSource = interactionSource,
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.photo_widget_configure_source_keep_current),
+                                fontSize = 12.sp,
+                                textAlign = TextAlign.Center,
+                            )
+                        }
+                    },
+                    menuContent = {},
+                )
+
+                customItem(
+                    buttonGroupContent = {
+                        val interactionSource = remember { MutableInteractionSource() }
+
+                        FilledTonalButton(
+                            onClick = onChangeSource,
+                            shapes = ButtonDefaults.shapes(),
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .animateWidth(interactionSource),
+                            interactionSource = interactionSource,
+                        ) {
+                            Text(
+                                text = stringResource(
+                                    id = when (currentSource) {
+                                        PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_source_set_directory
+                                        PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_source_set_photos
+                                    },
+                                ),
+                                fontSize = 12.sp,
+                                textAlign = TextAlign.Center,
+                            )
+                        }
+                    },
+                    menuContent = {},
+                )
             }
 
             Text(

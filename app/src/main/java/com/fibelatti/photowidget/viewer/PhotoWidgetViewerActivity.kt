@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.fibelatti.photowidget.viewer
 
 import android.content.Intent
@@ -20,9 +22,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.IconButtonDefaults.smallContainerSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -194,6 +202,7 @@ private fun ScreenContent(
         ) {
             FilledTonalButton(
                 onClick = onAllPhotosClick,
+                shapes = ButtonDefaults.shapes(),
             ) {
                 Text(text = stringResource(R.string.photo_widget_viewer_all_photos))
             }
@@ -234,19 +243,28 @@ private fun Controls(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (showFlipControls) {
-            FilledTonalIconButton(onClick = onPreviousClick) {
+            FilledTonalIconButton(
+                onClick = onPreviousClick,
+                shapes = IconButtonDefaults.shapes(),
+                modifier = Modifier.size(smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Wide)),
+            ) {
                 Icon(painterResource(id = R.drawable.ic_chevron_left), contentDescription = null)
             }
         }
 
-        FilledTonalButton(
+        Button(
             onClick = onDismiss,
+            shapes = ButtonDefaults.shapes(),
         ) {
             Text(text = stringResource(R.string.photo_widget_action_dismiss))
         }
 
         if (showFlipControls) {
-            FilledTonalIconButton(onClick = onNextClick) {
+            FilledTonalIconButton(
+                onClick = onNextClick,
+                shapes = IconButtonDefaults.shapes(),
+                modifier = Modifier.size(smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Wide)),
+            ) {
                 Icon(painterResource(id = R.drawable.ic_chevron_right), contentDescription = null)
             }
         }

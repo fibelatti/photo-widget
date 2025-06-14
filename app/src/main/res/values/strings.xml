@@ -36,8 +36,6 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">You haven\'t added any widgets yet.\nWidgets added to your home screen will appear here.</string>
     <string name="photo_widget_home_filter_all">All</string>
-    <string name="photo_widget_home_filter_photos">Photos</string>
-    <string name="photo_widget_home_filter_folder">Folder</string>
 
     <string name="photo_widget_home_locked_label">Locked</string>
     <string name="photo_widget_home_removed_label">Removed</string>

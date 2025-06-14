@@ -32,8 +32,6 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Aún no has agregado ningún widget.\nLos widgets agregados a tu pantalla de inicio aparecerán aquí.</string>
     <string name="photo_widget_home_filter_all">Todos</string>
-    <string name="photo_widget_home_filter_photos">Fotos</string>
-    <string name="photo_widget_home_filter_folder">Carpeta</string>
     <string name="photo_widget_home_locked_label">Bloqueado</string>
     <string name="photo_widget_home_removed_label">Eliminado</string>
     <string name="photo_widget_home_removed_widgets_hint">Los widgets eliminados ya no aparecen en la pantalla de inicio. Se eliminan de forma permanente de la aplicación después de 7 días. Puedes elegir \"Mantener\" ellos.</string>
