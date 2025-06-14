@@ -804,11 +804,9 @@ private fun BehaviorTab(
         PickerDefault(
             title = stringResource(id = R.string.widget_defaults_tap_action),
             currentValue = buildString {
-                append(stringResource(id = photoWidget.tapActions.left.label))
-                append(", ")
-                append(stringResource(id = photoWidget.tapActions.center.label))
-                append(", ")
-                append(stringResource(id = photoWidget.tapActions.right.label))
+                appendLine(stringResource(id = photoWidget.tapActions.left.label))
+                appendLine(stringResource(id = photoWidget.tapActions.center.label))
+                appendLine(stringResource(id = photoWidget.tapActions.right.label))
             },
             onClick = { onTapActionPickerClick(photoWidget.tapActions) },
         )
