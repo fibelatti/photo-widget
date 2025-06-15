@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Widget Host -->
     <string name="photo_widget_host_description">お気に入りの写真でホーム画面を飾りましょう</string>
     <string name="photo_widget_host_loading">ウィジェットを読み込み中…</string>
     <string name="photo_widget_host_failed">読み込みに失敗しました\nもう一度お試しください</string>
-
+    <!-- Home -->
     <string name="photo_widget_home_title">お気に入りの写真でホーム画面を飾りましょう</string>
     <string name="photo_widget_home_instruction">オプションのいずれかをタップして新しいウィジェットを作成します。いつでも変更できますのでご安心ください！</string>
     <string name="photo_widget_home_new">新しいウィジェット</string>
@@ -22,22 +23,17 @@
     <string name="photo_widget_home_developer">Filipe Belatti が❤を込めて開発</string>
     <string name="photo_widget_home_version">アプリのバージョン: %s</string>
     <string name="photo_widget_home_view_licenses">OSS ライセンス</string>
-
     <plurals name="photo_widget_home_share_received">
-        <item quantity="one">1枚の写真を受信しました。新しいウィジェットを作成するか、既存のウィジェットを選択して追加してください。</item>
         <item quantity="other">%d枚の写真を受信しました。新しいウィジェットを作成するか、既存のウィジェットを選択して追加してください。</item>
     </plurals>
-
     <string name="photo_widget_home_pinning_not_supported_title">ホーム画面から直接ウィジェットを追加</string>
     <string name="photo_widget_home_pinning_not_supported_message">1. 空のスペースを長押しします\n\n2. ウィジェットメニューを選択します\n\n3. Material Photo Widget を検索します\n\n4. 設定して保存します！</string>
-
+    <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">ウィジェットはまだ追加されていません。\nホーム画面に追加されたウィジェットがここに表示されます。</string>
     <string name="photo_widget_home_filter_all">すべて</string>
-
     <string name="photo_widget_home_locked_label">ロック済み</string>
     <string name="photo_widget_home_removed_label">削除済み</string>
     <string name="photo_widget_home_removed_widgets_hint">削除されたウィジェットはホーム画面には表示されなくなります。7日後にアプリから完全に削除されます。「保持」を選択することもできます。</string>
-
     <string name="photo_widget_home_my_widget_action_sync">フォルダーの写真と同期</string>
     <string name="photo_widget_home_my_widget_action_edit">表示 / 編集</string>
     <string name="photo_widget_home_my_widget_action_duplicate">複製</string>
@@ -47,19 +43,16 @@
     <string name="photo_widget_home_removed_widget_action_restore">復元</string>
     <string name="photo_widget_home_removed_widget_action_keep">保持</string>
     <string name="photo_widget_home_removed_widget_action_delete">完全に削除</string>
-
     <string name="photo_widget_home_my_widget_syncing_feedback">フォルダーから最新の写真をフェッチ中…</string>
-
+    <!-- Preferences -->
     <string name="preferences_data_saver">ストレージ使用量を削減</string>
     <string name="preferences_data_saver_description">有効にすると、ウィジェットに追加された写真はストレージを節約するために圧縮されます。通常、品質には影響しませんが、写真に小さなテキストが含まれている場合は、これをオフにすることをお勧めします。\n\nこの設定は、変更後に加えられた写真にのみ影響します。\n\n同期されたフォルダーには適用されません。それらの写真はデバイスのストレージから直接読み取られるためです。</string>
-
     <string name="preferences_appearance_follow_system">システムに従う</string>
     <string name="preferences_appearance_light">ライト</string>
     <string name="preferences_appearance_dark">ダーク</string>
-
     <string name="preferences_dynamic_colors_enabled">ダイナミックカラー</string>
     <string name="preferences_dynamic_colors_disabled">デフォルトカラー</string>
-
+    <!-- Widget Defaults -->
     <string name="widget_defaults_title">ウィジェットのデフォルト設定</string>
     <string name="widget_defaults_explanation">これらの値は、新しいウィジェットを作成する際に事前に読み込まれます。同じ設定で複数のウィジェットを設定する際に便利で、毎回設定を調整する必要がなくなります。これらの値を変更しても、既存のウィジェットには影響しません。</string>
     <string name="widget_defaults_source">ソース</string>
@@ -72,13 +65,13 @@
     <string name="widget_defaults_brightness">明るさ</string>
     <string name="widget_defaults_tap_action">タップアクション</string>
     <string name="widget_defaults_reset">値をリセット</string>
-
+    <!-- Share -->
     <string name="share_title">情報を広める</string>
     <string name="share_text">Material Photo Widget でお気に入りの写真をホーム画面に追加しましょう。無料でダウンロード: %s</string>
-
+    <!-- Source -->
     <string name="photo_widget_source_photos">写真</string>
     <string name="photo_widget_source_directory">フォルダー</string>
-
+    <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">フォーマット</string>
     <string name="photo_widget_aspect_ratio_shape">シェイプ</string>
     <string name="photo_widget_aspect_ratio_shape_description">Material You のシェイプ</string>
@@ -89,22 +82,18 @@
     <string name="photo_widget_aspect_ratio_original_description">各写真に合わせる</string>
     <string name="photo_widget_aspect_ratio_fill_widget">全体に合わせる</string>
     <string name="photo_widget_aspect_ratio_fill_widget_description">ウィジェットサイズに合わせる</string>
-
+    <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">変更は失われます。戻ってもよろしいですか？</string>
-
     <string name="photo_widget_configure_tab_content">コンテンツ</string>
     <string name="photo_widget_configure_tab_appearance">外観</string>
     <string name="photo_widget_configure_tab_behavior">動作</string>
-
     <string name="photo_widget_configure_import_prompt">他のウィジェットからインポートしますか？</string>
     <string name="photo_widget_configure_import_prompt_action">選択</string>
     <string name="photo_widget_configure_import_dialog_title">ウィジェットを選択</string>
     <string name="photo_widget_configure_import_dialog_description">すべての写真と設定が新しいウィジェットにコピーされます</string>
-
     <string name="photo_widget_configure_import_error">選択した写真をすべてインポートできませんでした</string>
     <string name="photo_widget_configure_too_many_photos_error">同期フォルダーには最大3000枚の写真を含めることができます。複数選択でき、各サブフォルダーは個別にカウントされます。\n\nカメラロールは選択できません。写真は1枚ずつ処理され、数千枚の写真を含むフォルダーは、ウィジェットエディターやホーム画面での写真切り替え時に深刻なパフォーマンスの問題を引き起こします。</string>
     <string name="photo_widget_configure_missing_photos_error">ウィジェットには少なくとも1枚の写真が必要です。ウィジェットはホーム画面からのみ直接削除できます。</string>
-
     <string name="photo_widget_configure_menu_source">ソース</string>
     <string name="photo_widget_configure_source_description">各写真を個別に選択するか、このウィジェットを1つ以上のフォルダーと同期できます。同期すると、フォルダー内のすべての写真が自動的にウィジェットに追加されます。コンテンツは24時間ごとに更新されます。</string>
     <string name="photo_widget_configure_source_selection_photos">このウィジェットには、選択した写真のみが表示されます。</string>
@@ -114,65 +103,50 @@
     <string name="photo_widget_configure_source_set_directory">ソースをフォルダーに設定</string>
     <string name="photo_widget_configure_source_set_photos">ソースを写真に設定</string>
     <string name="photo_widget_configure_source_warning">ソースを変更すると、このウィジェットの現在の写真が置き換えられます</string>
-
     <string name="photo_widget_configure_menu_crop">切り抜き</string>
     <string name="photo_widget_configure_menu_remove">削除</string>
     <string name="photo_widget_configure_menu_move_left">左へ移動</string>
     <string name="photo_widget_configure_menu_move_right">右へ移動</string>
-
     <string name="photo_widget_configure_photos_pending_deletion">最近削除された写真</string>
     <string name="photo_widget_configure_photos_excluded">ウィジェットから除外</string>
-
     <string name="photo_widget_configure_pick_photo">写真を選択</string>
     <string name="photo_widget_configure_pick_folder">フォルダーを選択</string>
     <string name="photo_widget_configure_change_source">ソースを変更</string>
-
     <string name="photo_widget_configure_select_cycling_mode">写真の切り替え</string>
     <string name="photo_widget_configure_cycling_mode_interval">間隔</string>
     <string name="photo_widget_configure_cycling_mode_schedule">スケジュール</string>
     <string name="photo_widget_configure_cycling_mode_disabled">無効</string>
-
     <string name="photo_widget_configure_cycling_mode_interval_description">ウィジェットは以下の間隔で次の写真に自動的に切り替わります:</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description">ウィジェットは毎日、以下の指定された時間に次の写真に自動的に切り替わります:</string>
     <string name="photo_widget_configure_cycling_mode_disabled_description">ウィジェットは写真を自動的に切り替えません。ウィジェットの端をタップして次の写真に切り替えてください。</string>
-
     <string name="photo_widget_configure_interval_current_label">毎%s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
-        <item quantity="one">%d秒</item>
         <item quantity="other">%d秒</item>
     </plurals>
     <plurals name="photo_widget_configure_interval_current_minutes">
-        <item quantity="one">%d分</item>
         <item quantity="other">%d分</item>
     </plurals>
     <plurals name="photo_widget_configure_interval_current_hours">
-        <item quantity="one">%d時間</item>
         <item quantity="other">%d時間</item>
     </plurals>
     <plurals name="photo_widget_configure_interval_current_days">
-        <item quantity="one">%d日</item>
         <item quantity="other">%d日</item>
     </plurals>
     <string name="photo_widget_configure_interval_seconds_label">秒</string>
     <string name="photo_widget_configure_interval_minutes_label">分</string>
     <string name="photo_widget_configure_interval_hours_label">時間</string>
     <string name="photo_widget_configure_interval_days_label">日</string>
-
     <string name="photo_widget_configure_schedule_placeholder">写真を自動的に切り替える時間を最大4つまでスケジュールします。</string>
     <string name="photo_widget_configure_schedule_add_new">新規追加</string>
     <string name="photo_widget_configure_schedule_limit_reached">最大4つの時間に達しました</string>
     <plurals name="photo_widget_configure_schedule_times">
-        <item quantity="one">1つの時間が選択されました</item>
         <item quantity="other">%dつの時間が選択されました</item>
     </plurals>
-
     <string name="photo_widget_configure_interval_warning">実際の切り替え間隔やスケジュール時間は、Androidがバッテリー寿命を最適化するために課す制限により異なる場合があります。希望どおりに機能するようにするには、以下の権限を付与してください。</string>
-
     <string name="photo_widget_configure_interval_grant_permission">正確なアラーム権限を付与</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">この権限について</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">Androidはバッテリー寿命を最適化するためにバックグラウンド作業を制限することがあり、写真ごとの間隔が長くなる可能性があります。\n\n選択した間隔でウィジェットを正確に更新するには、設定を開き、アラームとリマインダーの設定を許可してください。</string>
     <string name="photo_widget_configure_interval_open_settings">設定を開く</string>
-
     <string name="photo_widget_configure_border">枠線</string>
     <string name="photo_widget_configure_border_none">なし</string>
     <string name="photo_widget_configure_border_dynamic">ダイナミック</string>
@@ -181,16 +155,12 @@
     <string name="photo_widget_configure_border_color_palette_dominant">支配的な色</string>
     <string name="photo_widget_configure_border_color_palette_vibrant">鮮やかな色</string>
     <string name="photo_widget_configure_border_color_palette_muted">落ち着いた色</string>
-
     <string name="photo_widget_configure_border_explanation">変更は、スマートフォンのテーマカラーを変更した後の次回のウィジェット更新時に適用されます。すべてのウィジェットをすぐに更新するには、アプリを開いてください。</string>
-
     <string name="photo_widget_configure_offset">オフセット</string>
     <string name="photo_widget_configure_offset_current_values">横: %1$d, 縦: %2$d</string>
     <string name="photo_widget_configure_offset_current_horizontal">横: %1$d</string>
     <string name="photo_widget_configure_offset_current_vertical">縦: %1$d</string>
-
     <string name="photo_widget_configure_padding">パディング</string>
-
     <string name="photo_widget_configure_tap_action">タップアクション</string>
     <string name="photo_widget_configure_tap_action_description">各エリアのタップアクションをカスタマイズします。1x1のウィジェットは中央のタップアクションのみを使用します。</string>
     <string name="photo_widget_configure_tap_action_area_left">左</string>
@@ -206,7 +176,6 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">リンクを開く</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">切り替えの有効/無効</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">タップして写真の自動切り替えを一時停止します。もう一度タップして再開します。ウィジェットがロックされている場合、このアクションは効果がありません。</string>
-
     <string name="photo_widget_configure_tap_action_increase_brightness">明るさを自動的に上げる</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">元の写真を表示（切り抜きや回転なし）</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">ビューアーボタン使用時にシャッフルしない</string>
@@ -218,31 +187,23 @@
     <string name="photo_widget_configure_tap_action_disable_tap">切り替えが一時停止している間、他のタップエリアを無効にする</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">これらの設定は、このタップアクションを使用するすべてのエリアで使用されます。</string>
     <string name="photo_widget_configure_tap_action_shared_selected_app">選択されたアプリは、このタップアクションを使用するすべてのエリアで使用されます。</string>
-
     <string name="photo_widget_configure_add_to_home">ホーム画面に追加</string>
     <string name="photo_widget_configure_save_changes">変更を保存</string>
-
     <string name="photo_widget_configure_widget_pinned">ウィジェットが追加されました！ホーム画面を確認してください…</string>
-
     <string name="photo_widget_time_picker_title">時間を選択</string>
-
     <string name="photo_widget_directory_sort_title">写真の並べ替え</string>
     <string name="photo_widget_directory_sort_newest_first">新しいものから順に</string>
     <string name="photo_widget_directory_sort_oldest_first">古いものから順に</string>
     <string name="photo_widget_directory_sort_explanation">並べ替えは、元の画像ファイルの最終変更日を使用し、フォルダーと同期されたウィジェットにのみ適用されます。</string>
-
+    <!-- Help -->
     <string name="help_article_title_1">ホーム画面へのウィジェットの追加が機能しない</string>
     <string name="help_article_body_1">ウィジェットを設定してもホーム画面に追加されない場合や、追加されても選択した写真が表示されない場合は、ホーム画面から直接追加してみてください。\n\n手順はAndroidのバージョン、デバイスメーカー、ホーム画面ランチャーによって異なる場合がありますが、一般的には以下のとおりです。\n\n1. ホーム画面の空いているスペースを長押しすると、ポップアップメニューが表示されます。\n2. 「ウィジェット」オプションを探します。\n3. 利用可能なウィジェットの中から「Material Photo Widget」を検索します。\n4. ホーム画面にドラッグし、通常どおり設定します。</string>
-
     <string name="help_article_title_2">写真が自動的に切り替わらない</string>
     <string name="help_article_body_2">選択された間隔やスケジュールされた時間は、次の写真が表示されるおおよその時間です。Androidは実際の時間を決定する際にいくつかの要因を考慮し、各デバイスメーカーはバックグラウンドプロセスに制限を課す場合があります。\n\n写真が希望どおりに正確に切り替わるようにするには、アプリに「正確なアラーム」権限を付与し、スマートフォンの設定でバッテリー制限が適用されていないことを確認してください。</string>
-
     <string name="help_article_title_3">スマートフォンの再起動後にウィジェットが機能しない</string>
     <string name="help_article_body_3">スマートフォンが再起動すると、Androidはアプリに通知を送信し、アプリ自身が再起動できるようにします。残念ながら、一部のデバイスメーカー（Xiaomi、Redmi、Huaweiなど）はこの信号をブロックしています。\n\nこの機能を有効にするには、セキュリティアプリで「自動起動」権限を変更してください。</string>
-
     <string name="help_article_title_4">ウィジェットのサイズが小さすぎる</string>
     <string name="help_article_body_4">ウィジェットをホーム画面に追加した後、ウィジェットを長押しするとサイズ変更オプションが表示されます。その後、境界線をドラッグして希望のサイズに調整してください。</string>
-
     <string name="restriction_warning_hint">バックグラウンドアクティビティが制限されています。ウィジェットが正しく機能しない場合があります。詳細についてはタップしてください。</string>
     <string name="restriction_warning_dialog_title">バックグラウンド作業の制限とバッテリー最適化</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget はウィジェットを更新するためにバックグラウンドで実行する必要があります。必要なときにのみ実行されますが、バッテリー使用量が「最適化」に設定されている場合、Androidはアプリを停止させ、ウィジェットが正しく機能しなくなる可能性があります。</string>
@@ -250,17 +211,17 @@
     <string name="restriction_warning_dialog_body_3">一部のスマートフォンではさらに制限が厳しく、再起動後にアプリが自動的に起動するのをブロックする場合があります。設定はデバイスによって異なります — 詳細な手順については https://dontkillmyapp.com を参照してください。</string>
     <string name="restriction_warning_open_app_settings">アプリ設定を開く</string>
     <string name="restriction_warning_open_power_settings">電源設定を開く</string>
-
+    <!-- Translations -->
     <string name="translations_dialog_title">あなたの言語への翻訳にご協力ください！</string>
     <string name="translations_dialog_body">このアプリはコミュニティ主導の翻訳アプローチを採用しており、皆様のご協力によりさらに改善されます。新しい言語の追加をご希望の場合や、誤りを見つけた場合はご貢献いただけます。</string>
     <string name="translations_dialog_positive_action">Crowdinを開く</string>
     <string name="translations_dialog_negative_action">今はしない</string>
-
+    <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">すべての写真</string>
-
+    <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">切り替えを一時停止しました</string>
     <string name="photo_widget_cycling_feedback_resumed">切り替えを再開しました</string>
-
+    <!-- Common Actions -->
     <string name="photo_widget_action_yes">はい</string>
     <string name="photo_widget_action_no">いいえ</string>
     <string name="photo_widget_action_continue">続行</string>
@@ -269,6 +230,6 @@
     <string name="photo_widget_action_confirm">確認</string>
     <string name="photo_widget_action_got_it">了解</string>
     <string name="photo_widget_action_dismiss">閉じる</string>
-
+    <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photoホーム画面ウィジェット</string>
 </resources>
