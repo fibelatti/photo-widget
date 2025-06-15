@@ -94,8 +94,8 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
                         },
                         onDismissClick = ::finish,
                         showFlipControls = state.showMoveControls,
-                        onPreviousClick = { viewModel.flip(backwards = true) },
-                        onNextClick = { viewModel.flip() },
+                        onPreviousClick = viewModel::viewPreviousPhoto,
+                        onNextClick = viewModel::viewNextPhoto,
                         onAllPhotosClick = {
                             val clickIntent = Intent(this, PhotoWidgetChooserActivity::class.java).apply {
                                 this.appWidgetId = intent.appWidgetId

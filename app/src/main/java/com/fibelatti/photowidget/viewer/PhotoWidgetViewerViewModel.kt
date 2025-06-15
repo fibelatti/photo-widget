@@ -39,20 +39,27 @@ class PhotoWidgetViewerViewModel @Inject constructor(
         updateState()
     }
 
-    fun flip(backwards: Boolean = false) {
+    fun viewNextPhoto() {
+        cycleWidget(direction = CyclePhotoUseCase.Direction.NEXT)
+    }
+
+    fun viewPreviousPhoto() {
+        cycleWidget(direction = CyclePhotoUseCase.Direction.PREVIOUS)
+    }
+
+    private fun cycleWidget(direction: CyclePhotoUseCase.Direction) {
         viewModelScope.launch {
             val photoWidget = _state.value.photoWidget ?: return@launch
             val newPhotoId = cyclePhotoUseCase(
                 appWidgetId = appWidgetId,
-                flipBackwards = backwards,
+                direction = direction,
                 noShuffle = photoWidget.tapActionNoShuffle,
                 skipSaving = photoWidget.tapActionKeepCurrentPhoto,
                 currentPhoto = photoWidget.currentPhoto?.photoId,
             )
             updateState(
-                fromWidget = photoWidget.photos.firstOrNull { it.photoId == newPhotoId }?.let { newPhoto ->
-                    photoWidget.copy(currentPhoto = newPhoto)
-                },
+                fromWidget = photoWidget.photos.firstOrNull { it.photoId == newPhotoId }
+                    ?.let { newPhoto -> photoWidget.copy(currentPhoto = newPhoto) },
             )
         }
     }

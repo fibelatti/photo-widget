@@ -16,7 +16,7 @@ class CyclePhotoUseCase @Inject constructor(
      * Cycles through the photos in the widget.
      *
      * @param appWidgetId The ID of the widget to update.
-     * @param flipBackwards Whether to cycle backwards or forwards.
+     * @param direction Whether to view the next or previous photo.
      * @param noShuffle Whether to disregard the widget shuffle setting.
      * @param skipSaving Whether to skip saving the result of the operation.
      * @param currentPhoto The ID of the current photo being displayed by the widget.
@@ -24,7 +24,7 @@ class CyclePhotoUseCase @Inject constructor(
      */
     suspend operator fun invoke(
         appWidgetId: Int,
-        flipBackwards: Boolean = false,
+        direction: Direction = Direction.NEXT,
         noShuffle: Boolean = false,
         skipSaving: Boolean = false,
         currentPhoto: String? = null,
@@ -32,43 +32,47 @@ class CyclePhotoUseCase @Inject constructor(
         Timber.d(
             "Cycling photo (" +
                 "appWidgetId=$appWidgetId," +
-                "flipBackwards=$flipBackwards," +
+                "direction=$direction," +
                 "noShuffle=$noShuffle," +
                 "skipSaving=$skipSaving," +
                 "currentPhoto=$currentPhoto" +
                 ")",
         )
 
-        val widgetPhotos = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+        val widgetPhotoIds: List<String> = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
             .first()
             .current
             .map { it.photoId }
 
         when {
-            widgetPhotos.isEmpty() -> return ""
-            widgetPhotos.size == 1 -> return widgetPhotos.first()
+            widgetPhotoIds.isEmpty() -> return ""
+            widgetPhotoIds.size == 1 -> return widgetPhotoIds.first()
         }
 
         val displayedPhotos = photoWidgetStorage.getDisplayedPhotoIds(appWidgetId = appWidgetId).toMutableSet()
 
-        if (!flipBackwards && displayedPhotos.size >= widgetPhotos.size && !skipSaving) {
+        var didClear = false
+        if (Direction.NEXT == direction && displayedPhotos.size >= widgetPhotoIds.size && !skipSaving) {
             Timber.d("All photos displayed, starting over")
             photoWidgetStorage.clearDisplayedPhotos(appWidgetId = appWidgetId)
             displayedPhotos.clear()
+            didClear = true
         }
 
         val currentPhotoId: suspend () -> String? = {
-            currentPhoto
+            val resolved: String? = currentPhoto
                 ?: photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)
-                ?: widgetPhotos.getOrNull(photoWidgetStorage.getWidgetIndex(appWidgetId = appWidgetId))
+                ?: widgetPhotoIds.getOrNull(photoWidgetStorage.getWidgetIndex(appWidgetId = appWidgetId))
+
+            resolved?.ifEmpty { null }
         }
         val shuffle: Boolean = photoWidgetStorage.getWidgetShuffle(appWidgetId = appWidgetId) && !noShuffle
-        val nextRandomPhoto: () -> String = { widgetPhotos.subtract(displayedPhotos).random() }
+        val nextRandomPhoto: () -> String = { widgetPhotoIds.subtract(displayedPhotos).random() }
 
         val newPhotoId: String = when {
-            currentPhotoId() == null -> widgetPhotos.first()
+            didClear || currentPhotoId() == null -> widgetPhotoIds.first()
 
-            shuffle && flipBackwards -> {
+            shuffle && Direction.PREVIOUS == direction -> {
                 if (!skipSaving) {
                     photoWidgetStorage.clearMostRecentPhoto(appWidgetId = appWidgetId)
                 }
@@ -78,16 +82,15 @@ class CyclePhotoUseCase @Inject constructor(
             shuffle -> nextRandomPhoto()
 
             else -> {
-                val currentIndex = widgetPhotos.indexOfFirst { it == currentPhotoId() }
+                val currentIndex: Int = widgetPhotoIds.indexOfFirst { it == currentPhotoId() }
+                val newIndex: Int = when {
+                    Direction.PREVIOUS == direction && currentIndex <= 0 -> widgetPhotoIds.size - 1
+                    Direction.PREVIOUS == direction -> currentIndex - 1
+                    currentIndex == widgetPhotoIds.size - 1 -> 0
+                    else -> currentIndex + 1
+                }.coerceIn(0, widgetPhotoIds.size - 1)
 
-                widgetPhotos.get(
-                    index = when {
-                        flipBackwards && currentIndex == 0 -> widgetPhotos.size - 1
-                        flipBackwards -> currentIndex - 1
-                        currentIndex == widgetPhotos.size - 1 -> 0
-                        else -> currentIndex + 1
-                    }.coerceIn(0, widgetPhotos.size - 1),
-                )
+                widgetPhotoIds.get(index = newIndex)
             }
         }
 
@@ -99,5 +102,10 @@ class CyclePhotoUseCase @Inject constructor(
         }
 
         return newPhotoId
+    }
+
+    enum class Direction {
+        NEXT,
+        PREVIOUS,
     }
 }

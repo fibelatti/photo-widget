@@ -44,18 +44,16 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
         Timber.d("Broadcast received (action=${intent.action}, appWidgetId=${intent.appWidgetId})")
 
-        val acceptedAction = ACTION_VIEW_NEXT_PHOTO == intent.action ||
-            ACTION_VIEW_PREVIOUS_PHOTO == intent.action
-
-        if (!acceptedAction) {
-            return
-        }
+        val action: Action = Action.fromValue(intent.action) ?: return
 
         goAsync {
             entryPoint<PhotoWidgetEntryPoint>(context).run {
                 cyclePhotoUseCase().invoke(
                     appWidgetId = intent.appWidgetId,
-                    flipBackwards = ACTION_VIEW_PREVIOUS_PHOTO == intent.action,
+                    direction = when (action) {
+                        Action.VIEW_NEXT_PHOTO -> CyclePhotoUseCase.Direction.NEXT
+                        Action.VIEW_PREVIOUS_PHOTO -> CyclePhotoUseCase.Direction.PREVIOUS
+                    },
                 )
                 photoWidgetStorage().saveWidgetNextCycleTime(
                     appWidgetId = intent.appWidgetId,
@@ -108,10 +106,19 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         }
     }
 
-    companion object {
+    enum class Action(val value: String) {
 
-        private const val ACTION_VIEW_NEXT_PHOTO = "ACTION_VIEW_NEXT_PHOTO"
-        private const val ACTION_VIEW_PREVIOUS_PHOTO = "ACTION_VIEW_PREVIOUS_PHOTO"
+        VIEW_NEXT_PHOTO(value = "ACTION_VIEW_NEXT_PHOTO"),
+        VIEW_PREVIOUS_PHOTO(value = "ACTION_VIEW_PREVIOUS_PHOTO"),
+        ;
+
+        companion object {
+
+            fun fromValue(value: String?): Action? = entries.firstOrNull { it.value == value }
+        }
+    }
+
+    companion object {
 
         private val updateJobMap: MutableMap<Int, WeakReference<Job>> = mutableMapOf()
 
@@ -423,7 +430,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     return changePhotoPendingIntent(
                         context = context,
                         appWidgetId = appWidgetId,
-                        flipBackwards = false,
+                        action = Action.VIEW_NEXT_PHOTO,
                     )
                 }
 
@@ -431,7 +438,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     return changePhotoPendingIntent(
                         context = context,
                         appWidgetId = appWidgetId,
-                        flipBackwards = true,
+                        action = Action.VIEW_PREVIOUS_PHOTO,
                     )
                 }
 
@@ -523,12 +530,12 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         fun changePhotoPendingIntent(
             context: Context,
             appWidgetId: Int,
-            flipBackwards: Boolean = false,
+            action: Action = Action.VIEW_NEXT_PHOTO,
         ): PendingIntent {
             val intent = Intent(context, PhotoWidgetProvider::class.java).apply {
                 setIdentifierCompat("$appWidgetId")
                 this.appWidgetId = appWidgetId
-                this.action = if (flipBackwards) ACTION_VIEW_PREVIOUS_PHOTO else ACTION_VIEW_NEXT_PHOTO
+                this.action = action.value
             }
             return PendingIntent.getBroadcast(
                 /* context = */

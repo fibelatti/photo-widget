@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Certain images having unexpected borders in the full screen viewer
 * Provide better placeholders while widgets are loading
 * "My Widgets" filter not working as expected
+* Slideshow not working in certain conditions
 
 ## [v1.30.0] - 2025-05-25
 [v1.30.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.30.0
