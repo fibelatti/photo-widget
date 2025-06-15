@@ -1,0 +1,10 @@
+This version brings the following updates:
+
+* Refreshed app UI with Material 3 Expressive
+* Many new shapes
+* Fixes placeholders while widgets are loading
+* Fixes certain images having unexpected borders in the full screen viewer
+* Fixes "My Widgets" filter not working as expected
+* Fixes Slideshow not working in certain conditions
+
+Thanks for using the app!
