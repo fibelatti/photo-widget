@@ -25,8 +25,13 @@ class ConfigurationChangedReceiver : EntryPointBroadcastReceiver() {
         }
 
         for (id in ids) {
-            Timber.d("Updating widget (appWidgetId=$id)")
-            PhotoWidgetProvider.update(context = context, appWidgetId = id)
+            try {
+                Timber.d("Processing widget (id=$id)")
+
+                PhotoWidgetProvider.update(context = context, appWidgetId = id)
+            } catch (e: Exception) {
+                Timber.e(e, "Error processing widget (id=$id)")
+            }
         }
     }
 

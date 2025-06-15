@@ -29,11 +29,18 @@ class PhotoWidgetSyncReceiver : EntryPointBroadcastReceiver() {
         val coroutineScope = entryPoint.coroutineScope()
 
         for (id in ids) {
-            val source = photoWidgetStorage.getWidgetSource(appWidgetId = id)
-            if (PhotoWidgetSource.DIRECTORY == source) {
-                coroutineScope.launch(NonCancellable) {
-                    photoWidgetStorage.syncWidgetPhotos(appWidgetId = id)
+            try {
+                Timber.d("Processing widget (id=$id)")
+
+                val source = photoWidgetStorage.getWidgetSource(appWidgetId = id)
+
+                if (PhotoWidgetSource.DIRECTORY == source) {
+                    coroutineScope.launch(NonCancellable) {
+                        photoWidgetStorage.syncWidgetPhotos(appWidgetId = id)
+                    }
                 }
+            } catch (e: Exception) {
+                Timber.e(e, "Error processing widget (id=$id)")
             }
         }
     }

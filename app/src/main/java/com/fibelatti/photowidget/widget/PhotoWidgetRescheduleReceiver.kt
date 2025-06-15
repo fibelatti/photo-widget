@@ -24,23 +24,28 @@ class PhotoWidgetRescheduleReceiver : EntryPointBroadcastReceiver() {
                 return
             }
 
-            PhotoWidgetSyncReceiver.setup(context)
-
             val photoWidgetStorage = entryPoint.photoWidgetStorage()
             val photoWidgetAlarmManager = entryPoint.photoWidgetAlarmManager()
 
             for (id in ids) {
-                val cycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = id)
-                val isLocked = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = id)
-                val isPaused = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = id)
-                Timber.d("Processing widget (id=$id,cycleMode=$cycleMode,isLocked=$isLocked,isPaused=$isPaused)")
+                try {
+                    val cycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = id)
+                    val isLocked = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = id)
+                    val isPaused = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = id)
 
-                if (cycleMode !is PhotoWidgetCycleMode.Disabled && !isLocked && !isPaused) {
-                    photoWidgetAlarmManager.setup(appWidgetId = id)
+                    Timber.d("Processing widget (id=$id,cycleMode=$cycleMode,isLocked=$isLocked,isPaused=$isPaused)")
+
+                    if (cycleMode !is PhotoWidgetCycleMode.Disabled && !isLocked && !isPaused) {
+                        photoWidgetAlarmManager.setup(appWidgetId = id)
+                    }
+
+                    PhotoWidgetProvider.update(context = context, appWidgetId = id)
+                } catch (e: Exception) {
+                    Timber.e(e, "Error processing widget (id=$id)")
                 }
-
-                PhotoWidgetProvider.update(context = context, appWidgetId = id)
             }
+
+            PhotoWidgetSyncReceiver.setup(context)
         }
     }
 
