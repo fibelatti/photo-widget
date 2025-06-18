@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.max
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
-import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.platform.getMaxBitmapWidgetDimension
 import com.fibelatti.ui.foundation.dpToPx
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
@@ -72,11 +72,12 @@ fun AsyncPhotoViewer(
         val decoder by remember {
             lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
         }
-        val largestSize = max(maxWidth, maxHeight)
-        val maxDimension = if (constrainBitmapSize) {
-            largestSize.dpToPx().roundToInt().coerceAtMost(maximumValue = PhotoWidget.MAX_WIDGET_DIMENSION)
-        } else {
-            null
+
+        var maxDimension = localContext.getMaxBitmapWidgetDimension(coerceDimension = constrainBitmapSize)
+        val largestSize = max(maxWidth, maxHeight).dpToPx().roundToInt()
+
+        if (constrainBitmapSize && maxDimension > largestSize) {
+            maxDimension = largestSize
         }
 
         LaunchedEffect(*dataKey) {

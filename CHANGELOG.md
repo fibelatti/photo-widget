@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+* Increased the max roundness from 64 to 128
+
+### Fixed
+
+* The roundness preview now matches the actual roundness of the widget
+
 ## [v1.31.0] - 2025-06-15
 [v1.31.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.31.0
 

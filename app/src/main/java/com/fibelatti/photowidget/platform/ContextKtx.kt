@@ -5,12 +5,17 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.os.Build
 import android.os.PowerManager
+import android.util.DisplayMetrics
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.google.android.material.color.DynamicColors
+import kotlin.math.roundToInt
+import kotlin.math.sqrt
+import timber.log.Timber
 
 @ColorInt
 fun Context.getAttributeColor(
@@ -79,4 +84,28 @@ fun widgetPinningNotAvailable(): Boolean {
     )
 
     return manufacturer in notAvailable
+}
+
+fun Context.getMaxBitmapWidgetDimension(
+    coerceMaxMemory: Boolean = false,
+    coerceDimension: Boolean = false,
+): Int {
+    Timber.d("Calculating max dimension (coerceMaxMemory=$coerceMaxMemory, coerceDimension=$coerceDimension)")
+
+    val displayMetrics: DisplayMetrics = resources.displayMetrics
+    val maxMemoryAllowed: Int = if (coerceMaxMemory) {
+        6_912_000 // `RemoteViews` have a maximum allowed memory for bitmaps
+    } else {
+        (displayMetrics.heightPixels * displayMetrics.widthPixels * 4 * 1.5).roundToInt()
+    }
+    val maxMemoryDimension: Int = sqrt(maxMemoryAllowed / 4 / displayMetrics.density).roundToInt()
+    val maxDimension: Int = if (coerceDimension) {
+        maxMemoryDimension.coerceAtMost(maximumValue = PhotoWidget.MAX_WIDGET_DIMENSION)
+    } else {
+        maxMemoryDimension
+    }
+
+    Timber.d("Max dimension allowed: $maxDimension (maxMemoryAllowed=$maxMemoryAllowed)")
+
+    return maxDimension
 }

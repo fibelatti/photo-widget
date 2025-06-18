@@ -571,7 +571,7 @@ fun CornerRadiusPicker(
                 value = value.toFloat(),
                 onValueChange = { value = it.roundToInt() },
                 modifier = Modifier.weight(1f),
-                valueRange = 0f..64f,
+                valueRange = 0f..128f,
                 thumb = { SliderSmallThumb() },
             )
 

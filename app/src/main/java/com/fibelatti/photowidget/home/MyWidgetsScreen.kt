@@ -125,6 +125,7 @@ fun MyWidgetsScreen(
                                 colors = widget.colors,
                                 border = widget.border,
                                 isLoading = widget.isLoading,
+                                constrainBitmapSize = false,
                             )
 
                             when {

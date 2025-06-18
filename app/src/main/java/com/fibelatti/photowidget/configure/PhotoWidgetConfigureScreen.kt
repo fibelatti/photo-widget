@@ -870,6 +870,7 @@ private fun CurrentPhotoViewer(
                     .fillMaxHeight(),
                 colors = colors,
                 border = border,
+                constrainBitmapSize = false,
             )
         }
     }

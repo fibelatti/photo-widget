@@ -3,7 +3,6 @@ package com.fibelatti.photowidget.widget
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.DisplayMetrics
 import android.util.Size
 import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -13,12 +12,11 @@ import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.colorForType
 import com.fibelatti.photowidget.platform.getColorPalette
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
+import com.fibelatti.photowidget.platform.getMaxBitmapWidgetDimension
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.widget.data.PhotoWidgetInternalFileStorage
 import javax.inject.Inject
-import kotlin.math.roundToInt
-import kotlin.math.sqrt
 import timber.log.Timber
 
 class PrepareCurrentPhotoUseCase @Inject constructor(
@@ -45,26 +43,12 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
         )
 
         val bitmap: Bitmap = try {
-            val displayMetrics: DisplayMetrics = context.resources.displayMetrics
-            val maxMemoryAllowed: Int = if (!recoveryMode) {
-                (displayMetrics.heightPixels * displayMetrics.widthPixels * 4 * 1.5).roundToInt()
-            } else {
-                MAX_WIDGET_BITMAP_MEMORY
-            }
-            val maxMemoryDimension: Int = sqrt(maxMemoryAllowed / 4 / displayMetrics.density).roundToInt()
-            val maxDimension: Int = if (PhotoWidgetAspectRatio.SQUARE != photoWidget.aspectRatio) {
-                maxMemoryDimension
-            } else {
-                maxMemoryDimension.coerceAtMost(maximumValue = PhotoWidget.MAX_WIDGET_DIMENSION)
-            }
-
-            Timber.d(
-                "Creating widget bitmap (" +
-                    "maxMemoryAllowed=$maxMemoryAllowed," +
-                    "maxDimension=$maxDimension," +
-                    "recoveryMode=$recoveryMode" +
-                    ")",
+            val maxDimension = context.getMaxBitmapWidgetDimension(
+                coerceMaxMemory = recoveryMode,
+                coerceDimension = PhotoWidgetAspectRatio.SQUARE == photoWidget.aspectRatio,
             )
+
+            Timber.d("Creating widget bitmap (maxDimension=$maxDimension, recoveryMode=$recoveryMode)")
 
             requireNotNull(decoder.decode(data = currentPhotoPath, maxDimension = maxDimension))
         } catch (_: Exception) {
@@ -92,8 +76,8 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
             )
         } else {
             bitmap.withRoundedCorners(
-                aspectRatio = photoWidget.aspectRatio,
                 radius = photoWidget.cornerRadius * context.resources.displayMetrics.density,
+                aspectRatio = photoWidget.aspectRatio,
                 colors = photoWidget.colors,
                 borderColor = borderColor,
                 borderPercent = borderPercent,
@@ -117,10 +101,4 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
         val uri: Uri?,
         val fallback: Bitmap,
     )
-
-    private companion object {
-
-        // RemoteViews have a maximum allowed memory for bitmaps
-        private const val MAX_WIDGET_BITMAP_MEMORY = 6_912_000
-    }
 }
