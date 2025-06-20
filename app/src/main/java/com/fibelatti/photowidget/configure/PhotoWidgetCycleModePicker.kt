@@ -73,6 +73,7 @@ import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
 import com.fibelatti.ui.foundation.ConnectedButtonRowItem
 import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
@@ -583,7 +584,7 @@ fun TimePickerDialog(
                                     .animateWidth(interactionSource),
                                 interactionSource = interactionSource,
                             ) {
-                                Text(text = stringResource(R.string.photo_widget_action_cancel))
+                                AutoSizeText(text = stringResource(R.string.photo_widget_action_cancel), maxLines = 1)
                             }
                         },
                         menuContent = {},
@@ -601,7 +602,7 @@ fun TimePickerDialog(
                                     .animateWidth(interactionSource),
                                 interactionSource = interactionSource,
                             ) {
-                                Text(text = stringResource(R.string.photo_widget_action_confirm))
+                                AutoSizeText(text = stringResource(R.string.photo_widget_action_confirm), maxLines = 1)
                             }
                         },
                         menuContent = {},

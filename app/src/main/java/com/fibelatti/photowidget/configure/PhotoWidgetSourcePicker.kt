@@ -219,10 +219,11 @@ private fun SourcePickerContent(
                                 .animateWidth(interactionSource),
                             interactionSource = interactionSource,
                         ) {
-                            Text(
+                            AutoSizeText(
                                 text = stringResource(id = R.string.photo_widget_configure_source_keep_current),
                                 fontSize = 12.sp,
                                 textAlign = TextAlign.Center,
+                                maxLines = 1,
                             )
                         }
                     },
@@ -242,7 +243,7 @@ private fun SourcePickerContent(
                                 .animateWidth(interactionSource),
                             interactionSource = interactionSource,
                         ) {
-                            Text(
+                            AutoSizeText(
                                 text = stringResource(
                                     id = when (currentSource) {
                                         PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_source_set_directory
@@ -251,6 +252,7 @@ private fun SourcePickerContent(
                                 ),
                                 fontSize = 12.sp,
                                 textAlign = TextAlign.Center,
+                                maxLines = 1,
                             )
                         }
                     },
