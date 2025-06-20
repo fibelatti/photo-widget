@@ -5,7 +5,7 @@ coroutines = "1.10.2"
 hilt = "2.56.2"
 hiltExtensions = "1.2.0"
 kotlin = "2.1.21"
-room = "2.7.1"
+room = "2.7.2"
 aboutLibraries = "12.2.3"
 
 [libraries]
