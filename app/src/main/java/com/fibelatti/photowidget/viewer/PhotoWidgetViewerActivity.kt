@@ -53,6 +53,7 @@ import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
+import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.ui.imageviewer.ZoomableImageViewer
 import com.fibelatti.ui.imageviewer.rememberZoomableImageViewerState
@@ -77,7 +78,7 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
                 state.photoWidget?.let { photoWidget ->
-                    LaunchedEffect(Unit) {
+                    RememberedEffect(Unit) {
                         if (photoWidget.tapActionIncreaseBrightness) {
                             setScreenBrightness(value = 0.9f)
                         }
@@ -153,7 +154,7 @@ private fun ScreenContent(
         onDragToDismiss = onDismissClick,
     )
 
-    LaunchedEffect(Unit) {
+    RememberedEffect(Unit) {
         isBackgroundVisible = true
     }
 

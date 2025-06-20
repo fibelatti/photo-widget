@@ -18,7 +18,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,6 +29,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.platform.AppTheme
+import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -127,11 +127,11 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     )
                 }
 
-                LaunchedEffect(state.hasEdits) {
+                RememberedEffect(state.hasEdits) {
                     onBackPressedCallback.isEnabled = state.hasEdits
                 }
 
-                LaunchedEffect(state.messages) {
+                RememberedEffect(state.messages) {
                     state.messages.firstOrNull()?.let(::handleMessage)
                 }
             }
