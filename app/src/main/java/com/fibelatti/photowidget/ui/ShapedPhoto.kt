@@ -29,7 +29,6 @@ fun ShapedPhoto(
     border: PhotoWidgetBorder = PhotoWidgetBorder.None,
     badge: @Composable BoxScope.() -> Unit = {},
     isLoading: Boolean = false,
-    constrainBitmapSize: Boolean = true,
 ) {
     val localContext = LocalContext.current
     val localDensity = LocalDensity.current.density
@@ -49,7 +48,7 @@ fun ShapedPhoto(
         isLoading = isLoading,
         contentScale = if (aspectRatio.isConstrained) ContentScale.FillWidth else ContentScale.Fit,
         modifier = modifier.aspectRatio(ratio = aspectRatio.aspectRatio),
-        constrainBitmapSize = constrainBitmapSize,
+        constrainBitmapSize = PhotoWidgetAspectRatio.SQUARE == aspectRatio,
         transformer = { bitmap ->
             val borderColor = when (border) {
                 is PhotoWidgetBorder.None -> null

@@ -106,7 +106,6 @@ private fun ExistingWidgetPicker(
                         colors = widget.colors,
                         border = widget.border,
                         isLoading = widget.isLoading,
-                        constrainBitmapSize = false,
                     )
 
                     if (widget.status.isRemoved) {
