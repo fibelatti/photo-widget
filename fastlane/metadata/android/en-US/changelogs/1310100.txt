@@ -1,0 +1,7 @@
+This version brings the following updates:
+
+* Increases the maximum roundness from 64 to 128
+* Fixes the roundness preview to match the actual roundness of the widget
+* Fixes a crash that would happen when selecting certain shapes
+
+Thanks for using the app!
