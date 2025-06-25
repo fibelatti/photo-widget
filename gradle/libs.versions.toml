@@ -1,10 +1,10 @@
 [versions]
-agp = "8.10.1"
+agp = "8.11.0"
 coil = "3.2.0"
 coroutines = "1.10.2"
 hilt = "2.56.2"
 hiltExtensions = "1.2.0"
-kotlin = "2.1.21"
+kotlin = "2.2.0"
 room = "2.7.2"
 aboutLibraries = "12.2.3"
 
@@ -21,7 +21,7 @@ lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-com
 graphics-shapes = { module = "androidx.graphics:graphics-shapes", version = "1.0.1" }
 palette = { module = "androidx.palette:palette-ktx", version = "1.0.0" }
 
-compose-bom = { module = "androidx.compose:compose-bom-alpha", version = "2025.06.00" }
+compose-bom = { module = "androidx.compose:compose-bom-alpha", version = "2025.06.01" }
 compose-runtime = { module = "androidx.compose.runtime:runtime" }
 compose-material = { module = "androidx.compose.material:material" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
@@ -56,7 +56,7 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version = "2.1.21-2.0.2" }
+ksp = { id = "com.google.devtools.ksp", version = "2.2.0-2.0.2" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 room = { id = "androidx.room", version.ref = "room" }
 spotless = { id = "com.diffplug.spotless", version = "7.0.4" }

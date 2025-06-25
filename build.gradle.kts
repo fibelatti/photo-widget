@@ -101,10 +101,6 @@ subprojects {
                 sourceCompatibility(javaVersion)
                 targetCompatibility(javaVersion)
             }
-
-            dependencies {
-                "coreLibraryDesugaring"(libs.core.library.desugaring)
-            }
         }
 
         extensions.findByType(ComposeCompilerGradlePluginExtension::class.java)?.apply {
@@ -123,8 +119,13 @@ subprojects {
                 freeCompilerArgs = buildList {
                     addAll(freeCompilerArgs.get())
                     add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+                    add("-Xannotation-default-target=param-property")
                 }
             }
+        }
+
+        dependencies {
+            "coreLibraryDesugaring"(libs.core.library.desugaring)
         }
     }
 }
