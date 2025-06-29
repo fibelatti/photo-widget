@@ -57,7 +57,7 @@
     <string name="widget_defaults_explanation">これらの値は、新しいウィジェットを作成する際に事前に読み込まれます。同じ設定で複数のウィジェットを設定する際に便利で、毎回設定を調整する必要がなくなります。これらの値を変更しても、既存のウィジェットには影響しません。</string>
     <string name="widget_defaults_source">ソース</string>
     <string name="widget_defaults_shuffle">シャッフル</string>
-    <string name="widget_defaults_cycling">写真の切り替え</string>
+    <string name="widget_defaults_cycling">写真タイマー</string>
     <string name="widget_defaults_shape">形状</string>
     <string name="widget_defaults_corner_radius">丸み</string>
     <string name="widget_defaults_opacity">不透明度</string>
@@ -112,13 +112,13 @@
     <string name="photo_widget_configure_pick_photo">写真を選択</string>
     <string name="photo_widget_configure_pick_folder">フォルダーを選択</string>
     <string name="photo_widget_configure_change_source">ソースを変更</string>
-    <string name="photo_widget_configure_select_cycling_mode">写真の切り替え</string>
+    <string name="photo_widget_configure_select_cycling_mode">写真タイマー</string>
     <string name="photo_widget_configure_cycling_mode_interval">間隔</string>
     <string name="photo_widget_configure_cycling_mode_schedule">スケジュール</string>
     <string name="photo_widget_configure_cycling_mode_disabled">無効</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">ウィジェットは以下の間隔で次の写真に自動的に切り替わります:</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description">ウィジェットは毎日、以下の指定された時間に次の写真に自動的に切り替わります:</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">ウィジェットは写真を自動的に切り替えません。ウィジェットの端をタップして次の写真に切り替えてください。</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">ウィジェットは以下の間隔で自動的に次の写真に切り替わります：</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description">ウィジェットは毎日、以下のスケジュールされた時間に自動的に次の写真に切り替わります：</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">ウィジェットは自動的に写真を切り替えません。</string>
     <string name="photo_widget_configure_interval_current_label">毎%s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="other">%d秒</item>
@@ -174,8 +174,8 @@
     <string name="photo_widget_configure_tap_action_choose_next_photo">次の写真を選択</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">アプリを開く</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">リンクを開く</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling">切り替えの有効/無効</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling_description">タップして写真の自動切り替えを一時停止します。もう一度タップして再開します。ウィジェットがロックされている場合、このアクションは効果がありません。</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">タイマーの有効化/無効化</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">タップして写真タイマーを一時停止します。再度タップすると再開します。ウィジェットがロックされている間は、この操作は無効になります。</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">明るさを自動的に上げる</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">元の写真を表示（切り抜きや回転なし）</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">ビューアーボタン使用時にシャッフルしない</string>
@@ -184,7 +184,7 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">このアクションは、ギャラリーアプリを使用して現在の写真を開きます。他の写真を表示したり移動したりすることはできません。</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">使用するギャラリーアプリを選択することもできます。</string>
     <string name="photo_widget_configure_tap_action_choose_app">アプリを選択</string>
-    <string name="photo_widget_configure_tap_action_disable_tap">切り替えが一時停止している間、他のタップエリアを無効にする</string>
+    <string name="photo_widget_configure_tap_action_disable_tap">タイマーが一時停止中は他のタップエリアを無効にする</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">これらの設定は、このタップアクションを使用するすべてのエリアで使用されます。</string>
     <string name="photo_widget_configure_tap_action_shared_selected_app">選択されたアプリは、このタップアクションを使用するすべてのエリアで使用されます。</string>
     <string name="photo_widget_configure_add_to_home">ホーム画面に追加</string>
@@ -219,8 +219,8 @@
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">すべての写真</string>
     <!-- Cycling feedback -->
-    <string name="photo_widget_cycling_feedback_paused">切り替えを一時停止しました</string>
-    <string name="photo_widget_cycling_feedback_resumed">切り替えを再開しました</string>
+    <string name="photo_widget_cycling_feedback_paused">タイマーを一時停止しました</string>
+    <string name="photo_widget_cycling_feedback_resumed">タイマーを再開しました</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">はい</string>
     <string name="photo_widget_action_no">いいえ</string>

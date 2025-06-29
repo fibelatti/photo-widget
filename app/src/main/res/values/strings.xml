@@ -69,7 +69,7 @@
     <string name="widget_defaults_explanation">These values are pre-loaded when you create a new widget. They are useful for setting up multiple widgets with the same configuration, eliminating the need to adjust settings each time. Note that any changes to these values won’t affect existing widgets.</string>
     <string name="widget_defaults_source">Source</string>
     <string name="widget_defaults_shuffle">Shuffle</string>
-    <string name="widget_defaults_cycling">Photo cycling</string>
+    <string name="widget_defaults_cycling">Photo timer</string>
     <string name="widget_defaults_shape">Shape</string>
     <string name="widget_defaults_corner_radius">Roundness</string>
     <string name="widget_defaults_opacity">Opacity</string>
@@ -139,14 +139,14 @@
     <string name="photo_widget_configure_pick_folder">Pick folder</string>
     <string name="photo_widget_configure_change_source">Change source</string>
 
-    <string name="photo_widget_configure_select_cycling_mode">Photo cycling</string>
+    <string name="photo_widget_configure_select_cycling_mode">Photo timer</string>
     <string name="photo_widget_configure_cycling_mode_interval">Interval</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Schedule</string>
     <string name="photo_widget_configure_cycling_mode_disabled">Disabled</string>
 
-    <string name="photo_widget_configure_cycling_mode_interval_description">The widget will switch automatically to the next photo at the following interval:</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description">The widget will switch automatically to the next photo every day at the following scheduled times:</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">The widget won\'t cycle through photos automatically. Tap the widget edges to switch to the next photo.</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">The widget will automatically change to the next photo at the following interval:</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description">The widget will automatically change to the next photo every day at the following scheduled times:</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">The widget won\'t change photos automatically.</string>
 
     <string name="photo_widget_configure_interval_current_label">Every %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
@@ -216,8 +216,8 @@
     <string name="photo_widget_configure_tap_action_choose_next_photo">Choose next photo</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Open an app</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Open a link</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling">Enable/disable cycle</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Tap to pause the automatic photo cycling. Tap again to resume. This action has no effect if the widget is locked.</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">Enable/disable timer</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Tap to pause the photo timer. Tap again to resume. This action will be disabled while the widget is locked.</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Automatically increase brightness</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">View original photo (no crop or rotation)</string>
@@ -227,7 +227,7 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">This action opens the current photo using the gallery app. It won\'t be possible to view or navigate to other photos.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">You may also choose which gallery app to use.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Choose app</string>
-    <string name="photo_widget_configure_tap_action_disable_tap">Disable other tapping areas while cycling is paused</string>
+    <string name="photo_widget_configure_tap_action_disable_tap">Disable other tapping areas while the timer is paused</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">These preferences are used by all areas that use this tap action.</string>
     <string name="photo_widget_configure_tap_action_shared_selected_app">The selected app is used by all areas that use this tap action.</string>
 
@@ -274,8 +274,8 @@
     <string name="photo_widget_viewer_all_photos">All photos</string>
 
     <!-- Cycling feedback -->
-    <string name="photo_widget_cycling_feedback_paused">Cycle paused</string>
-    <string name="photo_widget_cycling_feedback_resumed">Cycle resumed</string>
+    <string name="photo_widget_cycling_feedback_paused">Timer paused</string>
+    <string name="photo_widget_cycling_feedback_resumed">Timer resumed</string>
 
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Yes</string>

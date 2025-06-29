@@ -60,7 +60,7 @@
     <string name="widget_defaults_explanation">Эти значения загружаются автоматически при создании нового виджета. Они полезны для настройки нескольких виджетов с одинаковой конфигурацией, что устраняет необходимость настраивать их каждый раз. Обратите внимание, что изменения этих значений не повлияют на уже существующие виджеты.</string>
     <string name="widget_defaults_source">Источник</string>
     <string name="widget_defaults_shuffle">Перемешивание</string>
-    <string name="widget_defaults_cycling">Цикличность фото</string>
+    <string name="widget_defaults_cycling">Фототаймер</string>
     <string name="widget_defaults_shape">Форма</string>
     <string name="widget_defaults_corner_radius">Закругление углов</string>
     <string name="widget_defaults_opacity">Прозрачность</string>
@@ -115,13 +115,13 @@
     <string name="photo_widget_configure_pick_photo">Выбрать фотографии</string>
     <string name="photo_widget_configure_pick_folder">Выбрать папку</string>
     <string name="photo_widget_configure_change_source">Изменить источник</string>
-    <string name="photo_widget_configure_select_cycling_mode">Цикл фотографий</string>
+    <string name="photo_widget_configure_select_cycling_mode">Фототаймер</string>
     <string name="photo_widget_configure_cycling_mode_interval">Интервал</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Расписание</string>
     <string name="photo_widget_configure_cycling_mode_disabled">Выключено</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">Виджет будет автоматически переключаться на следующую фотографию через следующий интервал:</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description">Виджет будет автоматически переключаться на следующую фотографию каждый день в следующие запланированные часы:</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Виджет не будет автоматически переключаться между фотографиями. Коснитесь краев виджета, чтобы переключиться на следующую фотографию.</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">Виджет будет автоматически переключаться на следующее фото через указанный интервал:</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description">Виджет будет автоматически переключаться на следующее фото каждый день в указанные запланированные часы:</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Виджет не будет автоматически менять фотографии.</string>
     <string name="photo_widget_configure_interval_current_label">Каждые %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d секунда</item>
@@ -192,8 +192,8 @@
     <string name="photo_widget_configure_tap_action_choose_next_photo">Выбрать следующее фото</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Открыть приложение</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Открыть ссылку</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling">Включить/выключить цикл</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Нажмите, чтобы приостановить автоматическую смену фото. Нажмите снова, чтобы возобновить. Это действие не имеет эффекта, если виджет заблокирован.</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">Включить/выключить таймер</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Нажмите, чтобы приостановить таймер фото. Нажмите ещё раз, чтобы продолжить. Это действие будет недоступно, пока виджет заблокирован.</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Автоматически увеличить яркость</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Просмотреть оригинальную фотографию (без обрезки или поворота)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Не перемешивать при использовании кнопок просмотра</string>
@@ -202,7 +202,7 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Это действие откроет текущую фотографию через приложение галереи. Невозможно будет просматривать или переходить к другим фотографиям.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Вы также можете выбрать, какое приложение галереи использовать.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Выбрать приложение</string>
-    <string name="photo_widget_configure_tap_action_disable_tap">Отключить другие зоны нажатия во время паузы прокрутки</string>
+    <string name="photo_widget_configure_tap_action_disable_tap">Отключить другие области касания во время паузы таймера</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Эти настройки используются всеми зонами, применяющими это действие нажатия.</string>
     <string name="photo_widget_configure_tap_action_shared_selected_app">Выбранное приложение используется всеми зонами, применяющими это действие нажатия.</string>
     <string name="photo_widget_configure_add_to_home">Добавить на главный экран</string>
@@ -237,8 +237,8 @@
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Все фото</string>
     <!-- Cycling feedback -->
-    <string name="photo_widget_cycling_feedback_paused">Цикл приостановлен</string>
-    <string name="photo_widget_cycling_feedback_resumed">Цикл возобновлен</string>
+    <string name="photo_widget_cycling_feedback_paused">Таймер приостановлен</string>
+    <string name="photo_widget_cycling_feedback_resumed">Таймер возобновлён</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Да</string>
     <string name="photo_widget_action_no">Нет</string>

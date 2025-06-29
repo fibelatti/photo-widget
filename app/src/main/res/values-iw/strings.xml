@@ -60,7 +60,7 @@
     <string name="widget_defaults_explanation">ערכים אלה נטענים מראש בעת יצירת ווידג\'ט חדש. הם שימושיים להגדרת ווידג\'טים מרובים עם אותה תצורה, ומבטלים את הצורך להתאים הגדרות בכל פעם. שים לב שכל שינוי בערכים אלה לא ישפיע על ווידג\'טים קיימים.</string>
     <string name="widget_defaults_source">מקור</string>
     <string name="widget_defaults_shuffle">ערבוב</string>
-    <string name="widget_defaults_cycling">חזרה על תמונה</string>
+    <string name="widget_defaults_cycling">טיימר צילום</string>
     <string name="widget_defaults_shape">צורה</string>
     <string name="widget_defaults_corner_radius">מעוגל</string>
     <string name="widget_defaults_opacity">שקיפות</string>
@@ -115,13 +115,13 @@
     <string name="photo_widget_configure_pick_photo">בחר תמונות</string>
     <string name="photo_widget_configure_pick_folder">בחר תיקיה</string>
     <string name="photo_widget_configure_change_source">שנה מקור</string>
-    <string name="photo_widget_configure_select_cycling_mode">חזרה על תמונה</string>
+    <string name="photo_widget_configure_select_cycling_mode">טיימר צילום</string>
     <string name="photo_widget_configure_cycling_mode_interval">מרווח זמן</string>
     <string name="photo_widget_configure_cycling_mode_schedule">תזמון</string>
     <string name="photo_widget_configure_cycling_mode_disabled">מושבת</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">הווידג\'ט יעבור אוטומטית לתמונה הבאה מרווחי זמן הבאים:</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description">הווידג\'ט יעבור אוטומטית לתמונה הבאה בכל יום בזמנים המתוזמנים הבאים:</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">הווידג\'ט לא יעבור בין תמונות באופן אוטומטי. הקש על קצוות הווידג\'ט כדי לעבור לתמונה הבאה.</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">הווידג\'ט יחליף אוטומטית לתמונה הבאה במרווח הבא:</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description">הווידג\'ט יחליף אוטומטית לתמונה הבאה כל יום בזמנים הבאים שתוזמנו:</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">הווידג\'ט לא יחליף תמונות אוטומטית.</string>
     <string name="photo_widget_configure_interval_current_label">כל %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">שנייה %d</item>
@@ -192,8 +192,8 @@
     <string name="photo_widget_configure_tap_action_choose_next_photo">בחר את התמונה הבאה</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">פתח אפליקציה</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">פתח קישור</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling">הפעלה/השבתה של מחזור</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling_description">הקש כדי להשהות את מחזור התמונות האוטומטי. הקש שוב כדי לחדש. לפעולה זו אין השפעה אם הווידג\'ט נעול.</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">הפעל/השבת טיימר</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">הקש כדי להשהות את טיימר התמונות. הקש שוב כדי לחדש. פעולה זו תושבת כאשר הווידג\'ט נעול.</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">הגברת בהירות באופן אוטומטי</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">צפה בתמונה המקורית (ללא חיתוך או סיבוב)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">אל תבצע הפעלה אקראית בעת שימוש בכפתורי הצפייה</string>
@@ -202,7 +202,7 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">פעולה זו פותחת את התמונה הנוכחית באמצעות אפליקציית הגלריה. לא ניתן יהיה לצפות בתמונות אחרות או לנווט אליהן.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">באפשרותך גם לבחור באיזו אפליקציית גלריה להשתמש.</string>
     <string name="photo_widget_configure_tap_action_choose_app">בחר אפליקציה</string>
-    <string name="photo_widget_configure_tap_action_disable_tap">השבת אזורי הקשה אחרים בזמן שהחזרה מושהית</string>
+    <string name="photo_widget_configure_tap_action_disable_tap">השבת אזורי הקשה אחרים כאשר הטיימר מושהה</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">העדפות אלה משמשות את כל האזורים המשתמשים בפעולת הקשה זו.</string>
     <string name="photo_widget_configure_tap_action_shared_selected_app">האפליקציה שנבחרה נמצאת בשימוש על ידי כל האזורים המשתמשים בפעולת הקשה זו.</string>
     <string name="photo_widget_configure_add_to_home">הוספה למסך הבית</string>
@@ -237,8 +237,8 @@
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">כל התמונות</string>
     <!-- Cycling feedback -->
-    <string name="photo_widget_cycling_feedback_paused">המחזור מושהה</string>
-    <string name="photo_widget_cycling_feedback_resumed">המחזור חודש</string>
+    <string name="photo_widget_cycling_feedback_paused">הטיימר הושהה</string>
+    <string name="photo_widget_cycling_feedback_resumed">הטיימר חודש</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">כן</string>
     <string name="photo_widget_action_no">לא</string>

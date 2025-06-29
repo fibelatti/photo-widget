@@ -58,7 +58,7 @@
     <string name="widget_defaults_explanation">Bu değerler, yeni bir widget oluşturduğunuzda önceden yüklenir. Aynı ayarlara sahip birden fazla widget oluştururken ayarları her seferinde değiştirme ihtiyacını ortadan kaldırdığı için kullanışlıdır. Bu değerlerde yapılan değişikliklerin mevcut widget\'ları etkilemeyeceğini unutmayın.</string>
     <string name="widget_defaults_source">Kaynak</string>
     <string name="widget_defaults_shuffle">Karıştır</string>
-    <string name="widget_defaults_cycling">Fotoğraf Döngüsü</string>
+    <string name="widget_defaults_cycling">Fotoğraf Zamanlayıcı</string>
     <string name="widget_defaults_shape">Şekil</string>
     <string name="widget_defaults_corner_radius">Yuvarlaklık</string>
     <string name="widget_defaults_opacity">Opaklık</string>
@@ -113,13 +113,13 @@
     <string name="photo_widget_configure_pick_photo">Fotoğraf seç</string>
     <string name="photo_widget_configure_pick_folder">Klasörü seç</string>
     <string name="photo_widget_configure_change_source">Kaynağı değiştir</string>
-    <string name="photo_widget_configure_select_cycling_mode">Fotoğraf Döngüsü</string>
+    <string name="photo_widget_configure_select_cycling_mode">Fotoğraf Zamanlayıcı</string>
     <string name="photo_widget_configure_cycling_mode_interval">Aralık</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Zamanlama</string>
     <string name="photo_widget_configure_cycling_mode_disabled">Devre dışı</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">Widget, belirli aralıklarla otomatik olarak bir sonraki fotoğrafa geçecektir:</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description">Widget, her gün belirlenen zamanlarda otomatik olarak bir sonraki fotoğrafa geçecektir:</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Widget fotoğraflar arasında otomatik olarak geçiş yapmaz. Bir sonraki fotoğrafa geçmek için widget kenarlarına dokunun.</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">Widget, belirlenen aralıklarla otomatik olarak bir sonraki fotoğrafa geçecektir:</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description">Widget, her gün aşağıdaki planlanan saatlerde otomatik olarak bir sonraki fotoğrafa geçecektir:</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Widget fotoğrafları otomatik olarak değiştirmeyecek.</string>
     <string name="photo_widget_configure_interval_current_label">Her %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d saniye</item>
@@ -180,8 +180,8 @@
     <string name="photo_widget_configure_tap_action_choose_next_photo">Sonraki fotoğrafı seçin</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Bir uygulama açın</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Bir bağlantı aç</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling">Döngüyü etkinleştir/devre dışı bırak</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Otomatik fotoğraf döngüsünü duraklatmak için dokunun. Devam etmek için tekrar dokunun. Widget kilitliyse bu işlemin etkisi olmaz.</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">Zamanlayıcıyı etkinleştir/devre dışı bırak</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Fotoğraf zamanlayıcısını duraklatmak için dokunun. Devam ettirmek için tekrar dokunun. Bu işlem, widget kilitliyken devre dışı olacaktır.</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Parlaklığı otomatik olarak artır</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Orijinal fotoğrafı görüntüle (kırpma veya döndürme yok)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Görüntüleyici düğmelerini kullanırken karıştırma yapmayın</string>
@@ -190,7 +190,7 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Bu eylem, mevcut fotoğrafı galeri uygulamasıyla açar. Diğer fotoğrafları görüntülemek veya onlara geçmek mümkün olmayacaktır.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Hangi galeri uygulamasını kullanacağınızı da seçebilirsiniz.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Uygulama seç</string>
-    <string name="photo_widget_configure_tap_action_disable_tap">Döngü duraklatıldığında diğer dokunma alanlarını devre dışı bırak</string>
+    <string name="photo_widget_configure_tap_action_disable_tap">Zamanlayıcı duraklatıldığında diğer dokunma alanlarını devre dışı bırak</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Bu tercihler, bu dokunma eylemini kullanan tüm alanlar tarafından kullanılır.</string>
     <string name="photo_widget_configure_tap_action_shared_selected_app">Seçilen uygulama, bu dokunma eylemini kullanan tüm alanlar tarafından kullanılır.</string>
     <string name="photo_widget_configure_add_to_home">Ana ekrana ekle</string>
@@ -225,8 +225,8 @@
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Tüm fotoğraflar</string>
     <!-- Cycling feedback -->
-    <string name="photo_widget_cycling_feedback_paused">Duraklatılan döngü</string>
-    <string name="photo_widget_cycling_feedback_resumed">Döngü devam ettirildi</string>
+    <string name="photo_widget_cycling_feedback_paused">Zamanlayıcı duraklatıldı</string>
+    <string name="photo_widget_cycling_feedback_resumed">Zamanlayıcı devam etti</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Evet</string>
     <string name="photo_widget_action_no">Hayır</string>
