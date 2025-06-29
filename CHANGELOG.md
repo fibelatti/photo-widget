@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* It's now possible to set a default format through settings
+
 ## [v1.31.1] - 2025-06-25
 [v1.31.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.31.1
 

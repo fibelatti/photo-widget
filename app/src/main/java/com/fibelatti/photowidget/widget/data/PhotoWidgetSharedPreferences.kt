@@ -224,7 +224,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
     fun getWidgetAspectRatio(appWidgetId: Int): PhotoWidgetAspectRatio {
         val name = sharedPreferences.getString("${PreferencePrefix.RATIO}$appWidgetId", null)
 
-        return enumValueOfOrNull<PhotoWidgetAspectRatio>(name) ?: PhotoWidgetAspectRatio.SQUARE
+        return enumValueOfOrNull<PhotoWidgetAspectRatio>(name) ?: userPreferencesStorage.defaultAspectRatio
     }
 
     fun saveWidgetShapeId(appWidgetId: Int, shapeId: String) {

@@ -77,12 +77,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.DirectorySortingPicker
+import com.fibelatti.photowidget.configure.PhotoWidgetAspectRatioPicker
 import com.fibelatti.photowidget.configure.PhotoWidgetBrightnessPicker
 import com.fibelatti.photowidget.configure.PhotoWidgetCycleModePicker
 import com.fibelatti.photowidget.configure.PhotoWidgetSaturationPicker
 import com.fibelatti.photowidget.configure.rememberSampleBitmap
 import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
@@ -113,6 +115,12 @@ fun WidgetDefaultsScreen(
     WidgetDefaultsScreen(
         userPreferences = preferences,
         onNavClick = onNavClick,
+        onAspectRatioClick = {
+            PhotoWidgetAspectRatioPicker.show(
+                context = localContext,
+                onAspectRatioSelected = preferencesViewModel::saveDefaultAspectRatio,
+            )
+        },
         onSourceClick = {
             SelectionDialog.show(
                 context = localContext,
@@ -191,6 +199,7 @@ fun WidgetDefaultsScreen(
 private fun WidgetDefaultsScreen(
     userPreferences: UserPreferences,
     onNavClick: () -> Unit,
+    onAspectRatioClick: () -> Unit,
     onSourceClick: () -> Unit,
     onShapeClick: () -> Unit,
     onCornerRadiusClick: () -> Unit,
@@ -236,6 +245,12 @@ private fun WidgetDefaultsScreen(
                 .padding(start = 16.dp, end = 16.dp, bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+            PickerDefault(
+                title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
+                currentValue = stringResource(id = userPreferences.defaultAspectRatio.label),
+                onClick = onAspectRatioClick,
+            )
+
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_source),
                 currentValue = stringResource(id = userPreferences.defaultSource.label),
@@ -695,6 +710,7 @@ private fun WidgetDefaultsScreenPreview() {
                 appearance = Appearance.FOLLOW_SYSTEM,
                 useTrueBlack = false,
                 dynamicColors = true,
+                defaultAspectRatio = PhotoWidgetAspectRatio.SQUARE,
                 defaultSource = PhotoWidgetSource.PHOTOS,
                 defaultShuffle = false,
                 defaultDirectorySorting = DirectorySorting.NEWEST_FIRST,
@@ -706,6 +722,7 @@ private fun WidgetDefaultsScreenPreview() {
                 defaultBrightness = PhotoWidget.DEFAULT_BRIGHTNESS,
             ),
             onNavClick = {},
+            onAspectRatioClick = {},
             onSourceClick = {},
             onShapeClick = {},
             onCornerRadiusClick = {},

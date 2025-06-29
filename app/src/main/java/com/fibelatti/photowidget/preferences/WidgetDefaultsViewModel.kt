@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.preferences
 
 import androidx.lifecycle.ViewModel
 import com.fibelatti.photowidget.model.DirectorySorting
+import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,6 +15,10 @@ class WidgetDefaultsViewModel @Inject constructor(
 ) : ViewModel() {
 
     val userPreferences: StateFlow<UserPreferences> = userPreferencesStorage.userPreferences
+
+    fun saveDefaultAspectRatio(aspectRatio: PhotoWidgetAspectRatio) {
+        userPreferencesStorage.defaultAspectRatio = aspectRatio
+    }
 
     fun saveDefaultSource(source: PhotoWidgetSource) {
         userPreferencesStorage.defaultSource = source

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.core.content.edit
 import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.minutesToLoopingInterval
@@ -36,6 +37,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             appearance = appearance,
             useTrueBlack = useTrueBlack,
             dynamicColors = dynamicColors,
+            defaultAspectRatio = defaultAspectRatio,
             defaultSource = defaultSource,
             defaultShuffle = defaultShuffle,
             defaultDirectorySorting = defaultDirectorySorting,
@@ -89,6 +91,16 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
     // endregion App
 
     // region Defaults
+    var defaultAspectRatio: PhotoWidgetAspectRatio
+        get() {
+            val name = sharedPreferences.getString(Preference.DEFAULT_ASPECT_RATIO.value, null)
+            return enumValueOfOrNull<PhotoWidgetAspectRatio>(name) ?: PhotoWidgetAspectRatio.SQUARE
+        }
+        set(value) {
+            sharedPreferences.edit { putString(Preference.DEFAULT_ASPECT_RATIO.value, value.name) }
+            _userPreferences.update { current -> current.copy(defaultAspectRatio = value) }
+        }
+
     var defaultSource: PhotoWidgetSource
         get() {
             val name = sharedPreferences.getString(Preference.DEFAULT_SOURCE.value, null)
@@ -272,6 +284,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                 appearance = appearance,
                 useTrueBlack = useTrueBlack,
                 dynamicColors = dynamicColors,
+                defaultAspectRatio = defaultAspectRatio,
                 defaultSource = defaultSource,
                 defaultShuffle = defaultShuffle,
                 defaultDirectorySorting = defaultDirectorySorting,
@@ -290,6 +303,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         APP_APPEARANCE(value = "user_preferences_appearance"),
         USE_TRUE_BLACK(value = "user_preferences_use_true_black"),
         APP_DYNAMIC_COLORS(value = "user_preferences_dynamic_colors"),
+        DEFAULT_ASPECT_RATIO(value = "default_aspect_ratio"),
         DEFAULT_SOURCE(value = "default_source"),
         DEFAULT_SHUFFLE(value = "default_shuffle"),
         DEFAULT_DIR_SORTING(value = "default_directory_sorting"),
