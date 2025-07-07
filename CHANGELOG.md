@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * It's now possible to set a default format through settings
 
+### Changed
+
+* Using work manager to try to get around OEM restrictions (auto-start)
+
 ## [v1.31.1] - 2025-06-25
 [v1.31.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.31.1
 

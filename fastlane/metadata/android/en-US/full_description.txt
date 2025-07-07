@@ -55,6 +55,9 @@ app.
 * SCHEDULE_EXACT_ALARM (optional) — This is an optional permission that is
   needed if you would like to use shorter intervals to switch photos, ensuring
   that they follow the selected schedule exactly.
+* WAKE_LOCK & FOREGROUND_SERVICE — These permissions are used by Work Manager;
+  a standard Android library to manage background work, in this case, used to
+  ensure that the widget keeps functioning as expected.
 
 The app does not require any storage permissions. Photos and directories are
 selected using the native pickers and stored within the app to keep data

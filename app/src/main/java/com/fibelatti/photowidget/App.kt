@@ -3,10 +3,14 @@ package com.fibelatti.photowidget
 import android.app.Application
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import com.fibelatti.photowidget.platform.ConfigurationChangedReceiver
 import com.fibelatti.photowidget.preferences.Appearance
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
+import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleWorker
+import com.fibelatti.photowidget.widget.PhotoWidgetSyncWorker
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
 import dagger.hilt.android.HiltAndroidApp
@@ -16,7 +20,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @HiltAndroidApp
-class App : Application() {
+class App : Application(), Configuration.Provider {
 
     @Inject
     lateinit var userPreferencesStorage: UserPreferencesStorage
@@ -27,6 +31,15 @@ class App : Application() {
     @Inject
     lateinit var deleteStaleDataUseCase: DeleteStaleDataUseCase
 
+    @Inject
+    lateinit var hiltWorkerFactory: HiltWorkerFactory
+
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setMinimumLoggingLevel(android.util.Log.INFO)
+            .setWorkerFactory(hiltWorkerFactory)
+            .build()
+
     override fun onCreate() {
         super.onCreate()
 
@@ -34,7 +47,7 @@ class App : Application() {
         setupNightMode()
         setupDynamicColors()
         deleteStaleData()
-        registerReceivers()
+        getReadyToWork()
     }
 
     private fun setupDebugMode() {
@@ -82,7 +95,10 @@ class App : Application() {
         }
     }
 
-    private fun registerReceivers() {
+    private fun getReadyToWork() {
         ConfigurationChangedReceiver.register(context = this)
+
+        PhotoWidgetRescheduleWorker.enqueueWork(context = this)
+        PhotoWidgetSyncWorker.enqueueWork(context = this)
     }
 }

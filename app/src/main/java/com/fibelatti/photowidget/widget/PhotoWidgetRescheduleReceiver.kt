@@ -3,7 +3,6 @@ package com.fibelatti.photowidget.widget
 import android.content.Context
 import android.content.Intent
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
-import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.platform.EntryPointBroadcastReceiver
 import timber.log.Timber
 
@@ -19,33 +18,8 @@ class PhotoWidgetRescheduleReceiver : EntryPointBroadcastReceiver() {
         val isManual = ACTION_RESCHEDULE == intent.action
 
         if (isBoot || isUpdate || isManual) {
-            val ids = PhotoWidgetProvider.ids(context).ifEmpty {
-                Timber.d("There are no widgets")
-                return
-            }
-
-            val photoWidgetStorage = entryPoint.photoWidgetStorage()
-            val photoWidgetAlarmManager = entryPoint.photoWidgetAlarmManager()
-
-            for (id in ids) {
-                try {
-                    val cycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = id)
-                    val isLocked = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = id)
-                    val isPaused = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = id)
-
-                    Timber.d("Processing widget (id=$id,cycleMode=$cycleMode,isLocked=$isLocked,isPaused=$isPaused)")
-
-                    if (cycleMode !is PhotoWidgetCycleMode.Disabled && !isLocked && !isPaused) {
-                        photoWidgetAlarmManager.setup(appWidgetId = id)
-                    }
-
-                    PhotoWidgetProvider.update(context = context, appWidgetId = id)
-                } catch (e: Exception) {
-                    Timber.e(e, "Error processing widget (id=$id)")
-                }
-            }
-
-            PhotoWidgetSyncReceiver.setup(context)
+            PhotoWidgetRescheduleWorker.enqueueWork(context = context)
+            PhotoWidgetSyncWorker.enqueueWork(context = context)
         }
     }
 

@@ -183,6 +183,7 @@ dependencies {
     implementation(libs.graphics.shapes)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.palette)
+    implementation(libs.work.runtime.ktx)
 
     // Compose
     implementation(platform(libs.compose.bom))
@@ -195,8 +196,10 @@ dependencies {
 
     // Misc
     ksp(libs.dagger.hilt.compiler)
+    ksp(libs.hilt.compiler)
     implementation(libs.dagger.hilt.android)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.work)
 
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
