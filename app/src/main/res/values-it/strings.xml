@@ -96,7 +96,7 @@
     <string name="photo_widget_configure_too_many_photos_error">Ogni cartella sincronizzata può contenere un massimo di 3000 foto. Puoi selezionarne più di una, e ogni sottocartella viene conteggiata separatamente.\n\nNon puoi selezionare il rullino fotografico. Le foto vengono elaborate una per una, e le cartelle con molte migliaia di foto causano gravi problemi di prestazioni nell\'editor di widget, così come nella schermata iniziale durante il cambio delle foto.</string>
     <string name="photo_widget_configure_missing_photos_error">Il widget deve avere almeno una foto. I widget possono essere eliminati solo direttamente dalla schermata iniziale.</string>
     <string name="photo_widget_configure_menu_source">Sorgente</string>
-    <string name="photo_widget_configure_source_description">Puoi scegliere ogni foto individualmente o sincronizzare questo widget con una o più cartelle. Quando sincronizzi, tutte le foto nella cartella vengono automaticamente aggiunte al widget. Il contenuto viene aggiornato ogni 24 ore.</string>
+    <string name="photo_widget_configure_source_description">Puoi scegliere ogni foto individualmente o sincronizzare questo widget con una o più cartelle. Quando sincronizzi, tutte le foto nella cartella vengono automaticamente aggiunte al widget. Il contenuto viene aggiornato ogni 6 ore.</string>
     <string name="photo_widget_configure_source_selection_photos">Solo le foto selezionate verranno visualizzate in questo widget.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Questo widget non è ancora sincronizzato con nessuna cartella.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Questo widget è sincronizzato con queste cartelle:</string>

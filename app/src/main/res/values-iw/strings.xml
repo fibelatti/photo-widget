@@ -98,7 +98,7 @@
     <string name="photo_widget_configure_too_many_photos_error">כל תיקייה מסונכרנת יכולה להכיל עד 3000 תמונות. ניתן לבחור יותר מתיקייה אחת, וכל תת-תיקייה נספרת בנפרד.\n\nלא ניתן לבחור את סרט הצילום. התמונות מעובדות אחת אחת, ותיקיות עם המון (אלפים) תמונות גורמות לבעיות ביצועים רציניות בעורך הווידג\'טים, כמו גם במסך הבית בעת החלפת תמונות.</string>
     <string name="photo_widget_configure_missing_photos_error">הווידג\'ט חייב לכלול לפחות תמונה אחת. ניתן למחוק ווידג\'טים ממסך הבית בלבד.</string>
     <string name="photo_widget_configure_menu_source">מקור</string>
-    <string name="photo_widget_configure_source_description">ניתן לבחור כל תמונה בנפרד או לסנכרן ווידג\'ט זה עם תיקייה אחת או יותר. בעת הסנכרון, כל התמונות בתיקייה מתווספות אוטומטית לוידג\'ט. התוכן מתעדכן כל 24 שעות.</string>
+    <string name="photo_widget_configure_source_description">ניתן לבחור כל תמונה בנפרד או לסנכרן ווידג\'ט זה עם תיקייה אחת או יותר. בעת הסנכרון, כל התמונות בתיקייה מתווספות אוטומטית לוידג\'ט. התוכן מתעדכן כל 6 שעות.</string>
     <string name="photo_widget_configure_source_selection_photos">רק התמונות שבחרת יוצגו בווידג\'ט זה.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">ווידג\'ט זה עדיין לא מסונכרן עם אף תיקייה.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">ווידג\'ט זה מסונכרן עם התיקיות הבאות:</string>
