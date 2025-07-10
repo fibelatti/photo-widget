@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.31.2] - 2025-07-10
+[v1.31.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.31.2
+
 ### Added
 
 * It's now possible to set a default format through settings
@@ -14,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Using work manager to try to get around OEM restrictions (auto-start)
+* Selected folders are now synced every 6 hours
 
 ## [v1.31.1] - 2025-06-25
 [v1.31.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.31.1

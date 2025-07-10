@@ -1,0 +1,6 @@
+This version brings the following updates:
+
+* Adds a fallback mechanism to ensure that widgets are kept up-to-date
+* Reduces the interval to sync folders to every 6 hours 
+
+Thanks for using the app!
