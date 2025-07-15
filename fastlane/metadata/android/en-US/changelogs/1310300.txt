@@ -1,0 +1,7 @@
+This version brings the following updates:
+
+* Reverts an internal change that could result in the widget not being updated
+  or getting stuck (as in actions not working as expected)
+* Fixes a crash that could affect the Shapes format
+
+Thanks for using the app!

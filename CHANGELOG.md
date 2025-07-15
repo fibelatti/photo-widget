@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.31.3] - 2025-07-15
+[v1.31.3]: https://github.com/fibelatti/photo-widget/releases/tag/v1.31.3
+
+### Changed
+
+* Reverted an internal change that could be leading to widgets not behaving as
+  expected (like their actions getting stuck)
+
+### Fixed
+
+* Fixed a crash that could affect the Shapes format
+
 ## [v1.31.2] - 2025-07-10
 [v1.31.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.31.2
 
