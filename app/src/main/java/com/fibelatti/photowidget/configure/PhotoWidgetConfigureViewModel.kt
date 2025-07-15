@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -89,7 +90,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
     private fun updateState(photoWidget: PhotoWidget, hasEdits: Boolean) {
         val resolvedAspectRatio = aspectRatio ?: photoWidget.aspectRatio
-        _state.update { current ->
+        _state.getAndUpdate { current ->
             current.copy(
                 photoWidget = photoWidget.copy(
                     aspectRatio = resolvedAspectRatio,
@@ -105,7 +106,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     private fun trackEdits() {
         viewModelScope.launch {
             state.withIndex().first { (index, value) -> index > 0 && !value.hasEdits }
-            _state.update { current -> current.copy(hasEdits = true) }
+            _state.getAndUpdate { current -> current.copy(hasEdits = true) }
         }
     }
 
@@ -291,7 +292,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     private fun reloadDirPhotos(syncedDir: Collection<Uri>) {
         photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
             .onEach { widgetPhotos ->
-                _state.update { current ->
+                _state.getAndUpdate { current ->
                     current.copy(
                         photoWidget = current.photoWidget.copy(
                             photos = widgetPhotos.current,
@@ -309,7 +310,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     }
 
     fun previewPhoto(photo: LocalPhoto) {
-        _state.update { current -> current.copy(selectedPhoto = photo) }
+        _state.getAndUpdate { current -> current.copy(selectedPhoto = photo) }
     }
 
     fun requestCrop(photo: LocalPhoto) {
@@ -319,7 +320,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 localPhoto = photo,
             )
 
-            _state.update { current ->
+            _state.getAndUpdate { current ->
                 current.copy(
                     photoWidget = current.photoWidget.copy(
                         photos = current.photoWidget.photos.map { it.copy(cropping = it.photoId == photo.photoId) },
@@ -349,7 +350,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             }
         }
 
-        _state.update { current ->
+        _state.getAndUpdate { current ->
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     photos = current.photoWidget.photos.map(updateMatchingPhoto),
@@ -371,8 +372,8 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     }
 
     fun photoRemoved(photo: LocalPhoto) {
-        _state.update { current ->
-            val removedPhoto = current.photoWidget.photos.first { it.photoId == photo.photoId }
+        _state.getAndUpdate { current ->
+            val removedPhoto = current.photoWidget.photos.firstOrNull { it.photoId == photo.photoId }
             val updatedPhotos = current.photoWidget.photos.filterNot { it.photoId == photo.photoId }
             val newIndex = current.photoWidget.photos.indexOfFirst { it.photoId == photo.photoId }
                 .coerceAtMost(updatedPhotos.size - 1)
@@ -385,7 +386,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     } else {
                         current.photoWidget.currentPhoto
                     },
-                    removedPhotos = current.photoWidget.removedPhotos + removedPhoto,
+                    removedPhotos = current.photoWidget.removedPhotos.let { removedPhotos ->
+                        if (removedPhoto != null) removedPhotos + removedPhoto else removedPhotos
+                    },
                 ),
                 selectedPhoto = if (current.selectedPhoto?.photoId == photo.photoId) {
                     updatedPhotos.getOrNull(newIndex)
@@ -397,7 +400,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     }
 
     fun restorePhoto(photo: LocalPhoto) {
-        _state.update { current ->
+        _state.getAndUpdate { current ->
             val updatedPhotos = current.photoWidget.photos + photo
             current.copy(
                 photoWidget = current.photoWidget.copy(
@@ -437,7 +440,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     }
 
     private fun move(moveOp: MutableList<LocalPhoto>.() -> Unit) {
-        _state.update { current ->
+        _state.getAndUpdate { current ->
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     photos = current.photoWidget.photos.toMutableList().apply(moveOp),
@@ -447,7 +450,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     }
 
     fun reorderPhotos(photos: List<LocalPhoto>) {
-        _state.update { current ->
+        _state.getAndUpdate { current ->
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     photos = photos,
