@@ -13,10 +13,10 @@ import android.os.Looper
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.net.toUri
-import androidx.core.os.postDelayed
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.chooser.PhotoWidgetChooserActivity
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
+import com.fibelatti.photowidget.configure.PhotoWidgetPinningCache
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
@@ -24,11 +24,12 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.WidgetSizeProvider
-import com.fibelatti.photowidget.platform.goAsync
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
+import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import java.lang.ref.WeakReference
 import kotlin.math.roundToInt
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
@@ -46,20 +47,22 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
         val action: Action = Action.fromValue(intent.action) ?: return
 
-        goAsync {
-            entryPoint<PhotoWidgetEntryPoint>(context).run {
-                cyclePhotoUseCase().invoke(
+        handler.post {
+            val entryPoint: PhotoWidgetEntryPoint = entryPoint(context)
+
+            entryPoint.coroutineScope().launch {
+                entryPoint.cyclePhotoUseCase().invoke(
                     appWidgetId = intent.appWidgetId,
                     direction = when (action) {
                         Action.VIEW_NEXT_PHOTO -> CyclePhotoUseCase.Direction.NEXT
                         Action.VIEW_PREVIOUS_PHOTO -> CyclePhotoUseCase.Direction.PREVIOUS
                     },
                 )
-                photoWidgetStorage().saveWidgetNextCycleTime(
+                entryPoint.photoWidgetStorage().saveWidgetNextCycleTime(
                     appWidgetId = intent.appWidgetId,
                     nextCycleTime = null,
                 )
-                photoWidgetAlarmManager().setup(
+                entryPoint.photoWidgetAlarmManager().setup(
                     appWidgetId = intent.appWidgetId,
                 )
             }
@@ -69,7 +72,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         Timber.d("Update requested by the system (appWidgetIds=${appWidgetIds.toList()})")
 
-        handler.postDelayed(delayInMillis = 300) {
+        handler.post {
             for (appWidgetId in appWidgetIds) {
                 val widgetOptions: Bundle? = appWidgetManager.getAppWidgetOptions(appWidgetId)
 
@@ -86,7 +89,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
     ) {
         Timber.d("Options changed by the system (appWidgetId=$appWidgetId)")
 
-        handler.postDelayed(delayInMillis = 300) {
+        handler.post {
             update(context = context, appWidgetId = appWidgetId, widgetOptions = newOptions)
         }
     }
@@ -94,10 +97,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         Timber.d("Delete requested by the system (appWidgetIds=${appWidgetIds.toList()})")
 
-        handler.postDelayed(delayInMillis = 300) {
-            val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
-            val storage = entryPoint.photoWidgetStorage()
-            val alarmManager = entryPoint.photoWidgetAlarmManager()
+        handler.post {
+            val entryPoint: PhotoWidgetEntryPoint = entryPoint(context)
+            val storage: PhotoWidgetStorage = entryPoint.photoWidgetStorage()
+            val alarmManager: PhotoWidgetAlarmManager = entryPoint.photoWidgetAlarmManager()
 
             for (appWidgetId in appWidgetIds) {
                 storage.saveWidgetDeletionTimestamp(appWidgetId = appWidgetId, timestamp = System.currentTimeMillis())
@@ -135,12 +138,12 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         ) {
             Timber.d("Updating widget (appWidgetId=$appWidgetId)")
 
-            val appWidgetManager = AppWidgetManager.getInstance(context)
-            val entryPoint = entryPoint<PhotoWidgetEntryPoint>(context)
-            val coroutineScope = entryPoint.coroutineScope()
-            val photoWidgetStorage = entryPoint.photoWidgetStorage()
-            val pinningCache = entryPoint.photoWidgetPinningCache()
-            val loadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
+            val appWidgetManager: AppWidgetManager = AppWidgetManager.getInstance(context)
+            val entryPoint: PhotoWidgetEntryPoint = entryPoint(context)
+            val coroutineScope: CoroutineScope = entryPoint.coroutineScope()
+            val photoWidgetStorage: PhotoWidgetStorage = entryPoint.photoWidgetStorage()
+            val pinningCache: PhotoWidgetPinningCache = entryPoint.photoWidgetPinningCache()
+            val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
 
             val currentJob: Job? = updateJobMap[appWidgetId]?.get()
             Timber.d("Current update job (isActive=${currentJob?.isActive})")
@@ -192,8 +195,9 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             photoWidget: PhotoWidget,
             recoveryMode: Boolean = false,
         ): RemoteViews {
-            val prepareCurrentPhotoUseCase = entryPoint<PhotoWidgetEntryPoint>(context).prepareCurrentPhotoUseCase()
-            val result = prepareCurrentPhotoUseCase(
+            val entryPoint: PhotoWidgetEntryPoint = entryPoint(context)
+            val prepareCurrentPhotoUseCase: PrepareCurrentPhotoUseCase = entryPoint.prepareCurrentPhotoUseCase()
+            val result: PrepareCurrentPhotoUseCase.Result? = prepareCurrentPhotoUseCase(
                 context = context,
                 appWidgetId = appWidgetId,
                 photoWidget = photoWidget,
@@ -296,16 +300,16 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             isCyclePaused: Boolean,
             widgetOptions: Bundle?,
         ) {
-            val multiActionSupported = if (widgetOptions != null) {
+            val multiActionSupported: Boolean = if (widgetOptions != null) {
                 val sizeProvider = WidgetSizeProvider(context = context)
                 val (width, _) = sizeProvider.getWidgetsSize(widgetOptions = widgetOptions)
                 width > 100
             } else {
                 true
             }
-            val shouldDisableTap = photoWidget.tapActionDisableTap && isCyclePaused
+            val shouldDisableTap: Boolean = photoWidget.tapActionDisableTap && isCyclePaused
 
-            val centerClickPendingIntent = getClickPendingIntent(
+            val centerClickPendingIntent: PendingIntent? = getClickPendingIntent(
                 context = context,
                 appWidgetId = appWidgetId,
                 tapAction = photoWidget.tapActions.center,
@@ -365,12 +369,12 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     ")",
             )
 
-            val photoChangingAction = tapAction is PhotoWidgetTapAction.ViewNextPhoto ||
+            val photoChangingAction: Boolean = tapAction is PhotoWidgetTapAction.ViewNextPhoto ||
                 tapAction is PhotoWidgetTapAction.ViewPreviousPhoto ||
                 tapAction is PhotoWidgetTapAction.ChooseNextPhoto ||
                 tapAction is PhotoWidgetTapAction.ToggleCycling
 
-            val shouldIgnoreAction = when {
+            val shouldIgnoreAction: Boolean = when {
                 shouldDisableTap && tapAction !is PhotoWidgetTapAction.ToggleCycling -> true
                 photoChangingAction -> isLocked
                 else -> false
