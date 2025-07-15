@@ -58,7 +58,7 @@ data class PhotoWidget(
          * This dimension establishes a safe constant for the shapes library. Certain shapes can
          * throw an exception when larger than this.
          */
-        const val MAX_WIDGET_DIMENSION: Int = 700
+        const val MAX_WIDGET_DIMENSION: Int = 600
 
         const val DEFAULT_SHAPE_ID = "rounded-square"
 
