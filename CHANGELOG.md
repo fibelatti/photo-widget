@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+* Include the existing translations for German, Italian, Hebrew and Japanese
+
 ## [v1.31.3] - 2025-07-15
 [v1.31.3]: https://github.com/fibelatti/photo-widget/releases/tag/v1.31.3
 
