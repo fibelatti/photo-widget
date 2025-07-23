@@ -23,7 +23,6 @@ import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
-import com.fibelatti.photowidget.platform.WidgetSizeProvider
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
@@ -74,9 +73,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
         handler.post {
             for (appWidgetId in appWidgetIds) {
-                val widgetOptions: Bundle? = appWidgetManager.getAppWidgetOptions(appWidgetId)
-
-                update(context = context, appWidgetId = appWidgetId, widgetOptions = widgetOptions)
+                update(context = context, appWidgetId = appWidgetId)
             }
         }
     }
@@ -90,7 +87,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         Timber.d("Options changed by the system (appWidgetId=$appWidgetId)")
 
         handler.post {
-            update(context = context, appWidgetId = appWidgetId, widgetOptions = newOptions)
+            update(context = context, appWidgetId = appWidgetId)
         }
     }
 
@@ -133,7 +130,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         fun update(
             context: Context,
             appWidgetId: Int,
-            widgetOptions: Bundle? = null,
             recoveryMode: Boolean = false,
         ) {
             Timber.d("Updating widget (appWidgetId=$appWidgetId)")
@@ -170,7 +166,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     photoWidget = photoWidget,
                     isLocked = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = appWidgetId),
                     isCyclePaused = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = appWidgetId),
-                    widgetOptions = widgetOptions,
                 )
 
                 Timber.d("Invoking AppWidgetManager#updateAppWidget")
@@ -298,15 +293,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             photoWidget: PhotoWidget,
             isLocked: Boolean,
             isCyclePaused: Boolean,
-            widgetOptions: Bundle?,
         ) {
-            val multiActionSupported: Boolean = if (widgetOptions != null) {
-                val sizeProvider = WidgetSizeProvider(context = context)
-                val (width, _) = sizeProvider.getWidgetsSize(widgetOptions = widgetOptions)
-                width > 100
-            } else {
-                true
-            }
             val shouldDisableTap: Boolean = photoWidget.tapActionDisableTap && isCyclePaused
 
             val centerClickPendingIntent: PendingIntent? = getClickPendingIntent(
@@ -319,13 +306,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             )
 
             views.setOnClickPendingIntent(R.id.view_tap_center, centerClickPendingIntent)
-
-            if (!multiActionSupported) {
-                // The widget is too narrow to handle 3 different click actions
-                views.setOnClickPendingIntent(R.id.view_tap_left, centerClickPendingIntent)
-                views.setOnClickPendingIntent(R.id.view_tap_right, centerClickPendingIntent)
-                return
-            }
 
             views.setOnClickPendingIntent(
                 R.id.view_tap_left,

@@ -204,7 +204,7 @@
     <string name="photo_widget_configure_padding">Padding</string>
 
     <string name="photo_widget_configure_tap_action">Tap action</string>
-    <string name="photo_widget_configure_tap_action_description">Customize the tap action of each area. 1x1 widgets will use only the center tap action.</string>
+    <string name="photo_widget_configure_tap_action_description">Customize the tap action of each area.</string>
     <string name="photo_widget_configure_tap_action_area_left">Left</string>
     <string name="photo_widget_configure_tap_action_area_center">Center</string>
     <string name="photo_widget_configure_tap_action_area_right">Right</string>

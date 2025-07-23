@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+* Lifted the tap action restriction from 1x1 widgets
+
 ### Fixed
 
 * Include the existing translations for German, Italian, Hebrew and Japanese

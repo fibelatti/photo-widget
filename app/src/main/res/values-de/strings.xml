@@ -168,7 +168,7 @@
     <string name="photo_widget_configure_offset_current_vertical">Vertikal: %1$d</string>
     <string name="photo_widget_configure_padding">Polsterung</string>
     <string name="photo_widget_configure_tap_action">Tipp-Aktion</string>
-    <string name="photo_widget_configure_tap_action_description">Passen Sie die Tipp-Aktion jedes Bereichs an. 1x1 Widgets verwenden nur die zentrale Tipp-Aktion.</string>
+    <string name="photo_widget_configure_tap_action_description">Passen Sie die Tipp-Aktion jedes Bereichs an.</string>
     <string name="photo_widget_configure_tap_action_area_left">Links</string>
     <string name="photo_widget_configure_tap_action_area_center">Mitte</string>
     <string name="photo_widget_configure_tap_action_area_right">Rechts</string>

@@ -168,7 +168,7 @@
     <string name="photo_widget_configure_offset_current_vertical">Vertical : %1$d</string>
     <string name="photo_widget_configure_padding">Marge intérieure</string>
     <string name="photo_widget_configure_tap_action">Action tactile</string>
-    <string name="photo_widget_configure_tap_action_description">Personnalisez l\'action au toucher pour chaque zone. Les widgets 1x1 utiliseront uniquement l\'action de toucher au centre.</string>
+    <string name="photo_widget_configure_tap_action_description">Personnalisez l\'action au toucher pour chaque zone.</string>
     <string name="photo_widget_configure_tap_action_area_left">Gauche</string>
     <string name="photo_widget_configure_tap_action_area_center">Centre</string>
     <string name="photo_widget_configure_tap_action_area_right">Droite</string>

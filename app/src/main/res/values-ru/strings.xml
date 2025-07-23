@@ -180,7 +180,7 @@
     <string name="photo_widget_configure_offset_current_vertical">Вертикальное: %1$d</string>
     <string name="photo_widget_configure_padding">Отступ</string>
     <string name="photo_widget_configure_tap_action">Действие по нажатию</string>
-    <string name="photo_widget_configure_tap_action_description">Настройте действие при нажатии для каждой области. Виджеты 1x1 будут использовать только центральное нажатие.</string>
+    <string name="photo_widget_configure_tap_action_description">Настройте действие при нажатии для каждой области.</string>
     <string name="photo_widget_configure_tap_action_area_left">Слева</string>
     <string name="photo_widget_configure_tap_action_area_center">Центр</string>
     <string name="photo_widget_configure_tap_action_area_right">Справа</string>

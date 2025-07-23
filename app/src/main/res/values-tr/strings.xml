@@ -168,7 +168,7 @@
     <string name="photo_widget_configure_offset_current_vertical">Dikey: %1$d</string>
     <string name="photo_widget_configure_padding">Dolgu</string>
     <string name="photo_widget_configure_tap_action">Dokunma eylemi</string>
-    <string name="photo_widget_configure_tap_action_description">Her alan için dokunma eylemini özelleştirin. 1x1 widget\'lar yalnızca merkez dokunma eylemini kullanır.</string>
+    <string name="photo_widget_configure_tap_action_description">Her alan için dokunma eylemini özelleştirin.</string>
     <string name="photo_widget_configure_tap_action_area_left">Sol</string>
     <string name="photo_widget_configure_tap_action_area_center">Merkez</string>
     <string name="photo_widget_configure_tap_action_area_right">Sağ</string>
