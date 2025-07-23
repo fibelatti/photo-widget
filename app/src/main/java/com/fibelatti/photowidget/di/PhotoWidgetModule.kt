@@ -4,9 +4,11 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import coil3.ImageLoader
+import coil3.annotation.ExperimentalCoilApi
 import coil3.disk.DiskCache
 import coil3.disk.directory
 import coil3.memory.MemoryCache
+import coil3.memoryCacheMaxSizePercentWhileInBackground
 import coil3.request.addLastModifiedToFileCacheKey
 import coil3.request.allowHardware
 import com.fibelatti.photowidget.widget.data.DisplayedPhotoDao
@@ -69,12 +71,14 @@ object PhotoWidgetModule {
 
     @Provides
     @Singleton
+    @OptIn(ExperimentalCoilApi::class)
     fun imageLoader(@ApplicationContext context: Context): ImageLoader = ImageLoader.Builder(context)
         .memoryCache {
             MemoryCache.Builder()
                 .maxSizePercent(context = context, percent = 0.25)
                 .build()
         }
+        .memoryCacheMaxSizePercentWhileInBackground(percent = 0.25)
         .diskCache {
             DiskCache.Builder()
                 .directory(context.cacheDir.resolve(relative = "image_cache"))
