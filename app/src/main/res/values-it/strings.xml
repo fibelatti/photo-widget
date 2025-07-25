@@ -201,6 +201,7 @@
     <string name="photo_widget_directory_sort_newest_first">Più recenti prima</string>
     <string name="photo_widget_directory_sort_oldest_first">Meno recenti prima</string>
     <string name="photo_widget_directory_sort_explanation">L\'ordinamento utilizza la data dell\'ultima modifica del file immagine originale e si applica solo ai widget sincronizzati con le cartelle.</string>
+    <string name="photo_widget_crop_free_form">Forma libera</string>
     <!-- Help -->
     <string name="help_article_title_1">L\'aggiunta di un widget alla schermata iniziale non funziona</string>
     <string name="help_article_body_1">Se hai configurato un widget e non succede nulla quando provi ad aggiungerlo alla schermata iniziale, o se viene aggiunto ma non visualizza le foto selezionate, puoi provare ad aggiungerlo direttamente dalla tua schermata iniziale.\n\nLe istruzioni possono variare a seconda della versione di Android, del produttore del dispositivo e del launcher della schermata iniziale, ma in generale il processo è il seguente:\n\n1. Premi a lungo su uno spazio vuoto della tua schermata iniziale finché non appare un menu pop-up.\n2. Individua l\'opzione \"Widget\".\n3. Cerca \"Material Photo Widget\" tra i widget disponibili.\n4. Trascinalo sulla tua schermata iniziale e configuralo come di consueto.</string>

@@ -201,6 +201,7 @@
     <string name="photo_widget_directory_sort_newest_first">Neueste zuerst</string>
     <string name="photo_widget_directory_sort_oldest_first">Älteste zuerst</string>
     <string name="photo_widget_directory_sort_explanation">Die Sortierung verwendet das Datum der letzten Änderung der Originalbilddatei und gilt nur für Widgets, die mit Ordnern synchronisiert sind.</string>
+    <string name="photo_widget_crop_free_form">Frei</string>
     <!-- Help -->
     <string name="help_article_title_1">Das Hinzufügen eines Widgets zum Startbildschirm funktioniert nicht</string>
     <string name="help_article_body_1">Wenn Sie ein Widget konfiguriert haben und nichts passiert, wenn Sie versuchen, es zum Startbildschirm hinzuzufügen, oder wenn es hinzugefügt wird, aber die ausgewählten Fotos nicht anzeigt, können Sie versuchen, es direkt von Ihrem Startbildschirm hinzuzufügen.\n\nDie Anweisungen können je nach Android-Version, Gerätehersteller und Startbildschirm-Launcher variieren, aber im Allgemeinen ist der Vorgang wie folgt:\n\n1. Halten Sie einen leeren Bereich auf Ihrem Startbildschirm gedrückt, bis ein Pop-up-Menü erscheint.\n2. Suchen Sie die Option „Widgets“.\n3. Suchen Sie in den verfügbaren Widgets nach „Material Photo Widget“.\n4. Ziehen Sie es auf Ihren Startbildschirm und konfigurieren Sie es wie gewohnt.</string>

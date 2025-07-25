@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Lifted the tap action restriction from 1x1 widgets
+* Replaced the cropping library
 
 ### Fixed
 

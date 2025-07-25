@@ -201,6 +201,7 @@
     <string name="photo_widget_directory_sort_newest_first">En yeniler önce</string>
     <string name="photo_widget_directory_sort_oldest_first">En eskiler önce</string>
     <string name="photo_widget_directory_sort_explanation">Sıralama, orijinal görsel dosyasının son değiştirilme tarihine göre yapılır ve yalnızca klasörlerle senkronize edilen widget\'lara uygulanır.</string>
+    <string name="photo_widget_crop_free_form">Serbest Biçim</string>
     <!-- Help -->
     <string name="help_article_title_1">Ana ekrana bir widget eklemek çalışmıyor</string>
     <string name="help_article_body_1">Bir widget yapılandırdıysanız ve ana ekrana eklemeye çalıştığınızda hiçbir şey olmuyorsa veya eklendiği halde seçilen fotoğrafları göstermiyorsa, widget\'ı doğrudan ana ekranınızdan eklemeyi deneyebilirsiniz.\n\nTalimatlar Android sürümünüze, cihaz üreticinize ve ana ekran başlatıcınıza bağlı olarak değişiklik gösterebilir, ancak genellikle süreç şu şekildedir:\n\n1. Ana ekranınızdaki boş bir alana uzun basın ve bir açılır menü görünene kadar bekleyin.\n2. \"Widget\'lar\" seçeneğini bulun.\n3. Mevcut widget\'lar arasında \"Material Photo Widget\" arayın.\n4. Ana ekranınıza sürükleyin ve her zamanki gibi yapılandırın.</string>

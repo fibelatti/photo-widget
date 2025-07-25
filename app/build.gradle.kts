@@ -205,7 +205,7 @@ dependencies {
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
 
-    implementation(libs.ucrop)
+    implementation(libs.image.cropper)
     implementation(libs.coil)
     implementation(libs.reorderable)
     implementation(libs.colorpicker.compose)

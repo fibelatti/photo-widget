@@ -213,6 +213,7 @@
     <string name="photo_widget_directory_sort_newest_first">החדש ביותר קודם</string>
     <string name="photo_widget_directory_sort_oldest_first">הישן ביותר קודם</string>
     <string name="photo_widget_directory_sort_explanation">מיין משתמש בתאריך השינוי האחרון של קובץ התמונה המקורי והחל רק על ווידג\'טים המסונכרנים עם תיקיות.</string>
+    <string name="photo_widget_crop_free_form">חיתוך חופשי</string>
     <!-- Help -->
     <string name="help_article_title_1">הוספת ווידג\'ט למסך הבית לא עובדת</string>
     <string name="help_article_body_1">אם הגדרת ווידג\'ט ושום דבר לא קורה כשאתה מנסה להוסיף אותו למסך הבית, או אם הוא נוסף אבל לא מציג את התמונות שבחרת, תוכל לנסות להוסיף אותו ישירות ממסך הבית שלך.\n\nההוראות יכולות להשתנות בהתאם לגרסת האנדרואיד שלך, יצרן המכשיר ומפעיל מסך הבית, אבל באופן כללי, התהליך הוא כדלקמן:\n\n1. לחץ לחיצה ארוכה על מקום ריק במסך הבית שלך עד שיופיע תפריט קופץ.\n2. אתר את האפשרות \"ווידג\'טים\".\n3. חפש \"Material Photo Widget\" בתוך הווידג\'טים הזמינים.\n4. גרור אותו למסך הבית שלך והגדר אותו כרגיל.</string>

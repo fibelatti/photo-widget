@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.fibelatti.photowidget.configure
 
 import android.content.Context
@@ -8,24 +10,42 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonGroupDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
+import com.canhub.cropper.CropImageOptions
+import com.canhub.cropper.CropImageView
+import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.databinding.PhotoCropActivityBinding
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.platform.getAttributeColor
+import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.intentExtras
-import com.yalantis.ucrop.UCrop
-import com.yalantis.ucrop.UCropFragment
-import com.yalantis.ucrop.UCropFragmentCallback
+import com.fibelatti.ui.foundation.ConnectedButtonRowItem
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
-class PhotoCropActivity : AppCompatActivity(), UCropFragmentCallback {
+class PhotoCropActivity : AppCompatActivity() {
 
-    private val binding by lazy { PhotoCropActivityBinding.inflate(layoutInflater) }
+    private val binding: PhotoCropActivityBinding by lazy { PhotoCropActivityBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -34,7 +54,7 @@ class PhotoCropActivity : AppCompatActivity(), UCropFragmentCallback {
 
         setContentView(binding.root)
         setupViews()
-        showCropFragment()
+        setupSourceAndOptions()
     }
 
     private fun setupViews() {
@@ -56,44 +76,75 @@ class PhotoCropActivity : AppCompatActivity(), UCropFragmentCallback {
             onBackPressedDispatcher.onBackPressed()
         }
         binding.cropButton.setOnClickListener {
-            binding.fragmentContainerView.getFragment<UCropFragment>().cropAndSaveImage()
-            binding.cropButton.isInvisible = true
-            binding.progressIndicator.isVisible = true
+            cropImage()
         }
+        binding.cropImageView.setOnCropImageCompleteListener { _: CropImageView, result: CropImageView.CropResult ->
+            finishWithResult(result)
+        }
+
+        setupAspectRatioShortcuts()
     }
 
-    private fun showCropFragment() {
-        val fragment = UCrop.of(intent.sourceUri, intent.destinationUri)
-            .apply {
-                if (intent.aspectRatio.isConstrained) {
-                    withAspectRatio(intent.aspectRatio.x, intent.aspectRatio.y)
-                }
-            }
-            .withOptions(
-                UCrop.Options().apply {
-                    setCompressionFormat(Bitmap.CompressFormat.PNG)
-                    setActiveControlsWidgetColor(getAttributeColor(android.R.attr.colorPrimary))
-                },
-            )
-            .fragment
+    private fun setupSourceAndOptions() {
+        val cropOptions = CropImageOptions(
+            guidelines = CropImageView.Guidelines.ON_TOUCH,
+            showProgressBar = false,
+            multiTouchEnabled = true,
+            maxZoom = 8,
+            fixAspectRatio = intent.aspectRatio.isConstrained,
+            aspectRatioX = intent.aspectRatio.x.roundToInt(),
+            aspectRatioY = intent.aspectRatio.y.roundToInt(),
+        )
 
-        supportFragmentManager.beginTransaction()
-            .replace(binding.fragmentContainerView.id, fragment, UCropFragment.TAG)
-            .commitNowAllowingStateLoss()
+        binding.cropImageView.setImageUriAsync(intent.sourceUri)
+        binding.cropImageView.setImageCropOptions(cropOptions)
     }
 
-    override fun loadingProgress(showLoader: Boolean) {
-        // Intentionally empty
+    private fun cropImage() {
+        binding.cropButton.isInvisible = true
+        binding.progressIndicator.isVisible = true
+        binding.cropImageView.croppedImageAsync(
+            saveCompressFormat = Bitmap.CompressFormat.PNG,
+            customOutputUri = intent.destinationUri,
+        )
     }
 
-    override fun onCropFinish(result: UCropFragment.UCropResult) {
+    private fun finishWithResult(result: CropImageView.CropResult) {
         setResult(
-            result.mResultCode,
-            Intent().apply {
-                this.outputPath = result.mResultData?.let(UCrop::getOutput)?.path
+            if (result.isSuccessful) RESULT_OK else RESULT_CANCELED,
+            result.uriContent?.let { outputUri ->
+                Intent().apply { this.outputPath = outputUri.path }
+
             },
         )
         finish()
+    }
+
+    private fun setupAspectRatioShortcuts() {
+        if (intent.aspectRatio.isConstrained) {
+            binding.composeViewRatioShortcuts.isVisible = false
+        } else {
+            binding.composeViewRatioShortcuts.setContent {
+                AppTheme {
+                    RatioShortcuts(
+                        onFreeFormClick = { binding.cropImageView.setFixedAspectRatio(false) },
+                        onSquareClick = {
+                            binding.cropImageView.setFixedAspectRatio(true)
+                            binding.cropImageView.setAspectRatio(aspectRatioX = 1, aspectRatioY = 1)
+                        },
+                        onTallClick = {
+                            binding.cropImageView.setFixedAspectRatio(true)
+                            binding.cropImageView.setAspectRatio(aspectRatioX = 10, aspectRatioY = 16)
+                        },
+                        onWideClick = {
+                            binding.cropImageView.setFixedAspectRatio(true)
+                            binding.cropImageView.setAspectRatio(aspectRatioX = 16, aspectRatioY = 10)
+                        },
+                        modifier = Modifier.padding(all = 16.dp),
+                    )
+                }
+            }
+        }
     }
 
     companion object {
@@ -112,6 +163,49 @@ class PhotoCropActivity : AppCompatActivity(), UCropFragmentCallback {
             this.sourceUri = sourceUri
             this.destinationUri = destinationUri
             this.aspectRatio = aspectRatio
+        }
+    }
+}
+
+@Composable
+private fun RatioShortcuts(
+    onFreeFormClick: () -> Unit,
+    onSquareClick: () -> Unit,
+    onTallClick: () -> Unit,
+    onWideClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val freeFormLabel = stringResource(R.string.photo_widget_crop_free_form)
+    val items: Map<String, () -> Unit> by rememberUpdatedState(
+        mapOf(
+            freeFormLabel to onFreeFormClick,
+            "1:1" to onSquareClick,
+            "16:10" to onTallClick,
+            "10:16" to onWideClick,
+        ),
+    )
+    var selectionIndex by remember { mutableIntStateOf(0) }
+
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
+    ) {
+        items.onEachIndexed { index: Int, (label: String, action: () -> Unit) ->
+            val weight by animateFloatAsState(
+                targetValue = if (index == selectionIndex) 1.2f else 1f,
+            )
+
+            ConnectedButtonRowItem(
+                checked = index == selectionIndex,
+                onCheckedChange = {
+                    selectionIndex = index
+                    action()
+                },
+                itemIndex = index,
+                itemCount = items.size,
+                label = label,
+                modifier = Modifier.weight(weight),
+            )
         }
     }
 }

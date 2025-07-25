@@ -195,6 +195,7 @@
     <string name="photo_widget_directory_sort_newest_first">新しいものから順に</string>
     <string name="photo_widget_directory_sort_oldest_first">古いものから順に</string>
     <string name="photo_widget_directory_sort_explanation">並べ替えは、元の画像ファイルの最終変更日を使用し、フォルダーと同期されたウィジェットにのみ適用されます。</string>
+    <string name="photo_widget_crop_free_form">自由形式</string>
     <!-- Help -->
     <string name="help_article_title_1">ホーム画面へのウィジェットの追加が機能しない</string>
     <string name="help_article_body_1">ウィジェットを設定してもホーム画面に追加されない場合や、追加されても選択した写真が表示されない場合は、ホーム画面から直接追加してみてください。\n\n手順はAndroidのバージョン、デバイスメーカー、ホーム画面ランチャーによって異なる場合がありますが、一般的には以下のとおりです。\n\n1. ホーム画面の空いているスペースを長押しすると、ポップアップメニューが表示されます。\n2. 「ウィジェット」オプションを探します。\n3. 利用可能なウィジェットの中から「Material Photo Widget」を検索します。\n4. ホーム画面にドラッグし、通常どおり設定します。</string>

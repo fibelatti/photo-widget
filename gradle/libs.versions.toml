@@ -41,7 +41,7 @@ hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltExtensions"
 room-runtime = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
-ucrop = { module = "com.github.yalantis:ucrop", version = "2.2.10" }
+image-cropper = { module = "com.vanniktech:android-image-cropper", version = "4.6.0" }
 coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 reorderable = { module = "sh.calvin.reorderable:reorderable", version = "2.5.1" }
 colorpicker-compose = { module = "com.github.skydoves:colorpicker-compose", version = "1.1.2" }
