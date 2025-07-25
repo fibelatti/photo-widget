@@ -89,7 +89,6 @@ class PhotoCropActivity : AppCompatActivity() {
         val cropOptions = CropImageOptions(
             guidelines = CropImageView.Guidelines.ON_TOUCH,
             showProgressBar = false,
-            multiTouchEnabled = true,
             maxZoom = 8,
             fixAspectRatio = intent.aspectRatio.isConstrained,
             aspectRatioX = intent.aspectRatio.x.roundToInt(),
