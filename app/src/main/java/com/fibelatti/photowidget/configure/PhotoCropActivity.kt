@@ -114,7 +114,6 @@ class PhotoCropActivity : AppCompatActivity() {
             if (result.isSuccessful) RESULT_OK else RESULT_CANCELED,
             result.uriContent?.let { outputUri ->
                 Intent().apply { this.outputPath = outputUri.path }
-
             },
         )
         finish()
