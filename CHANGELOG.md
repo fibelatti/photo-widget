@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Include the existing translations for German, Italian, Hebrew and Japanese
+* Fixed scheduled photo cycling not working as expected
 
 ## [v1.31.3] - 2025-07-15
 [v1.31.3]: https://github.com/fibelatti/photo-widget/releases/tag/v1.31.3

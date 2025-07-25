@@ -9,11 +9,13 @@ import androidx.core.content.getSystemService
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
+import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.platform.EntryPointBroadcastReceiver
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Calendar
+import java.util.TimeZone
 import javax.inject.Inject
 import javax.inject.Singleton
 import timber.log.Timber
@@ -67,7 +69,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
             try {
                 alarmManager.setExact(
                     /* type = */
-                    AlarmManager.RTC,
+                    AlarmManager.RTC_WAKEUP,
                     /* triggerAtMillis = */
                     triggerAtMillis,
                     /* operation = */
@@ -97,7 +99,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
     private fun setRepeatingAlarm(triggerAtMillis: Long, intervalMillis: Long, appWidgetId: Int) {
         alarmManager.setRepeating(
             /* type = */
-            AlarmManager.RTC,
+            AlarmManager.RTC_WAKEUP,
             /* triggerAtMillis = */
             triggerAtMillis,
             /* intervalMillis = */
@@ -108,24 +110,40 @@ class PhotoWidgetAlarmManager @Inject constructor(
     }
 
     private fun setupScheduleAlarm(cycleMode: PhotoWidgetCycleMode.Schedule, appWidgetId: Int) {
-        val calendar = Calendar.getInstance()
+        if (cycleMode.triggers.isEmpty()) {
+            Timber.w("No triggers defined for widget (appWidgetId=$appWidgetId). Skipping schedule alarm setup.")
+            return
+        }
 
-        val nextSameDayTrigger = cycleMode.triggers.firstOrNull { (hour, minute) ->
-            hour >= calendar.get(Calendar.HOUR_OF_DAY) && minute > calendar.get(Calendar.MINUTE)
+        val calendar: Calendar = Calendar.getInstance(TimeZone.getDefault())
+        val currentHour: Int = calendar.get(Calendar.HOUR_OF_DAY)
+        val currentMinute: Int = calendar.get(Calendar.MINUTE)
+
+        val sortedTriggers: List<Time> = cycleMode.triggers.sortedWith(
+            comparator = compareBy({ it.hour }, { it.minute }),
+        )
+
+        var nextTrigger: Time? = null
+        var advanceToNextDay = false
+
+        for (trigger in sortedTriggers) {
+            if (trigger.hour > currentHour || (trigger.hour == currentHour && trigger.minute > currentMinute)) {
+                nextTrigger = trigger
+                break
+            }
+        }
+
+        if (nextTrigger == null) {
+            nextTrigger = sortedTriggers.first()
+            advanceToNextDay = true
         }
 
         calendar.apply {
-            if (nextSameDayTrigger != null) {
-                set(Calendar.HOUR_OF_DAY, nextSameDayTrigger.hour)
-                set(Calendar.MINUTE, nextSameDayTrigger.minute)
-            } else {
-                val nextTrigger = cycleMode.triggers.first()
-
+            if (advanceToNextDay) {
                 add(Calendar.DAY_OF_MONTH, 1)
-                set(Calendar.HOUR_OF_DAY, nextTrigger.hour)
-                set(Calendar.MINUTE, nextTrigger.minute)
             }
-
+            set(Calendar.HOUR_OF_DAY, nextTrigger.hour)
+            set(Calendar.MINUTE, nextTrigger.minute)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }
@@ -134,7 +152,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
             try {
                 alarmManager.setExactAndAllowWhileIdle(
                     /* type = */
-                    AlarmManager.RTC,
+                    AlarmManager.RTC_WAKEUP,
                     /* triggerAtMillis = */
                     calendar.timeInMillis,
                     /* operation = */
@@ -155,7 +173,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
     private fun setAlarm(triggerAtMillis: Long, appWidgetId: Int) {
         alarmManager.setAndAllowWhileIdle(
             /* type = */
-            AlarmManager.RTC,
+            AlarmManager.RTC_WAKEUP,
             /* triggerAtMillis = */
             triggerAtMillis,
             /* operation = */
