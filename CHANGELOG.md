@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.31.4] - 2025-07-25
+[v1.31.4]: https://github.com/fibelatti/photo-widget/releases/tag/v1.31.4
+
 ### Changed
 
 * Lifted the tap action restriction from 1x1 widgets
