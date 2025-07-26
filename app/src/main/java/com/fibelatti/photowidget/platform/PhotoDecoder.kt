@@ -27,7 +27,7 @@ class PhotoDecoder @Inject constructor(
 
         val request = ImageRequest.Builder(context)
             .data(if (data.toString().contains(context.packageName)) File(data.toString()) else data)
-            .apply { if (maxDimension != null) size(maxDimension) }
+            .apply { if (maxDimension != null && maxDimension > 0) size(maxDimension) }
             .build()
 
         imageLoader.execute(request)

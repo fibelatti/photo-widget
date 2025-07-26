@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.webkit.MimeTypeMap
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -100,10 +101,22 @@ class PhotoCropActivity : AppCompatActivity() {
     }
 
     private fun cropImage() {
+        val typeExtension: String? = MimeTypeMap.getSingleton()
+            .getExtensionFromMimeType(contentResolver.getType(intent.sourceUri))
+            ?.lowercase()
+        val urlExtension: String? = MimeTypeMap.getFileExtensionFromUrl(intent.sourceUri.toString())
+            ?.lowercase()
+        val jpeg: Array<String> = arrayOf("jpeg", "jpg")
+        val compressFormat: Bitmap.CompressFormat = if (typeExtension in jpeg || urlExtension in jpeg) {
+            Bitmap.CompressFormat.JPEG
+        } else {
+            Bitmap.CompressFormat.PNG
+        }
+
         binding.cropButton.isInvisible = true
         binding.progressIndicator.isVisible = true
         binding.cropImageView.croppedImageAsync(
-            saveCompressFormat = Bitmap.CompressFormat.PNG,
+            saveCompressFormat = compressFormat,
             customOutputUri = intent.destinationUri,
         )
     }

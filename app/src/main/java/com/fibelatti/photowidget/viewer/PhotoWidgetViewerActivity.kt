@@ -174,7 +174,7 @@ private fun ScreenContent(
                 isLoading = isLoading,
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier.aspectRatio(ratio = measuredRatio),
-                constrainBitmapSize = false,
+                constraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED,
                 transformer = { bitmap ->
                     measuredRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
                     didMeasure = true

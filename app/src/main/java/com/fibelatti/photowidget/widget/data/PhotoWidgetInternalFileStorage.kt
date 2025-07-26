@@ -44,22 +44,24 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
             runCatching {
                 Timber.d("New widget photo: $source (appWidgetId=$appWidgetId)")
 
-                val widgetDir = getWidgetDir(appWidgetId = appWidgetId)
-                val originalPhotosDir = File("$widgetDir/original").apply { mkdirs() }
-                val extension = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(source)) ?: "png"
+                val widgetDir: File = getWidgetDir(appWidgetId = appWidgetId)
+                val originalPhotosDir: File = File("$widgetDir/original").apply { mkdirs() }
+                val extension: String = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(source))
+                    ?.lowercase()
+                    ?: "png"
                 val newPhotoName = "${UUID.randomUUID()}.$extension"
 
                 val originalPhoto = File("$originalPhotosDir/$newPhotoName")
                 val croppedPhoto = File("$widgetDir/$newPhotoName")
 
-                val newFiles = listOf(originalPhoto, croppedPhoto)
-                val dataSaver = userPreferencesStorage.dataSaver
+                val newFiles: List<File> = listOf(originalPhoto, croppedPhoto)
+                val dataSaver: Boolean = userPreferencesStorage.dataSaver
 
                 Timber.d("Data saver: $dataSaver")
 
                 if (dataSaver) {
                     decoder.decode(data = source, maxDimension = 2560)?.let { importedPhoto ->
-                        val format = if (extension.equals("png", ignoreCase = true)) {
+                        val format: Bitmap.CompressFormat = if (extension == "png") {
                             Bitmap.CompressFormat.PNG
                         } else {
                             Bitmap.CompressFormat.JPEG
@@ -178,13 +180,13 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         appWidgetId: Int,
         currentPhoto: Bitmap,
     ): Uri? = withContext(Dispatchers.IO) {
-        val launcherPackages = getLauncherPackages()
+        val launcherPackages: List<String> = getLauncherPackages()
         if (launcherPackages.isEmpty()) {
             Timber.d("No launcher packages found, unable to generate URI.")
             return@withContext null
         }
 
-        val dir = getCurrentPhotoDir(appWidgetId = appWidgetId).apply {
+        val dir: File = getCurrentPhotoDir(appWidgetId = appWidgetId).apply {
             listFiles()?.toList()?.sortedBy { it.name }?.dropLast(1)?.forEach { it.delete() }
         }
         // Using `currentTimeMillis` to generate unique files,
@@ -200,14 +202,17 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
             return@withContext null
         }
 
-        val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+        val uri: Uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
         Timber.d("New URI for widget with id $appWidgetId: $uri")
 
-        val packages = launcherPackages + if (Build.MANUFACTURER.equals("samsung", ignoreCase = true)) {
-            samsungPackages
-        } else {
-            emptyList()
-        }
+        val packages: List<String> = launcherPackages
+            .plus(
+                if (Build.MANUFACTURER.equals("samsung", ignoreCase = true)) {
+                    samsungPackages
+                } else {
+                    emptyList()
+                },
+            )
 
         for (pkg in packages) {
             context.grantUriPermission(pkg, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)

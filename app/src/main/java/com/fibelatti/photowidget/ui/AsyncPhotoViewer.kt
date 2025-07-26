@@ -1,5 +1,7 @@
 package com.fibelatti.photowidget.ui
 
+import android.content.Context
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.max
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
+import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.getMaxBitmapWidgetDimension
 import com.fibelatti.ui.foundation.dpToPx
 import kotlin.math.roundToInt
@@ -41,7 +44,7 @@ fun AsyncPhotoViewer(
     isLoading: Boolean,
     contentScale: ContentScale,
     modifier: Modifier = Modifier,
-    constrainBitmapSize: Boolean = true,
+    constraintMode: AsyncPhotoViewer.BitmapSizeConstraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.DISPLAY,
     transformer: (Bitmap) -> Bitmap = { it },
     badge: @Composable BoxScope.() -> Unit = {},
 ) {
@@ -49,9 +52,9 @@ fun AsyncPhotoViewer(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
-        val localInspectionMode = LocalInspectionMode.current
-        val localContext = LocalContext.current
-        val localResources = LocalResources.current
+        val localInspectionMode: Boolean = LocalInspectionMode.current
+        val localContext: Context = LocalContext.current
+        val localResources: Resources = LocalResources.current
 
         var photoBitmap: Bitmap? by remember {
             mutableStateOf(
@@ -69,21 +72,27 @@ fun AsyncPhotoViewer(
         var showLoading: Boolean by remember { mutableStateOf(false) }
         var showError: Boolean by remember { mutableStateOf(false) }
 
-        val decoder by remember {
+        val decoder: PhotoDecoder by remember {
             lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
         }
 
-        var maxDimension = localContext.getMaxBitmapWidgetDimension(coerceDimension = constrainBitmapSize)
-        val largestSize = max(maxWidth, maxHeight).dpToPx().roundToInt()
-
-        if (constrainBitmapSize && maxDimension > largestSize) {
-            maxDimension = largestSize
-        }
+        val largestSize: Int = max(maxWidth, maxHeight).dpToPx().roundToInt()
+        val maxWidgetDimension: Int = localContext.getMaxBitmapWidgetDimension(
+            coerceMaxMemory = constraintMode == AsyncPhotoViewer.BitmapSizeConstraintMode.MEMORY,
+            coerceDimension = constraintMode == AsyncPhotoViewer.BitmapSizeConstraintMode.SHAPE,
+        ).coerceAtMost(largestSize)
 
         LaunchedEffect(*dataKey) {
             if (localInspectionMode) return@LaunchedEffect
             if (data != null) {
-                photoBitmap = decoder.decode(data = data, maxDimension = maxDimension)
+                photoBitmap = decoder.decode(
+                    data = data,
+                    maxDimension = if (constraintMode != AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED) {
+                        maxWidgetDimension
+                    } else {
+                        largestSize
+                    },
+                )
                 showLoading = false
                 showError = false
             } else if (!isLoading) {
@@ -137,5 +146,34 @@ fun AsyncPhotoViewer(
                 badge()
             }
         }
+    }
+}
+
+object AsyncPhotoViewer {
+
+    enum class BitmapSizeConstraintMode {
+
+        /**
+         * Constrain the size according to the maximum memory allowed for widget Bitmaps.
+         */
+        MEMORY,
+
+        /**
+         * Constrain the size according to the maximum allowed for the widget shape.
+         *
+         * The shapes library can throw an exception if the bitmap is too large since some shapes
+         * will fail to draw a contiguous line.
+         */
+        SHAPE,
+
+        /**
+         * Constrain the size according to the display size.
+         */
+        DISPLAY,
+
+        /**
+         * Do not apply any constraint and use the original bitmap size.
+         */
+        UNCONSTRAINED,
     }
 }
