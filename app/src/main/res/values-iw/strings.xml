@@ -87,6 +87,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget_description">התאם את גודל הווידג\'ט</string>
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">כל השינויים יאבדו, לחזור בכל זאת?</string>
+    <string name="photo_widget_configure_navigate_back_warning_restore">כדי לסיים את שחזור הווידג\'ט עליך להוסיף אותו למסך הבית. לצאת מבלי לשחזר?</string>
     <string name="photo_widget_configure_tab_content">תוכן</string>
     <string name="photo_widget_configure_tab_appearance">נראות</string>
     <string name="photo_widget_configure_tab_behavior">התנהגות</string>

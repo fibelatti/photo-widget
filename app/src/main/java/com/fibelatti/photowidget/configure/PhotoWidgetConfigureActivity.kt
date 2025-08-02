@@ -158,7 +158,13 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
     private fun handleBackNav() {
         MaterialAlertDialogBuilder(this)
-            .setMessage(R.string.photo_widget_configure_navigate_back_warning)
+            .setMessage(
+                if (intent.restoreFromId != null) {
+                    R.string.photo_widget_configure_navigate_back_warning_restore
+                } else {
+                    R.string.photo_widget_configure_navigate_back_warning
+                },
+            )
             .setPositiveButton(R.string.photo_widget_action_yes) { _, _ ->
                 finish()
             }

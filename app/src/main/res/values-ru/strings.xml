@@ -87,6 +87,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget_description">Соответствовать размеру виджета</string>
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Все изменения будут потеряны, вернуться назад?</string>
+    <string name="photo_widget_configure_navigate_back_warning_restore">Чтобы завершить восстановление виджета, вы должны добавить его на главный экран. Выйти без восстановления?</string>
     <string name="photo_widget_configure_tab_content">Содержание</string>
     <string name="photo_widget_configure_tab_appearance">Внешний вид</string>
     <string name="photo_widget_configure_tab_behavior">Поведение</string>

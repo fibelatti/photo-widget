@@ -84,6 +84,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget_description">ウィジェットサイズに合わせる</string>
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">変更は失われます。戻ってもよろしいですか？</string>
+    <string name="photo_widget_configure_navigate_back_warning_restore">ウィジェットの復元を完了するには、ホーム画面に追加する必要があります。復元せずに終了しますか？</string>
     <string name="photo_widget_configure_tab_content">コンテンツ</string>
     <string name="photo_widget_configure_tab_appearance">外観</string>
     <string name="photo_widget_configure_tab_behavior">動作</string>

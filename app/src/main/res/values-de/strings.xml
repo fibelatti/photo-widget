@@ -85,6 +85,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget_description">Widget-Größe anpassen</string>
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Alle Änderungen gehen verloren. Trotzdem zurückgehen?</string>
+    <string name="photo_widget_configure_navigate_back_warning_restore">Um die Wiederherstellung des Widgets abzuschließen, müssen Sie es zum Startbildschirm hinzufügen. Ohne Wiederherstellung beenden?</string>
     <string name="photo_widget_configure_tab_content">Inhalt</string>
     <string name="photo_widget_configure_tab_appearance">Aussehen</string>
     <string name="photo_widget_configure_tab_behavior">Verhalten</string>

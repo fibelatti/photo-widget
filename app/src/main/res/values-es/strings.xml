@@ -85,6 +85,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget_description">Ajustar al tamaño del widget</string>
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">¿Se perderán los cambios, volver de todos modos?</string>
+    <string name="photo_widget_configure_navigate_back_warning_restore">Para finalizar la restauración del widget, debes agregarlo a la pantalla de inicio. ¿Salir sin restaurar?</string>
     <string name="photo_widget_configure_tab_content">Contenido</string>
     <string name="photo_widget_configure_tab_appearance">Apariencia</string>
     <string name="photo_widget_configure_tab_behavior">Comportamiento</string>

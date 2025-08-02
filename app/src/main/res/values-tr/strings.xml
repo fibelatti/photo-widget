@@ -85,6 +85,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget_description">Widget boyutuna uyum sağla</string>
     <!-- Configure -->
     <string name="photo_widget_configure_navigate_back_warning">Değişiklikler kaybolacak, yine de geri dönmek istiyor musunuz?</string>
+    <string name="photo_widget_configure_navigate_back_warning_restore">Widget\'ı geri yüklemeyi tamamlamak için ana ekrana eklemeniz gerekir. Geri yüklemeden çıkılsın mı?</string>
     <string name="photo_widget_configure_tab_content">İçerik</string>
     <string name="photo_widget_configure_tab_appearance">Görünüm</string>
     <string name="photo_widget_configure_tab_behavior">Davranış</string>
