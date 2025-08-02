@@ -18,13 +18,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FilledTonalIconButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.ViewCompat
@@ -40,6 +45,8 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.intentExtras
 import com.fibelatti.ui.foundation.ConnectedButtonRowItem
+import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.theme.ExtendedTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.roundToInt
 
@@ -83,7 +90,7 @@ class PhotoCropActivity : AppCompatActivity() {
             finishWithResult(result)
         }
 
-        setupAspectRatioShortcuts()
+        setupCropShortcuts()
     }
 
     private fun setupSourceAndOptions() {
@@ -131,29 +138,28 @@ class PhotoCropActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun setupAspectRatioShortcuts() {
-        if (intent.aspectRatio.isConstrained) {
-            binding.composeViewRatioShortcuts.isVisible = false
-        } else {
-            binding.composeViewRatioShortcuts.setContent {
-                AppTheme {
-                    RatioShortcuts(
-                        onFreeFormClick = { binding.cropImageView.setFixedAspectRatio(false) },
-                        onSquareClick = {
-                            binding.cropImageView.setFixedAspectRatio(true)
-                            binding.cropImageView.setAspectRatio(aspectRatioX = 1, aspectRatioY = 1)
-                        },
-                        onTallClick = {
-                            binding.cropImageView.setFixedAspectRatio(true)
-                            binding.cropImageView.setAspectRatio(aspectRatioX = 10, aspectRatioY = 16)
-                        },
-                        onWideClick = {
-                            binding.cropImageView.setFixedAspectRatio(true)
-                            binding.cropImageView.setAspectRatio(aspectRatioX = 16, aspectRatioY = 10)
-                        },
-                        modifier = Modifier.padding(all = 16.dp),
-                    )
-                }
+    private fun setupCropShortcuts() {
+        binding.composeViewRatioShortcuts.setContent {
+            AppTheme {
+                CropControls(
+                    onRotateLeftClick = { binding.cropImageView.rotatedDegrees -= 90 },
+                    onRotateRightClick = { binding.cropImageView.rotatedDegrees += 90 },
+                    showAspectRatioShortcuts = !intent.aspectRatio.isConstrained,
+                    onFreeFormClick = { binding.cropImageView.setFixedAspectRatio(false) },
+                    onSquareClick = {
+                        binding.cropImageView.setFixedAspectRatio(true)
+                        binding.cropImageView.setAspectRatio(aspectRatioX = 1, aspectRatioY = 1)
+                    },
+                    onTallClick = {
+                        binding.cropImageView.setFixedAspectRatio(true)
+                        binding.cropImageView.setAspectRatio(aspectRatioX = 10, aspectRatioY = 16)
+                    },
+                    onWideClick = {
+                        binding.cropImageView.setFixedAspectRatio(true)
+                        binding.cropImageView.setAspectRatio(aspectRatioX = 16, aspectRatioY = 10)
+                    },
+                    modifier = Modifier.padding(all = 16.dp),
+                )
             }
         }
     }
@@ -174,6 +180,53 @@ class PhotoCropActivity : AppCompatActivity() {
             this.sourceUri = sourceUri
             this.destinationUri = destinationUri
             this.aspectRatio = aspectRatio
+        }
+    }
+}
+
+@Composable
+private fun CropControls(
+    onRotateLeftClick: () -> Unit,
+    onRotateRightClick: () -> Unit,
+    showAspectRatioShortcuts: Boolean,
+    onFreeFormClick: () -> Unit,
+    onSquareClick: () -> Unit,
+    onTallClick: () -> Unit,
+    onWideClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(space = 4.dp, alignment = Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        FilledTonalIconButton(
+            onClick = onRotateLeftClick,
+            shapes = IconButtonDefaults.shapes(),
+        ) {
+            Icon(
+                painter = painterResource(com.canhub.cropper.R.drawable.ic_rotate_left_24),
+                contentDescription = null,
+            )
+        }
+
+        FilledTonalIconButton(
+            onClick = onRotateRightClick,
+            shapes = IconButtonDefaults.shapes(),
+        ) {
+            Icon(
+                painter = painterResource(com.canhub.cropper.R.drawable.ic_rotate_right_24),
+                contentDescription = null,
+            )
+        }
+
+        if (showAspectRatioShortcuts) {
+            RatioShortcuts(
+                onFreeFormClick = onFreeFormClick,
+                onSquareClick = onSquareClick,
+                onTallClick = onTallClick,
+                onWideClick = onWideClick,
+            )
         }
     }
 }
@@ -218,5 +271,21 @@ private fun RatioShortcuts(
                 modifier = Modifier.weight(weight),
             )
         }
+    }
+}
+
+@Composable
+@ThemePreviews
+private fun RatioShortcutsPreview() {
+    ExtendedTheme {
+        CropControls(
+            onRotateLeftClick = {},
+            onRotateRightClick = {},
+            showAspectRatioShortcuts = true,
+            onFreeFormClick = {},
+            onSquareClick = {},
+            onTallClick = {},
+            onWideClick = {},
+        )
     }
 }
