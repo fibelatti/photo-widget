@@ -4,6 +4,7 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    assignees: "fibelatti"
 
   - package-ecosystem: "gradle"
     directory: "/"
