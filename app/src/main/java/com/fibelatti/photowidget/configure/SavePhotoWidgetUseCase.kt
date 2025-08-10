@@ -6,6 +6,8 @@ import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.TapActionArea
+import com.fibelatti.photowidget.model.canShuffle
+import com.fibelatti.photowidget.model.photoCycleEnabled
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import javax.inject.Inject
@@ -26,7 +28,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
         saveWidgetAppearance(appWidgetId = appWidgetId, photoWidget = photoWidget)
         saveWidgetBehavior(appWidgetId = appWidgetId, photoWidget = photoWidget)
 
-        if (photoWidget.cyclingEnabled) {
+        if (photoWidget.photoCycleEnabled) {
             photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
         } else {
             photoWidgetAlarmManager.cancel(appWidgetId = appWidgetId)

@@ -14,15 +14,6 @@ sealed interface PhotoWidgetBorder : Parcelable {
 
     val serializedName: String
 
-    fun getBorderPercent(): Float = getBorderWidth() * PERCENT_FACTOR
-
-    private fun getBorderWidth(): Int = when (this) {
-        is None -> 0
-        is Color -> width
-        is Dynamic -> width
-        is MatchPhoto -> width
-    }
-
     @Parcelize
     data object None : PhotoWidgetBorder {
 
@@ -98,4 +89,13 @@ sealed interface PhotoWidgetBorder : Parcelable {
             return entries.firstOrNull { it.serializedName == serializedName } ?: None
         }
     }
+}
+
+fun PhotoWidgetBorder.borderPercent(): Float = getBorderWidth() * PhotoWidgetBorder.PERCENT_FACTOR
+
+private fun PhotoWidgetBorder.getBorderWidth(): Int = when (this) {
+    is PhotoWidgetBorder.None -> 0
+    is PhotoWidgetBorder.Color -> width
+    is PhotoWidgetBorder.Dynamic -> width
+    is PhotoWidgetBorder.MatchPhoto -> width
 }

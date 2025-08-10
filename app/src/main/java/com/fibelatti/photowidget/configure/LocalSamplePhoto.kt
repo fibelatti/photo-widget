@@ -18,6 +18,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.LocalPhoto
+import com.fibelatti.photowidget.model.getPhotoPath
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.getMaxBitmapWidgetDimension
 

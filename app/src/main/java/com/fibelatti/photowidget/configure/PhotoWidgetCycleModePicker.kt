@@ -67,6 +67,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.Time
+import com.fibelatti.photowidget.model.intervalRange
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
 import com.fibelatti.photowidget.ui.SliderSmallThumb
@@ -304,7 +305,7 @@ private fun PhotoCycleModeIntervalContent(
                 value = interval.repeatInterval.toFloat(),
                 onValueChange = { newValue -> interval = interval.copy(repeatInterval = newValue.toLong()) },
                 modifier = Modifier.weight(1f),
-                valueRange = interval.range(),
+                valueRange = interval.intervalRange(),
                 thumb = { SliderSmallThumb() },
             )
 

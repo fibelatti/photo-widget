@@ -5,6 +5,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.tapActionKeepCurrentPhoto
+import com.fibelatti.photowidget.model.tapActionNoShuffle
 import com.fibelatti.photowidget.platform.savedState
 import com.fibelatti.photowidget.widget.CyclePhotoUseCase
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase

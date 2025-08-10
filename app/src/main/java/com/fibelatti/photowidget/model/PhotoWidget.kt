@@ -28,30 +28,6 @@ data class PhotoWidget(
     val isLoading: Boolean = false,
 ) : Parcelable {
 
-    val cyclingEnabled: Boolean
-        get() = photos.size > 1 && cycleMode !is PhotoWidgetCycleMode.Disabled
-
-    val canSort: Boolean
-        get() = PhotoWidgetSource.PHOTOS == source && photos.size > 1 && !shuffle
-
-    val canShuffle: Boolean
-        get() = photos.size > 1
-
-    val tapActionIncreaseBrightness: Boolean
-        get() = tapActions.increaseBrightness
-
-    val tapActionViewOriginalPhoto: Boolean
-        get() = tapActions.viewOriginalPhoto
-
-    val tapActionNoShuffle: Boolean
-        get() = tapActions.noShuffle
-
-    val tapActionKeepCurrentPhoto: Boolean
-        get() = tapActions.keepCurrentPhoto
-
-    val tapActionDisableTap: Boolean
-        get() = tapActions.disableTap
-
     companion object {
 
         /**
@@ -97,3 +73,31 @@ data class PhotoWidget(
         const val POSITIONING_MULTIPLIER: Int = 4
     }
 }
+
+// region ktx
+
+val PhotoWidget.photoCycleEnabled: Boolean
+    get() = photos.size > 1 && cycleMode !is PhotoWidgetCycleMode.Disabled
+
+val PhotoWidget.canSort: Boolean
+    get() = PhotoWidgetSource.PHOTOS == source && photos.size > 1 && !shuffle
+
+val PhotoWidget.canShuffle: Boolean
+    get() = photos.size > 1
+
+val PhotoWidget.tapActionIncreaseBrightness: Boolean
+    get() = tapActions.increaseBrightness
+
+val PhotoWidget.tapActionViewOriginalPhoto: Boolean
+    get() = tapActions.viewOriginalPhoto
+
+val PhotoWidget.tapActionNoShuffle: Boolean
+    get() = tapActions.noShuffle
+
+val PhotoWidget.tapActionKeepCurrentPhoto: Boolean
+    get() = tapActions.keepCurrentPhoto
+
+val PhotoWidget.tapActionDisableTap: Boolean
+    get() = tapActions.disableTap
+
+// endregion ktx

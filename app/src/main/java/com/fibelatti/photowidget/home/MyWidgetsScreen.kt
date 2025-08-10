@@ -48,6 +48,8 @@ import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
+import com.fibelatti.photowidget.model.isWidgetRemoved
+import com.fibelatti.photowidget.model.photoCycleEnabled
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
@@ -77,7 +79,7 @@ fun MyWidgetsScreen(
             }
         }
         val hasDeletedWidgets = remember(widgets) {
-            filteredWidgets.any { it.second.status.isRemoved }
+            filteredWidgets.any { it.second.status.isWidgetRemoved }
         }
 
         AnimatedContent(
@@ -99,13 +101,13 @@ fun MyWidgetsScreen(
                                 .animateItem()
                                 .fillMaxSize()
                                 .clickable {
-                                    if (widget.status.isRemoved) {
+                                    if (widget.status.isWidgetRemoved) {
                                         onRemovedWidgetClick(id, widget.status)
                                     } else {
                                         onCurrentWidgetClick(
                                             /* appWidgetId = */ id,
                                             /* canSync = */ widget.source == PhotoWidgetSource.DIRECTORY,
-                                            /* canLock = */ widget.cyclingEnabled,
+                                            /* canLock = */ widget.photoCycleEnabled,
                                             /* isLocked = */ PhotoWidgetStatus.LOCKED == widget.status,
                                         )
                                     }
@@ -133,7 +135,7 @@ fun MyWidgetsScreen(
                                     )
                                 }
 
-                                widget.status.isRemoved -> {
+                                widget.status.isWidgetRemoved -> {
                                     MyWidgetBadge(
                                         text = stringResource(R.string.photo_widget_home_removed_label),
                                         backgroundColor = MaterialTheme.colorScheme.errorContainer,

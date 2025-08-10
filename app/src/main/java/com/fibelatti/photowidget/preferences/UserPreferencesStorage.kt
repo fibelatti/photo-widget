@@ -7,10 +7,11 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.minutesToLoopingInterval
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.secondsToLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.Time
+import com.fibelatti.photowidget.model.minutesToLoopingInterval
+import com.fibelatti.photowidget.model.repeatIntervalAsSeconds
+import com.fibelatti.photowidget.model.secondsToLoopingInterval
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -174,7 +175,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                         remove(Preference.DEFAULT_SCHEDULE.value)
                         remove(Preference.DEFAULT_INTERVAL_ENABLED.value)
 
-                        putLong(Preference.DEFAULT_INTERVAL.value, value.loopingInterval.toSeconds())
+                        putLong(Preference.DEFAULT_INTERVAL.value, value.loopingInterval.repeatIntervalAsSeconds())
                     }
 
                     is PhotoWidgetCycleMode.Schedule -> {

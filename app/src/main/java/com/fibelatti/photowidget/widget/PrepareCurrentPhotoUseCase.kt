@@ -8,6 +8,8 @@ import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
+import com.fibelatti.photowidget.model.borderPercent
+import com.fibelatti.photowidget.model.getPhotoPath
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.colorForType
 import com.fibelatti.photowidget.platform.getColorPalette
@@ -64,7 +66,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
 
             is PhotoWidgetBorder.MatchPhoto -> getColorPalette(bitmap).colorForType(photoWidget.border.type)
         }
-        val borderPercent = photoWidget.border.getBorderPercent()
+        val borderPercent = photoWidget.border.borderPercent()
 
         Timber.d("Transforming the bitmap")
         val transformedBitmap: Bitmap = if (PhotoWidgetAspectRatio.SQUARE == photoWidget.aspectRatio) {

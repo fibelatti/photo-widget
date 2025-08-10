@@ -59,8 +59,7 @@ enum class PhotoWidgetAspectRatio(
         description = R.string.photo_widget_aspect_ratio_fill_widget_description,
         isConstrained = false,
     ),
-    ;
-
-    val aspectRatio: Float
-        get() = x / y
 }
+
+val PhotoWidgetAspectRatio.rawAspectRatio: Float
+    get() = x / y

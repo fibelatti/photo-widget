@@ -23,6 +23,7 @@ import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.model.tapActionDisableTap
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage

@@ -9,12 +9,13 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.minutesToLoopingInterval
-import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval.Companion.secondsToLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.Time
+import com.fibelatti.photowidget.model.minutesToLoopingInterval
+import com.fibelatti.photowidget.model.repeatIntervalAsSeconds
+import com.fibelatti.photowidget.model.secondsToLoopingInterval
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -104,7 +105,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     remove("${PreferencePrefix.SCHEDULE}$appWidgetId")
                     remove("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId")
 
-                    putLong("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId", cycleMode.loopingInterval.toSeconds())
+                    putLong(
+                        "${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId",
+                        cycleMode.loopingInterval.repeatIntervalAsSeconds(),
+                    )
                 }
 
                 is PhotoWidgetCycleMode.Schedule -> {

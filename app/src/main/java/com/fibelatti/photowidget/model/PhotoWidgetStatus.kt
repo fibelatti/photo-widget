@@ -22,8 +22,7 @@ enum class PhotoWidgetStatus {
      * chooses to.
      */
     KEPT,
-    ;
-
-    val isRemoved: Boolean
-        get() = REMOVED == this || KEPT == this
 }
+
+val PhotoWidgetStatus.isWidgetRemoved: Boolean
+    get() = PhotoWidgetStatus.REMOVED == this || PhotoWidgetStatus.KEPT == this

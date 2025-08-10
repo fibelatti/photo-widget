@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
+import com.fibelatti.photowidget.model.rawAspectRatio
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.ShapesBanner
@@ -232,7 +233,7 @@ private fun DefaultAspectRatioItemRepresentation(
 ) {
     Box(
         modifier = modifier
-            .aspectRatio(ratio = item.aspectRatio)
+            .aspectRatio(ratio = item.rawAspectRatio)
             .background(
                 color = MaterialTheme.colorScheme.onSurface,
                 shape = MaterialTheme.shapes.small,
@@ -268,7 +269,7 @@ private fun OriginalAspectRatioRepresentation(
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .heightIn(max = 80.dp)
-                .aspectRatio(ratio = PhotoWidgetAspectRatio.TALL.aspectRatio)
+                .aspectRatio(ratio = PhotoWidgetAspectRatio.TALL.rawAspectRatio)
                 .background(
                     color = MaterialTheme.colorScheme.onSurface,
                     shape = MaterialTheme.shapes.small,
@@ -279,7 +280,7 @@ private fun OriginalAspectRatioRepresentation(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .widthIn(max = 80.dp)
-                .aspectRatio(ratio = PhotoWidgetAspectRatio.WIDE.aspectRatio)
+                .aspectRatio(ratio = PhotoWidgetAspectRatio.WIDE.rawAspectRatio)
                 .background(
                     color = MaterialTheme.colorScheme.primaryContainer,
                     shape = MaterialTheme.shapes.small,
@@ -294,7 +295,7 @@ private fun FillAspectRatioRepresentation(
 ) {
     Box(
         modifier = modifier
-            .aspectRatio(ratio = PhotoWidgetAspectRatio.FILL_WIDGET.aspectRatio)
+            .aspectRatio(ratio = PhotoWidgetAspectRatio.FILL_WIDGET.rawAspectRatio)
             .background(
                 color = MaterialTheme.colorScheme.onSurface,
                 shape = MaterialTheme.shapes.small,

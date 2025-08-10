@@ -30,6 +30,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.home.HomeViewModel
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
+import com.fibelatti.photowidget.model.isWidgetRemoved
 import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.ui.MyWidgetBadge
@@ -108,7 +109,7 @@ private fun ExistingWidgetPicker(
                         isLoading = widget.isLoading,
                     )
 
-                    if (widget.status.isRemoved) {
+                    if (widget.status.isWidgetRemoved) {
                         MyWidgetBadge(
                             text = stringResource(R.string.photo_widget_home_removed_label),
                             backgroundColor = MaterialTheme.colorScheme.errorContainer,

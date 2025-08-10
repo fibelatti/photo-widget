@@ -10,16 +10,6 @@ data class PhotoWidgetLoopingInterval(
     val timeUnit: TimeUnit,
 ) : Parcelable {
 
-    fun toSeconds(): Long = timeUnit.toSeconds(repeatInterval)
-
-    fun range(): ClosedFloatingPointRange<Float> {
-        return when (timeUnit) {
-            TimeUnit.SECONDS -> MIN_SECONDS.toFloat()..MAX_DEFAULT.toFloat()
-            TimeUnit.HOURS -> MIN_DEFAULT.toFloat()..MAX_HOURS.toFloat()
-            else -> MIN_DEFAULT.toFloat()..MAX_DEFAULT.toFloat()
-        }
-    }
-
     companion object {
 
         const val MAX_DEFAULT: Long = 30
@@ -31,51 +21,69 @@ data class PhotoWidgetLoopingInterval(
             repeatInterval = 24,
             timeUnit = TimeUnit.HOURS,
         )
+    }
+}
 
-        fun Long.minutesToLoopingInterval(): PhotoWidgetLoopingInterval {
-            return if (this <= MAX_DEFAULT) {
-                PhotoWidgetLoopingInterval(
-                    repeatInterval = TimeUnit.MINUTES.toMinutes(this),
-                    timeUnit = TimeUnit.MINUTES,
-                )
-            } else {
-                PhotoWidgetLoopingInterval(
-                    repeatInterval = TimeUnit.MINUTES.toHours(this),
-                    timeUnit = TimeUnit.HOURS,
-                )
-            }
+fun PhotoWidgetLoopingInterval.repeatIntervalAsSeconds(): Long = timeUnit.toSeconds(repeatInterval)
+
+fun PhotoWidgetLoopingInterval.intervalRange(): ClosedFloatingPointRange<Float> {
+    return when (timeUnit) {
+        TimeUnit.SECONDS -> {
+            PhotoWidgetLoopingInterval.MIN_SECONDS.toFloat()..PhotoWidgetLoopingInterval.MAX_DEFAULT.toFloat()
         }
 
-        fun Long.secondsToLoopingInterval(): PhotoWidgetLoopingInterval {
-            return when {
-                this <= MAX_DEFAULT -> {
-                    PhotoWidgetLoopingInterval(
-                        repeatInterval = TimeUnit.SECONDS.toSeconds(this),
-                        timeUnit = TimeUnit.SECONDS,
-                    )
-                }
+        TimeUnit.HOURS -> {
+            PhotoWidgetLoopingInterval.MIN_DEFAULT.toFloat()..PhotoWidgetLoopingInterval.MAX_HOURS.toFloat()
+        }
 
-                this <= TimeUnit.MINUTES.toSeconds(MAX_DEFAULT) -> {
-                    PhotoWidgetLoopingInterval(
-                        repeatInterval = TimeUnit.SECONDS.toMinutes(this),
-                        timeUnit = TimeUnit.MINUTES,
-                    )
-                }
+        else -> {
+            PhotoWidgetLoopingInterval.MIN_DEFAULT.toFloat()..PhotoWidgetLoopingInterval.MAX_DEFAULT.toFloat()
+        }
+    }
+}
 
-                this <= TimeUnit.HOURS.toSeconds(MAX_HOURS) -> {
-                    PhotoWidgetLoopingInterval(
-                        repeatInterval = TimeUnit.SECONDS.toHours(this),
-                        timeUnit = TimeUnit.HOURS,
-                    )
-                }
+fun Long.minutesToLoopingInterval(): PhotoWidgetLoopingInterval {
+    return if (this <= PhotoWidgetLoopingInterval.MAX_DEFAULT) {
+        PhotoWidgetLoopingInterval(
+            repeatInterval = TimeUnit.MINUTES.toMinutes(this),
+            timeUnit = TimeUnit.MINUTES,
+        )
+    } else {
+        PhotoWidgetLoopingInterval(
+            repeatInterval = TimeUnit.MINUTES.toHours(this),
+            timeUnit = TimeUnit.HOURS,
+        )
+    }
+}
 
-                else -> {
-                    PhotoWidgetLoopingInterval(
-                        repeatInterval = TimeUnit.SECONDS.toDays(this),
-                        timeUnit = TimeUnit.DAYS,
-                    )
-                }
-            }
+fun Long.secondsToLoopingInterval(): PhotoWidgetLoopingInterval {
+    return when {
+        this <= PhotoWidgetLoopingInterval.MAX_DEFAULT -> {
+            PhotoWidgetLoopingInterval(
+                repeatInterval = TimeUnit.SECONDS.toSeconds(this),
+                timeUnit = TimeUnit.SECONDS,
+            )
+        }
+
+        this <= TimeUnit.MINUTES.toSeconds(PhotoWidgetLoopingInterval.MAX_DEFAULT) -> {
+            PhotoWidgetLoopingInterval(
+                repeatInterval = TimeUnit.SECONDS.toMinutes(this),
+                timeUnit = TimeUnit.MINUTES,
+            )
+        }
+
+        this <= TimeUnit.HOURS.toSeconds(PhotoWidgetLoopingInterval.MAX_HOURS) -> {
+            PhotoWidgetLoopingInterval(
+                repeatInterval = TimeUnit.SECONDS.toHours(this),
+                timeUnit = TimeUnit.HOURS,
+            )
+        }
+
+        else -> {
+            PhotoWidgetLoopingInterval(
+                repeatInterval = TimeUnit.SECONDS.toDays(this),
+                timeUnit = TimeUnit.DAYS,
+            )
         }
     }
 }

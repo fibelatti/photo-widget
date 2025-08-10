@@ -19,6 +19,7 @@ import androidx.core.graphics.toRectF
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
+import com.fibelatti.photowidget.model.rawAspectRatio
 import kotlin.math.min
 import timber.log.Timber
 
@@ -154,7 +155,7 @@ private fun Bitmap.sourceRect(
                 }
             }
 
-            else -> aspectRatio.aspectRatio
+            else -> aspectRatio.rawAspectRatio
         },
     ).toRect().also { Timber.d("Output rect: $it") }
 }

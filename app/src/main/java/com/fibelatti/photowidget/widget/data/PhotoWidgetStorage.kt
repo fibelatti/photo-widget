@@ -10,6 +10,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.WidgetPhotos
+import com.fibelatti.photowidget.model.allWidgetPhotos
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -206,7 +207,7 @@ class PhotoWidgetStorage @Inject constructor(
         val excludedPhotos: Set<String> = removedPhotos?.map { it.photoId }?.toSet()
             ?: getExcludedPhotoIds(appWidgetId = appWidgetId)
         val allPhotos: List<LocalPhoto> = currentPhotos?.plus(removedPhotos.orEmpty())
-            ?: getSourceWidgetPhotos(appWidgetId = appWidgetId, excludedPhotos = excludedPhotos).all()
+            ?: getSourceWidgetPhotos(appWidgetId = appWidgetId, excludedPhotos = excludedPhotos).allWidgetPhotos()
 
         val newLocalPhotos: List<LocalPhotoDto> = allPhotos.map { localPhoto ->
             LocalPhotoDto(

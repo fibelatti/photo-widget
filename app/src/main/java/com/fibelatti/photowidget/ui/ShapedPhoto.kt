@@ -12,6 +12,9 @@ import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
+import com.fibelatti.photowidget.model.borderPercent
+import com.fibelatti.photowidget.model.getPhotoPath
+import com.fibelatti.photowidget.model.rawAspectRatio
 import com.fibelatti.photowidget.platform.colorForType
 import com.fibelatti.photowidget.platform.getColorPalette
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
@@ -47,7 +50,7 @@ fun ShapedPhoto(
         ),
         isLoading = isLoading,
         contentScale = if (aspectRatio.isConstrained) ContentScale.FillWidth else ContentScale.Fit,
-        modifier = modifier.aspectRatio(ratio = aspectRatio.aspectRatio),
+        modifier = modifier.aspectRatio(ratio = aspectRatio.rawAspectRatio),
         constraintMode = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
             AsyncPhotoViewer.BitmapSizeConstraintMode.SHAPE
         } else {
@@ -63,7 +66,7 @@ fun ShapedPhoto(
 
                 is PhotoWidgetBorder.MatchPhoto -> getColorPalette(bitmap).colorForType(border.type)
             }
-            val borderPercent = border.getBorderPercent()
+            val borderPercent = border.borderPercent()
 
             if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
                 bitmap.withPolygonalShape(

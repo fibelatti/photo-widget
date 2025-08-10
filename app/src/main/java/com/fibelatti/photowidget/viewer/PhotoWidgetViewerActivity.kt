@@ -52,6 +52,10 @@ import com.fibelatti.photowidget.chooser.PhotoWidgetChooserActivity
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.getPhotoPath
+import com.fibelatti.photowidget.model.rawAspectRatio
+import com.fibelatti.photowidget.model.tapActionIncreaseBrightness
+import com.fibelatti.photowidget.model.tapActionViewOriginalPhoto
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
@@ -165,7 +169,7 @@ private fun ScreenContent(
         contentAlignment = Alignment.Center,
     ) {
         ZoomableImageViewer(state = imageViewerState) {
-            var measuredRatio by remember { mutableFloatStateOf(aspectRatio.aspectRatio) }
+            var measuredRatio by remember { mutableFloatStateOf(aspectRatio.rawAspectRatio) }
             var didMeasure by remember { mutableStateOf(false) }
 
             AsyncPhotoViewer(
