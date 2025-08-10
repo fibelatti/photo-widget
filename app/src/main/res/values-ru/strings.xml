@@ -238,9 +238,9 @@
     <string name="translations_dialog_positive_action">Открыть Crowdin</string>
     <string name="translations_dialog_negative_action">Не сейчас</string>
     <!-- Backup -->
-    <string name="backup_explanation_1">Экспортируйте &lt;i>содержимое&lt;/i> и &lt;i>внешний вид&lt;/i> ваших фотовиджетов</string>
+    <string name="backup_explanation_1">Экспортируйте &lt;i&gt;содержимое&lt;/i&gt; и &lt;i&gt;внешний вид&lt;/i&gt; ваших фотовиджетов</string>
     <string name="backup_explanation_2">Восстановите предыдущие виджеты, импортировав файл резервной копии</string>
-    <string name="backup_explanation_3">&lt;b>Виджеты, синхронизированные с папками, нельзя экспортировать.&lt;/b> Разрешение на доступ к выбранным папкам устройства хранится на вашем устройстве и не может быть перенесено. Эти виджеты должны быть созданы с нуля</string>
+    <string name="backup_explanation_3">&lt;b&gt;Виджеты, синхронизированные с папками, нельзя экспортировать.&lt;/b&gt; Разрешение на доступ к выбранным папкам устройства хранится на вашем устройстве и не может быть перенесено. Эти виджеты должны быть созданы с нуля</string>
     <string name="backup_create">Создать резервную копию</string>
     <string name="backup_restore">Восстановить из резервной копии</string>
     <string name="backup_items_title">Виджеты из файла резервной копии</string>

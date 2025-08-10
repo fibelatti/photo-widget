@@ -238,9 +238,9 @@
     <string name="translations_dialog_positive_action">פתח Crowdin</string>
     <string name="translations_dialog_negative_action">לא כעת</string>
     <!-- Backup -->
-    <string name="backup_explanation_1">ייצא את ה&lt;i>תוכן&lt;/i> וה&lt;i>מראה&lt;/i> של ווידג\'טי התמונות שלך</string>
+    <string name="backup_explanation_1">ייצא את ה&lt;i&gt;תוכן&lt;/i&gt; וה&lt;i&gt;מראה&lt;/i&gt; של ווידג\'טי התמונות שלך</string>
     <string name="backup_explanation_2">שחזר את הווידג\'טים הקודמים שלך על ידי ייבוא קובץ גיבוי</string>
-    <string name="backup_explanation_3">&lt;b>ווידג\'טים המסונכרנים עם תיקיות לא ניתנים לייצוא.&lt;/b> ההרשאה לגישה לתיקיות המכשיר הנבחרות מאוחסנת במכשיר שלך ולא ניתנת להעברה. ווידג\'טים אלו חייבים להיווצר מאפס</string>
+    <string name="backup_explanation_3">&lt;b&gt;ווידג\'טים המסונכרנים עם תיקיות לא ניתנים לייצוא.&lt;/b&gt; ההרשאה לגישה לתיקיות המכשיר הנבחרות מאוחסנת במכשיר שלך ולא ניתנת להעברה. ווידג\'טים אלו חייבים להיווצר מאפס</string>
     <string name="backup_create">צור גיבוי</string>
     <string name="backup_restore">שחזר מגיבוי</string>
     <string name="backup_items_title">ווידג\'טים מקובץ הגיבוי</string>

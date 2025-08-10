@@ -226,9 +226,9 @@
     <string name="translations_dialog_positive_action">Crowdin öffnen</string>
     <string name="translations_dialog_negative_action">Nicht jetzt</string>
     <!-- Backup -->
-    <string name="backup_explanation_1">Exportieren Sie den &lt;i>Inhalt&lt;/i> und das &lt;i>Aussehen&lt;/i> Ihrer Foto-Widgets</string>
+    <string name="backup_explanation_1">Exportieren Sie den &lt;i&gt;Inhalt&lt;/i&gt; und das &lt;i&gt;Aussehen&lt;/i&gt; Ihrer Foto-Widgets</string>
     <string name="backup_explanation_2">Stellen Sie Ihre vorherigen Widgets durch den Import einer Sicherungsdatei wieder her</string>
-    <string name="backup_explanation_3">&lt;b>Mit Ordnern synchronisierte Widgets können nicht exportiert werden.&lt;/b> Die Berechtigung zum Zugriff auf die ausgewählten Geräteordner wird auf Ihrem Gerät gespeichert und kann nicht migriert werden. Diese Widgets müssen von Grund auf neu erstellt werden</string>
+    <string name="backup_explanation_3">&lt;b&gt;Mit Ordnern synchronisierte Widgets können nicht exportiert werden.&lt;/b&gt; Die Berechtigung zum Zugriff auf die ausgewählten Geräteordner wird auf Ihrem Gerät gespeichert und kann nicht migriert werden. Diese Widgets müssen von Grund auf neu erstellt werden</string>
     <string name="backup_create">Sicherung erstellen</string>
     <string name="backup_restore">Aus Sicherung wiederherstellen</string>
     <string name="backup_items_title">Widgets aus der Sicherungsdatei</string>
