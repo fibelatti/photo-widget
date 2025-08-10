@@ -226,9 +226,9 @@
     <string name="translations_dialog_positive_action">Crowdin\'i Aç</string>
     <string name="translations_dialog_negative_action">Şimdi değil</string>
     <!-- Backup -->
-    <string name="backup_explanation_1">Foto widget\'lerinizin &lt;i>içeriğini&lt;/i> ve &lt;i>görünümünü&lt;/i> dışa aktarın</string>
+    <string name="backup_explanation_1">Foto widget\'lerinizin &lt;i&gt;içeriğini&lt;/i&gt; ve &lt;i&gt;görünümünü&lt;/i&gt; dışa aktarın</string>
     <string name="backup_explanation_2">Yedekleme dosyasını içe aktararak önceki widget\'larınızı geri yükleyin</string>
-    <string name="backup_explanation_3">&lt;b>Klasörlerle senkronize edilmiş widget\'lar dışa aktarılamaz.&lt;/b> Seçilen cihaz klasörlerine erişim izni cihazınızda saklanır ve taşınamaz. Bu widget\'lar sıfırdan oluşturulmalıdır</string>
+    <string name="backup_explanation_3">&lt;b&gt;Klasörlerle senkronize edilmiş widget\'lar dışa aktarılamaz.&lt;/b&gt; Seçilen cihaz klasörlerine erişim izni cihazınızda saklanır ve taşınamaz. Bu widget\'lar sıfırdan oluşturulmalıdır</string>
     <string name="backup_create">Yedekleme oluştur</string>
     <string name="backup_restore">Yedeklemeden geri yükle</string>
     <string name="backup_items_title">Yedekleme dosyasındaki widget\'lar</string>

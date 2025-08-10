@@ -226,9 +226,9 @@
     <string name="translations_dialog_positive_action">Abrir Crowdin</string>
     <string name="translations_dialog_negative_action">Ahora no</string>
     <!-- Backup -->
-    <string name="backup_explanation_1">Exporte el &lt;i>contenido&lt;/i> y la &lt;i>apariencia&lt;/i> de sus widgets de fotos</string>
+    <string name="backup_explanation_1">Exporte el &lt;i&gt;contenido&lt;/i&gt; y la &lt;i&gt;apariencia&lt;/i&gt; de sus widgets de fotos</string>
     <string name="backup_explanation_2">Restaure sus widgets anteriores importando un archivo de copia de seguridad</string>
-    <string name="backup_explanation_3">&lt;b>Los widgets sincronizados con carpetas no se pueden exportar.&lt;/b> El permiso para acceder a las carpetas seleccionadas del dispositivo se almacena en su dispositivo y no se puede migrar. Esos widgets deben crearse desde cero</string>
+    <string name="backup_explanation_3">&lt;b&gt;Los widgets sincronizados con carpetas no se pueden exportar.&lt;/b&gt; El permiso para acceder a las carpetas seleccionadas del dispositivo se almacena en su dispositivo y no se puede migrar. Esos widgets deben crearse desde cero</string>
     <string name="backup_create">Crear copia de seguridad</string>
     <string name="backup_restore">Restaurar desde copia de seguridad</string>
     <string name="backup_items_title">Widgets del archivo de copia de seguridad</string>

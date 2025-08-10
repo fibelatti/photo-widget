@@ -220,9 +220,9 @@
     <string name="translations_dialog_positive_action">Crowdinを開く</string>
     <string name="translations_dialog_negative_action">今はしない</string>
     <!-- Backup -->
-    <string name="backup_explanation_1">写真ウィジェットの&lt;i>コンテンツ&lt;/i>と&lt;i>外観&lt;/i>をエクスポートする</string>
+    <string name="backup_explanation_1">写真ウィジェットの&lt;i&gt;コンテンツ&lt;/i&gt;と&lt;i&gt;外観&lt;/i&gt;をエクスポートする</string>
     <string name="backup_explanation_2">バックアップファイルをインポートして、以前のウィジェットを復元します</string>
-    <string name="backup_explanation_3">&lt;b>フォルダと同期されたウィジェットはエクスポートできません。&lt;/b> 選択したデバイスフォルダへのアクセス許可はデバイスに保存されており、移行できません。これらのウィジェットは最初から作成する必要があります</string>
+    <string name="backup_explanation_3">&lt;b&gt;フォルダと同期されたウィジェットはエクスポートできません。&lt;/b&gt; 選択したデバイスフォルダへのアクセス許可はデバイスに保存されており、移行できません。これらのウィジェットは最初から作成する必要があります</string>
     <string name="backup_create">バックアップを作成</string>
     <string name="backup_restore">バックアップから復元</string>
     <string name="backup_items_title">バックアップファイルからのウィジェット</string>
