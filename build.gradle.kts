@@ -31,32 +31,45 @@ val javaVersion = JavaVersion.VERSION_21
 allprojects {
     apply<SpotlessPlugin>()
 
-    val disabledRules = listOf(
-        "ktlint_standard_blank-line-before-declaration",
-        "ktlint_standard_function-expression-body",
-        "ktlint_standard_class-signature",
-        "ktlint_standard_function-signature",
-    ).associateWith { "disabled" }
-
     val configuredRules = mapOf(
+        "ktlint_code_style" to "android_studio",
         "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
         "ktlint_ignore_back_ticked_identifier" to true,
     )
 
-    val allRules = disabledRules + configuredRules
+    val disabledRules = listOf(
+        "ktlint_standard_comment-wrapping",
+        "ktlint_standard_class-signature",
+        "ktlint_standard_function-expression-body",
+        "ktlint_standard_function-signature",
+    ).associateWith { "disabled" }
+
+    val allRules = configuredRules + disabledRules
 
     val configureSpotless: SpotlessExtension.() -> Unit = {
         kotlin {
             target("**/*.kt")
             targetExclude("**/build/**/*.kt")
 
-            ktlint().editorConfigOverride(allRules)
+            ktlint("1.7.1")
+                .setEditorConfigPath("${rootProject.projectDir}/.editorconfig")
+                .editorConfigOverride(allRules)
+
+            trimTrailingWhitespace()
+            leadingTabsToSpaces()
+            endWithNewline()
         }
         kotlinGradle {
             target("**/*.kts")
             targetExclude("**/build/**/*.kts")
 
-            ktlint().editorConfigOverride(allRules)
+            ktlint("1.7.1")
+                .setEditorConfigPath("${rootProject.projectDir}/.editorconfig")
+                .editorConfigOverride(allRules)
+
+            trimTrailingWhitespace()
+            leadingTabsToSpaces()
+            endWithNewline()
         }
         format("xml") {
             target("**/*.xml")

@@ -103,14 +103,10 @@ fun MyWidgetsScreen(
                                         onRemovedWidgetClick(id, widget.status)
                                     } else {
                                         onCurrentWidgetClick(
-                                            /* appWidgetId = */
-                                            id,
-                                            /* canSync = */
-                                            widget.source == PhotoWidgetSource.DIRECTORY,
-                                            /* canLock = */
-                                            widget.cyclingEnabled,
-                                            /* isLocked = */
-                                            PhotoWidgetStatus.LOCKED == widget.status,
+                                            /* appWidgetId = */ id,
+                                            /* canSync = */ widget.source == PhotoWidgetSource.DIRECTORY,
+                                            /* canLock = */ widget.cyclingEnabled,
+                                            /* isLocked = */ PhotoWidgetStatus.LOCKED == widget.status,
                                         )
                                     }
                                 },

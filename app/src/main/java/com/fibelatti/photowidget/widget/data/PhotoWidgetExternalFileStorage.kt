@@ -39,10 +39,8 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
         val photos: List<LocalPhoto> = dirUri.map { uri ->
             async {
                 val documentUri = DocumentsContract.buildDocumentUriUsingTree(
-                    /* treeUri = */
-                    uri,
-                    /* documentId = */
-                    DocumentsContract.getTreeDocumentId(uri),
+                    /* treeUri = */ uri,
+                    /* documentId = */ DocumentsContract.getTreeDocumentId(uri),
                 )
                 getPhotos(documentUri = documentUri, croppedPhotos = croppedPhotos, applyValidation = applyValidation)
             }
@@ -106,10 +104,8 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
     private suspend inline fun <T> usingCursor(documentUri: Uri, crossinline block: suspend (Cursor) -> T): T? {
         return withContext(Dispatchers.IO) {
             val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
-                /* treeUri = */
-                documentUri,
-                /* parentDocumentId = */
-                DocumentsContract.getDocumentId(documentUri),
+                /* treeUri = */ documentUri,
+                /* parentDocumentId = */ DocumentsContract.getDocumentId(documentUri),
             )
 
             val projection = arrayOf(
@@ -120,16 +116,11 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
             )
 
             contentResolver.query(
-                /* uri = */
-                childrenUri,
-                /* projection = */
-                projection,
-                /* selection = */
-                null,
-                /* selectionArgs = */
-                null,
-                /* sortOrder = */
-                null,
+                /* uri = */ childrenUri,
+                /* projection = */ projection,
+                /* selection = */ null,
+                /* selectionArgs = */ null,
+                /* sortOrder = */ null,
             )?.use { cursor -> block(cursor) }
         }
     }

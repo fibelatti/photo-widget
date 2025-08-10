@@ -47,16 +47,14 @@ class ToggleCyclingFeedbackActivity : AppCompatActivity() {
         )
 
         Toast.makeText(
-            /* context = */
-            this,
+            /* context = */ this,
             /* resId = */
             if (paused) {
                 R.string.photo_widget_cycling_feedback_resumed
             } else {
                 R.string.photo_widget_cycling_feedback_paused
             },
-            /* duration = */
-            Toast.LENGTH_SHORT,
+            /* duration = */ Toast.LENGTH_SHORT,
         ).show()
 
         finish()

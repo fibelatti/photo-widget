@@ -68,15 +68,10 @@ class PhotoWidgetAlarmManager @Inject constructor(
         if (canScheduleExactAlarms) {
             try {
                 alarmManager.setExact(
-                    /* type = */
-                    AlarmManager.RTC_WAKEUP,
-                    /* triggerAtMillis = */
-                    triggerAtMillis,
+                    /* type = */ AlarmManager.RTC_WAKEUP,
+                    /* triggerAtMillis = */ triggerAtMillis,
                     /* operation = */
-                    ExactRepeatingAlarmReceiver.pendingIntent(
-                        context = context,
-                        appWidgetId = appWidgetId,
-                    ),
+                    ExactRepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId),
                 )
             } catch (_: SecurityException) {
                 Timber.d("SecurityException: fallback to inexact alarm")
@@ -98,12 +93,9 @@ class PhotoWidgetAlarmManager @Inject constructor(
 
     private fun setRepeatingAlarm(triggerAtMillis: Long, intervalMillis: Long, appWidgetId: Int) {
         alarmManager.setRepeating(
-            /* type = */
-            AlarmManager.RTC_WAKEUP,
-            /* triggerAtMillis = */
-            triggerAtMillis,
-            /* intervalMillis = */
-            intervalMillis,
+            /* type = */ AlarmManager.RTC_WAKEUP,
+            /* triggerAtMillis = */ triggerAtMillis,
+            /* intervalMillis = */ intervalMillis,
             /* operation = */
             PhotoWidgetProvider.changePhotoPendingIntent(context = context, appWidgetId = appWidgetId),
         )
@@ -151,15 +143,10 @@ class PhotoWidgetAlarmManager @Inject constructor(
         if (canScheduleExactAlarms) {
             try {
                 alarmManager.setExactAndAllowWhileIdle(
-                    /* type = */
-                    AlarmManager.RTC_WAKEUP,
-                    /* triggerAtMillis = */
-                    calendar.timeInMillis,
+                    /* type = */ AlarmManager.RTC_WAKEUP,
+                    /* triggerAtMillis = */ calendar.timeInMillis,
                     /* operation = */
-                    ExactRepeatingAlarmReceiver.pendingIntent(
-                        context = context,
-                        appWidgetId = appWidgetId,
-                    ),
+                    ExactRepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId),
                 )
             } catch (_: SecurityException) {
                 Timber.d("SecurityException: fallback to inexact alarm")
@@ -172,12 +159,9 @@ class PhotoWidgetAlarmManager @Inject constructor(
 
     private fun setAlarm(triggerAtMillis: Long, appWidgetId: Int) {
         alarmManager.setAndAllowWhileIdle(
-            /* type = */
-            AlarmManager.RTC_WAKEUP,
-            /* triggerAtMillis = */
-            triggerAtMillis,
-            /* operation = */
-            ExactRepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId),
+            /* type = */ AlarmManager.RTC_WAKEUP,
+            /* triggerAtMillis = */ triggerAtMillis,
+            /* operation = */ ExactRepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId),
         )
     }
 }
@@ -205,14 +189,10 @@ class ExactRepeatingAlarmReceiver : EntryPointBroadcastReceiver() {
                 this.appWidgetId = appWidgetId
             }
             return PendingIntent.getBroadcast(
-                /* context = */
-                context,
-                /* requestCode = */
-                appWidgetId,
-                /* intent = */
-                intent,
-                /* flags = */
-                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                /* context = */ context,
+                /* requestCode = */ appWidgetId,
+                /* intent = */ intent,
+                /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
             )
         }
     }
