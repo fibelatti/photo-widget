@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added rotation controls to the crop tool
 * Added the option to create a backup file to export photo widgets
 
+### Changed
+
+* Revised the timer intervals to make them more flexible
+
 ## [v1.31.5] - 2025-07-26
 [v1.31.5]: https://github.com/fibelatti/photo-widget/releases/tag/v1.31.5
 

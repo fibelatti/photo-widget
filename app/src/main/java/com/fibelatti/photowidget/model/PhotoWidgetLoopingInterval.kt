@@ -12,10 +12,11 @@ data class PhotoWidgetLoopingInterval(
 
     companion object {
 
-        const val MAX_DEFAULT: Long = 30
+        const val MAX_DEFAULT: Long = 60
         const val MAX_HOURS: Long = 24
+        const val MAX_DAYS: Long = 31
         const val MIN_DEFAULT: Long = 1
-        const val MIN_SECONDS: Long = 10
+        const val MIN_SECONDS: Long = 5
 
         val ONE_DAY = PhotoWidgetLoopingInterval(
             repeatInterval = 24,
@@ -34,6 +35,10 @@ fun PhotoWidgetLoopingInterval.intervalRange(): ClosedFloatingPointRange<Float> 
 
         TimeUnit.HOURS -> {
             PhotoWidgetLoopingInterval.MIN_DEFAULT.toFloat()..PhotoWidgetLoopingInterval.MAX_HOURS.toFloat()
+        }
+
+        TimeUnit.DAYS -> {
+            PhotoWidgetLoopingInterval.MIN_DEFAULT.toFloat()..PhotoWidgetLoopingInterval.MAX_DAYS.toFloat()
         }
 
         else -> {
