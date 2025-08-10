@@ -187,42 +187,44 @@ private fun AspectRatioItem(
 ) {
     ElevatedCard(
         modifier = modifier
-            .width(140.dp)
-            .height(180.dp)
+            .width(160.dp)
+            .height(240.dp)
             .clip(shape = CardDefaults.elevatedShape)
             .clickable(onClick = onClick),
         colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Box(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+                .weight(1f)
+                .align(Alignment.CenterHorizontally),
+            contentAlignment = Alignment.Center,
         ) {
-            Box(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-                    .weight(1f),
-                contentAlignment = Alignment.Center,
-            ) {
-                itemRepresentation()
-            }
-
-            Text(
-                text = stringResource(id = item.label),
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-
-            Text(
-                text = stringResource(id = item.description),
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.labelSmall,
-            )
-
-            Spacer(modifier = Modifier.size(12.dp))
+            itemRepresentation()
         }
+
+        Text(
+            text = stringResource(id = item.label),
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .align(Alignment.CenterHorizontally),
+            color = MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyMedium,
+        )
+
+        Text(
+            text = stringResource(id = item.description),
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .align(Alignment.CenterHorizontally),
+            color = MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.labelSmall,
+        )
+
+        Spacer(modifier = Modifier.size(12.dp))
     }
 }
 
@@ -268,7 +270,7 @@ private fun OriginalAspectRatioRepresentation(
         Box(
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .heightIn(max = 80.dp)
+                .heightIn(max = 120.dp)
                 .aspectRatio(ratio = PhotoWidgetAspectRatio.TALL.rawAspectRatio)
                 .background(
                     color = MaterialTheme.colorScheme.onSurface,
@@ -279,7 +281,7 @@ private fun OriginalAspectRatioRepresentation(
         Box(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .widthIn(max = 80.dp)
+                .widthIn(max = 100.dp)
                 .aspectRatio(ratio = PhotoWidgetAspectRatio.WIDE.rawAspectRatio)
                 .background(
                     color = MaterialTheme.colorScheme.primaryContainer,

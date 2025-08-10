@@ -55,6 +55,7 @@ import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
@@ -196,7 +197,10 @@ fun MyWidgetsScreen(
                         else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
                     },
                 ) {
-                    Text(stringResource(source?.label ?: R.string.photo_widget_home_filter_all))
+                    AutoSizeText(
+                        text = stringResource(source?.label ?: R.string.photo_widget_home_filter_all),
+                        maxLines = 1,
+                    )
                 }
             }
         }

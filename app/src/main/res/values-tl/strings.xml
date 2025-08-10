@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Widget Host -->
+    <string name="photo_widget_host_description">I-disenyo ang iyong home screen gamit ang iyong mga paboritong larawan</string>
+    <string name="photo_widget_host_loading">Nilo-load ang widget…</string>
+    <string name="photo_widget_host_failed">Nabigo ang pag-load\nMuling subukan?</string>
+    <!-- Home -->
+    <string name="photo_widget_home_title">I-disenyo ang iyong home screen gamit ang iyong mga paboritong larawan</string>
+    <string name="photo_widget_home_instruction">Mag-tap ng isa sa mga pagpipilian upang gumawa ng bagong widget. Huwag mag-alala, maaari mo itong baguhin kahit kailan!</string>
+    <string name="photo_widget_home_new">Bagong Widget</string>
+    <string name="photo_widget_home_current">Mga Widget Ko</string>
+    <string name="photo_widget_home_settings">Mga Setting</string>
+    <string name="photo_widget_home_data_saver">Storage na naka-optimize</string>
+    <string name="photo_widget_home_appearance">Tema ng app</string>
+    <string name="photo_widget_home_true_black_background">True black na background</string>
+    <string name="photo_widget_home_dynamic_colors">Mga kulay ng app</string>
+    <string name="photo_widget_home_translations">Wika ng app</string>
+    <string name="photo_widget_home_backup">Backup</string>
+    <string name="photo_widget_home_share">Ibahagi ang app</string>
+    <string name="photo_widget_home_rate">Mag-iwan ng rebyu</string>
+    <string name="photo_widget_home_help">May hindi gumagana?</string>
+    <string name="photo_widget_home_common_issues">Mga pangkaraniwang isyu</string>
+    <string name="photo_widget_home_privacy_policy">Patakaran sa privacy</string>
+    <string name="photo_widget_home_developer">Binuo ni Filipe Belatti nang may ❤</string>
+    <string name="photo_widget_home_version">Bersyon ng app: %s</string>
+    <string name="photo_widget_home_view_licenses">Mga Lisensya sa OSS</string>
+    <plurals name="photo_widget_home_share_received">
+        <item quantity="one">Nakuha ang 1 larawan. Gumawa ng bagong widget o pumili ng isang nagawa na upang idagdag.</item>
+        <item quantity="other">Nakuha ang %d larawan. Gumawa ng bagong widget o pumili ng isang nagawa na upang idagdag.</item>
+    </plurals>
+    <string name="photo_widget_home_pinning_not_supported_title">Magdagdag ng widget mula mismo sa home screen</string>
+    <string name="photo_widget_home_pinning_not_supported_message">1. Pindutin at hawakan ang isang espasyong bakante\n\n2. Pumili mula sa menyu ng mga widget\n\n3. Hanapin ang Material Photo Widget\n\n4. Isaayos at i-save!</string>
+    <!-- My Widgets -->
+    <string name="photo_widget_home_empty_widgets">Wala ka pang nagawang na widget.\nDito mo mahahanap ang mga widget na nakalagay na sa iyong home screen.</string>
+    <string name="photo_widget_home_filter_all">Lahat</string>
+    <string name="photo_widget_home_locked_label">Naka-lock</string>
+    <string name="photo_widget_home_removed_label">Tinanggal</string>
+    <string name="photo_widget_home_removed_widgets_hint">Wala na sa iyong home screen ang mga tinanggal na widget. Binubura ang mga ito sa app pagkalipas ng 7 araw. Maaari mong piliing \"Panatilihin\" sila.</string>
+    <string name="photo_widget_home_my_widget_action_sync">I-sync sa mga larawang nasa folder</string>
+    <string name="photo_widget_home_my_widget_action_edit">Tingnan / Baguhin</string>
+    <string name="photo_widget_home_my_widget_action_duplicate">Duplikahin</string>
+    <string name="photo_widget_home_my_widget_action_lock">I-lock kasama ang kasalukuyang larawan</string>
+    <string name="photo_widget_home_my_widget_action_unlock">I-unlock ang widget</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">Hindi magbabago ang mga larawan nang awtomatiko o pag pinipindot habang naka-lock ang widget</string>
+    <string name="photo_widget_home_removed_widget_action_restore">Ibalik</string>
+    <string name="photo_widget_home_removed_widget_action_keep">Panatilihin</string>
+    <string name="photo_widget_home_removed_widget_action_delete">Permanenteng burahin</string>
+    <string name="photo_widget_home_my_widget_syncing_feedback">Kinukuha ang mga pinakabagong larawan mula sa folder…</string>
+    <!-- Preferences -->
+    <string name="preferences_data_saver">Bawasan ang paggamit ng imbakan</string>
+    <string name="preferences_data_saver_description">Pag naka-on, kino-compress ang mga larawang idinaragdag sa mga widget upang magtipid ng espasyo sa imbakan. Hindi ito makakaapekto sa kalidad, pero inirerekomenda itong i-off kung may maliit na teksto sa larawan.\n\nNakakaapekto lamang ito sa mga larawang idinaragdag pagkatpos ng pag-on o pag-off ng setting na ito.\n\nHindi ito nakakaapekto sa mga folder na naka-sync dahil binabasa sila mula mismo sa imbakan ng iyong device.</string>
+    <string name="preferences_appearance_follow_system">Sundan ang sistema</string>
+    <string name="preferences_appearance_light">Maliwanag</string>
+    <string name="preferences_appearance_dark">Madilim</string>
+    <string name="preferences_dynamic_colors_enabled">Mga dimanikong kulay</string>
+    <string name="preferences_dynamic_colors_disabled">Paunang setting ng kulay</string>
+    <!-- Widget Defaults -->
+    <string name="widget_defaults_title">Mga paunang setting ng widget</string>
+    <string name="widget_defaults_explanation">Ito ang mga setting na ito ay awtomikong nilalagay kapag gumawa ka ng bagong widget. Nakakatulong ito sa paggawa ng maramihang widget na may parehong pagkakaayos ng setting, kaya hindi mo na kakailanganing baguhin ang mga setting sa bawat widget na linilikha. Hindi makakaapekto ang mga pagbabago rito sa mga widget na nagawa mo na.</string>
+    <string name="widget_defaults_source">Pinagmulan</string>
+    <string name="widget_defaults_shuffle">Paghalu-haluin</string>
+    <string name="widget_defaults_cycling">Timer sa paglipat ng larawan</string>
+    <string name="widget_defaults_shape">Hugis</string>
+    <string name="widget_defaults_corner_radius">Pagkabilog</string>
+    <string name="widget_defaults_opacity">Kalabuan</string>
+    <string name="widget_defaults_saturation">Saturation</string>
+    <string name="widget_defaults_brightness">Liwanag</string>
+    <string name="widget_defaults_tap_action">Aksyon sa pagpindot</string>
+    <string name="widget_defaults_reset">Ibalik ang mga orihinal na setting</string>
+    <!-- Share -->
+    <string name="share_title">Ibahagi sa iba</string>
+    <string name="share_text">Idagdag ang mga paborito mong larawan sa iyong home screen gamit ang Material Photo Widget. I-download nang libre sa %s</string>
+    <!-- Source -->
+    <string name="photo_widget_source_photos">Mga Larawan</string>
+    <string name="photo_widget_source_directory">Folder</string>
+    <!-- Aspect Ratio -->
+    <string name="photo_widget_aspect_ratio_title">Porma</string>
+    <string name="photo_widget_aspect_ratio_shape">Mga Hugis</string>
+    <string name="photo_widget_aspect_ratio_shape_description">Mga hugis ng Material You</string>
+    <string name="photo_widget_aspect_ratio_square">Parisukat</string>
+    <string name="photo_widget_aspect_ratio_tall">Matangkad</string>
+    <string name="photo_widget_aspect_ratio_wide">Malapad</string>
+    <string name="photo_widget_aspect_ratio_original">Orihinal</string>
+    <string name="photo_widget_aspect_ratio_original_description">Angkop sa bawat larawan</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">Punuin</string>
+    <string name="photo_widget_aspect_ratio_fill_widget_description">Angkop sa laki ng widget</string>
+    <!-- Configure -->
+    <string name="photo_widget_configure_navigate_back_warning">Bumalik? Mawawala ang mga pagbabago.</string>
+    <string name="photo_widget_configure_navigate_back_warning_restore">To finish restoring the widget you must add it to home screen. Exit without restoring?</string>
+    <string name="photo_widget_configure_tab_content">Laman</string>
+    <string name="photo_widget_configure_tab_appearance">Itsura</string>
+    <string name="photo_widget_configure_tab_behavior">Pag-uugali</string>
+    <string name="photo_widget_configure_import_prompt">Kumuha mula sa ibang widget?</string>
+    <string name="photo_widget_configure_import_prompt_action">Piliin</string>
+    <string name="photo_widget_configure_import_dialog_title">Piliin ang widget</string>
+    <string name="photo_widget_configure_import_dialog_description">Kokopyahin ang lahat ng mga larawan at setting sa bagong widget</string>
+    <string name="photo_widget_configure_import_error">Hindi nakuha ang lahat ng mga piniling larawan</string>
+    <string name="photo_widget_configure_too_many_photos_error">Hindi lalampas sa 3000 larawan ang laman ng bawat folder na naka-sync. Maaaring pumili ng higit sa isa, at hiwalay ang bilangan sa mga subfolder.\n\nHindi maaaring piliin ang camera roll. Iniisa-isa ang pagproseso ng mga larawan, at nagiging sanhi ng lag sa widget editor at home screen ang mga folder na may libo-libong larawan.</string>
+    <string name="photo_widget_configure_missing_photos_error">Dapat may hindi bababa sa isang larawan ang widget. Maaari lamang burahin ang mga widget mula mismo sa home screen.</string>
+    <string name="photo_widget_configure_menu_source">Pinagmulan</string>
+    <string name="photo_widget_configure_source_description">Maaaring isa-isahin ang pagpili ng mga larawan o i-sync ang widget sa isa o higit sa isang folder. Habang nagsi-sync, awtomatikong idinaragdag sa widget ang mga larawan sa folder. Inu-update ang laman kada-6 na oras.</string>
+    <string name="photo_widget_configure_source_selection_photos">Ipapakita lamang sa widget ang mga larawang pinili mo.</string>
+    <string name="photo_widget_configure_source_selection_directory_empty">Hindi pa naka-sync ang widget na ito sa kahit na anong folder.</string>
+    <string name="photo_widget_configure_source_selection_directory_non_empty">Naka-sync ang widget sa mga folder na ito:</string>
+    <string name="photo_widget_configure_source_keep_current">Panatilihin ang kasalukuyang pinagmulan</string>
+    <string name="photo_widget_configure_source_set_directory">Itakda ang pinagmulan sa Folder</string>
+    <string name="photo_widget_configure_source_set_photos">Itakda ang pinagmulan sa Photos</string>
+    <string name="photo_widget_configure_source_warning">Papalitan ang mga kasalukuyang larawan sa widget kapag binago ang pinagmulan</string>
+    <string name="photo_widget_configure_menu_crop">I-krop</string>
+    <string name="photo_widget_configure_menu_remove">Tanggalin</string>
+    <string name="photo_widget_configure_menu_move_left">Ilipat sa kaliwa</string>
+    <string name="photo_widget_configure_menu_move_right">Ilipat sa kanan</string>
+    <string name="photo_widget_configure_photos_pending_deletion">Mga larawang binura kamakailan</string>
+    <string name="photo_widget_configure_photos_excluded">Mga hindi sinasama sa widget</string>
+    <string name="photo_widget_configure_pick_photo">Pumili ng mga larawan</string>
+    <string name="photo_widget_configure_pick_folder">Pumili ng folder</string>
+    <string name="photo_widget_configure_change_source">Palitan ang pinagmulan</string>
+    <string name="photo_widget_configure_select_cycling_mode">Timer sa paglipat ng larawan</string>
+    <string name="photo_widget_configure_cycling_mode_interval">Agwat ng Oras</string>
+    <string name="photo_widget_configure_cycling_mode_schedule">Iskedyul</string>
+    <string name="photo_widget_configure_cycling_mode_disabled">Naka-off</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">Awtomatikong lilipat sa susunod na larawan ang widget paglipas ng:</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description">Awtomatikong lilipat sa susunod na larawan ang widget araw-araw sa mga oras na ito:</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Hindi awtomatikong magbabago ang mga larawan sa widget.</string>
+    <string name="photo_widget_configure_interval_current_label">Kada %s</string>
+    <plurals name="photo_widget_configure_interval_current_seconds">
+        <item quantity="one">%d segundo</item>
+        <item quantity="other">%d segundo</item>
+    </plurals>
+    <plurals name="photo_widget_configure_interval_current_minutes">
+        <item quantity="one">%d minuto</item>
+        <item quantity="other">%d minuto</item>
+    </plurals>
+    <plurals name="photo_widget_configure_interval_current_hours">
+        <item quantity="one">%d oras</item>
+        <item quantity="other">%d oras</item>
+    </plurals>
+    <plurals name="photo_widget_configure_interval_current_days">
+        <item quantity="one">%d araw</item>
+        <item quantity="other">%d araw</item>
+    </plurals>
+    <string name="photo_widget_configure_interval_seconds_label">Segundo</string>
+    <string name="photo_widget_configure_interval_minutes_label">Minuto</string>
+    <string name="photo_widget_configure_interval_hours_label">Oras</string>
+    <string name="photo_widget_configure_interval_days_label">Araw</string>
+    <string name="photo_widget_configure_schedule_placeholder">Iskedyul nang hindi lalampas sa 4 na beses upang awtomatikong palitan ang mga larawan.</string>
+    <string name="photo_widget_configure_schedule_add_new">Magdagdag ng bago</string>
+    <string name="photo_widget_configure_schedule_limit_reached">Umabot na sa maximum na 4 na beses</string>
+    <plurals name="photo_widget_configure_schedule_times">
+        <item quantity="one">1 beses na pinili</item>
+        <item quantity="other">%d beses na pinili</item>
+    </plurals>
+    <string name="photo_widget_configure_interval_warning">Maaaring magbago ang aktwal na agwat o iskedyul dahil sa mga limitasyong ipinapataw ng Android upang magtipid ng baterya. Upang tiyaking gagana ito ayon sa inaasahan, ibigay ang pahintulot sa ibaba</string>
+    <string name="photo_widget_configure_interval_grant_permission">Ibigay ang pahintulot sa eksaktong alarma</string>
+    <string name="photo_widget_configure_interval_permission_dialog_title">Tungkol sa pahintulot na ito</string>
+    <string name="photo_widget_configure_interval_permission_dialog_description">Maaaring paghigpitan ng Android ang aktibidad sa background upang magtipid ng baterya, at nagiging sanhi ito ng mas mahabang agwat ng oras sa paglipat ng larawan.\n\nPara makapaglipat ng larawan ang mga widget sa tamang agwat ng oras, buksan ang mga setting at pahintulutan ang pagtatakda ng mga alarma at paalala.</string>
+    <string name="photo_widget_configure_interval_open_settings">Buksan ang mga setting</string>
+    <string name="photo_widget_configure_border">Border</string>
+    <string name="photo_widget_configure_border_none">Wala</string>
+    <string name="photo_widget_configure_border_dynamic">Dinamiko</string>
+    <string name="photo_widget_configure_border_color">May kulay</string>
+    <string name="photo_widget_configure_border_color_palette">Palette</string>
+    <string name="photo_widget_configure_border_color_palette_dominant">Pangunahing kulay</string>
+    <string name="photo_widget_configure_border_color_palette_vibrant">Vibrant na kulay</string>
+    <string name="photo_widget_configure_border_color_palette_muted">Muted na kulay</string>
+    <string name="photo_widget_configure_border_explanation">Makakabisa ang mga pagbabago sa susunod na update ng widget pagkatapos mong palitan ang kulay ng tema ng iyong telepono. Buksan lamang ang app upang i-update agad ang lahat ng mga widget.</string>
+    <string name="photo_widget_configure_offset">Offset</string>
+    <string name="photo_widget_configure_offset_current_values">Pahalang: %1$d, Patayo: %2$d</string>
+    <string name="photo_widget_configure_offset_current_horizontal">Pahalang: %1$d</string>
+    <string name="photo_widget_configure_offset_current_vertical">Patayo: %1$d</string>
+    <string name="photo_widget_configure_padding">Padding</string>
+    <string name="photo_widget_configure_tap_action">Aksyon sa pagpindot</string>
+    <string name="photo_widget_configure_tap_action_description">Isaayos ang aksyon sa pagpindot ng bawat lugar.</string>
+    <string name="photo_widget_configure_tap_action_area_left">Kaliwa</string>
+    <string name="photo_widget_configure_tap_action_area_center">Gitna</string>
+    <string name="photo_widget_configure_tap_action_area_right">Kanan</string>
+    <string name="photo_widget_configure_tap_action_none">Wala</string>
+    <string name="photo_widget_configure_tap_action_view_full_screen">I-fullscreen ang larawan</string>
+    <string name="photo_widget_configure_tap_action_view_in_gallery">Tingnan ang larawan sa isang gallery app</string>
+    <string name="photo_widget_configure_tap_action_view_next_photo">Tingnan ang susunod na larawan</string>
+    <string name="photo_widget_configure_tap_action_view_previous_photo">Tingnan ang nakaraang larawan</string>
+    <string name="photo_widget_configure_tap_action_choose_next_photo">Piliin ang susunod na larawan</string>
+    <string name="photo_widget_configure_tap_action_app_shortcut">Magbukas ng app</string>
+    <string name="photo_widget_configure_tap_action_url_shortcut">Magbukas ng link</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">I-on/i-off ang timer</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Pindutin upang ihinto ang timer sa paglipat ng larawan. Muling pumindot upang ituloy. I-o-off ang aksyong ito pag naka-lock ang widget.</string>
+    <string name="photo_widget_configure_tap_action_increase_brightness">Awtomatikong itaas ang liwanag</string>
+    <string name="photo_widget_configure_tap_action_view_original_photo">Tingnan ang orihinal na larawan (walang krop o pag-ikot)</string>
+    <string name="photo_widget_configure_tap_action_do_not_shuffle">Huwag halu-haluin pag ginagamit ang mga viewer button</string>
+    <string name="photo_widget_configure_tap_action_keep_current_photo">Huwag baguhin ang kasalukuyang larawan pag ginagamit ang mga viewer button</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Gumagana sa mga widget na gumagamit ng folder, gagamitin naman ng mga widget na gumagamit ng mga indibidwal na larawan ang \"View photo in full screen.\"</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_warning">Binubuksan ng aksyong ito ang kasalukuyang larawan gamit ang gallery app. Hindi ka makakatingin o makakalipat sa ibang mga larawan.</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Maaari mo ring piliin ang gallery app na gagamitin.</string>
+    <string name="photo_widget_configure_tap_action_choose_app">Piliin ang app</string>
+    <string name="photo_widget_configure_tap_action_disable_tap">Huwag gamitin ang ibang lugar na puwedeng pindutin habang nakahinto ang timer</string>
+    <string name="photo_widget_configure_tap_action_shared_preferences">Ginagamit ng lahat ng lugar para sa aksyon sa pagpindot ang mga setting na ito.</string>
+    <string name="photo_widget_configure_tap_action_shared_selected_app">Ginagamit ng lahat ng lugar para sa aksyon sa pagpindot ang napiling app.</string>
+    <string name="photo_widget_configure_add_to_home">Idagdag sa home screen</string>
+    <string name="photo_widget_configure_save_changes">I-save ang mga pagbabago</string>
+    <string name="photo_widget_configure_widget_pinned">Nadagdag ang widget! Tingnan ang iyong home screen…</string>
+    <string name="photo_widget_time_picker_title">Pumili ng oras</string>
+    <string name="photo_widget_directory_sort_title">Pagbukud-bukurin ang mga larawan</string>
+    <string name="photo_widget_directory_sort_newest_first">Pinakabago muna</string>
+    <string name="photo_widget_directory_sort_oldest_first">Pinakaluma muna</string>
+    <string name="photo_widget_directory_sort_explanation">Batay ang pagbubukud-bukod sa huling petsa ng pagbabago sa orihinal na file ng larawan at nakakaapekto lamang ito sa mga widget na naka-sync sa mga folder.</string>
+    <string name="photo_widget_crop_free_form">Free form</string>
+    <!-- Help -->
+    <string name="help_article_title_1">Hindi gumagana ang pagdagdag ng widget sa home screen</string>
+    <string name="help_article_body_1">Kung may binago ka sa isang widget at walang nangyayari pag sinusubukan mo itong idagdag sa home screen, o kung hindi nito pinapakita ang mga pinili mong larawan, puwede mong subukang idagdag ang widget mula mismo sa iyong home screen.\n\nDepende ang mga hakbang para dito sa iyong bersyon ng Android, tagapaggawa ng telepono, at launcher ng home screen, pero kadalasan, ganito ang mga hakbang:\n\n1. Hawakan nang matagal ang isang bakanteng espasyo sa iyong screen hanggang may lumitaw na menyu.\n2. Hanapin ang opsyong \"Mga Widget.\"\n3. Hanapin ang \"Material Photo Widget\" sa mga magagamit na widget\n4. Hilahin ito sa home screen at isaayos batay sa iyong kagustuhan.</string>
+    <string name="help_article_title_2">Hindi awtomatikong nagbabago ang mga larawan</string>
+    <string name="help_article_body_2">Tantiya lamang ang mga piniling agwat ng oras o iskedyul sa paglipat ng mga larawan. May iba\'t ibang salik na isinasaalang-alang ng Android sa pagtukoy ng aktwal na oras, at may iba\'t ibang mga limitasyong maaaring ipataw ang bawat kumpanyang tagapaggawa ng telepono sa aktibidad sa background.\n\nUpang siguraduhing magbabago ang mga larawan sa tamang oras, bigyan ang pahintulot na \"Eksaktong Alarma\" at siguraduhing walang limitasyon sa beterya na nakatakda rito sa mga setting ng iyong telepono.</string>
+    <string name="help_article_title_3">Hindi gumagana ang widget pagkatapos ng pag-restart ng telepono</string>
+    <string name="help_article_body_3">Pag nire-restart ang iyong telepono, nagbabahagi ng mensahe ang Android sa mga app, upang makapag-restart din sila. Sa kasamaang palad, may mga tagapaggawa ng telepono (tulad ng Xiaomi, Redmi, Huawei, at iba pa) na humaharang sa mensaheng ito.\n\nUpang i-on ang ang pag-andar ng mensaheng ito, palitan ang pahintulot na \"Auto Start\" sa iyong app ng seguridad.</string>
+    <string name="help_article_title_4">Masyadong maliit ang widget</string>
+    <string name="help_article_body_4">Pagkatapos mong ilagay ang widget sa iyong home screen, maaari mo itong hawakan nang matagal upang ipakita ang mga linya sa gilid na puwedeng hilahin para lumaki o lumiit ito.</string>
+    <string name="restriction_warning_hint">May limitasyon sa aktibidad sa background. Maaaring hindi umandar nang maayos ang mga widget. Pumindot para matuto pa.</string>
+    <string name="restriction_warning_dialog_title">Mga limitasyon sa aktibidad sa background at optimisasyon sa baterya</string>
+    <string name="restriction_warning_dialog_body_1">Kailangang umandar sa background ang Material Photo Widget upang i-update ang iyong mga widget. Umaandar lang ito pag kailangan, pero maaaring ihinto ng Android ang app at magdulot ng problema sa pag-andar ng mga widget pag naka-set ang paggamit ng baterya sa \"naka-optimize.\"</string>
+    <string name="restriction_warning_dialog_body_2">Buksan ang mga setting ng app at gawing \"Unrestricted\" ang paggamit nito ng baterya. Kung wala ang opsyon na ito, tingnan ang mga setting ng telepono sa power o baterya.</string>
+    <string name="restriction_warning_dialog_body_3">May mga teleponong mas mahigpit pa at maaaring harangin ang awtomatikong pagsimula ng app pagkatapos ng pag-restart ng telepono. Iba-iba ang mga setting depende sa device — bisitahin ang https://dontkillmyapp.com para sa mas espesipikong mga hakbang.</string>
+    <string name="restriction_warning_open_app_settings">Buksan ang mga setting ng app</string>
+    <string name="restriction_warning_open_power_settings">Buksan ang mga setting sa power</string>
+    <!-- Translations -->
+    <string name="translations_dialog_title">Tumulong sa pagsasalin-wika!</string>
+    <string name="translations_dialog_body">Pinangungunahan ng komunidad ang pagsasalin ng app na ito, at maaari kang tumulong. Puwede kang mag-ambag kung nais mong makakita ng bagong wika, o kung may nakita kang mukhang mali.</string>
+    <string name="translations_dialog_positive_action">Buksan ang Crowdin</string>
+    <string name="translations_dialog_negative_action">Huwag muna</string>
+    <!-- Backup -->
+    <string name="backup_explanation_1">I-export ang &lt;i>nilalaman&lt;/i> at &lt;i>hitsura&lt;/i> ng iyong mga photo widget</string>
+    <string name="backup_explanation_2">Ibalik ang iyong mga nakaraang widget sa pamamagitan ng pag-import ng backup file</string>
+    <string name="backup_explanation_3">&lt;b>Ang mga widget na naka-sync sa mga folder ay hindi maaaring i-export.&lt;/b> Ang pahintulot na i-access ang mga napiling folder ng device ay nakaimbak sa iyong device at hindi maaaring ilipat. Ang mga widget na iyon ay kailangang gawin mula sa simula</string>
+    <string name="backup_create">Gumawa ng backup</string>
+    <string name="backup_restore">Ibalik mula sa backup</string>
+    <string name="backup_items_title">Mga widget mula sa backup file</string>
+    <string name="backup_item_restore">Ibalik</string>
+    <string name="backup_feedback_success">Matagumpay na na-export ang backup!</string>
+    <string name="backup_feedback_error">Nabigo ang paggawa ng backup file. Pakitiyak na mayroon kang mga widget na ie-export at subukang muli.</string>
+    <string name="backup_feedback_restore_error">Nabigo ang pag-restore ng backup. Pakitiyak na pumipili ka ng wastong backup file.</string>
+    <!-- Viewer -->
+    <string name="photo_widget_viewer_all_photos">Lahat ng larawan</string>
+    <!-- Cycling feedback -->
+    <string name="photo_widget_cycling_feedback_paused">Naka-hinto ang timer</string>
+    <string name="photo_widget_cycling_feedback_resumed">Pinatuloy ang timer</string>
+    <!-- Common Actions -->
+    <string name="photo_widget_action_yes">Oo</string>
+    <string name="photo_widget_action_no">Hindi</string>
+    <string name="photo_widget_action_continue">Tumuloy</string>
+    <string name="photo_widget_action_cancel">Kanselahin</string>
+    <string name="photo_widget_action_apply">Ilapat</string>
+    <string name="photo_widget_action_confirm">Kumpirmahin</string>
+    <string name="photo_widget_action_got_it">Sige</string>
+    <string name="photo_widget_action_dismiss">Balewalain</string>
+    <!-- Content Description -->
+    <string name="photo_widget_cd_host">Widget ng Material Photo sa home screen</string>
+</resources>

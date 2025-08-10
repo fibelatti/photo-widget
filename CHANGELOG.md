@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added rotation controls to the crop tool
 * Added the option to create a backup file to export photo widgets
+* Added Tagalog
 
 ### Changed
 
