@@ -25,7 +25,6 @@
     <string name="photo_widget_home_version">Bersyon ng app: %s</string>
     <string name="photo_widget_home_view_licenses">Mga Lisensya sa OSS</string>
     <plurals name="photo_widget_home_share_received">
-        <item quantity="one">Nakuha ang 1 larawan. Gumawa ng bagong widget o pumili ng isang nagawa na upang idagdag.</item>
         <item quantity="other">Nakuha ang %d larawan. Gumawa ng bagong widget o pumili ng isang nagawa na upang idagdag.</item>
     </plurals>
     <string name="photo_widget_home_pinning_not_supported_title">Magdagdag ng widget mula mismo sa home screen</string>
@@ -147,7 +146,6 @@
     <string name="photo_widget_configure_schedule_add_new">Magdagdag ng bago</string>
     <string name="photo_widget_configure_schedule_limit_reached">Umabot na sa maximum na 4 na beses</string>
     <plurals name="photo_widget_configure_schedule_times">
-        <item quantity="one">1 beses na pinili</item>
         <item quantity="other">%d beses na pinili</item>
     </plurals>
     <string name="photo_widget_configure_interval_warning">Maaaring magbago ang aktwal na agwat o iskedyul dahil sa mga limitasyong ipinapataw ng Android upang magtipid ng baterya. Upang tiyaking gagana ito ayon sa inaasahan, ibigay ang pahintulot sa ibaba</string>
