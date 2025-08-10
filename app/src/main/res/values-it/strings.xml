@@ -15,6 +15,7 @@
     <string name="photo_widget_home_true_black_background">Sfondo nero puro</string>
     <string name="photo_widget_home_dynamic_colors">Colori dell\'app</string>
     <string name="photo_widget_home_translations">Lingua dell\'app</string>
+    <string name="photo_widget_home_backup">Backup</string>
     <string name="photo_widget_home_share">Condividi l\'app</string>
     <string name="photo_widget_home_rate">Scrivi una recensione</string>
     <string name="photo_widget_home_help">Qualcosa non funziona?</string>
@@ -224,6 +225,18 @@
     <string name="translations_dialog_body">Questa app utilizza un approccio basato sulla community per le traduzioni, e il tuo aiuto può renderla migliore. Puoi contribuire se desideri vedere una nuova lingua disponibile, o hai notato qualcosa che non ti sembra corretto.</string>
     <string name="translations_dialog_positive_action">Apri Crowdin</string>
     <string name="translations_dialog_negative_action">Non ora</string>
+    <!-- Backup -->
+    <string name="backup_explanation_1">Esporta il &lt;i>contenuto&lt;/i> e l\'&lt;i>aspetto&lt;/i> dei tuoi widget fotografici</string>
+    <string name="backup_explanation_2">Ripristina i tuoi widget precedenti importando un file di backup</string>
+    <string name="backup_explanation_3">&lt;b>I widget sincronizzati con le cartelle non possono essere esportati.&lt;/b> L\'autorizzazione per accedere alle cartelle selezionate del dispositivo è memorizzata nel dispositivo e non può essere migrata. Questi widget devono essere creati da zero</string>
+    <string name="backup_create">Crea backup</string>
+    <string name="backup_restore">Ripristina da backup</string>
+    <string name="backup_items_title">Widget dal file di backup</string>
+    <string name="backup_item_restore">Ripristina</string>
+    <string name="backup_feedback_success">Backup esportato con successo!</string>
+    <string name="backup_feedback_error">Impossibile creare un file di backup. Assicurati di avere widget da esportare e riprova.</string>
+    <string name="backup_feedback_restore_error">Impossibile ripristinare il backup. Assicurati di scegliere un file di backup valido.</string>
+
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Tutte le foto</string>
     <!-- Cycling feedback -->

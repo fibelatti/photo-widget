@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.widget.data
 
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -31,9 +32,9 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
     private val decoder: PhotoDecoder,
 ) {
 
-    private val contentResolver = context.contentResolver
-    private val mimeTypeMap = MimeTypeMap.getSingleton()
-    private val rootDir by lazy {
+    private val contentResolver: ContentResolver = context.contentResolver
+    private val mimeTypeMap: MimeTypeMap = MimeTypeMap.getSingleton()
+    private val rootDir: File by lazy {
         File("${context.filesDir}/widgets").apply {
             mkdirs()
         }
@@ -258,6 +259,19 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
     private suspend fun getCurrentPhotoDir(appWidgetId: Int): File = withContext(Dispatchers.IO) {
         File("$rootDir/current_photos/$appWidgetId").apply {
             mkdirs()
+        }
+    }
+
+    suspend fun exportWidgetDir(appWidgetId: Int, destinationDir: File) {
+        withContext(Dispatchers.IO) {
+            getWidgetDir(appWidgetId = appWidgetId)
+                .copyRecursively(target = File("$destinationDir/$appWidgetId"))
+        }
+    }
+
+    suspend fun importWidgetDir(appWidgetId: Int, sourceDir: File) {
+        withContext(Dispatchers.IO) {
+            sourceDir.copyRecursively(target = getWidgetDir(appWidgetId = appWidgetId))
         }
     }
 

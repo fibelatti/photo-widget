@@ -17,6 +17,7 @@ import com.fibelatti.photowidget.platform.savedState
 import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
 import com.fibelatti.photowidget.widget.DuplicatePhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
+import com.fibelatti.photowidget.widget.RestoreWidgetUseCase
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -45,6 +46,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     private val photoWidgetStorage: PhotoWidgetStorage,
     loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
     private val duplicatePhotoWidgetUseCase: DuplicatePhotoWidgetUseCase,
+    private val restoreWidgetUseCase: RestoreWidgetUseCase,
     private val savePhotoWidgetUseCase: SavePhotoWidgetUseCase,
     deleteStaleDataUseCase: DeleteStaleDataUseCase,
     private val pinningCache: PhotoWidgetPinningCache,
@@ -56,6 +58,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     )
     private val duplicateFromId: Int? by savedStateHandle.savedState()
     private val restoreFromId: Int? by savedStateHandle.savedState()
+    private val backupWidget: PhotoWidget? by savedStateHandle.savedState()
     private val aspectRatio: PhotoWidgetAspectRatio? by savedStateHandle.savedState()
 
     private val _state = MutableStateFlow(PhotoWidgetConfigureState())
@@ -67,13 +70,11 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         viewModelScope.launch {
             deleteStaleDataUseCase()
 
-            val sourceWidget = duplicateFromId?.let {
-                Timber.d("Duplicating widget (duplicateFromId=$it)")
-                duplicatePhotoWidgetUseCase(originalAppWidgetId = it, newAppWidgetId = appWidgetId)
-            } ?: restoreFromId?.let {
-                Timber.d("Restoring widget (restoreFromId=$it)")
-                duplicatePhotoWidgetUseCase(originalAppWidgetId = it, newAppWidgetId = appWidgetId)
-            }
+            val sourceWidget: PhotoWidget? = checkForSourceWidget(
+                duplicateFromId = duplicateFromId,
+                restoreFromId = restoreFromId,
+                backupWidget = backupWidget,
+            )
 
             if (sourceWidget != null) {
                 updateState(photoWidget = sourceWidget, hasEdits = true)
@@ -85,6 +86,44 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             }
 
             checkImportSuggestion()
+        }
+    }
+
+    private suspend fun checkForSourceWidget(
+        duplicateFromId: Int?,
+        restoreFromId: Int?,
+        backupWidget: PhotoWidget?,
+    ): PhotoWidget? {
+        require(listOfNotNull(duplicateFromId, restoreFromId, backupWidget).size <= 1) {
+            "Only one widget source must be provided."
+        }
+
+        return when {
+            duplicateFromId != null -> {
+                Timber.d("Duplicating widget (duplicateFromId=$duplicateFromId)")
+                duplicatePhotoWidgetUseCase(originalAppWidgetId = duplicateFromId, newAppWidgetId = appWidgetId)
+            }
+
+            restoreFromId != null -> {
+                Timber.d("Restoring widget (restoreFromId=$restoreFromId)")
+                duplicatePhotoWidgetUseCase(originalAppWidgetId = restoreFromId, newAppWidgetId = appWidgetId)
+            }
+
+            backupWidget != null -> {
+                Timber.d("Restoring widget from backup (backupWidget=$backupWidget)")
+                runCatching { restoreWidgetUseCase(originalWidget = backupWidget, newAppWidgetId = appWidgetId) }
+                    .onFailure {
+                        Timber.e(it, "Failed to restore widget from backup.")
+                        _state.update { current ->
+                            current.copy(
+                                messages = current.messages + PhotoWidgetConfigureState.Message.MissingBackupData,
+                            )
+                        }
+                    }
+                    .getOrNull()
+            }
+
+            else -> null
         }
     }
 

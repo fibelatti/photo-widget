@@ -15,6 +15,7 @@
     <string name="photo_widget_home_true_black_background">Fondo negro verdadero</string>
     <string name="photo_widget_home_dynamic_colors">Colores de la app</string>
     <string name="photo_widget_home_translations">Idioma de la app</string>
+    <string name="photo_widget_home_backup">Copia de seguridad</string>
     <string name="photo_widget_home_share">Comparte la app</string>
     <string name="photo_widget_home_rate">Escribe una reseña</string>
     <string name="photo_widget_home_help">¿Algo no está funcionando?</string>
@@ -224,6 +225,17 @@
     <string name="translations_dialog_body">Esta aplicación utiliza un enfoque comunitario para las traducciones, y tu ayuda puede mejorarla. Puedes contribuir si quieres ver un nuevo idioma disponible o si detectas algo que no se ve bien.</string>
     <string name="translations_dialog_positive_action">Abrir Crowdin</string>
     <string name="translations_dialog_negative_action">Ahora no</string>
+    <!-- Backup -->
+    <string name="backup_explanation_1">Exporte el &lt;i>contenido&lt;/i> y la &lt;i>apariencia&lt;/i> de sus widgets de fotos</string>
+    <string name="backup_explanation_2">Restaure sus widgets anteriores importando un archivo de copia de seguridad</string>
+    <string name="backup_explanation_3">&lt;b>Los widgets sincronizados con carpetas no se pueden exportar.&lt;/b> El permiso para acceder a las carpetas seleccionadas del dispositivo se almacena en su dispositivo y no se puede migrar. Esos widgets deben crearse desde cero</string>
+    <string name="backup_create">Crear copia de seguridad</string>
+    <string name="backup_restore">Restaurar desde copia de seguridad</string>
+    <string name="backup_items_title">Widgets del archivo de copia de seguridad</string>
+    <string name="backup_item_restore">Restaurar</string>
+    <string name="backup_feedback_success">¡Copia de seguridad exportada con éxito!</string>
+    <string name="backup_feedback_error">No se pudo crear un archivo de copia de seguridad. Asegúrese de tener widgets para exportar y vuelva a intentarlo.</string>
+    <string name="backup_feedback_restore_error">No se pudo restaurar la copia de seguridad. Asegúrese de elegir un archivo de copia de seguridad válido.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Todas las fotos</string>
     <!-- Cycling feedback -->

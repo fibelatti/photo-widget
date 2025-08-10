@@ -254,10 +254,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             appWidgetId: Int,
             remoteViews: RemoteViews,
         ): RemoteViews {
-            val clickIntent = Intent(context, PhotoWidgetConfigureActivity::class.java).apply {
-                setIdentifierCompat("$appWidgetId")
-                this.appWidgetId = appWidgetId
-            }
+            val clickIntent = PhotoWidgetConfigureActivity.editWidgetIntent(
+                context = context,
+                appWidgetId = appWidgetId,
+            )
+
             val pendingIntent = PendingIntent.getActivity(
                 /* context = */
                 context,

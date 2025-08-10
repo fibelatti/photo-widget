@@ -65,6 +65,10 @@
             android:exported="false" />
 
         <activity
+            android:name=".backup.PhotoWidgetBackupActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".configure.PhotoWidgetConfigureActivity"
             android:enableOnBackInvokedCallback="false"
             android:exported="true">

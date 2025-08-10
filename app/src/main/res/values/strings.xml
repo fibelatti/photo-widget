@@ -16,6 +16,7 @@
     <string name="photo_widget_home_true_black_background">True black background</string>
     <string name="photo_widget_home_dynamic_colors">App colors</string>
     <string name="photo_widget_home_translations">App language</string>
+    <string name="photo_widget_home_backup">Backup</string>
     <string name="photo_widget_home_share">Share the app</string>
     <string name="photo_widget_home_rate">Write a review</string>
     <string name="photo_widget_home_help">Something is not working?</string>
@@ -272,6 +273,18 @@
     <string name="translations_dialog_body">This app uses a community-driven approach for translations, and your help can make it better. You can contribute if you would like to see a new language available, or spotted something that doesn\'t look right.</string>
     <string name="translations_dialog_positive_action">Open Crowdin</string>
     <string name="translations_dialog_negative_action">Not now</string>
+
+    <!-- Backup -->
+    <string name="backup_explanation_1">Export the &lt;i>content&lt;/i> and &lt;i>appearance&lt;/i> of your photo widgets</string>
+    <string name="backup_explanation_2">Restore your previous widgets by importing a backup file</string>
+    <string name="backup_explanation_3">&lt;b>Widgets synced with folders cannot be exported.&lt;/b> The permission to access the selected device folders is stored in your device and cannot be migrated. Those widgets must be created from scratch</string>
+    <string name="backup_create">Create backup</string>
+    <string name="backup_restore">Restore from backup</string>
+    <string name="backup_items_title">Widgets from the backup file</string>
+    <string name="backup_item_restore">Restore</string>
+    <string name="backup_feedback_success">Backup exported successfully!</string>
+    <string name="backup_feedback_error">Failed to create a backup file. Please ensure you have widgets to export and try again.</string>
+    <string name="backup_feedback_restore_error">Failed to restore backup. Please make sure you\'re choosing a valid backup file.</string>
 
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">All photos</string>

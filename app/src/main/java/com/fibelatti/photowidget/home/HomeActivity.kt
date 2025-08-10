@@ -27,11 +27,10 @@ import androidx.core.app.ShareCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.backup.PhotoWidgetBackupActivity
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.configure.aspectRatio
-import com.fibelatti.photowidget.configure.duplicateFromId
-import com.fibelatti.photowidget.configure.restoreFromId
 import com.fibelatti.photowidget.configure.sharedPhotos
 import com.fibelatti.photowidget.hints.HintStorage
 import com.fibelatti.photowidget.licenses.OssLicensesActivity
@@ -85,6 +84,9 @@ class HomeActivity : AppCompatActivity() {
                     onAppearanceClick = ::showAppearancePicker,
                     onColorsClick = ::showAppColorsPicker,
                     onAppLanguageClick = ::showTranslationsDialog,
+                    onBackupClick = {
+                        startActivity(PhotoWidgetBackupActivity.newIntent(this))
+                    },
                     onSendFeedbackClick = ::showHelp,
                     onRateClick = ::rateApp,
                     onShareClick = ::shareApp,
@@ -113,7 +115,8 @@ class HomeActivity : AppCompatActivity() {
     private fun checkIntent() {
         if (!intent.hasExtra(Intent.EXTRA_STREAM)) return
 
-        preparedIntent = Intent(this, PhotoWidgetConfigureActivity::class.java).apply {
+        preparedIntent = PhotoWidgetConfigureActivity.newWidgetIntent(
+            context = this,
             sharedPhotos = when {
                 Intent.ACTION_SEND == intent.action -> {
                     (intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let(::listOf)
@@ -124,8 +127,8 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 else -> null
-            }
-        }
+            },
+        )
 
         val size = preparedIntent?.sharedPhotos?.size ?: 0
         if (size == 0) {
@@ -150,9 +153,8 @@ class HomeActivity : AppCompatActivity() {
             return
         }
 
-        val intent = (preparedIntent ?: Intent(this, PhotoWidgetConfigureActivity::class.java)).apply {
-            this.aspectRatio = aspectRatio
-        }
+        val intent: Intent = preparedIntent?.apply { this.aspectRatio = aspectRatio }
+            ?: PhotoWidgetConfigureActivity.newWidgetIntent(context = this, aspectRatio = aspectRatio)
 
         preparedIntent = null
 
@@ -185,17 +187,19 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     MyWidgetOptions.EDIT -> {
-                        val intent = Intent(this, PhotoWidgetConfigureActivity::class.java).apply {
-                            this.appWidgetId = appWidgetId
-                        }
+                        val intent = PhotoWidgetConfigureActivity.editWidgetIntent(
+                            context = this,
+                            appWidgetId = appWidgetId,
+                        )
 
                         startActivity(intent)
                     }
 
                     MyWidgetOptions.DUPLICATE -> {
-                        val intent = Intent(this, PhotoWidgetConfigureActivity::class.java).apply {
-                            this.duplicateFromId = appWidgetId
-                        }
+                        val intent = PhotoWidgetConfigureActivity.duplicateWidgetIntent(
+                            context = this,
+                            appWidgetId = appWidgetId,
+                        )
 
                         startActivity(intent)
                     }
@@ -234,9 +238,10 @@ class HomeActivity : AppCompatActivity() {
             onOptionSelected = { option ->
                 when (option) {
                     RemovedWidgetOptions.RESTORE -> {
-                        val intent = Intent(this, PhotoWidgetConfigureActivity::class.java).apply {
-                            this.restoreFromId = appWidgetId
-                        }
+                        val intent = PhotoWidgetConfigureActivity.restoreWidgetIntent(
+                            context = this,
+                            appWidgetId = appWidgetId,
+                        )
 
                         startActivity(intent)
                     }

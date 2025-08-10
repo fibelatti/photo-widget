@@ -15,6 +15,7 @@
     <string name="photo_widget_home_true_black_background">Настоящий черный фон</string>
     <string name="photo_widget_home_dynamic_colors">Цвета приложения</string>
     <string name="photo_widget_home_translations">Язык приложения</string>
+    <string name="photo_widget_home_backup">Резервная копия</string>
     <string name="photo_widget_home_share">Поделиться приложением</string>
     <string name="photo_widget_home_rate">Оставить отзыв</string>
     <string name="photo_widget_home_help">Что-то не работает?</string>
@@ -236,6 +237,17 @@
     <string name="translations_dialog_body">Это приложение использует подход сообщества для переводов, и ваша помощь может сделать его лучше. Вы можете внести свой вклад, если хотите увидеть новый доступный язык или заметили что-то, что выглядит неправильно.</string>
     <string name="translations_dialog_positive_action">Открыть Crowdin</string>
     <string name="translations_dialog_negative_action">Не сейчас</string>
+    <!-- Backup -->
+    <string name="backup_explanation_1">Экспортируйте &lt;i>содержимое&lt;/i> и &lt;i>внешний вид&lt;/i> ваших фотовиджетов</string>
+    <string name="backup_explanation_2">Восстановите предыдущие виджеты, импортировав файл резервной копии</string>
+    <string name="backup_explanation_3">&lt;b>Виджеты, синхронизированные с папками, нельзя экспортировать.&lt;/b> Разрешение на доступ к выбранным папкам устройства хранится на вашем устройстве и не может быть перенесено. Эти виджеты должны быть созданы с нуля</string>
+    <string name="backup_create">Создать резервную копию</string>
+    <string name="backup_restore">Восстановить из резервной копии</string>
+    <string name="backup_items_title">Виджеты из файла резервной копии</string>
+    <string name="backup_item_restore">Восстановить</string>
+    <string name="backup_feedback_success">Резервная копия успешно экспортирована!</string>
+    <string name="backup_feedback_error">Не удалось создать файл резервной копии. Пожалуйста, убедитесь, что у вас есть виджеты для экспорта, и повторите попытку.</string>
+    <string name="backup_feedback_restore_error">Не удалось восстановить резервную копию. Пожалуйста, убедитесь, что вы выбираете действительный файл резервной копии.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Все фото</string>
     <!-- Cycling feedback -->

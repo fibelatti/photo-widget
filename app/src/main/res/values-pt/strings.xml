@@ -15,6 +15,7 @@
     <string name="photo_widget_home_true_black_background">Fundo preto verdadeiro</string>
     <string name="photo_widget_home_dynamic_colors">Cores do app</string>
     <string name="photo_widget_home_translations">Idioma do app</string>
+    <string name="photo_widget_home_backup">Backup</string>
     <string name="photo_widget_home_share">Compartilhe o app</string>
     <string name="photo_widget_home_rate">Deixe a sua avaliação</string>
     <string name="photo_widget_home_help">Algo não está funcionando?</string>
@@ -224,6 +225,17 @@
     <string name="translations_dialog_body">Este aplicativo utiliza uma abordagem de tradução orientada pela comunidade, e sua ajuda pode melhorá-lo. Você pode contribuir se quiser ver um novo idioma disponível ou se notar algo que não parece certo.</string>
     <string name="translations_dialog_positive_action">Abrir Crowdin</string>
     <string name="translations_dialog_negative_action">Agora não</string>
+    <!-- Backup -->
+    <string name="backup_explanation_1">Exporte o &lt;i>conteúdo&lt;/i> e a &lt;i>aparência&lt;/i> dos seus widgets de fotos</string>
+    <string name="backup_explanation_2">Restaure seus widgets anteriores importando um arquivo de backup</string>
+    <string name="backup_explanation_3">&lt;b>Widgets sincronizados com pastas não podem ser exportados.&lt;/b> A permissão para acessar as pastas selecionadas do dispositivo é armazenada no seu dispositivo e não pode ser migrada. Esses widgets devem ser criados do zero</string>
+    <string name="backup_create">Criar backup</string>
+    <string name="backup_restore">Restaurar do backup</string>
+    <string name="backup_items_title">Widgets do arquivo de backup</string>
+    <string name="backup_item_restore">Restaurar</string>
+    <string name="backup_feedback_success">Backup exportado com sucesso!</string>
+    <string name="backup_feedback_error">Falha ao criar um arquivo de backup. Certifique-se de ter widgets para exportar e tente novamente.</string>
+    <string name="backup_feedback_restore_error">Falha ao restaurar o backup. Certifique-se de estar escolhendo um arquivo de backup válido.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Todas as fotos</string>
     <!-- Cycling feedback -->

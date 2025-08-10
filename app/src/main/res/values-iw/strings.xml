@@ -15,6 +15,7 @@
     <string name="photo_widget_home_true_black_background">רקע שחור אמיתי</string>
     <string name="photo_widget_home_dynamic_colors">צבעי אפליקציה</string>
     <string name="photo_widget_home_translations">שפת האפליקציה</string>
+    <string name="photo_widget_home_backup">גיבוי</string>
     <string name="photo_widget_home_share">שתף את האפליקציה</string>
     <string name="photo_widget_home_rate">כתיבת ביקורת</string>
     <string name="photo_widget_home_help">משהו לא עובד?</string>
@@ -236,6 +237,17 @@
     <string name="translations_dialog_body">אפליקציה זו משתמשת בגישה קהילתית לתרגומים, והעזרה שלך יכולה לשפר אותה. אתה יכול לתרום אם תרצה לראות שפה חדשה זמינה, או אם הבחנת במשהו שלא נראה טוב.</string>
     <string name="translations_dialog_positive_action">פתח Crowdin</string>
     <string name="translations_dialog_negative_action">לא כעת</string>
+    <!-- Backup -->
+    <string name="backup_explanation_1">ייצא את ה&lt;i>תוכן&lt;/i> וה&lt;i>מראה&lt;/i> של ווידג\'טי התמונות שלך</string>
+    <string name="backup_explanation_2">שחזר את הווידג\'טים הקודמים שלך על ידי ייבוא קובץ גיבוי</string>
+    <string name="backup_explanation_3">&lt;b>ווידג\'טים המסונכרנים עם תיקיות לא ניתנים לייצוא.&lt;/b> ההרשאה לגישה לתיקיות המכשיר הנבחרות מאוחסנת במכשיר שלך ולא ניתנת להעברה. ווידג\'טים אלו חייבים להיווצר מאפס</string>
+    <string name="backup_create">צור גיבוי</string>
+    <string name="backup_restore">שחזר מגיבוי</string>
+    <string name="backup_items_title">ווידג\'טים מקובץ הגיבוי</string>
+    <string name="backup_item_restore">שחזר</string>
+    <string name="backup_feedback_success">הגיבוי יוצא בהצלחה!</string>
+    <string name="backup_feedback_error">יצירת קובץ גיבוי נכשלה. אנא ודא שיש לך ווידג\'טים לייצוא ונסה שוב.</string>
+    <string name="backup_feedback_restore_error">שחזור גיבוי נכשל. אנא ודא שאתה בוחר קובץ גיבוי חוקי.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">כל התמונות</string>
     <!-- Cycling feedback -->

@@ -15,6 +15,7 @@
     <string name="photo_widget_home_true_black_background">Fond noir véritable</string>
     <string name="photo_widget_home_dynamic_colors">Couleurs de l\'application</string>
     <string name="photo_widget_home_translations">Langue de l\'application</string>
+    <string name="photo_widget_home_backup">Sauvegarde</string>
     <string name="photo_widget_home_share">Partager l\'application</string>
     <string name="photo_widget_home_rate">Écrire un avis</string>
     <string name="photo_widget_home_help">Quelque chose ne fonctionne pas ?</string>
@@ -224,6 +225,17 @@
     <string name="translations_dialog_body">Cette application utilise une approche communautaire pour les traductions, et votre aide peut l\'améliorer. Vous pouvez contribuer si vous souhaitez qu\'une nouvelle langue soit disponible ou si vous remarquez une anomalie.</string>
     <string name="translations_dialog_positive_action">Ouvrir Crowdin</string>
     <string name="translations_dialog_negative_action">Pas maintenant</string>
+    <!-- Backup -->
+    <string name="backup_explanation_1">Exportez le &lt;i>contenu&lt;/i> et l\'&lt;i>apparence&lt;/i> de vos widgets photo</string>
+    <string name="backup_explanation_2">Restaurez vos widgets précédents en important un fichier de sauvegarde</string>
+    <string name="backup_explanation_3">&lt;b>Les widgets synchronisés avec des dossiers ne peuvent pas être exportés.&lt;/b> L\'autorisation d\'accéder aux dossiers sélectionnés de l\'appareil est stockée sur votre appareil et ne peut pas être migrée. Ces widgets doivent être créés à partir de zéro</string>
+    <string name="backup_create">Créer une sauvegarde</string>
+    <string name="backup_restore">Restaurer à partir de la sauvegarde</string>
+    <string name="backup_items_title">Widgets du fichier de sauvegarde</string>
+    <string name="backup_item_restore">Restaurer</string>
+    <string name="backup_feedback_success">Sauvegarde exportée avec succès !</string>
+    <string name="backup_feedback_error">Échec de la création du fichier de sauvegarde. Veuillez vous assurer que vous avez des widgets à exporter et réessayez.</string>
+    <string name="backup_feedback_restore_error">Échec de la restauration de la sauvegarde. Veuillez vous assurer que vous choisissez un fichier de sauvegarde valide.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Toutes les photos</string>
     <!-- Cycling feedback -->

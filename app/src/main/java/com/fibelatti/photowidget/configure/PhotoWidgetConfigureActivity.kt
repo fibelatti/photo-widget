@@ -24,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoCropActivity.Companion.outputPath
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
@@ -159,7 +160,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     private fun handleBackNav() {
         MaterialAlertDialogBuilder(this)
             .setMessage(
-                if (intent.restoreFromId != null) {
+                if (intent.restoreFromId != null || intent.backupWidget != null) {
                     R.string.photo_widget_configure_navigate_back_warning_restore
                 } else {
                     R.string.photo_widget_configure_navigate_back_warning
@@ -217,6 +218,14 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             is PhotoWidgetConfigureState.Message.MissingPhotos -> {
                 MaterialAlertDialogBuilder(this)
                     .setMessage(R.string.photo_widget_configure_missing_photos_error)
+                    .setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+                    .setOnDismissListener { viewModel.messageHandled(message = message) }
+                    .show()
+            }
+
+            is PhotoWidgetConfigureState.Message.MissingBackupData -> {
+                MaterialAlertDialogBuilder(this)
+                    .setMessage(R.string.backup_feedback_restore_error)
                     .setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
                     .setOnDismissListener { viewModel.messageHandled(message = message) }
                     .show()
@@ -373,5 +382,41 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
         private const val PIN_REQUEST_CODE = 1001
         const val ACTION_FINISH = "FINISH_PHOTO_WIDGET_CONFIGURE_ACTIVITY"
+
+        fun newWidgetIntent(
+            context: Context,
+            aspectRatio: PhotoWidgetAspectRatio? = null,
+            sharedPhotos: List<Uri>? = null,
+        ): Intent {
+            return Intent(context, PhotoWidgetConfigureActivity::class.java).apply {
+                if (aspectRatio != null) this.aspectRatio = aspectRatio
+                if (sharedPhotos != null) this.sharedPhotos = sharedPhotos
+            }
+        }
+
+        fun editWidgetIntent(context: Context, appWidgetId: Int): Intent {
+            return Intent(context, PhotoWidgetConfigureActivity::class.java).apply {
+                setIdentifierCompat("$appWidgetId")
+                this.appWidgetId = appWidgetId
+            }
+        }
+
+        fun duplicateWidgetIntent(context: Context, appWidgetId: Int): Intent {
+            return Intent(context, PhotoWidgetConfigureActivity::class.java).apply {
+                this.duplicateFromId = appWidgetId
+            }
+        }
+
+        fun restoreWidgetIntent(context: Context, appWidgetId: Int): Intent {
+            return Intent(context, PhotoWidgetConfigureActivity::class.java).apply {
+                this.restoreFromId = appWidgetId
+            }
+        }
+
+        fun importWidgetIntent(context: Context, photoWidget: PhotoWidget): Intent {
+            return Intent(context, PhotoWidgetConfigureActivity::class.java).apply {
+                this.backupWidget = photoWidget
+            }
+        }
     }
 }

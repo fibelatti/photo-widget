@@ -68,6 +68,7 @@ fun SettingsScreen(
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
+    onBackupClick: () -> Unit,
     onSendFeedbackClick: () -> Unit,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
@@ -99,6 +100,7 @@ fun SettingsScreen(
         onAppearanceClick = onAppearanceClick,
         onColorsClick = onColorsClick,
         onAppLanguageClick = onAppLanguageClick,
+        onBackupClick = onBackupClick,
         onSendFeedbackClick = onSendFeedbackClick,
         onRateClick = onRateClick,
         onShareClick = onShareClick,
@@ -129,6 +131,7 @@ private fun SettingsScreen(
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
+    onBackupClick: () -> Unit,
     onSendFeedbackClick: () -> Unit,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
@@ -188,6 +191,12 @@ private fun SettingsScreen(
                 icon = R.drawable.ic_translation,
                 label = R.string.photo_widget_home_translations,
                 onClick = onAppLanguageClick,
+            )
+
+            SettingsAction(
+                icon = R.drawable.ic_backup,
+                label = R.string.photo_widget_home_backup,
+                onClick = onBackupClick,
             )
 
             HorizontalDivider()
@@ -346,6 +355,7 @@ private fun SettingsScreenPreview() {
             onAppearanceClick = {},
             onColorsClick = {},
             onAppLanguageClick = {},
+            onBackupClick = {},
             onSendFeedbackClick = {},
             onRateClick = {},
             onShareClick = {},

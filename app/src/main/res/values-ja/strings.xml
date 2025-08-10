@@ -15,6 +15,7 @@
     <string name="photo_widget_home_true_black_background">純粋な黒の背景</string>
     <string name="photo_widget_home_dynamic_colors">アプリの色</string>
     <string name="photo_widget_home_translations">アプリの言語</string>
+    <string name="photo_widget_home_backup">バックアップ</string>
     <string name="photo_widget_home_share">アプリを共有</string>
     <string name="photo_widget_home_rate">レビューを書く</string>
     <string name="photo_widget_home_help">何かが機能していませんか？</string>
@@ -218,6 +219,17 @@
     <string name="translations_dialog_body">このアプリはコミュニティ主導の翻訳アプローチを採用しており、皆様のご協力によりさらに改善されます。新しい言語の追加をご希望の場合や、誤りを見つけた場合はご貢献いただけます。</string>
     <string name="translations_dialog_positive_action">Crowdinを開く</string>
     <string name="translations_dialog_negative_action">今はしない</string>
+    <!-- Backup -->
+    <string name="backup_explanation_1">写真ウィジェットの&lt;i>コンテンツ&lt;/i>と&lt;i>外観&lt;/i>をエクスポートする</string>
+    <string name="backup_explanation_2">バックアップファイルをインポートして、以前のウィジェットを復元します</string>
+    <string name="backup_explanation_3">&lt;b>フォルダと同期されたウィジェットはエクスポートできません。&lt;/b> 選択したデバイスフォルダへのアクセス許可はデバイスに保存されており、移行できません。これらのウィジェットは最初から作成する必要があります</string>
+    <string name="backup_create">バックアップを作成</string>
+    <string name="backup_restore">バックアップから復元</string>
+    <string name="backup_items_title">バックアップファイルからのウィジェット</string>
+    <string name="backup_item_restore">復元</string>
+    <string name="backup_feedback_success">バックアップが正常にエクスポートされました！</string>
+    <string name="backup_feedback_error">バックアップファイルの作成に失敗しました。エクスポートするウィジェットがあることを確認して、もう一度お試しください。</string>
+    <string name="backup_feedback_restore_error">バックアップの復元に失敗しました。有効なバックアップファイルを選択していることを確認してください。</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">すべての写真</string>
     <!-- Cycling feedback -->

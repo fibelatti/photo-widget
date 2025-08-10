@@ -15,6 +15,7 @@
     <string name="photo_widget_home_true_black_background">Echter schwarzer Hintergrund</string>
     <string name="photo_widget_home_dynamic_colors">App-Farben</string>
     <string name="photo_widget_home_translations">App-Sprache</string>
+    <string name="photo_widget_home_backup">Sicherung</string>
     <string name="photo_widget_home_share">App teilen</string>
     <string name="photo_widget_home_rate">Eine Bewertung schreiben</string>
     <string name="photo_widget_home_help">Etwas funktioniert nicht?</string>
@@ -224,6 +225,17 @@
     <string name="translations_dialog_body">Diese App verwendet einen Community-basierten Ansatz für Übersetzungen, und Ihre Hilfe kann sie verbessern. Sie können dazu beitragen, wenn Sie eine neue Sprache verfügbar sehen möchten oder etwas entdeckt haben, das nicht richtig aussieht.</string>
     <string name="translations_dialog_positive_action">Crowdin öffnen</string>
     <string name="translations_dialog_negative_action">Nicht jetzt</string>
+    <!-- Backup -->
+    <string name="backup_explanation_1">Exportieren Sie den &lt;i>Inhalt&lt;/i> und das &lt;i>Aussehen&lt;/i> Ihrer Foto-Widgets</string>
+    <string name="backup_explanation_2">Stellen Sie Ihre vorherigen Widgets durch den Import einer Sicherungsdatei wieder her</string>
+    <string name="backup_explanation_3">&lt;b>Mit Ordnern synchronisierte Widgets können nicht exportiert werden.&lt;/b> Die Berechtigung zum Zugriff auf die ausgewählten Geräteordner wird auf Ihrem Gerät gespeichert und kann nicht migriert werden. Diese Widgets müssen von Grund auf neu erstellt werden</string>
+    <string name="backup_create">Sicherung erstellen</string>
+    <string name="backup_restore">Aus Sicherung wiederherstellen</string>
+    <string name="backup_items_title">Widgets aus der Sicherungsdatei</string>
+    <string name="backup_item_restore">Wiederherstellen</string>
+    <string name="backup_feedback_success">Sicherung erfolgreich exportiert!</string>
+    <string name="backup_feedback_error">Fehler beim Erstellen der Sicherungsdatei. Bitte stellen Sie sicher, dass Sie Widgets zum Exportieren haben, und versuchen Sie es erneut.</string>
+    <string name="backup_feedback_restore_error">Fehler beim Wiederherstellen der Sicherung. Bitte stellen Sie sicher, dass Sie eine gültige Sicherungsdatei auswählen.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Alle Fotos</string>
     <!-- Cycling feedback -->

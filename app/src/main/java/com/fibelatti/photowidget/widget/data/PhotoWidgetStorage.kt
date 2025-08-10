@@ -10,6 +10,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.WidgetPhotos
+import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.days
@@ -518,6 +519,14 @@ class PhotoWidgetStorage @Inject constructor(
             originalAppWidgetId = originalAppWidgetId,
             newAppWidgetId = newAppWidgetId,
         )
+    }
+
+    suspend fun exportWidgetDir(appWidgetId: Int, destinationDir: File) {
+        internalFileStorage.exportWidgetDir(appWidgetId = appWidgetId, destinationDir = destinationDir)
+    }
+
+    suspend fun importWidgetDir(appWidgetId: Int, sourceDir: File) {
+        internalFileStorage.importWidgetDir(appWidgetId = appWidgetId, sourceDir = sourceDir)
     }
 
     companion object {

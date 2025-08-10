@@ -26,6 +26,9 @@ import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonNamingStrategy
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -89,4 +92,12 @@ object PhotoWidgetModule {
         .addLastModifiedToFileCacheKey(enable = true)
         .allowHardware(enable = false)
         .build()
+
+    @Provides
+    @OptIn(ExperimentalSerializationApi::class)
+    fun json(): Json = Json {
+        encodeDefaults = true
+        explicitNulls = false
+        namingStrategy = JsonNamingStrategy.SnakeCase
+    }
 }
