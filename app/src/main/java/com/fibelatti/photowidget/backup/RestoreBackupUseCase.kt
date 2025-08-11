@@ -53,12 +53,12 @@ class RestoreBackupUseCase @Inject constructor(
                 .filterNot { it.isDirectory }
                 .ifEmpty { return@mapNotNull null }
 
-            exported.toPhotoWidget().copy(
-                photos = photoFiles.map {
+            exported.toPhotoWidget(
+                photos = photoFiles.map { file: File ->
                     LocalPhoto(
-                        photoId = it.name,
-                        croppedPhotoPath = it.absolutePath,
-                        originalPhotoPath = "", // Not needed; The dir path will be inferred from the cropped photo path
+                        photoId = file.name,
+                        croppedPhotoPath = file.absolutePath,
+                        originalPhotoPath = null, // The dir path will be inferred from the cropped photo path
                     )
                 },
             )

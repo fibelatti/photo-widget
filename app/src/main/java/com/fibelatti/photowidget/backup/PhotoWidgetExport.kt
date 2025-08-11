@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.backup
 
+import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
@@ -25,7 +26,7 @@ data class PhotoWidgetExport(
     val padding: Int,
 )
 
-fun PhotoWidgetExport.toPhotoWidget(): PhotoWidget {
+fun PhotoWidgetExport.toPhotoWidget(photos: List<LocalPhoto>): PhotoWidget {
     val photoWidgetBorder: PhotoWidgetBorder = when (border) {
         "COLOR" -> {
             PhotoWidgetBorder.Color(
@@ -52,6 +53,7 @@ fun PhotoWidgetExport.toPhotoWidget(): PhotoWidget {
     }
 
     return PhotoWidget(
+        photos = photos,
         aspectRatio = enumValueOfOrNull<PhotoWidgetAspectRatio>(aspectRatio)
             ?: PhotoWidgetAspectRatio.SQUARE,
         shapeId = shapeId,

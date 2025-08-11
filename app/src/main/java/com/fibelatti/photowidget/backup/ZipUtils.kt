@@ -2,6 +2,8 @@ package com.fibelatti.photowidget.backup
 
 import java.io.File
 import java.io.FileInputStream
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
@@ -92,10 +94,12 @@ class ZipUtils @Inject constructor() {
                     entry = currentEntry,
                 )
 
-                totalSize += extractedSize
-                extractedFiles += destFile.absolutePath
+                if (extractedSize >= 0) {
+                    totalSize += extractedSize
+                    extractedFiles += destFile.absolutePath
 
-                Timber.d("Extracted ${destFile.absolutePath} ($extractedSize bytes)")
+                    Timber.d("Extracted ${destFile.absolutePath} ($extractedSize bytes)")
+                }
 
                 zipInputStream.closeEntry()
             }
@@ -131,6 +135,14 @@ class ZipUtils @Inject constructor() {
                 totalBytesRead += bytesRead
                 outputStream.write(buffer, 0, bytesRead)
             }
+        }
+
+        val mimeType: String = Files.probeContentType(Paths.get(destFile.path))
+
+        if (mimeType != "application/json" && !mimeType.startsWith("image/")) {
+            Timber.w("Unexpected file found ($destFile)")
+            destFile.delete()
+            return -1
         }
 
         if (entry.size >= 0 && totalBytesRead != entry.size) {
