@@ -210,6 +210,8 @@ private fun PhotoWidgetBackupContent(
                 .padding(horizontal = 16.dp),
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
+
         Text(
             text = stringResource(R.string.backup_items_title),
             modifier = Modifier.padding(horizontal = 16.dp),
