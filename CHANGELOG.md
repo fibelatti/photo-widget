@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.32.1] - 2025-08-12
+[v1.32.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.32.1
+
+### Fixed
+
+* Fixed the appearance of the chosen tap actions in the configuration screen
+
 ## [v1.32.0] - 2025-08-12
 [v1.32.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.32.0
 
