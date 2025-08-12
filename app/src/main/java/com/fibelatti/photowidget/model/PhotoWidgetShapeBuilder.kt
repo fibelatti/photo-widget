@@ -51,9 +51,10 @@ object PhotoWidgetShapeBuilder {
             id = "fan",
             roundedPolygon = MaterialShapes.Fan,
         ),
-        PhotoWidgetShape.Material(
+        PhotoWidgetShape.Polygon(
             id = "circle",
-            roundedPolygon = MaterialShapes.Circle,
+            numVertices = 8,
+            rounding = 1f,
         ),
         PhotoWidgetShape.Material(
             id = "oval",
