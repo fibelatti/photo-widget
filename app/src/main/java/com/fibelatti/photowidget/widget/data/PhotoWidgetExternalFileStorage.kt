@@ -57,8 +57,36 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
         croppedPhotos: Map<String, LocalPhoto>,
         applyValidation: Boolean = false,
     ): List<LocalPhoto> {
-        return usingCursor(documentUri = documentUri) { cursor ->
-            buildList {
+        return withContext(Dispatchers.IO) {
+            val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
+                /* treeUri = */ documentUri,
+                /* parentDocumentId = */ DocumentsContract.getDocumentId(documentUri),
+            )
+
+            val projection = arrayOf(
+                DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                DocumentsContract.Document.COLUMN_MIME_TYPE,
+                DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+                DocumentsContract.Document.COLUMN_LAST_MODIFIED,
+            )
+
+            val result: MutableList<LocalPhoto> = mutableListOf()
+
+            val cursor: Cursor? = runCatching {
+                contentResolver.query(
+                    /* uri = */ childrenUri,
+                    /* projection = */ projection,
+                    /* selection = */ null,
+                    /* selectionArgs = */ null,
+                    /* sortOrder = */ null,
+                )
+            }.onFailure { throwable ->
+                Timber.e(throwable, "Failed to query children of $documentUri")
+            }.getOrNull()
+
+            if (cursor == null) return@withContext result
+
+            cursor.use { cursor ->
                 while (cursor.moveToNext()) {
                     val documentId = cursor.getString(0)
                     val mimeType = cursor.getString(1)
@@ -74,54 +102,37 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
                             "documentId=$documentId, " +
                             "mimeType=$mimeType, " +
                             "documentName=$documentName, " +
+                            "documentLastModified=$documentLastModified, " +
                             "fileUri=$fileUri, " +
                             "photoId=$photoId" +
                             ")",
                     )
 
-                    if (photoId != null && mimeType in ALLOWED_TYPES && fileUri != null) {
-                        val path = (croppedPhotos[photoId] ?: croppedPhotos[documentName])?.croppedPhotoPath
-                        val localPhoto = LocalPhoto(
-                            photoId = photoId,
-                            croppedPhotoPath = path,
-                            externalUri = fileUri,
-                            timestamp = documentLastModified,
-                        )
+                    when {
+                        photoId != null && mimeType in ALLOWED_TYPES && fileUri != null -> {
+                            val path = (croppedPhotos[photoId] ?: croppedPhotos[documentName])?.croppedPhotoPath
+                            val localPhoto = LocalPhoto(
+                                photoId = photoId,
+                                croppedPhotoPath = path,
+                                externalUri = fileUri,
+                                timestamp = documentLastModified,
+                            )
 
-                        add(localPhoto)
+                            result.add(localPhoto)
 
-                        if (applyValidation && size >= 3_000) {
-                            throw InvalidDirException()
+                            if (applyValidation && result.size >= 3_000) {
+                                throw InvalidDirException()
+                            }
                         }
-                    } else if (documentName?.startsWith(".") != true && mimeType == "vnd.android.document/directory") {
-                        addAll(getPhotos(documentUri = fileUri, croppedPhotos = croppedPhotos))
+
+                        documentName?.startsWith(".") != true && mimeType == "vnd.android.document/directory" -> {
+                            result.addAll(getPhotos(documentUri = fileUri, croppedPhotos = croppedPhotos))
+                        }
                     }
                 }
             }
-        }.orEmpty()
-    }
 
-    private suspend inline fun <T> usingCursor(documentUri: Uri, crossinline block: suspend (Cursor) -> T): T? {
-        return withContext(Dispatchers.IO) {
-            val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
-                /* treeUri = */ documentUri,
-                /* parentDocumentId = */ DocumentsContract.getDocumentId(documentUri),
-            )
-
-            val projection = arrayOf(
-                DocumentsContract.Document.COLUMN_DOCUMENT_ID,
-                DocumentsContract.Document.COLUMN_MIME_TYPE,
-                DocumentsContract.Document.COLUMN_DISPLAY_NAME,
-                DocumentsContract.Document.COLUMN_LAST_MODIFIED,
-            )
-
-            contentResolver.query(
-                /* uri = */ childrenUri,
-                /* projection = */ projection,
-                /* selection = */ null,
-                /* selectionArgs = */ null,
-                /* sortOrder = */ null,
-            )?.use { cursor -> block(cursor) }
+            return@withContext result
         }
     }
 
