@@ -442,11 +442,11 @@ fun PickerDefault(
 
                 AutoSizeText(
                     text = currentValue,
-                    modifier = Modifier.width(140.dp),
+                    modifier = Modifier.width(160.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.End,
                     overflow = TextOverflow.Ellipsis,
-                    maxLines = 2,
+                    maxLines = 3,
                 )
             }
 
