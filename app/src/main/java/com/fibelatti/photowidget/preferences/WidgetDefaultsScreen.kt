@@ -225,8 +225,7 @@ private fun WidgetDefaultsScreen(
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_back),
-                            contentDescription = "",
-                            tint = MaterialTheme.colorScheme.primary,
+                            contentDescription = null,
                         )
                     }
                 },
@@ -374,12 +373,14 @@ fun BooleanDefault(
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
+            AutoSizeText(
                 text = title,
+                modifier = Modifier.weight(1f),
                 style = MaterialTheme.typography.titleMedium,
+                maxLines = 2,
             )
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.width(24.dp))
 
             Switch(
                 checked = currentValue,
@@ -429,21 +430,23 @@ fun PickerDefault(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                Text(
+                AutoSizeText(
                     text = title,
+                    modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.titleMedium,
+                    maxLines = 2,
                 )
 
-                Spacer(modifier = Modifier.width(40.dp))
+                Spacer(modifier = Modifier.width(24.dp))
 
                 AutoSizeText(
                     text = currentValue,
+                    modifier = Modifier.width(140.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.End,
                     overflow = TextOverflow.Ellipsis,
-                    maxLines = 3,
+                    maxLines = 2,
                 )
             }
 
@@ -481,12 +484,14 @@ fun ShapeDefault(
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
+            AutoSizeText(
                 text = title,
+                modifier = Modifier.weight(1f),
                 style = MaterialTheme.typography.titleMedium,
+                maxLines = 2,
             )
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.width(24.dp))
 
             ColoredShape(
                 shapeId = currentValue,

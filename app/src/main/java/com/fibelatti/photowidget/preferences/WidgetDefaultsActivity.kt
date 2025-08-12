@@ -17,7 +17,7 @@ class WidgetDefaultsActivity : AppCompatActivity() {
         setContent {
             AppTheme {
                 WidgetDefaultsScreen(
-                    onNavClick = { finish() },
+                    onNavClick = ::finish,
                 )
             }
         }
