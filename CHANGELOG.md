@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.32.0] - 2025-08-12
+[v1.32.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.32.0
+
 ### Added
 
 * Added rotation controls to the crop tool
