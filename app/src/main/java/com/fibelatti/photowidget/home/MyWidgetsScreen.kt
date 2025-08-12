@@ -3,8 +3,11 @@ package com.fibelatti.photowidget.home
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -85,7 +88,14 @@ fun MyWidgetsScreen(
 
         AnimatedContent(
             targetState = filteredWidgets,
-            transitionSpec = { fadeIn() togetherWith fadeOut() },
+            transitionSpec = {
+                fadeIn(animationSpec = tween(300, delayMillis = 90))
+                    .plus(scaleIn(initialScale = 0.92f, animationSpec = tween(300, delayMillis = 90)))
+                    .togetherWith(
+                        fadeOut(animationSpec = tween(90))
+                            .plus(scaleOut(targetScale = 0.92f, animationSpec = tween(90))),
+                    )
+            },
             label = "MyWidgetsScreen_content",
         ) { items ->
             if (items.isNotEmpty()) {
@@ -99,7 +109,6 @@ fun MyWidgetsScreen(
                     items(items, key = { (id, _) -> id }) { (id, widget) ->
                         Box(
                             modifier = Modifier
-                                .animateItem()
                                 .fillMaxSize()
                                 .clickable {
                                     if (widget.status.isWidgetRemoved) {
