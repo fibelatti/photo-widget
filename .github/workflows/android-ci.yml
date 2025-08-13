@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Project checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Android build
         uses: ./.github/actions/setup-android-build
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Project checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Android build
         uses: ./.github/actions/setup-android-build
@@ -46,7 +46,7 @@ jobs:
 
     steps:
       - name: Project checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Android build
         uses: ./.github/actions/setup-android-build
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Project checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Android build
         uses: ./.github/actions/setup-android-build
