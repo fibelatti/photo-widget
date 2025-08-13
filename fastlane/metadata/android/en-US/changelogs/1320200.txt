@@ -1,0 +1,8 @@
+This version brings the following updates:
+
+* Backup tool — Create a backup file to export your photo widgets
+* Revises the timer intervals to make them more flexible
+* Adds rotation controls back to the crop tool
+* Adds support for webp images when syncing folders
+
+Thanks for using the app!

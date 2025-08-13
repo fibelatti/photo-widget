@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.32.2] - 2025-08-13
+[v1.32.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.32.2
+
+### Fixed
+
+* Fixed the full screen viewer not behaving as expected
+
 ## [v1.32.1] - 2025-08-12
 [v1.32.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.32.1
 
