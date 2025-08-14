@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -21,6 +22,7 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -96,7 +98,7 @@ class PhotoWidgetChooserActivity : AppCompatActivity() {
 }
 
 @Composable
-@OptIn(ExperimentalStdlibApi::class)
+@OptIn(ExperimentalStdlibApi::class, ExperimentalFoundationApi::class)
 private fun ScreenContent(
     photos: List<LocalPhoto>?,
     selectedPhoto: LocalPhoto?,
@@ -128,7 +130,8 @@ private fun ScreenContent(
             return
         }
 
-        val lazyGridState = rememberLazyGridState()
+        val cacheWindow = LazyLayoutCacheWindow(aheadFraction = .5f, behindFraction = .5f)
+        val lazyGridState = rememberLazyGridState(cacheWindow = cacheWindow)
         val currentPhotos by rememberUpdatedState(photos.toMutableStateList())
 
         LazyVerticalGrid(

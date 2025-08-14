@@ -7,6 +7,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -43,6 +44,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -972,6 +974,7 @@ private fun EditingControls(
 
 // region Pickers
 @Composable
+@OptIn(ExperimentalFoundationApi::class)
 private fun PhotoPicker(
     source: PhotoWidgetSource,
     onChangeSource: () -> Unit,
@@ -994,7 +997,8 @@ private fun PhotoPicker(
         val localHaptics = LocalHapticFeedback.current
 
         val currentPhotos by rememberUpdatedState(photos.toMutableStateList())
-        val lazyGridState = rememberLazyGridState()
+        val cacheWindow = LazyLayoutCacheWindow(aheadFraction = .5f, behindFraction = .5f)
+        val lazyGridState = rememberLazyGridState(cacheWindow = cacheWindow)
         val reorderableLazyGridState = rememberReorderableLazyGridState(lazyGridState) { from, to ->
             currentPhotos.apply {
                 add(index = to.index, element = removeAt(index = from.index))
