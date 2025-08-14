@@ -3,6 +3,8 @@ package com.fibelatti.photowidget
 import android.app.Application
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.runtime.Composer
+import androidx.compose.runtime.ExperimentalComposeRuntimeApi
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.fibelatti.photowidget.platform.ConfigurationChangedReceiver
@@ -50,6 +52,7 @@ class App : Application(), Configuration.Provider {
         getReadyToWork()
     }
 
+    @OptIn(ExperimentalComposeRuntimeApi::class)
     private fun setupDebugMode() {
         if (!BuildConfig.DEBUG) return
 
@@ -68,6 +71,8 @@ class App : Application(), Configuration.Provider {
                 .penaltyLog()
                 .build(),
         )
+
+        Composer.setDiagnosticStackTraceEnabled(enabled = true)
     }
 
     private fun setupNightMode() {
