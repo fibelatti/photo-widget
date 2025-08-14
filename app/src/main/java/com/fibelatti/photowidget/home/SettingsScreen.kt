@@ -39,7 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onLayoutRectChanged
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -232,8 +232,8 @@ private fun SettingsScreen(
         SettingsFooter(
             onViewLicensesClick = onViewLicensesClick,
             modifier = Modifier
-                .onLayoutRectChanged {
-                    footerHeight = with(localDensity) { it.height.toDp() }
+                .onGloballyPositioned { coordinates ->
+                    footerHeight = with(localDensity) { coordinates.size.height.toDp() }
                 }
                 .background(
                     brush = Brush.verticalGradient(

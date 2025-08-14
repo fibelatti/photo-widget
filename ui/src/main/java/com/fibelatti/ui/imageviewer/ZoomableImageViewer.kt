@@ -24,7 +24,7 @@ import androidx.compose.ui.input.pointer.util.addPointerInputChange
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.Placeable
-import androidx.compose.ui.layout.onLayoutRectChanged
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Velocity
 import com.fibelatti.ui.foundation.detectZoom
@@ -45,8 +45,11 @@ fun ZoomableImageViewer(
 
     Layout(
         modifier = modifier
-            .onLayoutRectChanged { position ->
-                val currentSize = Size(position.width.toFloat(), position.height.toFloat())
+            .onGloballyPositioned { coordinates ->
+                val currentSize = Size(
+                    width = coordinates.size.width.toFloat(),
+                    height = coordinates.size.height.toFloat(),
+                )
                 if (currentSize != latestSize) {
                     state.updateLayoutSize(currentSize)
                     latestSize = currentSize
