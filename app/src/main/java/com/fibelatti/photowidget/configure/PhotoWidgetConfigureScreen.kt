@@ -1001,7 +1001,9 @@ private fun PhotoPicker(
         val lazyGridState = rememberLazyGridState(cacheWindow = cacheWindow)
         val reorderableLazyGridState = rememberReorderableLazyGridState(lazyGridState) { from, to ->
             currentPhotos.apply {
-                add(index = to.index, element = removeAt(index = from.index))
+                this[to.index] = this[from.index].also {
+                    this[from.index] = this[to.index]
+                }
             }
             localHaptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
         }
