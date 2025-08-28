@@ -97,7 +97,7 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
                         } else {
                             photoWidget.aspectRatio
                         },
-                        onDismissClick = ::finish,
+                        onDismissClick = ::finishAndRemoveTask,
                         showFlipControls = state.showMoveControls,
                         onPreviousClick = viewModel::viewPreviousPhoto,
                         onNextClick = viewModel::viewNextPhoto,
