@@ -1,6 +1,5 @@
 package com.fibelatti.photowidget.platform
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,26 +14,33 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.ui.AppBottomSheet
+import com.fibelatti.photowidget.ui.AppSheetState
 import com.fibelatti.ui.foundation.TextWithLinks
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
-object BackgroundRestrictedSheetDialog {
+@Composable
+fun BackgroundRestrictionBottomSheet(
+    sheetState: AppSheetState,
+) {
+    val localContext = LocalContext.current
 
-    fun show(context: Context) {
-        ComposeBottomSheetDialog(context) {
-            BackgroundPickerContent(
-                onOpenAppSettingsClick = {
-                    context.startActivity(appSettingsIntent(context = context))
-                },
-                onOpenPowerOptimizationSettings = {
-                    context.startActivity(batteryUsageSettingsIntent())
-                },
-            )
-        }.show()
+    AppBottomSheet(
+        sheetState = sheetState,
+    ) {
+        BackgroundPickerContent(
+            onOpenAppSettingsClick = {
+                localContext.startActivity(appSettingsIntent(context = localContext))
+            },
+            onOpenPowerOptimizationSettings = {
+                localContext.startActivity(batteryUsageSettingsIntent())
+            },
+        )
     }
 }
 

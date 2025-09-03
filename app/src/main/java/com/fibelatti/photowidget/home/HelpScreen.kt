@@ -37,12 +37,28 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
+import com.fibelatti.photowidget.ui.AppBottomSheet
+import com.fibelatti.photowidget.ui.AppSheetState
 import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
-fun HelpScreen(
+fun HelpBottomSheet(
+    sheetState: AppSheetState,
+    onBackgroundRestrictionClick: () -> Unit,
+) {
+    AppBottomSheet(
+        sheetState = sheetState,
+    ) {
+        HelpScreen(
+            onBackgroundRestrictionClick = onBackgroundRestrictionClick,
+        )
+    }
+}
+
+@Composable
+private fun HelpScreen(
     onBackgroundRestrictionClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

@@ -37,6 +37,10 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
+import com.fibelatti.photowidget.platform.BackgroundRestrictionBottomSheet
+import com.fibelatti.photowidget.ui.hideBottomSheet
+import com.fibelatti.photowidget.ui.rememberAppSheetState
+import com.fibelatti.photowidget.ui.showBottomSheet
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -52,12 +56,9 @@ fun HomeScreen(
     onColorsClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
     onBackupClick: () -> Unit,
-    onSendFeedbackClick: () -> Unit,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
-    onHelpClick: () -> Unit,
     showBackgroundRestrictionHint: Boolean,
-    onBackgroundRestrictionClick: () -> Unit,
     onDismissWarningClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onViewLicensesClick: () -> Unit,
@@ -66,6 +67,9 @@ fun HomeScreen(
     var currentDestination: HomeNavigationDestination by rememberSaveable {
         mutableStateOf(HomeNavigationDestination.NEW_WIDGET)
     }
+
+    val helpSheetState = rememberAppSheetState()
+    val backgroundRestrictionSheetState = rememberAppSheetState()
 
     Scaffold(
         modifier = modifier,
@@ -95,9 +99,9 @@ fun HomeScreen(
                 HomeNavigationDestination.NEW_WIDGET -> {
                     NewWidgetScreen(
                         onCreateNewWidgetClick = onCreateNewWidgetClick,
-                        onHelpClick = onHelpClick,
+                        onHelpClick = helpSheetState::showBottomSheet,
                         showBackgroundRestrictionHint = showBackgroundRestrictionHint,
-                        onBackgroundRestrictionClick = onBackgroundRestrictionClick,
+                        onBackgroundRestrictionClick = backgroundRestrictionSheetState::showBottomSheet,
                         onDismissWarningClick = onDismissWarningClick,
                     )
                 }
@@ -118,7 +122,7 @@ fun HomeScreen(
                         onColorsClick = onColorsClick,
                         onAppLanguageClick = onAppLanguageClick,
                         onBackupClick = onBackupClick,
-                        onSendFeedbackClick = onSendFeedbackClick,
+                        onSendFeedbackClick = helpSheetState::showBottomSheet,
                         onRateClick = onRateClick,
                         onShareClick = onShareClick,
                         onPrivacyPolicyClick = onPrivacyPolicyClick,
@@ -128,6 +132,18 @@ fun HomeScreen(
             }
         }
     }
+
+    HelpBottomSheet(
+        sheetState = helpSheetState,
+        onBackgroundRestrictionClick = {
+            helpSheetState.hideBottomSheet()
+            backgroundRestrictionSheetState.showBottomSheet()
+        },
+    )
+
+    BackgroundRestrictionBottomSheet(
+        sheetState = backgroundRestrictionSheetState,
+    )
 }
 
 @Composable
@@ -216,12 +232,9 @@ private fun HomeScreenPreview() {
             onColorsClick = {},
             onAppLanguageClick = {},
             onBackupClick = {},
-            onSendFeedbackClick = {},
             onRateClick = {},
             onShareClick = {},
-            onHelpClick = {},
             showBackgroundRestrictionHint = true,
-            onBackgroundRestrictionClick = {},
             onDismissWarningClick = {},
             onPrivacyPolicyClick = {},
             onViewLicensesClick = {},

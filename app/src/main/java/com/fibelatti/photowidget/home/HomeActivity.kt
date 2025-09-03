@@ -37,8 +37,6 @@ import com.fibelatti.photowidget.licenses.OssLicensesActivity
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.platform.AppTheme
-import com.fibelatti.photowidget.platform.BackgroundRestrictedSheetDialog
-import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.platform.widgetPinningNotAvailable
 import com.fibelatti.photowidget.preferences.Appearance
@@ -87,12 +85,9 @@ class HomeActivity : AppCompatActivity() {
                     onBackupClick = {
                         startActivity(PhotoWidgetBackupActivity.newIntent(this))
                     },
-                    onSendFeedbackClick = ::showHelp,
                     onRateClick = ::rateApp,
                     onShareClick = ::shareApp,
-                    onHelpClick = ::showHelp,
                     showBackgroundRestrictionHint = showBackgroundRestrictionHint,
-                    onBackgroundRestrictionClick = ::showBackgroundRestrictionDialog,
                     onDismissWarningClick = {
                         hintStorage.showHomeBackgroundRestrictionsHint = false
                         showBackgroundRestrictionHint = false
@@ -256,21 +251,6 @@ class HomeActivity : AppCompatActivity() {
                 }
             },
         )
-    }
-
-    private fun showHelp() {
-        ComposeBottomSheetDialog(context = this) {
-            HelpScreen(
-                onBackgroundRestrictionClick = {
-                    dismiss()
-                    showBackgroundRestrictionDialog()
-                },
-            )
-        }.show()
-    }
-
-    private fun showBackgroundRestrictionDialog() {
-        BackgroundRestrictedSheetDialog.show(context = this)
     }
 
     private fun showDefaults() {
