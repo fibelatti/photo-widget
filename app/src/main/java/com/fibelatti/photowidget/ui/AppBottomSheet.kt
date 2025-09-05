@@ -6,15 +6,43 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+/**
+ * Custom [ModalBottomSheet] component, which abstracts the show/hide orchestration.
+ *
+ * Sample usage:
+ * ```kotlin
+ * val sheetState = rememberAppSheetState()
+ *
+ * Button(
+ *   onClick = sheetState::showBottomSheet
+ * ) {
+ *   Text("Show bottom sheet")
+ * }
+ *
+ * AppBottomSheet(
+ *   sheetState = sheetState,
+ * ) {
+ *   // Custom content...
+ * }
+ * ```
+ *
+ * @param sheetState [AppSheetState], see [rememberAppSheetState].
+ * @param modifier Optional [Modifier] for the bottom sheet.
+ * @param onDismissRequest Executes when the user clicks outside of the bottom sheet, after sheet animates to Hidden.
+ * @param content The content to be displayed inside the bottom sheet.
+ */
 @Composable
 fun AppBottomSheet(
     sheetState: AppSheetState,
@@ -22,17 +50,36 @@ fun AppBottomSheet(
     onDismissRequest: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    if (!sheetState.isBottomSheetShowing) return
     require(sheetState is AppSheetStateImpl)
 
+    LaunchedEffect(sheetState.isVisible) {
+        if (sheetState.isVisible) {
+            // The caller requested the sheet to be visible: start the show animation
+            // The sheet will be added to the composition below
+            sheetState.state.show()
+        }
+    }
+
+    // The sheet is neither visible or requested to be visible: remove it from the composition
+    if (!sheetState.isBottomSheetShowing) {
+        return
+    }
+
     ModalBottomSheet(
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = {
+            // The sheet was dismissed with a gesture or click outside: clean up the custom state and notify the caller
+            sheetState.isVisible = false
+            onDismissRequest()
+        },
         modifier = modifier,
         sheetState = sheetState.state,
         content = content,
     )
 }
 
+/**
+ * Creates and remembers an [AppSheetState] instance, used to control the visibility of an [AppBottomSheet].
+ */
 @Composable
 fun rememberAppSheetState(
     skipPartiallyExpanded: Boolean = true,
@@ -43,25 +90,48 @@ fun rememberAppSheetState(
     return remember(skipPartiallyExpanded) { AppSheetStateImpl(sheetState, scope) }
 }
 
+/**
+ * Marker interface used to control the behavior of an [AppBottomSheet].
+ *
+ * @see rememberAppSheetState
+ */
 interface AppSheetState
 
 private data class AppSheetStateImpl(
     val state: SheetState,
     val scope: CoroutineScope,
-) : AppSheetState
+) : AppSheetState {
 
+    var isVisible: Boolean by mutableStateOf(false)
+}
+
+/**
+ * Indicates whether the bottom sheet is currently visible, or requested to be visible.
+ */
 val AppSheetState.isBottomSheetShowing: Boolean
     get() {
         require(this is AppSheetStateImpl)
-        return state.isVisible || state.targetValue != SheetValue.Hidden
+        // `Or` is important here to add the `ModalBottomSheet` to the composition before it begins animating
+        // otherwise it would simply appear the first time. It works as expected if opened again.
+        return state.isVisible || isVisible
     }
 
+/**
+ * Shows the bottom sheet associated with the received [AppSheetState].
+ */
 fun AppSheetState.showBottomSheet() {
     require(this is AppSheetStateImpl)
-    scope.launch { state.show() }
+    // Simply mark it to be displayed and let the state change do its thing in `AppBottomSheet`
+    isVisible = true
 }
 
 fun AppSheetState.hideBottomSheet() {
     require(this is AppSheetStateImpl)
     scope.launch { state.hide() }
+        .invokeOnCompletion {
+            // Clean up the state on completion to remove the sheet from the composition
+            if (!state.isVisible) {
+                isVisible = false
+            }
+        }
 }
