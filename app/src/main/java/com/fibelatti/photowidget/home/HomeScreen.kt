@@ -38,6 +38,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.platform.BackgroundRestrictionBottomSheet
+import com.fibelatti.photowidget.preferences.DataSaverBottomSheet
 import com.fibelatti.photowidget.ui.hideBottomSheet
 import com.fibelatti.photowidget.ui.rememberAppSheetState
 import com.fibelatti.photowidget.ui.showBottomSheet
@@ -51,7 +52,6 @@ fun HomeScreen(
     onCurrentWidgetClick: (appWidgetId: Int, canSync: Boolean, canLock: Boolean, isLocked: Boolean) -> Unit,
     onRemovedWidgetClick: (appWidgetId: Int, PhotoWidgetStatus) -> Unit,
     onDefaultsClick: () -> Unit,
-    onDataSaverClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
@@ -70,6 +70,7 @@ fun HomeScreen(
 
     val helpSheetState = rememberAppSheetState()
     val backgroundRestrictionSheetState = rememberAppSheetState()
+    val dataSaverSheetState = rememberAppSheetState()
 
     Scaffold(
         modifier = modifier,
@@ -117,7 +118,7 @@ fun HomeScreen(
                 HomeNavigationDestination.SETTINGS -> {
                     SettingsScreen(
                         onDefaultsClick = onDefaultsClick,
-                        onDataSaverClick = onDataSaverClick,
+                        onDataSaverClick = dataSaverSheetState::showBottomSheet,
                         onAppearanceClick = onAppearanceClick,
                         onColorsClick = onColorsClick,
                         onAppLanguageClick = onAppLanguageClick,
@@ -143,6 +144,10 @@ fun HomeScreen(
 
     BackgroundRestrictionBottomSheet(
         sheetState = backgroundRestrictionSheetState,
+    )
+
+    DataSaverBottomSheet(
+        sheetState = dataSaverSheetState,
     )
 }
 
@@ -227,7 +232,6 @@ private fun HomeScreenPreview() {
             onCurrentWidgetClick = { _, _, _, _ -> },
             onRemovedWidgetClick = { _, _ -> },
             onDefaultsClick = {},
-            onDataSaverClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
             onAppLanguageClick = {},

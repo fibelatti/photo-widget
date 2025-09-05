@@ -40,7 +40,6 @@ import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.platform.widgetPinningNotAvailable
 import com.fibelatti.photowidget.preferences.Appearance
-import com.fibelatti.photowidget.preferences.DataSaverPicker
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.preferences.WidgetDefaultsActivity
 import com.fibelatti.photowidget.ui.Toggle
@@ -78,7 +77,6 @@ class HomeActivity : AppCompatActivity() {
                     onCurrentWidgetClick = ::showExistingWidgetMenu,
                     onRemovedWidgetClick = ::showRemovedWidgetMenu,
                     onDefaultsClick = ::showDefaults,
-                    onDataSaverClick = ::showDataSaverPicker,
                     onAppearanceClick = ::showAppearancePicker,
                     onColorsClick = ::showAppColorsPicker,
                     onAppLanguageClick = ::showTranslationsDialog,
@@ -255,10 +253,6 @@ class HomeActivity : AppCompatActivity() {
 
     private fun showDefaults() {
         startActivity(Intent(this, WidgetDefaultsActivity::class.java))
-    }
-
-    private fun showDataSaverPicker() {
-        DataSaverPicker.show(context = this)
     }
 
     private fun showAppearancePicker() {

@@ -1,6 +1,5 @@
 package com.fibelatti.photowidget.preferences
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,7 +8,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -17,25 +18,31 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
-import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
+import com.fibelatti.photowidget.ui.AppBottomSheet
+import com.fibelatti.photowidget.ui.AppSheetState
 import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
-object DataSaverPicker {
+@Composable
+fun DataSaverBottomSheet(
+    sheetState: AppSheetState,
+) {
+    val localContext = LocalContext.current
+    val userPreferencesStorage = remember(localContext) {
+        entryPoint<PhotoWidgetEntryPoint>(localContext).userPreferencesStorage()
+    }
 
-    fun show(context: Context) {
-        val userPreferencesStorage = entryPoint<PhotoWidgetEntryPoint>(context).userPreferencesStorage()
+    AppBottomSheet(
+        sheetState = sheetState,
+    ) {
+        val preferences by userPreferencesStorage.userPreferences.collectAsStateWithLifecycle()
 
-        ComposeBottomSheetDialog(context) {
-            val preferences by userPreferencesStorage.userPreferences.collectAsStateWithLifecycle()
-
-            DataSaverPickerContent(
-                dataSaver = preferences.dataSaver,
-                onDataSaverChange = { newValue -> userPreferencesStorage.dataSaver = newValue },
-            )
-        }.show()
+        DataSaverPickerContent(
+            dataSaver = preferences.dataSaver,
+            onDataSaverChange = { newValue -> userPreferencesStorage.dataSaver = newValue },
+        )
     }
 }
 
