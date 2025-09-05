@@ -116,6 +116,8 @@ import com.fibelatti.photowidget.preferences.ShapePicker
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.photowidget.ui.rememberAppSheetState
+import com.fibelatti.photowidget.ui.showBottomSheet
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.AllPreviews
@@ -169,6 +171,8 @@ fun PhotoWidgetConfigureScreen(
             label = "ProcessingBlur",
         )
 
+        val directoryPickerSheetState = rememberAppSheetState()
+
         PhotoWidgetConfigureContent(
             photoWidget = photoWidget,
             isUpdating = isUpdating,
@@ -187,12 +191,7 @@ fun PhotoWidgetConfigureScreen(
             onRemovedPhotoClick = onRemovedPhotoClick,
             onCycleModePickerClick = onCycleModePickerClick,
             onShuffleChange = onShuffleChange,
-            onSortClick = {
-                DirectorySortingPicker.show(
-                    context = localContext,
-                    onItemClick = onSortChange,
-                )
-            },
+            onSortClick = directoryPickerSheetState::showBottomSheet,
             onTapActionPickerClick = onTapActionPickerClick,
             onShapeClick = {
                 ComposeBottomSheetDialog(localContext) {
@@ -286,6 +285,11 @@ fun PhotoWidgetConfigureScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .blur(radius = blurRadius),
+        )
+
+        DirectorySortingBottomSheet(
+            sheetState = directoryPickerSheetState,
+            onItemClick = onSortChange,
         )
 
         AnimatedVisibility(

@@ -76,7 +76,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
-import com.fibelatti.photowidget.configure.DirectorySortingPicker
+import com.fibelatti.photowidget.configure.DirectorySortingBottomSheet
 import com.fibelatti.photowidget.configure.PhotoWidgetAspectRatioPicker
 import com.fibelatti.photowidget.configure.PhotoWidgetBrightnessPicker
 import com.fibelatti.photowidget.configure.PhotoWidgetCycleModePicker
@@ -96,6 +96,8 @@ import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.photowidget.ui.rememberAppSheetState
+import com.fibelatti.photowidget.ui.showBottomSheet
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.preview.ThemePreviews
@@ -111,6 +113,8 @@ fun WidgetDefaultsScreen(
 ) {
     val preferences by preferencesViewModel.userPreferences.collectAsStateWithLifecycle()
     val localContext = LocalContext.current
+
+    val directoryPickerSheetState = rememberAppSheetState()
 
     WidgetDefaultsScreen(
         userPreferences = preferences,
@@ -184,13 +188,13 @@ fun WidgetDefaultsScreen(
             )
         },
         onShuffleChange = preferencesViewModel::saveDefaultShuffle,
-        onSortClick = {
-            DirectorySortingPicker.show(
-                context = localContext,
-                onItemClick = preferencesViewModel::saveDefaultSorting,
-            )
-        },
+        onSortClick = directoryPickerSheetState::showBottomSheet,
         onClearDefaultsClick = preferencesViewModel::clearDefaults,
+    )
+
+    DirectorySortingBottomSheet(
+        sheetState = directoryPickerSheetState,
+        onItemClick = preferencesViewModel::saveDefaultSorting,
     )
 }
 

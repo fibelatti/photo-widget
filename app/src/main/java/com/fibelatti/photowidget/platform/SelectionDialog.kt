@@ -20,6 +20,9 @@ import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.fibelatti.photowidget.ui.AppBottomSheet
+import com.fibelatti.photowidget.ui.AppSheetState
+import com.fibelatti.photowidget.ui.hideBottomSheet
 
 object SelectionDialog {
 
@@ -45,6 +48,35 @@ object SelectionDialog {
                 footer = footer,
             )
         }.show()
+    }
+}
+
+@Composable
+fun <T> SelectionDialogBottomSheet(
+    sheetState: AppSheetState,
+    title: String,
+    options: List<T>,
+    optionName: (T) -> String,
+    onOptionSelected: (T) -> Unit,
+    modifier: Modifier = Modifier,
+    optionIcon: (T) -> Int? = { null },
+    footer: @Composable () -> Unit = {},
+) {
+    AppBottomSheet(
+        sheetState = sheetState,
+        modifier = modifier,
+    ) {
+        SelectionDialogContent(
+            title = title,
+            options = options,
+            optionName = optionName,
+            optionIcon = optionIcon,
+            onOptionSelected = { option ->
+                onOptionSelected(option)
+                sheetState.hideBottomSheet()
+            },
+            footer = footer,
+        )
     }
 }
 
