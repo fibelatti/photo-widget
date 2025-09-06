@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.di
 
 import com.fibelatti.photowidget.configure.PhotoWidgetPinningCache
 import com.fibelatti.photowidget.configure.SavePhotoWidgetUseCase
+import com.fibelatti.photowidget.hints.HintStorage
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.CyclePhotoUseCase
@@ -21,6 +22,8 @@ interface PhotoWidgetEntryPoint {
     fun userPreferencesStorage(): UserPreferencesStorage
 
     fun photoWidgetStorage(): PhotoWidgetStorage
+
+    fun hintStorage(): HintStorage
 
     fun photoWidgetPinningCache(): PhotoWidgetPinningCache
 
