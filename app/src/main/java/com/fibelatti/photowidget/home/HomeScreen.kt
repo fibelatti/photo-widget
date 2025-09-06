@@ -37,8 +37,8 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
-import com.fibelatti.photowidget.platform.BackgroundRestrictionBottomSheet
 import com.fibelatti.photowidget.preferences.DataSaverBottomSheet
+import com.fibelatti.photowidget.ui.BackgroundRestrictionBottomSheet
 import com.fibelatti.photowidget.ui.hideBottomSheet
 import com.fibelatti.photowidget.ui.rememberAppSheetState
 import com.fibelatti.photowidget.ui.showBottomSheet

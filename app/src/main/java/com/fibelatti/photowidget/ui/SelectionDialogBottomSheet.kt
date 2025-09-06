@@ -1,6 +1,5 @@
-package com.fibelatti.photowidget.platform
+package com.fibelatti.photowidget.ui
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,36 +19,6 @@ import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.fibelatti.photowidget.ui.AppBottomSheet
-import com.fibelatti.photowidget.ui.AppSheetState
-import com.fibelatti.photowidget.ui.hideBottomSheet
-
-object SelectionDialog {
-
-    fun <T> show(
-        context: Context,
-        title: String,
-        options: List<T>,
-        optionName: (T) -> String,
-        optionIcon: (T) -> Int? = { null },
-        onOptionSelected: (T) -> Unit,
-        footer: @Composable () -> Unit = {},
-    ) {
-        ComposeBottomSheetDialog(context) {
-            SelectionDialogContent(
-                title = title,
-                options = options,
-                optionName = optionName,
-                optionIcon = optionIcon,
-                onOptionSelected = { option ->
-                    onOptionSelected(option)
-                    dismiss()
-                },
-                footer = footer,
-            )
-        }.show()
-    }
-}
 
 @Composable
 fun <T> SelectionDialogBottomSheet(

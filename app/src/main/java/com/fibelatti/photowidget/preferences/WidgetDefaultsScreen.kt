@@ -77,10 +77,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.DirectorySortingBottomSheet
-import com.fibelatti.photowidget.configure.PhotoWidgetAspectRatioPicker
-import com.fibelatti.photowidget.configure.PhotoWidgetBrightnessPicker
-import com.fibelatti.photowidget.configure.PhotoWidgetCycleModePicker
-import com.fibelatti.photowidget.configure.PhotoWidgetSaturationPicker
+import com.fibelatti.photowidget.configure.PhotoWidgetAspectRatioBottomSheet
+import com.fibelatti.photowidget.configure.PhotoWidgetBrightnessBottomSheet
+import com.fibelatti.photowidget.configure.PhotoWidgetCycleModeBottomSheet
+import com.fibelatti.photowidget.configure.PhotoWidgetSaturationBottomSheet
 import com.fibelatti.photowidget.configure.rememberSampleBitmap
 import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -89,13 +89,14 @@ import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
-import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import com.fibelatti.photowidget.ui.AppBottomSheet
 import com.fibelatti.photowidget.ui.ColoredShape
+import com.fibelatti.photowidget.ui.SelectionDialogBottomSheet
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.photowidget.ui.hideBottomSheet
 import com.fibelatti.photowidget.ui.rememberAppSheetState
 import com.fibelatti.photowidget.ui.showBottomSheet
 import com.fibelatti.ui.foundation.dpToPx
@@ -112,90 +113,107 @@ fun WidgetDefaultsScreen(
     onNavClick: () -> Unit,
 ) {
     val preferences by preferencesViewModel.userPreferences.collectAsStateWithLifecycle()
-    val localContext = LocalContext.current
 
+    val aspectRatioPickerSheetState = rememberAppSheetState()
+    val sourcePickerSheetState = rememberAppSheetState()
+    val shapePickerSheetState = rememberAppSheetState()
+    val cornerRadiusPickerSheetState = rememberAppSheetState()
+    val opacityPickerSheetState = rememberAppSheetState()
+    val saturationPickerSheetState = rememberAppSheetState()
+    val brightnessPickerSheetState = rememberAppSheetState()
+    val cycleModePickerSheetState = rememberAppSheetState()
     val directoryPickerSheetState = rememberAppSheetState()
+
+    val localContext = LocalContext.current
 
     WidgetDefaultsScreen(
         userPreferences = preferences,
         onNavClick = onNavClick,
-        onAspectRatioClick = {
-            PhotoWidgetAspectRatioPicker.show(
-                context = localContext,
-                onAspectRatioSelected = preferencesViewModel::saveDefaultAspectRatio,
-            )
-        },
-        onSourceClick = {
-            SelectionDialog.show(
-                context = localContext,
-                title = localContext.getString(R.string.widget_defaults_source),
-                options = PhotoWidgetSource.entries,
-                optionName = { option -> localContext.getString(option.label) },
-                onOptionSelected = preferencesViewModel::saveDefaultSource,
-            )
-        },
-        onShapeClick = {
-            ComposeBottomSheetDialog(localContext) {
-                ShapePicker(
-                    onClick = { newShapeId ->
-                        preferencesViewModel.saveDefaultShape(newShapeId)
-                        dismiss()
-                    },
-                )
-            }.show()
-        },
-        onCornerRadiusClick = {
-            ComposeBottomSheetDialog(localContext) {
-                CornerRadiusPicker(
-                    currentValue = preferences.defaultCornerRadius,
-                    onApplyClick = { newValue ->
-                        preferencesViewModel.saveDefaultCornerRadius(newValue)
-                        dismiss()
-                    },
-                )
-            }.show()
-        },
-        onOpacityClick = {
-            ComposeBottomSheetDialog(localContext) {
-                OpacityPicker(
-                    currentValue = preferences.defaultOpacity,
-                    onApplyClick = { newValue ->
-                        preferencesViewModel.saveDefaultOpacity(newValue)
-                        dismiss()
-                    },
-                )
-            }.show()
-        },
-        onSaturationClick = {
-            PhotoWidgetSaturationPicker.show(
-                context = localContext,
-                currentSaturation = preferences.defaultSaturation,
-                onApplyClick = preferencesViewModel::saveDefaultSaturation,
-            )
-        },
-        onBrightnessClick = {
-            PhotoWidgetBrightnessPicker.show(
-                context = localContext,
-                currentBrightness = preferences.defaultBrightness,
-                onApplyClick = preferencesViewModel::saveDefaultBrightness,
-            )
-        },
-        onIntervalClick = {
-            PhotoWidgetCycleModePicker.show(
-                context = localContext,
-                cycleMode = preferences.defaultCycleMode,
-                onApplyClick = preferencesViewModel::saveDefaultCycleMode,
-            )
-        },
+        onAspectRatioClick = aspectRatioPickerSheetState::showBottomSheet,
+        onSourceClick = sourcePickerSheetState::showBottomSheet,
+        onShapeClick = shapePickerSheetState::showBottomSheet,
+        onCornerRadiusClick = cornerRadiusPickerSheetState::showBottomSheet,
+        onOpacityClick = opacityPickerSheetState::showBottomSheet,
+        onSaturationClick = saturationPickerSheetState::showBottomSheet,
+        onBrightnessClick = brightnessPickerSheetState::showBottomSheet,
+        onIntervalClick = cycleModePickerSheetState::showBottomSheet,
         onShuffleChange = preferencesViewModel::saveDefaultShuffle,
         onSortClick = directoryPickerSheetState::showBottomSheet,
         onClearDefaultsClick = preferencesViewModel::clearDefaults,
+    )
+
+    // region Bottom Sheets
+    PhotoWidgetAspectRatioBottomSheet(
+        sheetState = aspectRatioPickerSheetState,
+        onAspectRatioSelected = preferencesViewModel::saveDefaultAspectRatio,
+    )
+
+    SelectionDialogBottomSheet(
+        sheetState = sourcePickerSheetState,
+        title = stringResource(R.string.widget_defaults_source),
+        options = PhotoWidgetSource.entries,
+        optionName = { option -> localContext.getString(option.label) },
+        onOptionSelected = preferencesViewModel::saveDefaultSource,
+    )
+
+    AppBottomSheet(
+        sheetState = shapePickerSheetState,
+    ) {
+        ShapePicker(
+            onClick = { newShapeId ->
+                preferencesViewModel.saveDefaultShape(newShapeId)
+                shapePickerSheetState.hideBottomSheet()
+            },
+        )
+    }
+
+    AppBottomSheet(
+        sheetState = cornerRadiusPickerSheetState,
+    ) {
+        CornerRadiusPicker(
+            currentValue = preferences.defaultCornerRadius,
+            onApplyClick = { newValue ->
+                preferencesViewModel.saveDefaultCornerRadius(newValue)
+                cornerRadiusPickerSheetState.hideBottomSheet()
+            },
+        )
+    }
+
+    AppBottomSheet(
+        sheetState = opacityPickerSheetState,
+    ) {
+        OpacityPicker(
+            currentValue = preferences.defaultOpacity,
+            onApplyClick = { newValue ->
+                preferencesViewModel.saveDefaultOpacity(newValue)
+                opacityPickerSheetState.hideBottomSheet()
+            },
+        )
+    }
+
+    PhotoWidgetSaturationBottomSheet(
+        sheetState = saturationPickerSheetState,
+        currentSaturation = preferences.defaultSaturation,
+        onApplyClick = preferencesViewModel::saveDefaultSaturation,
+    )
+
+    PhotoWidgetBrightnessBottomSheet(
+        sheetState = brightnessPickerSheetState,
+        currentBrightness = preferences.defaultBrightness,
+        onApplyClick = preferencesViewModel::saveDefaultBrightness,
+    )
+
+    PhotoWidgetCycleModeBottomSheet(
+        sheetState = cycleModePickerSheetState,
+        cycleMode = preferences.defaultCycleMode,
+        onApplyClick = preferencesViewModel::saveDefaultCycleMode,
     )
 
     DirectorySortingBottomSheet(
         sheetState = directoryPickerSheetState,
         onItemClick = preferencesViewModel::saveDefaultSorting,
     )
+    // endregion Bottom Sheets
 }
 
 @Composable

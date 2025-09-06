@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.platform
+package com.fibelatti.photowidget.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,8 +18,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
-import com.fibelatti.photowidget.ui.AppBottomSheet
-import com.fibelatti.photowidget.ui.AppSheetState
+import com.fibelatti.photowidget.platform.appSettingsIntent
+import com.fibelatti.photowidget.platform.batteryUsageSettingsIntent
 import com.fibelatti.ui.foundation.TextWithLinks
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme

@@ -1,6 +1,5 @@
 package com.fibelatti.photowidget.configure
 
-import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -46,34 +45,34 @@ import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
+import com.fibelatti.photowidget.ui.AppBottomSheet
+import com.fibelatti.photowidget.ui.AppSheetState
+import com.fibelatti.photowidget.ui.hideBottomSheet
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 
-object PhotoWidgetSourcePicker {
-
-    fun show(
-        context: Context,
-        currentSource: PhotoWidgetSource,
-        syncedDir: Set<Uri>,
-        onDirRemoved: (Uri) -> Unit,
-        onChangeSource: () -> Unit,
+@Composable
+fun PhotoWidgetSourceBottomSheet(
+    sheetState: AppSheetState,
+    currentSource: PhotoWidgetSource,
+    syncedDir: Set<Uri>,
+    onDirRemoved: (Uri) -> Unit,
+    onChangeSource: () -> Unit,
+) {
+    AppBottomSheet(
+        sheetState = sheetState,
     ) {
-        ComposeBottomSheetDialog(context) {
-            SourcePickerContent(
-                currentSource = currentSource,
-                syncedDir = syncedDir,
-                onDirRemoved = onDirRemoved,
-                onKeepSource = {
-                    dismiss()
-                },
-                onChangeSource = {
-                    onChangeSource()
-                    dismiss()
-                },
-            )
-        }.show()
+        SourcePickerContent(
+            currentSource = currentSource,
+            syncedDir = syncedDir,
+            onDirRemoved = onDirRemoved,
+            onKeepSource = sheetState::hideBottomSheet,
+            onChangeSource = {
+                onChangeSource()
+                sheetState.hideBottomSheet()
+            },
+        )
     }
 }
 

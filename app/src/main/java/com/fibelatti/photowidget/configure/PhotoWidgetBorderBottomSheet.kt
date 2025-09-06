@@ -1,6 +1,5 @@
 package com.fibelatti.photowidget.configure
 
-import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -35,7 +34,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,16 +53,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.R
-import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
-import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.colorForType
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.getColorPalette
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import com.fibelatti.photowidget.ui.AppBottomSheet
+import com.fibelatti.photowidget.ui.AppSheetState
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.photowidget.ui.hideBottomSheet
 import com.fibelatti.ui.foundation.ColumnToggleButtonGroup
 import com.fibelatti.ui.foundation.ToggleButtonGroup
 import com.fibelatti.ui.foundation.dpToPx
@@ -75,24 +74,21 @@ import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 import kotlin.math.roundToInt
 
-object PhotoWidgetBorderPicker {
-
-    fun show(
-        context: Context,
-        localPhoto: LocalPhoto?,
-        currentBorder: PhotoWidgetBorder,
-        onApplyClick: (PhotoWidgetBorder) -> Unit,
+@Composable
+fun PhotoWidgetBorderBottomSheet(
+    sheetState: AppSheetState,
+    currentBorder: PhotoWidgetBorder,
+    onApplyClick: (PhotoWidgetBorder) -> Unit,
+) {
+    AppBottomSheet(
+        sheetState = sheetState,
     ) {
-        ComposeBottomSheetDialog(context) {
-            CompositionLocalProvider(LocalSamplePhoto provides localPhoto) {
-                BorderPickerContent(
-                    currentBorder = currentBorder,
-                ) { newBorder ->
-                    onApplyClick(newBorder)
-                    dismiss()
-                }
-            }
-        }.show()
+        BorderPickerContent(
+            currentBorder = currentBorder,
+        ) { newBorder ->
+            onApplyClick(newBorder)
+            sheetState.hideBottomSheet()
+        }
     }
 }
 

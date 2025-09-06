@@ -1,6 +1,5 @@
 package com.fibelatti.photowidget.configure
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,22 +14,24 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.home.AspectRatioPicker
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
+import com.fibelatti.photowidget.ui.AppBottomSheet
+import com.fibelatti.photowidget.ui.AppSheetState
+import com.fibelatti.photowidget.ui.hideBottomSheet
 
-object PhotoWidgetAspectRatioPicker {
-
-    fun show(
-        context: Context,
-        onAspectRatioSelected: (PhotoWidgetAspectRatio) -> Unit,
+@Composable
+fun PhotoWidgetAspectRatioBottomSheet(
+    sheetState: AppSheetState,
+    onAspectRatioSelected: (PhotoWidgetAspectRatio) -> Unit,
+) {
+    AppBottomSheet(
+        sheetState = sheetState,
     ) {
-        ComposeBottomSheetDialog(context) {
-            AspectRatioPickerContent(
-                onAspectRatioSelected = { newAspectRatio ->
-                    onAspectRatioSelected(newAspectRatio)
-                    dismiss()
-                },
-            )
-        }.show()
+        AspectRatioPickerContent(
+            onAspectRatioSelected = { newAspectRatio ->
+                onAspectRatioSelected(newAspectRatio)
+                sheetState.hideBottomSheet()
+            },
+        )
     }
 }
 

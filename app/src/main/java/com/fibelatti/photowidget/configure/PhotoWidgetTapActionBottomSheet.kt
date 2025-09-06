@@ -2,7 +2,6 @@
 
 package com.fibelatti.photowidget.configure
 
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -70,9 +69,11 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.TapActionArea
-import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import com.fibelatti.photowidget.ui.AppBottomSheet
+import com.fibelatti.photowidget.ui.AppSheetState
 import com.fibelatti.photowidget.ui.Toggle
+import com.fibelatti.photowidget.ui.hideBottomSheet
 import com.fibelatti.ui.foundation.ColumnToggleButtonGroup
 import com.fibelatti.ui.foundation.ConnectedButtonRowItem
 import com.fibelatti.ui.foundation.ToggleButtonGroup
@@ -81,131 +82,129 @@ import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 
-object PhotoWidgetTapActionPicker {
-
-    fun show(
-        context: Context,
-        currentTapActions: PhotoWidgetTapActions,
-        onApplyClick: (newTapActions: PhotoWidgetTapActions) -> Unit,
+@Composable
+fun PhotoWidgetTapActionBottomSheet(
+    sheetState: AppSheetState,
+    currentTapActions: PhotoWidgetTapActions,
+    onApplyClick: (newTapActions: PhotoWidgetTapActions) -> Unit,
+) {
+    AppBottomSheet(
+        sheetState = sheetState,
     ) {
-        ComposeBottomSheetDialog(context) {
-            skipCollapsed = false
+        var tapActions by remember { mutableStateOf(currentTapActions) }
+        var selectedArea by remember { mutableStateOf(TapActionArea.CENTER) }
 
-            var tapActions by remember { mutableStateOf(currentTapActions) }
-            var selectedArea by remember { mutableStateOf(TapActionArea.CENTER) }
+        val appShortcutPickerLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartActivityForResult(),
+        ) { result ->
+            val newTapAction = PhotoWidgetTapAction.AppShortcut(result.data?.component?.packageName)
 
-            val appShortcutPickerLauncher = rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.StartActivityForResult(),
-            ) { result ->
-                val newTapAction = PhotoWidgetTapAction.AppShortcut(result.data?.component?.packageName)
-
-                tapActions = when (selectedArea) {
-                    TapActionArea.LEFT -> tapActions.copy(left = newTapAction)
-                    TapActionArea.CENTER -> tapActions.copy(center = newTapAction)
-                    TapActionArea.RIGHT -> tapActions.copy(right = newTapAction)
-                }
+            tapActions = when (selectedArea) {
+                TapActionArea.LEFT -> tapActions.copy(left = newTapAction)
+                TapActionArea.CENTER -> tapActions.copy(center = newTapAction)
+                TapActionArea.RIGHT -> tapActions.copy(right = newTapAction)
             }
+        }
 
-            val galleryAppPickerLauncher = rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.StartActivityForResult(),
-            ) { result ->
-                val newTapAction = PhotoWidgetTapAction.ViewInGallery(result.data?.component?.packageName)
+        val galleryAppPickerLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartActivityForResult(),
+        ) { result ->
+            val newTapAction = PhotoWidgetTapAction.ViewInGallery(result.data?.component?.packageName)
 
-                tapActions = tapActions.copy(
-                    left = if (tapActions.left is PhotoWidgetTapAction.ViewInGallery) {
-                        newTapAction
-                    } else {
-                        tapActions.left
-                    },
-                    center = if (tapActions.center is PhotoWidgetTapAction.ViewInGallery) {
-                        newTapAction
-                    } else {
-                        tapActions.center
-                    },
-                    right = if (tapActions.right is PhotoWidgetTapAction.ViewInGallery) {
-                        newTapAction
-                    } else {
-                        tapActions.right
-                    },
-                )
-            }
-
-            TapActionPickerContent(
-                selectedArea = selectedArea,
-                onSelectedAreaChange = { newArea -> selectedArea = newArea },
-                currentTapAction = when (selectedArea) {
-                    TapActionArea.LEFT -> tapActions.left
-                    TapActionArea.CENTER -> tapActions.center
-                    TapActionArea.RIGHT -> tapActions.right
+            tapActions = tapActions.copy(
+                left = if (tapActions.left is PhotoWidgetTapAction.ViewInGallery) {
+                    newTapAction
+                } else {
+                    tapActions.left
                 },
-                onTapActionChange = { newAction ->
-                    val isChangingTypes = when (selectedArea) {
-                        TapActionArea.LEFT -> tapActions.left.javaClass != newAction.javaClass
-                        TapActionArea.CENTER -> tapActions.center.javaClass != newAction.javaClass
-                        TapActionArea.RIGHT -> tapActions.right.javaClass != newAction.javaClass
-                    }
-
-                    val action = when {
-                        !isChangingTypes -> newAction
-
-                        newAction is PhotoWidgetTapAction.ViewFullScreen -> {
-                            when {
-                                tapActions.left is PhotoWidgetTapAction.ViewFullScreen -> tapActions.left
-                                tapActions.center is PhotoWidgetTapAction.ViewFullScreen -> tapActions.center
-                                tapActions.right is PhotoWidgetTapAction.ViewFullScreen -> tapActions.right
-                                else -> newAction
-                            }
-                        }
-
-                        newAction is PhotoWidgetTapAction.ViewInGallery -> {
-                            when {
-                                tapActions.left is PhotoWidgetTapAction.ViewInGallery -> tapActions.left
-                                tapActions.center is PhotoWidgetTapAction.ViewInGallery -> tapActions.center
-                                tapActions.right is PhotoWidgetTapAction.ViewInGallery -> tapActions.right
-                                else -> newAction
-                            }
-                        }
-
-                        newAction is PhotoWidgetTapAction.ToggleCycling -> {
-                            when {
-                                tapActions.left is PhotoWidgetTapAction.ToggleCycling -> tapActions.left
-                                tapActions.center is PhotoWidgetTapAction.ToggleCycling -> tapActions.center
-                                tapActions.right is PhotoWidgetTapAction.ToggleCycling -> tapActions.right
-                                else -> newAction
-                            }
-                        }
-
-                        else -> newAction
-                    }
-
-                    tapActions = when (selectedArea) {
-                        TapActionArea.LEFT -> tapActions.copy(left = action)
-                        TapActionArea.CENTER -> tapActions.copy(center = action)
-                        TapActionArea.RIGHT -> tapActions.copy(right = action)
-                    }
+                center = if (tapActions.center is PhotoWidgetTapAction.ViewInGallery) {
+                    newTapAction
+                } else {
+                    tapActions.center
                 },
-                onChooseAppShortcutClick = {
-                    appShortcutPickerLauncher.launch(
-                        Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
-                            Intent.EXTRA_INTENT,
-                            Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
-                        ),
-                    )
-                },
-                onChooseGalleryAppClick = {
-                    galleryAppPickerLauncher.launch(
-                        Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
-                            Intent.EXTRA_INTENT,
-                            Intent(Intent.ACTION_VIEW).setDataAndType("content://sample".toUri(), "image/*"),
-                        ),
-                    )
-                },
-                onApplyClick = {
-                    onApplyClick(tapActions)
-                    dismiss()
+                right = if (tapActions.right is PhotoWidgetTapAction.ViewInGallery) {
+                    newTapAction
+                } else {
+                    tapActions.right
                 },
             )
-        }.show()
+        }
+
+        TapActionPickerContent(
+            selectedArea = selectedArea,
+            onSelectedAreaChange = { newArea -> selectedArea = newArea },
+            currentTapAction = when (selectedArea) {
+                TapActionArea.LEFT -> tapActions.left
+                TapActionArea.CENTER -> tapActions.center
+                TapActionArea.RIGHT -> tapActions.right
+            },
+            onTapActionChange = { newAction ->
+                val isChangingTypes = when (selectedArea) {
+                    TapActionArea.LEFT -> tapActions.left.javaClass != newAction.javaClass
+                    TapActionArea.CENTER -> tapActions.center.javaClass != newAction.javaClass
+                    TapActionArea.RIGHT -> tapActions.right.javaClass != newAction.javaClass
+                }
+
+                val action = when {
+                    !isChangingTypes -> newAction
+
+                    newAction is PhotoWidgetTapAction.ViewFullScreen -> {
+                        when {
+                            tapActions.left is PhotoWidgetTapAction.ViewFullScreen -> tapActions.left
+                            tapActions.center is PhotoWidgetTapAction.ViewFullScreen -> tapActions.center
+                            tapActions.right is PhotoWidgetTapAction.ViewFullScreen -> tapActions.right
+                            else -> newAction
+                        }
+                    }
+
+                    newAction is PhotoWidgetTapAction.ViewInGallery -> {
+                        when {
+                            tapActions.left is PhotoWidgetTapAction.ViewInGallery -> tapActions.left
+                            tapActions.center is PhotoWidgetTapAction.ViewInGallery -> tapActions.center
+                            tapActions.right is PhotoWidgetTapAction.ViewInGallery -> tapActions.right
+                            else -> newAction
+                        }
+                    }
+
+                    newAction is PhotoWidgetTapAction.ToggleCycling -> {
+                        when {
+                            tapActions.left is PhotoWidgetTapAction.ToggleCycling -> tapActions.left
+                            tapActions.center is PhotoWidgetTapAction.ToggleCycling -> tapActions.center
+                            tapActions.right is PhotoWidgetTapAction.ToggleCycling -> tapActions.right
+                            else -> newAction
+                        }
+                    }
+
+                    else -> newAction
+                }
+
+                tapActions = when (selectedArea) {
+                    TapActionArea.LEFT -> tapActions.copy(left = action)
+                    TapActionArea.CENTER -> tapActions.copy(center = action)
+                    TapActionArea.RIGHT -> tapActions.copy(right = action)
+                }
+            },
+            onChooseAppShortcutClick = {
+                appShortcutPickerLauncher.launch(
+                    Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
+                        Intent.EXTRA_INTENT,
+                        Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
+                    ),
+                )
+            },
+            onChooseGalleryAppClick = {
+                galleryAppPickerLauncher.launch(
+                    Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
+                        Intent.EXTRA_INTENT,
+                        Intent(Intent.ACTION_VIEW).setDataAndType("content://sample".toUri(), "image/*"),
+                    ),
+                )
+            },
+            onApplyClick = {
+                onApplyClick(tapActions)
+                sheetState.hideBottomSheet()
+            },
+        )
     }
 }
 

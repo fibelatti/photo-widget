@@ -3,7 +3,6 @@
 package com.fibelatti.photowidget.configure
 
 import android.app.AlarmManager
-import android.content.Context
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -54,6 +53,7 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -68,9 +68,11 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.intervalRange
-import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
+import com.fibelatti.photowidget.ui.AppBottomSheet
+import com.fibelatti.photowidget.ui.AppSheetState
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.photowidget.ui.hideBottomSheet
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
 import com.fibelatti.ui.foundation.ConnectedButtonRowItem
 import com.fibelatti.ui.preview.AllPreviews
@@ -79,37 +81,40 @@ import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
-object PhotoWidgetCycleModePicker {
-
-    fun show(
-        context: Context,
-        cycleMode: PhotoWidgetCycleMode,
-        onApplyClick: (newMode: PhotoWidgetCycleMode) -> Unit,
+@Composable
+fun PhotoWidgetCycleModeBottomSheet(
+    sheetState: AppSheetState,
+    cycleMode: PhotoWidgetCycleMode,
+    onApplyClick: (newMode: PhotoWidgetCycleMode) -> Unit,
+) {
+    AppBottomSheet(
+        sheetState = sheetState,
     ) {
-        val alarmManager: AlarmManager = requireNotNull(context.getSystemService())
+        val localContext = LocalContext.current
+        val alarmManager: AlarmManager = remember(localContext) {
+            requireNotNull(localContext.getSystemService())
+        }
 
-        ComposeBottomSheetDialog(context) {
-            var canScheduleExactAlarms by remember {
-                mutableStateOf(AlarmManagerCompat.canScheduleExactAlarms(alarmManager))
+        var canScheduleExactAlarms by remember {
+            mutableStateOf(AlarmManagerCompat.canScheduleExactAlarms(alarmManager))
+        }
+
+        val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            canScheduleExactAlarms = AlarmManagerCompat.canScheduleExactAlarms(alarmManager)
+            if (canScheduleExactAlarms) {
+                localContext.sendBroadcast(PhotoWidgetRescheduleReceiver.intent(localContext))
             }
+        }
 
-            val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                canScheduleExactAlarms = AlarmManagerCompat.canScheduleExactAlarms(alarmManager)
-                if (canScheduleExactAlarms) {
-                    context.sendBroadcast(PhotoWidgetRescheduleReceiver.intent(context))
-                }
-            }
-
-            PhotoCycleModePickerContent(
-                cycleMode = cycleMode,
-                canScheduleExactAlarms = canScheduleExactAlarms,
-                onOpenPermission = { launcher.launch(requestScheduleExactAlarmIntent(context)) },
-                onApplyClick = { newMode ->
-                    onApplyClick(newMode)
-                    dismiss()
-                },
-            )
-        }.show()
+        PhotoCycleModePickerContent(
+            cycleMode = cycleMode,
+            canScheduleExactAlarms = canScheduleExactAlarms,
+            onOpenPermission = { launcher.launch(requestScheduleExactAlarmIntent(localContext)) },
+            onApplyClick = { newMode ->
+                onApplyClick(newMode)
+                sheetState.hideBottomSheet()
+            },
+        )
     }
 }
 
