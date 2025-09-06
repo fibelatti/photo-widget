@@ -76,11 +76,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
-import com.fibelatti.photowidget.configure.DirectorySortingPicker
-import com.fibelatti.photowidget.configure.PhotoWidgetAspectRatioPicker
-import com.fibelatti.photowidget.configure.PhotoWidgetBrightnessPicker
-import com.fibelatti.photowidget.configure.PhotoWidgetCycleModePicker
-import com.fibelatti.photowidget.configure.PhotoWidgetSaturationPicker
+import com.fibelatti.photowidget.configure.DirectorySortingBottomSheet
+import com.fibelatti.photowidget.configure.PhotoWidgetAspectRatioBottomSheet
+import com.fibelatti.photowidget.configure.PhotoWidgetBrightnessBottomSheet
+import com.fibelatti.photowidget.configure.PhotoWidgetCycleModeBottomSheet
+import com.fibelatti.photowidget.configure.PhotoWidgetSaturationBottomSheet
 import com.fibelatti.photowidget.configure.rememberSampleBitmap
 import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -89,14 +89,17 @@ import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
-import com.fibelatti.photowidget.platform.SelectionDialog
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.ui.foundation.AppBottomSheet
+import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
 import com.fibelatti.ui.foundation.dpToPx
+import com.fibelatti.ui.foundation.hideBottomSheet
+import com.fibelatti.ui.foundation.rememberAppSheetState
+import com.fibelatti.ui.foundation.showBottomSheet
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.text.AutoSizeText
@@ -110,88 +113,107 @@ fun WidgetDefaultsScreen(
     onNavClick: () -> Unit,
 ) {
     val preferences by preferencesViewModel.userPreferences.collectAsStateWithLifecycle()
+
+    val aspectRatioPickerSheetState = rememberAppSheetState()
+    val sourcePickerSheetState = rememberAppSheetState()
+    val shapePickerSheetState = rememberAppSheetState()
+    val cornerRadiusPickerSheetState = rememberAppSheetState()
+    val opacityPickerSheetState = rememberAppSheetState()
+    val saturationPickerSheetState = rememberAppSheetState()
+    val brightnessPickerSheetState = rememberAppSheetState()
+    val cycleModePickerSheetState = rememberAppSheetState()
+    val directoryPickerSheetState = rememberAppSheetState()
+
     val localContext = LocalContext.current
 
     WidgetDefaultsScreen(
         userPreferences = preferences,
         onNavClick = onNavClick,
-        onAspectRatioClick = {
-            PhotoWidgetAspectRatioPicker.show(
-                context = localContext,
-                onAspectRatioSelected = preferencesViewModel::saveDefaultAspectRatio,
-            )
-        },
-        onSourceClick = {
-            SelectionDialog.show(
-                context = localContext,
-                title = localContext.getString(R.string.widget_defaults_source),
-                options = PhotoWidgetSource.entries,
-                optionName = { option -> localContext.getString(option.label) },
-                onOptionSelected = preferencesViewModel::saveDefaultSource,
-            )
-        },
-        onShapeClick = {
-            ComposeBottomSheetDialog(localContext) {
-                ShapePicker(
-                    onClick = { newShapeId ->
-                        preferencesViewModel.saveDefaultShape(newShapeId)
-                        dismiss()
-                    },
-                )
-            }.show()
-        },
-        onCornerRadiusClick = {
-            ComposeBottomSheetDialog(localContext) {
-                CornerRadiusPicker(
-                    currentValue = preferences.defaultCornerRadius,
-                    onApplyClick = { newValue ->
-                        preferencesViewModel.saveDefaultCornerRadius(newValue)
-                        dismiss()
-                    },
-                )
-            }.show()
-        },
-        onOpacityClick = {
-            ComposeBottomSheetDialog(localContext) {
-                OpacityPicker(
-                    currentValue = preferences.defaultOpacity,
-                    onApplyClick = { newValue ->
-                        preferencesViewModel.saveDefaultOpacity(newValue)
-                        dismiss()
-                    },
-                )
-            }.show()
-        },
-        onSaturationClick = {
-            PhotoWidgetSaturationPicker.show(
-                context = localContext,
-                currentSaturation = preferences.defaultSaturation,
-                onApplyClick = preferencesViewModel::saveDefaultSaturation,
-            )
-        },
-        onBrightnessClick = {
-            PhotoWidgetBrightnessPicker.show(
-                context = localContext,
-                currentBrightness = preferences.defaultBrightness,
-                onApplyClick = preferencesViewModel::saveDefaultBrightness,
-            )
-        },
-        onIntervalClick = {
-            PhotoWidgetCycleModePicker.show(
-                context = localContext,
-                cycleMode = preferences.defaultCycleMode,
-                onApplyClick = preferencesViewModel::saveDefaultCycleMode,
-            )
-        },
+        onAspectRatioClick = aspectRatioPickerSheetState::showBottomSheet,
+        onSourceClick = sourcePickerSheetState::showBottomSheet,
+        onShapeClick = shapePickerSheetState::showBottomSheet,
+        onCornerRadiusClick = cornerRadiusPickerSheetState::showBottomSheet,
+        onOpacityClick = opacityPickerSheetState::showBottomSheet,
+        onSaturationClick = saturationPickerSheetState::showBottomSheet,
+        onBrightnessClick = brightnessPickerSheetState::showBottomSheet,
+        onIntervalClick = cycleModePickerSheetState::showBottomSheet,
         onShuffleChange = preferencesViewModel::saveDefaultShuffle,
-        onSortClick = {
-            DirectorySortingPicker.show(
-                context = localContext,
-                onItemClick = preferencesViewModel::saveDefaultSorting,
-            )
-        },
+        onSortClick = directoryPickerSheetState::showBottomSheet,
         onClearDefaultsClick = preferencesViewModel::clearDefaults,
     )
+
+    // region Bottom Sheets
+    PhotoWidgetAspectRatioBottomSheet(
+        sheetState = aspectRatioPickerSheetState,
+        onAspectRatioSelected = preferencesViewModel::saveDefaultAspectRatio,
+    )
+
+    SelectionDialogBottomSheet(
+        sheetState = sourcePickerSheetState,
+        title = stringResource(R.string.widget_defaults_source),
+        options = PhotoWidgetSource.entries,
+        optionName = { option -> localContext.getString(option.label) },
+        onOptionSelected = preferencesViewModel::saveDefaultSource,
+    )
+
+    AppBottomSheet(
+        sheetState = shapePickerSheetState,
+    ) {
+        ShapePicker(
+            onClick = { newShapeId ->
+                preferencesViewModel.saveDefaultShape(newShapeId)
+                shapePickerSheetState.hideBottomSheet()
+            },
+        )
+    }
+
+    AppBottomSheet(
+        sheetState = cornerRadiusPickerSheetState,
+    ) {
+        CornerRadiusPicker(
+            currentValue = preferences.defaultCornerRadius,
+            onApplyClick = { newValue ->
+                preferencesViewModel.saveDefaultCornerRadius(newValue)
+                cornerRadiusPickerSheetState.hideBottomSheet()
+            },
+        )
+    }
+
+    AppBottomSheet(
+        sheetState = opacityPickerSheetState,
+    ) {
+        OpacityPicker(
+            currentValue = preferences.defaultOpacity,
+            onApplyClick = { newValue ->
+                preferencesViewModel.saveDefaultOpacity(newValue)
+                opacityPickerSheetState.hideBottomSheet()
+            },
+        )
+    }
+
+    PhotoWidgetSaturationBottomSheet(
+        sheetState = saturationPickerSheetState,
+        currentSaturation = preferences.defaultSaturation,
+        onApplyClick = preferencesViewModel::saveDefaultSaturation,
+    )
+
+    PhotoWidgetBrightnessBottomSheet(
+        sheetState = brightnessPickerSheetState,
+        currentBrightness = preferences.defaultBrightness,
+        onApplyClick = preferencesViewModel::saveDefaultBrightness,
+    )
+
+    PhotoWidgetCycleModeBottomSheet(
+        sheetState = cycleModePickerSheetState,
+        cycleMode = preferences.defaultCycleMode,
+        onApplyClick = preferencesViewModel::saveDefaultCycleMode,
+    )
+
+    DirectorySortingBottomSheet(
+        sheetState = directoryPickerSheetState,
+        onItemClick = preferencesViewModel::saveDefaultSorting,
+    )
+    // endregion Bottom Sheets
 }
 
 @Composable
@@ -236,118 +258,152 @@ private fun WidgetDefaultsScreen(
         },
         contentWindowInsets = WindowInsets.safeDrawing,
     ) { contentPadding ->
-        Column(
+        WidgetDefaultsContent(
+            userPreferences = userPreferences,
+            onAspectRatioClick = onAspectRatioClick,
+            onSourceClick = onSourceClick,
+            onShapeClick = onShapeClick,
+            onCornerRadiusClick = onCornerRadiusClick,
+            onOpacityClick = onOpacityClick,
+            onSaturationClick = onSaturationClick,
+            onBrightnessClick = onBrightnessClick,
+            onIntervalClick = onIntervalClick,
+            onShuffleChange = onShuffleChange,
+            onSortClick = onSortClick,
+            onClearDefaultsClick = onClearDefaultsClick,
             modifier = modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(contentPadding)
-                .padding(start = 16.dp, end = 16.dp, bottom = 32.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+                .padding(contentPadding),
+        )
+    }
+}
+
+@Composable
+private fun WidgetDefaultsContent(
+    userPreferences: UserPreferences,
+    onAspectRatioClick: () -> Unit,
+    onSourceClick: () -> Unit,
+    onShapeClick: () -> Unit,
+    onCornerRadiusClick: () -> Unit,
+    onOpacityClick: () -> Unit,
+    onSaturationClick: () -> Unit,
+    onBrightnessClick: () -> Unit,
+    onIntervalClick: () -> Unit,
+    onShuffleChange: (Boolean) -> Unit,
+    onSortClick: () -> Unit,
+    onClearDefaultsClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(start = 16.dp, end = 16.dp, bottom = 32.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        PickerDefault(
+            title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
+            currentValue = stringResource(id = userPreferences.defaultAspectRatio.label),
+            onClick = onAspectRatioClick,
+        )
+
+        PickerDefault(
+            title = stringResource(id = R.string.widget_defaults_source),
+            currentValue = stringResource(id = userPreferences.defaultSource.label),
+            onClick = onSourceClick,
+        )
+
+        ShapeDefault(
+            title = stringResource(id = R.string.widget_defaults_shape),
+            currentValue = userPreferences.defaultShape,
+            onClick = onShapeClick,
+        )
+
+        PickerDefault(
+            title = stringResource(id = R.string.widget_defaults_corner_radius),
+            currentValue = userPreferences.defaultCornerRadius.toString(),
+            onClick = onCornerRadiusClick,
+        )
+
+        PickerDefault(
+            title = stringResource(id = R.string.widget_defaults_opacity),
+            currentValue = formatPercent(value = userPreferences.defaultOpacity, fractionDigits = 0),
+            onClick = onOpacityClick,
+        )
+
+        PickerDefault(
+            title = stringResource(R.string.widget_defaults_saturation),
+            currentValue = formatRangeValue(
+                value = PhotoWidgetColors.pickerSaturation(userPreferences.defaultSaturation),
+            ),
+            onClick = onSaturationClick,
+        )
+
+        PickerDefault(
+            title = stringResource(R.string.widget_defaults_brightness),
+            currentValue = formatRangeValue(value = userPreferences.defaultBrightness),
+            onClick = onBrightnessClick,
+        )
+
+        PickerDefault(
+            title = stringResource(id = R.string.widget_defaults_cycling),
+            currentValue = when (userPreferences.defaultCycleMode) {
+                is PhotoWidgetCycleMode.Interval -> {
+                    val intervalString = pluralStringResource(
+                        id = when (userPreferences.defaultCycleMode.loopingInterval.timeUnit) {
+                            TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
+                            TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
+                            TimeUnit.HOURS -> R.plurals.photo_widget_configure_interval_current_hours
+                            else -> R.plurals.photo_widget_configure_interval_current_days
+                        },
+                        count = userPreferences.defaultCycleMode.loopingInterval.repeatInterval.toInt(),
+                        userPreferences.defaultCycleMode.loopingInterval.repeatInterval,
+                    )
+                    stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
+                }
+
+                is PhotoWidgetCycleMode.Schedule -> {
+                    pluralStringResource(
+                        id = R.plurals.photo_widget_configure_schedule_times,
+                        count = userPreferences.defaultCycleMode.triggers.size,
+                        userPreferences.defaultCycleMode.triggers.size,
+                    )
+                }
+
+                is PhotoWidgetCycleMode.Disabled -> {
+                    stringResource(id = R.string.photo_widget_configure_cycling_mode_disabled)
+                }
+            },
+            onClick = onIntervalClick,
+        )
+
+        BooleanDefault(
+            title = stringResource(id = R.string.widget_defaults_shuffle),
+            currentValue = userPreferences.defaultShuffle,
+            onCheckedChange = onShuffleChange,
+        )
+
+        PickerDefault(
+            title = stringResource(R.string.photo_widget_directory_sort_title),
+            currentValue = stringResource(id = userPreferences.defaultDirectorySorting.label),
+            onClick = onSortClick,
+        )
+
+        OutlinedButton(
+            onClick = onClearDefaultsClick,
+            shapes = ButtonDefaults.shapes(),
+            modifier = Modifier.padding(top = 16.dp),
         ) {
-            PickerDefault(
-                title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
-                currentValue = stringResource(id = userPreferences.defaultAspectRatio.label),
-                onClick = onAspectRatioClick,
-            )
-
-            PickerDefault(
-                title = stringResource(id = R.string.widget_defaults_source),
-                currentValue = stringResource(id = userPreferences.defaultSource.label),
-                onClick = onSourceClick,
-            )
-
-            ShapeDefault(
-                title = stringResource(id = R.string.widget_defaults_shape),
-                currentValue = userPreferences.defaultShape,
-                onClick = onShapeClick,
-            )
-
-            PickerDefault(
-                title = stringResource(id = R.string.widget_defaults_corner_radius),
-                currentValue = userPreferences.defaultCornerRadius.toString(),
-                onClick = onCornerRadiusClick,
-            )
-
-            PickerDefault(
-                title = stringResource(id = R.string.widget_defaults_opacity),
-                currentValue = formatPercent(value = userPreferences.defaultOpacity, fractionDigits = 0),
-                onClick = onOpacityClick,
-            )
-
-            PickerDefault(
-                title = stringResource(R.string.widget_defaults_saturation),
-                currentValue = formatRangeValue(
-                    value = PhotoWidgetColors.pickerSaturation(userPreferences.defaultSaturation),
-                ),
-                onClick = onSaturationClick,
-            )
-
-            PickerDefault(
-                title = stringResource(R.string.widget_defaults_brightness),
-                currentValue = formatRangeValue(value = userPreferences.defaultBrightness),
-                onClick = onBrightnessClick,
-            )
-
-            PickerDefault(
-                title = stringResource(id = R.string.widget_defaults_cycling),
-                currentValue = when (userPreferences.defaultCycleMode) {
-                    is PhotoWidgetCycleMode.Interval -> {
-                        val intervalString = pluralStringResource(
-                            id = when (userPreferences.defaultCycleMode.loopingInterval.timeUnit) {
-                                TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
-                                TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
-                                TimeUnit.HOURS -> R.plurals.photo_widget_configure_interval_current_hours
-                                else -> R.plurals.photo_widget_configure_interval_current_days
-                            },
-                            count = userPreferences.defaultCycleMode.loopingInterval.repeatInterval.toInt(),
-                            userPreferences.defaultCycleMode.loopingInterval.repeatInterval,
-                        )
-                        stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
-                    }
-
-                    is PhotoWidgetCycleMode.Schedule -> {
-                        pluralStringResource(
-                            id = R.plurals.photo_widget_configure_schedule_times,
-                            count = userPreferences.defaultCycleMode.triggers.size,
-                            userPreferences.defaultCycleMode.triggers.size,
-                        )
-                    }
-
-                    is PhotoWidgetCycleMode.Disabled -> {
-                        stringResource(id = R.string.photo_widget_configure_cycling_mode_disabled)
-                    }
-                },
-                onClick = onIntervalClick,
-            )
-
-            BooleanDefault(
-                title = stringResource(id = R.string.widget_defaults_shuffle),
-                currentValue = userPreferences.defaultShuffle,
-                onCheckedChange = onShuffleChange,
-            )
-
-            PickerDefault(
-                title = stringResource(R.string.photo_widget_directory_sort_title),
-                currentValue = stringResource(id = userPreferences.defaultDirectorySorting.label),
-                onClick = onSortClick,
-            )
-
-            OutlinedButton(
-                onClick = onClearDefaultsClick,
-                shapes = ButtonDefaults.shapes(),
-                modifier = Modifier.padding(top = 16.dp),
-            ) {
-                Text(text = stringResource(id = R.string.widget_defaults_reset))
-            }
-
-            HorizontalDivider(modifier = Modifier.padding(all = 8.dp))
-
-            Text(
-                text = stringResource(id = R.string.widget_defaults_explanation),
-                modifier = Modifier.padding(horizontal = 8.dp),
-                style = MaterialTheme.typography.bodyMedium,
-            )
+            Text(text = stringResource(id = R.string.widget_defaults_reset))
         }
+
+        HorizontalDivider(modifier = Modifier.padding(all = 8.dp))
+
+        Text(
+            text = stringResource(id = R.string.widget_defaults_explanation),
+            modifier = Modifier.padding(horizontal = 8.dp),
+            style = MaterialTheme.typography.bodyMedium,
+        )
     }
 }
 

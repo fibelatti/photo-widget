@@ -1,6 +1,5 @@
 package com.fibelatti.photowidget.configure
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -16,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -30,75 +28,70 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
-import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetColors
-import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.DefaultPicker
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.ui.foundation.AppBottomSheet
+import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.dpToPx
+import com.fibelatti.ui.foundation.hideBottomSheet
 
-object PhotoWidgetSaturationPicker {
-
-    fun show(
-        context: Context,
-        currentSaturation: Float,
-        onApplyClick: (Float) -> Unit,
-        localPhoto: LocalPhoto? = null,
+@Composable
+fun PhotoWidgetSaturationBottomSheet(
+    sheetState: AppSheetState,
+    currentSaturation: Float,
+    onApplyClick: (Float) -> Unit,
+) {
+    AppBottomSheet(
+        sheetState = sheetState,
     ) {
-        ComposeBottomSheetDialog(context) {
-            CompositionLocalProvider(LocalSamplePhoto provides localPhoto) {
-                ColorMatrixPicker(
-                    title = stringResource(R.string.widget_defaults_saturation),
-                    valueRange = -100f..100f,
-                    currentValue = PhotoWidgetColors.pickerSaturation(currentSaturation),
-                    onCurrentValueChange = { value ->
-                        ColorMatrix().apply { setToSaturation(PhotoWidgetColors.persistenceSaturation(value) / 100) }
-                    },
-                    onApplyClick = { newValue ->
-                        onApplyClick(PhotoWidgetColors.persistenceSaturation(newValue))
-                        dismiss()
-                    },
-                )
-            }
-        }.show()
+        ColorMatrixPicker(
+            title = stringResource(R.string.widget_defaults_saturation),
+            valueRange = -100f..100f,
+            currentValue = PhotoWidgetColors.pickerSaturation(currentSaturation),
+            onCurrentValueChange = { value ->
+                ColorMatrix().apply { setToSaturation(PhotoWidgetColors.persistenceSaturation(value) / 100) }
+            },
+            onApplyClick = { newValue ->
+                onApplyClick(PhotoWidgetColors.persistenceSaturation(newValue))
+                sheetState.hideBottomSheet()
+            },
+        )
     }
 }
 
-object PhotoWidgetBrightnessPicker {
-
-    fun show(
-        context: Context,
-        currentBrightness: Float,
-        onApplyClick: (Float) -> Unit,
-        localPhoto: LocalPhoto? = null,
+@Composable
+fun PhotoWidgetBrightnessBottomSheet(
+    sheetState: AppSheetState,
+    currentBrightness: Float,
+    onApplyClick: (Float) -> Unit,
+) {
+    AppBottomSheet(
+        sheetState = sheetState,
     ) {
-        ComposeBottomSheetDialog(context) {
-            CompositionLocalProvider(LocalSamplePhoto provides localPhoto) {
-                ColorMatrixPicker(
-                    title = stringResource(R.string.widget_defaults_brightness),
-                    valueRange = -100f..100f,
-                    currentValue = currentBrightness,
-                    onCurrentValueChange = { value ->
-                        val brightness = value * 255 / 100
-                        val colorMatrix = floatArrayOf(
-                            1f, 0f, 0f, 0f, brightness,
-                            0f, 1f, 0f, 0f, brightness,
-                            0f, 0f, 1f, 0f, brightness,
-                            0f, 0f, 0f, 1f, 0f,
-                        )
-
-                        ColorMatrix(colorMatrix)
-                    },
-                    onApplyClick = { newValue ->
-                        onApplyClick(newValue)
-                        dismiss()
-                    },
+        ColorMatrixPicker(
+            title = stringResource(R.string.widget_defaults_brightness),
+            valueRange = -100f..100f,
+            currentValue = currentBrightness,
+            onCurrentValueChange = { value ->
+                val brightness = value * 255 / 100
+                val colorMatrix = floatArrayOf(
+                    1f, 0f, 0f, 0f, brightness,
+                    0f, 1f, 0f, 0f, brightness,
+                    0f, 0f, 1f, 0f, brightness,
+                    0f, 0f, 0f, 1f, 0f,
                 )
-            }
-        }.show()
+
+                ColorMatrix(colorMatrix)
+            },
+            onApplyClick = { newValue ->
+                onApplyClick(newValue)
+                sheetState.hideBottomSheet()
+            },
+        )
     }
 }
 

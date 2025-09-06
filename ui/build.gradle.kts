@@ -14,6 +14,7 @@ android {
 
 dependencies {
     implementation(libs.kotlin)
+    implementation(libs.coroutines.core)
 
     implementation(libs.core.ktx)
 

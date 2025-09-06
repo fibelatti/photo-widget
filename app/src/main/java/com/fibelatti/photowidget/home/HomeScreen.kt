@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.home
 
+import android.content.Intent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
@@ -24,21 +25,143 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.backup.PhotoWidgetBackupActivity
+import com.fibelatti.photowidget.configure.appWidgetId
+import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
+import com.fibelatti.photowidget.di.entryPoint
+import com.fibelatti.photowidget.licenses.OssLicensesActivity
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
+import com.fibelatti.photowidget.preferences.DataSaverBottomSheet
+import com.fibelatti.photowidget.preferences.WidgetDefaultsActivity
+import com.fibelatti.photowidget.ui.BackgroundRestrictionBottomSheet
+import com.fibelatti.ui.foundation.hideBottomSheet
+import com.fibelatti.ui.foundation.rememberAppSheetState
+import com.fibelatti.ui.foundation.showBottomSheet
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
+
+@Composable
+fun HomeScreen(
+    homeViewModel: HomeViewModel,
+    preparedIntent: Intent?,
+    onIntentConsumed: () -> Unit,
+    onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
+    onAppLanguageClick: () -> Unit,
+    onShareClick: () -> Unit,
+) {
+    val currentWidgets by homeViewModel.currentWidgets.collectAsStateWithLifecycle()
+
+    val existingWidgetMenuSheetState = rememberAppSheetState()
+    val removedWidgetSheetState = rememberAppSheetState()
+    val appAppearanceSheetState = rememberAppSheetState()
+    val appColorsSheetState = rememberAppSheetState()
+
+    val localContext = LocalContext.current
+    val localUriHandler = LocalUriHandler.current
+
+    val hintStorage = remember(localContext) {
+        entryPoint<PhotoWidgetEntryPoint>(localContext).hintStorage()
+    }
+    var showBackgroundRestrictionHint by remember {
+        mutableStateOf(hintStorage.showHomeBackgroundRestrictionsHint)
+    }
+
+    HomeScreen(
+        onCreateNewWidgetClick = onCreateNewWidgetClick,
+        currentWidgets = currentWidgets,
+        onCurrentWidgetClick = click@{ appWidgetId: Int, canSync: Boolean, canLock: Boolean, isLocked: Boolean ->
+            preparedIntent?.let { intent ->
+                intent.appWidgetId = appWidgetId
+
+                onIntentConsumed()
+
+                localContext.startActivity(intent)
+
+                return@click
+            }
+
+            existingWidgetMenuSheetState.showBottomSheet(
+                data = ExistingWidgetMenuBottomSheetData(
+                    appWidgetId = appWidgetId,
+                    canSync = canSync,
+                    canLock = canLock,
+                    isLocked = isLocked,
+                ),
+            )
+        },
+        onRemovedWidgetClick = { appWidgetId, photoWidgetStatus ->
+            removedWidgetSheetState.showBottomSheet(
+                data = RemovedWidgetBottomSheetData(
+                    appWidgetId = appWidgetId,
+                    status = photoWidgetStatus,
+                ),
+            )
+        },
+        onDefaultsClick = {
+            localContext.startActivity(Intent(localContext, WidgetDefaultsActivity::class.java))
+        },
+        onAppearanceClick = appAppearanceSheetState::showBottomSheet,
+        onColorsClick = appColorsSheetState::showBottomSheet,
+        onAppLanguageClick = onAppLanguageClick,
+        onBackupClick = {
+            localContext.startActivity(PhotoWidgetBackupActivity.newIntent(localContext))
+        },
+        onRateClick = {
+            localUriHandler.openUri("https://play.google.com/store/apps/details?id=com.fibelatti.photowidget")
+        },
+        onShareClick = onShareClick,
+        showBackgroundRestrictionHint = showBackgroundRestrictionHint,
+        onDismissWarningClick = {
+            hintStorage.showHomeBackgroundRestrictionsHint = false
+            showBackgroundRestrictionHint = false
+        },
+        onPrivacyPolicyClick = {
+            localUriHandler.openUri("https://www.fibelatti.com/privacy-policy/material-photo-widget")
+        },
+        onViewLicensesClick = {
+            localContext.startActivity(Intent(localContext, OssLicensesActivity::class.java))
+        },
+    )
+
+    // region Bottom sheets
+    ExistingWidgetMenuBottomSheet(
+        sheetState = existingWidgetMenuSheetState,
+        onSync = homeViewModel::syncPhotos,
+        onLock = homeViewModel::lockWidget,
+        onUnlock = homeViewModel::unlockWidget,
+    )
+
+    RemovedWidgetBottomSheet(
+        sheetState = removedWidgetSheetState,
+        onKeep = homeViewModel::keepWidget,
+        onDelete = homeViewModel::deleteWidget,
+    )
+
+    AppAppearanceBottomSheet(
+        sheetState = appAppearanceSheetState,
+    )
+
+    AppColorsBottomSheet(
+        sheetState = appColorsSheetState,
+    )
+    // endregion Bottom sheets
+}
 
 @Composable
 fun HomeScreen(
@@ -47,17 +170,13 @@ fun HomeScreen(
     onCurrentWidgetClick: (appWidgetId: Int, canSync: Boolean, canLock: Boolean, isLocked: Boolean) -> Unit,
     onRemovedWidgetClick: (appWidgetId: Int, PhotoWidgetStatus) -> Unit,
     onDefaultsClick: () -> Unit,
-    onDataSaverClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
     onBackupClick: () -> Unit,
-    onSendFeedbackClick: () -> Unit,
     onRateClick: () -> Unit,
     onShareClick: () -> Unit,
-    onHelpClick: () -> Unit,
     showBackgroundRestrictionHint: Boolean,
-    onBackgroundRestrictionClick: () -> Unit,
     onDismissWarningClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onViewLicensesClick: () -> Unit,
@@ -66,6 +185,10 @@ fun HomeScreen(
     var currentDestination: HomeNavigationDestination by rememberSaveable {
         mutableStateOf(HomeNavigationDestination.NEW_WIDGET)
     }
+
+    val helpSheetState = rememberAppSheetState()
+    val backgroundRestrictionSheetState = rememberAppSheetState()
+    val dataSaverSheetState = rememberAppSheetState()
 
     Scaffold(
         modifier = modifier,
@@ -95,9 +218,9 @@ fun HomeScreen(
                 HomeNavigationDestination.NEW_WIDGET -> {
                     NewWidgetScreen(
                         onCreateNewWidgetClick = onCreateNewWidgetClick,
-                        onHelpClick = onHelpClick,
+                        onHelpClick = helpSheetState::showBottomSheet,
                         showBackgroundRestrictionHint = showBackgroundRestrictionHint,
-                        onBackgroundRestrictionClick = onBackgroundRestrictionClick,
+                        onBackgroundRestrictionClick = backgroundRestrictionSheetState::showBottomSheet,
                         onDismissWarningClick = onDismissWarningClick,
                     )
                 }
@@ -113,12 +236,12 @@ fun HomeScreen(
                 HomeNavigationDestination.SETTINGS -> {
                     SettingsScreen(
                         onDefaultsClick = onDefaultsClick,
-                        onDataSaverClick = onDataSaverClick,
+                        onDataSaverClick = dataSaverSheetState::showBottomSheet,
                         onAppearanceClick = onAppearanceClick,
                         onColorsClick = onColorsClick,
                         onAppLanguageClick = onAppLanguageClick,
                         onBackupClick = onBackupClick,
-                        onSendFeedbackClick = onSendFeedbackClick,
+                        onSendFeedbackClick = helpSheetState::showBottomSheet,
                         onRateClick = onRateClick,
                         onShareClick = onShareClick,
                         onPrivacyPolicyClick = onPrivacyPolicyClick,
@@ -128,6 +251,22 @@ fun HomeScreen(
             }
         }
     }
+
+    HelpBottomSheet(
+        sheetState = helpSheetState,
+        onBackgroundRestrictionClick = {
+            helpSheetState.hideBottomSheet()
+            backgroundRestrictionSheetState.showBottomSheet()
+        },
+    )
+
+    BackgroundRestrictionBottomSheet(
+        sheetState = backgroundRestrictionSheetState,
+    )
+
+    DataSaverBottomSheet(
+        sheetState = dataSaverSheetState,
+    )
 }
 
 @Composable
@@ -211,17 +350,13 @@ private fun HomeScreenPreview() {
             onCurrentWidgetClick = { _, _, _, _ -> },
             onRemovedWidgetClick = { _, _ -> },
             onDefaultsClick = {},
-            onDataSaverClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
             onAppLanguageClick = {},
             onBackupClick = {},
-            onSendFeedbackClick = {},
             onRateClick = {},
             onShareClick = {},
-            onHelpClick = {},
             showBackgroundRestrictionHint = true,
-            onBackgroundRestrictionClick = {},
             onDismissWarningClick = {},
             onPrivacyPolicyClick = {},
             onViewLicensesClick = {},

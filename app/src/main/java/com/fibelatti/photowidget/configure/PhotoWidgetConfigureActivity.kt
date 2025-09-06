@@ -26,13 +26,13 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoCropActivity.Companion.outputPath
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
-import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
+import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.rememberAppSheetState
+import com.fibelatti.ui.foundation.showBottomSheet
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -94,37 +94,20 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             AppTheme {
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
+                val importFromWidgetSheetState = rememberAppSheetState()
+
                 CompositionLocalProvider(LocalSamplePhoto provides state.selectedPhoto) {
                     PhotoWidgetConfigureScreen(
-                        photoWidget = state.photoWidget,
+                        viewModel = viewModel,
                         isUpdating = intent.appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID,
-                        selectedPhoto = state.selectedPhoto,
-                        isProcessing = state.isProcessing,
                         onNavClick = onBackPressedDispatcher::onBackPressed,
-                        onAspectRatioClick = ::showAspectRatioPicker,
-                        onCropClick = viewModel::requestCrop,
-                        onRemoveClick = viewModel::photoRemoved,
-                        onMoveLeftClick = viewModel::moveLeft,
-                        onMoveRightClick = viewModel::moveRight,
-                        onChangeSource = ::showSourcePicker,
                         onPhotoPickerClick = ::launchPhotoPicker,
                         onDirPickerClick = ::launchFolderPicker,
-                        onPhotoClick = viewModel::previewPhoto,
-                        onReorderFinished = viewModel::reorderPhotos,
-                        onRemovedPhotoClick = viewModel::restorePhoto,
-                        onCycleModePickerClick = ::showCycleModePicker,
-                        onShuffleChange = viewModel::saveShuffle,
-                        onSortChange = viewModel::saveSorting,
-                        onTapActionPickerClick = ::showTapActionPicker,
-                        onShapeChange = viewModel::shapeSelected,
-                        onCornerRadiusChange = viewModel::cornerRadiusSelected,
-                        onBorderChange = viewModel::borderSelected,
-                        onOpacityChange = viewModel::opacitySelected,
-                        onSaturationChange = viewModel::saturationSelected,
-                        onBrightnessChange = viewModel::brightnessSelected,
-                        onOffsetChange = viewModel::offsetSelected,
-                        onPaddingChange = viewModel::paddingSelected,
-                        onAddToHomeClick = viewModel::addNewWidget,
+                    )
+
+                    ImportFromWidgetBottomSheet(
+                        sheetState = importFromWidgetSheetState,
+                        onWidgetSelected = viewModel::importFromWidget,
                     )
                 }
 
@@ -133,7 +116,12 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 }
 
                 RememberedEffect(state.messages) {
-                    state.messages.firstOrNull()?.let(::handleMessage)
+                    state.messages.firstOrNull()?.let { message ->
+                        handleMessage(
+                            message = message,
+                            importFromWidgetSheetState = importFromWidgetSheetState,
+                        )
+                    }
                 }
             }
         }
@@ -173,10 +161,13 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun handleMessage(message: PhotoWidgetConfigureState.Message) {
+    private fun handleMessage(
+        message: PhotoWidgetConfigureState.Message,
+        importFromWidgetSheetState: AppSheetState,
+    ) {
         when (message) {
             is PhotoWidgetConfigureState.Message.SuggestImport -> {
-                showImportFromWidgetSuggestion()
+                showImportFromWidgetSuggestion(importFromWidgetSheetState)
                 viewModel.messageHandled(message = message)
             }
 
@@ -238,39 +229,18 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         }
     }
 
-    private fun showImportFromWidgetSuggestion() {
+    private fun showImportFromWidgetSuggestion(
+        importFromWidgetSheetState: AppSheetState,
+    ) {
         Snackbar.make(
             findViewById(android.R.id.content),
             R.string.photo_widget_configure_import_prompt,
             Snackbar.LENGTH_LONG,
         ).apply {
             setAction(R.string.photo_widget_configure_import_prompt_action) {
-                ExistingWidgetPicker.show(
-                    context = this@PhotoWidgetConfigureActivity,
-                    onWidgetSelected = viewModel::importFromWidget,
-                )
+                importFromWidgetSheetState.showBottomSheet()
             }
         }.show()
-    }
-
-    private fun showAspectRatioPicker() {
-        PhotoWidgetAspectRatioPicker.show(
-            context = this,
-            onAspectRatioSelected = viewModel::setAspectRatio,
-        )
-    }
-
-    private fun showSourcePicker(
-        currentSource: PhotoWidgetSource,
-        syncedDir: Set<Uri>,
-    ) {
-        PhotoWidgetSourcePicker.show(
-            context = this,
-            currentSource = currentSource,
-            syncedDir = syncedDir,
-            onDirRemoved = viewModel::removeDir,
-            onChangeSource = viewModel::changeSource,
-        )
     }
 
     private fun launchPhotoPicker() {
@@ -308,24 +278,6 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         result.data?.outputPath
             ?.let(viewModel::photoCropped)
             ?: run { viewModel.cropCancelled() }
-    }
-
-    private fun showCycleModePicker(cycleMode: PhotoWidgetCycleMode) {
-        PhotoWidgetCycleModePicker.show(
-            context = this,
-            cycleMode = cycleMode,
-            onApplyClick = viewModel::cycleModeSelected,
-        )
-    }
-
-    private fun showTapActionPicker(
-        tapActions: PhotoWidgetTapActions,
-    ) {
-        PhotoWidgetTapActionPicker.show(
-            context = this,
-            currentTapActions = tapActions,
-            onApplyClick = viewModel::tapActionSelected,
-        )
     }
 
     private fun addNewWidget(appWidgetId: Int) {

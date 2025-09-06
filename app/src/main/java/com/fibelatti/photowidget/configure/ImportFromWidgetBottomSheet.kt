@@ -1,6 +1,5 @@
 package com.fibelatti.photowidget.configure
 
-import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,35 +30,42 @@ import com.fibelatti.photowidget.home.HomeViewModel
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.model.isWidgetRemoved
-import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
+import com.fibelatti.ui.foundation.AppBottomSheet
+import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.hideBottomSheet
 
-object ExistingWidgetPicker {
+@Composable
+fun ImportFromWidgetBottomSheet(
+    sheetState: AppSheetState,
+    onWidgetSelected: (appWidgetId: Int) -> Unit,
+    modifier: Modifier = Modifier,
+    homeViewModel: HomeViewModel = hiltViewModel(),
+) {
+    AppBottomSheet(
+        sheetState = sheetState,
+        modifier = modifier,
+    ) {
+        val currentWidgets by homeViewModel.currentWidgets.collectAsStateWithLifecycle()
 
-    fun show(context: Context, onWidgetSelected: (widgetId: Int) -> Unit) {
-        ComposeBottomSheetDialog(context) {
-            val homeViewModel = hiltViewModel<HomeViewModel>()
-            val currentWidgets by homeViewModel.currentWidgets.collectAsStateWithLifecycle()
+        RememberedEffect(homeViewModel) {
+            homeViewModel.loadCurrentWidgets()
+        }
 
-            RememberedEffect(homeViewModel) {
-                homeViewModel.loadCurrentWidgets()
-            }
-
-            ExistingWidgetPicker(
-                currentWidgets = currentWidgets,
-                onWidgetSelected = { id ->
-                    onWidgetSelected(id)
-                    dismiss()
-                },
-            )
-        }.show()
+        ImportFromWidgetContent(
+            currentWidgets = currentWidgets,
+            onWidgetSelected = { id ->
+                onWidgetSelected(id)
+                sheetState.hideBottomSheet()
+            },
+        )
     }
 }
 
 @Composable
-private fun ExistingWidgetPicker(
+private fun ImportFromWidgetContent(
     currentWidgets: List<Pair<Int, PhotoWidget>>,
     onWidgetSelected: (widgetId: Int) -> Unit,
 ) {

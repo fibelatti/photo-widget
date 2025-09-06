@@ -1,6 +1,5 @@
-package com.fibelatti.photowidget.platform
+package com.fibelatti.ui.foundation
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,30 +20,32 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
-object SelectionDialog {
-
-    fun <T> show(
-        context: Context,
-        title: String,
-        options: List<T>,
-        optionName: (T) -> String,
-        optionIcon: (T) -> Int? = { null },
-        onOptionSelected: (T) -> Unit,
-        footer: @Composable () -> Unit = {},
+@Composable
+fun <T> SelectionDialogBottomSheet(
+    sheetState: AppSheetState,
+    title: String,
+    options: List<T>,
+    optionName: (T) -> String,
+    onOptionSelected: (T) -> Unit,
+    modifier: Modifier = Modifier,
+    optionIcon: (T) -> Int? = { null },
+    footer: @Composable () -> Unit = {},
+) {
+    AppBottomSheet(
+        sheetState = sheetState,
+        modifier = modifier,
     ) {
-        ComposeBottomSheetDialog(context) {
-            SelectionDialogContent(
-                title = title,
-                options = options,
-                optionName = optionName,
-                optionIcon = optionIcon,
-                onOptionSelected = { option ->
-                    onOptionSelected(option)
-                    dismiss()
-                },
-                footer = footer,
-            )
-        }.show()
+        SelectionDialogContent(
+            title = title,
+            options = options,
+            optionName = optionName,
+            optionIcon = optionIcon,
+            onOptionSelected = { option ->
+                onOptionSelected(option)
+                sheetState.hideBottomSheet()
+            },
+            footer = footer,
+        )
     }
 }
 

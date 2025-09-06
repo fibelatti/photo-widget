@@ -2,7 +2,6 @@
 
 package com.fibelatti.photowidget.configure
 
-import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
@@ -80,7 +79,6 @@ import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
@@ -90,8 +88,8 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
-import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -99,10 +97,8 @@ import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.canShuffle
 import com.fibelatti.photowidget.model.canSort
-import com.fibelatti.photowidget.platform.ComposeBottomSheetDialog
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.withRoundedCorners
@@ -116,14 +112,188 @@ import com.fibelatti.photowidget.preferences.ShapePicker
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.foundation.fadingEdges
+import com.fibelatti.ui.foundation.hideBottomSheet
+import com.fibelatti.ui.foundation.rememberAppSheetState
+import com.fibelatti.ui.foundation.showBottomSheet
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
+
+@Composable
+fun PhotoWidgetConfigureScreen(
+    viewModel: PhotoWidgetConfigureViewModel,
+    isUpdating: Boolean,
+    onNavClick: () -> Unit,
+    onPhotoPickerClick: () -> Unit,
+    onDirPickerClick: () -> Unit,
+) {
+    val state: PhotoWidgetConfigureState by viewModel.state.collectAsStateWithLifecycle()
+
+    val aspectRatioPickerSheetState = rememberAppSheetState()
+    val sourceSheetState = rememberAppSheetState()
+    val cycleModePickerSheetState = rememberAppSheetState()
+    val directoryPickerSheetState = rememberAppSheetState()
+    val tapActionPickerSheetState = rememberAppSheetState()
+    val shapePickerSheetState = rememberAppSheetState()
+    val cornerRadiusPickerSheetState = rememberAppSheetState()
+    val borderPickerSheetState = rememberAppSheetState()
+    val opacityPickerSheetState = rememberAppSheetState()
+    val saturationPickerSheetState = rememberAppSheetState()
+    val brightnessPickerSheetState = rememberAppSheetState()
+    val offsetPickerSheetState = rememberAppSheetState()
+    val paddingPickerSheetState = rememberAppSheetState()
+
+    CompositionLocalProvider(LocalSamplePhoto provides state.selectedPhoto) {
+        PhotoWidgetConfigureScreen(
+            photoWidget = state.photoWidget,
+            isUpdating = isUpdating,
+            selectedPhoto = state.selectedPhoto,
+            isProcessing = state.isProcessing,
+            onNavClick = onNavClick,
+            onAspectRatioClick = aspectRatioPickerSheetState::showBottomSheet,
+            onCropClick = viewModel::requestCrop,
+            onRemoveClick = viewModel::photoRemoved,
+            onMoveLeftClick = viewModel::moveLeft,
+            onMoveRightClick = viewModel::moveRight,
+            onChangeSourceClick = sourceSheetState::showBottomSheet,
+            onPhotoPickerClick = onPhotoPickerClick,
+            onDirPickerClick = onDirPickerClick,
+            onPhotoClick = viewModel::previewPhoto,
+            onReorderFinished = viewModel::reorderPhotos,
+            onRemovedPhotoClick = viewModel::restorePhoto,
+            onCycleModePickerClick = cycleModePickerSheetState::showBottomSheet,
+            onShuffleChange = viewModel::saveShuffle,
+            onSortClick = directoryPickerSheetState::showBottomSheet,
+            onTapActionPickerClick = tapActionPickerSheetState::showBottomSheet,
+            onShapeClick = shapePickerSheetState::showBottomSheet,
+            onCornerRadiusClick = cornerRadiusPickerSheetState::showBottomSheet,
+            onBorderClick = borderPickerSheetState::showBottomSheet,
+            onOpacityClick = opacityPickerSheetState::showBottomSheet,
+            onSaturationClick = saturationPickerSheetState::showBottomSheet,
+            onBrightnessClick = brightnessPickerSheetState::showBottomSheet,
+            onOffsetClick = offsetPickerSheetState::showBottomSheet,
+            onPaddingClick = paddingPickerSheetState::showBottomSheet,
+            onAddToHomeClick = viewModel::addNewWidget,
+        )
+
+        // region Bottom Sheets
+        PhotoWidgetAspectRatioBottomSheet(
+            sheetState = aspectRatioPickerSheetState,
+            onAspectRatioSelected = viewModel::setAspectRatio,
+        )
+
+        PhotoWidgetSourceBottomSheet(
+            sheetState = sourceSheetState,
+            currentSource = state.photoWidget.source,
+            syncedDir = state.photoWidget.syncedDir,
+            onDirRemoved = viewModel::removeDir,
+            onChangeSource = viewModel::changeSource,
+        )
+
+        PhotoWidgetCycleModeBottomSheet(
+            sheetState = cycleModePickerSheetState,
+            cycleMode = state.photoWidget.cycleMode,
+            onApplyClick = viewModel::cycleModeSelected,
+        )
+
+        DirectorySortingBottomSheet(
+            sheetState = directoryPickerSheetState,
+            onItemClick = viewModel::saveSorting,
+        )
+
+        PhotoWidgetTapActionBottomSheet(
+            sheetState = tapActionPickerSheetState,
+            currentTapActions = state.photoWidget.tapActions,
+            onApplyClick = viewModel::tapActionSelected,
+        )
+
+        AppBottomSheet(
+            sheetState = shapePickerSheetState,
+        ) {
+            ShapePicker(
+                onClick = { newShapeId ->
+                    viewModel.shapeSelected(newShapeId)
+                    shapePickerSheetState.hideBottomSheet()
+                },
+                selectedShapeId = state.photoWidget.shapeId,
+            )
+        }
+
+        AppBottomSheet(
+            sheetState = cornerRadiusPickerSheetState,
+        ) {
+            CornerRadiusPicker(
+                currentValue = state.photoWidget.cornerRadius,
+                onApplyClick = { newValue ->
+                    viewModel.cornerRadiusSelected(newValue)
+                    cornerRadiusPickerSheetState.hideBottomSheet()
+                },
+            )
+        }
+
+        PhotoWidgetBorderBottomSheet(
+            sheetState = borderPickerSheetState,
+            currentBorder = state.photoWidget.border,
+            onApplyClick = viewModel::borderSelected,
+        )
+
+        AppBottomSheet(
+            sheetState = opacityPickerSheetState,
+        ) {
+            OpacityPicker(
+                currentValue = state.photoWidget.colors.opacity,
+                onApplyClick = { newValue ->
+                    viewModel.opacitySelected(newValue)
+                    opacityPickerSheetState.hideBottomSheet()
+                },
+            )
+        }
+
+        PhotoWidgetSaturationBottomSheet(
+            sheetState = saturationPickerSheetState,
+            currentSaturation = state.photoWidget.colors.saturation,
+            onApplyClick = viewModel::saturationSelected,
+        )
+
+        PhotoWidgetBrightnessBottomSheet(
+            sheetState = brightnessPickerSheetState,
+            currentBrightness = state.photoWidget.colors.brightness,
+            onApplyClick = viewModel::brightnessSelected,
+        )
+
+        AppBottomSheet(
+            sheetState = offsetPickerSheetState,
+        ) {
+            PhotoWidgetOffsetPicker(
+                horizontalOffset = state.photoWidget.horizontalOffset,
+                verticalOffset = state.photoWidget.verticalOffset,
+                onApplyClick = { newHorizontalOffset, newVerticalOffset ->
+                    viewModel.offsetSelected(newHorizontalOffset, newVerticalOffset)
+                    offsetPickerSheetState.hideBottomSheet()
+                },
+            )
+        }
+
+        AppBottomSheet(
+            sheetState = paddingPickerSheetState,
+        ) {
+            PaddingPicker(
+                currentValue = state.photoWidget.padding,
+                onApplyClick = { newValue ->
+                    viewModel.paddingSelected(newValue)
+                    paddingPickerSheetState.hideBottomSheet()
+                },
+            )
+        }
+        // endregion Bottom Sheets
+    }
+}
 
 @Composable
 fun PhotoWidgetConfigureScreen(
@@ -137,29 +307,27 @@ fun PhotoWidgetConfigureScreen(
     onRemoveClick: (LocalPhoto) -> Unit,
     onMoveLeftClick: (LocalPhoto) -> Unit,
     onMoveRightClick: (LocalPhoto) -> Unit,
-    onChangeSource: (currentSource: PhotoWidgetSource, syncedDir: Set<Uri>) -> Unit,
+    onChangeSourceClick: () -> Unit,
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     onReorderFinished: (List<LocalPhoto>) -> Unit,
     onRemovedPhotoClick: (LocalPhoto) -> Unit,
-    onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
+    onCycleModePickerClick: () -> Unit,
     onShuffleChange: (Boolean) -> Unit,
-    onSortChange: (DirectorySorting) -> Unit,
-    onTapActionPickerClick: (PhotoWidgetTapActions) -> Unit,
-    onShapeChange: (String) -> Unit,
-    onCornerRadiusChange: (Int) -> Unit,
-    onBorderChange: (PhotoWidgetBorder) -> Unit,
-    onOpacityChange: (Float) -> Unit,
-    onSaturationChange: (Float) -> Unit,
-    onBrightnessChange: (Float) -> Unit,
-    onOffsetChange: (horizontalOffset: Int, verticalOffset: Int) -> Unit,
-    onPaddingChange: (Int) -> Unit,
+    onSortClick: () -> Unit,
+    onTapActionPickerClick: () -> Unit,
+    onShapeClick: () -> Unit,
+    onCornerRadiusClick: () -> Unit,
+    onBorderClick: () -> Unit,
+    onOpacityClick: () -> Unit,
+    onSaturationClick: () -> Unit,
+    onBrightnessClick: () -> Unit,
+    onOffsetClick: () -> Unit,
+    onPaddingClick: () -> Unit,
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val localContext = LocalContext.current
-
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center,
@@ -179,7 +347,7 @@ fun PhotoWidgetConfigureScreen(
             onAspectRatioClick = onAspectRatioClick,
             onCropClick = onCropClick,
             onRemoveClick = onRemoveClick,
-            onChangeSource = onChangeSource,
+            onChangeSourceClick = onChangeSourceClick,
             onPhotoPickerClick = onPhotoPickerClick,
             onDirPickerClick = onDirPickerClick,
             onPhotoClick = onPhotoClick,
@@ -187,101 +355,16 @@ fun PhotoWidgetConfigureScreen(
             onRemovedPhotoClick = onRemovedPhotoClick,
             onCycleModePickerClick = onCycleModePickerClick,
             onShuffleChange = onShuffleChange,
-            onSortClick = {
-                DirectorySortingPicker.show(
-                    context = localContext,
-                    onItemClick = onSortChange,
-                )
-            },
+            onSortClick = onSortClick,
             onTapActionPickerClick = onTapActionPickerClick,
-            onShapeClick = {
-                ComposeBottomSheetDialog(localContext) {
-                    ShapePicker(
-                        onClick = { newShapeId ->
-                            onShapeChange(newShapeId)
-                            dismiss()
-                        },
-                        selectedShapeId = photoWidget.shapeId,
-                    )
-                }.show()
-            },
-            onCornerRadiusClick = {
-                ComposeBottomSheetDialog(localContext) {
-                    CompositionLocalProvider(LocalSamplePhoto provides selectedPhoto) {
-                        CornerRadiusPicker(
-                            currentValue = photoWidget.cornerRadius,
-                            onApplyClick = { newValue ->
-                                onCornerRadiusChange(newValue)
-                                dismiss()
-                            },
-                        )
-                    }
-                }.show()
-            },
-            onBorderClick = {
-                PhotoWidgetBorderPicker.show(
-                    context = localContext,
-                    localPhoto = selectedPhoto,
-                    currentBorder = photoWidget.border,
-                    onApplyClick = onBorderChange,
-                )
-            },
-            onOpacityClick = {
-                ComposeBottomSheetDialog(localContext) {
-                    CompositionLocalProvider(LocalSamplePhoto provides selectedPhoto) {
-                        OpacityPicker(
-                            currentValue = photoWidget.colors.opacity,
-                            onApplyClick = { newValue ->
-                                onOpacityChange(newValue)
-                                dismiss()
-                            },
-                        )
-                    }
-                }.show()
-            },
-            onSaturationClick = {
-                PhotoWidgetSaturationPicker.show(
-                    context = localContext,
-                    localPhoto = selectedPhoto,
-                    currentSaturation = photoWidget.colors.saturation,
-                    onApplyClick = onSaturationChange,
-                )
-            },
-            onBrightnessClick = {
-                PhotoWidgetBrightnessPicker.show(
-                    context = localContext,
-                    localPhoto = selectedPhoto,
-                    currentBrightness = photoWidget.colors.brightness,
-                    onApplyClick = onBrightnessChange,
-                )
-            },
-            onOffsetClick = {
-                ComposeBottomSheetDialog(localContext) {
-                    CompositionLocalProvider(LocalSamplePhoto provides selectedPhoto) {
-                        PhotoWidgetOffsetPicker(
-                            horizontalOffset = photoWidget.horizontalOffset,
-                            verticalOffset = photoWidget.verticalOffset,
-                            onApplyClick = { newHorizontalOffset, newVerticalOffset ->
-                                onOffsetChange(newHorizontalOffset, newVerticalOffset)
-                                dismiss()
-                            },
-                        )
-                    }
-                }.show()
-            },
-            onPaddingClick = {
-                ComposeBottomSheetDialog(localContext) {
-                    CompositionLocalProvider(LocalSamplePhoto provides selectedPhoto) {
-                        PaddingPicker(
-                            currentValue = photoWidget.padding,
-                            onApplyClick = { newValue ->
-                                onPaddingChange(newValue)
-                                dismiss()
-                            },
-                        )
-                    }
-                }.show()
-            },
+            onShapeClick = onShapeClick,
+            onCornerRadiusClick = onCornerRadiusClick,
+            onBorderClick = onBorderClick,
+            onOpacityClick = onOpacityClick,
+            onSaturationClick = onSaturationClick,
+            onBrightnessClick = onBrightnessClick,
+            onOffsetClick = onOffsetClick,
+            onPaddingClick = onPaddingClick,
             onAddToHomeClick = onAddToHomeClick,
             modifier = Modifier
                 .fillMaxSize()
@@ -316,16 +399,16 @@ private fun PhotoWidgetConfigureContent(
     onRemoveClick: (LocalPhoto) -> Unit,
     onMoveLeftClick: (LocalPhoto) -> Unit,
     onMoveRightClick: (LocalPhoto) -> Unit,
-    onChangeSource: (currentSource: PhotoWidgetSource, syncedDir: Set<Uri>) -> Unit,
+    onChangeSourceClick: () -> Unit,
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     onReorderFinished: (List<LocalPhoto>) -> Unit,
     onRemovedPhotoClick: (LocalPhoto) -> Unit,
-    onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
+    onCycleModePickerClick: () -> Unit,
     onShuffleChange: (Boolean) -> Unit,
     onSortClick: () -> Unit,
-    onTapActionPickerClick: (PhotoWidgetTapActions) -> Unit,
+    onTapActionPickerClick: () -> Unit,
     onShapeClick: () -> Unit,
     onCornerRadiusClick: () -> Unit,
     onBorderClick: () -> Unit,
@@ -357,7 +440,7 @@ private fun PhotoWidgetConfigureContent(
                 PhotoWidgetEditor(
                     photoWidget = photoWidget,
                     isUpdating = isUpdating,
-                    onChangeSource = onChangeSource,
+                    onChangeSourceClick = onChangeSourceClick,
                     onPhotoPickerClick = onPhotoPickerClick,
                     onDirPickerClick = onDirPickerClick,
                     onPhotoClick = onPhotoClick,
@@ -400,7 +483,7 @@ private fun PhotoWidgetConfigureContent(
                 PhotoWidgetEditor(
                     photoWidget = photoWidget,
                     isUpdating = isUpdating,
-                    onChangeSource = onChangeSource,
+                    onChangeSourceClick = onChangeSourceClick,
                     onPhotoPickerClick = onPhotoPickerClick,
                     onDirPickerClick = onDirPickerClick,
                     onPhotoClick = onPhotoClick,
@@ -493,7 +576,7 @@ private fun PhotoWidgetViewer(
 private fun PhotoWidgetEditor(
     photoWidget: PhotoWidget,
     isUpdating: Boolean,
-    onChangeSource: (currentSource: PhotoWidgetSource, syncedDir: Set<Uri>) -> Unit,
+    onChangeSourceClick: () -> Unit,
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
@@ -508,10 +591,10 @@ private fun PhotoWidgetEditor(
     onBrightnessClick: () -> Unit,
     onOffsetClick: () -> Unit,
     onPaddingClick: () -> Unit,
-    onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
+    onCycleModePickerClick: () -> Unit,
     onShuffleChange: (Boolean) -> Unit,
     onSortClick: () -> Unit,
-    onTapActionPickerClick: (PhotoWidgetTapActions) -> Unit,
+    onTapActionPickerClick: () -> Unit,
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
     contentWindowInsets: WindowInsets = WindowInsets.navigationBars,
@@ -539,7 +622,7 @@ private fun PhotoWidgetEditor(
                 ConfigureTab.CONTENT -> {
                     ContentTab(
                         photoWidget = photoWidget,
-                        onChangeSource = onChangeSource,
+                        onChangeSourceClick = onChangeSourceClick,
                         onPhotoPickerClick = onPhotoPickerClick,
                         onDirPickerClick = onDirPickerClick,
                         onPhotoClick = onPhotoClick,
@@ -603,7 +686,7 @@ private fun PhotoWidgetEditor(
 @Composable
 private fun ContentTab(
     photoWidget: PhotoWidget,
-    onChangeSource: (currentSource: PhotoWidgetSource, syncedDir: Set<Uri>) -> Unit,
+    onChangeSourceClick: () -> Unit,
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
@@ -613,7 +696,7 @@ private fun ContentTab(
 ) {
     PhotoPicker(
         source = photoWidget.source,
-        onChangeSource = { onChangeSource(photoWidget.source, photoWidget.syncedDir) },
+        onChangeSourceClick = onChangeSourceClick,
         photos = photoWidget.photos,
         canSort = photoWidget.canSort,
         onPhotoPickerClick = onPhotoPickerClick,
@@ -743,10 +826,10 @@ private fun AppearanceTab(
 @Composable
 private fun BehaviorTab(
     photoWidget: PhotoWidget,
-    onCycleModePickerClick: (PhotoWidgetCycleMode) -> Unit,
+    onCycleModePickerClick: () -> Unit,
     onShuffleChange: (Boolean) -> Unit,
     onSortClick: () -> Unit,
-    onTapActionPickerClick: (PhotoWidgetTapActions) -> Unit,
+    onTapActionPickerClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -784,7 +867,7 @@ private fun BehaviorTab(
                         stringResource(id = R.string.photo_widget_configure_cycling_mode_disabled)
                     }
                 },
-                onClick = { onCycleModePickerClick(photoWidget.cycleMode) },
+                onClick = onCycleModePickerClick,
             )
         }
 
@@ -818,7 +901,7 @@ private fun BehaviorTab(
                 appendLine(stringResource(id = photoWidget.tapActions.center.label))
                 appendLine(stringResource(id = photoWidget.tapActions.right.label))
             },
-            onClick = { onTapActionPickerClick(photoWidget.tapActions) },
+            onClick = onTapActionPickerClick,
         )
     }
 }
@@ -977,7 +1060,7 @@ private fun EditingControls(
 @OptIn(ExperimentalFoundationApi::class)
 private fun PhotoPicker(
     source: PhotoWidgetSource,
-    onChangeSource: () -> Unit,
+    onChangeSourceClick: () -> Unit,
     photos: List<LocalPhoto>,
     canSort: Boolean,
     onPhotoPickerClick: () -> Unit,
@@ -1109,7 +1192,7 @@ private fun PhotoPicker(
                     val interactionSource = remember { MutableInteractionSource() }
 
                     OutlinedButton(
-                        onClick = onChangeSource,
+                        onClick = onChangeSourceClick,
                         shapes = ButtonDefaults.shapes(),
                         modifier = Modifier
                             .weight(1f)
@@ -1289,12 +1372,12 @@ private fun PhotoWidgetConfigureScreenPreview() {
             selectedPhoto = LocalPhoto(photoId = "photo-0"),
             isProcessing = false,
             onNavClick = {},
-            onMoveLeftClick = {},
-            onMoveRightClick = {},
             onAspectRatioClick = {},
             onCropClick = {},
             onRemoveClick = {},
-            onChangeSource = { _, _ -> },
+            onMoveLeftClick = {},
+            onMoveRightClick = {},
+            onChangeSourceClick = {},
             onPhotoPickerClick = {},
             onDirPickerClick = {},
             onPhotoClick = {},
@@ -1302,16 +1385,16 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onRemovedPhotoClick = {},
             onCycleModePickerClick = {},
             onShuffleChange = {},
-            onSortChange = {},
+            onSortClick = {},
             onTapActionPickerClick = {},
-            onShapeChange = {},
-            onCornerRadiusChange = {},
-            onBorderChange = {},
-            onOpacityChange = {},
-            onSaturationChange = {},
-            onBrightnessChange = {},
-            onOffsetChange = { _, _ -> },
-            onPaddingChange = {},
+            onShapeClick = {},
+            onCornerRadiusClick = {},
+            onBorderClick = {},
+            onOpacityClick = {},
+            onSaturationClick = {},
+            onBrightnessClick = {},
+            onOffsetClick = {},
+            onPaddingClick = {},
             onAddToHomeClick = {},
         )
     }
@@ -1328,16 +1411,16 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
                 aspectRatio = PhotoWidgetAspectRatio.TALL,
                 colors = PhotoWidgetColors(opacity = 80f),
             ),
-            isUpdating = true,
+            isUpdating = false,
             selectedPhoto = LocalPhoto(photoId = "photo-0"),
             isProcessing = false,
             onNavClick = {},
-            onMoveLeftClick = {},
-            onMoveRightClick = {},
             onAspectRatioClick = {},
             onCropClick = {},
             onRemoveClick = {},
-            onChangeSource = { _, _ -> },
+            onMoveLeftClick = {},
+            onMoveRightClick = {},
+            onChangeSourceClick = {},
             onPhotoPickerClick = {},
             onDirPickerClick = {},
             onPhotoClick = {},
@@ -1345,16 +1428,16 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onRemovedPhotoClick = {},
             onCycleModePickerClick = {},
             onShuffleChange = {},
-            onSortChange = {},
+            onSortClick = {},
             onTapActionPickerClick = {},
-            onShapeChange = {},
-            onCornerRadiusChange = {},
-            onBorderChange = {},
-            onOpacityChange = {},
-            onSaturationChange = {},
-            onBrightnessChange = {},
-            onOffsetChange = { _, _ -> },
-            onPaddingChange = {},
+            onShapeClick = {},
+            onCornerRadiusClick = {},
+            onBorderClick = {},
+            onOpacityClick = {},
+            onSaturationClick = {},
+            onBrightnessClick = {},
+            onOffsetClick = {},
+            onPaddingClick = {},
             onAddToHomeClick = {},
         )
     }
