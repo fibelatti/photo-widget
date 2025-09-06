@@ -45,9 +45,9 @@ import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.ui.AppBottomSheet
-import com.fibelatti.photowidget.ui.AppSheetState
-import com.fibelatti.photowidget.ui.hideBottomSheet
+import com.fibelatti.ui.foundation.AppBottomSheet
+import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme

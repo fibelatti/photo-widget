@@ -70,14 +70,14 @@ import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.platform.withRoundedCorners
-import com.fibelatti.photowidget.ui.AppBottomSheet
-import com.fibelatti.photowidget.ui.AppSheetState
 import com.fibelatti.photowidget.ui.Toggle
-import com.fibelatti.photowidget.ui.hideBottomSheet
+import com.fibelatti.ui.foundation.AppBottomSheet
+import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.ColumnToggleButtonGroup
 import com.fibelatti.ui.foundation.ConnectedButtonRowItem
 import com.fibelatti.ui.foundation.ToggleButtonGroup
 import com.fibelatti.ui.foundation.dpToPx
+import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme

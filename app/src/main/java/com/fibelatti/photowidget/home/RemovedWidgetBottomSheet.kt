@@ -8,9 +8,9 @@ import androidx.compose.ui.platform.LocalContext
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
-import com.fibelatti.photowidget.ui.AppSheetState
-import com.fibelatti.photowidget.ui.SelectionDialogBottomSheet
-import com.fibelatti.photowidget.ui.data
+import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
+import com.fibelatti.ui.foundation.data
 
 @Composable
 fun RemovedWidgetBottomSheet(

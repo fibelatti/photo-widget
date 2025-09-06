@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.appSettingsIntent
 import com.fibelatti.photowidget.platform.batteryUsageSettingsIntent
+import com.fibelatti.ui.foundation.AppBottomSheet
+import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.TextWithLinks
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme

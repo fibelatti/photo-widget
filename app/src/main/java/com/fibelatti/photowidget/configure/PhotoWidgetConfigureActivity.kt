@@ -29,10 +29,10 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.setIdentifierCompat
-import com.fibelatti.photowidget.ui.AppSheetState
-import com.fibelatti.photowidget.ui.rememberAppSheetState
-import com.fibelatti.photowidget.ui.showBottomSheet
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
+import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.rememberAppSheetState
+import com.fibelatti.ui.foundation.showBottomSheet
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint

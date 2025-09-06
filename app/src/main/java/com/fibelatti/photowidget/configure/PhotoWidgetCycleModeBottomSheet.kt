@@ -69,12 +69,12 @@ import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.intervalRange
 import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
-import com.fibelatti.photowidget.ui.AppBottomSheet
-import com.fibelatti.photowidget.ui.AppSheetState
 import com.fibelatti.photowidget.ui.SliderSmallThumb
-import com.fibelatti.photowidget.ui.hideBottomSheet
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
+import com.fibelatti.ui.foundation.AppBottomSheet
+import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.ConnectedButtonRowItem
+import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme

@@ -10,8 +10,8 @@ import androidx.core.app.ActivityCompat
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
-import com.fibelatti.photowidget.ui.AppSheetState
-import com.fibelatti.photowidget.ui.SelectionDialogBottomSheet
+import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
 
 @Composable
 fun AppColorsBottomSheet(

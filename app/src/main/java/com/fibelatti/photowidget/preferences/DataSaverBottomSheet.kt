@@ -18,9 +18,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
-import com.fibelatti.photowidget.ui.AppBottomSheet
-import com.fibelatti.photowidget.ui.AppSheetState
 import com.fibelatti.photowidget.ui.Toggle
+import com.fibelatti.ui.foundation.AppBottomSheet
+import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.preview.LocalePreviews
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.theme.ExtendedTheme

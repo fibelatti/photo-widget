@@ -12,9 +12,9 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.preferences.Appearance
-import com.fibelatti.photowidget.ui.AppSheetState
-import com.fibelatti.photowidget.ui.SelectionDialogBottomSheet
 import com.fibelatti.photowidget.ui.Toggle
+import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
 
 @Composable
 fun AppAppearanceBottomSheet(

@@ -60,13 +60,13 @@ import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.getColorPalette
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.withRoundedCorners
-import com.fibelatti.photowidget.ui.AppBottomSheet
-import com.fibelatti.photowidget.ui.AppSheetState
 import com.fibelatti.photowidget.ui.SliderSmallThumb
-import com.fibelatti.photowidget.ui.hideBottomSheet
+import com.fibelatti.ui.foundation.AppBottomSheet
+import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.ColumnToggleButtonGroup
 import com.fibelatti.ui.foundation.ToggleButtonGroup
 import com.fibelatti.ui.foundation.dpToPx
+import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 import com.github.skydoves.colorpicker.compose.BrightnessSlider

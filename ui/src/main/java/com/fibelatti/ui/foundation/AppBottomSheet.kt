@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.fibelatti.photowidget.ui
+package com.fibelatti.ui.foundation
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -95,7 +95,7 @@ fun rememberAppSheetState(
  *
  * @see rememberAppSheetState
  */
-interface AppSheetState
+sealed interface AppSheetState
 
 private data class AppSheetStateImpl(
     val state: SheetState,

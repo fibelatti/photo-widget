@@ -33,11 +33,11 @@ import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.DefaultPicker
-import com.fibelatti.photowidget.ui.AppBottomSheet
-import com.fibelatti.photowidget.ui.AppSheetState
 import com.fibelatti.photowidget.ui.SliderSmallThumb
-import com.fibelatti.photowidget.ui.hideBottomSheet
+import com.fibelatti.ui.foundation.AppBottomSheet
+import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.dpToPx
+import com.fibelatti.ui.foundation.hideBottomSheet
 
 @Composable
 fun PhotoWidgetSaturationBottomSheet(

@@ -12,8 +12,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.DirectorySorting
-import com.fibelatti.photowidget.ui.AppSheetState
-import com.fibelatti.photowidget.ui.SelectionDialogBottomSheet
+import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
 
 @Composable
 fun DirectorySortingBottomSheet(

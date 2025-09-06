@@ -31,11 +31,11 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.model.isWidgetRemoved
 import com.fibelatti.photowidget.platform.RememberedEffect
-import com.fibelatti.photowidget.ui.AppBottomSheet
-import com.fibelatti.photowidget.ui.AppSheetState
 import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
-import com.fibelatti.photowidget.ui.hideBottomSheet
+import com.fibelatti.ui.foundation.AppBottomSheet
+import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.hideBottomSheet
 
 @Composable
 fun ImportFromWidgetBottomSheet(

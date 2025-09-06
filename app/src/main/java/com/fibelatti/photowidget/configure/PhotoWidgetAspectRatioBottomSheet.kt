@@ -14,9 +14,9 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.home.AspectRatioPicker
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.ui.AppBottomSheet
-import com.fibelatti.photowidget.ui.AppSheetState
-import com.fibelatti.photowidget.ui.hideBottomSheet
+import com.fibelatti.ui.foundation.AppBottomSheet
+import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.hideBottomSheet
 
 @Composable
 fun PhotoWidgetAspectRatioBottomSheet(
