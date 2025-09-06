@@ -15,6 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -50,7 +52,7 @@ fun AppBottomSheet(
     onDismissRequest: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    require(sheetState is AppSheetStateImpl)
+    sheetState.checkTypeRequirement()
 
     LaunchedEffect(sheetState.isVisible) {
         if (sheetState.isVisible) {
@@ -112,11 +114,20 @@ private data class AppSheetStateImpl(
  */
 private val AppSheetState.isBottomSheetShowing: Boolean
     get() {
-        require(this is AppSheetStateImpl)
+        checkTypeRequirement()
         // `Or` is important here to add the `ModalBottomSheet` to the composition before it begins animating
         // otherwise it would simply appear the first time. It works as expected if opened again.
         return state.isVisible || isVisible
     }
+
+/**
+ * Convenience function to check the validity of the receiver [AppSheetState] before performing any operations on it.
+ */
+@OptIn(ExperimentalContracts::class)
+private fun AppSheetState.checkTypeRequirement() {
+    contract { returns() implies (this@checkTypeRequirement is AppSheetStateImpl) }
+    require(this is AppSheetStateImpl) { "AppBottomSheet must be used with rememberAppSheetState." }
+}
 
 /**
  * Shows the bottom sheet associated with the received [AppSheetState].
@@ -124,7 +135,7 @@ private val AppSheetState.isBottomSheetShowing: Boolean
  * @param data optional data to be passed to the bottom sheet. See [AppSheetState.data].
  */
 fun AppSheetState.showBottomSheet(data: Any? = null) {
-    require(this is AppSheetStateImpl)
+    checkTypeRequirement()
     // Simply mark it to be displayed and let the state change do its thing in `AppBottomSheet`
     this.isVisible = true
     this.data = data
@@ -134,7 +145,7 @@ fun AppSheetState.showBottomSheet(data: Any? = null) {
  * Hides the bottom sheet associated with the received [AppSheetState].
  */
 fun AppSheetState.hideBottomSheet() {
-    require(this is AppSheetStateImpl)
+    checkTypeRequirement()
     scope.launch { state.hide() }
         .invokeOnCompletion {
             // Clean up the state on completion to remove the sheet from the composition
@@ -153,6 +164,6 @@ fun AppSheetState.hideBottomSheet() {
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> AppSheetState.data(): T? {
-    require(this is AppSheetStateImpl)
+    checkTypeRequirement()
     return data as? T
 }
