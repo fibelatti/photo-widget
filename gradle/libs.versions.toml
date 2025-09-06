@@ -6,7 +6,7 @@ hilt = "2.57.1"
 hiltExtensions = "1.2.0"
 kotlin = "2.2.10"
 room = "2.7.2"
-aboutLibraries = "12.2.4"
+aboutLibraries = "13.0.0-b01"
 
 [libraries]
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }

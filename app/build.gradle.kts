@@ -154,20 +154,23 @@ room {
 }
 
 aboutLibraries {
-    export.excludeFields = setOf("generated")
-    android.registerAndroidTasks = false
+    collect {
+        filterVariants.add("release")
+    }
+
+    export {
+        variant = "release"
+        excludeFields = setOf("generated")
+    }
+
+    library {
+        duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
+        duplicationRule = com.mikepenz.aboutlibraries.plugin.DuplicateRule.EXACT
+    }
 }
 
 licensee {
     allow("Apache-2.0")
-}
-
-afterEvaluate {
-    // aboutlibraries caches the result of this task, leading to the JSON containing
-    // outdated versions after a library update
-    tasks.named { name -> name == "collectDependencies" }.configureEach {
-        outputs.upToDateWhen { false }
-    }
 }
 
 dependencies {

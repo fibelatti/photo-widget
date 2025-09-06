@@ -75,15 +75,14 @@ private fun OssLicensesScreen(
         contentPadding = paddingValues.copy(top = 0.dp),
         showLicenseBadges = false,
         colors = LibraryDefaults.libraryColors(
-            backgroundColor = MaterialTheme.colorScheme.background,
-            contentColor = MaterialTheme.colorScheme.onBackground,
+            libraryBackgroundColor = MaterialTheme.colorScheme.background,
+            libraryContentColor = MaterialTheme.colorScheme.onBackground,
             versionChipColors = LibraryDefaults.chipColors(
-                containerColor = MaterialTheme.colorScheme.background,
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                contentColor = MaterialTheme.colorScheme.onSurface,
             ),
-            licenseChipColors = LibraryDefaults.chipColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            ),
+            dialogBackgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            dialogContentColor = MaterialTheme.colorScheme.onSurface,
             dialogConfirmButtonColor = MaterialTheme.colorScheme.primary,
         ),
         header = {
