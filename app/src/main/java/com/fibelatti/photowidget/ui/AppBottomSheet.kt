@@ -38,7 +38,7 @@ import kotlinx.coroutines.launch
  * }
  * ```
  *
- * @param sheetState [AppSheetState], see [rememberAppSheetState].
+ * @param sheetState [AppSheetState] obtained with [rememberAppSheetState].
  * @param modifier Optional [Modifier] for the bottom sheet.
  * @param onDismissRequest Executes when the user clicks outside of the bottom sheet, after sheet animates to Hidden.
  * @param content The content to be displayed inside the bottom sheet.
@@ -103,12 +103,14 @@ private data class AppSheetStateImpl(
 ) : AppSheetState {
 
     var isVisible: Boolean by mutableStateOf(false)
+
+    var data: Any? by mutableStateOf(null)
 }
 
 /**
  * Indicates whether the bottom sheet is currently visible, or requested to be visible.
  */
-val AppSheetState.isBottomSheetShowing: Boolean
+private val AppSheetState.isBottomSheetShowing: Boolean
     get() {
         require(this is AppSheetStateImpl)
         // `Or` is important here to add the `ModalBottomSheet` to the composition before it begins animating
@@ -118,13 +120,19 @@ val AppSheetState.isBottomSheetShowing: Boolean
 
 /**
  * Shows the bottom sheet associated with the received [AppSheetState].
+ *
+ * @param data optional data to be passed to the bottom sheet. See [AppSheetState.data].
  */
-fun AppSheetState.showBottomSheet() {
+fun AppSheetState.showBottomSheet(data: Any? = null) {
     require(this is AppSheetStateImpl)
     // Simply mark it to be displayed and let the state change do its thing in `AppBottomSheet`
-    isVisible = true
+    this.isVisible = true
+    this.data = data
 }
 
+/**
+ * Hides the bottom sheet associated with the received [AppSheetState].
+ */
 fun AppSheetState.hideBottomSheet() {
     require(this is AppSheetStateImpl)
     scope.launch { state.hide() }
@@ -134,4 +142,17 @@ fun AppSheetState.hideBottomSheet() {
                 isVisible = false
             }
         }
+}
+
+/**
+ * Retrieves the data associated with the bottom sheet, if any was provided when calling [showBottomSheet].
+ *
+ * This **always returns null** before [showBottomSheet] is called, so take this into account when relying on this value
+ * for your composition. It's likely that whenever the data is missing, downstream items should not be in the
+ * composition yet.
+ */
+@Suppress("UNCHECKED_CAST")
+fun <T> AppSheetState.data(): T? {
+    require(this is AppSheetStateImpl)
+    return data as? T
 }
