@@ -1,0 +1,6 @@
+This version brings the following updates:
+
+* Remove app from recent apps after dismissing the full screen viewer
+* Update app internals to keep it running smoothly
+
+Thanks for using the app!
