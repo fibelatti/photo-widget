@@ -63,9 +63,10 @@ fun Bitmap.withPolygonalShape(
         canvas.drawPath(path, paint)
     } catch (e: Exception) {
         val message = "withPolygonalShape failed! " +
-            "(shapeId=$shapeId, bitmap=$width, $height, rect=${rect.width()}, ${rect.height()})"
+            "(shapeId=$shapeId, bitmap=[$width;$height], rect=[${rect.width()};${rect.height()}])"
 
-        throw RuntimeException(message, e)
+        // GPC strips the message from the exception, but not the cause. Let's see if the double wrap gets us anywhere
+        throw RuntimeException(message, IllegalStateException(message, e))
     }
 }
 
