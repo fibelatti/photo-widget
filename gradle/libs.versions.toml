@@ -15,7 +15,7 @@ coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ve
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 
 appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.1" }
-activity = { module = "androidx.activity:activity", version = "1.10.1" }
+activity = { module = "androidx.activity:activity", version = "1.11.0" }
 core-ktx = { module = "androidx.core:core-ktx", version = "1.17.0" }
 material = { module = "com.google.android.material:material", version = "1.13.0" }
 lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version = "2.9.3" }
