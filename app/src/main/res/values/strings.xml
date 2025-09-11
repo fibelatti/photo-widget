@@ -293,6 +293,10 @@
     <string name="photo_widget_cycling_feedback_paused">Timer paused</string>
     <string name="photo_widget_cycling_feedback_resumed">Timer resumed</string>
 
+    <!-- Notifications -->
+    <string name="notification_channel_name_keep_alive">Keep-Alive Service</string>
+    <string name="notification_channel_description_keep_alive">Keeps the app alive, even while backgrounded for a long time. Ensures that widgets can be updated as expected.</string>
+
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Yes</string>
     <string name="photo_widget_action_no">No</string>
