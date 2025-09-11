@@ -12,6 +12,7 @@ import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
+import com.fibelatti.photowidget.platform.KeepAliveService
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -112,6 +113,7 @@ class RecurringWorker(
 ) : Worker(context = context, workerParams = workerParams) {
 
     override fun doWork(): Result {
+        KeepAliveService.tryStart(context = applicationContext)
         PhotoWidgetRescheduleWorker.enqueueWork(context = applicationContext, delay = Duration.ofHours(1))
         return Result.success()
     }

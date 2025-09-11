@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composer
 import androidx.compose.runtime.ExperimentalComposeRuntimeApi
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.fibelatti.photowidget.platform.ConfigurationChangedReceiver
+import com.fibelatti.photowidget.platform.KeepAliveService
 import com.fibelatti.photowidget.preferences.Appearance
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
@@ -101,8 +101,7 @@ class App : Application(), Configuration.Provider {
     }
 
     private fun getReadyToWork() {
-        ConfigurationChangedReceiver.register(context = this)
-
+        KeepAliveService.tryStart(context = this)
         PhotoWidgetRescheduleWorker.enqueueWork(context = this)
         PhotoWidgetSyncWorker.enqueueWork(context = this)
     }

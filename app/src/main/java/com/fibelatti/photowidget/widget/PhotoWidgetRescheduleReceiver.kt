@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.platform.EntryPointBroadcastReceiver
+import com.fibelatti.photowidget.platform.KeepAliveService
 import timber.log.Timber
 
 class PhotoWidgetRescheduleReceiver : EntryPointBroadcastReceiver() {
@@ -18,6 +19,7 @@ class PhotoWidgetRescheduleReceiver : EntryPointBroadcastReceiver() {
         val isManual = ACTION_RESCHEDULE == intent.action
 
         if (isBoot || isUpdate || isManual) {
+            KeepAliveService.tryStart(context = context)
             PhotoWidgetRescheduleWorker.enqueueWork(context = context)
             PhotoWidgetSyncWorker.enqueueWork(context = context)
         }
