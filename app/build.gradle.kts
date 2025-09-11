@@ -184,7 +184,7 @@ dependencies {
 
     // Android Platform
     implementation(libs.appcompat)
-    implementation(libs.activity)
+    implementation(libs.activity.compose)
     implementation(libs.material)
     implementation(libs.graphics.shapes)
     implementation(libs.lifecycle.runtime.compose)
@@ -204,7 +204,7 @@ dependencies {
     ksp(libs.dagger.hilt.compiler)
     ksp(libs.hilt.compiler)
     implementation(libs.dagger.hilt.android)
-    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.lifecycle.viewmodel.compose)
     implementation(libs.hilt.work)
 
     implementation(libs.room.runtime)
