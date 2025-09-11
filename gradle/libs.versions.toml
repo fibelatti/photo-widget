@@ -4,7 +4,7 @@ coil = "3.3.0"
 coroutines = "1.10.2"
 hilt = "2.57.1"
 hiltExtensions = "1.2.0"
-kotlin = "2.2.10"
+kotlin = "2.2.20"
 room = "2.8.0"
 aboutLibraries = "13.0.0-b01"
 
@@ -61,7 +61,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version = "2.2.10-2.0.2" }
+ksp = { id = "com.google.devtools.ksp", version = "2.2.20-2.0.2" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 room = { id = "androidx.room", version.ref = "room" }
 spotless = { id = "com.diffplug.spotless", version = "7.2.1" }
