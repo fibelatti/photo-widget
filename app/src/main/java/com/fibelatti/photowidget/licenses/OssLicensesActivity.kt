@@ -35,7 +35,7 @@ import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
 import com.mikepenz.aboutlibraries.ui.compose.chipColors
 import com.mikepenz.aboutlibraries.ui.compose.libraryColors
-import com.mikepenz.aboutlibraries.ui.compose.rememberLibraries
+import com.mikepenz.aboutlibraries.ui.compose.produceLibraries
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -62,7 +62,7 @@ private fun OssLicensesScreen(
     paddingValues: PaddingValues = WindowInsets.safeDrawing.asPaddingValues(),
 ) {
     val localResources: Resources = LocalResources.current
-    val libs: Libs? by rememberLibraries {
+    val libs: Libs? by produceLibraries {
         localResources.openRawResource(R.raw.aboutlibraries).bufferedReader().use { it.readText() }
     }
 
