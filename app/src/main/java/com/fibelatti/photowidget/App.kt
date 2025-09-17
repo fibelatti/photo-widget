@@ -5,6 +5,7 @@ import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.Composer
 import androidx.compose.runtime.ExperimentalComposeRuntimeApi
+import androidx.compose.runtime.tooling.ComposeStackTraceMode
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.fibelatti.photowidget.platform.ConfigurationChangedReceiver
@@ -72,7 +73,7 @@ class App : Application(), Configuration.Provider {
                 .build(),
         )
 
-        Composer.setDiagnosticStackTraceEnabled(enabled = true)
+        Composer.setDiagnosticStackTraceMode(ComposeStackTraceMode.Auto)
     }
 
     private fun setupNightMode() {
