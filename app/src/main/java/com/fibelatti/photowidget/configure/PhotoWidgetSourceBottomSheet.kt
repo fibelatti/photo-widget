@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ButtonGroup
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -197,66 +196,53 @@ private fun SourcePickerContent(
                 .align(Alignment.BottomCenter),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            ButtonGroup(
-                overflowIndicator = {},
+            val interactionSources: Array<MutableInteractionSource> = remember {
+                Array(size = 2) { MutableInteractionSource() }
+            }
+
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
                     .height(IntrinsicSize.Max),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                customItem(
-                    buttonGroupContent = {
-                        val interactionSource = remember { MutableInteractionSource() }
+                OutlinedButton(
+                    onClick = onKeepSource,
+                    shapes = ButtonDefaults.shapes(),
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    interactionSource = interactionSources[0],
+                ) {
+                    AutoSizeText(
+                        text = stringResource(id = R.string.photo_widget_configure_source_keep_current),
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                    )
+                }
 
-                        OutlinedButton(
-                            onClick = onKeepSource,
-                            shapes = ButtonDefaults.shapes(),
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight()
-                                .animateWidth(interactionSource),
-                            interactionSource = interactionSource,
-                        ) {
-                            AutoSizeText(
-                                text = stringResource(id = R.string.photo_widget_configure_source_keep_current),
-                                fontSize = 12.sp,
-                                textAlign = TextAlign.Center,
-                                maxLines = 1,
-                            )
-                        }
-                    },
-                    menuContent = {},
-                )
-
-                customItem(
-                    buttonGroupContent = {
-                        val interactionSource = remember { MutableInteractionSource() }
-
-                        FilledTonalButton(
-                            onClick = onChangeSource,
-                            shapes = ButtonDefaults.shapes(),
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight()
-                                .animateWidth(interactionSource),
-                            interactionSource = interactionSource,
-                        ) {
-                            AutoSizeText(
-                                text = stringResource(
-                                    id = when (currentSource) {
-                                        PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_source_set_directory
-                                        PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_source_set_photos
-                                    },
-                                ),
-                                fontSize = 12.sp,
-                                textAlign = TextAlign.Center,
-                                maxLines = 1,
-                            )
-                        }
-                    },
-                    menuContent = {},
-                )
+                FilledTonalButton(
+                    onClick = onChangeSource,
+                    shapes = ButtonDefaults.shapes(),
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    interactionSource = interactionSources[1],
+                ) {
+                    AutoSizeText(
+                        text = stringResource(
+                            id = when (currentSource) {
+                                PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_source_set_directory
+                                PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_source_set_photos
+                            },
+                        ),
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                    )
+                }
             }
 
             Text(

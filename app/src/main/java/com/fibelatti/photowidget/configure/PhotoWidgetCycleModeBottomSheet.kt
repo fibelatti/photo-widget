@@ -29,7 +29,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ButtonGroup
 import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -571,48 +570,33 @@ fun TimePickerDialog(
 
                 TimePicker(state = timePickerState)
 
-                ButtonGroup(
-                    overflowIndicator = {},
+                val interactionSources: Array<MutableInteractionSource> = remember {
+                    Array(size = 2) { MutableInteractionSource() }
+                }
+
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(40.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    customItem(
-                        buttonGroupContent = {
-                            val interactionSource = remember { MutableInteractionSource() }
+                    TextButton(
+                        onClick = onDismiss,
+                        shapes = ButtonDefaults.shapes(),
+                        modifier = Modifier.weight(1f),
+                        interactionSource = interactionSources[0],
+                    ) {
+                        AutoSizeText(text = stringResource(R.string.photo_widget_action_cancel), maxLines = 1)
+                    }
 
-                            TextButton(
-                                onClick = onDismiss,
-                                shapes = ButtonDefaults.shapes(),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .animateWidth(interactionSource),
-                                interactionSource = interactionSource,
-                            ) {
-                                AutoSizeText(text = stringResource(R.string.photo_widget_action_cancel), maxLines = 1)
-                            }
-                        },
-                        menuContent = {},
-                    )
-
-                    customItem(
-                        buttonGroupContent = {
-                            val interactionSource = remember { MutableInteractionSource() }
-
-                            Button(
-                                onClick = { onConfirm(timePickerState) },
-                                shapes = ButtonDefaults.shapes(),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .animateWidth(interactionSource),
-                                interactionSource = interactionSource,
-                            ) {
-                                AutoSizeText(text = stringResource(R.string.photo_widget_action_confirm), maxLines = 1)
-                            }
-                        },
-                        menuContent = {},
-                    )
+                    Button(
+                        onClick = { onConfirm(timePickerState) },
+                        shapes = ButtonDefaults.shapes(),
+                        modifier = Modifier.weight(1f),
+                        interactionSource = interactionSources[1],
+                    ) {
+                        AutoSizeText(text = stringResource(R.string.photo_widget_action_confirm), maxLines = 1)
+                    }
                 }
             }
         }
