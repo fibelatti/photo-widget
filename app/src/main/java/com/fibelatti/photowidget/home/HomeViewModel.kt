@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
+import com.fibelatti.photowidget.platform.ExceptionReporter
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
@@ -14,11 +15,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
@@ -28,6 +31,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.withIndex
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -35,11 +39,12 @@ class HomeViewModel @Inject constructor(
     private val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
     private val photoWidgetStorage: PhotoWidgetStorage,
     private val photoWidgetAlarmManager: PhotoWidgetAlarmManager,
+    private val exceptionReporter: ExceptionReporter,
     private val scope: CoroutineScope,
 ) : ViewModel() {
 
-    private val widgetIds = MutableStateFlow(emptyList<Int>())
-    private val updateSignal = Channel<Unit>()
+    private val widgetIds: MutableStateFlow<List<Int>> = MutableStateFlow(emptyList())
+    private val updateSignal: Channel<Unit> = Channel()
 
     val currentWidgets: StateFlow<List<Pair<Int, PhotoWidget>>> = widgetIds
         .combine(updateSignal.receiveAsFlow()) { ids, _ -> ids }
@@ -71,6 +76,9 @@ class HomeViewModel @Inject constructor(
             }
         }
         .stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(), initialValue = emptyList())
+
+    private val _pendingReport: MutableStateFlow<String?> = MutableStateFlow(null)
+    val pendingReport: StateFlow<String?> = _pendingReport.asStateFlow()
 
     fun loadCurrentWidgets() {
         viewModelScope.launch {
@@ -118,6 +126,24 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             photoWidgetStorage.deleteWidgetData(appWidgetId = appWidgetId)
             widgetIds.update { current -> current - appWidgetId }
+        }
+    }
+
+    fun checkForPendingExceptionReports() {
+        viewModelScope.launch {
+            val crashReports = exceptionReporter.getPendingReports()
+            if (crashReports.isNotEmpty()) {
+                val reportText: String = withContext(Dispatchers.IO) {
+                    crashReports.last().readText()
+                }
+                _pendingReport.update { reportText }
+            }
+        }
+    }
+
+    fun clearPendingExceptionReports() {
+        viewModelScope.launch {
+            exceptionReporter.clearPendingReports()
         }
     }
 }

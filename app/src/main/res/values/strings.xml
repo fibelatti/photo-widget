@@ -34,6 +34,12 @@
     <string name="photo_widget_home_pinning_not_supported_title">Add a widget directly from your home screen</string>
     <string name="photo_widget_home_pinning_not_supported_message">1. Tap and hold an empty space\n\n2. Choose the widgets menu\n\n3. Search for Material Photo Widget\n\n4. Configure and save!</string>
 
+    <string name="photo_widget_home_crash_report_title">Your help can make the app better</string>
+    <string name="photo_widget_home_crash_report_body">It seems like the app or the widget crashed unexpectedly. You can choose to share the details with me via email, helping to improve the app for everyone.</string>
+    <string name="photo_widget_home_crash_report_action_confirm">Share report</string>
+    <string name="photo_widget_home_crash_report_action_cancel">Don\'t share</string>
+    <string name="photo_widget_home_crash_report_choose_title">Send email</string>
+
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">You haven\'t added any widgets yet.\nWidgets added to your home screen will appear here.</string>
     <string name="photo_widget_home_filter_all">All</string>

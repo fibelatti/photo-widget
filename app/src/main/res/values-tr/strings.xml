@@ -30,6 +30,11 @@
     </plurals>
     <string name="photo_widget_home_pinning_not_supported_title">Ana ekranınızdan doğrudan bir widget ekleyin</string>
     <string name="photo_widget_home_pinning_not_supported_message">1. Boş bir alana dokunup basılı tutun\n\n2. Widget menüsünü seçin\n\n3. Material Photo Widget\'ı arayın\n\n4. Yapılandırın ve kaydedin!</string>
+    <string name="photo_widget_home_crash_report_title">Yardımınız uygulamayı daha iyi hale getirebilir</string>
+    <string name="photo_widget_home_crash_report_body">Görünüşe göre uygulama veya widget beklenmedik bir şekilde çöktü. E-posta yoluyla ayrıntıları benimle paylaşmayı seçerek, uygulamanın herkes için geliştirilmesine yardımcı olabilirsiniz.</string>
+    <string name="photo_widget_home_crash_report_action_confirm">Raporu paylaş</string>
+    <string name="photo_widget_home_crash_report_action_cancel">Paylaşma</string>
+    <string name="photo_widget_home_crash_report_choose_title">E-posta gönder</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Henüz herhangi bir widget eklemediniz.\nAna ekranınıza eklenen widget\'lar burada görünecektir.</string>
     <string name="photo_widget_home_filter_all">Hepsi</string>

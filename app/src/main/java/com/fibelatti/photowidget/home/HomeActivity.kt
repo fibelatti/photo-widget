@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.home
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.compose.setContent
@@ -13,6 +14,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.app.ShareCompat
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
+import com.fibelatti.photowidget.BuildConfig
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.configure.aspectRatio
@@ -22,6 +25,9 @@ import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.widgetPinningNotAvailable
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
@@ -48,11 +54,17 @@ class HomeActivity : AppCompatActivity() {
         }
 
         checkIntent()
+
+        homeViewModel.pendingReport
+            .filterNotNull()
+            .onEach(::showCrashReportDialog)
+            .launchIn(lifecycleScope)
     }
 
     override fun onResume() {
         super.onResume()
         homeViewModel.loadCurrentWidgets()
+        homeViewModel.checkForPendingExceptionReports()
     }
 
     @Suppress("DEPRECATION")
@@ -122,6 +134,46 @@ class HomeActivity : AppCompatActivity() {
             .setChooserTitle(R.string.share_title)
             .setText(getString(R.string.share_text, APP_URL))
             .startChooser()
+    }
+
+    private fun showCrashReportDialog(reportText: String) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.photo_widget_home_crash_report_title))
+            .setMessage(getString(R.string.photo_widget_home_crash_report_body))
+            .setPositiveButton(getString(R.string.photo_widget_home_crash_report_action_confirm)) { dialog, _ ->
+                val emailBody = buildString {
+                    appendLine("Android Version: ${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})")
+                    appendLine()
+                    append(reportText)
+                    appendLine()
+                }
+
+                val emailIntent = Intent(Intent.ACTION_SENDTO, "mailto:".toUri())
+                    .putExtra(Intent.EXTRA_EMAIL, arrayOf("appsupport@fibelatti.com"))
+                    .putExtra(
+                        Intent.EXTRA_SUBJECT,
+                        "Material Photo Widget (${BuildConfig.VERSION_NAME}) — Crash Report",
+                    )
+                    .putExtra(Intent.EXTRA_TEXT, emailBody)
+
+                startActivity(
+                    Intent.createChooser(
+                        emailIntent,
+                        getString(R.string.photo_widget_home_crash_report_choose_title),
+                    ),
+                )
+
+                homeViewModel.clearPendingExceptionReports()
+                dialog?.dismiss()
+            }
+            .setNegativeButton(getString(R.string.photo_widget_home_crash_report_action_cancel)) { dialog, _ ->
+                homeViewModel.clearPendingExceptionReports()
+                dialog?.dismiss()
+            }
+            .setOnDismissListener {
+                homeViewModel.clearPendingExceptionReports()
+            }
+            .show()
     }
 
     private companion object {

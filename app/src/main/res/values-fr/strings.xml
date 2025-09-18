@@ -30,6 +30,11 @@
     </plurals>
     <string name="photo_widget_home_pinning_not_supported_title">Ajoutez un widget directement depuis votre écran d\'accueil</string>
     <string name="photo_widget_home_pinning_not_supported_message">1. Appuyez longuement sur un espace vide\n\n2. Choisissez le menu des widgets\n\n3. Recherchez Material Photo Widget\n\n4. Configurez et enregistrez !</string>
+    <string name="photo_widget_home_crash_report_title">Votre aide peut améliorer l\'application</string>
+    <string name="photo_widget_home_crash_report_body">Il semble que l\'application ou le widget ait planté de manière inattendue. Vous pouvez choisir de partager les détails avec moi par e-mail, ce qui aidera à améliorer l\'application pour tout le monde.</string>
+    <string name="photo_widget_home_crash_report_action_confirm">Partager le rapport</string>
+    <string name="photo_widget_home_crash_report_action_cancel">Ne pas partager</string>
+    <string name="photo_widget_home_crash_report_choose_title">Envoyer un e-mail</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Vous n\'avez pas encore ajouté de widgets.\nLes widgets ajoutés à votre écran d\'accueil apparaîtront ici.</string>
     <string name="photo_widget_home_filter_all">Tous</string>

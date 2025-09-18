@@ -70,6 +70,7 @@ fun ShapedPhoto(
 
             if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
                 bitmap.withPolygonalShape(
+                    context = localContext,
                     shapeId = shapeId,
                     colors = colors,
                     borderColor = borderColor,

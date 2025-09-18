@@ -29,6 +29,11 @@
     </plurals>
     <string name="photo_widget_home_pinning_not_supported_title">ホーム画面から直接ウィジェットを追加</string>
     <string name="photo_widget_home_pinning_not_supported_message">1. 空のスペースを長押しします\n\n2. ウィジェットメニューを選択します\n\n3. Material Photo Widget を検索します\n\n4. 設定して保存します！</string>
+    <string name="photo_widget_home_crash_report_title">ご協力がアプリの改善につながります</string>
+    <string name="photo_widget_home_crash_report_body">アプリまたはウィジェットが予期せずクラッシュしたようです。詳細をメールで共有していただくことで、アプリをすべての人にとってより良いものにするのに役立ちます。</string>
+    <string name="photo_widget_home_crash_report_action_confirm">レポートを共有</string>
+    <string name="photo_widget_home_crash_report_action_cancel">共有しない</string>
+    <string name="photo_widget_home_crash_report_choose_title">メールを送信</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">ウィジェットはまだ追加されていません。\nホーム画面に追加されたウィジェットがここに表示されます。</string>
     <string name="photo_widget_home_filter_all">すべて</string>

@@ -29,6 +29,11 @@
     </plurals>
     <string name="photo_widget_home_pinning_not_supported_title">Magdagdag ng widget mula mismo sa home screen</string>
     <string name="photo_widget_home_pinning_not_supported_message">1. Pindutin at hawakan ang isang espasyong bakante\n\n2. Pumili mula sa menyu ng mga widget\n\n3. Hanapin ang Material Photo Widget\n\n4. Isaayos at i-save!</string>
+    <string name="photo_widget_home_crash_report_title">Ang iyong tulong ay makapagpapabuti sa app</string>
+    <string name="photo_widget_home_crash_report_body">Mukhang nag-crash nang hindi inaasahan ang app o ang widget. Maaari mong piliing ibahagi sa akin ang mga detalye sa pamamagitan ng email, na makatutulong upang mapabuti ang app para sa lahat.</string>
+    <string name="photo_widget_home_crash_report_action_confirm">Ibahagi ang ulat</string>
+    <string name="photo_widget_home_crash_report_action_cancel">Huwag ibahagi</string>
+    <string name="photo_widget_home_crash_report_choose_title">Magpadala ng email</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Wala ka pang nagawang na widget.\nDito mo mahahanap ang mga widget na nakalagay na sa iyong home screen.</string>
     <string name="photo_widget_home_filter_all">Lahat</string>

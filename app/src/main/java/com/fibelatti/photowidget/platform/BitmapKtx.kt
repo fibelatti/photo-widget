@@ -1,11 +1,13 @@
 package com.fibelatti.photowidget.platform
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
+import android.graphics.Path
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
@@ -16,6 +18,8 @@ import androidx.annotation.FloatRange
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.toRect
 import androidx.core.graphics.toRectF
+import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
+import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
@@ -36,11 +40,12 @@ fun Bitmap.withRoundedCorners(
     borderColor = borderColor,
     borderPercent = borderPercent,
     widgetSize = widgetSize,
-) { canvas, rect, paint ->
+) { canvas: Canvas, rect: Rect, paint: Paint ->
     canvas.drawRoundRect(rect.toRectF(), radius, radius, paint)
 }
 
 fun Bitmap.withPolygonalShape(
+    context: Context,
     shapeId: String,
     colors: PhotoWidgetColors = PhotoWidgetColors(),
     @ColorInt borderColor: Int? = null,
@@ -51,9 +56,9 @@ fun Bitmap.withPolygonalShape(
     borderColor = borderColor,
     borderPercent = borderPercent,
     widgetSize = null,
-) { canvas, rect, paint ->
+) { canvas: Canvas, rect: Rect, paint: Paint ->
     try {
-        val path = PhotoWidgetShapeBuilder.getShapePath(
+        val path: Path = PhotoWidgetShapeBuilder.getShapePath(
             shapeId = shapeId,
             width = width.toFloat(),
             height = height.toFloat(),
@@ -61,12 +66,23 @@ fun Bitmap.withPolygonalShape(
         )
 
         canvas.drawPath(path, paint)
-    } catch (e: Exception) {
-        val message = "withPolygonalShape failed! " +
-            "(shapeId=$shapeId, bitmap=[$width;$height], rect=[${rect.width()};${rect.height()}])"
+    } catch (cause: Exception) {
+        val wrapped = RuntimeException(
+            buildString {
+                append("Unable to create shape with `withPolygonalShape`! (")
+                append("shapeId=$shapeId,")
+                append("bitmap=[$width;$height],")
+                append("rect=[${rect.width()};${rect.height()}]")
+                append(")")
+            },
+            cause,
+        )
 
-        // GPC strips the message from the exception, but not the cause. Let's see if the double wrap gets us anywhere
-        throw RuntimeException(message, IllegalStateException(message, e))
+        entryPoint<PhotoWidgetEntryPoint>(context)
+            .exceptionReporter()
+            .collectReport(throwable = wrapped)
+
+        throw wrapped
     }
 }
 

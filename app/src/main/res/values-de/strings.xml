@@ -30,6 +30,11 @@
     </plurals>
     <string name="photo_widget_home_pinning_not_supported_title">Ein Widget direkt vom Startbildschirm hinzufügen</string>
     <string name="photo_widget_home_pinning_not_supported_message">1. Leeren Bereich gedrückt halten\n\n2. Widget-Menü auswählen\n\n3. Nach Material Photo Widget suchen\n\n4. Konfigurieren und speichern!</string>
+    <string name="photo_widget_home_crash_report_title">Ihre Hilfe kann die App verbessern</string>
+    <string name="photo_widget_home_crash_report_body">Es scheint, dass die App oder das Widget unerwartet abgestürzt ist. Sie können die Details per E-Mail mit mir teilen und so helfen, die App für alle zu verbessern.</string>
+    <string name="photo_widget_home_crash_report_action_confirm">Bericht teilen</string>
+    <string name="photo_widget_home_crash_report_action_cancel">Nicht teilen</string>
+    <string name="photo_widget_home_crash_report_choose_title">E-Mail senden</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Sie haben noch keine Widgets hinzugefügt.\nHier erscheinen Widgets, die Ihrem Startbildschirm hinzugefügt wurden.</string>
     <string name="photo_widget_home_filter_all">Alle</string>
