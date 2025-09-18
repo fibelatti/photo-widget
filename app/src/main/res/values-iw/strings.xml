@@ -33,10 +33,10 @@
     <string name="photo_widget_home_pinning_not_supported_title">הוסף ווידג\'ט ישירות ממסך הבית שלך</string>
     <string name="photo_widget_home_pinning_not_supported_message">1. הקש והחזק שטח ריק\n\n2. בחר את תפריט הווידג\'טים\n\n3. חפש את Material Photo Widget\n\n4. הגדר ושמור!</string>
     <string name="photo_widget_home_crash_report_title">העזרה שלך יכולה לשפר את האפליקציה</string>
-    <string name="photo_widget_home_crash_report_body">נראה שהאפליקציה או הווידג\'ט קרסו באופן בלתי צפוי. באפשרותך לבחור לשתף את הפרטים איתי באמצעות דוא"ל, מה שיעזור לשפר את האפליקציה עבור כולם.</string>
+    <string name="photo_widget_home_crash_report_body">נראה שהאפליקציה או הווידג\'ט קרסו באופן בלתי צפוי. באפשרותך לבחור לשתף את הפרטים איתי באמצעות דוא\"ל, מה שיעזור לשפר את האפליקציה עבור כולם.</string>
     <string name="photo_widget_home_crash_report_action_confirm">שתף דוח</string>
     <string name="photo_widget_home_crash_report_action_cancel">אל תשתף</string>
-    <string name="photo_widget_home_crash_report_choose_title">שלח דוא"ל</string>
+    <string name="photo_widget_home_crash_report_choose_title">שלח דוא\"ל</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">עדיין לא הוספת ווידג\'טים.\nווידג\'טים שתוסיף למסך הבית שלך יופיעו כאן.</string>
     <string name="photo_widget_home_filter_all">הכל</string>
