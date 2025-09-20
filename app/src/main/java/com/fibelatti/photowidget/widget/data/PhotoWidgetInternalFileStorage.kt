@@ -7,10 +7,11 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
-import android.webkit.MimeTypeMap
 import androidx.core.content.FileProvider
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetSource
+import com.fibelatti.photowidget.platform.ImageFormat
+import com.fibelatti.photowidget.platform.ImageFormatDetector
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -29,11 +30,11 @@ import timber.log.Timber
 class PhotoWidgetInternalFileStorage @Inject constructor(
     @ApplicationContext private val context: Context,
     private val userPreferencesStorage: UserPreferencesStorage,
+    private val imageFormatDetector: ImageFormatDetector,
     private val decoder: PhotoDecoder,
 ) {
 
     private val contentResolver: ContentResolver = context.contentResolver
-    private val mimeTypeMap: MimeTypeMap = MimeTypeMap.getSingleton()
     private val rootDir: File by lazy {
         File("${context.filesDir}/widgets").apply {
             mkdirs()
@@ -47,9 +48,9 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
                 val widgetDir: File = getWidgetDir(appWidgetId = appWidgetId)
                 val originalPhotosDir: File = File("$widgetDir/original").apply { mkdirs() }
-                val extension: String = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(source))
-                    ?.lowercase()
-                    ?: "png"
+
+                val format: ImageFormat = imageFormatDetector.getImageFormat(context = context, imageUri = source)
+                val extension: String = if (format == ImageFormat.JPEG) "jpg" else "png"
                 val newPhotoName = "${UUID.randomUUID()}.$extension"
 
                 val originalPhoto = File("$originalPhotosDir/$newPhotoName")
@@ -62,14 +63,14 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
                 if (dataSaver) {
                     decoder.decode(data = source, maxDimension = 2560)?.let { importedPhoto ->
-                        val format: Bitmap.CompressFormat = if (extension == "png") {
-                            Bitmap.CompressFormat.PNG
-                        } else {
+                        val compressFormat: Bitmap.CompressFormat = if (format == ImageFormat.JPEG) {
                             Bitmap.CompressFormat.JPEG
+                        } else {
+                            Bitmap.CompressFormat.PNG
                         }
                         newFiles.map { file ->
                             async {
-                                writeToFile(file) { fos -> importedPhoto.compress(format, 95, fos) }
+                                writeToFile(file) { fos -> importedPhoto.compress(compressFormat, 95, fos) }
                             }
                         }.awaitAll()
                     }
