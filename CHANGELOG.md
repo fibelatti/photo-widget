@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Update how the image format is detected for better handling of pngs
+* Allow locking widgets even when the timer is disabled
 
 ## [v1.32.3] - 2025-09-07
 [v1.32.3]: https://github.com/fibelatti/photo-widget/releases/tag/v1.32.3

@@ -117,7 +117,7 @@ fun MyWidgetsScreen(
                                         onCurrentWidgetClick(
                                             /* appWidgetId = */ id,
                                             /* canSync = */ widget.source == PhotoWidgetSource.DIRECTORY,
-                                            /* canLock = */ widget.photoCycleEnabled,
+                                            /* canLock = */ widget.photos.isNotEmpty(),
                                             /* isLocked = */ PhotoWidgetStatus.LOCKED == widget.status,
                                         )
                                     }
