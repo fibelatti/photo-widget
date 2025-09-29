@@ -266,6 +266,9 @@
     <string name="help_article_title_4">The widget size is too small</string>
     <string name="help_article_body_4">After adding the widget to your home screen, you can long press it to reveal the resizing option. Then, drag its borders to adjust it to your desired size.</string>
 
+    <string name="help_article_title_5">The widget sometimes turns into an error icon</string>
+    <string name="help_article_body_5">The app itself is not used frequently — only when you need to edit a widget. Widgets run independently within your app launcher. This can make Android think that the app is not important, and the system will stop it to claim back resources. When the app is stopped, its widgets are too. To prevent this, update the battery usage policy for the app, setting it to "Unrestricted".</string>
+
     <string name="restriction_warning_hint">Background activity is restricted. Widgets may not work correctly. Tap to learn more.</string>
     <string name="restriction_warning_dialog_title">Background work restrictions and battery optimization</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget needs to run in the background to update your widgets. It only runs when needed, but if battery usage is set to "optimized" Android may stop the app, causing widgets to stop working correctly.</string>

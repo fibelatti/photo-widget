@@ -212,6 +212,8 @@
     <string name="help_article_body_3">スマートフォンが再起動すると、Androidはアプリに通知を送信し、アプリ自身が再起動できるようにします。残念ながら、一部のデバイスメーカー（Xiaomi、Redmi、Huaweiなど）はこの信号をブロックしています。\n\nこの機能を有効にするには、セキュリティアプリで「自動起動」権限を変更してください。</string>
     <string name="help_article_title_4">ウィジェットのサイズが小さすぎる</string>
     <string name="help_article_body_4">ウィジェットをホーム画面に追加した後、ウィジェットを長押しするとサイズ変更オプションが表示されます。その後、境界線をドラッグして希望のサイズに調整してください。</string>
+    <string name="help_article_title_5">ウィジェットがエラーアイコンに変わることがある</string>
+    <string name="help_article_body_5">アプリ自体は頻繁には使用されません。ウィジェットを編集する必要がある場合にのみ使用されます。ウィジェットは、アプリランチャー内で独立して実行されます。これにより、Androidはアプリが重要ではないと考え、システムがリソースを取り戻すために停止することがあります。アプリが停止すると、そのウィジェットも停止します。これを防ぐには、アプリのバッテリー使用ポリシーを更新し、「制限なし」に設定してください。</string>
     <string name="restriction_warning_hint">バックグラウンドアクティビティが制限されています。ウィジェットが正しく機能しない場合があります。詳細についてはタップしてください。</string>
     <string name="restriction_warning_dialog_title">バックグラウンド作業の制限とバッテリー最適化</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget はウィジェットを更新するためにバックグラウンドで実行する必要があります。必要なときにのみ実行されますが、バッテリー使用量が「最適化」に設定されている場合、Androidはアプリを停止させ、ウィジェットが正しく機能しなくなる可能性があります。</string>

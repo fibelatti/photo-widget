@@ -15,6 +15,7 @@ data class HelpArticle(
             HelpArticle(title = R.string.help_article_title_2, body = R.string.help_article_body_2),
             HelpArticle(title = R.string.help_article_title_3, body = R.string.help_article_body_3),
             HelpArticle(title = R.string.help_article_title_4, body = R.string.help_article_body_4),
+            HelpArticle(title = R.string.help_article_title_5, body = R.string.help_article_body_5),
         )
     }
 }
