@@ -61,7 +61,11 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     private val backupWidget: PhotoWidget? by savedStateHandle.savedState()
     private val aspectRatio: PhotoWidgetAspectRatio? by savedStateHandle.savedState()
 
-    private val _state = MutableStateFlow(PhotoWidgetConfigureState())
+    private val _state = MutableStateFlow(
+        PhotoWidgetConfigureState(
+            isImportAvailable = photoWidgetStorage.getKnownWidgetIds().isNotEmpty(),
+        ),
+    )
     val state: StateFlow<PhotoWidgetConfigureState> = _state.asStateFlow()
 
     init {
@@ -84,8 +88,6 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     .onCompletion { trackEdits() }
                     .launchIn(viewModelScope)
             }
-
-            checkImportSuggestion()
         }
     }
 
@@ -146,22 +148,6 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         viewModelScope.launch {
             state.withIndex().first { (index, value) -> index > 0 && !value.hasEdits }
             _state.getAndUpdate { current -> current.copy(hasEdits = true) }
-        }
-    }
-
-    private fun checkImportSuggestion() {
-        viewModelScope.launch {
-            val currentPhotos = state.first { !it.isProcessing }.photoWidget.photos
-            val canImport = appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID &&
-                currentPhotos.isEmpty() &&
-                photoWidgetStorage.getKnownWidgetIds().isNotEmpty()
-
-            if (canImport) {
-                delay(1_000)
-                _state.update { current ->
-                    current.copy(messages = current.messages + PhotoWidgetConfigureState.Message.SuggestImport)
-                }
-            }
         }
     }
 

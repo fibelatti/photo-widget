@@ -30,11 +30,7 @@ import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
-import com.fibelatti.ui.foundation.AppSheetState
-import com.fibelatti.ui.foundation.rememberAppSheetState
-import com.fibelatti.ui.foundation.showBottomSheet
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -94,8 +90,6 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             AppTheme {
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
-                val importFromWidgetSheetState = rememberAppSheetState()
-
                 CompositionLocalProvider(LocalSamplePhoto provides state.selectedPhoto) {
                     PhotoWidgetConfigureScreen(
                         viewModel = viewModel,
@@ -104,11 +98,6 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                         onPhotoPickerClick = ::launchPhotoPicker,
                         onDirPickerClick = ::launchFolderPicker,
                     )
-
-                    ImportFromWidgetBottomSheet(
-                        sheetState = importFromWidgetSheetState,
-                        onWidgetSelected = viewModel::importFromWidget,
-                    )
                 }
 
                 RememberedEffect(state.hasEdits) {
@@ -116,12 +105,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 }
 
                 RememberedEffect(state.messages) {
-                    state.messages.firstOrNull()?.let { message ->
-                        handleMessage(
-                            message = message,
-                            importFromWidgetSheetState = importFromWidgetSheetState,
-                        )
-                    }
+                    state.messages.firstOrNull()?.let(::handleMessage)
                 }
             }
         }
@@ -163,14 +147,8 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
     private fun handleMessage(
         message: PhotoWidgetConfigureState.Message,
-        importFromWidgetSheetState: AppSheetState,
     ) {
         when (message) {
-            is PhotoWidgetConfigureState.Message.SuggestImport -> {
-                showImportFromWidgetSuggestion(importFromWidgetSheetState)
-                viewModel.messageHandled(message = message)
-            }
-
             is PhotoWidgetConfigureState.Message.ImportFailed -> {
                 MaterialAlertDialogBuilder(this)
                     .setMessage(R.string.photo_widget_configure_import_error)
@@ -227,20 +205,6 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 viewModel.messageHandled(message = message)
             }
         }
-    }
-
-    private fun showImportFromWidgetSuggestion(
-        importFromWidgetSheetState: AppSheetState,
-    ) {
-        Snackbar.make(
-            findViewById(android.R.id.content),
-            R.string.photo_widget_configure_import_prompt,
-            Snackbar.LENGTH_LONG,
-        ).apply {
-            setAction(R.string.photo_widget_configure_import_prompt_action) {
-                importFromWidgetSheetState.showBottomSheet()
-            }
-        }.show()
     }
 
     private fun launchPhotoPicker() {

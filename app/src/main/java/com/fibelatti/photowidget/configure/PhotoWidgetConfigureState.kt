@@ -12,11 +12,10 @@ data class PhotoWidgetConfigureState(
     val cropQueue: List<LocalPhoto> = emptyList(),
     val messages: List<Message> = emptyList(),
     val hasEdits: Boolean = false,
+    val isImportAvailable: Boolean = false,
 ) {
 
     sealed class Message {
-
-        data object SuggestImport : Message()
 
         data object ImportFailed : Message()
 

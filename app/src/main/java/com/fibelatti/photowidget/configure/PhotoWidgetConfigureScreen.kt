@@ -58,6 +58,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -83,6 +84,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.toUpperCase
@@ -136,6 +138,7 @@ fun PhotoWidgetConfigureScreen(
 
     val aspectRatioPickerSheetState = rememberAppSheetState()
     val sourceSheetState = rememberAppSheetState()
+    val importFromWidgetSheetState = rememberAppSheetState()
     val cycleModePickerSheetState = rememberAppSheetState()
     val directoryPickerSheetState = rememberAppSheetState()
     val tapActionPickerSheetState = rememberAppSheetState()
@@ -161,6 +164,8 @@ fun PhotoWidgetConfigureScreen(
             onMoveLeftClick = viewModel::moveLeft,
             onMoveRightClick = viewModel::moveRight,
             onChangeSourceClick = sourceSheetState::showBottomSheet,
+            isImportAvailable = state.isImportAvailable,
+            onImportClick = importFromWidgetSheetState::showBottomSheet,
             onPhotoPickerClick = onPhotoPickerClick,
             onDirPickerClick = onDirPickerClick,
             onPhotoClick = viewModel::previewPhoto,
@@ -193,6 +198,11 @@ fun PhotoWidgetConfigureScreen(
             syncedDir = state.photoWidget.syncedDir,
             onDirRemoved = viewModel::removeDir,
             onChangeSource = viewModel::changeSource,
+        )
+
+        ImportFromWidgetBottomSheet(
+            sheetState = importFromWidgetSheetState,
+            onWidgetSelected = viewModel::importFromWidget,
         )
 
         PhotoWidgetCycleModeBottomSheet(
@@ -307,6 +317,8 @@ fun PhotoWidgetConfigureScreen(
     onMoveLeftClick: (LocalPhoto) -> Unit,
     onMoveRightClick: (LocalPhoto) -> Unit,
     onChangeSourceClick: () -> Unit,
+    isImportAvailable: Boolean,
+    onImportClick: () -> Unit,
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
@@ -347,6 +359,8 @@ fun PhotoWidgetConfigureScreen(
             onCropClick = onCropClick,
             onRemoveClick = onRemoveClick,
             onChangeSourceClick = onChangeSourceClick,
+            isImportAvailable = isImportAvailable,
+            onImportClick = onImportClick,
             onPhotoPickerClick = onPhotoPickerClick,
             onDirPickerClick = onDirPickerClick,
             onPhotoClick = onPhotoClick,
@@ -399,6 +413,8 @@ private fun PhotoWidgetConfigureContent(
     onMoveLeftClick: (LocalPhoto) -> Unit,
     onMoveRightClick: (LocalPhoto) -> Unit,
     onChangeSourceClick: () -> Unit,
+    isImportAvailable: Boolean,
+    onImportClick: () -> Unit,
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
@@ -440,6 +456,8 @@ private fun PhotoWidgetConfigureContent(
                     photoWidget = photoWidget,
                     isUpdating = isUpdating,
                     onChangeSourceClick = onChangeSourceClick,
+                    isImportAvailable = isImportAvailable,
+                    onImportClick = onImportClick,
                     onPhotoPickerClick = onPhotoPickerClick,
                     onDirPickerClick = onDirPickerClick,
                     onPhotoClick = onPhotoClick,
@@ -483,6 +501,8 @@ private fun PhotoWidgetConfigureContent(
                     photoWidget = photoWidget,
                     isUpdating = isUpdating,
                     onChangeSourceClick = onChangeSourceClick,
+                    isImportAvailable = isImportAvailable,
+                    onImportClick = onImportClick,
                     onPhotoPickerClick = onPhotoPickerClick,
                     onDirPickerClick = onDirPickerClick,
                     onPhotoClick = onPhotoClick,
@@ -576,6 +596,8 @@ private fun PhotoWidgetEditor(
     photoWidget: PhotoWidget,
     isUpdating: Boolean,
     onChangeSourceClick: () -> Unit,
+    isImportAvailable: Boolean,
+    onImportClick: () -> Unit,
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
@@ -622,6 +644,8 @@ private fun PhotoWidgetEditor(
                     ContentTab(
                         photoWidget = photoWidget,
                         onChangeSourceClick = onChangeSourceClick,
+                        isImportAvailable = isImportAvailable,
+                        onImportClick = onImportClick,
                         onPhotoPickerClick = onPhotoPickerClick,
                         onDirPickerClick = onDirPickerClick,
                         onPhotoClick = onPhotoClick,
@@ -686,6 +710,8 @@ private fun PhotoWidgetEditor(
 private fun ContentTab(
     photoWidget: PhotoWidget,
     onChangeSourceClick: () -> Unit,
+    isImportAvailable: Boolean,
+    onImportClick: () -> Unit,
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
@@ -696,6 +722,8 @@ private fun ContentTab(
     PhotoPicker(
         source = photoWidget.source,
         onChangeSourceClick = onChangeSourceClick,
+        isImportAvailable = isImportAvailable,
+        onImportClick = onImportClick,
         photos = photoWidget.photos,
         canSort = photoWidget.canSort,
         onPhotoPickerClick = onPhotoPickerClick,
@@ -1039,6 +1067,8 @@ private fun EditingControls(
 private fun PhotoPicker(
     source: PhotoWidgetSource,
     onChangeSourceClick: () -> Unit,
+    isImportAvailable: Boolean,
+    onImportClick: () -> Unit,
     photos: List<LocalPhoto>,
     canSort: Boolean,
     onPhotoPickerClick: () -> Unit,
@@ -1114,7 +1144,7 @@ private fun PhotoPicker(
             }
         }
 
-        Row(
+        Column(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .fillMaxWidth()
@@ -1128,52 +1158,90 @@ private fun PhotoPicker(
                     ),
                 )
                 .padding(all = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            val interactionSources: Array<MutableInteractionSource> = remember {
-                Array(size = 2) { MutableInteractionSource() }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                val interactionSources: Array<MutableInteractionSource> = remember {
+                    Array(size = 2) { MutableInteractionSource() }
+                }
+
+                OutlinedButton(
+                    onClick = {
+                        when (source) {
+                            PhotoWidgetSource.PHOTOS -> onPhotoPickerClick()
+                            PhotoWidgetSource.DIRECTORY -> onDirPickerClick()
+                        }
+                    },
+                    shapes = ButtonDefaults.shapes(),
+                    modifier = Modifier
+                        .weight(1f)
+                        .heightIn(max = 36.dp),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
+                    interactionSource = interactionSources[0],
+                ) {
+                    AutoSizeText(
+                        text = stringResource(
+                            id = when (source) {
+                                PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_pick_photo
+                                PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_pick_folder
+                            },
+                        ),
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                    )
+                }
+
+                OutlinedButton(
+                    onClick = onChangeSourceClick,
+                    shapes = ButtonDefaults.shapes(),
+                    modifier = Modifier
+                        .weight(1f)
+                        .heightIn(max = 36.dp),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
+                    interactionSource = interactionSources[1],
+                ) {
+                    AutoSizeText(
+                        text = stringResource(R.string.photo_widget_configure_change_source),
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                    )
+                }
             }
 
-            OutlinedButton(
-                onClick = {
-                    when (source) {
-                        PhotoWidgetSource.PHOTOS -> onPhotoPickerClick()
-                        PhotoWidgetSource.DIRECTORY -> onDirPickerClick()
+            AnimatedVisibility(
+                visible = isImportAvailable && photos.isEmpty() && removedPhotos.isEmpty(),
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 32.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            shape = MaterialTheme.shapes.medium,
+                        )
+                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(R.string.photo_widget_configure_import_prompt),
+                        modifier = Modifier.weight(1f),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.bodyMediumEmphasized,
+                    )
+
+                    TextButton(
+                        onClick = onImportClick,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.photo_widget_configure_import_prompt_action),
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        )
                     }
-                },
-                shapes = ButtonDefaults.shapes(),
-                modifier = Modifier
-                    .weight(1f)
-                    .heightIn(max = 36.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-                interactionSource = interactionSources[0],
-            ) {
-                AutoSizeText(
-                    text = stringResource(
-                        id = when (source) {
-                            PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_pick_photo
-                            PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_pick_folder
-                        },
-                    ),
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                )
-            }
-
-            OutlinedButton(
-                onClick = onChangeSourceClick,
-                shapes = ButtonDefaults.shapes(),
-                modifier = Modifier
-                    .weight(1f)
-                    .heightIn(max = 36.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-                interactionSource = interactionSources[1],
-            ) {
-                AutoSizeText(
-                    text = stringResource(R.string.photo_widget_configure_change_source),
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                )
+                }
             }
         }
 
@@ -1343,6 +1411,8 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onMoveLeftClick = {},
             onMoveRightClick = {},
             onChangeSourceClick = {},
+            isImportAvailable = true,
+            onImportClick = {},
             onPhotoPickerClick = {},
             onDirPickerClick = {},
             onPhotoClick = {},
@@ -1386,6 +1456,8 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onMoveLeftClick = {},
             onMoveRightClick = {},
             onChangeSourceClick = {},
+            isImportAvailable = true,
+            onImportClick = {},
             onPhotoPickerClick = {},
             onDirPickerClick = {},
             onPhotoClick = {},
