@@ -66,6 +66,6 @@ ksp = { id = "com.google.devtools.ksp", version = "2.2.20-2.0.3" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 room = { id = "androidx.room", version.ref = "room" }
 spotless = { id = "com.diffplug.spotless", version = "8.0.0" }
-cache-fix = { id = "org.gradle.android.cache-fix", version = "3.0.1" }
+cache-fix = { id = "org.gradle.android.cache-fix", version = "3.0.2" }
 about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }
 licensee = { id = "app.cash.licensee", version = "1.13.0" }
