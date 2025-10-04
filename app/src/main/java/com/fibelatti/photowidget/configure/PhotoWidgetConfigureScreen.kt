@@ -2,6 +2,11 @@
 
 package com.fibelatti.photowidget.configure
 
+import androidx.activity.OnBackPressedDispatcherOwner
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
@@ -130,9 +135,7 @@ import sh.calvin.reorderable.rememberReorderableLazyGridState
 fun PhotoWidgetConfigureScreen(
     viewModel: PhotoWidgetConfigureViewModel,
     isUpdating: Boolean,
-    onNavClick: () -> Unit,
-    onPhotoPickerClick: () -> Unit,
-    onDirPickerClick: () -> Unit,
+    onBack: () -> Unit,
 ) {
     val state: PhotoWidgetConfigureState by viewModel.state.collectAsStateWithLifecycle()
 
@@ -151,13 +154,30 @@ fun PhotoWidgetConfigureScreen(
     val offsetPickerSheetState = rememberAppSheetState()
     val paddingPickerSheetState = rememberAppSheetState()
 
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetMultipleContents(),
+        onResult = viewModel::photoPicked,
+    )
+
+    val dirPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocumentTree(),
+        onResult = viewModel::dirPicked,
+    )
+
+    val localBackHandler: OnBackPressedDispatcherOwner? = LocalOnBackPressedDispatcherOwner.current
+
+    BackHandler(
+        enabled = state.hasEdits,
+        onBack = onBack,
+    )
+
     CompositionLocalProvider(LocalSamplePhoto provides state.selectedPhoto) {
         PhotoWidgetConfigureScreen(
             photoWidget = state.photoWidget,
             isUpdating = isUpdating,
             selectedPhoto = state.selectedPhoto,
             isProcessing = state.isProcessing,
-            onNavClick = onNavClick,
+            onNavClick = { localBackHandler?.onBackPressedDispatcher?.onBackPressed() },
             onAspectRatioClick = aspectRatioPickerSheetState::showBottomSheet,
             onCropClick = viewModel::requestCrop,
             onRemoveClick = viewModel::photoRemoved,
@@ -166,8 +186,8 @@ fun PhotoWidgetConfigureScreen(
             onChangeSourceClick = sourceSheetState::showBottomSheet,
             isImportAvailable = state.isImportAvailable,
             onImportClick = importFromWidgetSheetState::showBottomSheet,
-            onPhotoPickerClick = onPhotoPickerClick,
-            onDirPickerClick = onDirPickerClick,
+            onPhotoPickerClick = { photoPickerLauncher.launch(input = "image/*") },
+            onDirPickerClick = { dirPickerLauncher.launch(input = null) },
             onPhotoClick = viewModel::previewPhoto,
             onReorderFinished = viewModel::reorderPhotos,
             onRemovedPhotoClick = viewModel::restorePhoto,

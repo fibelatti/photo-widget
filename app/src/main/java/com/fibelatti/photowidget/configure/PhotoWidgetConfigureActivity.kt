@@ -10,14 +10,13 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -37,42 +36,25 @@ import timber.log.Timber
 @AndroidEntryPoint
 class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
-    private val viewModel by viewModels<PhotoWidgetConfigureViewModel>()
+    private val viewModel: PhotoWidgetConfigureViewModel by viewModels()
 
-    private val photoPickerLauncher = registerForActivityResult(
-        ActivityResultContracts.GetMultipleContents(),
-        ::onPhotoPicked,
+    private val photoCropLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        callback = ::onPhotoCropped,
     )
 
-    private val photoCropLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult(),
-        ::onPhotoCropped,
-    )
-
-    private val photoDirPickerLauncher = registerForActivityResult(
-        ActivityResultContracts.OpenDocumentTree(),
-        ::onDirPicked,
-    )
-
-    private val onBackPressedCallback = object : OnBackPressedCallback(enabled = false) {
-
-        override fun handleOnBackPressed() {
-            handleBackNav()
-        }
-    }
-
-    private val finishReceiver = object : BroadcastReceiver() {
+    private val finishReceiver: BroadcastReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
             Timber.d("Broadcast received (action=${intent.action})")
 
-            Toast.makeText(
-                this@PhotoWidgetConfigureActivity,
-                R.string.photo_widget_configure_widget_pinned,
-                Toast.LENGTH_SHORT,
-            ).show()
-
             if (ACTION_FINISH == intent.action) {
+                Toast.makeText(
+                    /* context = */ context,
+                    /* resId = */ R.string.photo_widget_configure_widget_pinned,
+                    /* duration = */ Toast.LENGTH_SHORT,
+                ).show()
+
                 widgetAdded(appWidgetId = intent.appWidgetId)
             }
         }
@@ -88,21 +70,13 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
         setContent {
             AppTheme {
-                val state by viewModel.state.collectAsStateWithLifecycle()
+                val state: PhotoWidgetConfigureState by viewModel.state.collectAsStateWithLifecycle()
 
-                CompositionLocalProvider(LocalSamplePhoto provides state.selectedPhoto) {
-                    PhotoWidgetConfigureScreen(
-                        viewModel = viewModel,
-                        isUpdating = intent.appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID,
-                        onNavClick = onBackPressedDispatcher::onBackPressed,
-                        onPhotoPickerClick = ::launchPhotoPicker,
-                        onDirPickerClick = ::launchFolderPicker,
-                    )
-                }
-
-                RememberedEffect(state.hasEdits) {
-                    onBackPressedCallback.isEnabled = state.hasEdits
-                }
+                PhotoWidgetConfigureScreen(
+                    viewModel = viewModel,
+                    isUpdating = intent.appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID,
+                    onBack = ::showExitConfirmationDialog,
+                )
 
                 RememberedEffect(state.messages) {
                     state.messages.firstOrNull()?.let(::handleMessage)
@@ -110,18 +84,15 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             }
         }
 
-        onBackPressedDispatcher.addCallback(onBackPressedCallback)
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-            finishReceiver,
-            IntentFilter(ACTION_FINISH),
-        )
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(/* receiver = */ finishReceiver, /* filter = */ IntentFilter(ACTION_FINISH))
 
         checkIntent()
     }
 
     override fun onDestroy() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(finishReceiver)
+        LocalBroadcastManager.getInstance(this)
+            .unregisterReceiver(/* receiver = */ finishReceiver)
         super.onDestroy()
     }
 
@@ -129,7 +100,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         intent.sharedPhotos?.let(viewModel::photoPicked)
     }
 
-    private fun handleBackNav() {
+    private fun showExitConfirmationDialog() {
         MaterialAlertDialogBuilder(this)
             .setMessage(
                 if (intent.restoreFromId != null || intent.backupWidget != null) {
@@ -145,9 +116,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun handleMessage(
-        message: PhotoWidgetConfigureState.Message,
-    ) {
+    private fun handleMessage(message: PhotoWidgetConfigureState.Message) {
         when (message) {
             is PhotoWidgetConfigureState.Message.ImportFailed -> {
                 MaterialAlertDialogBuilder(this)
@@ -205,22 +174,6 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 viewModel.messageHandled(message = message)
             }
         }
-    }
-
-    private fun launchPhotoPicker() {
-        photoPickerLauncher.launch("image/*")
-    }
-
-    private fun launchFolderPicker() {
-        photoDirPickerLauncher.launch(null)
-    }
-
-    private fun onPhotoPicked(source: List<Uri>) {
-        viewModel.photoPicked(source = source)
-    }
-
-    private fun onDirPicked(uri: Uri?) {
-        viewModel.dirPicked(source = uri)
     }
 
     private fun launchPhotoCrop(
