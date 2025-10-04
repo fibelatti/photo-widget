@@ -431,7 +431,7 @@ fun PhotoWidgetConfigureScreen(
             onCropClick = onCropClick,
             onRemoveClick = onRemoveClick,
             onChangeSourceClick = onChangeSourceClick,
-            isImportAvailable = isImportAvailable,
+            isImportAvailable = isImportAvailable && !isProcessing,
             onImportClick = onImportClick,
             onPhotoPickerClick = onPhotoPickerClick,
             onDirPickerClick = onDirPickerClick,
