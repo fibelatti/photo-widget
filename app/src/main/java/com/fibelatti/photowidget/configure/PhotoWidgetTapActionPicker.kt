@@ -235,6 +235,7 @@ private fun TapActionPickerContent(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
                     contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurface,
                 )
             }
 
