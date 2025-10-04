@@ -21,12 +21,15 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -35,6 +38,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -42,7 +48,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,9 +56,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -71,145 +76,138 @@ import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.Toggle
-import com.fibelatti.ui.foundation.AppBottomSheet
-import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.ColumnToggleButtonGroup
 import com.fibelatti.ui.foundation.ConnectedButtonRowItem
 import com.fibelatti.ui.foundation.ToggleButtonGroup
 import com.fibelatti.ui.foundation.dpToPx
-import com.fibelatti.ui.foundation.hideBottomSheet
+import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
-fun PhotoWidgetTapActionBottomSheet(
-    sheetState: AppSheetState,
+fun PhotoWidgetTapActionPicker(
+    onNavClick: () -> Unit,
     currentTapActions: PhotoWidgetTapActions,
     onApplyClick: (newTapActions: PhotoWidgetTapActions) -> Unit,
 ) {
-    AppBottomSheet(
-        sheetState = sheetState,
-    ) {
-        var tapActions by remember { mutableStateOf(currentTapActions) }
-        var selectedArea by remember { mutableStateOf(TapActionArea.CENTER) }
+    var tapActions by rememberSaveable { mutableStateOf(currentTapActions) }
+    var selectedArea by rememberSaveable { mutableStateOf(TapActionArea.CENTER) }
 
-        val appShortcutPickerLauncher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.StartActivityForResult(),
-        ) { result ->
-            val newTapAction = PhotoWidgetTapAction.AppShortcut(result.data?.component?.packageName)
+    val appShortcutPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+    ) { result ->
+        val newTapAction = PhotoWidgetTapAction.AppShortcut(result.data?.component?.packageName)
 
-            tapActions = when (selectedArea) {
-                TapActionArea.LEFT -> tapActions.copy(left = newTapAction)
-                TapActionArea.CENTER -> tapActions.copy(center = newTapAction)
-                TapActionArea.RIGHT -> tapActions.copy(right = newTapAction)
-            }
+        tapActions = when (selectedArea) {
+            TapActionArea.LEFT -> tapActions.copy(left = newTapAction)
+            TapActionArea.CENTER -> tapActions.copy(center = newTapAction)
+            TapActionArea.RIGHT -> tapActions.copy(right = newTapAction)
         }
+    }
 
-        val galleryAppPickerLauncher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.StartActivityForResult(),
-        ) { result ->
-            val newTapAction = PhotoWidgetTapAction.ViewInGallery(result.data?.component?.packageName)
+    val galleryAppPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+    ) { result ->
+        val newTapAction = PhotoWidgetTapAction.ViewInGallery(result.data?.component?.packageName)
 
-            tapActions = tapActions.copy(
-                left = if (tapActions.left is PhotoWidgetTapAction.ViewInGallery) {
-                    newTapAction
-                } else {
-                    tapActions.left
-                },
-                center = if (tapActions.center is PhotoWidgetTapAction.ViewInGallery) {
-                    newTapAction
-                } else {
-                    tapActions.center
-                },
-                right = if (tapActions.right is PhotoWidgetTapAction.ViewInGallery) {
-                    newTapAction
-                } else {
-                    tapActions.right
-                },
-            )
-        }
-
-        TapActionPickerContent(
-            selectedArea = selectedArea,
-            onSelectedAreaChange = { newArea -> selectedArea = newArea },
-            currentTapAction = when (selectedArea) {
-                TapActionArea.LEFT -> tapActions.left
-                TapActionArea.CENTER -> tapActions.center
-                TapActionArea.RIGHT -> tapActions.right
+        tapActions = tapActions.copy(
+            left = if (tapActions.left is PhotoWidgetTapAction.ViewInGallery) {
+                newTapAction
+            } else {
+                tapActions.left
             },
-            onTapActionChange = { newAction ->
-                val isChangingTypes = when (selectedArea) {
-                    TapActionArea.LEFT -> tapActions.left.javaClass != newAction.javaClass
-                    TapActionArea.CENTER -> tapActions.center.javaClass != newAction.javaClass
-                    TapActionArea.RIGHT -> tapActions.right.javaClass != newAction.javaClass
-                }
-
-                val action = when {
-                    !isChangingTypes -> newAction
-
-                    newAction is PhotoWidgetTapAction.ViewFullScreen -> {
-                        when {
-                            tapActions.left is PhotoWidgetTapAction.ViewFullScreen -> tapActions.left
-                            tapActions.center is PhotoWidgetTapAction.ViewFullScreen -> tapActions.center
-                            tapActions.right is PhotoWidgetTapAction.ViewFullScreen -> tapActions.right
-                            else -> newAction
-                        }
-                    }
-
-                    newAction is PhotoWidgetTapAction.ViewInGallery -> {
-                        when {
-                            tapActions.left is PhotoWidgetTapAction.ViewInGallery -> tapActions.left
-                            tapActions.center is PhotoWidgetTapAction.ViewInGallery -> tapActions.center
-                            tapActions.right is PhotoWidgetTapAction.ViewInGallery -> tapActions.right
-                            else -> newAction
-                        }
-                    }
-
-                    newAction is PhotoWidgetTapAction.ToggleCycling -> {
-                        when {
-                            tapActions.left is PhotoWidgetTapAction.ToggleCycling -> tapActions.left
-                            tapActions.center is PhotoWidgetTapAction.ToggleCycling -> tapActions.center
-                            tapActions.right is PhotoWidgetTapAction.ToggleCycling -> tapActions.right
-                            else -> newAction
-                        }
-                    }
-
-                    else -> newAction
-                }
-
-                tapActions = when (selectedArea) {
-                    TapActionArea.LEFT -> tapActions.copy(left = action)
-                    TapActionArea.CENTER -> tapActions.copy(center = action)
-                    TapActionArea.RIGHT -> tapActions.copy(right = action)
-                }
+            center = if (tapActions.center is PhotoWidgetTapAction.ViewInGallery) {
+                newTapAction
+            } else {
+                tapActions.center
             },
-            onChooseAppShortcutClick = {
-                appShortcutPickerLauncher.launch(
-                    Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
-                        Intent.EXTRA_INTENT,
-                        Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
-                    ),
-                )
-            },
-            onChooseGalleryAppClick = {
-                galleryAppPickerLauncher.launch(
-                    Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
-                        Intent.EXTRA_INTENT,
-                        Intent(Intent.ACTION_VIEW).setDataAndType("content://sample".toUri(), "image/*"),
-                    ),
-                )
-            },
-            onApplyClick = {
-                onApplyClick(tapActions)
-                sheetState.hideBottomSheet()
+            right = if (tapActions.right is PhotoWidgetTapAction.ViewInGallery) {
+                newTapAction
+            } else {
+                tapActions.right
             },
         )
     }
+
+    TapActionPickerContent(
+        onNavClick = onNavClick,
+        selectedArea = selectedArea,
+        onSelectedAreaChange = { newArea -> selectedArea = newArea },
+        currentTapAction = when (selectedArea) {
+            TapActionArea.LEFT -> tapActions.left
+            TapActionArea.CENTER -> tapActions.center
+            TapActionArea.RIGHT -> tapActions.right
+        },
+        onTapActionChange = { newAction ->
+            val isChangingTypes = when (selectedArea) {
+                TapActionArea.LEFT -> tapActions.left.javaClass != newAction.javaClass
+                TapActionArea.CENTER -> tapActions.center.javaClass != newAction.javaClass
+                TapActionArea.RIGHT -> tapActions.right.javaClass != newAction.javaClass
+            }
+
+            val action = when {
+                !isChangingTypes -> newAction
+
+                newAction is PhotoWidgetTapAction.ViewFullScreen -> {
+                    when {
+                        tapActions.left is PhotoWidgetTapAction.ViewFullScreen -> tapActions.left
+                        tapActions.center is PhotoWidgetTapAction.ViewFullScreen -> tapActions.center
+                        tapActions.right is PhotoWidgetTapAction.ViewFullScreen -> tapActions.right
+                        else -> newAction
+                    }
+                }
+
+                newAction is PhotoWidgetTapAction.ViewInGallery -> {
+                    when {
+                        tapActions.left is PhotoWidgetTapAction.ViewInGallery -> tapActions.left
+                        tapActions.center is PhotoWidgetTapAction.ViewInGallery -> tapActions.center
+                        tapActions.right is PhotoWidgetTapAction.ViewInGallery -> tapActions.right
+                        else -> newAction
+                    }
+                }
+
+                newAction is PhotoWidgetTapAction.ToggleCycling -> {
+                    when {
+                        tapActions.left is PhotoWidgetTapAction.ToggleCycling -> tapActions.left
+                        tapActions.center is PhotoWidgetTapAction.ToggleCycling -> tapActions.center
+                        tapActions.right is PhotoWidgetTapAction.ToggleCycling -> tapActions.right
+                        else -> newAction
+                    }
+                }
+
+                else -> newAction
+            }
+
+            tapActions = when (selectedArea) {
+                TapActionArea.LEFT -> tapActions.copy(left = action)
+                TapActionArea.CENTER -> tapActions.copy(center = action)
+                TapActionArea.RIGHT -> tapActions.copy(right = action)
+            }
+        },
+        onChooseAppShortcutClick = {
+            appShortcutPickerLauncher.launch(
+                Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
+                    Intent.EXTRA_INTENT,
+                    Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
+                ),
+            )
+        },
+        onChooseGalleryAppClick = {
+            galleryAppPickerLauncher.launch(
+                Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
+                    Intent.EXTRA_INTENT,
+                    Intent(Intent.ACTION_VIEW).setDataAndType("content://sample".toUri(), "image/*"),
+                ),
+            )
+        },
+        onApplyClick = { onApplyClick(tapActions) },
+    )
 }
 
 @Composable
 private fun TapActionPickerContent(
+    onNavClick: () -> Unit,
     selectedArea: TapActionArea,
     onSelectedAreaChange: (TapActionArea) -> Unit,
     currentTapAction: PhotoWidgetTapAction,
@@ -221,89 +219,112 @@ private fun TapActionPickerContent(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .nestedScroll(rememberNestedScrollInteropConnection())
-            .verticalScroll(rememberScrollState())
-            .padding(all = 16.dp),
+            .background(MaterialTheme.colorScheme.background)
+            .windowInsetsPadding(WindowInsets.safeDrawing),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Text(
-            text = stringResource(id = R.string.photo_widget_configure_tap_action),
+        Box(
             modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleLarge,
-        )
-
-        Text(
-            text = stringResource(id = R.string.photo_widget_configure_tap_action_description),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyMedium,
-        )
-
-        TapAreaSelector(
-            selectedArea = selectedArea,
-            onSelectedAreaChange = onSelectedAreaChange,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-        )
-
-        BoxWithConstraints(
-            modifier = Modifier.padding(top = 16.dp),
+            contentAlignment = Alignment.Center,
         ) {
-            if (maxWidth < 600.dp) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    TapAreaIndicator(
-                        tapActionArea = selectedArea,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
+            IconButton(
+                onClick = onNavClick,
+                shapes = IconButtonDefaults.shapes(),
+                modifier = Modifier.align(Alignment.TopStart),
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_back),
+                    contentDescription = null,
+                )
+            }
 
-                    TapOptionsPicker(
-                        currentTapAction = currentTapAction,
-                        onTapActionClick = onTapActionChange,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-            } else {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    TapAreaIndicator(
-                        tapActionArea = selectedArea,
-                        modifier = Modifier.weight(0.4f),
-                    )
+            Column(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = stringResource(id = R.string.photo_widget_configure_tap_action),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleLarge,
+                )
 
-                    TapOptionsPicker(
-                        currentTapAction = currentTapAction,
-                        onTapActionClick = onTapActionChange,
-                        modifier = Modifier.weight(0.6f),
-                    )
-                }
+                Text(
+                    text = stringResource(id = R.string.photo_widget_configure_tap_action_description),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
             }
         }
 
-        TapActionCustomizationContent(
-            tapAction = currentTapAction,
-            onTapActionChange = onTapActionChange,
-            onChooseGalleryAppClick = onChooseGalleryAppClick,
-            onChooseAppShortcutClick = onChooseAppShortcutClick,
+        val scrollState = rememberScrollState()
+
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-        )
+                .weight(1f)
+                .verticalScroll(scrollState)
+                .fadingEdges(scrollState)
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            TapAreaSelector(
+                selectedArea = selectedArea,
+                onSelectedAreaChange = onSelectedAreaChange,
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            BoxWithConstraints {
+                if (maxWidth < 600.dp) {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
+                        TapAreaIndicator(
+                            tapActionArea = selectedArea,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+
+                        TapOptionsPicker(
+                            currentTapAction = currentTapAction,
+                            onTapActionClick = onTapActionChange,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    }
+                } else {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        TapAreaIndicator(
+                            tapActionArea = selectedArea,
+                            modifier = Modifier.weight(0.4f),
+                        )
+
+                        TapOptionsPicker(
+                            currentTapAction = currentTapAction,
+                            onTapActionClick = onTapActionChange,
+                            modifier = Modifier.weight(0.6f),
+                        )
+                    }
+                }
+            }
+
+            TapActionCustomizationContent(
+                tapAction = currentTapAction,
+                onTapActionChange = onTapActionChange,
+                onChooseGalleryAppClick = onChooseGalleryAppClick,
+                onChooseAppShortcutClick = onChooseAppShortcutClick,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
 
         Button(
             onClick = onApplyClick,
             shapes = ButtonDefaults.shapes(),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp),
+                .padding(horizontal = 16.dp),
         ) {
             Text(text = stringResource(id = R.string.photo_widget_action_apply))
         }
@@ -678,6 +699,7 @@ private fun ToggleCyclingCustomizationContent(
 private fun PhotoWidgetTapActionPickerPreview() {
     ExtendedTheme {
         TapActionPickerContent(
+            onNavClick = {},
             selectedArea = TapActionArea.CENTER,
             onSelectedAreaChange = {},
             currentTapAction = PhotoWidgetTapAction.DEFAULT,

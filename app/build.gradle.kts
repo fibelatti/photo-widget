@@ -192,6 +192,9 @@ dependencies {
     implementation(libs.palette)
     implementation(libs.work.runtime.ktx)
 
+    implementation(libs.navigation3.runtime)
+    implementation(libs.navigation3.ui)
+
     // Compose
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.runtime)
