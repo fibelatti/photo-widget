@@ -1,0 +1,8 @@
+This version brings the following updates:
+
+* Improve the usability of the tap action picker
+* Update how the image format is detected for better handling of PNGs
+* Allow locking widgets even when the timer is disabled
+* Collect crash reports locally for optional reporting
+
+Thanks for using the app!
