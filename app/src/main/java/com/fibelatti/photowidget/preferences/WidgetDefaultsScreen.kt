@@ -63,7 +63,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
@@ -124,7 +124,7 @@ fun WidgetDefaultsScreen(
     val cycleModePickerSheetState = rememberAppSheetState()
     val directoryPickerSheetState = rememberAppSheetState()
 
-    val localContext = LocalContext.current
+    val localResources = LocalResources.current
 
     WidgetDefaultsScreen(
         userPreferences = preferences,
@@ -152,7 +152,7 @@ fun WidgetDefaultsScreen(
         sheetState = sourcePickerSheetState,
         title = stringResource(R.string.widget_defaults_source),
         options = PhotoWidgetSource.entries,
-        optionName = { option -> localContext.getString(option.label) },
+        optionName = { option -> localResources.getString(option.label) },
         onOptionSelected = preferencesViewModel::saveDefaultSource,
     )
 

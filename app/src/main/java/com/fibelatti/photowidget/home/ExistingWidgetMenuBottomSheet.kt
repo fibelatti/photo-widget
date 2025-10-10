@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -27,13 +28,14 @@ fun ExistingWidgetMenuBottomSheet(
     modifier: Modifier = Modifier,
 ) {
     val localContext: Context = LocalContext.current
+    val localResources = LocalResources.current
     val data: ExistingWidgetMenuBottomSheetData = sheetState.data() ?: return
 
     SelectionDialogBottomSheet(
         sheetState = sheetState,
         title = "",
         options = MyWidgetOptions.options(canSync = data.canSync, canLock = data.canLock, isLocked = data.isLocked),
-        optionName = { option -> localContext.getString(option.label) },
+        optionName = { option -> localResources.getString(option.label) },
         onOptionSelected = { option ->
             when (option) {
                 MyWidgetOptions.SYNC_PHOTOS -> {

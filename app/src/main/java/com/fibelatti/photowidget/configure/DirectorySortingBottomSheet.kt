@@ -6,7 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -21,13 +21,13 @@ fun DirectorySortingBottomSheet(
     onItemClick: (DirectorySorting) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val localContext = LocalContext.current
+    val localResources = LocalResources.current
 
     SelectionDialogBottomSheet(
         sheetState = sheetState,
         title = stringResource(R.string.photo_widget_directory_sort_title),
         options = DirectorySorting.entries,
-        optionName = { localContext.getString(it.label) },
+        optionName = { localResources.getString(it.label) },
         onOptionSelected = onItemClick,
         modifier = modifier,
         footer = {
