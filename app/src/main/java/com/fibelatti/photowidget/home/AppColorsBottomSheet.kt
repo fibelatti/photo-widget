@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.core.app.ActivityCompat
 import com.fibelatti.photowidget.R
@@ -19,6 +20,7 @@ fun AppColorsBottomSheet(
     modifier: Modifier = Modifier,
 ) {
     val localContext = LocalContext.current
+    val localResources = LocalResources.current
     val localActivity = LocalActivity.current
 
     val userPreferencesStorage = remember(localContext) {
@@ -30,7 +32,7 @@ fun AppColorsBottomSheet(
         title = stringResource(R.string.photo_widget_home_dynamic_colors),
         options = listOf(true, false),
         optionName = { value ->
-            localContext.getString(
+            localResources.getString(
                 if (value) {
                     R.string.preferences_dynamic_colors_enabled
                 } else {

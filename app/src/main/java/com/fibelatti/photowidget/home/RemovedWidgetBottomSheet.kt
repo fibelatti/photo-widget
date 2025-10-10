@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
@@ -20,6 +21,7 @@ fun RemovedWidgetBottomSheet(
     modifier: Modifier = Modifier,
 ) {
     val localContext: Context = LocalContext.current
+    val localResources = LocalResources.current
     val data: RemovedWidgetBottomSheetData = sheetState.data() ?: return
 
     SelectionDialogBottomSheet(
@@ -32,7 +34,7 @@ fun RemovedWidgetBottomSheet(
             }
             add(RemovedWidgetOptions.DELETE)
         },
-        optionName = { option -> localContext.getString(option.label) },
+        optionName = { option -> localResources.getString(option.label) },
         onOptionSelected = { option ->
             when (option) {
                 RemovedWidgetOptions.RESTORE -> {
