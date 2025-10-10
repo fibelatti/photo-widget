@@ -173,16 +173,20 @@ fun PhotoWidgetConfigureScreen(
 
             entry<PhotoWidgetConfigureNav.TapActionPicker> {
                 PhotoWidgetTapActionPicker(
-                    onNavClick = { configureBackStack.removeLastOrNull() },
+                    onNavClick = configureBackStack::pop,
                     currentTapActions = state.photoWidget.tapActions,
                     onApplyClick = { actions ->
                         viewModel.tapActionSelected(actions)
-                        configureBackStack.removeLastOrNull()
+                        configureBackStack.pop()
                     },
                 )
             }
         },
     )
+}
+
+private fun NavBackStack<*>.pop() {
+    if (size > 1) removeLastOrNull()
 }
 
 @Composable
