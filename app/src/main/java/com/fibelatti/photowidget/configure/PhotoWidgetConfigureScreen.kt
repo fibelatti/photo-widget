@@ -73,6 +73,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
@@ -89,6 +90,7 @@ import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
@@ -117,6 +119,7 @@ import com.fibelatti.photowidget.model.canShuffle
 import com.fibelatti.photowidget.model.canSort
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
+import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.CornerRadiusPicker
@@ -125,6 +128,8 @@ import com.fibelatti.photowidget.preferences.OpacityPicker
 import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.photowidget.preferences.ShapeDefault
 import com.fibelatti.photowidget.preferences.ShapePicker
+import com.fibelatti.photowidget.ui.BackgroundRestrictionBottomSheet
+import com.fibelatti.photowidget.ui.BackgroundRestrictionWarningDialog
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.ui.SliderSmallThumb
@@ -199,6 +204,9 @@ private fun PhotoWidgetConfigureHomeScreen(
     val state: PhotoWidgetConfigureState by viewModel.state.collectAsStateWithLifecycle()
 
     // region Sheet States
+    var showBackgroundRestrictionDialog by remember { mutableStateOf(false) }
+    val backgroundRestrictionSheetState = rememberAppSheetState()
+
     val aspectRatioPickerSheetState = rememberAppSheetState()
     val sourceSheetState = rememberAppSheetState()
     val importFromWidgetSheetState = rememberAppSheetState()
@@ -227,6 +235,7 @@ private fun PhotoWidgetConfigureHomeScreen(
     // endregion Picker Launchers
 
     val localBackHandler: OnBackPressedDispatcherOwner? = LocalOnBackPressedDispatcherOwner.current
+    val localContext = LocalContext.current
 
     BackHandler(
         enabled = state.hasEdits,
@@ -253,7 +262,13 @@ private fun PhotoWidgetConfigureHomeScreen(
             onPhotoClick = viewModel::previewPhoto,
             onReorderFinished = viewModel::reorderPhotos,
             onRemovedPhotoClick = viewModel::restorePhoto,
-            onCycleModePickerClick = cycleModePickerSheetState::showBottomSheet,
+            onCycleModePickerClick = {
+                if (localContext.isBackgroundRestricted(checkUnrestrictedBattery = true)) {
+                    showBackgroundRestrictionDialog = true
+                } else {
+                    cycleModePickerSheetState.showBottomSheet()
+                }
+            },
             onShuffleChange = viewModel::saveShuffle,
             onSortClick = directoryPickerSheetState::showBottomSheet,
             onTapActionPickerClick = { onNav(PhotoWidgetConfigureNav.TapActionPicker) },
@@ -268,7 +283,24 @@ private fun PhotoWidgetConfigureHomeScreen(
             onAddToHomeClick = viewModel::addNewWidget,
         )
 
-        // region Bottom Sheets
+        // region Bottom Sheets and Dialogs
+        if (showBackgroundRestrictionDialog) {
+            BackgroundRestrictionWarningDialog(
+                onLearnMoreClick = {
+                    showBackgroundRestrictionDialog = false
+                    backgroundRestrictionSheetState.showBottomSheet()
+                },
+                onIgnoreClick = {
+                    showBackgroundRestrictionDialog = false
+                    cycleModePickerSheetState.showBottomSheet()
+                },
+            )
+        }
+
+        BackgroundRestrictionBottomSheet(
+            sheetState = backgroundRestrictionSheetState,
+        )
+
         PhotoWidgetAspectRatioBottomSheet(
             sheetState = aspectRatioPickerSheetState,
             onAspectRatioSelected = viewModel::setAspectRatio,
@@ -376,7 +408,7 @@ private fun PhotoWidgetConfigureHomeScreen(
                 },
             )
         }
-        // endregion Bottom Sheets
+        // endregion Bottom Sheets and Dialogs
     }
 }
 

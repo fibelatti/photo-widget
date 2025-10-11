@@ -255,6 +255,8 @@
     <string name="photo_widget_action_confirm">Kumpirmahin</string>
     <string name="photo_widget_action_got_it">Sige</string>
     <string name="photo_widget_action_dismiss">Balewalain</string>
+    <string name="photo_widget_action_learn_more">Matuto pa</string>
+    <string name="photo_widget_action_ignore">Balewalain</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget ng Material Photo sa home screen</string>
 </resources>

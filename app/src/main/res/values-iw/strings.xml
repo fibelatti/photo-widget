@@ -269,6 +269,8 @@
     <string name="photo_widget_action_confirm">אישור</string>
     <string name="photo_widget_action_got_it">הבנתי</string>
     <string name="photo_widget_action_dismiss">התעלם</string>
+    <string name="photo_widget_action_learn_more">מידע נוסף</string>
+    <string name="photo_widget_action_ignore">התעלם</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">ווידג\'ט מסך הבית של Material Photo</string>
 </resources>

@@ -47,8 +47,11 @@ fun Context?.findActivity(): AppCompatActivity? {
 }
 
 fun Context.isBackgroundRestricted(checkUnrestrictedBattery: Boolean = false): Boolean {
-    val manufacturer = Build.MANUFACTURER.lowercase()
-    val restrictiveManufacturers = listOf(
+    val isBackgroundRestricted: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P &&
+        getSystemService<ActivityManager>()?.isBackgroundRestricted == true
+
+    val manufacturer: String = Build.MANUFACTURER.lowercase()
+    val restrictiveManufacturers: List<String> = listOf(
         "huawei",
         "xiaomi",
         "redmi",
@@ -59,14 +62,10 @@ fun Context.isBackgroundRestricted(checkUnrestrictedBattery: Boolean = false): B
         "tecno",
         "infinix",
     )
-    val isRestrictive = manufacturer in restrictiveManufacturers
+    val isRestrictive: Boolean = isBackgroundRestricted && manufacturer in restrictiveManufacturers
 
-    val activityManager: ActivityManager? = getSystemService()
-    val isBackgroundRestricted = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P &&
-        activityManager?.isBackgroundRestricted == true
-
-    val checkBattery = checkUnrestrictedBattery || manufacturer in listOf("samsung", "motorola")
-    val isBatteryUsageRestricted = if (checkBattery) {
+    val checkBattery: Boolean = checkUnrestrictedBattery || manufacturer in listOf("samsung", "motorola")
+    val isBatteryUsageRestricted: Boolean = if (checkBattery) {
         getSystemService<PowerManager>()?.isIgnoringBatteryOptimizations(packageName) != true
     } else {
         false

@@ -1,22 +1,32 @@
 package com.fibelatti.photowidget.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.appSettingsIntent
 import com.fibelatti.photowidget.platform.batteryUsageSettingsIntent
@@ -25,6 +35,64 @@ import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.TextWithLinks
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun BackgroundRestrictionWarningDialog(
+    onLearnMoreClick: () -> Unit,
+    onIgnoreClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    BasicAlertDialog(
+        onDismissRequest = {},
+        modifier = modifier,
+        properties = DialogProperties(
+            dismissOnBackPress = false,
+            dismissOnClickOutside = false,
+        ),
+    ) {
+        Column(
+            modifier = Modifier
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    shape = MaterialTheme.shapes.medium,
+                )
+                .padding(all = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_warning),
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface,
+            )
+
+            Text(
+                text = stringResource(R.string.restriction_warning_hint),
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyLarge,
+            )
+
+            Row(
+                modifier = Modifier.align(Alignment.End),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                TextButton(
+                    onClick = onIgnoreClick,
+                ) {
+                    Text(text = stringResource(R.string.photo_widget_action_ignore))
+                }
+
+                Button(
+                    onClick = onLearnMoreClick,
+                ) {
+                    Text(text = stringResource(R.string.photo_widget_action_learn_more))
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun BackgroundRestrictionBottomSheet(

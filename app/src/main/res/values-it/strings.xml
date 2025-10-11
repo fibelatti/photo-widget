@@ -258,6 +258,8 @@
     <string name="photo_widget_action_confirm">Conferma</string>
     <string name="photo_widget_action_got_it">Capito</string>
     <string name="photo_widget_action_dismiss">Ignora</string>
+    <string name="photo_widget_action_learn_more">Ulteriori informazioni</string>
+    <string name="photo_widget_action_ignore">Ignora</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget schermata iniziale Material Photo</string>
 </resources>

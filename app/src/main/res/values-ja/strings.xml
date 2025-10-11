@@ -251,6 +251,8 @@
     <string name="photo_widget_action_confirm">確認</string>
     <string name="photo_widget_action_got_it">了解</string>
     <string name="photo_widget_action_dismiss">閉じる</string>
+    <string name="photo_widget_action_learn_more">詳細</string>
+    <string name="photo_widget_action_ignore">無視</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photoホーム画面ウィジェット</string>
 </resources>

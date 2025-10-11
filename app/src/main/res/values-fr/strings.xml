@@ -257,6 +257,8 @@
     <string name="photo_widget_action_confirm">Confirmer</string>
     <string name="photo_widget_action_got_it">J\'ai compris</string>
     <string name="photo_widget_action_dismiss">Fermer</string>
+    <string name="photo_widget_action_learn_more">En savoir plus</string>
+    <string name="photo_widget_action_ignore">Ignorer</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget d\'accueil Material Photo</string>
 </resources>

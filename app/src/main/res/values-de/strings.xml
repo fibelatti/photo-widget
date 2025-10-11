@@ -257,6 +257,8 @@
     <string name="photo_widget_action_confirm">Bestätigen</string>
     <string name="photo_widget_action_got_it">Verstanden</string>
     <string name="photo_widget_action_dismiss">Ablehnen</string>
+    <string name="photo_widget_action_learn_more">Mehr erfahren</string>
+    <string name="photo_widget_action_ignore">Ignorieren</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo Startbildschirm-Widget</string>
 </resources>

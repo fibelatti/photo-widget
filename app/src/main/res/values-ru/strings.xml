@@ -269,6 +269,8 @@
     <string name="photo_widget_action_confirm">Подтвердить</string>
     <string name="photo_widget_action_got_it">Я понял</string>
     <string name="photo_widget_action_dismiss">Закрыть</string>
+    <string name="photo_widget_action_learn_more">Подробнее</string>
+    <string name="photo_widget_action_ignore">Пропустить</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Виджет главного экрана Material Photo</string>
 </resources>
