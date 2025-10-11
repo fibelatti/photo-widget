@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.33.1] - 2025-10-11
+[v1.33.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.33.1
+
+### Added
+
+* Prominent warning about background restrictions when configuring the timer
+
+### Fixed
+
+* Fix the crash affecting the 8-leaf clover shape
+* Fix the crash when tapping back to leave the tap action picker
+* Fix the tap action picker back navigation icon appearance in dark mode
+
 ## [v1.33.0] - 2025-10-04
 [v1.33.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.33.0
 
