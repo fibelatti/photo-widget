@@ -1,7 +1,9 @@
 package com.fibelatti.photowidget.ui
 
+import android.graphics.Path
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,18 +20,18 @@ fun ColoredShape(
     content: @Composable BoxScope.() -> Unit = {},
 ) {
     Box(
-        modifier = modifier.drawWithContent {
-            drawPath(
-                path = PhotoWidgetShapeBuilder.getShapePath(
+        modifier = modifier
+            .aspectRatio(1f)
+            .drawWithContent {
+                val shapePath: Path = PhotoWidgetShapeBuilder.getShapePath(
                     shapeId = shapeId,
-                    width = size.width,
-                    height = size.height,
-                ).asComposePath(),
-                color = color,
-            )
+                    size = size.minDimension,
+                )
 
-            drawContent()
-        },
+                drawPath(path = shapePath.asComposePath(), color = color)
+
+                drawContent()
+            },
         contentAlignment = Alignment.Center,
         content = content,
     )

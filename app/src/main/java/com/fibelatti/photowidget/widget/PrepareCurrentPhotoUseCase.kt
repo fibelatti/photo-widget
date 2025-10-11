@@ -3,7 +3,6 @@ package com.fibelatti.photowidget.widget
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Size
 import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -30,7 +29,6 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
         context: Context,
         appWidgetId: Int,
         photoWidget: PhotoWidget,
-        widgetSize: Size? = null,
         recoveryMode: Boolean = false,
     ): Result? {
         val currentPhotoPath: String = photoWidget.currentPhoto?.getPhotoPath() ?: return null
@@ -38,17 +36,13 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
         Timber.d(
             "Preparing current photo (" +
                 "appWidgetId=$appWidgetId," +
-                "widgetSize=$widgetSize," +
                 "recoveryMode=$recoveryMode," +
                 "currentPhotoPath=$currentPhotoPath" +
                 ")",
         )
 
         val bitmap: Bitmap = try {
-            val maxDimension = context.getMaxBitmapWidgetDimension(
-                coerceMaxMemory = recoveryMode,
-                coerceDimension = PhotoWidgetAspectRatio.SQUARE == photoWidget.aspectRatio,
-            )
+            val maxDimension = context.getMaxBitmapWidgetDimension(coerceMaxMemory = recoveryMode)
 
             Timber.d("Creating widget bitmap (maxDimension=$maxDimension, recoveryMode=$recoveryMode)")
 
@@ -84,7 +78,6 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 colors = photoWidget.colors,
                 borderColor = borderColor,
                 borderPercent = borderPercent,
-                widgetSize = widgetSize,
             )
         }
 

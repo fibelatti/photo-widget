@@ -79,7 +79,6 @@ fun AsyncPhotoViewer(
         val largestSize: Int = max(maxWidth, maxHeight).dpToPx().roundToInt()
         val maxWidgetDimension: Int = localContext.getMaxBitmapWidgetDimension(
             coerceMaxMemory = constraintMode == AsyncPhotoViewer.BitmapSizeConstraintMode.MEMORY,
-            coerceDimension = constraintMode == AsyncPhotoViewer.BitmapSizeConstraintMode.SHAPE,
         ).coerceAtMost(largestSize)
 
         LaunchedEffect(*dataKey) {
@@ -87,10 +86,10 @@ fun AsyncPhotoViewer(
             if (data != null) {
                 photoBitmap = decoder.decode(
                     data = data,
-                    maxDimension = if (constraintMode != AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED) {
-                        maxWidgetDimension
-                    } else {
+                    maxDimension = if (constraintMode == AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED) {
                         largestSize
+                    } else {
+                        maxWidgetDimension
                     },
                 )
                 showLoading = false
@@ -157,14 +156,6 @@ object AsyncPhotoViewer {
          * Constrain the size according to the maximum memory allowed for widget Bitmaps.
          */
         MEMORY,
-
-        /**
-         * Constrain the size according to the maximum allowed for the widget shape.
-         *
-         * The shapes library can throw an exception if the bitmap is too large since some shapes
-         * will fail to draw a contiguous line.
-         */
-        SHAPE,
 
         /**
          * Constrain the size according to the display size.

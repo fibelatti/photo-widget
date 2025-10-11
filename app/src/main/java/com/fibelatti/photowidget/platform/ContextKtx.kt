@@ -11,7 +11,6 @@ import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
-import com.fibelatti.photowidget.model.PhotoWidget
 import com.google.android.material.color.DynamicColors
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
@@ -86,11 +85,8 @@ fun widgetPinningNotAvailable(): Boolean {
     return manufacturer in notAvailable
 }
 
-fun Context.getMaxBitmapWidgetDimension(
-    coerceMaxMemory: Boolean = false,
-    coerceDimension: Boolean = false,
-): Int {
-    Timber.d("Calculating max dimension (coerceMaxMemory=$coerceMaxMemory, coerceDimension=$coerceDimension)")
+fun Context.getMaxBitmapWidgetDimension(coerceMaxMemory: Boolean = false): Int {
+    Timber.d("Calculating max dimension (coerceMaxMemory=$coerceMaxMemory)")
 
     val displayMetrics: DisplayMetrics = resources.displayMetrics
     val maxMemoryAllowed: Int = if (coerceMaxMemory) {
@@ -98,12 +94,7 @@ fun Context.getMaxBitmapWidgetDimension(
     } else {
         (displayMetrics.heightPixels * displayMetrics.widthPixels * 4 * 1.5).roundToInt()
     }
-    val maxMemoryDimension: Int = sqrt(maxMemoryAllowed / 4 / displayMetrics.density).roundToInt()
-    val maxDimension: Int = if (coerceDimension) {
-        maxMemoryDimension.coerceAtMost(maximumValue = PhotoWidget.MAX_WIDGET_DIMENSION)
-    } else {
-        maxMemoryDimension
-    }
+    val maxDimension: Int = sqrt(maxMemoryAllowed / 4 / displayMetrics.density).roundToInt()
 
     Timber.d("Max dimension allowed: $maxDimension (maxMemoryAllowed=$maxMemoryAllowed)")
 

@@ -12,7 +12,6 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import android.graphics.RectF
-import android.util.Size
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import androidx.core.graphics.createBitmap
@@ -33,13 +32,11 @@ fun Bitmap.withRoundedCorners(
     colors: PhotoWidgetColors = PhotoWidgetColors(),
     @ColorInt borderColor: Int? = null,
     @FloatRange(from = 0.0) borderPercent: Float = .0F,
-    widgetSize: Size? = null,
 ): Bitmap = withTransformation(
     aspectRatio = aspectRatio,
     colors = colors,
     borderColor = borderColor,
     borderPercent = borderPercent,
-    widgetSize = widgetSize,
 ) { canvas: Canvas, rect: Rect, paint: Paint ->
     canvas.drawRoundRect(rect.toRectF(), radius, radius, paint)
 }
@@ -55,14 +52,11 @@ fun Bitmap.withPolygonalShape(
     colors = colors,
     borderColor = borderColor,
     borderPercent = borderPercent,
-    widgetSize = null,
 ) { canvas: Canvas, rect: Rect, paint: Paint ->
     try {
         val path: Path = PhotoWidgetShapeBuilder.getShapePath(
             shapeId = shapeId,
-            width = width.toFloat(),
-            height = height.toFloat(),
-            rectF = rect.toRectF(),
+            size = min(rect.height(), rect.width()).toFloat(),
         )
 
         canvas.drawPath(path, paint)
@@ -91,26 +85,28 @@ private inline fun Bitmap.withTransformation(
     colors: PhotoWidgetColors,
     @ColorInt borderColor: Int?,
     @FloatRange(from = 0.0) borderPercent: Float,
-    widgetSize: Size?,
     body: (Canvas, Rect, Paint) -> Unit,
 ): Bitmap {
-    val source = sourceRect(aspectRatio = aspectRatio, widgetSize = widgetSize)
-    val destination = Rect(0, 0, source.width(), source.height())
+    val source: Rect = sourceRect(aspectRatio = aspectRatio)
+    val destination = Rect(
+        /* left = */ 0,
+        /* top = */ 0,
+        /* right = */ source.width().coerceForAspectRatio(aspectRatio),
+        /* bottom = */ source.height().coerceForAspectRatio(aspectRatio),
+    )
 
-    val output = createBitmap(source.width(), source.height())
-    val canvas = Canvas(output).apply {
+    val output: Bitmap = createBitmap(destination.width(), destination.height())
+    val canvas: Canvas = Canvas(output).apply {
         drawColor(Color.TRANSPARENT)
     }
-    val basePaint = Paint().apply {
+    val basePaint: Paint = Paint().apply {
         isAntiAlias = true
         alpha = (colors.opacity * 255 / 100).toInt()
     }
 
-    val bodyRect = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) source else destination
+    body(canvas, destination, basePaint)
 
-    body(canvas, bodyRect, basePaint)
-
-    val bitmapPaint = Paint(basePaint).apply {
+    val bitmapPaint: Paint = Paint(basePaint).apply {
         xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
 
         val brightness = colors.brightness * 255 / 100
@@ -139,22 +135,18 @@ private inline fun Bitmap.withTransformation(
             color = borderColor
             strokeWidth = min(output.width, output.height) * borderPercent
         }
-        body(canvas, bodyRect, strokePaint)
+        body(canvas, destination, strokePaint)
     }
 
     return output
 }
 
-private fun Bitmap.sourceRect(
-    aspectRatio: PhotoWidgetAspectRatio,
-    widgetSize: Size? = null,
-): Rect {
+private fun Bitmap.sourceRect(aspectRatio: PhotoWidgetAspectRatio): Rect {
     Timber.d(
         "Calculating source rect for bitmap (" +
             "width=$width," +
             "height=$height," +
             "aspectRatio=$aspectRatio," +
-            "widgetSize=$widgetSize" +
             ")",
     )
 
@@ -162,16 +154,7 @@ private fun Bitmap.sourceRect(
         bitmapWidth = width.toFloat(),
         bitmapHeight = height.toFloat(),
         aspectRatio = when (aspectRatio) {
-            PhotoWidgetAspectRatio.ORIGINAL -> width / height.toFloat()
-
-            PhotoWidgetAspectRatio.FILL_WIDGET -> {
-                if (widgetSize != null && widgetSize.width > 0 && widgetSize.height > 0) {
-                    widgetSize.width / widgetSize.height.toFloat()
-                } else {
-                    width / height.toFloat()
-                }
-            }
-
+            PhotoWidgetAspectRatio.ORIGINAL, PhotoWidgetAspectRatio.FILL_WIDGET -> width / height.toFloat()
             else -> aspectRatio.rawAspectRatio
         },
     ).toRect().also { Timber.d("Output rect: $it") }
@@ -211,4 +194,13 @@ private fun createCenteredRectWithAspectRatio(
     val top = (bitmapHeight - rectHeight) / 2
 
     return RectF(left, top, left + rectWidth, top + rectHeight)
+}
+
+/**
+ * This function establishes a safe dimension for the shapes library.
+ *
+ * Certain shapes can throw an exception when trying to draw something larger than this.
+ */
+private fun Int.coerceForAspectRatio(aspectRatio: PhotoWidgetAspectRatio): Int {
+    return if (PhotoWidgetAspectRatio.SQUARE != aspectRatio) this else coerceAtMost(500)
 }

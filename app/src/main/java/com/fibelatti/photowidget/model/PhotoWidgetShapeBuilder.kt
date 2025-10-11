@@ -141,7 +141,7 @@ object PhotoWidgetShapeBuilder {
             roundedPolygon = MaterialShapes.ClamShell,
             enabled = false, // Scaling is broken
         ),
-        PhotoWidgetShape.Simple(id = "heart"),
+        PhotoWidgetShape.CustomPath(id = "heart"),
         PhotoWidgetShape.Material(
             id = "puffy",
             roundedPolygon = MaterialShapes.Puffy,
@@ -151,7 +151,7 @@ object PhotoWidgetShapeBuilder {
             id = "puffy-diamond",
             roundedPolygon = MaterialShapes.PuffyDiamond,
         ),
-        PhotoWidgetShape.Simple(id = "star"),
+        PhotoWidgetShape.CustomPath(id = "star"),
         PhotoWidgetShape.Material(
             id = "burst",
             roundedPolygon = MaterialShapes.Burst,
@@ -168,26 +168,16 @@ object PhotoWidgetShapeBuilder {
         }
     }
 
-    fun getShapePath(
-        shapeId: String,
-        width: Float,
-        height: Float,
-        rectF: RectF = RectF(0f, 0f, width, height),
-    ): Path {
+    fun getShapePath(shapeId: String, size: Float): Path {
         val photoWidgetShape: PhotoWidgetShape = shapes.firstOrNull { it.id == shapeId } ?: shapes.first()
 
         val polygon: RoundedPolygon = when (photoWidgetShape) {
-            is PhotoWidgetShape.Simple -> {
+            is PhotoWidgetShape.CustomPath -> {
+                // Return early since custom paths don't have to be transformed further
                 return when (shapeId) {
-                    "heart" -> {
-                        createHeartPath(width = rectF.width(), height = rectF.height())
-                    }
-
-                    "star" -> {
-                        createStarPath(width = rectF.width(), height = rectF.height())
-                    }
-
-                    else -> error("Unknown simple shapeId: $shapeId")
+                    "heart" -> createHeartPath(width = size, height = size)
+                    "star" -> createStarPath(width = size, height = size)
+                    else -> error("Unknown `CustomPath` shapeId: $shapeId")
                 }
             }
 
@@ -212,49 +202,39 @@ object PhotoWidgetShapeBuilder {
             }
         }
 
-        return polygon.transformed(
-            matrix = Matrix().apply {
-                if (!photoWidgetShape.rotation.isNaN()) {
-                    postRotate(photoWidgetShape.rotation)
-                }
-                if (!photoWidgetShape.scaleX.isNaN() && !photoWidgetShape.scaleY.isNaN()) {
-                    postScale(photoWidgetShape.scaleX, photoWidgetShape.scaleY)
-                }
-            },
-        ).transformed(
-            width = width,
-            height = height,
-        ).transformed(
-            bounds = rectF,
-        ).toPath()
+        return polygon
+            .transformedRotation(rotation = photoWidgetShape.rotation)
+            .transformedSize(size = size)
+            .toPath()
     }
 
-    private fun RoundedPolygon.transformed(
-        bounds: RectF? = null,
-        width: Float? = null,
-        height: Float? = null,
-    ): RoundedPolygon {
-        val actualBounds = bounds ?: calculateBounds().let { RectF(it[0], it[1], it[2], it[3]) }
+    fun RoundedPolygon.transformedRotation(rotation: Float): RoundedPolygon {
+        return transformed(
+            matrix = Matrix().apply {
+                if (!rotation.isNaN()) postRotate(rotation)
+            },
+        )
+    }
 
+    private fun RoundedPolygon.transformedSize(size: Float): RoundedPolygon {
         return transformed(
             matrix = calculateMatrix(
-                bounds = actualBounds,
-                width = width ?: actualBounds.width(),
-                height = height ?: actualBounds.height(),
+                size = size,
+                bounds = calculateBounds().let { RectF(it[0], it[1], it[2], it[3]) },
             ),
         )
     }
 
-    private fun calculateMatrix(bounds: RectF, width: Float, height: Float): Matrix {
-        val scaleX = width / (bounds.right - bounds.left)
-        val scaleY = height / (bounds.bottom - bounds.top)
+    private fun calculateMatrix(size: Float, bounds: RectF): Matrix {
+        val scaleX = size / (bounds.right - bounds.left)
+        val scaleY = size / (bounds.bottom - bounds.top)
         val scale = min(scaleX, scaleY)
         val scaledLeft = scale * bounds.left
         val scaledTop = scale * bounds.top
         val scaledWidth = (scale * bounds.right) - scaledLeft
         val scaledHeight = (scale * bounds.bottom) - scaledTop
-        val newLeft = scaledLeft - (width - scaledWidth) / 2
-        val newTop = scaledTop - (height - scaledHeight) / 2
+        val newLeft = scaledLeft - (size - scaledWidth) / 2
+        val newTop = scaledTop - (size - scaledHeight) / 2
 
         return Matrix().apply {
             preTranslate(-newLeft, -newTop)

@@ -51,11 +51,7 @@ fun ShapedPhoto(
         isLoading = isLoading,
         contentScale = if (aspectRatio.isConstrained) ContentScale.FillWidth else ContentScale.Fit,
         modifier = modifier.aspectRatio(ratio = aspectRatio.rawAspectRatio),
-        constraintMode = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
-            AsyncPhotoViewer.BitmapSizeConstraintMode.SHAPE
-        } else {
-            AsyncPhotoViewer.BitmapSizeConstraintMode.DISPLAY
-        },
+        constraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.DISPLAY,
         transformer = { bitmap ->
             val borderColor = when (border) {
                 is PhotoWidgetBorder.None -> null
