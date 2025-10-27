@@ -23,7 +23,7 @@ jobs:
 
       - name: Upload APK
         if: success()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           path: app/build/outputs/apk/debug/*.apk
 
