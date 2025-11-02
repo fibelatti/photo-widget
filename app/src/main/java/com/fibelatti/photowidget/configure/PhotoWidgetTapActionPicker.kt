@@ -526,6 +526,8 @@ private fun TapActionCustomizationContent(
                 shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
             )
         }
+
+        is PhotoWidgetTapAction.SharePhoto -> Unit
     }
 }
 

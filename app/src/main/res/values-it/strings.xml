@@ -189,6 +189,7 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">Apri un link</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Attiva/disattiva timer</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Tocca per mettere in pausa il timer delle foto. Tocca di nuovo per riprendere. Questa azione sarà disattivata mentre il widget è bloccato.</string>
+    <string name="photo_widget_configure_tap_action_share_photo">Condividi foto</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Aumenta automaticamente la luminosità</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Visualizza foto originale (senza ritaglio o rotazione)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Non mescolare quando si usano i pulsanti del visualizzatore</string>
@@ -260,6 +261,7 @@
     <string name="photo_widget_action_dismiss">Ignora</string>
     <string name="photo_widget_action_learn_more">Ulteriori informazioni</string>
     <string name="photo_widget_action_ignore">Ignora</string>
+    <string name="photo_widget_action_share">Condividi</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget schermata iniziale Material Photo</string>
 </resources>

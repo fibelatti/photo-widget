@@ -226,6 +226,7 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">Open a link</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Enable/disable timer</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Tap to pause the photo timer. Tap again to resume. This action will be disabled while the widget is locked.</string>
+    <string name="photo_widget_configure_tap_action_share_photo">Share photo</string>
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Automatically increase brightness</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">View original photo (no crop or rotation)</string>
@@ -311,8 +312,9 @@
     <string name="photo_widget_action_confirm">Confirm</string>
     <string name="photo_widget_action_got_it">Got it</string>
     <string name="photo_widget_action_dismiss">Dismiss</string>
-<string name="photo_widget_action_learn_more">Learn more</string>
-<string name="photo_widget_action_ignore">Ignore</string>
+    <string name="photo_widget_action_learn_more">Learn more</string>
+    <string name="photo_widget_action_ignore">Ignore</string>
+    <string name="photo_widget_action_share">Share</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo home screen widget</string>

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* New action: share photos as a tap action or from the full screen viewer
+
 ## [v1.33.1] - 2025-10-11
 [v1.33.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.33.1
 

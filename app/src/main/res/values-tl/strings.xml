@@ -187,6 +187,7 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">Magbukas ng link</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">I-on/i-off ang timer</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Pindutin upang ihinto ang timer sa paglipat ng larawan. Muling pumindot upang ituloy. I-o-off ang aksyong ito pag naka-lock ang widget.</string>
+    <string name="photo_widget_configure_tap_action_share_photo">Ibahagi ang larawan</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Awtomatikong itaas ang liwanag</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Tingnan ang orihinal na larawan (walang krop o pag-ikot)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Huwag halu-haluin pag ginagamit ang mga viewer button</string>
@@ -257,6 +258,7 @@
     <string name="photo_widget_action_dismiss">Balewalain</string>
     <string name="photo_widget_action_learn_more">Matuto pa</string>
     <string name="photo_widget_action_ignore">Balewalain</string>
+    <string name="photo_widget_action_share">Ibahagi</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget ng Material Photo sa home screen</string>
 </resources>

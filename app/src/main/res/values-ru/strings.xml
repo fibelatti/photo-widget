@@ -201,6 +201,7 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">Открыть ссылку</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Включить/выключить таймер</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Нажмите, чтобы приостановить таймер фото. Нажмите ещё раз, чтобы продолжить. Это действие будет недоступно, пока виджет заблокирован.</string>
+    <string name="photo_widget_configure_tap_action_share_photo">Поделиться фото</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Автоматически увеличить яркость</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Просмотреть оригинальную фотографию (без обрезки или поворота)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Не перемешивать при использовании кнопок просмотра</string>
@@ -271,6 +272,7 @@
     <string name="photo_widget_action_dismiss">Закрыть</string>
     <string name="photo_widget_action_learn_more">Подробнее</string>
     <string name="photo_widget_action_ignore">Пропустить</string>
+    <string name="photo_widget_action_share">Поделиться</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Виджет главного экрана Material Photo</string>
 </resources>

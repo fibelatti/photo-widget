@@ -189,6 +189,7 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">Abrir um link</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Ativar/desativar timer</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Toque para pausar o timer de fotos. Toque novamente para retomar. Esta ação será desativada enquanto o widget estiver bloqueado.</string>
+    <string name="photo_widget_configure_tap_action_share_photo">Compartilhar foto</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Aumentar o brilho automaticamente</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Ver a foto original (sem corte ou rotação)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Não embaralhar ao usar os botões do visualizador</string>
@@ -259,6 +260,7 @@
     <string name="photo_widget_action_dismiss">Fechar</string>
     <string name="photo_widget_action_learn_more">Saiba mais</string>
     <string name="photo_widget_action_ignore">Ignorar</string>
+    <string name="photo_widget_action_share">Compartilhar</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de fotos da tela inicial</string>
 </resources>

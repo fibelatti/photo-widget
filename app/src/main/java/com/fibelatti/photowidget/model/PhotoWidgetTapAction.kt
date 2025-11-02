@@ -116,6 +116,16 @@ sealed interface PhotoWidgetTapAction : Parcelable {
         override val serializedName: String = "TOGGLE_CYCLING"
     }
 
+    @Parcelize
+    data object SharePhoto : PhotoWidgetTapAction {
+
+        @IgnoredOnParcel
+        override val label: Int = R.string.photo_widget_configure_tap_action_share_photo
+
+        @IgnoredOnParcel
+        override val serializedName: String = "SHARE_PHOTO"
+    }
+
     companion object {
 
         val DEFAULT: PhotoWidgetTapAction = None
@@ -131,6 +141,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
                 ToggleCycling(),
                 AppShortcut(),
                 UrlShortcut(),
+                SharePhoto,
             )
         }
 

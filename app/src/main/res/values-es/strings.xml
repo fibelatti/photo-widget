@@ -189,6 +189,7 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">Abrir un enlace</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Activar/desactivar temporizador</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Toca para pausar el temporizador de fotos. Toca de nuevo para reanudar. Esta acción estará deshabilitada mientras el widget esté bloqueado.</string>
+    <string name="photo_widget_configure_tap_action_share_photo">Compartir foto</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Aumentar automáticamente el brillo</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Ver foto original (sin recorte ni rotación)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">No barajar al usar los botones del visor</string>
@@ -259,6 +260,7 @@
     <string name="photo_widget_action_dismiss">Cerrar</string>
     <string name="photo_widget_action_learn_more">Más información</string>
     <string name="photo_widget_action_ignore">Ignorar</string>
+    <string name="photo_widget_action_share">Compartir</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de pantalla principal de Material Photo</string>
 </resources>

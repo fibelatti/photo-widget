@@ -189,6 +189,7 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">Ouvrir un lien</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Activer/désactiver le minuteur</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Appuyez pour mettre le minuteur photo en pause. Appuyez de nouveau pour reprendre. Cette action sera désactivée lorsque le widget est verrouillé.</string>
+    <string name="photo_widget_configure_tap_action_share_photo">Partager la photo</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Augmenter automatiquement la luminosité</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Voir la photo originale (sans recadrage ni rotation)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Ne pas mélanger lors de l\'utilisation des boutons de la visionneuse</string>
@@ -259,6 +260,7 @@
     <string name="photo_widget_action_dismiss">Fermer</string>
     <string name="photo_widget_action_learn_more">En savoir plus</string>
     <string name="photo_widget_action_ignore">Ignorer</string>
+    <string name="photo_widget_action_share">Partager</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget d\'accueil Material Photo</string>
 </resources>

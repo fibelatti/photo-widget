@@ -58,6 +58,7 @@ import com.fibelatti.photowidget.model.tapActionIncreaseBrightness
 import com.fibelatti.photowidget.model.tapActionViewOriginalPhoto
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.RememberedEffect
+import com.fibelatti.photowidget.platform.sharePhotoChooserIntent
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.ui.imageviewer.ZoomableImageViewer
 import com.fibelatti.ui.imageviewer.rememberZoomableImageViewerState
@@ -107,6 +108,7 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
                             }
                             startActivity(clickIntent)
                         },
+                        onShareClick = ::sharePhoto,
                     )
                 }
             }
@@ -129,6 +131,18 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
             screenBrightness = value
         }
     }
+
+    private fun sharePhoto(photo: LocalPhoto) {
+        val intent: Intent? = sharePhotoChooserIntent(
+            context = this,
+            originalPhotoPath = photo.originalPhotoPath,
+            externalUri = photo.externalUri,
+        )
+
+        if (intent != null) {
+            startActivity(intent)
+        }
+    }
 }
 
 private const val ANIM_DURATION: Int = 600
@@ -145,6 +159,7 @@ private fun ScreenContent(
     onPreviousClick: () -> Unit = {},
     onNextClick: () -> Unit = {},
     onAllPhotosClick: () -> Unit = {},
+    onShareClick: (LocalPhoto) -> Unit = {},
 ) {
     var isBackgroundVisible: Boolean by remember { mutableStateOf(false) }
     val backgroundAlpha: Float by animateFloatAsState(
@@ -195,7 +210,7 @@ private fun ScreenContent(
         }
 
         AnimatedVisibility(
-            visible = showFlipControls && isBackgroundVisible,
+            visible = isBackgroundVisible,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .safeDrawingPadding()
@@ -205,11 +220,26 @@ private fun ScreenContent(
                 initialOffsetY = { -it },
             ),
         ) {
-            FilledTonalButton(
-                onClick = onAllPhotosClick,
-                shapes = ButtonDefaults.shapes(),
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Text(text = stringResource(R.string.photo_widget_viewer_all_photos))
+                if (showFlipControls) {
+                    FilledTonalButton(
+                        onClick = onAllPhotosClick,
+                        shapes = ButtonDefaults.shapes(),
+                    ) {
+                        Text(text = stringResource(R.string.photo_widget_viewer_all_photos))
+                    }
+                }
+
+                if (photo?.getPhotoPath(viewOriginalPhoto = true) != null) {
+                    FilledTonalButton(
+                        onClick = { onShareClick(photo) },
+                        shapes = ButtonDefaults.shapes(),
+                    ) {
+                        Text(text = stringResource(R.string.photo_widget_action_share))
+                    }
+                }
             }
         }
 

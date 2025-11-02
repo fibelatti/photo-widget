@@ -201,6 +201,7 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">פתח קישור</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">הפעל/השבת טיימר</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">הקש כדי להשהות את טיימר התמונות. הקש שוב כדי לחדש. פעולה זו תושבת כאשר הווידג\'ט נעול.</string>
+    <string name="photo_widget_configure_tap_action_share_photo">שתף תמונה</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">הגברת בהירות באופן אוטומטי</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">צפה בתמונה המקורית (ללא חיתוך או סיבוב)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">אל תבצע הפעלה אקראית בעת שימוש בכפתורי הצפייה</string>
@@ -271,6 +272,7 @@
     <string name="photo_widget_action_dismiss">התעלם</string>
     <string name="photo_widget_action_learn_more">מידע נוסף</string>
     <string name="photo_widget_action_ignore">התעלם</string>
+    <string name="photo_widget_action_share">שתף</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">ווידג\'ט מסך הבית של Material Photo</string>
 </resources>

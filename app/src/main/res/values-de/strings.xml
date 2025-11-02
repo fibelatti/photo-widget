@@ -189,6 +189,7 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">Einen Link öffnen</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Timer aktivieren/deaktivieren</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Tippen, um den Foto-Timer zu pausieren. Nochmals tippen, um fortzusetzen. Diese Aktion ist deaktiviert, wenn das Widget gesperrt ist.</string>
+    <string name="photo_widget_configure_tap_action_share_photo">Foto teilen</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Helligkeit automatisch erhöhen</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Originalfoto anzeigen (kein Zuschnitt oder Drehung)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Beim Verwenden der Viewer-Tasten nicht mischen</string>
@@ -259,6 +260,7 @@
     <string name="photo_widget_action_dismiss">Ablehnen</string>
     <string name="photo_widget_action_learn_more">Mehr erfahren</string>
     <string name="photo_widget_action_ignore">Ignorieren</string>
+    <string name="photo_widget_action_share">Teilen</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo Startbildschirm-Widget</string>
 </resources>

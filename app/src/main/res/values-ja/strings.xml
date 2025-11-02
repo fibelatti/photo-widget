@@ -183,6 +183,7 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">リンクを開く</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">タイマーの有効化/無効化</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">タップして写真タイマーを一時停止します。再度タップすると再開します。ウィジェットがロックされている間は、この操作は無効になります。</string>
+    <string name="photo_widget_configure_tap_action_share_photo">写真を共有</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">明るさを自動的に上げる</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">元の写真を表示（切り抜きや回転なし）</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">ビューアーボタン使用時にシャッフルしない</string>
@@ -253,6 +254,7 @@
     <string name="photo_widget_action_dismiss">閉じる</string>
     <string name="photo_widget_action_learn_more">詳細</string>
     <string name="photo_widget_action_ignore">無視</string>
+    <string name="photo_widget_action_share">共有</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photoホーム画面ウィジェット</string>
 </resources>

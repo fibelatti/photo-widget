@@ -25,6 +25,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.tapActionDisableTap
 import com.fibelatti.photowidget.platform.setIdentifierCompat
+import com.fibelatti.photowidget.platform.sharePhotoChooserIntent
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import java.lang.ref.WeakReference
@@ -295,6 +296,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 tapAction = photoWidget.tapActions.center,
                 isLocked = isLocked,
                 shouldDisableTap = shouldDisableTap,
+                originalPhotoPath = photoWidget.currentPhoto?.originalPhotoPath,
                 externalUri = photoWidget.currentPhoto?.externalUri,
             )
 
@@ -308,6 +310,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     tapAction = photoWidget.tapActions.left,
                     isLocked = isLocked,
                     shouldDisableTap = shouldDisableTap,
+                    originalPhotoPath = photoWidget.currentPhoto?.originalPhotoPath,
                     externalUri = photoWidget.currentPhoto?.externalUri,
                 ),
             )
@@ -319,6 +322,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     tapAction = photoWidget.tapActions.right,
                     isLocked = isLocked,
                     shouldDisableTap = shouldDisableTap,
+                    originalPhotoPath = photoWidget.currentPhoto?.originalPhotoPath,
                     externalUri = photoWidget.currentPhoto?.externalUri,
                 ),
             )
@@ -330,6 +334,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             tapAction: PhotoWidgetTapAction,
             isLocked: Boolean,
             shouldDisableTap: Boolean,
+            originalPhotoPath: String?,
             externalUri: Uri?,
         ): PendingIntent? {
             Timber.d(
@@ -338,6 +343,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     "tapAction=$tapAction," +
                     "isLocked=$isLocked," +
                     "shouldDisableTap=$shouldDisableTap," +
+                    "originalPhotoPath=$originalPhotoPath," +
                     "externalUri=$externalUri" +
                     ")",
             )
@@ -469,6 +475,23 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
                     val intent = Intent(Intent.ACTION_VIEW, tapAction.url.toUri())
                         .setIdentifierCompat("$appWidgetId")
+
+                    return PendingIntent.getActivity(
+                        /* context = */ context,
+                        /* requestCode = */ appWidgetId,
+                        /* intent = */ intent,
+                        /* flags = */ PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                    )
+                }
+
+                is PhotoWidgetTapAction.SharePhoto -> {
+                    val intent: Intent? = sharePhotoChooserIntent(
+                        context = context,
+                        originalPhotoPath = originalPhotoPath,
+                        externalUri = externalUri,
+                    )
+
+                    if (intent == null) return null
 
                     return PendingIntent.getActivity(
                         /* context = */ context,

@@ -189,6 +189,7 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">Bir bağlantı aç</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Zamanlayıcıyı etkinleştir/devre dışı bırak</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Fotoğraf zamanlayıcısını duraklatmak için dokunun. Devam ettirmek için tekrar dokunun. Bu işlem, widget kilitliyken devre dışı olacaktır.</string>
+    <string name="photo_widget_configure_tap_action_share_photo">Fotoğrafı paylaş</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Parlaklığı otomatik olarak artır</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Orijinal fotoğrafı görüntüle (kırpma veya döndürme yok)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Görüntüleyici düğmelerini kullanırken karıştırma yapmayın</string>
@@ -259,6 +260,7 @@
     <string name="photo_widget_action_dismiss">Kapatmak için</string>
     <string name="photo_widget_action_learn_more">Daha fazla bilgi</string>
     <string name="photo_widget_action_ignore">Yoksay</string>
+    <string name="photo_widget_action_share">Paylaş</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo ana ekran widget\'ı</string>
 </resources>
