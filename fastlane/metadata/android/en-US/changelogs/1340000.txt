@@ -1,0 +1,5 @@
+This version brings the following updates:
+
+* New action: share photos as a tap action or from the full screen viewer
+
+Thanks for using the app!
