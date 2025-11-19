@@ -69,7 +69,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 ksp = { id = "com.google.devtools.ksp", version = "2.3.2" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 room = { id = "androidx.room", version.ref = "room" }
-spotless = { id = "com.diffplug.spotless", version = "8.0.0" }
+spotless = { id = "com.diffplug.spotless", version = "8.1.0" }
 cache-fix = { id = "org.gradle.android.cache-fix", version = "3.0.3" }
 about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }
 licensee = { id = "app.cash.licensee", version = "1.14.1" }
