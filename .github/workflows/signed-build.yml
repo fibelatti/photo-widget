@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Android Build
         uses: ./.github/actions/setup-android-build
@@ -62,7 +62,7 @@ jobs:
 
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Android Build
         uses: ./.github/actions/setup-android-build
