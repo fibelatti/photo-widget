@@ -214,7 +214,7 @@ private fun SettingsScreen(
             )
 
             SettingsAction(
-                icon = R.drawable.ic_share,
+                icon = R.drawable.ic_send,
                 label = R.string.photo_widget_home_share,
                 onClick = onShareClick,
             )
