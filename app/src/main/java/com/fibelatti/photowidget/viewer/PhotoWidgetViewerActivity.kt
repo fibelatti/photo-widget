@@ -12,11 +12,14 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -102,12 +105,7 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
                         showFlipControls = state.showMoveControls,
                         onPreviousClick = viewModel::viewPreviousPhoto,
                         onNextClick = viewModel::viewNextPhoto,
-                        onAllPhotosClick = {
-                            val clickIntent = Intent(this, PhotoWidgetChooserActivity::class.java).apply {
-                                this.appWidgetId = intent.appWidgetId
-                            }
-                            startActivity(clickIntent)
-                        },
+                        onAllPhotosClick = ::showPhotoChooser,
                         onShareClick = ::sharePhoto,
                     )
                 }
@@ -130,6 +128,13 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
             currentScreenBrightness = screenBrightness
             screenBrightness = value
         }
+    }
+
+    private fun showPhotoChooser() {
+        val clickIntent = Intent(this, PhotoWidgetChooserActivity::class.java).apply {
+            this.appWidgetId = intent.appWidgetId
+        }
+        startActivity(clickIntent)
     }
 
     private fun sharePhoto(photo: LocalPhoto) {
@@ -162,6 +167,8 @@ private fun ScreenContent(
     onShareClick: (LocalPhoto) -> Unit = {},
 ) {
     var isBackgroundVisible: Boolean by remember { mutableStateOf(false) }
+    var showControls: Boolean by remember { mutableStateOf(false) }
+
     val backgroundAlpha: Float by animateFloatAsState(
         targetValue = if (isBackgroundVisible) .8f else 0f,
         animationSpec = tween(ANIM_DURATION),
@@ -170,11 +177,16 @@ private fun ScreenContent(
     val imageViewerState = rememberZoomableImageViewerState(
         minimumScale = 1f,
         maximumScale = 4f,
+        onTap = { showControls = !showControls },
         onDragToDismiss = onDismissClick,
     )
 
-    RememberedEffect(Unit) {
+    LaunchedEffect(Unit) {
         isBackgroundVisible = true
+        showControls = true
+
+        delay(ANIM_DURATION * 3L)
+        showControls = false
     }
 
     Box(
@@ -210,7 +222,7 @@ private fun ScreenContent(
         }
 
         AnimatedVisibility(
-            visible = isBackgroundVisible,
+            visible = showControls,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .safeDrawingPadding()
@@ -218,6 +230,10 @@ private fun ScreenContent(
             enter = fadeIn(animationSpec = tween(ANIM_DURATION, delayMillis = 200)) + slideInVertically(
                 animationSpec = tween(ANIM_DURATION),
                 initialOffsetY = { -it },
+            ),
+            exit = fadeOut(animationSpec = tween(ANIM_DURATION)) + slideOutVertically(
+                animationSpec = tween(ANIM_DURATION),
+                targetOffsetY = { -it },
             ),
         ) {
             Row(
@@ -229,6 +245,14 @@ private fun ScreenContent(
                         shapes = ButtonDefaults.shapes(),
                     ) {
                         Text(text = stringResource(R.string.photo_widget_viewer_all_photos))
+
+                        Spacer(modifier = Modifier.size(8.dp))
+
+                        Icon(
+                            painter = painterResource(R.drawable.ic_album),
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp),
+                        )
                     }
                 }
 
@@ -238,13 +262,21 @@ private fun ScreenContent(
                         shapes = ButtonDefaults.shapes(),
                     ) {
                         Text(text = stringResource(R.string.photo_widget_action_share))
+
+                        Spacer(modifier = Modifier.size(8.dp))
+
+                        Icon(
+                            painter = painterResource(R.drawable.ic_share),
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp),
+                        )
                     }
                 }
             }
         }
 
         AnimatedVisibility(
-            visible = isBackgroundVisible,
+            visible = showControls,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .safeDrawingPadding()
@@ -252,6 +284,10 @@ private fun ScreenContent(
             enter = fadeIn(animationSpec = tween(ANIM_DURATION, delayMillis = 200)) + slideInVertically(
                 animationSpec = tween(ANIM_DURATION),
                 initialOffsetY = { it },
+            ),
+            exit = fadeOut(animationSpec = tween(ANIM_DURATION)) + slideOutVertically(
+                animationSpec = tween(ANIM_DURATION),
+                targetOffsetY = { it },
             ),
         ) {
             Controls(

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+* All buttons of the full screen viewer will now auto-hide and show on tap
+
 ### Fixed
 
 * Fix "My Widgets" not working correctly after rotating the device
