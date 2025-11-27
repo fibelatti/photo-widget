@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+* Fix "My Widgets" not working correctly after rotating the device
+
 ## [v1.34.0] - 2025-11-15
 [v1.34.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.34.0
 

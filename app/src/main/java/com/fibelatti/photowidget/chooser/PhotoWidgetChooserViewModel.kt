@@ -29,7 +29,11 @@ class PhotoWidgetChooserViewModel @Inject constructor(
     )
 
     val state: StateFlow<PhotoWidget?> = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
-        .stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(), initialValue = null)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = null,
+        )
 
     suspend fun setPhoto(photo: LocalPhoto) {
         Timber.d("Updating current photo to ${photo.photoId}")

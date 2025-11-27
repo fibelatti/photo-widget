@@ -75,7 +75,11 @@ class HomeViewModel @Inject constructor(
                 )
             }
         }
-        .stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(), initialValue = emptyList())
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = emptyList(),
+        )
 
     private val _pendingReport: MutableStateFlow<String?> = MutableStateFlow(null)
     val pendingReport: StateFlow<String?> = _pendingReport.asStateFlow()
