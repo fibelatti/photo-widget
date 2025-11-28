@@ -33,7 +33,6 @@ fun ExistingWidgetMenuBottomSheet(
 
     SelectionDialogBottomSheet(
         sheetState = sheetState,
-        title = "",
         options = MyWidgetOptions.options(canSync = data.canSync, canLock = data.canLock, isLocked = data.isLocked),
         optionName = { option -> localResources.getString(option.label) },
         onOptionSelected = { option ->

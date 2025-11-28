@@ -23,6 +23,35 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun <T> SelectionDialogBottomSheet(
     sheetState: AppSheetState,
+    options: List<T>,
+    optionName: (T) -> String,
+    onOptionSelected: (T) -> Unit,
+    modifier: Modifier = Modifier,
+    optionIcon: (T) -> Int? = { null },
+    header: @Composable () -> Unit = {},
+    footer: @Composable () -> Unit = {},
+) {
+    AppBottomSheet(
+        sheetState = sheetState,
+        modifier = modifier,
+    ) {
+        SelectionDialogContent(
+            options = options,
+            optionName = optionName,
+            optionIcon = optionIcon,
+            onOptionSelected = { option ->
+                onOptionSelected(option)
+                sheetState.hideBottomSheet()
+            },
+            header = header,
+            footer = footer,
+        )
+    }
+}
+
+@Composable
+fun <T> SelectionDialogBottomSheet(
+    sheetState: AppSheetState,
     title: String,
     options: List<T>,
     optionName: (T) -> String,
@@ -36,13 +65,21 @@ fun <T> SelectionDialogBottomSheet(
         modifier = modifier,
     ) {
         SelectionDialogContent(
-            title = title,
             options = options,
             optionName = optionName,
             optionIcon = optionIcon,
             onOptionSelected = { option ->
                 onOptionSelected(option)
                 sheetState.hideBottomSheet()
+            },
+            header = {
+                Text(
+                    text = title,
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleLarge,
+                )
             },
             footer = footer,
         )
@@ -52,12 +89,12 @@ fun <T> SelectionDialogBottomSheet(
 @Composable
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private fun <T> SelectionDialogContent(
-    title: String,
     options: List<T>,
     optionName: (T) -> String,
     optionIcon: (T) -> Int?,
     onOptionSelected: (T) -> Unit,
-    footer: @Composable () -> Unit = {},
+    header: @Composable () -> Unit,
+    footer: @Composable () -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -66,16 +103,8 @@ private fun <T> SelectionDialogContent(
         contentPadding = PaddingValues(all = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        if (title.isNotEmpty()) {
-            stickyHeader {
-                Text(
-                    text = title,
-                    modifier = Modifier.fillMaxWidth(),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge,
-                )
-            }
+        stickyHeader {
+            header()
         }
 
         items(options) { option ->

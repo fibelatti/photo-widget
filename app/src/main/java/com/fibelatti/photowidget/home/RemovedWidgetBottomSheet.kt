@@ -26,7 +26,6 @@ fun RemovedWidgetBottomSheet(
 
     SelectionDialogBottomSheet(
         sheetState = sheetState,
-        title = "",
         options = buildList {
             add(RemovedWidgetOptions.RESTORE)
             if (PhotoWidgetStatus.KEPT != data.status) {
