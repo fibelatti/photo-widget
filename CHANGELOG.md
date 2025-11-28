@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.35.0] - 2025-11-28
+[v1.35.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.35.0
+
 ### Added
 
 * You can now manually remove recently deleted photos from widgets
