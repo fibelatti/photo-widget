@@ -218,6 +218,7 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.reorderable)
     implementation(libs.colorpicker.compose)
+    implementation(libs.zoomable)
 
     implementation(libs.about.libraries)
 

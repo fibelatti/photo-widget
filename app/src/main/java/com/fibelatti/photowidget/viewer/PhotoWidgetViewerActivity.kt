@@ -20,9 +20,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
@@ -38,14 +38,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -56,19 +58,25 @@ import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.getPhotoPath
-import com.fibelatti.photowidget.model.rawAspectRatio
 import com.fibelatti.photowidget.model.tapActionIncreaseBrightness
 import com.fibelatti.photowidget.model.tapActionViewOriginalPhoto
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.sharePhotoChooserIntent
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
-import com.fibelatti.ui.imageviewer.ZoomableImageViewer
-import com.fibelatti.ui.imageviewer.rememberZoomableImageViewerState
+import com.fibelatti.photowidget.ui.DragToDismissState
+import com.fibelatti.photowidget.ui.onVerticalDrag
+import com.fibelatti.photowidget.ui.rememberDragToDismissState
+import com.fibelatti.ui.foundation.pxToDp
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import net.engawapg.lib.zoomable.ZoomState
+import net.engawapg.lib.zoomable.rememberZoomState
+import net.engawapg.lib.zoomable.zoomable
 
 @AndroidEntryPoint
 class PhotoWidgetViewerActivity : AppCompatActivity() {
@@ -166,23 +174,26 @@ private fun ScreenContent(
     onAllPhotosClick: () -> Unit = {},
     onShareClick: (LocalPhoto) -> Unit = {},
 ) {
-    var isBackgroundVisible: Boolean by remember { mutableStateOf(false) }
+    var showContent: Boolean by remember { mutableStateOf(false) }
     var showControls: Boolean by remember { mutableStateOf(false) }
 
     val backgroundAlpha: Float by animateFloatAsState(
-        targetValue = if (isBackgroundVisible) .8f else 0f,
+        targetValue = if (showContent) .8f else 0f,
+        animationSpec = tween(ANIM_DURATION),
+    )
+    val contentAlpha: Float by animateFloatAsState(
+        targetValue = if (showContent) 1f else 0f,
         animationSpec = tween(ANIM_DURATION),
     )
 
-    val imageViewerState = rememberZoomableImageViewerState(
-        minimumScale = 1f,
-        maximumScale = 4f,
-        onTap = { showControls = !showControls },
+    val zoomState: ZoomState = rememberZoomState()
+    val dragToDismissState: DragToDismissState = rememberDragToDismissState(
         onDragToDismiss = onDismissClick,
     )
+    val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        isBackgroundVisible = true
+        showContent = true
         showControls = true
 
         delay(ANIM_DURATION * 3L)
@@ -195,31 +206,31 @@ private fun ScreenContent(
             .background(color = Color.Black.copy(alpha = backgroundAlpha)),
         contentAlignment = Alignment.Center,
     ) {
-        ZoomableImageViewer(state = imageViewerState) {
-            var measuredRatio by remember { mutableFloatStateOf(aspectRatio.rawAspectRatio) }
-            var didMeasure by remember { mutableStateOf(false) }
-
-            AsyncPhotoViewer(
-                data = photo?.getPhotoPath(viewOriginalPhoto = viewOriginalPhoto),
-                dataKey = arrayOf(photo, aspectRatio),
-                isLoading = isLoading,
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier.aspectRatio(ratio = measuredRatio),
-                constraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED,
-                transformer = { bitmap ->
-                    measuredRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
-                    didMeasure = true
-                    bitmap
-                },
-            )
-
-            LaunchedEffect(measuredRatio, didMeasure) {
-                if (didMeasure) {
-                    delay(100)
-                    imageViewerState.animateToStandard()
+        AsyncPhotoViewer(
+            data = photo?.getPhotoPath(viewOriginalPhoto = viewOriginalPhoto),
+            dataKey = arrayOf(photo, aspectRatio),
+            isLoading = isLoading,
+            contentScale = ContentScale.Inside,
+            modifier = Modifier
+                .onGloballyPositioned { coordinates ->
+                    dragToDismissState.setReferenceHeight(coordinates.size.height.toFloat())
                 }
-            }
-        }
+                .alpha(contentAlpha)
+                .zoomable(
+                    zoomState = zoomState,
+                    onTap = { showControls = !showControls },
+                )
+                .onVerticalDrag(
+                    onDrag = dragToDismissState::onDrag,
+                    onDragStopped = {
+                        coroutineScope.launch {
+                            dragToDismissState.onDragStopped()
+                        }
+                    },
+                )
+                .offset(y = dragToDismissState.currentOffsetYPixel.pxToDp()),
+            constraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED,
+        )
 
         AnimatedVisibility(
             visible = showControls,

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * All buttons of the full screen viewer will now auto-hide and show on tap
+* Improve the zoom controls of the full screen viewer
 
 ### Fixed
 
