@@ -273,6 +273,8 @@
     <string name="photo_widget_action_learn_more">Подробнее</string>
     <string name="photo_widget_action_ignore">Пропустить</string>
     <string name="photo_widget_action_share">Поделиться</string>
+    <string name="photo_widget_action_restore">Восстановить</string>
+    <string name="photo_widget_action_delete_permanently">Удалить навсегда</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Виджет главного экрана Material Photo</string>
 </resources>

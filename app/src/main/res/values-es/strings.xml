@@ -261,6 +261,8 @@
     <string name="photo_widget_action_learn_more">Más información</string>
     <string name="photo_widget_action_ignore">Ignorar</string>
     <string name="photo_widget_action_share">Compartir</string>
+    <string name="photo_widget_action_restore">Restaurar</string>
+    <string name="photo_widget_action_delete_permanently">Eliminar permanentemente</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de pantalla principal de Material Photo</string>
 </resources>

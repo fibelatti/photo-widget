@@ -262,6 +262,8 @@
     <string name="photo_widget_action_learn_more">Ulteriori informazioni</string>
     <string name="photo_widget_action_ignore">Ignora</string>
     <string name="photo_widget_action_share">Condividi</string>
+    <string name="photo_widget_action_restore">Ripristina</string>
+    <string name="photo_widget_action_delete_permanently">Elimina definitivamente</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget schermata iniziale Material Photo</string>
 </resources>

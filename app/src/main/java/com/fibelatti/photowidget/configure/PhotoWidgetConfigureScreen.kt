@@ -210,6 +210,7 @@ private fun PhotoWidgetConfigureHomeScreen(
     val aspectRatioPickerSheetState = rememberAppSheetState()
     val sourceSheetState = rememberAppSheetState()
     val importFromWidgetSheetState = rememberAppSheetState()
+    val recentlyDeletedPhotoSheetState = rememberAppSheetState()
     val cycleModePickerSheetState = rememberAppSheetState()
     val directoryPickerSheetState = rememberAppSheetState()
     val shapePickerSheetState = rememberAppSheetState()
@@ -251,7 +252,7 @@ private fun PhotoWidgetConfigureHomeScreen(
             onNavClick = { localBackHandler?.onBackPressedDispatcher?.onBackPressed() },
             onAspectRatioClick = aspectRatioPickerSheetState::showBottomSheet,
             onCropClick = viewModel::requestCrop,
-            onRemoveClick = viewModel::photoRemoved,
+            onRemoveClick = viewModel::removePhoto,
             onMoveLeftClick = viewModel::moveLeft,
             onMoveRightClick = viewModel::moveRight,
             onChangeSourceClick = sourceSheetState::showBottomSheet,
@@ -261,7 +262,9 @@ private fun PhotoWidgetConfigureHomeScreen(
             onDirPickerClick = { dirPickerLauncher.launch(input = null) },
             onPhotoClick = viewModel::previewPhoto,
             onReorderFinished = viewModel::reorderPhotos,
-            onRemovedPhotoClick = viewModel::restorePhoto,
+            onRemovedPhotoClick = { photo ->
+                recentlyDeletedPhotoSheetState.showBottomSheet(data = photo)
+            },
             onCycleModePickerClick = {
                 if (localContext.isBackgroundRestricted(checkUnrestrictedBattery = true)) {
                     showBackgroundRestrictionDialog = true
@@ -317,6 +320,12 @@ private fun PhotoWidgetConfigureHomeScreen(
         ImportFromWidgetBottomSheet(
             sheetState = importFromWidgetSheetState,
             onWidgetSelected = viewModel::importFromWidget,
+        )
+
+        RecentlyDeletedPhotoBottomSheet(
+            sheetState = recentlyDeletedPhotoSheetState,
+            onRestore = viewModel::restorePhoto,
+            onDelete = viewModel::deletePhotoPermanently,
         )
 
         PhotoWidgetCycleModeBottomSheet(

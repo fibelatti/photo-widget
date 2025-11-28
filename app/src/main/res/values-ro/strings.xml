@@ -267,6 +267,8 @@
     <string name="photo_widget_action_learn_more">Află mai multe</string>
     <string name="photo_widget_action_ignore">Ignoră</string>
     <string name="photo_widget_action_share">Distribuie</string>
+    <string name="photo_widget_action_restore">Restabilește</string>
+    <string name="photo_widget_action_delete_permanently">Șterge definitiv</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget ecranul de pornire Material Photo</string>
 </resources>

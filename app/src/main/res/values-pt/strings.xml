@@ -261,6 +261,8 @@
     <string name="photo_widget_action_learn_more">Saiba mais</string>
     <string name="photo_widget_action_ignore">Ignorar</string>
     <string name="photo_widget_action_share">Compartilhar</string>
+    <string name="photo_widget_action_restore">Restaurar</string>
+    <string name="photo_widget_action_delete_permanently">Excluir permanentemente</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de fotos da tela inicial</string>
 </resources>

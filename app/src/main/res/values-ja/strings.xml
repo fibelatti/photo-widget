@@ -255,6 +255,8 @@
     <string name="photo_widget_action_learn_more">詳細</string>
     <string name="photo_widget_action_ignore">無視</string>
     <string name="photo_widget_action_share">共有</string>
+    <string name="photo_widget_action_restore">復元</string>
+    <string name="photo_widget_action_delete_permanently">完全に削除</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photoホーム画面ウィジェット</string>
 </resources>

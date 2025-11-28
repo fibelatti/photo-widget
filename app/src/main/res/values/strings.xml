@@ -315,6 +315,8 @@
     <string name="photo_widget_action_learn_more">Learn more</string>
     <string name="photo_widget_action_ignore">Ignore</string>
     <string name="photo_widget_action_share">Share</string>
+    <string name="photo_widget_action_restore">Restore</string>
+    <string name="photo_widget_action_delete_permanently">Delete permanently</string>
 
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo home screen widget</string>

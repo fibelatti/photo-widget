@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* You can now manually remove recently deleted photos from widgets
+
 ### Changed
 
 * All buttons of the full screen viewer will now auto-hide and show on tap

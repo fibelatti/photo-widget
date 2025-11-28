@@ -396,7 +396,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         _state.update { current -> current.copy(cropQueue = emptyList()) }
     }
 
-    fun photoRemoved(photo: LocalPhoto) {
+    fun removePhoto(photo: LocalPhoto) {
         _state.getAndUpdate { current ->
             val removedPhoto = current.photoWidget.photos.firstOrNull { it.photoId == photo.photoId }
             val updatedPhotos = current.photoWidget.photos.filterNot { it.photoId == photo.photoId }
@@ -442,6 +442,16 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 } else {
                     current.selectedPhoto
                 },
+            )
+        }
+    }
+
+    fun deletePhotoPermanently(photo: LocalPhoto) {
+        _state.getAndUpdate { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(
+                    removedPhotos = current.photoWidget.removedPhotos.filterNot { it.photoId == photo.photoId },
+                ),
             )
         }
     }

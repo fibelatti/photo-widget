@@ -273,6 +273,8 @@
     <string name="photo_widget_action_learn_more">מידע נוסף</string>
     <string name="photo_widget_action_ignore">התעלם</string>
     <string name="photo_widget_action_share">שתף</string>
+    <string name="photo_widget_action_restore">שחזור</string>
+    <string name="photo_widget_action_delete_permanently">מחק לצמיתות</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">ווידג\'ט מסך הבית של Material Photo</string>
 </resources>

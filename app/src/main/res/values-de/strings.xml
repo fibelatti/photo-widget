@@ -261,6 +261,8 @@
     <string name="photo_widget_action_learn_more">Mehr erfahren</string>
     <string name="photo_widget_action_ignore">Ignorieren</string>
     <string name="photo_widget_action_share">Teilen</string>
+    <string name="photo_widget_action_restore">Wiederherstellen</string>
+    <string name="photo_widget_action_delete_permanently">Dauerhaft löschen</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo Startbildschirm-Widget</string>
 </resources>
