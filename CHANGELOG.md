@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.35.1] - 2025-11-29
+[v1.35.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.35.1
+
+### Fixed
+
+* Fix a crop tool crash introduced in version 1.35.0
+
 ## [v1.35.0] - 2025-11-28
 [v1.35.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.35.0
 
