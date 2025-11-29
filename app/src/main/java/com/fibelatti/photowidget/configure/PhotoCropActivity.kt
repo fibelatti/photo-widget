@@ -32,6 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
+import androidx.core.net.toFile
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isInvisible
@@ -124,16 +126,18 @@ class PhotoCropActivity : AppCompatActivity() {
         binding.progressIndicator.isVisible = true
         binding.cropImageView.croppedImageAsync(
             saveCompressFormat = compressFormat,
-            customOutputUri = intent.destinationUri,
+            customOutputUri = FileProvider.getUriForFile(
+                /* context = */ this,
+                /* authority = */ "${packageName}.fileprovider",
+                /* file = */ intent.destinationUri.toFile(),
+            ),
         )
     }
 
     private fun finishWithResult(result: CropImageView.CropResult) {
         setResult(
-            if (result.isSuccessful) RESULT_OK else RESULT_CANCELED,
-            result.uriContent?.let { outputUri ->
-                Intent().apply { this.outputPath = outputUri.path }
-            },
+            /* resultCode = */ if (result.isSuccessful && result.uriContent != null) RESULT_OK else RESULT_CANCELED,
+            /* data = */ result.uriContent?.let { Intent().apply { this.outputPath = intent.destinationUri.path } },
         )
         finish()
     }
