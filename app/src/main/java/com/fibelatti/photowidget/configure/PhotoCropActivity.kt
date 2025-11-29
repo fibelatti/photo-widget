@@ -128,7 +128,7 @@ class PhotoCropActivity : AppCompatActivity() {
             saveCompressFormat = compressFormat,
             customOutputUri = FileProvider.getUriForFile(
                 /* context = */ this,
-                /* authority = */ "${packageName}.fileprovider",
+                /* authority = */ "$packageName.fileprovider",
                 /* file = */ intent.destinationUri.toFile(),
             ),
         )
