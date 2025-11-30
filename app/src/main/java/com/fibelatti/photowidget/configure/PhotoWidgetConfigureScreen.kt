@@ -1205,7 +1205,10 @@ private fun PhotoPicker(
         val localHaptics = LocalHapticFeedback.current
 
         val currentPhotos by rememberUpdatedState(photos.toMutableStateList())
-        val cacheWindow = LazyLayoutCacheWindow(aheadFraction = .5f, behindFraction = .5f)
+        val cacheWindow = LazyLayoutCacheWindow(
+            aheadFraction = if (currentPhotos.isNotEmpty()) .5f else 0f,
+            behindFraction = if (currentPhotos.isNotEmpty()) .5f else 0f,
+        )
         val lazyGridState = rememberLazyGridState(cacheWindow = cacheWindow)
         val reorderableLazyGridState = rememberReorderableLazyGridState(lazyGridState) { from, to ->
             currentPhotos.apply {
