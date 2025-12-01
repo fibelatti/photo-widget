@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* You can now swipe left and right to switch photos in the full screen viewer
+
 ### Fixed
 
 * Fix a crash that could happen when switching source from folder to photos

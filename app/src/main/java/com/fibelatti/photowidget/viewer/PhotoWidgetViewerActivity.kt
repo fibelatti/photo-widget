@@ -34,9 +34,11 @@ import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.IconButtonDefaults.smallContainerSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,10 +48,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
@@ -64,10 +70,11 @@ import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.sharePhotoChooserIntent
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
-import com.fibelatti.photowidget.ui.DragToDismissState
-import com.fibelatti.photowidget.ui.onVerticalDrag
-import com.fibelatti.photowidget.ui.rememberDragToDismissState
+import com.fibelatti.ui.foundation.DragState
+import com.fibelatti.ui.foundation.onHorizontalDrag
+import com.fibelatti.ui.foundation.onVerticalDrag
 import com.fibelatti.ui.foundation.pxToDp
+import com.fibelatti.ui.foundation.rememberDragState
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -186,10 +193,30 @@ private fun ScreenContent(
         animationSpec = tween(ANIM_DURATION),
     )
 
+    val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
     val zoomState: ZoomState = rememberZoomState()
-    val dragToDismissState: DragToDismissState = rememberDragToDismissState(
-        onDragToDismiss = onDismissClick,
+    val verticalDragState: DragState = rememberDragState(
+        mode = DragState.Mode.UNIDIRECTIONAL,
+        onConfirm = { onDismissClick() },
+        onThreshold = { localHapticFeedback.performHapticFeedback(HapticFeedbackType.Confirm) },
     )
+    val horizontalDragState: DragState = rememberDragState(
+        mode = DragState.Mode.BIDIRECTIONAL,
+        onConfirm = { direction ->
+            when (direction) {
+                DragState.Direction.START -> onNextClick()
+                DragState.Direction.END -> onPreviousClick()
+            }
+        },
+        onThreshold = { localHapticFeedback.performHapticFeedback(HapticFeedbackType.Confirm) },
+    )
+
+    val horizontalIndicatorSize: Dp by remember {
+        derivedStateOf {
+            (48 * horizontalDragState.currentOffsetFraction).dp
+        }
+    }
+
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
@@ -206,6 +233,48 @@ private fun ScreenContent(
             .background(color = Color.Black.copy(alpha = backgroundAlpha)),
         contentAlignment = Alignment.Center,
     ) {
+        AnimatedVisibility(
+            visible = horizontalDragState.currentOffsetPixel > 0,
+            modifier = Modifier
+                .padding(all = 32.dp)
+                .align(Alignment.CenterStart),
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_chevron_left),
+                contentDescription = null,
+                modifier = Modifier
+                    .background(
+                        color = MaterialTheme.colorScheme.tertiaryContainer,
+                        shape = MaterialTheme.shapes.small,
+                    )
+                    .size(horizontalIndicatorSize),
+                tint = MaterialTheme.colorScheme.onTertiaryContainer,
+            )
+        }
+
+        AnimatedVisibility(
+            visible = horizontalDragState.currentOffsetPixel < 0,
+            modifier = Modifier
+                .padding(all = 32.dp)
+                .align(Alignment.CenterEnd),
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_chevron_right),
+                contentDescription = null,
+                modifier = Modifier
+                    .background(
+                        color = MaterialTheme.colorScheme.tertiaryContainer,
+                        shape = MaterialTheme.shapes.small,
+                    )
+                    .size(horizontalIndicatorSize),
+                tint = MaterialTheme.colorScheme.onTertiaryContainer,
+            )
+        }
+
         AsyncPhotoViewer(
             data = photo?.getPhotoPath(viewOriginalPhoto = viewOriginalPhoto),
             dataKey = arrayOf(photo, aspectRatio),
@@ -213,7 +282,8 @@ private fun ScreenContent(
             contentScale = ContentScale.Inside,
             modifier = Modifier
                 .onGloballyPositioned { coordinates ->
-                    dragToDismissState.setReferenceHeight(coordinates.size.height.toFloat())
+                    verticalDragState.setThreshold(coordinates.size.height * .3f)
+                    horizontalDragState.setThreshold(coordinates.size.width * .3f)
                 }
                 .alpha(contentAlpha)
                 .zoomable(
@@ -221,14 +291,29 @@ private fun ScreenContent(
                     onTap = { showControls = !showControls },
                 )
                 .onVerticalDrag(
-                    onDrag = dragToDismissState::onDrag,
+                    onDrag = verticalDragState::onDrag,
                     onDragStopped = {
                         coroutineScope.launch {
-                            dragToDismissState.onDragStopped()
+                            verticalDragState.onDragStopped()
                         }
                     },
+                    enabled = showFlipControls && zoomState.scale == 1f,
                 )
-                .offset(y = dragToDismissState.currentOffsetYPixel.pxToDp()),
+                .onHorizontalDrag(
+                    onDrag = { offset ->
+                        horizontalDragState.onDrag(amount = offset)
+                    },
+                    onDragStopped = {
+                        coroutineScope.launch {
+                            horizontalDragState.onDragStopped(resetOnConfirm = true)
+                        }
+                    },
+                    enabled = showFlipControls && zoomState.scale == 1f,
+                )
+                .offset(
+                    x = horizontalDragState.currentOffsetPixel.pxToDp(),
+                    y = verticalDragState.currentOffsetPixel.pxToDp(),
+                ),
             constraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED,
         )
 
