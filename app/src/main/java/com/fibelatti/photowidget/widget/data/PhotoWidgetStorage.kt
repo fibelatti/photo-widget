@@ -477,26 +477,39 @@ class PhotoWidgetStorage @Inject constructor(
         excludedPhotosDao.deletePhotosByWidgetId(widgetId = appWidgetId)
     }
 
+    /**
+     * 1. Receive all IDs known by the OS ([existingWidgetIds]).
+     * 2. Get all IDs known by the app ([getKnownWidgetIds]).
+     * 3. Identify which IDs are known by the app, but not by the OS. These will be processed by
+     * this function.
+     * 4. Delete draft data.
+     * 5. For each identified ID, check if the widget was kept by the user and skip.
+     * 6. For each identified ID that was not kept, check if the deletion threshold was not
+     * reached yet and skip.
+     * 7. Delete any widget data that doesn't match the previous rules.
+     * 8. Delete recently removed photos that are past the threshold.
+     */
     suspend fun deleteUnusedWidgetData(existingWidgetIds: List<Int>) {
-        val unusedWidgetIds = getKnownWidgetIds().filterNot { it == 0 || it in existingWidgetIds }
-        val currentTimestamp = System.currentTimeMillis()
+        val unplacedWidgetIds: List<Int> = getKnownWidgetIds() - existingWidgetIds.toSet()
+        val currentTimestamp: Long = System.currentTimeMillis()
 
         Timber.d("Deleting draft widget data")
         deleteWidgetData(appWidgetId = 0)
 
-        for (id in unusedWidgetIds) {
+        for (id in unplacedWidgetIds) {
             Timber.d("Stale data found (appWidgetId=$id)")
-            val deletionTimestamp = getWidgetDeletionTimestamp(appWidgetId = id)
+            val deletionTimestamp: Long = getWidgetDeletionTimestamp(appWidgetId = id)
             if (deletionTimestamp == -1L) {
                 Timber.d("Widget was kept by the user (appWidgetId=$id)")
                 continue
             }
 
-            val deletionInterval = currentTimestamp - deletionTimestamp
+            val deletionInterval: Long = currentTimestamp - deletionTimestamp
             if (deletionInterval <= DELETION_THRESHOLD_MILLIS) {
                 Timber.d("Deletion threshold not reached (appWidgetId=$id, interval=$deletionInterval)")
                 continue
             }
+
             deleteWidgetData(appWidgetId = id)
         }
 
