@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
@@ -41,7 +40,6 @@ enum class ConfigureTab(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 inline fun ConfigureTabs(
     modifier: Modifier = Modifier,
     tabHeight: Dp = 48.dp,
