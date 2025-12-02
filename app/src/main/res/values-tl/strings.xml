@@ -190,8 +190,8 @@
     <string name="photo_widget_configure_tap_action_share_photo">Ibahagi ang larawan</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Awtomatikong itaas ang liwanag</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Tingnan ang orihinal na larawan (walang krop o pag-ikot)</string>
-    <string name="photo_widget_configure_tap_action_do_not_shuffle">Huwag halu-haluin pag ginagamit ang mga viewer button</string>
-    <string name="photo_widget_configure_tap_action_keep_current_photo">Huwag baguhin ang kasalukuyang larawan pag ginagamit ang mga viewer button</string>
+    <string name="photo_widget_configure_tap_action_do_not_shuffle">Huwag i-shuffle ang mga larawan kapag nagpapalit sa viewer</string>
+    <string name="photo_widget_configure_tap_action_keep_current_photo">Huwag palitan ang kasalukuyang larawan kapag nagpapalit sa viewer</string>
     <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Gumagana sa mga widget na gumagamit ng folder, gagamitin naman ng mga widget na gumagamit ng mga indibidwal na larawan ang \"View photo in full screen.\"</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Binubuksan ng aksyong ito ang kasalukuyang larawan gamit ang gallery app. Hindi ka makakatingin o makakalipat sa ibang mga larawan.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Maaari mo ring piliin ang gallery app na gagamitin.</string>

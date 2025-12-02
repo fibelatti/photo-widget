@@ -192,8 +192,8 @@
     <string name="photo_widget_configure_tap_action_share_photo">Foto teilen</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Helligkeit automatisch erhöhen</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Originalfoto anzeigen (kein Zuschnitt oder Drehung)</string>
-    <string name="photo_widget_configure_tap_action_do_not_shuffle">Beim Verwenden der Viewer-Tasten nicht mischen</string>
-    <string name="photo_widget_configure_tap_action_keep_current_photo">Beim Verwenden der Viewer-Tasten das aktuelle Foto nicht ändern</string>
+    <string name="photo_widget_configure_tap_action_do_not_shuffle">Fotos im Viewer beim Wechseln nicht mischen</string>
+    <string name="photo_widget_configure_tap_action_keep_current_photo">Beim Wechseln im Viewer das aktuelle Foto nicht ändern</string>
     <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Kompatibel mit ordnerbasierten Widgets, fotobasierte Widgets verwenden stattdessen „Foto im Vollbildmodus anzeigen“.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Diese Aktion öffnet das aktuelle Foto mit der Galerie-App. Es ist nicht möglich, andere Fotos anzuzeigen oder zu ihnen zu navigieren.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Sie können auch auswählen, welche Galerie-App verwendet werden soll.</string>

@@ -186,8 +186,8 @@
     <string name="photo_widget_configure_tap_action_share_photo">写真を共有</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">明るさを自動的に上げる</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">元の写真を表示（切り抜きや回転なし）</string>
-    <string name="photo_widget_configure_tap_action_do_not_shuffle">ビューアーボタン使用時にシャッフルしない</string>
-    <string name="photo_widget_configure_tap_action_keep_current_photo">ビューアーボタン使用時に現在の写真を変更しない</string>
+    <string name="photo_widget_configure_tap_action_do_not_shuffle">ビューアで写真を切り替えるときにシャッフルしない</string>
+    <string name="photo_widget_configure_tap_action_keep_current_photo">ビューアで写真を切り替えるときに現在の写真を変更しない</string>
     <string name="photo_widget_configure_tap_action_gallery_description_compatibility">フォルダーベースのウィジェットと互換性があります。写真ベースのウィジェットでは代わりに「写真をフルスクリーンで表示」が使用されます。</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">このアクションは、ギャラリーアプリを使用して現在の写真を開きます。他の写真を表示したり移動したりすることはできません。</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">使用するギャラリーアプリを選択することもできます。</string>

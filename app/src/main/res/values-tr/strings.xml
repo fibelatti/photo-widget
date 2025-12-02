@@ -192,8 +192,8 @@
     <string name="photo_widget_configure_tap_action_share_photo">Fotoğrafı paylaş</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Parlaklığı otomatik olarak artır</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Orijinal fotoğrafı görüntüle (kırpma veya döndürme yok)</string>
-    <string name="photo_widget_configure_tap_action_do_not_shuffle">Görüntüleyici düğmelerini kullanırken karıştırma yapmayın</string>
-    <string name="photo_widget_configure_tap_action_keep_current_photo">Görüntüleyici düğmelerini kullanırken geçerli fotoğrafı değiştirme</string>
+    <string name="photo_widget_configure_tap_action_do_not_shuffle">Görüntüleyicide fotoğraflar değiştirilirken karıştırma</string>
+    <string name="photo_widget_configure_tap_action_keep_current_photo">Görüntüleyicide fotoğraflar değiştirilirken geçerli fotoğrafı değiştirme</string>
     <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Klasör tabanlı widget\'larla uyumlu olan fotoğraf tabanlı widget\'lar bunun yerine \"Fotoğrafı tam ekranda görüntüle\" seçeneğini kullanacaktır.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Bu eylem, mevcut fotoğrafı galeri uygulamasıyla açar. Diğer fotoğrafları görüntülemek veya onlara geçmek mümkün olmayacaktır.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Hangi galeri uygulamasını kullanacağınızı da seçebilirsiniz.</string>

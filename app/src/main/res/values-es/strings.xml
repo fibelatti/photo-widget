@@ -192,8 +192,8 @@
     <string name="photo_widget_configure_tap_action_share_photo">Compartir foto</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Aumentar automáticamente el brillo</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Ver foto original (sin recorte ni rotación)</string>
-    <string name="photo_widget_configure_tap_action_do_not_shuffle">No barajar al usar los botones del visor</string>
-    <string name="photo_widget_configure_tap_action_keep_current_photo">No cambiar la foto actual al usar los botones del visor</string>
+    <string name="photo_widget_configure_tap_action_do_not_shuffle">No mezclar las fotos al cambiar de foto en el visor</string>
+    <string name="photo_widget_configure_tap_action_keep_current_photo">No cambiar la foto actual al cambiar de foto en el visor</string>
     <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Compatible con widgets basados en carpetas, los widgets basados en fotos usarán \"Ver foto en pantalla completa\" en su lugar.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Esta acción abre la foto actual usando la aplicación de galería. No será posible ver ni navegar a otras fotos.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">También puedes elegir qué aplicación de galería usar.</string>

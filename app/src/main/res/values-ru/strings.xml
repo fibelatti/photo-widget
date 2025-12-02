@@ -204,8 +204,8 @@
     <string name="photo_widget_configure_tap_action_share_photo">Поделиться фото</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Автоматически увеличить яркость</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Просмотреть оригинальную фотографию (без обрезки или поворота)</string>
-    <string name="photo_widget_configure_tap_action_do_not_shuffle">Не перемешивать при использовании кнопок просмотра</string>
-    <string name="photo_widget_configure_tap_action_keep_current_photo">Не менять текущую фотографию при использовании кнопок просмотра</string>
+    <string name="photo_widget_configure_tap_action_do_not_shuffle">Не перемешивать фотографии при переключении в просмотрщике</string>
+    <string name="photo_widget_configure_tap_action_keep_current_photo">Не менять текущую фотографию при переключении фотографий в просмотрщике</string>
     <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Совместимо с виджетами на основе папок, виджеты на основе фотографий будут использовать «Просмотреть фото на весь экран» вместо этого.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Это действие откроет текущую фотографию через приложение галереи. Невозможно будет просматривать или переходить к другим фотографиям.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Вы также можете выбрать, какое приложение галереи использовать.</string>

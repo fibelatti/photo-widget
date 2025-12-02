@@ -230,8 +230,8 @@
 
     <string name="photo_widget_configure_tap_action_increase_brightness">Automatically increase brightness</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">View original photo (no crop or rotation)</string>
-    <string name="photo_widget_configure_tap_action_do_not_shuffle">Do not shuffle when using the viewer buttons</string>
-    <string name="photo_widget_configure_tap_action_keep_current_photo">Do not change the current photo when using the viewer buttons</string>
+    <string name="photo_widget_configure_tap_action_do_not_shuffle">Do not shuffle when switching photos in the viewer</string>
+    <string name="photo_widget_configure_tap_action_keep_current_photo">Do not change the current photo when switching photos in the viewer</string>
     <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Compatible with folder-based widgets, photo-based widgets will use \"View photo in full screen\" instead.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">This action opens the current photo using the gallery app. It won\'t be possible to view or navigate to other photos.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">You may also choose which gallery app to use.</string>

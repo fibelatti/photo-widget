@@ -192,8 +192,8 @@
     <string name="photo_widget_configure_tap_action_share_photo">Condividi foto</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Aumenta automaticamente la luminosità</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Visualizza foto originale (senza ritaglio o rotazione)</string>
-    <string name="photo_widget_configure_tap_action_do_not_shuffle">Non mescolare quando si usano i pulsanti del visualizzatore</string>
-    <string name="photo_widget_configure_tap_action_keep_current_photo">Non cambiare la foto corrente quando si usano i pulsanti del visualizzatore</string>
+    <string name="photo_widget_configure_tap_action_do_not_shuffle">Non mescolare le foto quando si cambia foto nel visualizzatore</string>
+    <string name="photo_widget_configure_tap_action_keep_current_photo">Non cambiare la foto corrente quando si cambia foto nel visualizzatore</string>
     <string name="photo_widget_configure_tap_action_gallery_description_compatibility">Compatibile con i widget basati su cartella, i widget basati su foto useranno invece \"Visualizza foto a schermo intero\".</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Questa azione apre la foto corrente usando l\'app galleria. Non sarà possibile visualizzare o navigare verso altre foto.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Puoi anche scegliere quale app galleria utilizzare.</string>
