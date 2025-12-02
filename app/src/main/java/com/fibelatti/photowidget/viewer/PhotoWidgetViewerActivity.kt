@@ -167,6 +167,18 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
 
 private const val ANIM_DURATION: Int = 600
 
+/**
+ * The drag state uses a spring animation. Without a minimum threshold both indicators would
+ * show when the subject is settling.
+ */
+private const val MIN_OFFSET: Int = 100
+
+/**
+ * Percent of the screen dimension required to trigger the drag state action.
+ */
+private const val SMALLEST_DIMENSION_FRACTION = .25f
+private const val LARGEST_DIMENSION_FRACTION = .15f
+
 @Composable
 private fun ScreenContent(
     photo: LocalPhoto?,
@@ -234,8 +246,9 @@ private fun ScreenContent(
         contentAlignment = Alignment.Center,
     ) {
         AnimatedVisibility(
-            visible = horizontalDragState.currentOffsetPixel > 0,
+            visible = horizontalDragState.currentOffsetPixel > MIN_OFFSET,
             modifier = Modifier
+                .safeDrawingPadding()
                 .padding(all = 32.dp)
                 .align(Alignment.CenterStart),
             enter = fadeIn(),
@@ -255,8 +268,9 @@ private fun ScreenContent(
         }
 
         AnimatedVisibility(
-            visible = horizontalDragState.currentOffsetPixel < 0,
+            visible = horizontalDragState.currentOffsetPixel < MIN_OFFSET * -1,
             modifier = Modifier
+                .safeDrawingPadding()
                 .padding(all = 32.dp)
                 .align(Alignment.CenterEnd),
             enter = fadeIn(),
@@ -282,8 +296,16 @@ private fun ScreenContent(
             contentScale = ContentScale.Inside,
             modifier = Modifier
                 .onGloballyPositioned { coordinates ->
-                    verticalDragState.setThreshold(coordinates.size.height * .3f)
-                    horizontalDragState.setThreshold(coordinates.size.width * .3f)
+                    val height = coordinates.size.height
+                    val width = coordinates.size.width
+
+                    if (height > width) {
+                        verticalDragState.setThreshold(height * LARGEST_DIMENSION_FRACTION)
+                        horizontalDragState.setThreshold(width * SMALLEST_DIMENSION_FRACTION)
+                    } else {
+                        verticalDragState.setThreshold(height * SMALLEST_DIMENSION_FRACTION)
+                        horizontalDragState.setThreshold(width * LARGEST_DIMENSION_FRACTION)
+                    }
                 }
                 .alpha(contentAlpha)
                 .zoomable(
