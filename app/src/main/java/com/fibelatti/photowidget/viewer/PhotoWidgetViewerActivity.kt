@@ -319,7 +319,7 @@ private fun ScreenContent(
                             verticalDragState.onDragStopped()
                         }
                     },
-                    enabled = showFlipControls && zoomState.scale == 1f,
+                    enabled = zoomState.scale == 1f,
                 )
                 .onHorizontalDrag(
                     onDrag = { offset ->
