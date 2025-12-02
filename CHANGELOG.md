@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.35.2] - 2025-12-2
+[v1.35.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.35.2
+
 ### Added
 
 * You can now swipe left and right to switch photos in the full screen viewer

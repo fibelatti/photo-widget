@@ -1,0 +1,7 @@
+This version brings the following updates:
+
+* Improves the usability of the full screen viewer, including swipe gestures!
+* Recently removed photos can now be permanently deleted
+* Fixes "My Widgets" not working correctly after rotating the device
+
+Thanks for using the app!
