@@ -2,7 +2,7 @@
 <resources>
     <!-- Widget Host -->
     <string name="photo_widget_host_description">Favori fotoğraflar ekleyin veya klasörleri eşitleyin. Eylemleri ayarlayın. Özelleştirirken formatı, yerleştirdikten sonra boyutu seçin.</string>
-<string name="photo_widget_host_loading">Widget yükleniyor…</string>
+    <string name="photo_widget_host_loading">Widget yükleniyor…</string>
     <string name="photo_widget_host_failed">Yükleme başarısız\nTekrar denensin mi?</string>
     <!-- Home -->
     <string name="photo_widget_home_title">Ana ekranınızı favori fotoğraflarınızla süsleyin</string>
