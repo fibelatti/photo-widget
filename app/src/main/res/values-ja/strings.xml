@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Widget Host -->
-    <string name="photo_widget_host_description">お気に入りの写真でホーム画面を飾りましょう</string>
+    <string name="photo_widget_host_description">お気に入りの写真を追加するかフォルダを同期。アクションを設定し、カスタマイズ時に形式、配置後にサイズを選択できます。</string>
     <string name="photo_widget_host_loading">ウィジェットを読み込み中…</string>
     <string name="photo_widget_host_failed">読み込みに失敗しました\nもう一度お試しください</string>
     <!-- Home -->

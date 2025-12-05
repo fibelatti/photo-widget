@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Widget Host -->
-    <string name="photo_widget_host_description">Decorează-ți ecranul de pornire cu fotografiile tale preferate</string>
+    <string name="photo_widget_host_description">Adaugă fotografii favorite sau sincronizează foldere. Setează acțiuni. Alege formatul la personalizare și mărimea după plasare.</string>
     <string name="photo_widget_host_loading">Încărcare widget…</string>
     <string name="photo_widget_host_failed">Încărcarea a eșuat\nÎncercați din nou?</string>
     <!-- Home -->

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Widget Host -->
-    <string name="photo_widget_host_description">Украсьте главный экран любимыми фотографиями</string>
+    <string name="photo_widget_host_description">Добавьте любимые фото или синхронизируйте папки. Настройте действия. Выберите формат при настройке и размер после размещения.</string>
     <string name="photo_widget_host_loading">Загрузка виджета…</string>
     <string name="photo_widget_host_failed">Не удалось загрузить\nПопробовать снова?</string>
     <!-- Home -->

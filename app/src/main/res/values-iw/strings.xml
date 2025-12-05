@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Widget Host -->
-    <string name="photo_widget_host_description">עצב את מסך הבית שלך עם התמונות האהובות עליך</string>
+    <string name="photo_widget_host_description">הוסף תמונות מועדפות או סנכרן תיקיות. הגדר פעולות. בחר את התצורה בעת ההתאמה ואת הגודל לאחר שממקמים אותו.</string>
     <string name="photo_widget_host_loading">טוען ווידג\'ט…</string>
     <string name="photo_widget_host_failed">הטעינה נכשלה\nלנסות שוב?</string>
     <!-- Home -->

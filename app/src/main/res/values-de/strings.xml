@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Widget Host -->
-    <string name="photo_widget_host_description">Dekorieren Sie Ihren Startbildschirm mit Ihren Lieblingsfotos</string>
+    <string name="photo_widget_host_description">Füge Lieblingsfotos hinzu oder synchronisiere Ordner. Lege Aktionen fest. Wähle das Format beim Anpassen und die Größe nach dem Platzieren.</string>
     <string name="photo_widget_host_loading">Widget wird geladen…</string>
     <string name="photo_widget_host_failed">Laden fehlgeschlagen\nErneut versuchen?</string>
     <!-- Home -->

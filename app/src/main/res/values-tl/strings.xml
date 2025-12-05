@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Widget Host -->
-    <string name="photo_widget_host_description">I-disenyo ang iyong home screen gamit ang iyong mga paboritong larawan</string>
+    <string name="photo_widget_host_description">Magdagdag ng paboritong larawan o mag-sync ng mga folder. Mag-set ng actions. Pumili ng format pag-customize at laki pagkatapos ilagay.</string>
     <string name="photo_widget_host_loading">Nilo-load ang widget…</string>
     <string name="photo_widget_host_failed">Nabigo ang pag-load\nMuling subukan?</string>
     <!-- Home -->

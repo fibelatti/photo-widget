@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Widget Host -->
-    <string name="photo_widget_host_description">Enfeite a sua tela inicial com as suas fotos favoritas</string>
+    <string name="photo_widget_host_description">Adicione fotos favoritas ou sincronize pastas. Defina ações. Escolha o formato ao personalizar e o tamanho após colocá-lo.</string>
     <string name="photo_widget_host_loading">Carregando widget…</string>
     <string name="photo_widget_host_failed">Falha ao carregar\nTentar novamente?</string>
     <!-- Home -->

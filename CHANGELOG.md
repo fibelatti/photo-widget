@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Add haptic feedback to sliders to make customization a bit more tactile
+* Update the picker description to make certain instructions clearer
+
 ### Fixed
 
 * Fix swipe to dismiss not working in the viewer when there's a single photo

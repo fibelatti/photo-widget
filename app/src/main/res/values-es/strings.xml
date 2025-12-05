@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Widget Host -->
-    <string name="photo_widget_host_description">Decora tu pantalla principal con tus fotos favoritas</string>
+    <string name="photo_widget_host_description">Agrega tus fotos favoritas o sincroniza carpetas. Configura acciones. Elige el formato al personalizar y el tamaño después de colocarlo.</string>
     <string name="photo_widget_host_loading">Cargando widget…</string>
     <string name="photo_widget_host_failed">Error al cargar\n¿Intentar de nuevo?</string>
     <!-- Home -->

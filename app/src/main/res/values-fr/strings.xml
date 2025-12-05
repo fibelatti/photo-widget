@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Widget Host -->
-    <string name="photo_widget_host_description">Décorez votre écran d\'accueil avec vos photos préférées</string>
+    <string name="photo_widget_host_description">Ajoutez vos photos favorites ou synchronisez des dossiers. Définissez des actions. Choisissez le format lors de la personnalisation et la taille après l\'avoir placé.</string>
     <string name="photo_widget_host_loading">Chargement du widget…</string>
     <string name="photo_widget_host_failed">Échec du chargement\nRéessayer ?</string>
     <!-- Home -->
@@ -124,7 +124,7 @@
     <string name="photo_widget_configure_cycling_mode_interval">Intervalle</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Planification</string>
     <string name="photo_widget_configure_cycling_mode_disabled">Désactivé</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">Le widget changera automatiquement de photo à l’intervalle suivant :</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">Le widget changera automatiquement de photo à l\'intervalle suivant :</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description">Le widget changera automatiquement de photo chaque jour aux heures programmées suivantes :</string>
     <string name="photo_widget_configure_cycling_mode_disabled_description">Le widget ne changera pas de photo automatiquement.</string>
     <string name="photo_widget_configure_interval_current_label">Toutes les %s</string>
@@ -200,7 +200,7 @@
     <string name="photo_widget_configure_tap_action_choose_app">Choisir une application</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Désactiver les autres zones tactiles pendant la pause du minuteur</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Ces préférences sont utilisées par toutes les zones utilisant cette action de toucher.</string>
-    <string name="photo_widget_configure_tap_action_shared_selected_app">L’application sélectionnée est utilisée par toutes les zones utilisant cette action de toucher.</string>
+    <string name="photo_widget_configure_tap_action_shared_selected_app">L\'application sélectionnée est utilisée par toutes les zones utilisant cette action de toucher.</string>
     <string name="photo_widget_configure_add_to_home">Ajouter à l\'écran d\'accueil</string>
     <string name="photo_widget_configure_save_changes">Enregistrer les modifications</string>
     <string name="photo_widget_configure_widget_pinned">Widget ajouté ! Consultez votre écran d\'accueil…</string>

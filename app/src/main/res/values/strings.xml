@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Widget Host -->
-    <string name="photo_widget_host_description">Decorate your home screen with your favorite photos</string>
+    <string name="photo_widget_host_description">Add your favorite photos or sync folders. Set actions. Choose the format when customizing and the size after placing it.</string>
     <string name="photo_widget_host_loading">Loading widget…</string>
     <string name="photo_widget_host_failed">Loading failed\nTry again?</string>
 
@@ -73,7 +73,7 @@
 
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Widget defaults</string>
-    <string name="widget_defaults_explanation">These values are pre-loaded when you create a new widget. They are useful for setting up multiple widgets with the same configuration, eliminating the need to adjust settings each time. Note that any changes to these values won’t affect existing widgets.</string>
+    <string name="widget_defaults_explanation">These values are pre-loaded when you create a new widget. They are useful for setting up multiple widgets with the same configuration, eliminating the need to adjust settings each time. Note that any changes to these values won\'t affect existing widgets.</string>
     <string name="widget_defaults_source">Source</string>
     <string name="widget_defaults_shuffle">Shuffle</string>
     <string name="widget_defaults_cycling">Photo timer</string>

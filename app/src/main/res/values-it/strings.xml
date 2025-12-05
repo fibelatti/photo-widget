@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Widget Host -->
-    <string name="photo_widget_host_description">Decora la tua schermata iniziale con le tue foto preferite</string>
+    <string name="photo_widget_host_description">Aggiungi foto preferite o sincronizza cartelle. Imposta azioni. Scegli il formato durante la personalizzazione e la dimensione dopo averlo posizionato.</string>
     <string name="photo_widget_host_loading">Caricamento widget…</string>
     <string name="photo_widget_host_failed">Caricamento fallito\nRiprovare?</string>
     <!-- Home -->
