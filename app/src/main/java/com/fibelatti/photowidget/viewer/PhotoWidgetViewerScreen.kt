@@ -115,7 +115,7 @@ fun PhotoWidgetViewerScreen(
     val verticalDragState: DragState = rememberDragState(
         mode = DragState.Mode.UNIDIRECTIONAL,
         onConfirm = { onDismissClick() },
-        onThreshold = { localHapticFeedback.performHapticFeedback(HapticFeedbackType.Confirm) },
+        onThreshold = { localHapticFeedback.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate) },
     )
     val horizontalDragState: DragState = rememberDragState(
         mode = DragState.Mode.BIDIRECTIONAL,
@@ -125,7 +125,7 @@ fun PhotoWidgetViewerScreen(
                 DragState.Direction.END -> onPreviousClick()
             }
         },
-        onThreshold = { localHapticFeedback.performHapticFeedback(HapticFeedbackType.Confirm) },
+        onThreshold = { localHapticFeedback.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate) },
     )
 
     val horizontalIndicatorSize: Dp by remember {

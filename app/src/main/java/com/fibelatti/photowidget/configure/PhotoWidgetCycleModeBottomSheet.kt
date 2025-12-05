@@ -51,8 +51,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -67,6 +70,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.intervalRange
+import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
@@ -305,6 +309,11 @@ private fun PhotoCycleModeIntervalContent(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
+            RememberedEffect(interval.repeatInterval) {
+                localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
+            }
+
             Slider(
                 value = interval.repeatInterval.toFloat(),
                 onValueChange = { newValue -> interval = interval.copy(repeatInterval = newValue.toLong()) },

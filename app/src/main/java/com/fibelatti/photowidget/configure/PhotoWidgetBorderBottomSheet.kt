@@ -35,6 +35,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -43,18 +44,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.hapticfeedback.HapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastRoundToInt
 import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
+import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.colorForType
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.getColorPalette
@@ -72,7 +78,6 @@ import com.fibelatti.ui.theme.ExtendedTheme
 import com.github.skydoves.colorpicker.compose.BrightnessSlider
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
-import kotlin.math.roundToInt
 
 @Composable
 fun PhotoWidgetBorderBottomSheet(
@@ -442,9 +447,18 @@ private fun BorderWidthPicker(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
+        var value by remember { mutableIntStateOf(currentWidth) }
+        RememberedEffect(value) {
+            localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
+        }
+
         Slider(
             value = currentWidth.toFloat(),
-            onValueChange = { onWidthChange(it.roundToInt()) },
+            onValueChange = {
+                value = it.fastRoundToInt()
+                onWidthChange(value)
+            },
             modifier = Modifier.weight(1f),
             valueRange = PhotoWidgetBorder.VALUE_RANGE,
             thumb = { SliderSmallThumb() },

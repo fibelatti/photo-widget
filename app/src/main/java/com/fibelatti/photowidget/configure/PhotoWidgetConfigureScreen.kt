@@ -89,6 +89,7 @@ import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -117,6 +118,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.canShuffle
 import com.fibelatti.photowidget.model.canSort
+import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
@@ -1482,6 +1484,11 @@ private fun PaddingPicker(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
+            RememberedEffect(value) {
+                localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
+            }
+
             Slider(
                 value = value.toFloat(),
                 onValueChange = { value = it.toInt() },

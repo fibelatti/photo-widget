@@ -24,12 +24,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.hapticfeedback.HapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastRoundToInt
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetColors
+import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.DefaultPicker
@@ -127,6 +132,11 @@ private fun ColorMatrixPicker(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
+            RememberedEffect(value.fastRoundToInt()) {
+                localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
+            }
+
             Slider(
                 value = value,
                 onValueChange = { value = it },

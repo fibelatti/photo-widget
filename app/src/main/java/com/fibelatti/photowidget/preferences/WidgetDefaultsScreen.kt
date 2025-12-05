@@ -62,7 +62,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.hapticfeedback.HapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
@@ -73,6 +76,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastRoundToInt
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
@@ -89,6 +93,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
+import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.withRoundedCorners
@@ -105,7 +110,6 @@ import com.fibelatti.ui.preview.ThemePreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit
-import kotlin.math.roundToInt
 
 @Composable
 fun WidgetDefaultsScreen(
@@ -643,9 +647,14 @@ fun CornerRadiusPicker(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
+            RememberedEffect(value) {
+                localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
+            }
+
             Slider(
                 value = value.toFloat(),
-                onValueChange = { value = it.roundToInt() },
+                onValueChange = { value = it.fastRoundToInt() },
                 modifier = Modifier.weight(1f),
                 valueRange = 0f..128f,
                 thumb = { SliderSmallThumb() },
@@ -703,6 +712,11 @@ fun OpacityPicker(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
+            RememberedEffect(value.fastRoundToInt()) {
+                localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
+            }
+
             Slider(
                 value = value,
                 onValueChange = { value = it },
