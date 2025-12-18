@@ -197,6 +197,10 @@ class PhotoWidgetStorage @Inject constructor(
         )
     }
 
+    suspend fun copyWidgetOrder(sourceWidgetId: Int, targetWidgetId: Int) {
+        orderDao.copyWidgetOrder(sourceWidgetId = sourceWidgetId, targetWidgetId = targetWidgetId)
+    }
+
     suspend fun syncWidgetPhotos(
         appWidgetId: Int,
         currentPhotos: List<LocalPhoto>? = null,

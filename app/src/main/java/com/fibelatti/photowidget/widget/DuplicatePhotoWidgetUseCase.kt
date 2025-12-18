@@ -39,6 +39,11 @@ class DuplicatePhotoWidgetUseCase @Inject constructor(
             }
         }
 
+        photoWidgetStorage.copyWidgetOrder(
+            sourceWidgetId = originalAppWidgetId,
+            targetWidgetId = newAppWidgetId,
+        )
+
         photoWidgetStorage.deletePhotos(
             appWidgetId = newAppWidgetId,
             photoIds = photoWidgetStorage.getExcludedPhotoIds(appWidgetId = originalAppWidgetId),

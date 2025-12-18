@@ -142,6 +142,9 @@ interface PhotoWidgetOrderDao {
     @Query("select photoId from photo_widget_order where widgetId = :widgetId order by photoIndex asc")
     suspend fun getWidgetOrder(widgetId: Int): List<String>
 
+    @Query("select * from photo_widget_order where widgetId = :widgetId order by photoIndex asc")
+    suspend fun getWidgetOrderObject(widgetId: Int): List<PhotoWidgetOrderDto>
+
     @Upsert
     suspend fun saveWidgetOrder(order: Collection<PhotoWidgetOrderDto>)
 
@@ -161,6 +164,12 @@ interface PhotoWidgetOrderDao {
             deletePhotosByPhotoIds(widgetId = widgetId, photoIds = idsToDelete)
         }
         saveWidgetOrder(order)
+    }
+
+    @Transaction
+    suspend fun copyWidgetOrder(sourceWidgetId: Int, targetWidgetId: Int) {
+        val source: List<PhotoWidgetOrderDto> = getWidgetOrderObject(sourceWidgetId)
+        saveWidgetOrder(order = source.map { it.copy(widgetId = targetWidgetId) })
     }
 }
 
