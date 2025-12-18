@@ -4,7 +4,6 @@ import android.app.Application
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.Composer
-import androidx.compose.runtime.ExperimentalComposeRuntimeApi
 import androidx.compose.runtime.tooling.ComposeStackTraceMode
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
@@ -53,7 +52,6 @@ class App : Application(), Configuration.Provider {
         getReadyToWork()
     }
 
-    @OptIn(ExperimentalComposeRuntimeApi::class)
     private fun setupDebugMode() {
         if (!BuildConfig.DEBUG) return
 

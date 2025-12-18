@@ -98,7 +98,7 @@ class PhotoWidgetChooserActivity : AppCompatActivity() {
 }
 
 @Composable
-@OptIn(ExperimentalStdlibApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 private fun ScreenContent(
     photos: List<LocalPhoto>?,
     selectedPhoto: LocalPhoto?,

@@ -7,7 +7,6 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import javax.inject.Inject
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
@@ -27,7 +26,6 @@ class ExceptionReporter @Inject constructor(
         File("${context.filesDir}/crashes").apply { mkdirs() }
     }
 
-    @OptIn(ExperimentalTime::class)
     fun collectReport(throwable: Throwable) {
         coroutineScope.launch(NonCancellable) {
             withContext(Dispatchers.IO) {
