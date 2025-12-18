@@ -53,7 +53,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -1207,11 +1206,7 @@ private fun PhotoPicker(
         val localHaptics = LocalHapticFeedback.current
 
         val currentPhotos by rememberUpdatedState(photos.toMutableStateList())
-        val cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = if (currentPhotos.isNotEmpty()) .5f else 0f,
-            behindFraction = if (currentPhotos.isNotEmpty()) .5f else 0f,
-        )
-        val lazyGridState = rememberLazyGridState(cacheWindow = cacheWindow)
+        val lazyGridState = rememberLazyGridState()
         val reorderableLazyGridState = rememberReorderableLazyGridState(lazyGridState) { from, to ->
             currentPhotos.apply {
                 this[to.index] = this[from.index].also {

@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fix swipe to dismiss not working in the viewer when there's a single photo
 * Fix order not being applied when duplicating or restoring a widget
+* Fix drag to reorder not working
 
 ## [v1.35.2] - 2025-12-2
 [v1.35.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.35.2
