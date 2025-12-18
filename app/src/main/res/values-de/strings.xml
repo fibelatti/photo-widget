@@ -257,7 +257,7 @@
     <string name="photo_widget_action_apply">Anwenden</string>
     <string name="photo_widget_action_confirm">Bestätigen</string>
     <string name="photo_widget_action_got_it">Verstanden</string>
-    <string name="photo_widget_action_dismiss">Ablehnen</string>
+    <string name="photo_widget_action_dismiss">Abbrechen</string>
     <string name="photo_widget_action_learn_more">Mehr erfahren</string>
     <string name="photo_widget_action_ignore">Ignorieren</string>
     <string name="photo_widget_action_share">Teilen</string>
