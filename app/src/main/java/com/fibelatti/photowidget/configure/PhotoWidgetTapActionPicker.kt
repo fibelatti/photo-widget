@@ -55,6 +55,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -549,30 +550,35 @@ private fun AppPicker(
             Text(text = stringResource(id = R.string.photo_widget_configure_tap_action_choose_app))
         }
 
-        value?.runCatching {
-            val packageManager = LocalContext.current.packageManager
-            val appInfo = packageManager.getApplicationInfo(
-                value,
-                PackageManager.MATCH_DEFAULT_ONLY,
-            )
-            val appIcon = packageManager.getApplicationIcon(appInfo).toBitmap().asImageBitmap()
-            val appLabel = packageManager.getApplicationLabel(appInfo).toString()
+        val packageManager = LocalContext.current.packageManager
+        val (appIcon: ImageBitmap, appLabel: String) = value
+            ?.runCatching {
+                val appInfo = packageManager.getApplicationInfo(
+                    value,
+                    PackageManager.MATCH_DEFAULT_ONLY,
+                )
+                Pair(
+                    first = packageManager.getApplicationIcon(appInfo).toBitmap().asImageBitmap(),
+                    second = packageManager.getApplicationLabel(appInfo).toString(),
+                )
+            }
+            ?.getOrNull()
+            ?: return
 
-            Image(
-                bitmap = appIcon,
-                contentDescription = null,
-                modifier = Modifier.size(40.dp),
-            )
+        Image(
+            bitmap = appIcon,
+            contentDescription = null,
+            modifier = Modifier.size(40.dp),
+        )
 
-            AutoSizeText(
-                text = appLabel,
-                modifier = Modifier.weight(1f),
-                color = MaterialTheme.colorScheme.onSurface,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                style = MaterialTheme.typography.labelLarge,
-            )
-        }
+        AutoSizeText(
+            text = appLabel,
+            modifier = Modifier.weight(1f),
+            color = MaterialTheme.colorScheme.onSurface,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
+            style = MaterialTheme.typography.labelLarge,
+        )
     }
 }
 
