@@ -263,6 +263,8 @@
     <string name="photo_widget_action_share">Compartilhar</string>
     <string name="photo_widget_action_restore">Restaurar</string>
     <string name="photo_widget_action_delete_permanently">Excluir permanentemente</string>
+    <!-- Hints -->
+    <string name="hint_scroll_to_view_more">Role para ver mais</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de fotos da tela inicial</string>
 </resources>

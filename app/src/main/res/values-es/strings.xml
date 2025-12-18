@@ -263,6 +263,8 @@
     <string name="photo_widget_action_share">Compartir</string>
     <string name="photo_widget_action_restore">Restaurar</string>
     <string name="photo_widget_action_delete_permanently">Eliminar permanentemente</string>
+    <!-- Hints -->
+    <string name="hint_scroll_to_view_more">Desplázate para ver más</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de pantalla principal de Material Photo</string>
 </resources>

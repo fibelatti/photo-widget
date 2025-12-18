@@ -263,6 +263,8 @@
     <string name="photo_widget_action_share">Paylaş</string>
     <string name="photo_widget_action_restore">Geri yükle</string>
     <string name="photo_widget_action_delete_permanently">Kalıcı olarak sil</string>
+    <!-- Hints -->
+    <string name="hint_scroll_to_view_more">Daha fazlasını görmek için kaydırın</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo ana ekran widget\'ı</string>
 </resources>

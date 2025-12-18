@@ -264,6 +264,8 @@
     <string name="photo_widget_action_share">Condividi</string>
     <string name="photo_widget_action_restore">Ripristina</string>
     <string name="photo_widget_action_delete_permanently">Elimina definitivamente</string>
+    <!-- Hints -->
+    <string name="hint_scroll_to_view_more">Scorri per visualizzare altro</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget schermata iniziale Material Photo</string>
 </resources>

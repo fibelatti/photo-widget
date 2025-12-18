@@ -257,6 +257,8 @@
     <string name="photo_widget_action_share">共有</string>
     <string name="photo_widget_action_restore">復元</string>
     <string name="photo_widget_action_delete_permanently">完全に削除</string>
+    <!-- Hints -->
+    <string name="hint_scroll_to_view_more">スクロールしてもっと表示</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photoホーム画面ウィジェット</string>
 </resources>

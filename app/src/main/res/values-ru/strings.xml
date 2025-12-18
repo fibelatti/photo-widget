@@ -275,6 +275,8 @@
     <string name="photo_widget_action_share">Поделиться</string>
     <string name="photo_widget_action_restore">Восстановить</string>
     <string name="photo_widget_action_delete_permanently">Удалить навсегда</string>
+    <!-- Hints -->
+    <string name="hint_scroll_to_view_more">Прокрутите, чтобы увидеть больше</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Виджет главного экрана Material Photo</string>
 </resources>

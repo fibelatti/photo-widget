@@ -269,6 +269,8 @@
     <string name="photo_widget_action_share">Distribuie</string>
     <string name="photo_widget_action_restore">Restabilește</string>
     <string name="photo_widget_action_delete_permanently">Șterge definitiv</string>
+    <!-- Hints -->
+    <string name="hint_scroll_to_view_more">Derulează pentru a vedea mai mult</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget ecranul de pornire Material Photo</string>
 </resources>

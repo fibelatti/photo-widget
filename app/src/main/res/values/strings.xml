@@ -318,6 +318,9 @@
     <string name="photo_widget_action_restore">Restore</string>
     <string name="photo_widget_action_delete_permanently">Delete permanently</string>
 
+    <!-- Hints -->
+    <string name="hint_scroll_to_view_more">Scroll to view more</string>
+
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Material Photo home screen widget</string>
 </resources>

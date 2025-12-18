@@ -275,6 +275,8 @@
     <string name="photo_widget_action_share">שתף</string>
     <string name="photo_widget_action_restore">שחזור</string>
     <string name="photo_widget_action_delete_permanently">מחק לצמיתות</string>
+    <!-- Hints -->
+    <string name="hint_scroll_to_view_more">גלול כדי לראות עוד</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">ווידג\'ט מסך הבית של Material Photo</string>
 </resources>

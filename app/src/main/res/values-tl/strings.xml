@@ -261,6 +261,8 @@
     <string name="photo_widget_action_share">Ibahagi</string>
     <string name="photo_widget_action_restore">Ibalik</string>
     <string name="photo_widget_action_delete_permanently">Permanenteng burahin</string>
+    <!-- Hints -->
+    <string name="hint_scroll_to_view_more">Mag-scroll para makita pa</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget ng Material Photo sa home screen</string>
 </resources>
