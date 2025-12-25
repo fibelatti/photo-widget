@@ -94,6 +94,7 @@
     <string name="photo_widget_configure_navigate_back_warning_restore">Um die Wiederherstellung des Widgets abzuschließen, müssen Sie es zum Startbildschirm hinzufügen. Ohne Wiederherstellung beenden?</string>
     <string name="photo_widget_configure_tab_content">Inhalt</string>
     <string name="photo_widget_configure_tab_appearance">Aussehen</string>
+    <string name="photo_widget_configure_tab_text">Text</string>
     <string name="photo_widget_configure_tab_behavior">Verhalten</string>
     <string name="photo_widget_configure_import_prompt">Von einem anderen Widget importieren?</string>
     <string name="photo_widget_configure_import_prompt_action">Auswählen</string>
@@ -210,6 +211,16 @@
     <string name="photo_widget_directory_sort_oldest_first">Älteste zuerst</string>
     <string name="photo_widget_directory_sort_explanation">Die Sortierung verwendet das Datum der letzten Änderung der Originalbilddatei und gilt nur für Widgets, die mit Ordnern synchronisiert sind.</string>
     <string name="photo_widget_crop_free_form">Frei</string>
+    <string name="photo_widget_configure_text_type">Typ</string>
+    <string name="photo_widget_configure_text_type_none">Keiner</string>
+    <string name="photo_widget_configure_text_type_label">Beschriftung</string>
+    <string name="photo_widget_configure_text_type_label_description">Imitiert einen App-Namen, um zur Ästhetik deines Startbildschirms zu passen</string>
+    <string name="photo_widget_configure_text_value">Text</string>
+    <string name="photo_widget_configure_text_size">Größe</string>
+    <string name="photo_widget_configure_text_vertical_offset">Vertikaler Versatz</string>
+    <string name="photo_widget_configure_text_apply_shadow">Schatten anwenden</string>
+    <string name="photo_widget_configure_text_sample">Beispieltext</string>
+    <string name="photo_widget_configure_text_caveat">Foto und Text teilen sich denselben Widget-Bereich. Der Text verwendet das systemweite Standarderscheinungsbild. Die Position kann mit den obigen Einstellungen sowie mit Foto-Versatz und Innenabstand feinjustiert werden.</string>
     <!-- Help -->
     <string name="help_article_title_1">Das Hinzufügen eines Widgets zum Startbildschirm funktioniert nicht</string>
     <string name="help_article_body_1">Wenn Sie ein Widget konfiguriert haben und nichts passiert, wenn Sie versuchen, es zum Startbildschirm hinzuzufügen, oder wenn es hinzugefügt wird, aber die ausgewählten Fotos nicht anzeigt, können Sie versuchen, es direkt von Ihrem Startbildschirm hinzuzufügen.\n\nDie Anweisungen können je nach Android-Version, Gerätehersteller und Startbildschirm-Launcher variieren, aber im Allgemeinen ist der Vorgang wie folgt:\n\n1. Halten Sie einen leeren Bereich auf Ihrem Startbildschirm gedrückt, bis ein Pop-up-Menü erscheint.\n2. Suchen Sie die Option „Widgets“.\n3. Suchen Sie in den verfügbaren Widgets nach „Material Photo Widget“.\n4. Ziehen Sie es auf Ihren Startbildschirm und konfigurieren Sie es wie gewohnt.</string>
@@ -263,6 +274,7 @@
     <string name="photo_widget_action_share">Teilen</string>
     <string name="photo_widget_action_restore">Wiederherstellen</string>
     <string name="photo_widget_action_delete_permanently">Dauerhaft löschen</string>
+    <string name="photo_widget_action_reset">Zurücksetzen</string>
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Scrollen, um mehr anzuzeigen</string>
     <!-- Content Description -->

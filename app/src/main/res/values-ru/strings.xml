@@ -96,6 +96,7 @@
     <string name="photo_widget_configure_navigate_back_warning_restore">Чтобы завершить восстановление виджета, вы должны добавить его на главный экран. Выйти без восстановления?</string>
     <string name="photo_widget_configure_tab_content">Содержание</string>
     <string name="photo_widget_configure_tab_appearance">Внешний вид</string>
+    <string name="photo_widget_configure_tab_text">Текст</string>
     <string name="photo_widget_configure_tab_behavior">Поведение</string>
     <string name="photo_widget_configure_import_prompt">Импортировать из другого виджета?</string>
     <string name="photo_widget_configure_import_prompt_action">Чтобы выбрать</string>
@@ -222,6 +223,16 @@
     <string name="photo_widget_directory_sort_oldest_first">Сначала старые</string>
     <string name="photo_widget_directory_sort_explanation">Сортировка использует дату последнего изменения исходного файла изображения и применяется только к виджетам, синхронизированным с папками.</string>
     <string name="photo_widget_crop_free_form">Свободно</string>
+    <string name="photo_widget_configure_text_type">Тип</string>
+    <string name="photo_widget_configure_text_type_none">Нет</string>
+    <string name="photo_widget_configure_text_type_label">Метка</string>
+    <string name="photo_widget_configure_text_type_label_description">Имитирует название приложения, чтобы соответствовать эстетике главного экрана</string>
+    <string name="photo_widget_configure_text_value">Значение</string>
+    <string name="photo_widget_configure_text_size">Размер</string>
+    <string name="photo_widget_configure_text_vertical_offset">Вертикальное смещение</string>
+    <string name="photo_widget_configure_text_apply_shadow">Применить тень</string>
+    <string name="photo_widget_configure_text_sample">Пример текста</string>
+    <string name="photo_widget_configure_text_caveat">Фото и текст используют одну и ту же область виджета. Текст отображается с использованием стандартного оформления системы. Положение можно точно настроить с помощью параметров выше, а также смещения и отступов фото.</string>
     <!-- Help -->
     <string name="help_article_title_1">Не получается добавить виджет на главный экран</string>
     <string name="help_article_body_1">Если вы настроили виджет, но при попытке добавить его на главный экран ничего не происходит или он добавлен, но не отображает выбранные фотографии, попробуйте добавить его напрямую с главного экрана.\n\nИнструкции могут различаться в зависимости от версии Android, производителя устройства и лаунчера, но, как правило, процесс выглядит следующим образом:\n\n1. Нажмите и удерживайте пустое пространство на главном экране, пока не появится всплывающее меню.\n2. Найдите опцию «Виджеты».\n3. Найдите «Material Photo Widget» среди доступных виджетов.\n4. Перетащите его на главный экран и настройте, как обычно.</string>
@@ -275,6 +286,7 @@
     <string name="photo_widget_action_share">Поделиться</string>
     <string name="photo_widget_action_restore">Восстановить</string>
     <string name="photo_widget_action_delete_permanently">Удалить навсегда</string>
+    <string name="photo_widget_action_reset">Сбросить</string>
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Прокрутите, чтобы увидеть больше</string>
     <!-- Content Description -->

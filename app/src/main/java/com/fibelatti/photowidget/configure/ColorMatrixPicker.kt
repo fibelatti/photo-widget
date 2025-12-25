@@ -12,6 +12,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -154,14 +155,27 @@ private fun ColorMatrixPicker(
             )
         }
 
-        Button(
-            onClick = { onApplyClick(value) },
-            shapes = ButtonDefaults.shapes(),
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Text(text = stringResource(id = R.string.photo_widget_action_apply))
+            OutlinedButton(
+                onClick = { value = 0f },
+                shapes = ButtonDefaults.shapes(),
+                modifier = Modifier.weight(1f),
+            ) {
+                Text(text = stringResource(id = R.string.photo_widget_action_reset))
+            }
+
+            Button(
+                onClick = { onApplyClick(value) },
+                shapes = ButtonDefaults.shapes(),
+                modifier = Modifier.weight(1f),
+            ) {
+                Text(text = stringResource(id = R.string.photo_widget_action_apply))
+            }
         }
     }
 }

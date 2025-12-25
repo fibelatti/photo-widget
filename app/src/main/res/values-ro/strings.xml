@@ -95,6 +95,7 @@
     <string name="photo_widget_configure_navigate_back_warning_restore">Pentru a finaliza restaurarea widget-ului, trebuie să îl adăugați pe ecranul de pornire. Ieșiți fără restaurare?</string>
     <string name="photo_widget_configure_tab_content">Conținut</string>
     <string name="photo_widget_configure_tab_appearance">Aspect</string>
+    <string name="photo_widget_configure_tab_text">Text</string>
     <string name="photo_widget_configure_tab_behavior">Comportament</string>
     <string name="photo_widget_configure_import_prompt">Importați dintr-un alt widget?</string>
     <string name="photo_widget_configure_import_prompt_action">Alege</string>
@@ -216,6 +217,16 @@
     <string name="photo_widget_directory_sort_oldest_first">Cele mai vechi primele</string>
     <string name="photo_widget_directory_sort_explanation">Sortarea utilizează ultima dată modificată a imaginii originale și se aplică numai widget-urilor sincronizate cu dosare.</string>
     <string name="photo_widget_crop_free_form">Formă liberă</string>
+    <string name="photo_widget_configure_text_type">Tip</string>
+    <string name="photo_widget_configure_text_type_none">Niciunul</string>
+    <string name="photo_widget_configure_text_type_label">Etichetă</string>
+    <string name="photo_widget_configure_text_type_label_description">Imită numele unei aplicații pentru a se potrivi cu estetica ecranului principal</string>
+    <string name="photo_widget_configure_text_value">Text</string>
+    <string name="photo_widget_configure_text_size">Dimensiune</string>
+    <string name="photo_widget_configure_text_vertical_offset">Deplasare verticală</string>
+    <string name="photo_widget_configure_text_apply_shadow">Aplică umbră</string>
+    <string name="photo_widget_configure_text_sample">Text de exemplu</string>
+    <string name="photo_widget_configure_text_caveat">Fotografia și textul folosesc aceeași zonă a widgetului. Textul utilizează aspectul implicit al sistemului. Poți ajusta fin poziția folosind setările de mai sus, împreună cu deplasarea și spațierea fotografiei.</string>
     <!-- Help -->
     <string name="help_article_title_1">Adăugarea unui widget pe ecranul de pornire nu funcționează</string>
     <string name="help_article_body_1">Dacă ați configurat un widget şi nu se întâmplă nimic atunci când încercați să-l adăugați pe ecranul de pornire, sau dacă este adăugat, dar nu afișează fotografiile selectate, puteți încerca să le adăugați direct de pe ecranul de pornire.\n\nInstrucțiunile pot varia în funcție de versiunea Android, producătorul dispozitivului, și lansatorul ecranului de pornire, dar în general, procesul este după cum urmează:\n\n1. Apăsați lung pe un spațiu gol pe ecranul de pornire până când apare un meniu pop-up.\n2. Localizați opțiunea „Widget-uri”.\n3. Căutați \"Material Photo Widget\" în interiorul widget-urilor disponibile.\n4. Trageți-l pe ecranul de pornire și configurați-l ca de obicei.</string>
@@ -269,6 +280,7 @@
     <string name="photo_widget_action_share">Distribuie</string>
     <string name="photo_widget_action_restore">Restabilește</string>
     <string name="photo_widget_action_delete_permanently">Șterge definitiv</string>
+    <string name="photo_widget_action_reset">Resetează</string>
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Derulează pentru a vedea mai mult</string>
     <!-- Content Description -->

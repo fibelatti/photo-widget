@@ -2,7 +2,6 @@
 
 package com.fibelatti.photowidget.configure
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -11,9 +10,9 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -35,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
@@ -45,9 +43,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
-import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.DefaultPicker
-import com.fibelatti.ui.foundation.dpToPx
+import com.fibelatti.photowidget.ui.WidgetPositionViewer
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -67,7 +64,9 @@ fun PhotoWidgetOffsetPicker(
 
         BoxWithConstraints {
             if (maxWidth < 600.dp) {
-                Column {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
                     PhotoWidgetOffsetViewer(
                         horizontalValue = horizontalValue,
                         verticalValue = verticalValue,
@@ -101,27 +100,30 @@ fun PhotoWidgetOffsetPicker(
             }
         }
 
-        OutlinedButton(
-            onClick = {
-                horizontalValue = 0
-                verticalValue = 0
-            },
-            shapes = ButtonDefaults.shapes(),
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Text(text = stringResource(id = R.string.widget_defaults_reset))
-        }
+            OutlinedButton(
+                onClick = {
+                    horizontalValue = 0
+                    verticalValue = 0
+                },
+                shapes = ButtonDefaults.shapes(),
+                modifier = Modifier.weight(1f),
+            ) {
+                Text(text = stringResource(id = R.string.photo_widget_action_reset))
+            }
 
-        Button(
-            onClick = { onApplyClick(horizontalValue, verticalValue) },
-            shapes = ButtonDefaults.shapes(),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-        ) {
-            Text(text = stringResource(id = R.string.photo_widget_action_apply))
+            Button(
+                onClick = { onApplyClick(horizontalValue, verticalValue) },
+                shapes = ButtonDefaults.shapes(),
+                modifier = Modifier.weight(1f),
+            ) {
+                Text(text = stringResource(id = R.string.photo_widget_action_apply))
+            }
         }
     }
 }
@@ -132,24 +134,17 @@ private fun PhotoWidgetOffsetViewer(
     verticalValue: Int,
     modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center,
-    ) {
-        Image(
-            bitmap = rememberSampleBitmap()
-                .withRoundedCorners(radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx())
-                .asImageBitmap(),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(32.dp)
-                .size(200.dp)
-                .offset(
-                    x = (horizontalValue * PhotoWidget.POSITIONING_MULTIPLIER).dp,
-                    y = (verticalValue * PhotoWidget.POSITIONING_MULTIPLIER).dp,
-                ),
-        )
-    }
+    WidgetPositionViewer(
+        photoWidget = PhotoWidget(
+            currentPhoto = LocalSamplePhoto.current,
+            verticalOffset = verticalValue,
+            horizontalOffset = horizontalValue,
+        ),
+        modifier = modifier
+            .padding(16.dp)
+            .width(200.dp)
+            .aspectRatio(.75f),
+    )
 }
 
 @Composable

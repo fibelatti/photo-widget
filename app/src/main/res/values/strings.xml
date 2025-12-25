@@ -114,6 +114,7 @@
 
     <string name="photo_widget_configure_tab_content">Content</string>
     <string name="photo_widget_configure_tab_appearance">Appearance</string>
+    <string name="photo_widget_configure_tab_text">Text</string>
     <string name="photo_widget_configure_tab_behavior">Behavior</string>
 
     <string name="photo_widget_configure_import_prompt">Import from another widget?</string>
@@ -254,6 +255,21 @@
 
     <string name="photo_widget_crop_free_form">Free form</string>
 
+    <string name="photo_widget_configure_text_type">Type</string>
+
+    <string name="photo_widget_configure_text_type_none">None</string>
+    <string name="photo_widget_configure_text_type_label">Label</string>
+    <string name="photo_widget_configure_text_type_label_description">Mimics an app name to match your home screen aesthetic</string>
+
+    <string name="photo_widget_configure_text_value">Text</string>
+    <string name="photo_widget_configure_text_size">Size</string>
+    <string name="photo_widget_configure_text_vertical_offset">Vertical offset</string>
+    <string name="photo_widget_configure_text_apply_shadow">Apply shadow</string>
+
+    <string name="photo_widget_configure_text_sample">Sample text</string>
+
+    <string name="photo_widget_configure_text_caveat">The photo and text share the same widget area. The text uses the system\'s default appearance. You can fine tune the positioning using the settings above, along with the photo offset and padding.</string>
+
     <!-- Help -->
     <string name="help_article_title_1">Adding a widget to the home screen is not working</string>
     <string name="help_article_body_1">If you have configured a widget and nothing happens when you try to add it to the home screen, or if it\'s added but doesn\'t display the selected photos, you can try adding it directly from your home screen.\n\nInstructions may vary depending on your Android version, device manufacturer, and home screen launcher, but generally, the process is as follows:\n\n1. Long press on an empty space on your home screen until a pop-up menu appears.\n2. Locate the "Widgets" option.\n3. Search for "Material Photo Widget" within the available widgets.\n4. Drag it to your home screen and configure it as usual.</string>
@@ -317,6 +333,7 @@
     <string name="photo_widget_action_share">Share</string>
     <string name="photo_widget_action_restore">Restore</string>
     <string name="photo_widget_action_delete_permanently">Delete permanently</string>
+    <string name="photo_widget_action_reset">Reset</string>
 
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Scroll to view more</string>

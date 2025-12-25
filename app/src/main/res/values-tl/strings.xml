@@ -93,6 +93,7 @@
     <string name="photo_widget_configure_navigate_back_warning_restore">To finish restoring the widget you must add it to home screen. Exit without restoring?</string>
     <string name="photo_widget_configure_tab_content">Laman</string>
     <string name="photo_widget_configure_tab_appearance">Itsura</string>
+    <string name="photo_widget_configure_tab_text">Teksto</string>
     <string name="photo_widget_configure_tab_behavior">Pag-uugali</string>
     <string name="photo_widget_configure_import_prompt">Kumuha mula sa ibang widget?</string>
     <string name="photo_widget_configure_import_prompt_action">Piliin</string>
@@ -208,6 +209,16 @@
     <string name="photo_widget_directory_sort_oldest_first">Pinakaluma muna</string>
     <string name="photo_widget_directory_sort_explanation">Batay ang pagbubukud-bukod sa huling petsa ng pagbabago sa orihinal na file ng larawan at nakakaapekto lamang ito sa mga widget na naka-sync sa mga folder.</string>
     <string name="photo_widget_crop_free_form">Free form</string>
+    <string name="photo_widget_configure_text_type">Uri</string>
+    <string name="photo_widget_configure_text_type_none">Wala</string>
+    <string name="photo_widget_configure_text_type_label">Label</string>
+    <string name="photo_widget_configure_text_type_label_description">Ginagaya ang pangalan ng app upang tumugma sa itsura ng home screen</string>
+    <string name="photo_widget_configure_text_value">Teksto</string>
+    <string name="photo_widget_configure_text_size">Laki</string>
+    <string name="photo_widget_configure_text_vertical_offset">Patayong offset</string>
+    <string name="photo_widget_configure_text_apply_shadow">Ilapat ang anino</string>
+    <string name="photo_widget_configure_text_sample">Halimbawang teksto</string>
+    <string name="photo_widget_configure_text_caveat">Magkasama sa iisang widget area ang larawan at teksto. Ginagamit ng teksto ang default na itsura ng system. Maaaring ayusin ang posisyon gamit ang mga setting sa itaas, pati ang offset at padding ng larawan.</string>
     <!-- Help -->
     <string name="help_article_title_1">Hindi gumagana ang pagdagdag ng widget sa home screen</string>
     <string name="help_article_body_1">Kung may binago ka sa isang widget at walang nangyayari pag sinusubukan mo itong idagdag sa home screen, o kung hindi nito pinapakita ang mga pinili mong larawan, puwede mong subukang idagdag ang widget mula mismo sa iyong home screen.\n\nDepende ang mga hakbang para dito sa iyong bersyon ng Android, tagapaggawa ng telepono, at launcher ng home screen, pero kadalasan, ganito ang mga hakbang:\n\n1. Hawakan nang matagal ang isang bakanteng espasyo sa iyong screen hanggang may lumitaw na menyu.\n2. Hanapin ang opsyong \"Mga Widget.\"\n3. Hanapin ang \"Material Photo Widget\" sa mga magagamit na widget\n4. Hilahin ito sa home screen at isaayos batay sa iyong kagustuhan.</string>
@@ -261,6 +272,7 @@
     <string name="photo_widget_action_share">Ibahagi</string>
     <string name="photo_widget_action_restore">Ibalik</string>
     <string name="photo_widget_action_delete_permanently">Permanenteng burahin</string>
+    <string name="photo_widget_action_reset">I-reset</string>
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Mag-scroll para makita pa</string>
     <!-- Content Description -->

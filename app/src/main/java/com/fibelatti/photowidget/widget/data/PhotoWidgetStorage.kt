@@ -8,6 +8,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.WidgetPhotos
 import com.fibelatti.photowidget.model.allWidgetPhotos
@@ -459,6 +460,14 @@ class PhotoWidgetStorage @Inject constructor(
             appWidgetId = appWidgetId,
             tapActionArea = tapActionArea,
         )
+    }
+
+    fun saveWidgetText(appWidgetId: Int, text: PhotoWidgetText) {
+        sharedPreferences.saveWidgetText(appWidgetId = appWidgetId, text = text)
+    }
+
+    fun getWidgetText(appWidgetId: Int): PhotoWidgetText {
+        return sharedPreferences.getWidgetText(appWidgetId = appWidgetId)
     }
 
     fun saveWidgetDeletionTimestamp(appWidgetId: Int, timestamp: Long?) {

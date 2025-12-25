@@ -7,16 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* Text support: it's now possible to add widget labels to mimic app names
+
 ### Changed
 
 * Add haptic feedback to sliders to make customization a bit more tactile
 * Update the picker description to make certain instructions clearer
+* Update the configuration preview and pickers to include a sample widget area
+* Fill widgets no longer support vertical and horizontal offset
 
 ### Fixed
 
 * Fix swipe to dismiss not working in the viewer when there's a single photo
 * Fix order not being applied when duplicating or restoring a widget
 * Fix drag to reorder not working
+* Fix how vertical and horizontal offset is applied
 
 ## [v1.35.2] - 2025-12-2
 [v1.35.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.35.2

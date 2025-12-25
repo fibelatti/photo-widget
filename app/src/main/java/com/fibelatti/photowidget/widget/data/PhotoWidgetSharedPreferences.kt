@@ -11,6 +11,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.minutesToLoopingInterval
@@ -505,6 +506,36 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         }
     }
 
+    fun saveWidgetText(
+        appWidgetId: Int,
+        text: PhotoWidgetText,
+    ) {
+        sharedPreferences.edit {
+            putString("${PreferencePrefix.TEXT_TYPE}$appWidgetId", text.serializedName)
+            putString("${PreferencePrefix.TEXT_VALUE}$appWidgetId", text.value)
+            putInt("${PreferencePrefix.TEXT_SIZE}$appWidgetId", text.size)
+            putInt("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId", text.verticalOffset)
+            putBoolean("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId", text.hasShadow)
+        }
+    }
+
+    fun getWidgetText(appWidgetId: Int): PhotoWidgetText = with(sharedPreferences) {
+        val name = getString("${PreferencePrefix.TEXT_TYPE}$appWidgetId", null)
+
+        return PhotoWidgetText.fromSerializedName(name).let { photoWidgetText ->
+            when (photoWidgetText) {
+                is PhotoWidgetText.None -> photoWidgetText
+
+                is PhotoWidgetText.Label -> photoWidgetText.copy(
+                    value = getString("${PreferencePrefix.TEXT_VALUE}$appWidgetId", "") ?: "",
+                    size = getInt("${PreferencePrefix.TEXT_SIZE}$appWidgetId", 12),
+                    verticalOffset = getInt("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId", 0),
+                    hasShadow = getBoolean("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId", true),
+                )
+            }
+        }
+    }
+
     fun saveWidgetDeletionTimestamp(appWidgetId: Int, timestamp: Long?) {
         sharedPreferences.edit {
             if (timestamp != null) {
@@ -608,6 +639,12 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         URL_SHORTCUT_RIGHT(value = "appwidget_url_shortcut_right_"),
         PREFERRED_GALLERY_APP(value = "appwidget_preferred_gallery_app_"),
         DISABLE_TAP(value = "appwidget_disable_tap_"),
+
+        TEXT_TYPE("appwidget_text_type_"),
+        TEXT_VALUE("appwidget_text_value_"),
+        TEXT_SIZE("appwidget_text_size_"),
+        TEXT_VERTICAL_OFFSET("appwidget_text_vertical_offset_"),
+        TEXT_HAS_SHADOW("appwidget_text_has_shadow_"),
 
         DELETION_TIMESTAMP(value = "appwidget_deletion_timestamp_"),
         ;

@@ -1,7 +1,6 @@
 package com.fibelatti.photowidget.ui
 
-import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -14,7 +13,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.borderPercent
 import com.fibelatti.photowidget.model.getPhotoPath
-import com.fibelatti.photowidget.model.rawAspectRatio
 import com.fibelatti.photowidget.platform.colorForType
 import com.fibelatti.photowidget.platform.getColorPalette
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
@@ -30,7 +28,6 @@ fun ShapedPhoto(
     modifier: Modifier = Modifier,
     colors: PhotoWidgetColors = PhotoWidgetColors(),
     border: PhotoWidgetBorder = PhotoWidgetBorder.None,
-    badge: @Composable BoxScope.() -> Unit = {},
     isLoading: Boolean = false,
 ) {
     val localContext = LocalContext.current
@@ -49,8 +46,12 @@ fun ShapedPhoto(
             border,
         ),
         isLoading = isLoading,
-        contentScale = if (aspectRatio.isConstrained) ContentScale.FillWidth else ContentScale.Fit,
-        modifier = modifier.aspectRatio(ratio = aspectRatio.rawAspectRatio),
+        contentScale = if (aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET) {
+            ContentScale.Crop
+        } else {
+            ContentScale.Fit
+        },
+        modifier = modifier.fillMaxSize(),
         constraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.DISPLAY,
         transformer = { bitmap ->
             val borderColor = when (border) {
@@ -82,6 +83,5 @@ fun ShapedPhoto(
                 )
             }
         },
-        badge = badge,
     )
 }

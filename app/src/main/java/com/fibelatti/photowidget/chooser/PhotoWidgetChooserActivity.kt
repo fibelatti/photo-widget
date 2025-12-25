@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
@@ -22,7 +23,6 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -130,8 +130,7 @@ private fun ScreenContent(
             return
         }
 
-        val cacheWindow = LazyLayoutCacheWindow(aheadFraction = .5f, behindFraction = .5f)
-        val lazyGridState = rememberLazyGridState(cacheWindow = cacheWindow)
+        val lazyGridState = rememberLazyGridState()
         val currentPhotos by rememberUpdatedState(photos.toMutableStateList())
 
         LazyVerticalGrid(
@@ -162,6 +161,7 @@ private fun ScreenContent(
                     shapeId = PhotoWidget.DEFAULT_SHAPE_ID,
                     cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                     modifier = Modifier
+                        .fillMaxWidth()
                         .aspectRatio(ratio = 1f)
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },

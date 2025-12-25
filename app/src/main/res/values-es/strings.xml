@@ -94,6 +94,7 @@
     <string name="photo_widget_configure_navigate_back_warning_restore">Para finalizar la restauración del widget, debes agregarlo a la pantalla de inicio. ¿Salir sin restaurar?</string>
     <string name="photo_widget_configure_tab_content">Contenido</string>
     <string name="photo_widget_configure_tab_appearance">Apariencia</string>
+    <string name="photo_widget_configure_tab_text">Texto</string>
     <string name="photo_widget_configure_tab_behavior">Comportamiento</string>
     <string name="photo_widget_configure_import_prompt">¿Importar desde otro widget?</string>
     <string name="photo_widget_configure_import_prompt_action">Elegir</string>
@@ -210,6 +211,16 @@
     <string name="photo_widget_directory_sort_oldest_first">Más antiguas primero</string>
     <string name="photo_widget_directory_sort_explanation">La ordenación utiliza la fecha de última modificación del archivo de imagen original y solo se aplica a los widgets sincronizados con carpetas.</string>
     <string name="photo_widget_crop_free_form">Forma libre</string>
+    <string name="photo_widget_configure_text_type">Tipo</string>
+    <string name="photo_widget_configure_text_type_none">Ninguno</string>
+    <string name="photo_widget_configure_text_type_label">Etiqueta</string>
+    <string name="photo_widget_configure_text_type_label_description">Imita el nombre de una app para adaptarse a la estética de tu pantalla de inicio</string>
+    <string name="photo_widget_configure_text_value">Texto</string>
+    <string name="photo_widget_configure_text_size">Tamaño</string>
+    <string name="photo_widget_configure_text_vertical_offset">Desplazamiento vertical</string>
+    <string name="photo_widget_configure_text_apply_shadow">Aplicar sombra</string>
+    <string name="photo_widget_configure_text_sample">Texto de ejemplo</string>
+    <string name="photo_widget_configure_text_caveat">La foto y el texto comparten la misma área del widget. El texto usa la apariencia predeterminada del sistema. Puedes ajustar la posición con las opciones anteriores, junto con el desplazamiento y el relleno de la foto.</string>
     <!-- Help -->
     <string name="help_article_title_1">Agregar un widget a la pantalla de inicio no está funcionando</string>
     <string name="help_article_body_1">Si has configurado un widget y no sucede nada cuando intentas agregarlo a la pantalla de inicio, o si se agregó pero no muestra las fotos seleccionadas, puedes intentar agregarlo directamente desde tu pantalla de inicio.\n\nLas instrucciones pueden variar según la versión de Android, el fabricante del dispositivo y el lanzador de la pantalla de inicio, pero generalmente el proceso es el siguiente:\n\n1. Mantén presionado un espacio vacío en tu pantalla de inicio hasta que aparezca un menú emergente.\n2. Busca la opción \"Widgets\".\n3. Busca \"Material Photo Widget\" dentro de los widgets disponibles.\n4. Arrástralo a tu pantalla de inicio y configúralo como de costumbre.</string>
@@ -263,6 +274,7 @@
     <string name="photo_widget_action_share">Compartir</string>
     <string name="photo_widget_action_restore">Restaurar</string>
     <string name="photo_widget_action_delete_permanently">Eliminar permanentemente</string>
+    <string name="photo_widget_action_reset">Restablecer</string>
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Desplázate para ver más</string>
     <!-- Content Description -->

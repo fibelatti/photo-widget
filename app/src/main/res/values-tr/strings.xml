@@ -94,6 +94,7 @@
     <string name="photo_widget_configure_navigate_back_warning_restore">Widget\'ı geri yüklemeyi tamamlamak için ana ekrana eklemeniz gerekir. Geri yüklemeden çıkılsın mı?</string>
     <string name="photo_widget_configure_tab_content">İçerik</string>
     <string name="photo_widget_configure_tab_appearance">Görünüm</string>
+    <string name="photo_widget_configure_tab_text">Metin</string>
     <string name="photo_widget_configure_tab_behavior">Davranış</string>
     <string name="photo_widget_configure_import_prompt">Başka bir widget\'tan içe aktar?</string>
     <string name="photo_widget_configure_import_prompt_action">Seçmek</string>
@@ -210,6 +211,16 @@
     <string name="photo_widget_directory_sort_oldest_first">En eskiler önce</string>
     <string name="photo_widget_directory_sort_explanation">Sıralama, orijinal görsel dosyasının son değiştirilme tarihine göre yapılır ve yalnızca klasörlerle senkronize edilen widget\'lara uygulanır.</string>
     <string name="photo_widget_crop_free_form">Serbest Biçim</string>
+    <string name="photo_widget_configure_text_type">Tür</string>
+    <string name="photo_widget_configure_text_type_none">Yok</string>
+    <string name="photo_widget_configure_text_type_label">Etiket</string>
+    <string name="photo_widget_configure_text_type_label_description">Ana ekran estetiğine uyum sağlamak için bir uygulama adını taklit eder</string>
+    <string name="photo_widget_configure_text_value">Metin</string>
+    <string name="photo_widget_configure_text_size">Boyut</string>
+    <string name="photo_widget_configure_text_vertical_offset">Dikey kaydırma</string>
+    <string name="photo_widget_configure_text_apply_shadow">Gölge uygula</string>
+    <string name="photo_widget_configure_text_sample">Örnek metin</string>
+    <string name="photo_widget_configure_text_caveat">Fotoğraf ve metin aynı widget alanını paylaşır. Metin, sistemin varsayılan görünümünü kullanır. Yukarıdaki ayarların yanı sıra fotoğraf kaydırması ve dolgu ile konumu ince ayarlayabilirsiniz.</string>
     <!-- Help -->
     <string name="help_article_title_1">Ana ekrana bir widget eklemek çalışmıyor</string>
     <string name="help_article_body_1">Bir widget yapılandırdıysanız ve ana ekrana eklemeye çalıştığınızda hiçbir şey olmuyorsa veya eklendiği halde seçilen fotoğrafları göstermiyorsa, widget\'ı doğrudan ana ekranınızdan eklemeyi deneyebilirsiniz.\n\nTalimatlar Android sürümünüze, cihaz üreticinize ve ana ekran başlatıcınıza bağlı olarak değişiklik gösterebilir, ancak genellikle süreç şu şekildedir:\n\n1. Ana ekranınızdaki boş bir alana uzun basın ve bir açılır menü görünene kadar bekleyin.\n2. \"Widget\'lar\" seçeneğini bulun.\n3. Mevcut widget\'lar arasında \"Material Photo Widget\" arayın.\n4. Ana ekranınıza sürükleyin ve her zamanki gibi yapılandırın.</string>
@@ -263,6 +274,7 @@
     <string name="photo_widget_action_share">Paylaş</string>
     <string name="photo_widget_action_restore">Geri yükle</string>
     <string name="photo_widget_action_delete_permanently">Kalıcı olarak sil</string>
+    <string name="photo_widget_action_reset">Sıfırla</string>
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Daha fazlasını görmek için kaydırın</string>
     <!-- Content Description -->

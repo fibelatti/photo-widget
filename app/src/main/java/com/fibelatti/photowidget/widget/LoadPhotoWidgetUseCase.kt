@@ -48,17 +48,28 @@ class LoadPhotoWidgetUseCase @Inject constructor(
     }
 
     private fun loadWidgetData(appWidgetId: Int): PhotoWidget = with(photoWidgetStorage) {
-        val (horizontalOffset: Int, verticalOffset: Int) = getWidgetOffset(appWidgetId = appWidgetId)
         val aspectRatio: PhotoWidgetAspectRatio = getWidgetAspectRatio(appWidgetId = appWidgetId)
-        val cornerRadius: Int = if (PhotoWidgetAspectRatio.FILL_WIDGET == aspectRatio) {
-            PhotoWidget.DEFAULT_CORNER_RADIUS
+        val cornerRadius: Int
+        val border: PhotoWidgetBorder
+        val horizontalOffset: Int
+        val verticalOffset: Int
+        val padding: Int
+
+        if (PhotoWidgetAspectRatio.FILL_WIDGET == aspectRatio) {
+            cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS
+            border = PhotoWidgetBorder.None
+            horizontalOffset = 0
+            verticalOffset = 0
+            padding = 0
         } else {
-            getWidgetCornerRadius(appWidgetId = appWidgetId)
-        }
-        val border: PhotoWidgetBorder = if (PhotoWidgetAspectRatio.FILL_WIDGET == aspectRatio) {
-            PhotoWidgetBorder.None
-        } else {
-            getWidgetBorder(appWidgetId = appWidgetId)
+            cornerRadius = getWidgetCornerRadius(appWidgetId = appWidgetId)
+            border = getWidgetBorder(appWidgetId = appWidgetId)
+
+            val offset = getWidgetOffset(appWidgetId = appWidgetId)
+
+            horizontalOffset = offset.first
+            verticalOffset = offset.second
+            padding = getWidgetPadding(appWidgetId = appWidgetId)
         }
 
         return PhotoWidget(
@@ -83,7 +94,8 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             ),
             horizontalOffset = horizontalOffset,
             verticalOffset = verticalOffset,
-            padding = getWidgetPadding(appWidgetId = appWidgetId),
+            padding = padding,
+            text = getWidgetText(appWidgetId = appWidgetId),
             deletionTimestamp = getWidgetDeletionTimestamp(appWidgetId = appWidgetId),
         )
     }

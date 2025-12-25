@@ -734,14 +734,27 @@ fun OpacityPicker(
             )
         }
 
-        Button(
-            onClick = { onApplyClick(value) },
-            shapes = ButtonDefaults.shapes(),
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Text(text = stringResource(id = R.string.photo_widget_action_apply))
+            OutlinedButton(
+                onClick = { value = 100f },
+                shapes = ButtonDefaults.shapes(),
+                modifier = Modifier.weight(1f),
+            ) {
+                Text(text = stringResource(id = R.string.photo_widget_action_reset))
+            }
+
+            Button(
+                onClick = { onApplyClick(value) },
+                shapes = ButtonDefaults.shapes(),
+                modifier = Modifier.weight(1f),
+            ) {
+                Text(text = stringResource(id = R.string.photo_widget_action_apply))
+            }
         }
     }
 }
@@ -757,9 +770,9 @@ fun DefaultPicker(
             .fillMaxWidth()
             .nestedScroll(rememberNestedScrollInteropConnection())
             .verticalScroll(rememberScrollState())
-            .padding(vertical = 16.dp),
+            .padding(bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(
             text = title,

@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.CircleShape
@@ -46,7 +45,6 @@ fun AsyncPhotoViewer(
     modifier: Modifier = Modifier,
     constraintMode: AsyncPhotoViewer.BitmapSizeConstraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.DISPLAY,
     transformer: (Bitmap) -> Bitmap = { it },
-    badge: @Composable BoxScope.() -> Unit = {},
 ) {
     BoxWithConstraints(
         modifier = modifier,
@@ -141,8 +139,6 @@ fun AsyncPhotoViewer(
                     modifier = Modifier.fillMaxSize(),
                     contentScale = contentScale,
                 )
-
-                badge()
             }
         }
     }

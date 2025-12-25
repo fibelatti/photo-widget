@@ -5,6 +5,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
+import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import kotlinx.serialization.Serializable
 
@@ -24,38 +25,59 @@ data class PhotoWidgetExport(
     val horizontalOffset: Int,
     val verticalOffset: Int,
     val padding: Int,
+    val text: String?,
+    val textValue: String?,
+    val textSize: Int?,
+    val textVerticalOffset: Int?,
+    val textHasShadow: Boolean?,
 )
 
 fun PhotoWidgetExport.toPhotoWidget(photos: List<LocalPhoto>): PhotoWidget {
-    val photoWidgetBorder: PhotoWidgetBorder = when (border) {
-        "COLOR" -> {
+    val photoWidgetBorder: PhotoWidgetBorder = when (
+        val widgetBorder = PhotoWidgetBorder.fromSerializedName(border)
+    ) {
+        is PhotoWidgetBorder.None -> widgetBorder
+
+        is PhotoWidgetBorder.Color -> {
             PhotoWidgetBorder.Color(
                 colorHex = borderHex ?: "ffffff",
                 width = borderWidth ?: PhotoWidgetBorder.DEFAULT_WIDTH,
             )
         }
 
-        "DYNAMIC" -> {
+        is PhotoWidgetBorder.Dynamic -> {
             PhotoWidgetBorder.Dynamic(
                 width = borderWidth ?: PhotoWidgetBorder.DEFAULT_WIDTH,
             )
         }
 
-        "MATCH_PHOTO" -> {
+        is PhotoWidgetBorder.MatchPhoto -> {
             PhotoWidgetBorder.MatchPhoto(
                 width = borderWidth ?: PhotoWidgetBorder.DEFAULT_WIDTH,
                 type = enumValueOfOrNull<PhotoWidgetBorder.MatchPhoto.Type>(borderType)
                     ?: PhotoWidgetBorder.MatchPhoto.Type.DOMINANT,
             )
         }
+    }
 
-        else -> PhotoWidgetBorder.None
+    val photoWidgetText: PhotoWidgetText = when (
+        val widgetText = PhotoWidgetText.fromSerializedName(text)
+    ) {
+        is PhotoWidgetText.None -> widgetText
+
+        is PhotoWidgetText.Label -> {
+            PhotoWidgetText.Label(
+                value = textValue ?: widgetText.value,
+                size = textSize ?: widgetText.size,
+                verticalOffset = textVerticalOffset ?: widgetText.verticalOffset,
+                hasShadow = textHasShadow ?: widgetText.hasShadow,
+            )
+        }
     }
 
     return PhotoWidget(
         photos = photos,
-        aspectRatio = enumValueOfOrNull<PhotoWidgetAspectRatio>(aspectRatio)
-            ?: PhotoWidgetAspectRatio.SQUARE,
+        aspectRatio = enumValueOfOrNull<PhotoWidgetAspectRatio>(aspectRatio) ?: PhotoWidgetAspectRatio.SQUARE,
         shapeId = shapeId,
         cornerRadius = cornerRadius,
         border = photoWidgetBorder,
@@ -67,35 +89,48 @@ fun PhotoWidgetExport.toPhotoWidget(photos: List<LocalPhoto>): PhotoWidget {
         horizontalOffset = horizontalOffset,
         verticalOffset = verticalOffset,
         padding = padding,
+        text = photoWidgetText,
     )
 }
 
 fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
-    val borderName: String
     var borderHex: String? = null
     var borderWidth: Int? = null
     var borderType: String? = null
 
+    var textValue: String? = null
+    var textSize: Int? = null
+    var textVerticalOffset: Int? = null
+    var textHasShadow: Boolean? = null
+
     when (border) {
-        is PhotoWidgetBorder.None -> {
-            borderName = "NONE"
-        }
+        // Nothing else to export
+        is PhotoWidgetBorder.None -> Unit
 
         is PhotoWidgetBorder.Color -> {
-            borderName = "COLOR"
             borderHex = border.colorHex
             borderWidth = border.width
         }
 
         is PhotoWidgetBorder.Dynamic -> {
-            borderName = "DYNAMIC"
             borderWidth = border.width
         }
 
         is PhotoWidgetBorder.MatchPhoto -> {
-            borderName = "MATCH_PHOTO"
             borderWidth = border.width
             borderType = border.type.name
+        }
+    }
+
+    when (text) {
+        // Nothing else to export
+        is PhotoWidgetText.None -> Unit
+
+        is PhotoWidgetText.Label -> {
+            textValue = text.value
+            textSize = text.size
+            textVerticalOffset = text.verticalOffset
+            textHasShadow = text.hasShadow
         }
     }
 
@@ -104,7 +139,7 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
         aspectRatio = aspectRatio.name,
         shapeId = shapeId,
         cornerRadius = cornerRadius,
-        border = borderName,
+        border = border.serializedName,
         borderHex = borderHex,
         borderWidth = borderWidth,
         borderType = borderType,
@@ -114,5 +149,10 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
         horizontalOffset = horizontalOffset,
         verticalOffset = verticalOffset,
         padding = padding,
+        text = text.serializedName,
+        textValue = textValue,
+        textSize = textSize,
+        textVerticalOffset = textVerticalOffset,
+        textHasShadow = textHasShadow,
     )
 }

@@ -17,7 +17,6 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -45,7 +44,6 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.union
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -57,7 +55,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
@@ -65,13 +62,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -87,8 +82,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -115,16 +108,14 @@ import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
+import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.canShuffle
 import com.fibelatti.photowidget.model.canSort
-import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
-import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.CornerRadiusPicker
-import com.fibelatti.photowidget.preferences.DefaultPicker
 import com.fibelatti.photowidget.preferences.OpacityPicker
 import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.photowidget.preferences.ShapeDefault
@@ -133,9 +124,8 @@ import com.fibelatti.photowidget.ui.BackgroundRestrictionBottomSheet
 import com.fibelatti.photowidget.ui.BackgroundRestrictionWarningDialog
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.ShapedPhoto
-import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.photowidget.ui.WidgetPositionViewer
 import com.fibelatti.ui.foundation.AppBottomSheet
-import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.foundation.rememberAppSheetState
@@ -284,6 +274,7 @@ private fun PhotoWidgetConfigureHomeScreen(
             onBrightnessClick = brightnessPickerSheetState::showBottomSheet,
             onOffsetClick = offsetPickerSheetState::showBottomSheet,
             onPaddingClick = paddingPickerSheetState::showBottomSheet,
+            onPhotoWidgetTextChange = viewModel::photoWidgetTextChanged,
             onAddToHomeClick = viewModel::addNewWidget,
         )
 
@@ -410,7 +401,7 @@ private fun PhotoWidgetConfigureHomeScreen(
         AppBottomSheet(
             sheetState = paddingPickerSheetState,
         ) {
-            PaddingPicker(
+            PhotoWidgetPaddingPicker(
                 currentValue = state.photoWidget.padding,
                 onApplyClick = { newValue ->
                     viewModel.paddingSelected(newValue)
@@ -454,6 +445,7 @@ fun PhotoWidgetConfigureScreen(
     onBrightnessClick: () -> Unit,
     onOffsetClick: () -> Unit,
     onPaddingClick: () -> Unit,
+    onPhotoWidgetTextChange: (PhotoWidgetText) -> Unit,
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -496,6 +488,7 @@ fun PhotoWidgetConfigureScreen(
             onBrightnessClick = onBrightnessClick,
             onOffsetClick = onOffsetClick,
             onPaddingClick = onPaddingClick,
+            onPhotoWidgetTextChange = onPhotoWidgetTextChange,
             onAddToHomeClick = onAddToHomeClick,
             modifier = Modifier
                 .fillMaxSize()
@@ -550,6 +543,7 @@ private fun PhotoWidgetConfigureContent(
     onBrightnessClick: () -> Unit,
     onOffsetClick: () -> Unit,
     onPaddingClick: () -> Unit,
+    onPhotoWidgetTextChange: (PhotoWidgetText) -> Unit,
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -566,7 +560,7 @@ private fun PhotoWidgetConfigureContent(
                     onMoveRightClick = onMoveRightClick,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(320.dp),
+                        .height(360.dp),
                     editingControlsInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Start),
                 )
 
@@ -590,6 +584,7 @@ private fun PhotoWidgetConfigureContent(
                     onBrightnessClick = onBrightnessClick,
                     onOffsetClick = onOffsetClick,
                     onPaddingClick = onPaddingClick,
+                    onPhotoWidgetTextChange = onPhotoWidgetTextChange,
                     onCycleModePickerClick = onCycleModePickerClick,
                     onShuffleChange = onShuffleChange,
                     onSortClick = onSortClick,
@@ -613,6 +608,7 @@ private fun PhotoWidgetConfigureContent(
                         .fillMaxWidth(fraction = 0.4f),
                     editingControlsInsets = WindowInsets.safeDrawing
                         .only(sides = WindowInsetsSides.Start + WindowInsetsSides.Bottom),
+                    matchViewerHeightConstraintsFirst = false,
                 )
 
                 PhotoWidgetEditor(
@@ -635,6 +631,7 @@ private fun PhotoWidgetConfigureContent(
                     onBrightnessClick = onBrightnessClick,
                     onOffsetClick = onOffsetClick,
                     onPaddingClick = onPaddingClick,
+                    onPhotoWidgetTextChange = onPhotoWidgetTextChange,
                     onCycleModePickerClick = onCycleModePickerClick,
                     onShuffleChange = onShuffleChange,
                     onSortClick = onSortClick,
@@ -660,20 +657,46 @@ private fun PhotoWidgetViewer(
     onMoveRightClick: (LocalPhoto) -> Unit,
     modifier: Modifier = Modifier,
     editingControlsInsets: WindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Start),
+    matchViewerHeightConstraintsFirst: Boolean = true,
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        CurrentPhotoViewer(
-            photo = selectedPhoto,
-            aspectRatio = photoWidget.aspectRatio,
-            shapeId = photoWidget.shapeId,
-            modifier = Modifier.fillMaxSize(),
-            cornerRadius = photoWidget.cornerRadius,
-            border = photoWidget.border,
-            colors = photoWidget.colors,
+        val gradientColors: List<Color> = listOf(
+            Color.White,
+            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f),
         )
+        val largeRadialGradient: Brush = object : ShaderBrush() {
+            override fun createShader(size: Size): Shader = RadialGradientShader(
+                colors = gradientColors,
+                center = size.center,
+                radius = maxOf(size.height, size.width),
+                colorStops = listOf(0f, 0.9f),
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(largeRadialGradient)
+                .blur(10.dp),
+        )
+
+        if (selectedPhoto != null) {
+            WidgetPositionViewer(
+                photoWidget = photoWidget.copy(currentPhoto = selectedPhoto),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .windowInsetsPadding(
+                        WindowInsets.safeDrawing
+                            .only(WindowInsetsSides.Top + WindowInsetsSides.Start),
+                    )
+                    .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 48.dp)
+                    .aspectRatio(.75f, matchHeightConstraintsFirst = matchViewerHeightConstraintsFirst),
+                areaColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
+        }
 
         IconButton(
             onClick = onNavClick,
@@ -730,6 +753,7 @@ private fun PhotoWidgetEditor(
     onBrightnessClick: () -> Unit,
     onOffsetClick: () -> Unit,
     onPaddingClick: () -> Unit,
+    onPhotoWidgetTextChange: (PhotoWidgetText) -> Unit,
     onCycleModePickerClick: () -> Unit,
     onShuffleChange: (Boolean) -> Unit,
     onSortClick: () -> Unit,
@@ -785,6 +809,14 @@ private fun PhotoWidgetEditor(
                         onBrightnessClick = onBrightnessClick,
                         onOffsetClick = onOffsetClick,
                         onPaddingClick = onPaddingClick,
+                        modifier = tabContentModifier,
+                    )
+                }
+
+                ConfigureTab.TEXT -> {
+                    PhotoWidgetConfigureTextTab(
+                        photoWidgetText = photoWidget.text,
+                        onPhotoWidgetTextChange = onPhotoWidgetTextChange,
                         modifier = tabContentModifier,
                     )
                 }
@@ -946,18 +978,18 @@ private fun AppearanceTab(
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
-        PickerDefault(
-            title = stringResource(id = R.string.photo_widget_configure_offset),
-            currentValue = stringResource(
-                id = R.string.photo_widget_configure_offset_current_values,
-                photoWidget.horizontalOffset,
-                photoWidget.verticalOffset,
-            ),
-            onClick = onOffsetClick,
-            modifier = Modifier.padding(horizontal = 16.dp),
-        )
-
         if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
+            PickerDefault(
+                title = stringResource(id = R.string.photo_widget_configure_offset),
+                currentValue = stringResource(
+                    id = R.string.photo_widget_configure_offset_current_values,
+                    photoWidget.horizontalOffset,
+                    photoWidget.verticalOffset,
+                ),
+                onClick = onOffsetClick,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+
             PickerDefault(
                 title = stringResource(id = R.string.photo_widget_configure_padding),
                 currentValue = photoWidget.padding.toString(),
@@ -1053,60 +1085,6 @@ private fun BehaviorTab(
 // endregion Tabs
 
 // region Components
-@Composable
-private fun CurrentPhotoViewer(
-    photo: LocalPhoto?,
-    aspectRatio: PhotoWidgetAspectRatio,
-    shapeId: String,
-    cornerRadius: Int,
-    border: PhotoWidgetBorder,
-    colors: PhotoWidgetColors,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center,
-    ) {
-        val gradientColors = listOf(
-            Color.White,
-            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f),
-        )
-
-        val largeRadialGradient = object : ShaderBrush() {
-            override fun createShader(size: Size): Shader = RadialGradientShader(
-                colors = gradientColors,
-                center = size.center,
-                radius = maxOf(size.height, size.width),
-                colorStops = listOf(0f, 0.9f),
-            )
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(largeRadialGradient)
-                .blur(10.dp),
-        )
-
-        if (photo != null) {
-            ShapedPhoto(
-                photo = photo,
-                aspectRatio = aspectRatio,
-                shapeId = shapeId,
-                cornerRadius = cornerRadius,
-                modifier = Modifier
-                    .windowInsetsPadding(
-                        WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Start),
-                    )
-                    .padding(start = 32.dp, top = 32.dp, end = 32.dp, bottom = 48.dp)
-                    .fillMaxHeight(),
-                colors = colors,
-                border = border,
-            )
-        }
-    }
-}
-
 @Composable
 private fun EditingControls(
     onCropClick: () -> Unit,
@@ -1448,70 +1426,6 @@ private fun RemovedPhotosPicker(
         }
     }
 }
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun PaddingPicker(
-    currentValue: Int,
-    onApplyClick: (newValue: Int) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    DefaultPicker(
-        title = stringResource(id = R.string.photo_widget_configure_padding),
-        modifier = modifier,
-    ) {
-        var value by remember(currentValue) { mutableIntStateOf(currentValue) }
-
-        Image(
-            bitmap = rememberSampleBitmap()
-                .withRoundedCorners(radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx())
-                .asImageBitmap(),
-            contentDescription = null,
-            modifier = Modifier
-                .size(200.dp)
-                .padding((value * PhotoWidget.POSITIONING_MULTIPLIER).dp),
-        )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
-            RememberedEffect(value) {
-                localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
-            }
-
-            Slider(
-                value = value.toFloat(),
-                onValueChange = { value = it.toInt() },
-                modifier = Modifier.weight(1f),
-                valueRange = 0f..20f,
-                thumb = { SliderSmallThumb() },
-            )
-
-            Text(
-                text = "$value",
-                modifier = Modifier.width(40.dp),
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.End,
-                style = MaterialTheme.typography.labelLarge,
-            )
-        }
-
-        Button(
-            onClick = { onApplyClick(value) },
-            shapes = ButtonDefaults.shapes(),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-        ) {
-            Text(text = stringResource(id = R.string.photo_widget_action_apply))
-        }
-    }
-}
 // endregion Pickers
 
 // region Previews
@@ -1552,6 +1466,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
             onBrightnessClick = {},
             onOffsetClick = {},
             onPaddingClick = {},
+            onPhotoWidgetTextChange = {},
             onAddToHomeClick = {},
         )
     }
@@ -1597,6 +1512,7 @@ private fun PhotoWidgetConfigureScreenTallPreview() {
             onBrightnessClick = {},
             onOffsetClick = {},
             onPaddingClick = {},
+            onPhotoWidgetTextChange = {},
             onAddToHomeClick = {},
         )
     }

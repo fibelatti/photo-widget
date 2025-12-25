@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.runtime.Composable
@@ -36,6 +36,7 @@ enum class ConfigureTab(
 
     CONTENT(title = R.string.photo_widget_configure_tab_content),
     APPEARANCE(title = R.string.photo_widget_configure_tab_appearance),
+    TEXT(title = R.string.photo_widget_configure_tab_text),
     BEHAVIOR(title = R.string.photo_widget_configure_tab_behavior),
 }
 
@@ -51,10 +52,11 @@ inline fun ConfigureTabs(
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
-        PrimaryTabRow(
+        PrimaryScrollableTabRow(
             selectedTabIndex = selectedTabIndex,
             modifier = Modifier.fillMaxWidth(),
             containerColor = MaterialTheme.colorScheme.background,
+            edgePadding = 26.dp,
             indicator = {
                 TabRowDefaults.PrimaryIndicator(
                     modifier = Modifier.tabIndicatorOffset(selectedTabIndex, matchContentSize = true),
@@ -63,6 +65,7 @@ inline fun ConfigureTabs(
                 )
             },
             divider = {},
+            minTabWidth = 105.dp,
         ) {
             ConfigureTab.entries.forEach { tab ->
                 Tab(
@@ -89,6 +92,7 @@ inline fun ConfigureTabs(
     }
 }
 
+// region Previews
 @Composable
 @ThemePreviews
 @LocalePreviews
@@ -100,3 +104,4 @@ private fun ConfigureTabsPreview() {
         )
     }
 }
+// endregion Previews

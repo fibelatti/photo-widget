@@ -94,6 +94,7 @@
     <string name="photo_widget_configure_navigate_back_warning_restore">Pour terminer la restauration du widget, vous devez l\'ajouter à l\'écran d\'accueil. Quitter sans restaurer ?</string>
     <string name="photo_widget_configure_tab_content">Contenu</string>
     <string name="photo_widget_configure_tab_appearance">Apparence</string>
+    <string name="photo_widget_configure_tab_text">Texte</string>
     <string name="photo_widget_configure_tab_behavior">Comportement</string>
     <string name="photo_widget_configure_import_prompt">Importer depuis un autre widget ?</string>
     <string name="photo_widget_configure_import_prompt_action">Choisir</string>
@@ -210,6 +211,16 @@
     <string name="photo_widget_directory_sort_oldest_first">Les plus anciennes en premier</string>
     <string name="photo_widget_directory_sort_explanation">Le tri utilise la date de dernière modification du fichier image original et s\'applique uniquement aux widgets synchronisés avec des dossiers.</string>
     <string name="photo_widget_crop_free_form">Libre</string>
+    <string name="photo_widget_configure_text_type">Type</string>
+    <string name="photo_widget_configure_text_type_none">Aucun</string>
+    <string name="photo_widget_configure_text_type_label">Libellé</string>
+    <string name="photo_widget_configure_text_type_label_description">Imite le nom d’une application pour s’adapter à l’esthétique de votre écran d’accueil</string>
+    <string name="photo_widget_configure_text_value">Texte</string>
+    <string name="photo_widget_configure_text_size">Taille</string>
+    <string name="photo_widget_configure_text_vertical_offset">Décalage vertical</string>
+    <string name="photo_widget_configure_text_apply_shadow">Appliquer une ombre</string>
+    <string name="photo_widget_configure_text_sample">Texte d’exemple</string>
+    <string name="photo_widget_configure_text_caveat">La photo et le texte partagent la même zone du widget. Le texte utilise l’apparence par défaut du système. Vous pouvez ajuster finement la position à l’aide des réglages ci-dessus, ainsi que du décalage et des marges de la photo.</string>
     <!-- Help -->
     <string name="help_article_title_1">L\'ajout d\'un widget à l\'écran d\'accueil ne fonctionne pas</string>
     <string name="help_article_body_1">Si vous avez configuré un widget et que rien ne se passe lorsque vous essayez de l\'ajouter à l\'écran d\'accueil, ou s\'il est ajouté mais n\'affiche pas les photos sélectionnées, essayez de l\'ajouter directement depuis votre écran d\'accueil.\n\nLes instructions peuvent varier en fonction de votre version Android, du fabricant de votre appareil et du lanceur d\'écran d\'accueil, mais en général, le processus est le suivant :\n\n1. Appuyez longuement sur un espace vide de votre écran d\'accueil jusqu\'à ce qu\'un menu contextuel apparaisse.\n2. Trouvez l\'option \"Widgets\".\n3. Recherchez \"Material Photo Widget\" dans les widgets disponibles.\n4. Faites-le glisser vers votre écran d\'accueil et configurez-le comme d\'habitude.</string>
@@ -263,6 +274,7 @@
     <string name="photo_widget_action_share">Partager</string>
     <string name="photo_widget_action_restore">Restaurer</string>
     <string name="photo_widget_action_delete_permanently">Supprimer définitivement</string>
+    <string name="photo_widget_action_reset">Réinitialiser</string>
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Faites défiler pour en voir plus</string>
     <!-- Content Description -->

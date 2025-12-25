@@ -56,6 +56,15 @@
         android:visibility="gone"
         tools:src="@drawable/widget_preview" />
 
+    <ImageView
+        android:id="@+id/iv_widget_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:importantForAccessibility="no"
+        android:scaleType="center"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/tap_actions_layout"
         android:layout_width="match_parent"

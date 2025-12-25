@@ -28,6 +28,8 @@ class SavePhotoWidgetUseCase @Inject constructor(
         saveWidgetAppearance(appWidgetId = appWidgetId, photoWidget = photoWidget)
         saveWidgetBehavior(appWidgetId = appWidgetId, photoWidget = photoWidget)
 
+        photoWidgetStorage.saveWidgetText(appWidgetId = appWidgetId, text = photoWidget.text)
+
         if (photoWidget.photoCycleEnabled) {
             photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
         } else {
@@ -56,15 +58,15 @@ class SavePhotoWidgetUseCase @Inject constructor(
         val currentPhotoId = photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)
         val removedPhotos = photoWidget.removedPhotos.map { it.photoId }
 
-        when {
-            currentPhotoId == null -> {
+        when (currentPhotoId) {
+            null -> {
                 photoWidgetStorage.saveDisplayedPhoto(
                     appWidgetId = appWidgetId,
                     photoId = photoWidget.photos.first().photoId,
                 )
             }
 
-            currentPhotoId in removedPhotos && photoWidget.currentPhoto?.photoId != null -> {
+            in removedPhotos if photoWidget.currentPhoto?.photoId != null -> {
                 photoWidgetStorage.saveDisplayedPhoto(
                     appWidgetId = appWidgetId,
                     photoId = photoWidget.currentPhoto.photoId,
@@ -136,20 +138,21 @@ class SavePhotoWidgetUseCase @Inject constructor(
             brightness = photoWidget.colors.brightness,
         )
 
-        photoWidgetStorage.saveWidgetOffset(
-            appWidgetId = appWidgetId,
-            horizontalOffset = photoWidget.horizontalOffset,
-            verticalOffset = photoWidget.verticalOffset,
-        )
+        if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
+            photoWidgetStorage.saveWidgetOffset(
+                appWidgetId = appWidgetId,
+                horizontalOffset = photoWidget.horizontalOffset,
+                verticalOffset = photoWidget.verticalOffset,
+            )
 
-        photoWidgetStorage.saveWidgetPadding(
-            appWidgetId = appWidgetId,
-            padding = if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
-                photoWidget.padding
-            } else {
-                0
-            },
-        )
+            photoWidgetStorage.saveWidgetPadding(
+                appWidgetId = appWidgetId,
+                padding = photoWidget.padding,
+            )
+        } else {
+            photoWidgetStorage.saveWidgetOffset(appWidgetId = appWidgetId, horizontalOffset = 0, verticalOffset = 0)
+            photoWidgetStorage.saveWidgetPadding(appWidgetId = appWidgetId, padding = 0)
+        }
     }
 
     private fun saveWidgetBehavior(

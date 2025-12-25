@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -23,12 +24,15 @@ import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.tapActionDisableTap
+import com.fibelatti.photowidget.model.textToBitmap
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.platform.sharePhotoChooserIntent
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import java.lang.ref.WeakReference
+import kotlin.math.abs
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -161,8 +165,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     recoveryMode = recoveryMode,
                 )
 
-                setClickPendingIntent(
-                    views = views,
+                setTapActions(
+                    remoteViews = views,
                     context = context,
                     appWidgetId = appWidgetId,
                     photoWidget = photoWidget,
@@ -186,6 +190,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             updateJobMap[appWidgetId] = WeakReference(newJob)
         }
 
+        // region RemoteViews
+        // region Appearance
         private suspend fun createRemoteViews(
             context: Context,
             appWidgetId: Int,
@@ -205,10 +211,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
             if (result == null) {
                 Timber.d("Failed to prepare current photo")
-                return errorRemoteViews(
+                return setErrorState(
+                    remoteViews = remoteViews,
                     context = context,
                     appWidgetId = appWidgetId,
-                    remoteViews = remoteViews,
                 )
             }
 
@@ -228,7 +234,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 setViewVisibility(R.id.placeholder_layout, View.GONE)
                 setViewVisibility(visibleImageViewId, View.VISIBLE)
                 setViewVisibility(hiddenImageViewId, View.GONE)
-                setViewVisibility(R.id.tap_actions_layout, View.VISIBLE)
 
                 if (result.uri != null) {
                     setImageViewUri(visibleImageViewId, result.uri)
@@ -236,52 +241,89 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     setImageViewBitmap(visibleImageViewId, result.fallback)
                 }
 
-                setViewPadding(
-                    /* viewId = */ visibleImageViewId,
-                    /* left = */ getDimensionValue(context, photoWidget.padding + photoWidget.horizontalOffset),
-                    /* top = */ getDimensionValue(context, photoWidget.padding + photoWidget.verticalOffset),
-                    /* right = */ getDimensionValue(context, photoWidget.padding),
-                    /* bottom = */ getDimensionValue(context, photoWidget.padding),
+                setText(
+                    remoteViews = this,
+                    context = context,
+                    photoWidgetText = photoWidget.text,
+                )
+
+                setPadding(
+                    remoteViews = this,
+                    viewId = visibleImageViewId,
+                    context = context,
+                    padding = photoWidget.padding,
+                    verticalOffset = photoWidget.verticalOffset,
+                    horizontalOffset = photoWidget.horizontalOffset,
                 )
             }
         }
 
-        private fun errorRemoteViews(
-            context: Context,
-            appWidgetId: Int,
+        private fun setText(
             remoteViews: RemoteViews,
-        ): RemoteViews {
-            val clickIntent = PhotoWidgetConfigureActivity.editWidgetIntent(
-                context = context,
-                appWidgetId = appWidgetId,
-            )
+            context: Context,
+            photoWidgetText: PhotoWidgetText,
+        ) {
+            when (photoWidgetText) {
+                is PhotoWidgetText.None -> {
+                    remoteViews.setViewVisibility(R.id.iv_widget_label, View.GONE)
+                }
 
-            val pendingIntent = PendingIntent.getActivity(
-                /* context = */ context,
-                /* requestCode = */ appWidgetId,
-                /* intent = */ clickIntent,
-                /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-            )
+                is PhotoWidgetText.Label -> {
+                    val bitmap: Bitmap = photoWidgetText.textToBitmap(context = context)
+                    val bottomPadding: Int = photoWidgetText.verticalOffset
+                        .times(context.resources.displayMetrics.density)
+                        .roundToInt()
 
-            return remoteViews.apply {
-                setViewVisibility(R.id.placeholder_layout, View.VISIBLE)
-                setViewVisibility(R.id.iv_widget, View.GONE)
-                setViewVisibility(R.id.iv_widget_fill, View.GONE)
-                setViewVisibility(R.id.tap_actions_layout, View.GONE)
-
-                setImageViewResource(R.id.iv_placeholder, R.drawable.ic_file_not_found)
-                setTextViewText(R.id.tv_placeholder, context.getString(R.string.photo_widget_host_failed))
-
-                setOnClickPendingIntent(R.id.placeholder_layout, pendingIntent)
+                    remoteViews.setViewVisibility(R.id.iv_widget_label, View.VISIBLE)
+                    remoteViews.setImageViewBitmap(R.id.iv_widget_label, bitmap)
+                    remoteViews.setViewPadding(
+                        /* viewId = */ R.id.iv_widget_label,
+                        /* left = */ 0,
+                        /* top = */ 0,
+                        /* right = */ 0,
+                        /* bottom = */ bottomPadding,
+                    )
+                }
             }
         }
 
-        private fun getDimensionValue(context: Context, value: Int): Int {
-            return (value * context.resources.displayMetrics.density * PhotoWidget.POSITIONING_MULTIPLIER).roundToInt()
-        }
+        private fun setPadding(
+            remoteViews: RemoteViews,
+            viewId: Int,
+            context: Context,
+            padding: Int,
+            verticalOffset: Int,
+            horizontalOffset: Int,
+        ) {
+            var paddingLeft: Int = padding
+            var paddingTop: Int = padding
+            var paddingRight: Int = padding
+            var paddingBottom: Int = padding
 
-        private fun setClickPendingIntent(
-            views: RemoteViews,
+            when {
+                horizontalOffset > 0 -> paddingLeft = padding + horizontalOffset
+                horizontalOffset < 0 -> paddingRight = padding + abs(horizontalOffset)
+                verticalOffset > 0 -> paddingTop = padding + verticalOffset
+                verticalOffset < 0 -> paddingBottom = padding + abs(verticalOffset)
+            }
+
+            val applyDimension: (Int) -> Int = { value: Int ->
+                (value * context.resources.displayMetrics.density * PhotoWidget.POSITIONING_MULTIPLIER).roundToInt()
+            }
+
+            remoteViews.setViewPadding(
+                /* viewId = */ viewId,
+                /* left = */ applyDimension(paddingLeft),
+                /* top = */ applyDimension(paddingTop),
+                /* right = */ applyDimension(paddingRight),
+                /* bottom = */ applyDimension(paddingBottom),
+            )
+        }
+        // endregion Appearance
+
+        // region Tap Actions
+        private fun setTapActions(
+            remoteViews: RemoteViews,
             context: Context,
             appWidgetId: Int,
             photoWidget: PhotoWidget,
@@ -290,7 +332,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         ) {
             val shouldDisableTap: Boolean = photoWidget.tapActionDisableTap && isCyclePaused
 
-            val centerClickPendingIntent: PendingIntent? = getClickPendingIntent(
+            val centerClickPendingIntent: PendingIntent? = getTapActionPendingIntent(
                 context = context,
                 appWidgetId = appWidgetId,
                 tapAction = photoWidget.tapActions.center,
@@ -300,11 +342,13 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 externalUri = photoWidget.currentPhoto?.externalUri,
             )
 
-            views.setOnClickPendingIntent(R.id.view_tap_center, centerClickPendingIntent)
+            remoteViews.setViewVisibility(R.id.tap_actions_layout, View.VISIBLE)
 
-            views.setOnClickPendingIntent(
+            remoteViews.setOnClickPendingIntent(R.id.view_tap_center, centerClickPendingIntent)
+
+            remoteViews.setOnClickPendingIntent(
                 R.id.view_tap_left,
-                getClickPendingIntent(
+                getTapActionPendingIntent(
                     context = context,
                     appWidgetId = appWidgetId,
                     tapAction = photoWidget.tapActions.left,
@@ -314,9 +358,9 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     externalUri = photoWidget.currentPhoto?.externalUri,
                 ),
             )
-            views.setOnClickPendingIntent(
+            remoteViews.setOnClickPendingIntent(
                 R.id.view_tap_right,
-                getClickPendingIntent(
+                getTapActionPendingIntent(
                     context = context,
                     appWidgetId = appWidgetId,
                     tapAction = photoWidget.tapActions.right,
@@ -328,7 +372,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             )
         }
 
-        private fun getClickPendingIntent(
+        private fun getTapActionPendingIntent(
             context: Context,
             appWidgetId: Int,
             tapAction: PhotoWidgetTapAction,
@@ -402,7 +446,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 }
 
                 is PhotoWidgetTapAction.ViewNextPhoto -> {
-                    return changePhotoPendingIntent(
+                    return getChangePhotoPendingIntent(
                         context = context,
                         appWidgetId = appWidgetId,
                         action = Action.VIEW_NEXT_PHOTO,
@@ -410,7 +454,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 }
 
                 is PhotoWidgetTapAction.ViewPreviousPhoto -> {
-                    return changePhotoPendingIntent(
+                    return getChangePhotoPendingIntent(
                         context = context,
                         appWidgetId = appWidgetId,
                         action = Action.VIEW_PREVIOUS_PHOTO,
@@ -503,7 +547,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             }
         }
 
-        fun changePhotoPendingIntent(
+        fun getChangePhotoPendingIntent(
             context: Context,
             appWidgetId: Int,
             action: Action = Action.VIEW_NEXT_PHOTO,
@@ -520,5 +564,37 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
             )
         }
+        // endregion Tap Actions
+
+        private fun setErrorState(
+            remoteViews: RemoteViews,
+            context: Context,
+            appWidgetId: Int,
+        ): RemoteViews {
+            val clickIntent = PhotoWidgetConfigureActivity.editWidgetIntent(
+                context = context,
+                appWidgetId = appWidgetId,
+            )
+
+            val pendingIntent = PendingIntent.getActivity(
+                /* context = */ context,
+                /* requestCode = */ appWidgetId,
+                /* intent = */ clickIntent,
+                /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
+
+            return remoteViews.apply {
+                setViewVisibility(R.id.placeholder_layout, View.VISIBLE)
+                setViewVisibility(R.id.iv_widget, View.GONE)
+                setViewVisibility(R.id.iv_widget_fill, View.GONE)
+                setViewVisibility(R.id.tap_actions_layout, View.GONE)
+
+                setImageViewResource(R.id.iv_placeholder, R.drawable.ic_file_not_found)
+                setTextViewText(R.id.tv_placeholder, context.getString(R.string.photo_widget_host_failed))
+
+                setOnClickPendingIntent(R.id.placeholder_layout, pendingIntent)
+            }
+        }
+        // endregion RemoteViews
     }
 }

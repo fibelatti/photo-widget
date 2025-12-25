@@ -22,6 +22,7 @@ data class PhotoWidget(
     val horizontalOffset: Int = 0,
     val verticalOffset: Int = 0,
     val padding: Int = 0,
+    val text: PhotoWidgetText = PhotoWidgetText.None,
     val status: PhotoWidgetStatus = PhotoWidgetStatus.ACTIVE,
     val deletionTimestamp: Long = -1,
     val removedPhotos: List<LocalPhoto> = emptyList(),

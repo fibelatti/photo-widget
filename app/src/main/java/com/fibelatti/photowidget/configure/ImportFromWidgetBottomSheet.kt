@@ -5,18 +5,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
@@ -28,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.home.HomeViewModel
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.model.isWidgetRemoved
 import com.fibelatti.photowidget.platform.RememberedEffect
@@ -35,6 +40,7 @@ import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.conditional
 import com.fibelatti.ui.foundation.hideBottomSheet
 
 @Composable
@@ -90,6 +96,8 @@ private fun ImportFromWidgetContent(
             style = MaterialTheme.typography.labelMedium,
         )
 
+        val enforcedShape: Shape = RoundedCornerShape(28.dp)
+
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier.fillMaxWidth(),
@@ -100,7 +108,8 @@ private fun ImportFromWidgetContent(
             items(currentWidgets, key = { (id, _) -> id }) { (id, widget) ->
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
                         .clickable { onWidgetSelected(id) },
                     contentAlignment = Alignment.BottomCenter,
                 ) {
@@ -109,7 +118,12 @@ private fun ImportFromWidgetContent(
                         aspectRatio = widget.aspectRatio,
                         shapeId = widget.shapeId,
                         cornerRadius = widget.cornerRadius,
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .conditional(
+                                predicate = widget.aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET,
+                                ifTrue = { clip(enforcedShape) },
+                            ),
                         colors = widget.colors,
                         border = widget.border,
                         isLoading = widget.isLoading,

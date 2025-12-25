@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
@@ -35,6 +37,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -55,6 +59,7 @@ import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.ui.WarningSign
+import com.fibelatti.ui.foundation.conditional
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
@@ -71,18 +76,18 @@ fun MyWidgetsScreen(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.TopCenter,
     ) {
-        val maxWidth = maxWidth
-
-        val options = listOf(null, PhotoWidgetSource.PHOTOS, PhotoWidgetSource.DIRECTORY)
+        val options: List<PhotoWidgetSource?> = listOf(null, PhotoWidgetSource.PHOTOS, PhotoWidgetSource.DIRECTORY)
         var selectedSource: PhotoWidgetSource? by remember { mutableStateOf(null) }
         val filteredWidgets: List<Pair<Int, PhotoWidget>> by remember(widgets) {
             derivedStateOf {
                 widgets.filter { selectedSource == null || it.second.source == selectedSource }
             }
         }
-        val hasDeletedWidgets = remember(widgets) {
+        val hasDeletedWidgets: Boolean = remember(widgets) {
             filteredWidgets.any { it.second.status.isWidgetRemoved }
         }
+
+        val enforcedShape: Shape = RoundedCornerShape(28.dp)
 
         AnimatedContent(
             targetState = filteredWidgets,
@@ -95,7 +100,7 @@ fun MyWidgetsScreen(
                     )
             },
             label = "MyWidgetsScreen_content",
-        ) { items ->
+        ) { items: List<Pair<Int, PhotoWidget>> ->
             if (items.isNotEmpty()) {
                 LazyVerticalStaggeredGrid(
                     columns = StaggeredGridCells.Fixed(count = if (maxWidth < 600.dp) 2 else 4),
@@ -107,7 +112,8 @@ fun MyWidgetsScreen(
                     items(items, key = { (id, _) -> id }) { (id, widget) ->
                         Box(
                             modifier = Modifier
-                                .fillMaxSize()
+                                .fillMaxWidth()
+                                .aspectRatio(1f)
                                 .clickable {
                                     if (widget.status.isWidgetRemoved) {
                                         onRemovedWidgetClick(id, widget.status)
@@ -127,7 +133,12 @@ fun MyWidgetsScreen(
                                 aspectRatio = widget.aspectRatio,
                                 shapeId = widget.shapeId,
                                 cornerRadius = widget.cornerRadius,
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .conditional(
+                                        predicate = widget.aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET,
+                                        ifTrue = { clip(enforcedShape) },
+                                    ),
                                 colors = widget.colors,
                                 border = widget.border,
                                 isLoading = widget.isLoading,

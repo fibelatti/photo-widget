@@ -13,6 +13,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
+import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.platform.savedState
 import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
 import com.fibelatti.photowidget.widget.DuplicatePhotoWidgetUseCase
@@ -608,6 +609,16 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     padding = padding,
+                ),
+            )
+        }
+    }
+
+    fun photoWidgetTextChanged(photoWidgetText: PhotoWidgetText) {
+        _state.update { current ->
+            current.copy(
+                photoWidget = current.photoWidget.copy(
+                    text = photoWidgetText,
                 ),
             )
         }
