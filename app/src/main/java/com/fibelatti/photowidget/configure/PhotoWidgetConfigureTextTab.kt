@@ -2,8 +2,6 @@
 
 package com.fibelatti.photowidget.configure
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,12 +11,9 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
@@ -31,10 +26,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,9 +37,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
@@ -57,6 +50,7 @@ import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.DefaultPicker
 import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.photowidget.ui.NumberSpinner
+import com.fibelatti.photowidget.ui.RadioGroup
 import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
 import com.fibelatti.ui.foundation.AppBottomSheet
@@ -188,92 +182,35 @@ private fun PhotoWidgetTextTypePicker(
         DefaultPicker(
             title = stringResource(R.string.photo_widget_configure_text_type),
         ) {
-            Column(
-                modifier = Modifier
-                    .selectableGroup()
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                for (option: PhotoWidgetText in PhotoWidgetText.entries) {
-                    TypePickerItem(
-                        selected = option::class == currentValue::class,
-                        onClick = {
-                            if (option::class != currentValue::class) {
-                                onOptionSelected(option)
-                            }
-                            appSheetState.hideBottomSheet()
-                        },
-                        title = stringResource(
-                            when (option) {
-                                is PhotoWidgetText.None -> R.string.photo_widget_configure_text_type_none
-                                is PhotoWidgetText.Label -> R.string.photo_widget_configure_text_type_label
-                            },
-                        ),
-                        description = when (option) {
-                            is PhotoWidgetText.None -> null
-                            is PhotoWidgetText.Label -> {
-                                stringResource(R.string.photo_widget_configure_text_type_label_description)
-                            }
+            val localResources = LocalResources.current
+
+            RadioGroup(
+                items = PhotoWidgetText.entries,
+                itemSelected = { item: PhotoWidgetText -> item::class == currentValue::class },
+                onItemClick = { item: PhotoWidgetText ->
+                    if (item::class != currentValue::class) {
+                        onOptionSelected(item)
+                    }
+                    appSheetState.hideBottomSheet()
+                },
+                itemTitle = { item: PhotoWidgetText ->
+                    localResources.getString(
+                        when (item) {
+                            is PhotoWidgetText.None -> R.string.photo_widget_configure_text_type_none
+                            is PhotoWidgetText.Label -> R.string.photo_widget_configure_text_type_label
                         },
                     )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun TypePickerItem(
-    selected: Boolean,
-    onClick: () -> Unit,
-    title: String,
-    description: String?,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = 56.dp)
-            .background(
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                shape = MaterialTheme.shapes.small,
+                },
+                itemDescription = { item ->
+                    when (item) {
+                        is PhotoWidgetText.None -> null
+                        is PhotoWidgetText.Label -> {
+                            localResources.getString(R.string.photo_widget_configure_text_type_label_description)
+                        }
+                    }
+                },
+                modifier = Modifier.padding(horizontal = 16.dp),
             )
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.outlineVariant,
-                shape = MaterialTheme.shapes.small,
-            )
-            .selectable(
-                selected = selected,
-                role = Role.RadioButton,
-                onClick = onClick,
-            )
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        RadioButton(
-            selected = selected,
-            onClick = null,
-        )
-
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(1.dp),
-        ) {
-            Text(
-                text = title,
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.titleMedium,
-            )
-
-            if (description != null) {
-                Text(
-                    text = description,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.labelMedium,
-                )
-            }
         }
     }
 }
