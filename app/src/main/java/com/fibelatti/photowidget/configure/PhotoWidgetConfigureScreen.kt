@@ -561,7 +561,8 @@ private fun PhotoWidgetConfigureContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(360.dp),
-                    editingControlsInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Start),
+                    editingControlsInsets = WindowInsets.safeDrawing
+                        .only(sides = WindowInsetsSides.Start + WindowInsetsSides.Top),
                 )
 
                 PhotoWidgetEditor(
@@ -607,8 +608,7 @@ private fun PhotoWidgetConfigureContent(
                         .fillMaxHeight()
                         .fillMaxWidth(fraction = 0.4f),
                     editingControlsInsets = WindowInsets.safeDrawing
-                        .only(sides = WindowInsetsSides.Start + WindowInsetsSides.Bottom),
-                    matchViewerHeightConstraintsFirst = false,
+                        .only(sides = WindowInsetsSides.Start + WindowInsetsSides.Vertical),
                 )
 
                 PhotoWidgetEditor(
@@ -656,8 +656,7 @@ private fun PhotoWidgetViewer(
     onMoveLeftClick: (LocalPhoto) -> Unit,
     onMoveRightClick: (LocalPhoto) -> Unit,
     modifier: Modifier = Modifier,
-    editingControlsInsets: WindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Start),
-    matchViewerHeightConstraintsFirst: Boolean = true,
+    editingControlsInsets: WindowInsets = WindowInsets.safeDrawing,
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
@@ -684,18 +683,32 @@ private fun PhotoWidgetViewer(
         )
 
         if (selectedPhoto != null) {
-            WidgetPositionViewer(
-                photoWidget = photoWidget.copy(currentPhoto = selectedPhoto),
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .windowInsetsPadding(
-                        WindowInsets.safeDrawing
-                            .only(WindowInsetsSides.Top + WindowInsetsSides.Start),
-                    )
-                    .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 48.dp)
-                    .aspectRatio(.75f, matchHeightConstraintsFirst = matchViewerHeightConstraintsFirst),
-                areaColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            )
+                    .windowInsetsPadding(editingControlsInsets),
+                verticalArrangement = Arrangement.spacedBy(8.dp, alignment = Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                WidgetPositionViewer(
+                    photoWidget = photoWidget.copy(currentPhoto = selectedPhoto),
+                    modifier = Modifier
+                        .weight(1f)
+                        .aspectRatio(.75f)
+                        .padding(horizontal = 8.dp),
+                    areaColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+
+                EditingControls(
+                    onCropClick = { onCropClick(selectedPhoto) },
+                    onRemoveClick = { onRemoveClick(selectedPhoto) },
+                    showMoveControls = photoWidget.canSort,
+                    moveLeftEnabled = photoWidget.photos.indexOf(selectedPhoto) != 0,
+                    onMoveLeftClick = { onMoveLeftClick(selectedPhoto) },
+                    moveRightEnabled = photoWidget.photos.indexOf(selectedPhoto) < photoWidget.photos.size - 1,
+                    onMoveRightClick = { onMoveRightClick(selectedPhoto) },
+                )
+            }
         }
 
         IconButton(
@@ -711,22 +724,6 @@ private fun PhotoWidgetViewer(
             Icon(
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = null,
-            )
-        }
-
-        if (selectedPhoto != null) {
-            EditingControls(
-                onCropClick = { onCropClick(selectedPhoto) },
-                onRemoveClick = { onRemoveClick(selectedPhoto) },
-                showMoveControls = photoWidget.canSort,
-                moveLeftEnabled = photoWidget.photos.indexOf(selectedPhoto) != 0,
-                onMoveLeftClick = { onMoveLeftClick(selectedPhoto) },
-                moveRightEnabled = photoWidget.photos.indexOf(selectedPhoto) < photoWidget.photos.size - 1,
-                onMoveRightClick = { onMoveRightClick(selectedPhoto) },
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 8.dp)
-                    .windowInsetsPadding(editingControlsInsets),
             )
         }
     }
