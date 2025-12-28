@@ -4,12 +4,10 @@ import android.graphics.Bitmap
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,22 +15,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -41,17 +34,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -66,6 +56,8 @@ import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.getColorPalette
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import com.fibelatti.photowidget.preferences.DefaultPicker
+import com.fibelatti.photowidget.ui.RadioGroup
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
@@ -106,24 +98,10 @@ private fun BorderPickerContent(
     var border: PhotoWidgetBorder by remember { mutableStateOf(currentBorder) }
     val sampleBitmap = rememberSampleBitmap()
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .animateContentSize()
-            .nestedScroll(rememberNestedScrollInteropConnection())
-            .verticalScroll(rememberScrollState())
-            .padding(all = 16.dp),
+    DefaultPicker(
+        title = stringResource(R.string.photo_widget_configure_border),
+        modifier = Modifier.animateContentSize(),
     ) {
-        Text(
-            text = stringResource(R.string.photo_widget_configure_border),
-            modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleLarge,
-        )
-
-        Spacer(modifier = Modifier.size(8.dp))
-
         ColumnToggleButtonGroup(
             items = PhotoWidgetBorder.entries.map {
                 ToggleButtonGroup.Item(
@@ -134,15 +112,15 @@ private fun BorderPickerContent(
             onButtonClick = { item ->
                 border = PhotoWidgetBorder.fromSerializedName(item.id)
             },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             selectedIndex = PhotoWidgetBorder.entries.indexOfFirst {
                 it.serializedName == border.serializedName
             },
             colors = ToggleButtonGroup.colors(unselectedButtonColor = MaterialTheme.colorScheme.surfaceContainerLow),
             iconPosition = ToggleButtonGroup.IconPosition.End,
         )
-
-        Spacer(modifier = Modifier.size(16.dp))
 
         when (val current = border) {
             is PhotoWidgetBorder.None -> Unit
@@ -154,6 +132,7 @@ private fun BorderPickerContent(
                     onColorChange = { border = current.copy(colorHex = it) },
                     currentWidth = current.width,
                     onWidthChange = { border = current.copy(width = it) },
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
 
@@ -162,6 +141,7 @@ private fun BorderPickerContent(
                     sampleBitmap = sampleBitmap,
                     currentWidth = current.width,
                     onWidthChange = { border = current.copy(width = it) },
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
 
@@ -172,6 +152,7 @@ private fun BorderPickerContent(
                     onTypeChange = { border = current.copy(type = it) },
                     currentWidth = current.width,
                     onWidthChange = { border = current.copy(width = it) },
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
         }
@@ -179,13 +160,11 @@ private fun BorderPickerContent(
         Button(
             onClick = { onApplyClick(border) },
             shapes = ButtonDefaults.shapes(),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
         ) {
-            Text(
-                text = stringResource(id = R.string.photo_widget_action_apply),
-                modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Center,
-            )
+            Text(text = stringResource(id = R.string.photo_widget_action_apply))
         }
     }
 }
@@ -215,7 +194,7 @@ private fun ColorBorderContent(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
@@ -228,13 +207,15 @@ private fun ColorBorderContent(
                     .asImageBitmap(),
                 contentDescription = null,
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(1f, fill = false)
+                    .widthIn(max = 200.dp)
                     .aspectRatio(1f),
             )
 
             HsvColorPicker(
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(1f, fill = false)
+                    .widthIn(max = 200.dp)
                     .aspectRatio(1f),
                 controller = colorPickerController,
                 onColorChanged = { colorEnvelope ->
@@ -363,75 +344,64 @@ private fun MatchPhotoBorderContent(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        val colorPalette = remember(sampleBitmap) { getColorPalette(sampleBitmap) }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            val colorPalette = remember(sampleBitmap) { getColorPalette(sampleBitmap) }
+            val radioTypes = PhotoWidgetBorder.MatchPhoto.Type.entries
+            val (selectedType, onTypeSelected) = remember { mutableStateOf(currentType) }
+            val localResources = LocalResources.current
 
-        Image(
-            bitmap = sampleBitmap
-                .withRoundedCorners(
-                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
-                    borderColor = colorPalette.colorForType(currentType),
-                    borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
-                )
-                .asImageBitmap(),
-            contentDescription = null,
-            modifier = Modifier.size(200.dp),
-        )
+            Image(
+                bitmap = sampleBitmap
+                    .withRoundedCorners(
+                        radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
+                        borderColor = colorPalette.colorForType(currentType),
+                        borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
+                    )
+                    .asImageBitmap(),
+                contentDescription = null,
+                modifier = Modifier
+                    .weight(1f, fill = false)
+                    .widthIn(max = 200.dp)
+                    .aspectRatio(1f),
+            )
 
-        val radioTypes = PhotoWidgetBorder.MatchPhoto.Type.entries
-        val (selectedType, onTypeSelected) = remember { mutableStateOf(currentType) }
+            RadioGroup(
+                items = radioTypes,
+                itemSelected = { type -> type == selectedType },
+                onItemClick = { type ->
+                    onTypeSelected(type)
+                    onTypeChange(type)
+                },
+                itemTitle = { type ->
+                    val resId: Int = when (type) {
+                        PhotoWidgetBorder.MatchPhoto.Type.DOMINANT -> {
+                            R.string.photo_widget_configure_border_color_palette_dominant
+                        }
+
+                        PhotoWidgetBorder.MatchPhoto.Type.VIBRANT -> {
+                            R.string.photo_widget_configure_border_color_palette_vibrant
+                        }
+
+                        PhotoWidgetBorder.MatchPhoto.Type.MUTED -> {
+                            R.string.photo_widget_configure_border_color_palette_muted
+                        }
+                    }
+
+                    localResources.getString(resId)
+                },
+                itemDescription = { null },
+                modifier = Modifier.weight(1f),
+            )
+        }
 
         BorderWidthPicker(
             currentWidth = currentWidth,
             onWidthChange = onWidthChange,
         )
-
-        Column(
-            modifier = Modifier.selectableGroup(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            radioTypes.forEach { type ->
-                Row(
-                    modifier = Modifier
-                        .height(40.dp)
-                        .clip(MaterialTheme.shapes.large)
-                        .selectable(
-                            selected = (type == selectedType),
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = ripple(),
-                            role = Role.RadioButton,
-                            onClick = {
-                                onTypeSelected(type)
-                                onTypeChange(type)
-                            },
-                        )
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    RadioButton(
-                        selected = (type == selectedType),
-                        onClick = null,
-                    )
-                    Text(
-                        text = when (type) {
-                            PhotoWidgetBorder.MatchPhoto.Type.DOMINANT -> {
-                                stringResource(R.string.photo_widget_configure_border_color_palette_dominant)
-                            }
-
-                            PhotoWidgetBorder.MatchPhoto.Type.VIBRANT -> {
-                                stringResource(R.string.photo_widget_configure_border_color_palette_vibrant)
-                            }
-
-                            PhotoWidgetBorder.MatchPhoto.Type.MUTED -> {
-                                stringResource(R.string.photo_widget_configure_border_color_palette_muted)
-                            }
-                        },
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.bodyLarge,
-                    )
-                }
-            }
-        }
     }
 }
 

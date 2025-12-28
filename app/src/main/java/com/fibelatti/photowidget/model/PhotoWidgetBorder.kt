@@ -79,7 +79,7 @@ sealed interface PhotoWidgetBorder : Parcelable {
                     add(Dynamic(width = DEFAULT_WIDTH))
                 }
 
-                add(MatchPhoto(type = PhotoWidgetBorder.MatchPhoto.Type.DOMINANT, width = DEFAULT_WIDTH))
+                add(MatchPhoto(type = MatchPhoto.Type.DOMINANT, width = DEFAULT_WIDTH))
 
                 add(Color(colorHex = "ffffff", width = DEFAULT_WIDTH))
             }
