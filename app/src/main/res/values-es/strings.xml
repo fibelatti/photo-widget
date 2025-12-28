@@ -172,8 +172,8 @@
     <string name="photo_widget_configure_border_explanation">Los cambios se implementarán durante la próxima actualización de widgets después de que cambies el color del tema de tu teléfono. Para actualizar todos los widgets de inmediato, simplemente abre la aplicación.</string>
     <string name="photo_widget_configure_offset">Desplazamiento</string>
     <string name="photo_widget_configure_offset_current_values">Horizontal: %1$d, Vertical: %2$d</string>
-    <string name="photo_widget_configure_offset_current_horizontal">Horizontal: %1$d</string>
-    <string name="photo_widget_configure_offset_current_vertical">Vertical: %1$d</string>
+    <string name="photo_widget_configure_offset_current_horizontal">Horizontal</string>
+    <string name="photo_widget_configure_offset_current_vertical">Vertical</string>
     <string name="photo_widget_configure_padding">Espaciamiento</string>
     <string name="photo_widget_configure_tap_action">Acción de toque</string>
     <string name="photo_widget_configure_tap_action_description">Personaliza la acción al tocar en cada área.</string>

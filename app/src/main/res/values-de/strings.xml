@@ -172,8 +172,8 @@
     <string name="photo_widget_configure_border_explanation">Änderungen treten während des nächsten Widget-Updates in Kraft, nachdem Sie die Theme-Farbe Ihres Telefons geändert haben. Um alle Widgets sofort zu aktualisieren, öffnen Sie einfach die App.</string>
     <string name="photo_widget_configure_offset">Versatz</string>
     <string name="photo_widget_configure_offset_current_values">Horizontal: %1$d, Vertikal: %2$d</string>
-    <string name="photo_widget_configure_offset_current_horizontal">Horizontal: %1$d</string>
-    <string name="photo_widget_configure_offset_current_vertical">Vertikal: %1$d</string>
+    <string name="photo_widget_configure_offset_current_horizontal">Horizontal</string>
+    <string name="photo_widget_configure_offset_current_vertical">Vertikal</string>
     <string name="photo_widget_configure_padding">Polsterung</string>
     <string name="photo_widget_configure_tap_action">Tipp-Aktion</string>
     <string name="photo_widget_configure_tap_action_description">Passen Sie die Tipp-Aktion jedes Bereichs an.</string>

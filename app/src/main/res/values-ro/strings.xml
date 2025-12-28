@@ -178,8 +178,8 @@
     <string name="photo_widget_configure_border_explanation">Modificările vor avea loc în timpul următoarei actualizări a widget-ului după ce schimbați culoarea temei telefonului. Pentru a actualiza toate widget-urile imediat, pur și simplu deschideți aplicația.</string>
     <string name="photo_widget_configure_offset">Decalaj</string>
     <string name="photo_widget_configure_offset_current_values">Orizontal: %1$d, Vertical: %2$d</string>
-    <string name="photo_widget_configure_offset_current_horizontal">Orizontal: %1$d</string>
-    <string name="photo_widget_configure_offset_current_vertical">Vertical: %1$d</string>
+    <string name="photo_widget_configure_offset_current_horizontal">Orizontal</string>
+    <string name="photo_widget_configure_offset_current_vertical">Vertical</string>
     <string name="photo_widget_configure_padding">Umplutură</string>
     <string name="photo_widget_configure_tap_action">Acțiune la atingere</string>
     <string name="photo_widget_configure_tap_action_description">Personalizează acțiunea la atingere a fiecărei zone.</string>

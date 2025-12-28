@@ -184,8 +184,8 @@
     <string name="photo_widget_configure_border_explanation">השינויים יבוצעו במהלך עדכון הווידג\'ט הבא לאחר שתשנה את צבע ערכת הנושא של הטלפון שלך. כדי לעדכן את כל הווידג\'טים באופן מיידי, פשוט פתח את האפליקציה.</string>
     <string name="photo_widget_configure_offset">קיזוז</string>
     <string name="photo_widget_configure_offset_current_values">אופקי: %1$d, אנכי: %2$d</string>
-    <string name="photo_widget_configure_offset_current_horizontal">אופקי: %1$d</string>
-    <string name="photo_widget_configure_offset_current_vertical">אנכי: %1$d</string>
+    <string name="photo_widget_configure_offset_current_horizontal">אופקי</string>
+    <string name="photo_widget_configure_offset_current_vertical">אנכי</string>
     <string name="photo_widget_configure_padding">ריפוד</string>
     <string name="photo_widget_configure_tap_action">פעולת הקשה</string>
     <string name="photo_widget_configure_tap_action_description">התאם אישית את פעולת ההקשה של כל אזור.</string>

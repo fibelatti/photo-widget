@@ -184,8 +184,8 @@
     <string name="photo_widget_configure_border_explanation">Изменения произойдут во время следующего обновления виджета после того, как вы измените цвет темы телефона. Чтобы обновить все виджеты немедленно, просто откройте приложение.</string>
     <string name="photo_widget_configure_offset">Смещение</string>
     <string name="photo_widget_configure_offset_current_values">Горизонтальное: %1$d, Вертикальное: %2$d</string>
-    <string name="photo_widget_configure_offset_current_horizontal">Горизонтальное: %1$d</string>
-    <string name="photo_widget_configure_offset_current_vertical">Вертикальное: %1$d</string>
+    <string name="photo_widget_configure_offset_current_horizontal">Горизонтальное</string>
+    <string name="photo_widget_configure_offset_current_vertical">Вертикальное</string>
     <string name="photo_widget_configure_padding">Отступ</string>
     <string name="photo_widget_configure_tap_action">Действие по нажатию</string>
     <string name="photo_widget_configure_tap_action_description">Настройте действие при нажатии для каждой области.</string>

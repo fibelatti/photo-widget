@@ -170,8 +170,8 @@
     <string name="photo_widget_configure_border_explanation">Makakabisa ang mga pagbabago sa susunod na update ng widget pagkatapos mong palitan ang kulay ng tema ng iyong telepono. Buksan lamang ang app upang i-update agad ang lahat ng mga widget.</string>
     <string name="photo_widget_configure_offset">Offset</string>
     <string name="photo_widget_configure_offset_current_values">Pahalang: %1$d, Patayo: %2$d</string>
-    <string name="photo_widget_configure_offset_current_horizontal">Pahalang: %1$d</string>
-    <string name="photo_widget_configure_offset_current_vertical">Patayo: %1$d</string>
+    <string name="photo_widget_configure_offset_current_horizontal">Pahalang</string>
+    <string name="photo_widget_configure_offset_current_vertical">Patayo</string>
     <string name="photo_widget_configure_padding">Padding</string>
     <string name="photo_widget_configure_tap_action">Aksyon sa pagpindot</string>
     <string name="photo_widget_configure_tap_action_description">Isaayos ang aksyon sa pagpindot ng bawat lugar.</string>

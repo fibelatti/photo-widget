@@ -207,8 +207,8 @@
 
     <string name="photo_widget_configure_offset">Offset</string>
     <string name="photo_widget_configure_offset_current_values">Horizontal: %1$d, Vertical: %2$d</string>
-    <string name="photo_widget_configure_offset_current_horizontal">Horizontal: %1$d</string>
-    <string name="photo_widget_configure_offset_current_vertical">Vertical: %1$d</string>
+    <string name="photo_widget_configure_offset_current_horizontal">Horizontal</string>
+    <string name="photo_widget_configure_offset_current_vertical">Vertical</string>
 
     <string name="photo_widget_configure_padding">Padding</string>
 

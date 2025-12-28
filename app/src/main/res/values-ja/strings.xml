@@ -166,8 +166,8 @@
     <string name="photo_widget_configure_border_explanation">変更は、スマートフォンのテーマカラーを変更した後の次回のウィジェット更新時に適用されます。すべてのウィジェットをすぐに更新するには、アプリを開いてください。</string>
     <string name="photo_widget_configure_offset">オフセット</string>
     <string name="photo_widget_configure_offset_current_values">横: %1$d, 縦: %2$d</string>
-    <string name="photo_widget_configure_offset_current_horizontal">横: %1$d</string>
-    <string name="photo_widget_configure_offset_current_vertical">縦: %1$d</string>
+    <string name="photo_widget_configure_offset_current_horizontal">横</string>
+    <string name="photo_widget_configure_offset_current_vertical">縦</string>
     <string name="photo_widget_configure_padding">パディング</string>
     <string name="photo_widget_configure_tap_action">タップアクション</string>
     <string name="photo_widget_configure_tap_action_description">各エリアのタップアクションをカスタマイズします。</string>
