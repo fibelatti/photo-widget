@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -153,24 +154,49 @@ fun AspectRatioPicker(
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
 ) {
-    LazyRow(
+    Column(
         modifier = modifier,
-        state = state,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        items(PhotoWidgetAspectRatio.entries) { item ->
-            AspectRatioItem(
-                item = item,
-                onClick = { onAspectRatioSelected(item) },
-                itemRepresentation = {
-                    when (item) {
-                        PhotoWidgetAspectRatio.SQUARE -> ShapedAspectRatioItemRepresentation()
-                        PhotoWidgetAspectRatio.ORIGINAL -> OriginalAspectRatioRepresentation()
-                        PhotoWidgetAspectRatio.FILL_WIDGET -> FillAspectRatioRepresentation()
-                        else -> DefaultAspectRatioItemRepresentation(item = item)
-                    }
-                },
+        LazyRow(
+            state = state,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+        ) {
+            items(PhotoWidgetAspectRatio.entries) { item ->
+                AspectRatioItem(
+                    item = item,
+                    onClick = { onAspectRatioSelected(item) },
+                    itemRepresentation = {
+                        when (item) {
+                            PhotoWidgetAspectRatio.SQUARE -> ShapedAspectRatioItemRepresentation()
+                            PhotoWidgetAspectRatio.ORIGINAL -> OriginalAspectRatioRepresentation()
+                            PhotoWidgetAspectRatio.FILL_WIDGET -> FillAspectRatioRepresentation()
+                            else -> DefaultAspectRatioItemRepresentation(item = item)
+                        }
+                    },
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(space = 4.dp, alignment = Alignment.End),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            AutoSizeText(
+                text = stringResource(R.string.hint_scroll_to_view_more),
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 1,
+            )
+
+            Icon(
+                painter = painterResource(R.drawable.ic_chevron_right),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface,
             )
         }
     }
