@@ -46,9 +46,9 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.preferences.BooleanDefault
-import com.fibelatti.photowidget.preferences.DefaultPicker
-import com.fibelatti.photowidget.preferences.DefaultPickerFooterButtons
 import com.fibelatti.photowidget.preferences.PickerDefault
+import com.fibelatti.photowidget.ui.DefaultSheetContent
+import com.fibelatti.photowidget.ui.DefaultSheetFooterButtons
 import com.fibelatti.photowidget.ui.LocalSamplePhoto
 import com.fibelatti.photowidget.ui.NumberSpinner
 import com.fibelatti.photowidget.ui.RadioGroup
@@ -194,7 +194,7 @@ private fun PhotoWidgetTextTypePicker(
     AppBottomSheet(
         sheetState = appSheetState,
     ) {
-        DefaultPicker(
+        DefaultSheetContent(
             title = stringResource(R.string.photo_widget_configure_text_type),
         ) {
             val localResources = LocalResources.current
@@ -294,7 +294,7 @@ private fun PhotoWidgetTextSizePicker(
     AppBottomSheet(
         sheetState = appSheetState,
     ) {
-        DefaultPicker(
+        DefaultSheetContent(
             title = stringResource(R.string.photo_widget_configure_text_size),
         ) {
             var updatedValue: Int by rememberSaveable(currentValue) { mutableIntStateOf(currentValue) }
@@ -346,7 +346,7 @@ private fun PhotoWidgetVerticalOffsetPicker(
     AppBottomSheet(
         sheetState = appSheetState,
     ) {
-        DefaultPicker(
+        DefaultSheetContent(
             title = stringResource(R.string.photo_widget_configure_text_vertical_offset),
         ) {
             var updatedValue: Int by rememberSaveable(currentValue) { mutableIntStateOf(currentValue) }
@@ -372,7 +372,7 @@ private fun PhotoWidgetVerticalOffsetPicker(
                 upperBound = 0,
             )
 
-            DefaultPickerFooterButtons(
+            DefaultSheetFooterButtons(
                 onApplyClick = {
                     onApplyClick(updatedValue)
                     appSheetState.hideBottomSheet()

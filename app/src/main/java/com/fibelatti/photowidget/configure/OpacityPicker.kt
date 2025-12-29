@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -19,8 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -33,96 +30,36 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.platform.RememberedEffect
-import com.fibelatti.photowidget.platform.formatRangeValue
+import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.DefaultSheetFooterButtons
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.photowidget.ui.rememberSampleBitmap
-import com.fibelatti.ui.foundation.AppBottomSheet
-import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.dpToPx
-import com.fibelatti.ui.foundation.hideBottomSheet
 
 @Composable
-fun PhotoWidgetSaturationBottomSheet(
-    sheetState: AppSheetState,
-    currentSaturation: Float,
-    onApplyClick: (Float) -> Unit,
-) {
-    AppBottomSheet(
-        sheetState = sheetState,
-    ) {
-        ColorMatrixPicker(
-            title = stringResource(R.string.widget_defaults_saturation),
-            valueRange = -100f..100f,
-            currentValue = PhotoWidgetColors.pickerSaturation(currentSaturation),
-            onCurrentValueChange = { value ->
-                ColorMatrix().apply { setToSaturation(PhotoWidgetColors.persistenceSaturation(value) / 100) }
-            },
-            onApplyClick = { newValue ->
-                onApplyClick(PhotoWidgetColors.persistenceSaturation(newValue))
-                sheetState.hideBottomSheet()
-            },
-        )
-    }
-}
-
-@Composable
-fun PhotoWidgetBrightnessBottomSheet(
-    sheetState: AppSheetState,
-    currentBrightness: Float,
-    onApplyClick: (Float) -> Unit,
-) {
-    AppBottomSheet(
-        sheetState = sheetState,
-    ) {
-        ColorMatrixPicker(
-            title = stringResource(R.string.widget_defaults_brightness),
-            valueRange = -100f..100f,
-            currentValue = currentBrightness,
-            onCurrentValueChange = { value ->
-                val brightness = value * 255 / 100
-                val colorMatrix = floatArrayOf(
-                    1f, 0f, 0f, 0f, brightness,
-                    0f, 1f, 0f, 0f, brightness,
-                    0f, 0f, 1f, 0f, brightness,
-                    0f, 0f, 0f, 1f, 0f,
-                )
-
-                ColorMatrix(colorMatrix)
-            },
-            onApplyClick = { newValue ->
-                onApplyClick(newValue)
-                sheetState.hideBottomSheet()
-            },
-        )
-    }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
-private fun ColorMatrixPicker(
-    title: String,
-    valueRange: ClosedFloatingPointRange<Float>,
+@OptIn(ExperimentalMaterial3Api::class)
+fun OpacityPicker(
     currentValue: Float,
-    onCurrentValueChange: (Float) -> ColorMatrix,
     onApplyClick: (newValue: Float) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DefaultSheetContent(
-        title = title,
+        title = stringResource(id = R.string.widget_defaults_opacity),
         modifier = modifier,
     ) {
         var value by remember(currentValue) { mutableFloatStateOf(currentValue) }
 
         Image(
             bitmap = rememberSampleBitmap()
-                .withRoundedCorners(radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx())
+                .withRoundedCorners(
+                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
+                    colors = PhotoWidgetColors(opacity = value),
+                )
                 .asImageBitmap(),
             contentDescription = null,
             modifier = Modifier.size(200.dp),
-            colorFilter = ColorFilter.colorMatrix(onCurrentValueChange(value)),
         )
 
         Row(
@@ -141,12 +78,12 @@ private fun ColorMatrixPicker(
                 value = value,
                 onValueChange = { value = it },
                 modifier = Modifier.weight(1f),
-                valueRange = valueRange,
+                valueRange = 0f..100f,
                 thumb = { SliderSmallThumb() },
             )
 
             Text(
-                text = formatRangeValue(value = value),
+                text = formatPercent(value = value, fractionDigits = 0),
                 modifier = Modifier.width(48.dp),
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.End,
@@ -156,7 +93,7 @@ private fun ColorMatrixPicker(
 
         DefaultSheetFooterButtons(
             onApplyClick = { onApplyClick(value) },
-            onResetClick = { value = 0f },
+            onResetClick = { value = 100f },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),

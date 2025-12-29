@@ -56,7 +56,7 @@ import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.getColorPalette
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.withRoundedCorners
-import com.fibelatti.photowidget.preferences.DefaultPicker
+import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.RadioGroup
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.photowidget.ui.rememberSampleBitmap
@@ -99,7 +99,7 @@ private fun BorderPickerContent(
     var border: PhotoWidgetBorder by remember { mutableStateOf(currentBorder) }
     val sampleBitmap = rememberSampleBitmap()
 
-    DefaultPicker(
+    DefaultSheetContent(
         title = stringResource(R.string.photo_widget_configure_border),
         modifier = Modifier.animateContentSize(),
     ) {

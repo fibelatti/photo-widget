@@ -16,8 +16,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
-import com.fibelatti.photowidget.preferences.DefaultPicker
-import com.fibelatti.photowidget.preferences.DefaultPickerFooterButtons
+import com.fibelatti.photowidget.ui.DefaultSheetContent
+import com.fibelatti.photowidget.ui.DefaultSheetFooterButtons
 import com.fibelatti.photowidget.ui.LocalSamplePhoto
 import com.fibelatti.photowidget.ui.NumberSpinner
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
@@ -29,7 +29,7 @@ fun PhotoWidgetPaddingPicker(
     onApplyClick: (newValue: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    DefaultPicker(
+    DefaultSheetContent(
         title = stringResource(id = R.string.photo_widget_configure_padding),
         modifier = modifier,
     ) {
@@ -54,7 +54,7 @@ fun PhotoWidgetPaddingPicker(
             lowerBound = 0,
         )
 
-        DefaultPickerFooterButtons(
+        DefaultSheetFooterButtons(
             onApplyClick = { onApplyClick(value) },
             onResetClick = { value = 0 },
             modifier = Modifier
