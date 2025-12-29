@@ -7,12 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +36,7 @@ import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.DefaultPicker
+import com.fibelatti.photowidget.preferences.DefaultPickerFooterButtons
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
@@ -155,27 +153,12 @@ private fun ColorMatrixPicker(
             )
         }
 
-        Row(
+        DefaultPickerFooterButtons(
+            onApplyClick = { onApplyClick(value) },
+            onResetClick = { value = 0f },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            OutlinedButton(
-                onClick = { value = 0f },
-                shapes = ButtonDefaults.shapes(),
-                modifier = Modifier.weight(1f),
-            ) {
-                Text(text = stringResource(id = R.string.photo_widget_action_reset))
-            }
-
-            Button(
-                onClick = { onApplyClick(value) },
-                shapes = ButtonDefaults.shapes(),
-                modifier = Modifier.weight(1f),
-            ) {
-                Text(text = stringResource(id = R.string.photo_widget_action_apply))
-            }
-        }
+        )
     }
 }

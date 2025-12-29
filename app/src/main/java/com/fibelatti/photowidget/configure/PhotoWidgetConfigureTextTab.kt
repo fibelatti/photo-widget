@@ -5,7 +5,6 @@ package com.fibelatti.photowidget.configure
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +25,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,6 +46,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.DefaultPicker
+import com.fibelatti.photowidget.preferences.DefaultPickerFooterButtons
 import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.photowidget.ui.NumberSpinner
 import com.fibelatti.photowidget.ui.RadioGroup
@@ -357,31 +356,16 @@ private fun PhotoWidgetVerticalOffsetPicker(
                 upperBound = 20,
             )
 
-            Row(
+            DefaultPickerFooterButtons(
+                onApplyClick = {
+                    onApplyClick(updatedValue)
+                    appSheetState.hideBottomSheet()
+                },
+                onResetClick = { updatedValue = 0 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                OutlinedButton(
-                    onClick = { updatedValue = 0 },
-                    shapes = ButtonDefaults.shapes(),
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Text(text = stringResource(id = R.string.photo_widget_action_reset))
-                }
-
-                Button(
-                    onClick = {
-                        onApplyClick(updatedValue)
-                        appSheetState.hideBottomSheet()
-                    },
-                    shapes = ButtonDefaults.shapes(),
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Text(text = stringResource(id = R.string.photo_widget_action_apply))
-                }
-            }
+            )
         }
     }
 }

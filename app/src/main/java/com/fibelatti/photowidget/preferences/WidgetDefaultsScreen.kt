@@ -734,28 +734,13 @@ fun OpacityPicker(
             )
         }
 
-        Row(
+        DefaultPickerFooterButtons(
+            onApplyClick = { onApplyClick(value) },
+            onResetClick = { value = 100f },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            OutlinedButton(
-                onClick = { value = 100f },
-                shapes = ButtonDefaults.shapes(),
-                modifier = Modifier.weight(1f),
-            ) {
-                Text(text = stringResource(id = R.string.photo_widget_action_reset))
-            }
-
-            Button(
-                onClick = { onApplyClick(value) },
-                shapes = ButtonDefaults.shapes(),
-                modifier = Modifier.weight(1f),
-            ) {
-                Text(text = stringResource(id = R.string.photo_widget_action_apply))
-            }
-        }
+        )
     }
 }
 
@@ -783,6 +768,34 @@ fun DefaultPicker(
         )
 
         content()
+    }
+}
+
+@Composable
+fun DefaultPickerFooterButtons(
+    onApplyClick: () -> Unit,
+    onResetClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        OutlinedButton(
+            onClick = onResetClick,
+            shapes = ButtonDefaults.shapes(),
+            modifier = Modifier.weight(1f),
+        ) {
+            Text(text = stringResource(id = R.string.photo_widget_action_reset))
+        }
+
+        Button(
+            onClick = onApplyClick,
+            shapes = ButtonDefaults.shapes(),
+            modifier = Modifier.weight(1f),
+        ) {
+            Text(text = stringResource(id = R.string.photo_widget_action_apply))
+        }
     }
 }
 // endregion Pickers

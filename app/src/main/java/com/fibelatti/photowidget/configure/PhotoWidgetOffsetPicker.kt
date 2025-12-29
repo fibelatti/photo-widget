@@ -9,11 +9,8 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.preferences.DefaultPicker
+import com.fibelatti.photowidget.preferences.DefaultPickerFooterButtons
 import com.fibelatti.photowidget.ui.NumberSpinner
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
 import com.fibelatti.ui.preview.AllPreviews
@@ -93,31 +91,16 @@ fun PhotoWidgetOffsetPicker(
             }
         }
 
-        Row(
+        DefaultPickerFooterButtons(
+            onApplyClick = { onApplyClick(horizontalValue, verticalValue) },
+            onResetClick = {
+                horizontalValue = 0
+                verticalValue = 0
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            OutlinedButton(
-                onClick = {
-                    horizontalValue = 0
-                    verticalValue = 0
-                },
-                shapes = ButtonDefaults.shapes(),
-                modifier = Modifier.weight(1f),
-            ) {
-                Text(text = stringResource(id = R.string.photo_widget_action_reset))
-            }
-
-            Button(
-                onClick = { onApplyClick(horizontalValue, verticalValue) },
-                shapes = ButtonDefaults.shapes(),
-                modifier = Modifier.weight(1f),
-            ) {
-                Text(text = stringResource(id = R.string.photo_widget_action_apply))
-            }
-        }
+        )
     }
 }
 
