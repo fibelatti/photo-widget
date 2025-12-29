@@ -72,11 +72,12 @@ private fun HelpScreen(
             .nestedScroll(rememberNestedScrollInteropConnection()),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 24.dp),
+        contentPadding = PaddingValues(start = 16.dp, bottom = 24.dp, end = 16.dp),
     ) {
         item {
             Text(
                 text = stringResource(id = R.string.photo_widget_home_common_issues),
+                modifier = Modifier.padding(bottom = 8.dp),
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleLarge,
             )
@@ -100,6 +101,7 @@ private fun HelpScreen(
                 WarningSign(
                     text = stringResource(R.string.restriction_warning_hint),
                     modifier = Modifier
+                        .padding(top = 8.dp)
                         .fillMaxWidth()
                         .clickable(
                             onClick = onBackgroundRestrictionClick,

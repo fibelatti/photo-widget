@@ -203,7 +203,7 @@ private fun DirListItem(
     onRemoveClick: () -> Unit,
     modifier: Modifier = Modifier,
     backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    backgroundShape: Shape = RoundedCornerShape(2.dp),
+    backgroundShape: Shape = MaterialTheme.shapes.medium,
 ) {
     Row(
         modifier = modifier

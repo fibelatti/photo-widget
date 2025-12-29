@@ -12,21 +12,19 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonGroupDefaults
@@ -42,6 +40,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerState
+import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -51,12 +50,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -72,6 +71,7 @@ import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.intervalRange
 import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
+import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
 import com.fibelatti.ui.foundation.AppBottomSheet
@@ -132,25 +132,13 @@ private fun PhotoCycleModePickerContent(
     var mode by remember { mutableStateOf(cycleMode) }
     var showExplainerDialog by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .nestedScroll(rememberNestedScrollInteropConnection())
-            .verticalScroll(rememberScrollState())
-            .padding(all = 16.dp),
+    DefaultSheetContent(
+        title = stringResource(id = R.string.photo_widget_configure_select_cycling_mode),
     ) {
-        Text(
-            text = stringResource(id = R.string.photo_widget_configure_select_cycling_mode),
-            modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleLarge,
-        )
-
-        Spacer(modifier = Modifier.size(8.dp))
-
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
         ) {
             val items = remember {
@@ -196,17 +184,9 @@ private fun PhotoCycleModePickerContent(
             }
         }
 
-        Spacer(modifier = Modifier.size(8.dp))
-
         AnimatedContent(
             targetState = mode,
-            modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    shape = MaterialTheme.shapes.large,
-                )
-                .padding(all = 16.dp),
+            modifier = Modifier.padding(horizontal = 16.dp),
             transitionSpec = { fadeIn() togetherWith fadeOut() },
             label = "SelectedCycleModeContent",
         ) { current ->
@@ -298,14 +278,15 @@ private fun PhotoCycleModeIntervalContent(
     ) {
         Text(
             text = stringResource(R.string.photo_widget_configure_cycling_mode_interval_description),
+            modifier = Modifier.padding(horizontal = 16.dp),
             color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.bodyMedium,
         )
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp),
+                .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
@@ -332,7 +313,9 @@ private fun PhotoCycleModeIntervalContent(
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
         ) {
             val items = remember {
@@ -422,43 +405,46 @@ private fun PhotoCycleModeScheduleContent(
         if (triggers.isNotEmpty()) {
             Text(
                 text = stringResource(R.string.photo_widget_configure_cycling_mode_schedule_description),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.bodyMedium,
             )
 
-            for (item in triggers) {
-                Row(
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .clickable { triggers.remove(item) }
-                        .background(
-                            color = MaterialTheme.colorScheme.tertiaryContainer,
-                            shape = MaterialTheme.shapes.medium,
-                        )
-                        .padding(all = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = item.asString(),
-                        modifier = Modifier.padding(horizontal = 24.dp),
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(1.dp),
+            ) {
+                triggers.forEachIndexed { index, time ->
+                    SelectedTimeItem(
+                        item = time,
+                        onClick = { triggers.remove(time) },
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        backgroundShape = when (index) {
+                            0 if triggers.size == 1 -> MaterialTheme.shapes.medium
 
-                    Icon(
-                        painter = painterResource(R.drawable.ic_trash),
-                        modifier = Modifier.size(12.dp),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                            0 if triggers.size > 1 -> MaterialTheme.shapes.medium.copy(
+                                bottomStart = CornerSize(2.dp),
+                                bottomEnd = CornerSize(2.dp),
+                            )
+
+                            triggers.lastIndex if triggers.size > 1 -> MaterialTheme.shapes.medium.copy(
+                                topStart = CornerSize(2.dp),
+                                topEnd = CornerSize(2.dp),
+                            )
+
+                            else -> RoundedCornerShape(2.dp)
+                        },
                     )
                 }
             }
         } else {
             Text(
                 text = stringResource(R.string.photo_widget_configure_schedule_placeholder),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
 
@@ -466,16 +452,20 @@ private fun PhotoCycleModeScheduleContent(
             TextButton(
                 onClick = { showTimePickerDialog = true },
                 shapes = ButtonDefaults.shapes(),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
             ) {
                 Text(text = stringResource(R.string.photo_widget_configure_schedule_add_new))
             }
         } else {
             Text(
                 text = stringResource(R.string.photo_widget_configure_schedule_limit_reached),
-                modifier = Modifier.align(Alignment.CenterHorizontally),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .align(Alignment.CenterHorizontally),
                 color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelMedium,
             )
         }
 
@@ -507,6 +497,38 @@ private fun PhotoCycleModeScheduleContent(
 }
 
 @Composable
+private fun SelectedTimeItem(
+    item: Time,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
+    backgroundShape: Shape = MaterialTheme.shapes.medium,
+) {
+    Row(
+        modifier = modifier
+            .clickable(onClick = onClick)
+            .background(color = backgroundColor, shape = backgroundShape)
+            .padding(all = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = item.asString(),
+            modifier = Modifier.padding(horizontal = 24.dp),
+            color = contentColorFor(backgroundColor),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyMedium,
+        )
+
+        Icon(
+            painter = painterResource(R.drawable.ic_trash),
+            contentDescription = null,
+            modifier = Modifier.size(16.dp),
+            tint = contentColorFor(backgroundColor),
+        )
+    }
+}
+
+@Composable
 private fun PhotoCycleModeDisabledContent(
     onApplyClick: (newMode: PhotoWidgetCycleMode) -> Unit,
     modifier: Modifier = Modifier,
@@ -517,8 +539,11 @@ private fun PhotoCycleModeDisabledContent(
     ) {
         Text(
             text = stringResource(R.string.photo_widget_configure_cycling_mode_disabled_description),
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .align(Alignment.CenterHorizontally),
             color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.bodyMedium,
         )
 
         Button(
@@ -573,7 +598,7 @@ fun TimePickerDialog(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(R.string.photo_widget_time_picker_title),
-                    style = MaterialTheme.typography.labelMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
 
                 TimePicker(state = timePickerState)
