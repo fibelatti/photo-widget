@@ -80,6 +80,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">Фотографии</string>
     <string name="photo_widget_source_directory">Папка</string>
+    <string name="photo_widget_source_photos_description">Выберите одну или несколько фотографий с помощью стандартного выбора галереи.</string>
+    <string name="photo_widget_source_directory_description">Выберите одну или несколько папок для синхронизации. Фотографии добавляются автоматически и регулярно обновляются.</string>
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Формат</string>
     <string name="photo_widget_aspect_ratio_shape">Фигуры</string>
@@ -106,13 +108,8 @@
     <string name="photo_widget_configure_too_many_photos_error">Каждая синхронизированная папка может содержать не более 3000 фотографий. Вы можете выбрать больше одной, и каждая подпапка считается отдельно.\n\nВы не можете выбрать свою камеру. Фотографии обрабатываются по одной, и папки с несколькими тысячами приводят к серьезным проблемам с производительностью в редакторе виджетов, а также на главном экране при переключении фотографий.</string>
     <string name="photo_widget_configure_missing_photos_error">Виджет должен содержать хотя бы одну фотографию. Виджеты можно удалять только прямо с главного экрана.</string>
     <string name="photo_widget_configure_menu_source">Источник</string>
-    <string name="photo_widget_configure_source_description">Вы можете выбрать каждую фотографию по отдельности или синхронизировать этот виджет с одной или несколькими папками. При синхронизации все фотографии в папке автоматически добавляются в виджет. Содержимое обновляется каждые 6 часа.</string>
-    <string name="photo_widget_configure_source_selection_photos">Только выбранные вами фотографии будут отображаться в этом виджете.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Этот виджет еще не синхронизирован с какой-либо папкой.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Этот виджет синхронизирован с этими папками:</string>
-    <string name="photo_widget_configure_source_keep_current">Сохранить текущий источник</string>
-    <string name="photo_widget_configure_source_set_directory">Установить источник на папку</string>
-    <string name="photo_widget_configure_source_set_photos">Установить источник на фотографии</string>
     <string name="photo_widget_configure_source_warning">Изменение источника заменит текущие фотографии в этом виджете</string>
     <string name="photo_widget_configure_menu_crop">Обрезать</string>
     <string name="photo_widget_configure_menu_remove">Удалить</string>

@@ -79,6 +79,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">Fotografii</string>
     <string name="photo_widget_source_directory">Dosar</string>
+    <string name="photo_widget_source_photos_description">Alege una sau mai multe fotografii folosind selectorul implicit al galeriei.</string>
+    <string name="photo_widget_source_directory_description">Alege unul sau mai multe foldere pentru sincronizare. Fotografiile sunt adăugate automat și actualizate periodic.</string>
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Format</string>
     <string name="photo_widget_aspect_ratio_shape">Forme</string>
@@ -105,13 +107,8 @@
     <string name="photo_widget_configure_too_many_photos_error">Fiecare dosar sincronizat poate conține maximum 3000 de fotografii. Puteți selecta mai mult de un subdosar și fiecare este numărat separat.\n\nNu pueți selecta albumul camerei. Fotografiile sunt procesate una câte una, iar dosarele cu multe mii duc la probleme grave de performanță în editorul widget-ului, precum și pe ecranul de pornire atunci când comutați fotografii.</string>
     <string name="photo_widget_configure_missing_photos_error">Widgetul trebuie să aibă cel puțin o fotografie. Widget-urile pot fi șterse doar direct de pe ecranul de pornire.</string>
     <string name="photo_widget_configure_menu_source">Sursă</string>
-    <string name="photo_widget_configure_source_description">Puteți alege fiecare fotografie individual sau să sincronizați acest widget cu unul sau mai multe dosare. La sincronizare, toate fotografiile din dosar sunt adăugate automat în widget. Conținutul este actualizat la fiecare 6 ore.</string>
-    <string name="photo_widget_configure_source_selection_photos">Doar fotografiile pe care le-ați selectat vor fi afișate în acest widget.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Acest widget nu este încă sincronizat cu niciun dosar.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Acest widget este sincronizat cu aceste dosare:</string>
-    <string name="photo_widget_configure_source_keep_current">Păstrează sursa curentă</string>
-    <string name="photo_widget_configure_source_set_directory">Setează sursa la Dosar</string>
-    <string name="photo_widget_configure_source_set_photos">Setează sursa la Fotografii</string>
     <string name="photo_widget_configure_source_warning">Schimbarea sursei va înlocui fotografiile actuale din acest widget</string>
     <string name="photo_widget_configure_menu_crop">Taie</string>
     <string name="photo_widget_configure_menu_remove">Șterge</string>

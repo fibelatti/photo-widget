@@ -78,6 +78,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">Fotos</string>
     <string name="photo_widget_source_directory">Ordner</string>
+    <string name="photo_widget_source_photos_description">Wähle ein oder mehrere Fotos über den standardmäßigen Galerie-Auswahlbildschirm aus.</string>
+    <string name="photo_widget_source_directory_description">Wähle einen oder mehrere Ordner zum Synchronisieren aus. Fotos werden automatisch hinzugefügt und regelmäßig aktualisiert.</string>
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Format</string>
     <string name="photo_widget_aspect_ratio_shape">Formen</string>
@@ -104,13 +106,8 @@
     <string name="photo_widget_configure_too_many_photos_error">Jeder synchronisierte Ordner kann maximal 3000 Fotos enthalten. Sie können mehr als einen auswählen, und jeder Unterordner wird separat gezählt.\n\nSie können Ihre Kamerarolle nicht auswählen. Fotos werden einzeln verarbeitet, und Ordner mit vielen Tausend Fotos führen zu erheblichen Leistungsproblemen im Widget-Editor sowie auf dem Startbildschirm beim Wechseln der Fotos.</string>
     <string name="photo_widget_configure_missing_photos_error">Das Widget muss mindestens ein Foto enthalten. Widgets können nur direkt vom Startbildschirm gelöscht werden.</string>
     <string name="photo_widget_configure_menu_source">Quelle</string>
-    <string name="photo_widget_configure_source_description">Sie können jedes Foto einzeln auswählen oder dieses Widget mit einem oder mehreren Ordnern synchronisieren. Beim Synchronisieren werden alle Fotos im Ordner automatisch zum Widget hinzugefügt. Der Inhalt wird alle 6 Stunden aktualisiert.</string>
-    <string name="photo_widget_configure_source_selection_photos">Nur die von Ihnen ausgewählten Fotos werden in diesem Widget angezeigt.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Dieses Widget ist noch nicht mit einem Ordner synchronisiert.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Dieses Widget ist mit diesen Ordnern synchronisiert:</string>
-    <string name="photo_widget_configure_source_keep_current">Aktuelle Quelle beibehalten</string>
-    <string name="photo_widget_configure_source_set_directory">Quelle auf Ordner setzen</string>
-    <string name="photo_widget_configure_source_set_photos">Quelle auf Fotos setzen</string>
     <string name="photo_widget_configure_source_warning">Das Ändern der Quelle ersetzt die aktuellen Fotos aus diesem Widget</string>
     <string name="photo_widget_configure_menu_crop">Zuschneiden</string>
     <string name="photo_widget_configure_menu_remove">Entfernen</string>

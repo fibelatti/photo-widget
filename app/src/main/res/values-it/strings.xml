@@ -78,6 +78,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">Foto</string>
     <string name="photo_widget_source_directory">Cartella</string>
+    <string name="photo_widget_source_photos_description">Scegli una o più foto utilizzando il selettore della galleria predefinito.</string>
+    <string name="photo_widget_source_directory_description">Scegli una o più cartelle da sincronizzare. Le foto vengono aggiunte automaticamente e aggiornate a intervalli regolari.</string>
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Formato</string>
     <string name="photo_widget_aspect_ratio_shape">Forme</string>
@@ -104,13 +106,8 @@
     <string name="photo_widget_configure_too_many_photos_error">Ogni cartella sincronizzata può contenere un massimo di 3000 foto. Puoi selezionarne più di una, e ogni sottocartella viene conteggiata separatamente.\n\nNon puoi selezionare il rullino fotografico. Le foto vengono elaborate una per una, e le cartelle con molte migliaia di foto causano gravi problemi di prestazioni nell\'editor di widget, così come nella schermata iniziale durante il cambio delle foto.</string>
     <string name="photo_widget_configure_missing_photos_error">Il widget deve avere almeno una foto. I widget possono essere eliminati solo direttamente dalla schermata iniziale.</string>
     <string name="photo_widget_configure_menu_source">Sorgente</string>
-    <string name="photo_widget_configure_source_description">Puoi scegliere ogni foto individualmente o sincronizzare questo widget con una o più cartelle. Quando sincronizzi, tutte le foto nella cartella vengono automaticamente aggiunte al widget. Il contenuto viene aggiornato ogni 6 ore.</string>
-    <string name="photo_widget_configure_source_selection_photos">Solo le foto selezionate verranno visualizzate in questo widget.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Questo widget non è ancora sincronizzato con nessuna cartella.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Questo widget è sincronizzato con queste cartelle:</string>
-    <string name="photo_widget_configure_source_keep_current">Mantieni sorgente attuale</string>
-    <string name="photo_widget_configure_source_set_directory">Imposta sorgente su Cartella</string>
-    <string name="photo_widget_configure_source_set_photos">Imposta sorgente su Foto</string>
     <string name="photo_widget_configure_source_warning">La modifica della sorgente sostituirà le foto attuali di questo widget</string>
     <string name="photo_widget_configure_menu_crop">Ritaglia</string>
     <string name="photo_widget_configure_menu_remove">Rimuovi</string>
@@ -214,13 +211,13 @@
     <string name="photo_widget_configure_text_type">Tipo</string>
     <string name="photo_widget_configure_text_type_none">Nessuno</string>
     <string name="photo_widget_configure_text_type_label">Etichetta</string>
-    <string name="photo_widget_configure_text_type_label_description">Imita il nome di un’app per adattarsi all’estetica della schermata Home</string>
+    <string name="photo_widget_configure_text_type_label_description">Imita il nome di un\'app per adattarsi all\'estetica della schermata Home</string>
     <string name="photo_widget_configure_text_value">Testo</string>
     <string name="photo_widget_configure_text_size">Dimensione</string>
     <string name="photo_widget_configure_text_vertical_offset">Offset verticale</string>
     <string name="photo_widget_configure_text_apply_shadow">Applica ombra</string>
     <string name="photo_widget_configure_text_sample">Testo di esempio</string>
-    <string name="photo_widget_configure_text_caveat">La foto e il testo condividono la stessa area del widget. Il testo utilizza l’aspetto predefinito del sistema. Puoi regolare con precisione la posizione usando le impostazioni sopra, insieme all’offset e al padding della foto.</string>
+    <string name="photo_widget_configure_text_caveat">La foto e il testo condividono la stessa area del widget. Il testo utilizza l\'aspetto predefinito del sistema. Puoi regolare con precisione la posizione usando le impostazioni sopra, insieme all\'offset e al padding della foto.</string>
     <!-- Help -->
     <string name="help_article_title_1">L\'aggiunta di un widget alla schermata iniziale non funziona</string>
     <string name="help_article_body_1">Se hai configurato un widget e non succede nulla quando provi ad aggiungerlo alla schermata iniziale, o se viene aggiunto ma non visualizza le foto selezionate, puoi provare ad aggiungerlo direttamente dalla tua schermata iniziale.\n\nLe istruzioni possono variare a seconda della versione di Android, del produttore del dispositivo e del launcher della schermata iniziale, ma in generale il processo è il seguente:\n\n1. Premi a lungo su uno spazio vuoto della tua schermata iniziale finché non appare un menu pop-up.\n2. Individua l\'opzione \"Widget\".\n3. Cerca \"Material Photo Widget\" tra i widget disponibili.\n4. Trascinalo sulla tua schermata iniziale e configuralo come di consueto.</string>

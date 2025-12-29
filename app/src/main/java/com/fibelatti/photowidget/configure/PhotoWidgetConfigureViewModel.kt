@@ -166,14 +166,8 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun changeSource() {
-        val newSource = when (_state.value.photoWidget.source) {
-            PhotoWidgetSource.PHOTOS -> PhotoWidgetSource.DIRECTORY
-            PhotoWidgetSource.DIRECTORY -> PhotoWidgetSource.PHOTOS
-        }
-
+    fun changeSource(newSource: PhotoWidgetSource) {
         photoWidgetStorage.saveWidgetSource(appWidgetId = appWidgetId, source = newSource)
-
         photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
             .onEach { widgetPhotos ->
                 _state.update { current ->

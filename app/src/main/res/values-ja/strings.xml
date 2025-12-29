@@ -77,6 +77,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">写真</string>
     <string name="photo_widget_source_directory">フォルダー</string>
+    <string name="photo_widget_source_photos_description">デフォルトのギャラリーピッカーを使用して、1枚以上の写真を選択します。</string>
+    <string name="photo_widget_source_directory_description">同期するフォルダを1つ以上選択します。写真は自動的に追加され、定期的に更新されます。</string>
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">フォーマット</string>
     <string name="photo_widget_aspect_ratio_shape">シェイプ</string>
@@ -103,13 +105,8 @@
     <string name="photo_widget_configure_too_many_photos_error">同期フォルダーには最大3000枚の写真を含めることができます。複数選択でき、各サブフォルダーは個別にカウントされます。\n\nカメラロールは選択できません。写真は1枚ずつ処理され、数千枚の写真を含むフォルダーは、ウィジェットエディターやホーム画面での写真切り替え時に深刻なパフォーマンスの問題を引き起こします。</string>
     <string name="photo_widget_configure_missing_photos_error">ウィジェットには少なくとも1枚の写真が必要です。ウィジェットはホーム画面からのみ直接削除できます。</string>
     <string name="photo_widget_configure_menu_source">ソース</string>
-    <string name="photo_widget_configure_source_description">各写真を個別に選択するか、このウィジェットを1つ以上のフォルダーと同期できます。同期すると、フォルダー内のすべての写真が自動的にウィジェットに追加されます。コンテンツは6時間ごとに更新されます。</string>
-    <string name="photo_widget_configure_source_selection_photos">このウィジェットには、選択した写真のみが表示されます。</string>
     <string name="photo_widget_configure_source_selection_directory_empty">このウィジェットはまだどのフォルダーとも同期されていません。</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">このウィジェットはこれらのフォルダーと同期されています:</string>
-    <string name="photo_widget_configure_source_keep_current">現在のソースを維持</string>
-    <string name="photo_widget_configure_source_set_directory">ソースをフォルダーに設定</string>
-    <string name="photo_widget_configure_source_set_photos">ソースを写真に設定</string>
     <string name="photo_widget_configure_source_warning">ソースを変更すると、このウィジェットの現在の写真が置き換えられます</string>
     <string name="photo_widget_configure_menu_crop">切り抜き</string>
     <string name="photo_widget_configure_menu_remove">削除</string>

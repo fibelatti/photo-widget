@@ -77,6 +77,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">Mga Larawan</string>
     <string name="photo_widget_source_directory">Folder</string>
+    <string name="photo_widget_source_photos_description">Pumili ng isa o higit pang larawan gamit ang default na gallery picker.</string>
+    <string name="photo_widget_source_directory_description">Pumili ng isa o higit pang folder para i-sync. Awtomatikong idinadagdag ang mga larawan at regular na ina-update.</string>
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Porma</string>
     <string name="photo_widget_aspect_ratio_shape">Mga Hugis</string>
@@ -103,13 +105,8 @@
     <string name="photo_widget_configure_too_many_photos_error">Hindi lalampas sa 3000 larawan ang laman ng bawat folder na naka-sync. Maaaring pumili ng higit sa isa, at hiwalay ang bilangan sa mga subfolder.\n\nHindi maaaring piliin ang camera roll. Iniisa-isa ang pagproseso ng mga larawan, at nagiging sanhi ng lag sa widget editor at home screen ang mga folder na may libo-libong larawan.</string>
     <string name="photo_widget_configure_missing_photos_error">Dapat may hindi bababa sa isang larawan ang widget. Maaari lamang burahin ang mga widget mula mismo sa home screen.</string>
     <string name="photo_widget_configure_menu_source">Pinagmulan</string>
-    <string name="photo_widget_configure_source_description">Maaaring isa-isahin ang pagpili ng mga larawan o i-sync ang widget sa isa o higit sa isang folder. Habang nagsi-sync, awtomatikong idinaragdag sa widget ang mga larawan sa folder. Inu-update ang laman kada-6 na oras.</string>
-    <string name="photo_widget_configure_source_selection_photos">Ipapakita lamang sa widget ang mga larawang pinili mo.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Hindi pa naka-sync ang widget na ito sa kahit na anong folder.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Naka-sync ang widget sa mga folder na ito:</string>
-    <string name="photo_widget_configure_source_keep_current">Panatilihin ang kasalukuyang pinagmulan</string>
-    <string name="photo_widget_configure_source_set_directory">Itakda ang pinagmulan sa Folder</string>
-    <string name="photo_widget_configure_source_set_photos">Itakda ang pinagmulan sa Photos</string>
     <string name="photo_widget_configure_source_warning">Papalitan ang mga kasalukuyang larawan sa widget kapag binago ang pinagmulan</string>
     <string name="photo_widget_configure_menu_crop">I-krop</string>
     <string name="photo_widget_configure_menu_remove">Tanggalin</string>

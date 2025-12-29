@@ -78,6 +78,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">Fotos</string>
     <string name="photo_widget_source_directory">Carpeta</string>
+    <string name="photo_widget_source_photos_description">Elige una o varias fotos usando el selector de galería predeterminado.</string>
+    <string name="photo_widget_source_directory_description">Elige una o varias carpetas para sincronizar. Las fotos se añaden automáticamente y se actualizan de forma periódica.</string>
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Formato</string>
     <string name="photo_widget_aspect_ratio_shape">Formas</string>
@@ -104,13 +106,8 @@
     <string name="photo_widget_configure_too_many_photos_error">Cada carpeta sincronizada puede contener un máximo de 3000 fotos. Puedes seleccionar más de una y cada subcarpeta se cuenta por separado.\n\nNo puedes seleccionar el carrete de tu cámara. Las fotos se procesan una por una y las carpetas con muchos miles provocan graves problemas de rendimiento en el editor de widgets, así como en la pantalla de inicio, al cambiar de fotos.</string>
     <string name="photo_widget_configure_missing_photos_error">El widget debe tener al menos una foto. Los widgets solo se pueden eliminar directamente desde la pantalla de inicio.</string>
     <string name="photo_widget_configure_menu_source">Fuente</string>
-    <string name="photo_widget_configure_source_description">Puedes elegir cada foto individualmente o sincronizar este widget con una o más carpetas. Al sincronizar, todas las fotos de la carpeta se agregan automáticamente al widget. El contenido se actualiza cada 6 horas.</string>
-    <string name="photo_widget_configure_source_selection_photos">Solo las fotos que hayas seleccionado se mostrarán en este widget.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Este widget aún no está sincronizado con ninguna carpeta.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Este widget está sincronizado con estas carpetas:</string>
-    <string name="photo_widget_configure_source_keep_current">Mantener la fuente actual</string>
-    <string name="photo_widget_configure_source_set_directory">Cambiar fuente a Carpeta</string>
-    <string name="photo_widget_configure_source_set_photos">Cambiar fuente a Fotos</string>
     <string name="photo_widget_configure_source_warning">Cambiar la fuente reemplazará las fotos actuales de este widget</string>
     <string name="photo_widget_configure_menu_crop">Recortar</string>
     <string name="photo_widget_configure_menu_remove">Eliminar</string>

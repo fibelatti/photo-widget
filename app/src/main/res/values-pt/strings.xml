@@ -78,6 +78,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">Fotos</string>
     <string name="photo_widget_source_directory">Pasta</string>
+    <string name="photo_widget_source_photos_description">Escolha uma ou mais fotos usando o seletor de galeria padrão.</string>
+    <string name="photo_widget_source_directory_description">Escolha uma ou mais pastas para sincronizar. As fotos são adicionadas automaticamente e atualizadas em intervalos regulares.</string>
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Formato</string>
     <string name="photo_widget_aspect_ratio_shape">Formas</string>
@@ -104,13 +106,8 @@
     <string name="photo_widget_configure_too_many_photos_error">Cada pasta sincronizada pode conter no máximo 3000 fotos. Você pode selecionar mais de uma e cada subpasta é contada separadamente.\n\nVocê não pode selecionar seu rolo da câmera. As fotos são processadas uma por uma e pastas com muitos milhares resultam em problemas graves de desempenho no editor de widgets, bem como na tela inicial ao alternar fotos.</string>
     <string name="photo_widget_configure_missing_photos_error">O widget deve ter pelo menos uma foto. Os widgets só podem ser excluídos diretamente da tela inicial.</string>
     <string name="photo_widget_configure_menu_source">Origem</string>
-    <string name="photo_widget_configure_source_description">Você pode escolher cada foto individualmente ou sincronizar este widget com uma, ou mais pastas. Ao sincronizar, todas as fotos da pasta são automaticamente adicionadas ao widget. O conteúdo é atualizado a cada 6 horas.</string>
-    <string name="photo_widget_configure_source_selection_photos">Somente as fotos que você selecionou serão exibidas neste widget.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Este widget ainda não está sincronizado com nenhuma pasta.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Este widget está sincronizado com estas pastas:</string>
-    <string name="photo_widget_configure_source_keep_current">Manter origem atual</string>
-    <string name="photo_widget_configure_source_set_directory">Mudar origem para Pasta</string>
-    <string name="photo_widget_configure_source_set_photos">Mudar origem para Fotos</string>
     <string name="photo_widget_configure_source_warning">Alterar a origem irá substituir as fotos atuais deste widget</string>
     <string name="photo_widget_configure_menu_crop">Recortar</string>
     <string name="photo_widget_configure_menu_remove">Remover</string>

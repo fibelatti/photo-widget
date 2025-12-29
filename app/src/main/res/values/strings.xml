@@ -92,6 +92,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">Photos</string>
     <string name="photo_widget_source_directory">Folder</string>
+    <string name="photo_widget_source_photos_description">Choose one or more photos using your default gallery picker.</string>
+    <string name="photo_widget_source_directory_description">Choose one or more folders to sync. Photos are added automatically and refreshed at regular intervals.</string>
 
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Format</string>
@@ -127,13 +129,8 @@
     <string name="photo_widget_configure_missing_photos_error">The widget must have at least one photo. Widgets can only be deleted directly from the home screen.</string>
 
     <string name="photo_widget_configure_menu_source">Source</string>
-    <string name="photo_widget_configure_source_description">You can choose each photo individually or sync this widget with one or more folders. When syncing, all photos in the folder are automatically added to the widget. The content is updated every 6 hours.</string>
-    <string name="photo_widget_configure_source_selection_photos">Only the photos you selected will be displayed in this widget.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">This widget is not synced with any folder yet.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">This widget is synced with these folders:</string>
-    <string name="photo_widget_configure_source_keep_current">Keep current source</string>
-    <string name="photo_widget_configure_source_set_directory">Set source to Folder</string>
-    <string name="photo_widget_configure_source_set_photos">Set source to Photos</string>
     <string name="photo_widget_configure_source_warning">Changing the source will replace the current photos from this widget</string>
 
     <string name="photo_widget_configure_menu_crop">Crop</string>

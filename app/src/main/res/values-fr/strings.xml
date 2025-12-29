@@ -78,6 +78,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">Photos</string>
     <string name="photo_widget_source_directory">Dossier</string>
+    <string name="photo_widget_source_photos_description">Choisissez une ou plusieurs photos à l\'aide du sélecteur de galerie par défaut.</string>
+    <string name="photo_widget_source_directory_description">Choisissez un ou plusieurs dossiers à synchroniser. Les photos sont ajoutées automatiquement et mises à jour à intervalles réguliers.</string>
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Format</string>
     <string name="photo_widget_aspect_ratio_shape">Formes</string>
@@ -104,13 +106,8 @@
     <string name="photo_widget_configure_too_many_photos_error">Chaque dossier synchronisé peut contenir un maximum de 3000 photos. Vous pouvez en sélectionner plusieurs, et chaque sous-dossier est compté séparément.\n\nVous ne pouvez pas sélectionner votre pellicule. Les photos sont traitées une par une, et les dossiers très volumineux causent de graves problèmes de performance dans l\'éditeur de widgets, ainsi que sur l\'écran d\'accueil lors du changement de photos.</string>
     <string name="photo_widget_configure_missing_photos_error">Le widget doit contenir au moins une photo. Les widgets ne peuvent être supprimés que directement depuis l\'écran d\'accueil.</string>
     <string name="photo_widget_configure_menu_source">Source</string>
-    <string name="photo_widget_configure_source_description">Vous pouvez choisir chaque photo individuellement ou synchroniser ce widget avec un ou plusieurs dossiers. Lors de la synchronisation, toutes les photos du dossier sont automatiquement ajoutées au widget. Le contenu est mis à jour toutes les 6 heures.</string>
-    <string name="photo_widget_configure_source_selection_photos">Seules les photos sélectionnées s\'afficheront dans ce widget.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Ce widget n\'est pas encore synchronisé avec un dossier.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Ce widget est synchronisé avec ces dossiers :</string>
-    <string name="photo_widget_configure_source_keep_current">Garder la source actuelle</string>
-    <string name="photo_widget_configure_source_set_directory">Définir la source comme Dossier</string>
-    <string name="photo_widget_configure_source_set_photos">Définir la source comme Photos</string>
     <string name="photo_widget_configure_source_warning">Changer la source remplacera les photos actuelles de ce widget</string>
     <string name="photo_widget_configure_menu_crop">Rogner</string>
     <string name="photo_widget_configure_menu_remove">Supprimer</string>
@@ -214,13 +211,13 @@
     <string name="photo_widget_configure_text_type">Type</string>
     <string name="photo_widget_configure_text_type_none">Aucun</string>
     <string name="photo_widget_configure_text_type_label">Libellé</string>
-    <string name="photo_widget_configure_text_type_label_description">Imite le nom d’une application pour s’adapter à l’esthétique de votre écran d’accueil</string>
+    <string name="photo_widget_configure_text_type_label_description">Imite le nom d\'une application pour s\'adapter à l\'esthétique de votre écran d\'accueil</string>
     <string name="photo_widget_configure_text_value">Texte</string>
     <string name="photo_widget_configure_text_size">Taille</string>
     <string name="photo_widget_configure_text_vertical_offset">Décalage vertical</string>
     <string name="photo_widget_configure_text_apply_shadow">Appliquer une ombre</string>
-    <string name="photo_widget_configure_text_sample">Texte d’exemple</string>
-    <string name="photo_widget_configure_text_caveat">La photo et le texte partagent la même zone du widget. Le texte utilise l’apparence par défaut du système. Vous pouvez ajuster finement la position à l’aide des réglages ci-dessus, ainsi que du décalage et des marges de la photo.</string>
+    <string name="photo_widget_configure_text_sample">Texte d\'exemple</string>
+    <string name="photo_widget_configure_text_caveat">La photo et le texte partagent la même zone du widget. Le texte utilise l\'apparence par défaut du système. Vous pouvez ajuster finement la position à l\'aide des réglages ci-dessus, ainsi que du décalage et des marges de la photo.</string>
     <!-- Help -->
     <string name="help_article_title_1">L\'ajout d\'un widget à l\'écran d\'accueil ne fonctionne pas</string>
     <string name="help_article_body_1">Si vous avez configuré un widget et que rien ne se passe lorsque vous essayez de l\'ajouter à l\'écran d\'accueil, ou s\'il est ajouté mais n\'affiche pas les photos sélectionnées, essayez de l\'ajouter directement depuis votre écran d\'accueil.\n\nLes instructions peuvent varier en fonction de votre version Android, du fabricant de votre appareil et du lanceur d\'écran d\'accueil, mais en général, le processus est le suivant :\n\n1. Appuyez longuement sur un espace vide de votre écran d\'accueil jusqu\'à ce qu\'un menu contextuel apparaisse.\n2. Trouvez l\'option \"Widgets\".\n3. Recherchez \"Material Photo Widget\" dans les widgets disponibles.\n4. Faites-le glisser vers votre écran d\'accueil et configurez-le comme d\'habitude.</string>

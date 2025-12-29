@@ -78,6 +78,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">Fotoğraflar</string>
     <string name="photo_widget_source_directory">Klasör</string>
+    <string name="photo_widget_source_photos_description">Varsayılan galeri seçiciyi kullanarak bir veya daha fazla fotoğraf seçin.</string>
+    <string name="photo_widget_source_directory_description">Senkronize etmek için bir veya daha fazla klasör seçin. Fotoğraflar otomatik olarak eklenir ve düzenli aralıklarla yenilenir.</string>
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">Biçim</string>
     <string name="photo_widget_aspect_ratio_shape">Şekiller</string>
@@ -104,13 +106,8 @@
     <string name="photo_widget_configure_too_many_photos_error">Her senkronize klasör en fazla 3000 fotoğraf içerebilir. Birden fazla seçebilirsiniz ve her alt klasör ayrı ayrı sayılır.\n\nKamera rulosunu seçemezsiniz. Fotoğraflar tek tek işlenir ve binlerce fotoğraf içeren klasörler, widget düzenleyicide ve fotoğraflar arasında geçiş yaparken ana ekranda ciddi performans sorunlarına neden olur.</string>
     <string name="photo_widget_configure_missing_photos_error">Widget\'ta en az bir fotoğraf bulunmalıdır. Widget\'lar yalnızca doğrudan ana ekrandan silinebilir.</string>
     <string name="photo_widget_configure_menu_source">Kaynak</string>
-    <string name="photo_widget_configure_source_description">Her fotoğrafı ayrı ayrı seçebilir veya bu widget\'ı bir veya daha fazla klasörle senkronize edebilirsiniz. Senkronizasyon sırasında klasördeki tüm fotoğraflar otomatik olarak widget\'a eklenir. İçerik 6 saatte bir güncellenmektedir.</string>
-    <string name="photo_widget_configure_source_selection_photos">Yalnızca seçtiğiniz fotoğraflar bu widget\'te görüntülenecek.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Bu widget henüz herhangi bir klasör ile senkronize edilmedi.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Bu widget şu klasörler ile senkronize edildi:</string>
-    <string name="photo_widget_configure_source_keep_current">Geçerli kaynağı sakla</string>
-    <string name="photo_widget_configure_source_set_directory">Kaynağı Klasör olarak ayarla</string>
-    <string name="photo_widget_configure_source_set_photos">Kaynağı Fotoğraflar olarak ayarla</string>
     <string name="photo_widget_configure_source_warning">Kaynağı değiştirmek, bu widget\'teki mevcut fotoğrafları değiştirecek</string>
     <string name="photo_widget_configure_menu_crop">Kırp</string>
     <string name="photo_widget_configure_menu_remove">Kaldır</string>

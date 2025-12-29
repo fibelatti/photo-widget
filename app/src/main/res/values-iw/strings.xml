@@ -80,6 +80,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">תמונות</string>
     <string name="photo_widget_source_directory">תיקייה</string>
+    <string name="photo_widget_source_photos_description">בחר תמונה אחת או יותר באמצעות בורר הגלריה המוגדר כברירת מחדל.</string>
+    <string name="photo_widget_source_directory_description">בחר תיקייה אחת או יותר לסנכרון. התמונות מתווספות אוטומטית ומתעדכנות במרווחי זמן קבועים.</string>
     <!-- Aspect Ratio -->
     <string name="photo_widget_aspect_ratio_title">פורמט</string>
     <string name="photo_widget_aspect_ratio_shape">צורות</string>
@@ -106,13 +108,8 @@
     <string name="photo_widget_configure_too_many_photos_error">כל תיקייה מסונכרנת יכולה להכיל עד 3000 תמונות. ניתן לבחור יותר מתיקייה אחת, וכל תת-תיקייה נספרת בנפרד.\n\nלא ניתן לבחור את סרט הצילום. התמונות מעובדות אחת אחת, ותיקיות עם המון (אלפים) תמונות גורמות לבעיות ביצועים רציניות בעורך הווידג\'טים, כמו גם במסך הבית בעת החלפת תמונות.</string>
     <string name="photo_widget_configure_missing_photos_error">הווידג\'ט חייב לכלול לפחות תמונה אחת. ניתן למחוק ווידג\'טים ממסך הבית בלבד.</string>
     <string name="photo_widget_configure_menu_source">מקור</string>
-    <string name="photo_widget_configure_source_description">ניתן לבחור כל תמונה בנפרד או לסנכרן ווידג\'ט זה עם תיקייה אחת או יותר. בעת הסנכרון, כל התמונות בתיקייה מתווספות אוטומטית לוידג\'ט. התוכן מתעדכן כל 6 שעות.</string>
-    <string name="photo_widget_configure_source_selection_photos">רק התמונות שבחרת יוצגו בווידג\'ט זה.</string>
     <string name="photo_widget_configure_source_selection_directory_empty">ווידג\'ט זה עדיין לא מסונכרן עם אף תיקייה.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">ווידג\'ט זה מסונכרן עם התיקיות הבאות:</string>
-    <string name="photo_widget_configure_source_keep_current">השאר את המקור הנוכחי</string>
-    <string name="photo_widget_configure_source_set_directory">הגדר את המקור לתיקייה</string>
-    <string name="photo_widget_configure_source_set_photos">הגדר את המקור לתמונות</string>
     <string name="photo_widget_configure_source_warning">שינוי המקור יחליף את התמונות הנוכחיות מהווידג\'ט הזה</string>
     <string name="photo_widget_configure_menu_crop">חתוך</string>
     <string name="photo_widget_configure_menu_remove">הסר</string>
