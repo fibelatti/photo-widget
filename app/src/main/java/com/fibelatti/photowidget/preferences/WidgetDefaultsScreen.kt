@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -502,7 +503,7 @@ fun PickerDefault(
 
                 AutoSizeText(
                     text = currentValue,
-                    modifier = Modifier.width(160.dp),
+                    modifier = Modifier.widthIn(max = 200.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.End,
                     overflow = TextOverflow.Ellipsis,
