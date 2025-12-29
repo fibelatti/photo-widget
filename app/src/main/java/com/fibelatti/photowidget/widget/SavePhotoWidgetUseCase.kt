@@ -109,7 +109,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
             cornerRadius = if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
                 photoWidget.cornerRadius
             } else {
-                PhotoWidget.Companion.DEFAULT_CORNER_RADIUS
+                PhotoWidget.DEFAULT_CORNER_RADIUS
             },
         )
 
