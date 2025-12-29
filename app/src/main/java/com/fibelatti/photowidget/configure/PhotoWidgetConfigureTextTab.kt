@@ -41,6 +41,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetText
@@ -59,6 +60,20 @@ import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
+
+@Composable
+fun PhotoWidgetConfigureTextTab(
+    viewModel: PhotoWidgetConfigureViewModel,
+    modifier: Modifier = Modifier,
+) {
+    val state: PhotoWidgetConfigureState by viewModel.state.collectAsStateWithLifecycle()
+
+    PhotoWidgetConfigureTextTab(
+        photoWidgetText = state.photoWidget.text,
+        onPhotoWidgetTextChange = viewModel::photoWidgetTextChanged,
+        modifier = modifier,
+    )
+}
 
 @Composable
 fun PhotoWidgetConfigureTextTab(
@@ -126,7 +141,7 @@ fun PhotoWidgetConfigureTextTab(
         }
     }
 
-    // region Pickers
+    // region Sheets
     PhotoWidgetTextTypePicker(
         appSheetState = textTypeSheetState,
         currentValue = photoWidgetText,
@@ -165,7 +180,7 @@ fun PhotoWidgetConfigureTextTab(
             }
         },
     )
-    // endregion Pickers
+    // endregion Sheets
 }
 
 // region Pickers

@@ -4,21 +4,153 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
+import com.fibelatti.photowidget.preferences.CornerRadiusPicker
+import com.fibelatti.photowidget.preferences.OpacityPicker
 import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.photowidget.preferences.ShapeDefault
+import com.fibelatti.photowidget.preferences.ShapePicker
+import com.fibelatti.ui.foundation.AppBottomSheet
+import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.hideBottomSheet
+import com.fibelatti.ui.foundation.rememberAppSheetState
+import com.fibelatti.ui.foundation.showBottomSheet
+import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.theme.ExtendedTheme
+
+@Composable
+fun PhotoWidgetConfigureAppearanceTab(
+    viewModel: PhotoWidgetConfigureViewModel,
+    modifier: Modifier = Modifier,
+) {
+    val state: PhotoWidgetConfigureState by viewModel.state.collectAsStateWithLifecycle()
+
+    val aspectRatioPickerSheetState: AppSheetState = rememberAppSheetState()
+    val shapePickerSheetState: AppSheetState = rememberAppSheetState()
+    val cornerRadiusPickerSheetState: AppSheetState = rememberAppSheetState()
+    val borderPickerSheetState: AppSheetState = rememberAppSheetState()
+    val opacityPickerSheetState: AppSheetState = rememberAppSheetState()
+    val saturationPickerSheetState: AppSheetState = rememberAppSheetState()
+    val brightnessPickerSheetState: AppSheetState = rememberAppSheetState()
+    val offsetPickerSheetState: AppSheetState = rememberAppSheetState()
+    val paddingPickerSheetState: AppSheetState = rememberAppSheetState()
+
+    PhotoWidgetConfigureAppearanceTab(
+        photoWidget = state.photoWidget,
+        onAspectRatioClick = aspectRatioPickerSheetState::showBottomSheet,
+        onShapeClick = shapePickerSheetState::showBottomSheet,
+        onCornerRadiusClick = cornerRadiusPickerSheetState::showBottomSheet,
+        onBorderClick = borderPickerSheetState::showBottomSheet,
+        onOpacityClick = opacityPickerSheetState::showBottomSheet,
+        onSaturationClick = saturationPickerSheetState::showBottomSheet,
+        onBrightnessClick = brightnessPickerSheetState::showBottomSheet,
+        onOffsetClick = offsetPickerSheetState::showBottomSheet,
+        onPaddingClick = paddingPickerSheetState::showBottomSheet,
+        modifier = modifier,
+    )
+
+    // region Sheets
+    PhotoWidgetAspectRatioBottomSheet(
+        sheetState = aspectRatioPickerSheetState,
+        onAspectRatioSelected = viewModel::setAspectRatio,
+    )
+
+    AppBottomSheet(
+        sheetState = shapePickerSheetState,
+    ) {
+        ShapePicker(
+            onClick = { newShapeId ->
+                viewModel.shapeSelected(newShapeId)
+                shapePickerSheetState.hideBottomSheet()
+            },
+            selectedShapeId = state.photoWidget.shapeId,
+        )
+    }
+
+    AppBottomSheet(
+        sheetState = cornerRadiusPickerSheetState,
+    ) {
+        CornerRadiusPicker(
+            currentValue = state.photoWidget.cornerRadius,
+            onApplyClick = { newValue ->
+                viewModel.cornerRadiusSelected(newValue)
+                cornerRadiusPickerSheetState.hideBottomSheet()
+            },
+        )
+    }
+
+    PhotoWidgetBorderBottomSheet(
+        sheetState = borderPickerSheetState,
+        currentBorder = state.photoWidget.border,
+        onApplyClick = viewModel::borderSelected,
+    )
+
+    AppBottomSheet(
+        sheetState = opacityPickerSheetState,
+    ) {
+        OpacityPicker(
+            currentValue = state.photoWidget.colors.opacity,
+            onApplyClick = { newValue ->
+                viewModel.opacitySelected(newValue)
+                opacityPickerSheetState.hideBottomSheet()
+            },
+        )
+    }
+
+    PhotoWidgetSaturationBottomSheet(
+        sheetState = saturationPickerSheetState,
+        currentSaturation = state.photoWidget.colors.saturation,
+        onApplyClick = viewModel::saturationSelected,
+    )
+
+    PhotoWidgetBrightnessBottomSheet(
+        sheetState = brightnessPickerSheetState,
+        currentBrightness = state.photoWidget.colors.brightness,
+        onApplyClick = viewModel::brightnessSelected,
+    )
+
+    AppBottomSheet(
+        sheetState = offsetPickerSheetState,
+    ) {
+        PhotoWidgetOffsetPicker(
+            horizontalOffset = state.photoWidget.horizontalOffset,
+            verticalOffset = state.photoWidget.verticalOffset,
+            onApplyClick = { newHorizontalOffset, newVerticalOffset ->
+                viewModel.offsetSelected(newHorizontalOffset, newVerticalOffset)
+                offsetPickerSheetState.hideBottomSheet()
+            },
+        )
+    }
+
+    AppBottomSheet(
+        sheetState = paddingPickerSheetState,
+    ) {
+        PhotoWidgetPaddingPicker(
+            currentValue = state.photoWidget.padding,
+            onApplyClick = { newValue ->
+                viewModel.paddingSelected(newValue)
+                paddingPickerSheetState.hideBottomSheet()
+            },
+        )
+    }
+    // endregion Sheets
+}
 
 @Composable
 fun PhotoWidgetConfigureAppearanceTab(
@@ -131,3 +263,74 @@ fun PhotoWidgetConfigureAppearanceTab(
         }
     }
 }
+
+// region Previews
+@AllPreviews
+@Composable
+private fun PhotoWidgetConfigureAppearanceTabPreview() {
+    ExtendedTheme {
+        PhotoWidgetConfigureAppearanceTab(
+            photoWidget = PhotoWidget(
+                photos = List(10) { index -> LocalPhoto(photoId = "photo-$index") },
+                aspectRatio = PhotoWidgetAspectRatio.ROUNDED_SQUARE,
+            ),
+            onAspectRatioClick = {},
+            onShapeClick = {},
+            onCornerRadiusClick = {},
+            onBorderClick = {},
+            onOpacityClick = {},
+            onSaturationClick = {},
+            onBrightnessClick = {},
+            onOffsetClick = {},
+            onPaddingClick = {},
+            modifier = Modifier.safeDrawingPadding(),
+        )
+    }
+}
+
+@AllPreviews
+@Composable
+private fun PhotoWidgetConfigureAppearanceTabShapePreview() {
+    ExtendedTheme {
+        PhotoWidgetConfigureAppearanceTab(
+            photoWidget = PhotoWidget(
+                photos = List(10) { index -> LocalPhoto(photoId = "photo-$index") },
+                aspectRatio = PhotoWidgetAspectRatio.SQUARE,
+            ),
+            onAspectRatioClick = {},
+            onShapeClick = {},
+            onCornerRadiusClick = {},
+            onBorderClick = {},
+            onOpacityClick = {},
+            onSaturationClick = {},
+            onBrightnessClick = {},
+            onOffsetClick = {},
+            onPaddingClick = {},
+            modifier = Modifier.safeDrawingPadding(),
+        )
+    }
+}
+
+@AllPreviews
+@Composable
+private fun PhotoWidgetConfigureAppearanceTabFillPreview() {
+    ExtendedTheme {
+        PhotoWidgetConfigureAppearanceTab(
+            photoWidget = PhotoWidget(
+                photos = List(10) { index -> LocalPhoto(photoId = "photo-$index") },
+                aspectRatio = PhotoWidgetAspectRatio.FILL_WIDGET,
+            ),
+            onAspectRatioClick = {},
+            onShapeClick = {},
+            onCornerRadiusClick = {},
+            onBorderClick = {},
+            onOpacityClick = {},
+            onSaturationClick = {},
+            onBrightnessClick = {},
+            onOffsetClick = {},
+            onPaddingClick = {},
+            modifier = Modifier.safeDrawingPadding(),
+        )
+    }
+}
+// endregion Previews

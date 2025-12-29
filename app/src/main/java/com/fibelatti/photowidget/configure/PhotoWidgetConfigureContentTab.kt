@@ -2,6 +2,8 @@
 
 package com.fibelatti.photowidget.configure
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -45,6 +48,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -53,10 +57,73 @@ import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.canSort
 import com.fibelatti.photowidget.ui.ShapedPhoto
+import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.fadingEdges
+import com.fibelatti.ui.foundation.rememberAppSheetState
+import com.fibelatti.ui.foundation.showBottomSheet
+import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
+import com.fibelatti.ui.theme.ExtendedTheme
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
+
+@Composable
+fun PhotoWidgetConfigureContentTab(
+    viewModel: PhotoWidgetConfigureViewModel,
+    modifier: Modifier = Modifier,
+) {
+    val state: PhotoWidgetConfigureState by viewModel.state.collectAsStateWithLifecycle()
+
+    val sourceSheetState: AppSheetState = rememberAppSheetState()
+    val importFromWidgetSheetState: AppSheetState = rememberAppSheetState()
+    val recentlyDeletedPhotoSheetState: AppSheetState = rememberAppSheetState()
+
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetMultipleContents(),
+        onResult = viewModel::photoPicked,
+    )
+
+    val dirPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocumentTree(),
+        onResult = viewModel::dirPicked,
+    )
+
+    PhotoWidgetConfigureContentTab(
+        photoWidget = state.photoWidget,
+        onChangeSourceClick = sourceSheetState::showBottomSheet,
+        isImportAvailable = state.isImportAvailable,
+        onImportClick = importFromWidgetSheetState::showBottomSheet,
+        onPhotoPickerClick = { photoPickerLauncher.launch(input = "image/*") },
+        onDirPickerClick = { dirPickerLauncher.launch(input = null) },
+        onPhotoClick = viewModel::previewPhoto,
+        onReorderFinished = viewModel::reorderPhotos,
+        onRemovedPhotoClick = { photo ->
+            recentlyDeletedPhotoSheetState.showBottomSheet(data = photo)
+        },
+        modifier = modifier,
+    )
+
+    // region Sheets
+    PhotoWidgetSourceBottomSheet(
+        sheetState = sourceSheetState,
+        currentSource = state.photoWidget.source,
+        syncedDir = state.photoWidget.syncedDir,
+        onDirRemoved = viewModel::removeDir,
+        onChangeSource = viewModel::changeSource,
+    )
+
+    ImportFromWidgetBottomSheet(
+        sheetState = importFromWidgetSheetState,
+        onWidgetSelected = viewModel::importFromWidget,
+    )
+
+    RecentlyDeletedPhotoBottomSheet(
+        sheetState = recentlyDeletedPhotoSheetState,
+        onRestore = viewModel::restorePhoto,
+        onDelete = viewModel::deletePhotoPermanently,
+    )
+    // endregion Sheets
+}
 
 @Composable
 fun PhotoWidgetConfigureContentTab(
@@ -357,3 +424,48 @@ private fun RemovedPhotosPicker(
         }
     }
 }
+
+// region Previews
+@AllPreviews
+@Composable
+private fun PhotoWidgetConfigureContentTabPreview() {
+    ExtendedTheme {
+        PhotoWidgetConfigureContentTab(
+            photoWidget = PhotoWidget(
+                photos = List(20) { index -> LocalPhoto(photoId = "photo-$index") },
+            ),
+            onChangeSourceClick = {},
+            isImportAvailable = false,
+            onImportClick = {},
+            onPhotoPickerClick = {},
+            onDirPickerClick = {},
+            onPhotoClick = {},
+            onReorderFinished = {},
+            onRemovedPhotoClick = {},
+            modifier = Modifier.safeDrawingPadding(),
+        )
+    }
+}
+
+@AllPreviews
+@Composable
+private fun PhotoWidgetConfigureContentTabDirectoryPreview() {
+    ExtendedTheme {
+        PhotoWidgetConfigureContentTab(
+            photoWidget = PhotoWidget(
+                photos = List(20) { index -> LocalPhoto(photoId = "photo-$index") },
+                source = PhotoWidgetSource.DIRECTORY,
+            ),
+            onChangeSourceClick = {},
+            isImportAvailable = false,
+            onImportClick = {},
+            onPhotoPickerClick = {},
+            onDirPickerClick = {},
+            onPhotoClick = {},
+            onReorderFinished = {},
+            onRemovedPhotoClick = {},
+            modifier = Modifier.safeDrawingPadding(),
+        )
+    }
+}
+// endregion Previews

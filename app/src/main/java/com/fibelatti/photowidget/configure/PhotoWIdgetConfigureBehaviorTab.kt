@@ -1,24 +1,101 @@
 package com.fibelatti.photowidget.configure
 
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.canShuffle
+import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.PickerDefault
+import com.fibelatti.photowidget.ui.BackgroundRestrictionBottomSheet
+import com.fibelatti.photowidget.ui.BackgroundRestrictionWarningDialog
+import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.rememberAppSheetState
+import com.fibelatti.ui.foundation.showBottomSheet
+import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit
+
+@Composable
+fun PhotoWidgetConfigureBehaviorTab(
+    viewModel: PhotoWidgetConfigureViewModel,
+    onNav: (PhotoWidgetConfigureNav) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val state: PhotoWidgetConfigureState by viewModel.state.collectAsStateWithLifecycle()
+
+    var showBackgroundRestrictionDialog: Boolean by remember { mutableStateOf(false) }
+
+    val backgroundRestrictionSheetState: AppSheetState = rememberAppSheetState()
+    val cycleModePickerSheetState: AppSheetState = rememberAppSheetState()
+    val directoryPickerSheetState: AppSheetState = rememberAppSheetState()
+
+    val localContext: Context = LocalContext.current
+
+    PhotoWidgetConfigureBehaviorTab(
+        photoWidget = state.photoWidget,
+        onCycleModePickerClick = {
+            if (localContext.isBackgroundRestricted(checkUnrestrictedBattery = true)) {
+                showBackgroundRestrictionDialog = true
+            } else {
+                cycleModePickerSheetState.showBottomSheet()
+            }
+        },
+        onShuffleChange = viewModel::saveShuffle,
+        onSortClick = directoryPickerSheetState::showBottomSheet,
+        onTapActionPickerClick = { onNav(PhotoWidgetConfigureNav.TapActionPicker) },
+        modifier = modifier,
+    )
+
+    if (showBackgroundRestrictionDialog) {
+        BackgroundRestrictionWarningDialog(
+            onLearnMoreClick = {
+                showBackgroundRestrictionDialog = false
+                backgroundRestrictionSheetState.showBottomSheet()
+            },
+            onIgnoreClick = {
+                showBackgroundRestrictionDialog = false
+                cycleModePickerSheetState.showBottomSheet()
+            },
+        )
+    }
+
+    BackgroundRestrictionBottomSheet(
+        sheetState = backgroundRestrictionSheetState,
+    )
+
+    PhotoWidgetCycleModeBottomSheet(
+        sheetState = cycleModePickerSheetState,
+        cycleMode = state.photoWidget.cycleMode,
+        onApplyClick = viewModel::cycleModeSelected,
+    )
+
+    DirectorySortingBottomSheet(
+        sheetState = directoryPickerSheetState,
+        onItemClick = viewModel::saveSorting,
+    )
+}
 
 @Composable
 fun PhotoWidgetConfigureBehaviorTab(
@@ -102,3 +179,40 @@ fun PhotoWidgetConfigureBehaviorTab(
         )
     }
 }
+
+// region Previews
+@AllPreviews
+@Composable
+private fun PhotoWidgetConfigureBehaviorTabSinglePhotoPreview() {
+    ExtendedTheme {
+        PhotoWidgetConfigureBehaviorTab(
+            photoWidget = PhotoWidget(
+                photos = List(1) { index -> LocalPhoto(photoId = "photo-$index") },
+            ),
+            onCycleModePickerClick = {},
+            onShuffleChange = {},
+            onSortClick = {},
+            onTapActionPickerClick = {},
+            modifier = Modifier.safeDrawingPadding(),
+        )
+    }
+}
+
+@AllPreviews
+@Composable
+private fun PhotoWidgetConfigureBehaviorTabMultiPhotoPreview() {
+    ExtendedTheme {
+        PhotoWidgetConfigureBehaviorTab(
+            photoWidget = PhotoWidget(
+                photos = List(10) { index -> LocalPhoto(photoId = "photo-$index") },
+                source = PhotoWidgetSource.DIRECTORY,
+            ),
+            onCycleModePickerClick = {},
+            onShuffleChange = {},
+            onSortClick = {},
+            onTapActionPickerClick = {},
+            modifier = Modifier.safeDrawingPadding(),
+        )
+    }
+}
+// endregion Previews
