@@ -330,6 +330,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             isLocked: Boolean,
             isCyclePaused: Boolean,
         ) {
+            remoteViews.setViewVisibility(R.id.tap_actions_layout, View.VISIBLE)
+
             val shouldDisableTap: Boolean = photoWidget.tapActionDisableTap && isCyclePaused
 
             val centerClickPendingIntent: PendingIntent? = getTapActionPendingIntent(
@@ -342,34 +344,41 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 externalUri = photoWidget.currentPhoto?.externalUri,
             )
 
-            remoteViews.setViewVisibility(R.id.tap_actions_layout, View.VISIBLE)
-
             remoteViews.setOnClickPendingIntent(R.id.view_tap_center, centerClickPendingIntent)
 
-            remoteViews.setOnClickPendingIntent(
-                R.id.view_tap_left,
-                getTapActionPendingIntent(
-                    context = context,
-                    appWidgetId = appWidgetId,
-                    tapAction = photoWidget.tapActions.left,
-                    isLocked = isLocked,
-                    shouldDisableTap = shouldDisableTap,
-                    originalPhotoPath = photoWidget.currentPhoto?.originalPhotoPath,
-                    externalUri = photoWidget.currentPhoto?.externalUri,
-                ),
+            val tapLeftPendingIntent: PendingIntent? = getTapActionPendingIntent(
+                context = context,
+                appWidgetId = appWidgetId,
+                tapAction = photoWidget.tapActions.left,
+                isLocked = isLocked,
+                shouldDisableTap = shouldDisableTap,
+                originalPhotoPath = photoWidget.currentPhoto?.originalPhotoPath,
+                externalUri = photoWidget.currentPhoto?.externalUri,
             )
-            remoteViews.setOnClickPendingIntent(
-                R.id.view_tap_right,
-                getTapActionPendingIntent(
-                    context = context,
-                    appWidgetId = appWidgetId,
-                    tapAction = photoWidget.tapActions.right,
-                    isLocked = isLocked,
-                    shouldDisableTap = shouldDisableTap,
-                    originalPhotoPath = photoWidget.currentPhoto?.originalPhotoPath,
-                    externalUri = photoWidget.currentPhoto?.externalUri,
-                ),
+
+            if (tapLeftPendingIntent != null) {
+                remoteViews.setViewVisibility(R.id.view_tap_left, View.VISIBLE)
+                remoteViews.setOnClickPendingIntent(R.id.view_tap_left, tapLeftPendingIntent)
+            } else {
+                remoteViews.setViewVisibility(R.id.view_tap_left, View.INVISIBLE)
+            }
+
+            val tapRightPendingIntent: PendingIntent? = getTapActionPendingIntent(
+                context = context,
+                appWidgetId = appWidgetId,
+                tapAction = photoWidget.tapActions.right,
+                isLocked = isLocked,
+                shouldDisableTap = shouldDisableTap,
+                originalPhotoPath = photoWidget.currentPhoto?.originalPhotoPath,
+                externalUri = photoWidget.currentPhoto?.externalUri,
             )
+
+            if (tapRightPendingIntent != null) {
+                remoteViews.setViewVisibility(R.id.view_tap_right, View.VISIBLE)
+                remoteViews.setOnClickPendingIntent(R.id.view_tap_right, tapRightPendingIntent)
+            } else {
+                remoteViews.setViewVisibility(R.id.view_tap_right, View.INVISIBLE)
+            }
         }
 
         private fun getTapActionPendingIntent(
