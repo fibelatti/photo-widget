@@ -47,6 +47,7 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -90,6 +91,8 @@ import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun PhotoWidgetTapActionPicker(
@@ -267,6 +270,7 @@ private fun TapActionPickerContent(
         }
 
         val scrollState = rememberScrollState()
+        val scope = rememberCoroutineScope()
 
         Column(
             modifier = Modifier
@@ -296,7 +300,13 @@ private fun TapActionPickerContent(
 
                     TapOptionsPicker(
                         currentTapAction = currentTapAction,
-                        onTapActionClick = onTapActionChange,
+                        onTapActionClick = { action ->
+                            onTapActionChange(action)
+                            scope.launch {
+                                delay(100L)
+                                scrollState.animateScrollTo(scrollState.maxValue)
+                            }
+                        },
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
