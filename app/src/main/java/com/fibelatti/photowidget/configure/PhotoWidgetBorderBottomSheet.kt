@@ -228,7 +228,7 @@ private fun ColorBorderContent(
 
         Row(
             modifier = Modifier
-                .padding(top = 8.dp)
+                .padding(start = 16.dp, top = 8.dp, end = 16.dp)
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -282,6 +282,7 @@ private fun ColorBorderContent(
         BorderWidthPicker(
             currentWidth = currentWidth,
             onWidthChange = onWidthChange,
+            modifier = Modifier.padding(horizontal = 16.dp),
         )
     }
 }
@@ -317,6 +318,7 @@ private fun DynamicBorderContent(
         BorderWidthPicker(
             currentWidth = currentWidth,
             onWidthChange = onWidthChange,
+            modifier = Modifier.padding(horizontal = 16.dp),
         )
 
         Text(
@@ -401,6 +403,7 @@ private fun MatchPhotoBorderContent(
         BorderWidthPicker(
             currentWidth = currentWidth,
             onWidthChange = onWidthChange,
+            modifier = Modifier.padding(horizontal = 16.dp),
         )
     }
 }
