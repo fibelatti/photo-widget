@@ -16,17 +16,13 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.aspectRatio
@@ -35,7 +31,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
@@ -45,12 +40,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -61,17 +50,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -82,17 +67,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
@@ -104,26 +81,17 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
-import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetText
-import com.fibelatti.photowidget.model.canShuffle
 import com.fibelatti.photowidget.model.canSort
-import com.fibelatti.photowidget.platform.formatPercent
-import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
-import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.CornerRadiusPicker
 import com.fibelatti.photowidget.preferences.OpacityPicker
-import com.fibelatti.photowidget.preferences.PickerDefault
-import com.fibelatti.photowidget.preferences.ShapeDefault
 import com.fibelatti.photowidget.preferences.ShapePicker
 import com.fibelatti.photowidget.ui.BackgroundRestrictionBottomSheet
 import com.fibelatti.photowidget.ui.BackgroundRestrictionWarningDialog
 import com.fibelatti.photowidget.ui.LoadingIndicator
-import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.fadingEdges
@@ -131,11 +99,7 @@ import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
 import com.fibelatti.ui.preview.AllPreviews
-import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
-import java.util.concurrent.TimeUnit
-import sh.calvin.reorderable.ReorderableItem
-import sh.calvin.reorderable.rememberReorderableLazyGridState
 
 @Composable
 fun PhotoWidgetConfigureScreen(
@@ -730,359 +694,6 @@ private fun PhotoWidgetViewer(
 }
 
 @Composable
-private fun PhotoWidgetEditor(
-    photoWidget: PhotoWidget,
-    isUpdating: Boolean,
-    onChangeSourceClick: () -> Unit,
-    isImportAvailable: Boolean,
-    onImportClick: () -> Unit,
-    onPhotoPickerClick: () -> Unit,
-    onDirPickerClick: () -> Unit,
-    onPhotoClick: (LocalPhoto) -> Unit,
-    onReorderFinished: (List<LocalPhoto>) -> Unit,
-    onRemovedPhotoClick: (LocalPhoto) -> Unit,
-    onAspectRatioClick: () -> Unit,
-    onShapeClick: () -> Unit,
-    onCornerRadiusClick: () -> Unit,
-    onBorderClick: () -> Unit,
-    onOpacityClick: () -> Unit,
-    onSaturationClick: () -> Unit,
-    onBrightnessClick: () -> Unit,
-    onOffsetClick: () -> Unit,
-    onPaddingClick: () -> Unit,
-    onPhotoWidgetTextChange: (PhotoWidgetText) -> Unit,
-    onCycleModePickerClick: () -> Unit,
-    onShuffleChange: (Boolean) -> Unit,
-    onSortClick: () -> Unit,
-    onTapActionPickerClick: () -> Unit,
-    onAddToHomeClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    contentWindowInsets: WindowInsets = WindowInsets.navigationBars,
-) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
-            .windowInsetsPadding(contentWindowInsets),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        ConfigureTabs(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-        ) { tab ->
-            val tabContentScrollState = rememberScrollState()
-            val tabContentModifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(tabContentScrollState)
-                .padding(vertical = 16.dp)
-                .fadingEdges(scrollState = tabContentScrollState)
-
-            when (tab) {
-                ConfigureTab.CONTENT -> {
-                    ContentTab(
-                        photoWidget = photoWidget,
-                        onChangeSourceClick = onChangeSourceClick,
-                        isImportAvailable = isImportAvailable,
-                        onImportClick = onImportClick,
-                        onPhotoPickerClick = onPhotoPickerClick,
-                        onDirPickerClick = onDirPickerClick,
-                        onPhotoClick = onPhotoClick,
-                        onReorderFinished = onReorderFinished,
-                        onRemovedPhotoClick = onRemovedPhotoClick,
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
-
-                ConfigureTab.APPEARANCE -> {
-                    AppearanceTab(
-                        photoWidget = photoWidget,
-                        onAspectRatioClick = onAspectRatioClick,
-                        onShapeClick = onShapeClick,
-                        onCornerRadiusClick = onCornerRadiusClick,
-                        onBorderClick = onBorderClick,
-                        onOpacityClick = onOpacityClick,
-                        onSaturationClick = onSaturationClick,
-                        onBrightnessClick = onBrightnessClick,
-                        onOffsetClick = onOffsetClick,
-                        onPaddingClick = onPaddingClick,
-                        modifier = tabContentModifier,
-                    )
-                }
-
-                ConfigureTab.TEXT -> {
-                    PhotoWidgetConfigureTextTab(
-                        photoWidgetText = photoWidget.text,
-                        onPhotoWidgetTextChange = onPhotoWidgetTextChange,
-                        modifier = tabContentModifier,
-                    )
-                }
-
-                ConfigureTab.BEHAVIOR -> {
-                    BehaviorTab(
-                        photoWidget = photoWidget,
-                        onCycleModePickerClick = onCycleModePickerClick,
-                        onShuffleChange = onShuffleChange,
-                        onSortClick = onSortClick,
-                        onTapActionPickerClick = onTapActionPickerClick,
-                        modifier = tabContentModifier,
-                    )
-                }
-            }
-        }
-
-        Button(
-            onClick = onAddToHomeClick,
-            shapes = ButtonDefaults.shapes(),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-        ) {
-            Text(
-                text = stringResource(
-                    id = if (isUpdating) {
-                        R.string.photo_widget_configure_save_changes
-                    } else {
-                        R.string.photo_widget_configure_add_to_home
-                    },
-                ),
-            )
-        }
-    }
-}
-// endregion Sections
-
-// region Tabs
-@Composable
-private fun ContentTab(
-    photoWidget: PhotoWidget,
-    onChangeSourceClick: () -> Unit,
-    isImportAvailable: Boolean,
-    onImportClick: () -> Unit,
-    onPhotoPickerClick: () -> Unit,
-    onDirPickerClick: () -> Unit,
-    onPhotoClick: (LocalPhoto) -> Unit,
-    onReorderFinished: (List<LocalPhoto>) -> Unit,
-    onRemovedPhotoClick: (LocalPhoto) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    PhotoPicker(
-        source = photoWidget.source,
-        onChangeSourceClick = onChangeSourceClick,
-        isImportAvailable = isImportAvailable,
-        onImportClick = onImportClick,
-        photos = photoWidget.photos,
-        canSort = photoWidget.canSort,
-        onPhotoPickerClick = onPhotoPickerClick,
-        onDirPickerClick = onDirPickerClick,
-        onPhotoClick = onPhotoClick,
-        onReorderFinished = onReorderFinished,
-        removedPhotos = photoWidget.removedPhotos,
-        onRemovedPhotoClick = onRemovedPhotoClick,
-        aspectRatio = photoWidget.aspectRatio,
-        shapeId = photoWidget.shapeId,
-        modifier = modifier.fillMaxSize(),
-    )
-}
-
-@Composable
-private fun AppearanceTab(
-    photoWidget: PhotoWidget,
-    onAspectRatioClick: () -> Unit,
-    onShapeClick: () -> Unit,
-    onCornerRadiusClick: () -> Unit,
-    onBorderClick: () -> Unit,
-    onOpacityClick: () -> Unit,
-    onSaturationClick: () -> Unit,
-    onBrightnessClick: () -> Unit,
-    onOffsetClick: () -> Unit,
-    onPaddingClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        PickerDefault(
-            title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
-            currentValue = stringResource(id = photoWidget.aspectRatio.label),
-            onClick = onAspectRatioClick,
-            modifier = Modifier.padding(horizontal = 16.dp),
-        )
-
-        if (PhotoWidgetAspectRatio.SQUARE == photoWidget.aspectRatio) {
-            ShapeDefault(
-                title = stringResource(id = R.string.widget_defaults_shape),
-                currentValue = photoWidget.shapeId,
-                onClick = onShapeClick,
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
-        } else if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
-            PickerDefault(
-                title = stringResource(id = R.string.widget_defaults_corner_radius),
-                currentValue = photoWidget.cornerRadius.toString(),
-                onClick = onCornerRadiusClick,
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
-        }
-
-        if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
-            PickerDefault(
-                title = stringResource(R.string.photo_widget_configure_border),
-                currentValue = when (photoWidget.border) {
-                    is PhotoWidgetBorder.None -> stringResource(id = R.string.photo_widget_configure_border_none)
-                    is PhotoWidgetBorder.Color -> "#${photoWidget.border.colorHex}".toUpperCase(Locale.current)
-                    is PhotoWidgetBorder.Dynamic -> stringResource(R.string.photo_widget_configure_border_dynamic)
-                    is PhotoWidgetBorder.MatchPhoto -> {
-                        when (photoWidget.border.type) {
-                            PhotoWidgetBorder.MatchPhoto.Type.DOMINANT -> {
-                                stringResource(R.string.photo_widget_configure_border_color_palette_dominant)
-                            }
-
-                            PhotoWidgetBorder.MatchPhoto.Type.VIBRANT -> {
-                                stringResource(R.string.photo_widget_configure_border_color_palette_vibrant)
-                            }
-
-                            PhotoWidgetBorder.MatchPhoto.Type.MUTED -> {
-                                stringResource(R.string.photo_widget_configure_border_color_palette_muted)
-                            }
-                        }
-                    }
-                },
-                onClick = onBorderClick,
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
-        }
-
-        PickerDefault(
-            title = stringResource(id = R.string.widget_defaults_opacity),
-            currentValue = formatPercent(value = photoWidget.colors.opacity, fractionDigits = 0),
-            onClick = onOpacityClick,
-            modifier = Modifier.padding(horizontal = 16.dp),
-        )
-
-        PickerDefault(
-            title = stringResource(R.string.widget_defaults_saturation),
-            currentValue = formatRangeValue(value = PhotoWidgetColors.pickerSaturation(photoWidget.colors.saturation)),
-            onClick = onSaturationClick,
-            modifier = Modifier.padding(horizontal = 16.dp),
-        )
-
-        PickerDefault(
-            title = stringResource(R.string.widget_defaults_brightness),
-            currentValue = formatRangeValue(value = photoWidget.colors.brightness),
-            onClick = onBrightnessClick,
-            modifier = Modifier.padding(horizontal = 16.dp),
-        )
-
-        if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
-            PickerDefault(
-                title = stringResource(id = R.string.photo_widget_configure_offset),
-                currentValue = stringResource(
-                    id = R.string.photo_widget_configure_offset_current_values,
-                    photoWidget.horizontalOffset,
-                    photoWidget.verticalOffset,
-                ),
-                onClick = onOffsetClick,
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
-
-            PickerDefault(
-                title = stringResource(id = R.string.photo_widget_configure_padding),
-                currentValue = photoWidget.padding.toString(),
-                onClick = onPaddingClick,
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
-        }
-    }
-}
-
-@Composable
-private fun BehaviorTab(
-    photoWidget: PhotoWidget,
-    onCycleModePickerClick: () -> Unit,
-    onShuffleChange: (Boolean) -> Unit,
-    onSortClick: () -> Unit,
-    onTapActionPickerClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
-    ) {
-        if (photoWidget.photos.size > 1) {
-            PickerDefault(
-                title = stringResource(id = R.string.widget_defaults_cycling),
-                currentValue = when (photoWidget.cycleMode) {
-                    is PhotoWidgetCycleMode.Interval -> {
-                        val intervalString = pluralStringResource(
-                            id = when (photoWidget.cycleMode.loopingInterval.timeUnit) {
-                                TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
-                                TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
-                                TimeUnit.HOURS -> R.plurals.photo_widget_configure_interval_current_hours
-                                else -> R.plurals.photo_widget_configure_interval_current_days
-                            },
-                            count = photoWidget.cycleMode.loopingInterval.repeatInterval.toInt(),
-                            photoWidget.cycleMode.loopingInterval.repeatInterval,
-                        )
-                        stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
-                    }
-
-                    is PhotoWidgetCycleMode.Schedule -> {
-                        pluralStringResource(
-                            id = R.plurals.photo_widget_configure_schedule_times,
-                            count = photoWidget.cycleMode.triggers.size,
-                            photoWidget.cycleMode.triggers.size,
-                        )
-                    }
-
-                    is PhotoWidgetCycleMode.Disabled -> {
-                        stringResource(id = R.string.photo_widget_configure_cycling_mode_disabled)
-                    }
-                },
-                onClick = onCycleModePickerClick,
-            )
-        }
-
-        if (photoWidget.canShuffle) {
-            Spacer(modifier = Modifier.height(12.dp))
-
-            BooleanDefault(
-                title = stringResource(R.string.widget_defaults_shuffle),
-                currentValue = photoWidget.shuffle,
-                onCheckedChange = onShuffleChange,
-            )
-        }
-
-        AnimatedVisibility(
-            visible = PhotoWidgetSource.DIRECTORY == photoWidget.source && !photoWidget.shuffle,
-        ) {
-            PickerDefault(
-                title = stringResource(R.string.photo_widget_directory_sort_title),
-                currentValue = stringResource(id = photoWidget.directorySorting.label),
-                onClick = onSortClick,
-                modifier = Modifier.padding(top = 12.dp),
-            )
-        }
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        PickerDefault(
-            title = stringResource(id = R.string.widget_defaults_tap_action),
-            currentValue = buildString {
-                appendLine(stringResource(id = photoWidget.tapActions.left.label))
-                appendLine(stringResource(id = photoWidget.tapActions.center.label))
-                appendLine(stringResource(id = photoWidget.tapActions.right.label))
-            },
-            onClick = onTapActionPickerClick,
-        )
-    }
-}
-// endregion Tabs
-
-// region Components
-@Composable
 private fun EditingControls(
     onCropClick: () -> Unit,
     onRemoveClick: () -> Unit,
@@ -1152,278 +763,129 @@ private fun EditingControls(
         }
     }
 }
-// endregion Components
 
-// region Pickers
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
-private fun PhotoPicker(
-    source: PhotoWidgetSource,
+private fun PhotoWidgetEditor(
+    photoWidget: PhotoWidget,
+    isUpdating: Boolean,
     onChangeSourceClick: () -> Unit,
     isImportAvailable: Boolean,
     onImportClick: () -> Unit,
-    photos: List<LocalPhoto>,
-    canSort: Boolean,
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
     onReorderFinished: (List<LocalPhoto>) -> Unit,
-    removedPhotos: List<LocalPhoto>,
     onRemovedPhotoClick: (LocalPhoto) -> Unit,
-    aspectRatio: PhotoWidgetAspectRatio,
-    shapeId: String,
+    onAspectRatioClick: () -> Unit,
+    onShapeClick: () -> Unit,
+    onCornerRadiusClick: () -> Unit,
+    onBorderClick: () -> Unit,
+    onOpacityClick: () -> Unit,
+    onSaturationClick: () -> Unit,
+    onBrightnessClick: () -> Unit,
+    onOffsetClick: () -> Unit,
+    onPaddingClick: () -> Unit,
+    onPhotoWidgetTextChange: (PhotoWidgetText) -> Unit,
+    onCycleModePickerClick: () -> Unit,
+    onShuffleChange: (Boolean) -> Unit,
+    onSortClick: () -> Unit,
+    onTapActionPickerClick: () -> Unit,
+    onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
+    contentWindowInsets: WindowInsets = WindowInsets.navigationBars,
 ) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.BottomCenter,
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background)
+            .windowInsetsPadding(contentWindowInsets),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        val localHaptics = LocalHapticFeedback.current
-
-        val currentPhotos by rememberUpdatedState(photos.toMutableStateList())
-        val lazyGridState = rememberLazyGridState()
-        val reorderableLazyGridState = rememberReorderableLazyGridState(lazyGridState) { from, to ->
-            currentPhotos.apply {
-                this[to.index] = this[from.index].also {
-                    this[from.index] = this[to.index]
-                }
-            }
-            localHaptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
-        }
-
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(count = 5),
+        ConfigureTabs(
             modifier = Modifier
-                .fillMaxSize()
-                .fadingEdges(scrollState = lazyGridState),
-            state = lazyGridState,
-            contentPadding = PaddingValues(start = 16.dp, top = 68.dp, end = 16.dp, bottom = 200.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            items(currentPhotos, key = { photo -> photo }) { photo ->
-                ReorderableItem(reorderableLazyGridState, key = photo) {
-                    ShapedPhoto(
-                        photo = photo,
-                        aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                        shapeId = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
-                            shapeId
-                        } else {
-                            PhotoWidget.DEFAULT_SHAPE_ID
-                        },
-                        cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
-                        modifier = Modifier
-                            .animateItem()
-                            .longPressDraggableHandle(
-                                enabled = canSort,
-                                onDragStarted = {
-                                    localHaptics.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate)
-                                },
-                                onDragStopped = {
-                                    onReorderFinished(currentPhotos)
-                                    localHaptics.performHapticFeedback(HapticFeedbackType.GestureEnd)
-                                },
-                            )
-                            .aspectRatio(ratio = 1f)
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                                role = Role.Image,
-                                onClick = { onPhotoClick(photo) },
-                            ),
-                    )
-                }
-            }
-        }
-
-        Column(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
                 .fillMaxWidth()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colorStops = arrayOf(
-                            0f to MaterialTheme.colorScheme.background,
-                            0.8f to MaterialTheme.colorScheme.background.copy(alpha = 0.95f),
-                            1f to Color.Transparent,
-                        ),
-                    ),
-                )
-                .padding(all = 16.dp),
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                val interactionSources: Array<MutableInteractionSource> = remember {
-                    Array(size = 2) { MutableInteractionSource() }
-                }
+                .weight(1f),
+        ) { tab ->
+            val tabContentScrollState = rememberScrollState()
+            val tabContentModifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(tabContentScrollState)
+                .padding(vertical = 16.dp)
+                .fadingEdges(scrollState = tabContentScrollState)
 
-                OutlinedButton(
-                    onClick = {
-                        when (source) {
-                            PhotoWidgetSource.PHOTOS -> onPhotoPickerClick()
-                            PhotoWidgetSource.DIRECTORY -> onDirPickerClick()
-                        }
-                    },
-                    shapes = ButtonDefaults.shapes(),
-                    modifier = Modifier
-                        .weight(1f)
-                        .heightIn(max = 36.dp),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-                    interactionSource = interactionSources[0],
-                ) {
-                    AutoSizeText(
-                        text = stringResource(
-                            id = when (source) {
-                                PhotoWidgetSource.PHOTOS -> R.string.photo_widget_configure_pick_photo
-                                PhotoWidgetSource.DIRECTORY -> R.string.photo_widget_configure_pick_folder
-                            },
-                        ),
-                        textAlign = TextAlign.Center,
-                        maxLines = 1,
+            when (tab) {
+                ConfigureTab.CONTENT -> {
+                    PhotoWidgetConfigureContentTab(
+                        photoWidget = photoWidget,
+                        onChangeSourceClick = onChangeSourceClick,
+                        isImportAvailable = isImportAvailable,
+                        onImportClick = onImportClick,
+                        onPhotoPickerClick = onPhotoPickerClick,
+                        onDirPickerClick = onDirPickerClick,
+                        onPhotoClick = onPhotoClick,
+                        onReorderFinished = onReorderFinished,
+                        onRemovedPhotoClick = onRemovedPhotoClick,
+                        modifier = Modifier.fillMaxSize(),
                     )
                 }
 
-                OutlinedButton(
-                    onClick = onChangeSourceClick,
-                    shapes = ButtonDefaults.shapes(),
-                    modifier = Modifier
-                        .weight(1f)
-                        .heightIn(max = 36.dp),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-                    interactionSource = interactionSources[1],
-                ) {
-                    AutoSizeText(
-                        text = stringResource(R.string.photo_widget_configure_change_source),
-                        textAlign = TextAlign.Center,
-                        maxLines = 1,
+                ConfigureTab.APPEARANCE -> {
+                    PhotoWidgetConfigureAppearanceTab(
+                        photoWidget = photoWidget,
+                        onAspectRatioClick = onAspectRatioClick,
+                        onShapeClick = onShapeClick,
+                        onCornerRadiusClick = onCornerRadiusClick,
+                        onBorderClick = onBorderClick,
+                        onOpacityClick = onOpacityClick,
+                        onSaturationClick = onSaturationClick,
+                        onBrightnessClick = onBrightnessClick,
+                        onOffsetClick = onOffsetClick,
+                        onPaddingClick = onPaddingClick,
+                        modifier = tabContentModifier,
                     )
                 }
-            }
 
-            AnimatedVisibility(
-                visible = isImportAvailable && photos.isEmpty() && removedPhotos.isEmpty(),
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = 32.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.primaryContainer,
-                            shape = MaterialTheme.shapes.medium,
-                        )
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = stringResource(R.string.photo_widget_configure_import_prompt),
-                        modifier = Modifier.weight(1f),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.bodyMediumEmphasized,
+                ConfigureTab.TEXT -> {
+                    PhotoWidgetConfigureTextTab(
+                        photoWidgetText = photoWidget.text,
+                        onPhotoWidgetTextChange = onPhotoWidgetTextChange,
+                        modifier = tabContentModifier,
                     )
+                }
 
-                    TextButton(
-                        onClick = onImportClick,
-                    ) {
-                        Text(
-                            text = stringResource(R.string.photo_widget_configure_import_prompt_action),
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        )
-                    }
+                ConfigureTab.BEHAVIOR -> {
+                    PhotoWidgetConfigureBehaviorTab(
+                        photoWidget = photoWidget,
+                        onCycleModePickerClick = onCycleModePickerClick,
+                        onShuffleChange = onShuffleChange,
+                        onSortClick = onSortClick,
+                        onTapActionPickerClick = onTapActionPickerClick,
+                        modifier = tabContentModifier,
+                    )
                 }
             }
         }
 
-        AnimatedVisibility(
-            visible = removedPhotos.isNotEmpty(),
-            modifier = Modifier.fillMaxWidth(),
+        Button(
+            onClick = onAddToHomeClick,
+            shapes = ButtonDefaults.shapes(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
         ) {
-            RemovedPhotosPicker(
-                title = when (source) {
-                    PhotoWidgetSource.PHOTOS -> stringResource(
-                        R.string.photo_widget_configure_photos_pending_deletion,
-                    )
-
-                    PhotoWidgetSource.DIRECTORY -> stringResource(R.string.photo_widget_configure_photos_excluded)
-                },
-                photos = removedPhotos,
-                onPhotoClick = onRemovedPhotoClick,
-                aspectRatio = aspectRatio,
-                shapeId = shapeId,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colorStops = arrayOf(
-                                0f to Color.Transparent,
-                                0.2f to MaterialTheme.colorScheme.background.copy(alpha = 0.95f),
-                                1f to MaterialTheme.colorScheme.background,
-                            ),
-                        ),
-                    )
-                    .padding(top = 32.dp),
+            Text(
+                text = stringResource(
+                    id = if (isUpdating) {
+                        R.string.photo_widget_configure_save_changes
+                    } else {
+                        R.string.photo_widget_configure_add_to_home
+                    },
+                ),
             )
         }
     }
 }
-
-@Composable
-private fun RemovedPhotosPicker(
-    title: String,
-    photos: List<LocalPhoto>,
-    onPhotoClick: (LocalPhoto) -> Unit,
-    aspectRatio: PhotoWidgetAspectRatio,
-    shapeId: String,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        Text(
-            text = title,
-            modifier = Modifier.padding(horizontal = 16.dp),
-            color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.titleMedium,
-        )
-
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(64.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            items(photos, key = { it.photoId }) { photo ->
-                ShapedPhoto(
-                    photo = photo,
-                    aspectRatio = PhotoWidgetAspectRatio.SQUARE,
-                    shapeId = if (PhotoWidgetAspectRatio.SQUARE == aspectRatio) {
-                        shapeId
-                    } else {
-                        PhotoWidget.DEFAULT_SHAPE_ID
-                    },
-                    cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
-                    modifier = Modifier
-                        .animateItem()
-                        .fillMaxWidth()
-                        .aspectRatio(ratio = 1f)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            role = Role.Image,
-                            onClick = { onPhotoClick(photo) },
-                        ),
-                    colors = PhotoWidgetColors(saturation = 0f),
-                )
-            }
-        }
-    }
-}
-// endregion Pickers
+// endregion Sections
 
 // region Previews
 @Composable
