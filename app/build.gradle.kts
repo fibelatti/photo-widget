@@ -204,6 +204,8 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
 
+    implementation(libs.adaptive.android)
+
     // Misc
     ksp(libs.dagger.hilt.compiler)
     ksp(libs.hilt.compiler)

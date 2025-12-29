@@ -19,7 +19,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -51,6 +50,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -74,6 +74,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import androidx.window.core.layout.WindowSizeClass
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -278,63 +279,68 @@ private fun PhotoWidgetConfigureContent(
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    BoxWithConstraints(modifier = modifier) {
-        if (maxWidth < 840.dp) {
-            Column {
-                PhotoWidgetViewer(
-                    photoWidget = photoWidget,
-                    selectedPhoto = selectedPhoto,
-                    onNavClick = onNavClick,
-                    onCropClick = onCropClick,
-                    onRemoveClick = onRemoveClick,
-                    onMoveLeftClick = onMoveLeftClick,
-                    onMoveRightClick = onMoveRightClick,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(360.dp),
-                    editingControlsInsets = WindowInsets.safeDrawing
-                        .only(sides = WindowInsetsSides.Start + WindowInsetsSides.Top)
-                        .add(WindowInsets(bottom = 8.dp)),
-                )
+    val isAtLeastMediumWidth: Boolean = currentWindowAdaptiveInfo().windowSizeClass
+        .isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
 
-                PhotoWidgetEditor(
-                    contentTab = contentTab,
-                    appearanceTab = appearanceTab,
-                    textTab = textTab,
-                    behaviorTab = behaviorTab,
-                    isUpdating = isUpdating,
-                    onAddToHomeClick = onAddToHomeClick,
-                    contentWindowInsets = WindowInsets.navigationBars,
-                )
-            }
-        } else {
-            Row {
-                PhotoWidgetViewer(
-                    photoWidget = photoWidget,
-                    selectedPhoto = selectedPhoto,
-                    onNavClick = onNavClick,
-                    onCropClick = onCropClick,
-                    onRemoveClick = onRemoveClick,
-                    onMoveLeftClick = onMoveLeftClick,
-                    onMoveRightClick = onMoveRightClick,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .fillMaxWidth(fraction = 0.4f),
-                    editingControlsInsets = WindowInsets.safeDrawing
-                        .only(sides = WindowInsetsSides.Start + WindowInsetsSides.Vertical),
-                )
+    if (!isAtLeastMediumWidth) {
+        Column(
+            modifier = modifier,
+        ) {
+            PhotoWidgetViewer(
+                photoWidget = photoWidget,
+                selectedPhoto = selectedPhoto,
+                onNavClick = onNavClick,
+                onCropClick = onCropClick,
+                onRemoveClick = onRemoveClick,
+                onMoveLeftClick = onMoveLeftClick,
+                onMoveRightClick = onMoveRightClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(360.dp),
+                editingControlsInsets = WindowInsets.safeDrawing
+                    .only(sides = WindowInsetsSides.Start + WindowInsetsSides.Top)
+                    .add(WindowInsets(bottom = 8.dp)),
+            )
 
-                PhotoWidgetEditor(
-                    contentTab = contentTab,
-                    appearanceTab = appearanceTab,
-                    textTab = textTab,
-                    behaviorTab = behaviorTab,
-                    isUpdating = isUpdating,
-                    onAddToHomeClick = onAddToHomeClick,
-                    contentWindowInsets = WindowInsets.systemBars
-                        .union(WindowInsets.displayCutout.only(WindowInsetsSides.End)),
-                )
-            }
+            PhotoWidgetEditor(
+                contentTab = contentTab,
+                appearanceTab = appearanceTab,
+                textTab = textTab,
+                behaviorTab = behaviorTab,
+                isUpdating = isUpdating,
+                onAddToHomeClick = onAddToHomeClick,
+                contentWindowInsets = WindowInsets.navigationBars,
+            )
+        }
+    } else {
+        Row(
+            modifier = modifier,
+        ) {
+            PhotoWidgetViewer(
+                photoWidget = photoWidget,
+                selectedPhoto = selectedPhoto,
+                onNavClick = onNavClick,
+                onCropClick = onCropClick,
+                onRemoveClick = onRemoveClick,
+                onMoveLeftClick = onMoveLeftClick,
+                onMoveRightClick = onMoveRightClick,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth(fraction = 0.4f),
+                editingControlsInsets = WindowInsets.safeDrawing
+                    .only(sides = WindowInsetsSides.Start + WindowInsetsSides.Vertical),
+            )
+
+            PhotoWidgetEditor(
+                contentTab = contentTab,
+                appearanceTab = appearanceTab,
+                textTab = textTab,
+                behaviorTab = behaviorTab,
+                isUpdating = isUpdating,
+                onAddToHomeClick = onAddToHomeClick,
+                contentWindowInsets = WindowInsets.systemBars
+                    .union(WindowInsets.displayCutout.only(WindowInsetsSides.End)),
+            )
         }
     }
 }

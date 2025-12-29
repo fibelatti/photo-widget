@@ -16,7 +16,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -44,6 +43,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -73,6 +73,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
+import androidx.window.core.layout.WindowSizeClass
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
@@ -280,38 +281,39 @@ private fun TapActionPickerContent(
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            BoxWithConstraints {
-                if (maxWidth < 600.dp) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                    ) {
-                        TapAreaIndicator(
-                            tapActionArea = selectedArea,
-                            modifier = Modifier.fillMaxWidth(),
-                        )
+            val isAtLeastMediumWidth: Boolean = currentWindowAdaptiveInfo().windowSizeClass
+                .isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
 
-                        TapOptionsPicker(
-                            currentTapAction = currentTapAction,
-                            onTapActionClick = onTapActionChange,
-                            modifier = Modifier.fillMaxWidth(),
-                        )
-                    }
-                } else {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        TapAreaIndicator(
-                            tapActionArea = selectedArea,
-                            modifier = Modifier.weight(0.4f),
-                        )
+            if (!isAtLeastMediumWidth) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                ) {
+                    TapAreaIndicator(
+                        tapActionArea = selectedArea,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
 
-                        TapOptionsPicker(
-                            currentTapAction = currentTapAction,
-                            onTapActionClick = onTapActionChange,
-                            modifier = Modifier.weight(0.6f),
-                        )
-                    }
+                    TapOptionsPicker(
+                        currentTapAction = currentTapAction,
+                        onTapActionClick = onTapActionChange,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+            } else {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    TapAreaIndicator(
+                        tapActionArea = selectedArea,
+                        modifier = Modifier.weight(0.4f),
+                    )
+
+                    TapOptionsPicker(
+                        currentTapAction = currentTapAction,
+                        onTapActionClick = onTapActionChange,
+                        modifier = Modifier.weight(0.6f),
+                    )
                 }
             }
 

@@ -7,12 +7,12 @@ import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,18 +22,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.max
+import androidx.compose.ui.unit.IntSize
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.getMaxBitmapWidgetDimension
-import com.fibelatti.ui.foundation.dpToPx
-import kotlin.math.roundToInt
+import kotlin.math.max
 import kotlinx.coroutines.delay
 
 @Composable
@@ -46,8 +46,13 @@ fun AsyncPhotoViewer(
     constraintMode: AsyncPhotoViewer.BitmapSizeConstraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.DISPLAY,
     transformer: (Bitmap) -> Bitmap = { it },
 ) {
-    BoxWithConstraints(
-        modifier = modifier,
+    var composableSize: IntSize by remember { mutableStateOf(IntSize.Zero) }
+    val largestSize: Int by remember {
+        derivedStateOf { max(composableSize.width, composableSize.width) }
+    }
+
+    Box(
+        modifier = modifier.onSizeChanged { newSize -> composableSize = newSize },
         contentAlignment = Alignment.Center,
     ) {
         val localInspectionMode: Boolean = LocalInspectionMode.current
@@ -74,12 +79,11 @@ fun AsyncPhotoViewer(
             lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
         }
 
-        val largestSize: Int = max(maxWidth, maxHeight).dpToPx().roundToInt()
         val maxWidgetDimension: Int = localContext.getMaxBitmapWidgetDimension(
             coerceMaxMemory = constraintMode == AsyncPhotoViewer.BitmapSizeConstraintMode.MEMORY,
         ).coerceAtMost(largestSize)
 
-        LaunchedEffect(*dataKey) {
+        LaunchedEffect(*dataKey.plus(largestSize)) {
             if (localInspectionMode) return@LaunchedEffect
             if (data != null) {
                 photoBitmap = decoder.decode(

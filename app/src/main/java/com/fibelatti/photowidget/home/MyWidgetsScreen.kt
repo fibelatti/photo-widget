@@ -11,7 +11,6 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -29,6 +28,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -46,6 +46,7 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.window.core.layout.WindowSizeClass
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -72,7 +73,7 @@ fun MyWidgetsScreen(
     onRemovedWidgetClick: (appWidgetId: Int, PhotoWidgetStatus) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    BoxWithConstraints(
+    Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.TopCenter,
     ) {
@@ -89,6 +90,9 @@ fun MyWidgetsScreen(
 
         val enforcedShape: Shape = RoundedCornerShape(28.dp)
 
+        val isAtLeastMediumWidth: Boolean = currentWindowAdaptiveInfo().windowSizeClass
+            .isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
+
         AnimatedContent(
             targetState = filteredWidgets,
             transitionSpec = {
@@ -103,7 +107,7 @@ fun MyWidgetsScreen(
         ) { items: List<Pair<Int, PhotoWidget>> ->
             if (items.isNotEmpty()) {
                 LazyVerticalStaggeredGrid(
-                    columns = StaggeredGridCells.Fixed(count = if (maxWidth < 600.dp) 2 else 4),
+                    columns = StaggeredGridCells.Fixed(count = if (isAtLeastMediumWidth) 4 else 2),
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(start = 16.dp, top = 80.dp, end = 16.dp, bottom = 120.dp),
                     verticalItemSpacing = 16.dp,
