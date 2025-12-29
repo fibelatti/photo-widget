@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.add
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -292,7 +293,8 @@ private fun PhotoWidgetConfigureContent(
                         .fillMaxWidth()
                         .height(360.dp),
                     editingControlsInsets = WindowInsets.safeDrawing
-                        .only(sides = WindowInsetsSides.Start + WindowInsetsSides.Top),
+                        .only(sides = WindowInsetsSides.Start + WindowInsetsSides.Top)
+                        .add(WindowInsets(bottom = 8.dp)),
                 )
 
                 PhotoWidgetEditor(
