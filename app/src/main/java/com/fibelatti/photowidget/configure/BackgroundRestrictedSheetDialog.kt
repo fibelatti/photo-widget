@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.ui
+package com.fibelatti.photowidget.configure
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

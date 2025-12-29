@@ -28,8 +28,6 @@ import com.fibelatti.photowidget.model.canShuffle
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.PickerDefault
-import com.fibelatti.photowidget.ui.BackgroundRestrictionBottomSheet
-import com.fibelatti.photowidget.ui.BackgroundRestrictionWarningDialog
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet

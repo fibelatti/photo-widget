@@ -83,6 +83,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.canSort
 import com.fibelatti.photowidget.ui.LoadingIndicator
+import com.fibelatti.photowidget.ui.LocalSamplePhoto
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.AllPreviews

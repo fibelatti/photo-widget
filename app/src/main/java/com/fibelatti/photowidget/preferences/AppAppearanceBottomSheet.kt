@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.home
+package com.fibelatti.photowidget.preferences
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.padding
@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
-import com.fibelatti.photowidget.preferences.Appearance
 import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.SelectionDialogBottomSheet

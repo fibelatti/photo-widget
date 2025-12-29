@@ -18,6 +18,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.preferences.DefaultPicker
 import com.fibelatti.photowidget.preferences.DefaultPickerFooterButtons
+import com.fibelatti.photowidget.ui.LocalSamplePhoto
 import com.fibelatti.photowidget.ui.NumberSpinner
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
 

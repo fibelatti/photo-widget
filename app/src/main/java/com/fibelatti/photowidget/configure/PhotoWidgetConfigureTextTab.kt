@@ -49,6 +49,7 @@ import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.DefaultPicker
 import com.fibelatti.photowidget.preferences.DefaultPickerFooterButtons
 import com.fibelatti.photowidget.preferences.PickerDefault
+import com.fibelatti.photowidget.ui.LocalSamplePhoto
 import com.fibelatti.photowidget.ui.NumberSpinner
 import com.fibelatti.photowidget.ui.RadioGroup
 import com.fibelatti.photowidget.ui.WarningSign

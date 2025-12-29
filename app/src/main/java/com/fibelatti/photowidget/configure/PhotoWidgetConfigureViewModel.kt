@@ -19,6 +19,7 @@ import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
 import com.fibelatti.photowidget.widget.DuplicatePhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.RestoreWidgetUseCase
+import com.fibelatti.photowidget.widget.SavePhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.configure
+package com.fibelatti.photowidget.ui
 
 import android.annotation.SuppressLint
 import android.content.Context

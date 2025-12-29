@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.hints
+package com.fibelatti.photowidget.help
 
 import android.content.Context
 import androidx.core.content.edit

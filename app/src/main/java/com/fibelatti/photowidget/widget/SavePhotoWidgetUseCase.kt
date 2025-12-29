@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.configure
+package com.fibelatti.photowidget.widget
 
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -8,7 +8,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.canShuffle
 import com.fibelatti.photowidget.model.photoCycleEnabled
-import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import javax.inject.Inject
 import timber.log.Timber
@@ -110,7 +109,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
             cornerRadius = if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
                 photoWidget.cornerRadius
             } else {
-                PhotoWidget.DEFAULT_CORNER_RADIUS
+                PhotoWidget.Companion.DEFAULT_CORNER_RADIUS
             },
         )
 

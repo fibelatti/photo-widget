@@ -86,7 +86,6 @@ import com.fibelatti.photowidget.configure.PhotoWidgetAspectRatioBottomSheet
 import com.fibelatti.photowidget.configure.PhotoWidgetBrightnessBottomSheet
 import com.fibelatti.photowidget.configure.PhotoWidgetCycleModeBottomSheet
 import com.fibelatti.photowidget.configure.PhotoWidgetSaturationBottomSheet
-import com.fibelatti.photowidget.configure.rememberSampleBitmap
 import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -100,6 +99,7 @@ import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.photowidget.ui.rememberSampleBitmap
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
 import com.fibelatti.ui.foundation.dpToPx

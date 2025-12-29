@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.home
+package com.fibelatti.photowidget.help
 
 import androidx.annotation.StringRes
 import com.fibelatti.photowidget.R

@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.home
+package com.fibelatti.photowidget.help
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState

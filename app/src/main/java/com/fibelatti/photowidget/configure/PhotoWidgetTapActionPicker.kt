@@ -81,6 +81,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.Toggle
+import com.fibelatti.photowidget.ui.rememberSampleBitmap
 import com.fibelatti.ui.foundation.ColumnToggleButtonGroup
 import com.fibelatti.ui.foundation.ConnectedButtonRowItem
 import com.fibelatti.ui.foundation.ToggleButtonGroup

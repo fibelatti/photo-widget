@@ -1,8 +1,7 @@
 package com.fibelatti.photowidget.di
 
 import com.fibelatti.photowidget.configure.PhotoWidgetPinningCache
-import com.fibelatti.photowidget.configure.SavePhotoWidgetUseCase
-import com.fibelatti.photowidget.hints.HintStorage
+import com.fibelatti.photowidget.help.HintStorage
 import com.fibelatti.photowidget.platform.ExceptionReporter
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
@@ -10,6 +9,7 @@ import com.fibelatti.photowidget.widget.CyclePhotoUseCase
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
 import com.fibelatti.photowidget.widget.PrepareCurrentPhotoUseCase
+import com.fibelatti.photowidget.widget.SavePhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn

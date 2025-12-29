@@ -59,6 +59,7 @@ import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.DefaultPicker
 import com.fibelatti.photowidget.ui.RadioGroup
 import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.photowidget.ui.rememberSampleBitmap
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.ColumnToggleButtonGroup

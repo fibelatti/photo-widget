@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.home
+package com.fibelatti.photowidget.preferences
 
 import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
