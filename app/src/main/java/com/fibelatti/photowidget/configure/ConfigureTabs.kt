@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -75,8 +76,9 @@ inline fun ConfigureTabs(
                 ) {
                     AutoSizeText(
                         text = stringResource(tab.title),
-                        maxLines = 1,
+                        modifier = Modifier.padding(horizontal = 8.dp),
                         overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
                     )
                 }
             }
