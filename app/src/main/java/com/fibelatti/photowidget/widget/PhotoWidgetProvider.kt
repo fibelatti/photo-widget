@@ -270,7 +270,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
                 is PhotoWidgetText.Label -> {
                     val bitmap: Bitmap = photoWidgetText.textToBitmap(context = context)
-                    val bottomPadding: Int = photoWidgetText.verticalOffset
+                    val bottomPadding: Int = abs(photoWidgetText.verticalOffset)
                         .times(context.resources.displayMetrics.density)
                         .roundToInt()
 

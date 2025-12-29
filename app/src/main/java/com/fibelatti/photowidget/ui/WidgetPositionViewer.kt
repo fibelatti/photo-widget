@@ -96,7 +96,7 @@ fun WidgetPositionViewer(
                 contentDescription = null,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .padding(bottom = photoWidget.text.verticalOffset.dp),
+                    .padding(bottom = abs(photoWidget.text.verticalOffset).dp),
             )
         }
     }

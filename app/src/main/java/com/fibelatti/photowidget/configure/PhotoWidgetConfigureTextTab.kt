@@ -352,8 +352,8 @@ private fun PhotoWidgetVerticalOffsetPicker(
                 value = updatedValue,
                 onIncreaseClick = { updatedValue++ },
                 onDecreaseClick = { updatedValue-- },
-                lowerBound = 0,
-                upperBound = 20,
+                lowerBound = -20,
+                upperBound = 0,
             )
 
             DefaultPickerFooterButtons(
