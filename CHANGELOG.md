@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.36.0] - 2025-12-29
+[v1.36.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.36.0
+
 ### Added
 
 * Text support: it's now possible to add widget labels to mimic app names

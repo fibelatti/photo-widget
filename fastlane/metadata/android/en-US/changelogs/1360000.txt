@@ -1,0 +1,10 @@
+This version brings the following updates:
+
+* Text support: it's now possible to add widget labels to mimic app names
+* The configuration screen now includes a sample of the widget placement
+* Fixes drag to reorder photos not working
+* Fixes swipe to dismiss not working in the viewer when there's a single photo
+* Fixes order not being applied when duplicating or restoring a widget
+* Fixes how vertical and horizontal offset is applied to photos
+
+Thanks for using the app!

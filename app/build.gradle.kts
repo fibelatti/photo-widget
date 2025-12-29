@@ -19,8 +19,8 @@ object AppInfo {
     const val APPLICATION_ID = "com.fibelatti.photowidget"
 
     private const val VERSION_MAJOR = 1
-    private const val VERSION_MINOR = 35
-    private const val VERSION_PATCH = 2
+    private const val VERSION_MINOR = 36
+    private const val VERSION_PATCH = 0
     private const val VERSION_BUILD = 0
 
     val versionCode: Int = (VERSION_MAJOR * 1_000_000)
@@ -29,7 +29,7 @@ object AppInfo {
         .plus(VERSION_BUILD)
         .also { println("versionCode: $it") }
 
-    @Suppress("KotlinConstantConditions")
+    @Suppress("KotlinConstantConditions", "SimplifyBooleanWithConstants")
     val versionName: String = StringBuilder("$VERSION_MAJOR.$VERSION_MINOR")
         .apply { if (VERSION_PATCH != 0) append(".$VERSION_PATCH") }
         .toString()
