@@ -95,10 +95,11 @@ fun NewWidgetScreen(
             AutoSizeText(
                 text = stringResource(id = R.string.photo_widget_home_title),
                 modifier = Modifier.padding(horizontal = 32.dp),
-                maxLines = 2,
+                fontFamily = FontFamily.Cursive,
+                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineLargeEmphasized
-                    .copy(fontFamily = FontFamily.Cursive, fontWeight = FontWeight.Bold),
+                maxLines = 2,
+                style = MaterialTheme.typography.headlineLargeEmphasized,
             )
 
             Text(

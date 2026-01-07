@@ -336,7 +336,7 @@ private fun SettingsAction(
             modifier = Modifier.weight(1f),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             maxLines = 1,
-            minTextSize = 8.sp,
+            minFontSize = 8.sp,
             style = MaterialTheme.typography.titleMedium,
         )
     }
