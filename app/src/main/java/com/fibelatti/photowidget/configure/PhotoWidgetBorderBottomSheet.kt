@@ -396,7 +396,6 @@ private fun MatchPhotoBorderContent(
 
                     localResources.getString(resId)
                 },
-                itemDescription = { null },
                 modifier = Modifier.weight(1f),
             )
         }
