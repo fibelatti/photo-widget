@@ -303,6 +303,9 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             when {
                 horizontalOffset > 0 -> paddingLeft = padding + horizontalOffset
                 horizontalOffset < 0 -> paddingRight = padding + abs(horizontalOffset)
+            }
+
+            when {
                 verticalOffset > 0 -> paddingTop = padding + verticalOffset
                 verticalOffset < 0 -> paddingBottom = padding + abs(verticalOffset)
             }
