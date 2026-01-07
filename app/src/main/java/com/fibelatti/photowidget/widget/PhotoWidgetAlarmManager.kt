@@ -39,7 +39,13 @@ class PhotoWidgetAlarmManager @Inject constructor(
             return
         }
 
-        when (val cycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = appWidgetId)) {
+        cancel(appWidgetId)
+
+        val cycleMode: PhotoWidgetCycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = appWidgetId)
+
+        Timber.d("Widget alarm type: $cycleMode")
+
+        when (cycleMode) {
             is PhotoWidgetCycleMode.Interval -> setupIntervalAlarm(cycleMode = cycleMode, appWidgetId = appWidgetId)
             is PhotoWidgetCycleMode.Schedule -> setupScheduleAlarm(cycleMode = cycleMode, appWidgetId = appWidgetId)
             is PhotoWidgetCycleMode.Disabled -> return
@@ -47,7 +53,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
     }
 
     fun cancel(appWidgetId: Int) {
-        Timber.d("Cancelling alarm for widget (appWidgetId=$appWidgetId)")
+        Timber.d("Cancelling existing alarms for widget (appWidgetId=$appWidgetId)")
 
         alarmManager.cancel(
             PhotoWidgetProvider.getChangePhotoPendingIntent(context = context, appWidgetId = appWidgetId),

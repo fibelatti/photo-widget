@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Fix vertical offset not working when horizontal offset is also applied
+* Prevent photo timer changes from piling up
 
 ## [v1.36.0] - 2025-12-29
 [v1.36.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.36.0
