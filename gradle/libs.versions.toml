@@ -28,7 +28,7 @@ work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version = "2.11.
 navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3" }
 navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3" }
 
-compose-bom = { module = "androidx.compose:compose-bom-alpha", version = "2025.12.01" }
+compose-bom = { module = "androidx.compose:compose-bom-alpha", version = "2026.01.00" }
 compose-runtime = { module = "androidx.compose.runtime:runtime" }
 compose-material = { module = "androidx.compose.material:material" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
