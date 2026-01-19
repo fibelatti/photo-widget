@@ -463,24 +463,23 @@ fun PickerDefault(
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(24.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 AutoSizeText(
                     text = title,
-                    modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.widthIn(max = 140.dp),
                     maxLines = 2,
+                    style = MaterialTheme.typography.titleMedium,
                 )
-
-                Spacer(modifier = Modifier.width(24.dp))
 
                 AutoSizeText(
                     text = currentValue,
-                    modifier = Modifier.widthIn(max = 200.dp),
-                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.weight(1f),
                     textAlign = TextAlign.End,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 3,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             }
 
