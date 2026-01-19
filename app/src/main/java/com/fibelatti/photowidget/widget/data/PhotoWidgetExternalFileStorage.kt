@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.provider.DocumentsContract
 import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.LocalPhoto
@@ -151,13 +152,16 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
 
     private companion object {
 
-        private val ALLOWED_TYPES = arrayOf(
-            "image/jpeg",
-            "image/png",
-            "image/heic",
-            "image/heif",
-            "image/webp",
-        )
+        private val ALLOWED_TYPES = buildList {
+            add("image/jpeg")
+            add("image/png")
+            add("image/webp")
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.BAKLAVA) {
+                add("image/heic")
+                add("image/heif")
+            }
+        }
     }
 }
 

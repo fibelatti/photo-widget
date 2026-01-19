@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+* Disable HEIC/HEIF support until the bug introduced with Android 16 is fixed
+
 ### Fixed
 
 * Fix vertical offset not working when horizontal offset is also applied
