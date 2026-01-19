@@ -27,11 +27,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,7 +48,6 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.platform.AppTheme
-import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
@@ -106,15 +104,13 @@ private fun ScreenContent(
     onBackgroundClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var isBackgroundVisible: Boolean by remember { mutableStateOf(false) }
+    val isBackgroundVisible: Boolean by produceState(initialValue = false) {
+        value = true
+    }
     val backgroundAlpha: Float by animateFloatAsState(
         targetValue = if (isBackgroundVisible) .8f else 0f,
         animationSpec = tween(600),
     )
-
-    RememberedEffect(Unit) {
-        isBackgroundVisible = true
-    }
 
     Box(
         modifier = modifier

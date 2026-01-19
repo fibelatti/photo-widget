@@ -35,6 +35,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -98,7 +99,9 @@ fun PhotoWidgetViewerScreen(
     onAllPhotosClick: () -> Unit = {},
     onShareClick: (LocalPhoto) -> Unit = {},
 ) {
-    var showContent: Boolean by remember { mutableStateOf(false) }
+    val showContent: Boolean by produceState(initialValue = false) {
+        value = true
+    }
     var showControls: Boolean by remember { mutableStateOf(false) }
 
     val backgroundAlpha: Float by animateFloatAsState(
@@ -137,10 +140,8 @@ fun PhotoWidgetViewerScreen(
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        showContent = true
         showControls = true
-
-        delay(ANIM_DURATION * 3L)
+        delay(timeMillis = ANIM_DURATION * 3L)
         showControls = false
     }
 
