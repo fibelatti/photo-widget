@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.model
 
 import android.os.Parcelable
+import androidx.annotation.AttrRes
 import androidx.annotation.StringRes
 import com.fibelatti.photowidget.R
 import com.google.android.material.color.DynamicColors
@@ -35,13 +36,36 @@ sealed interface PhotoWidgetBorder : Parcelable {
     }
 
     @Parcelize
-    data class Dynamic(val width: Int) : PhotoWidgetBorder {
+    data class Dynamic(val width: Int, val type: Type = Type.PRIMARY_INVERSE) : PhotoWidgetBorder {
 
         @IgnoredOnParcel
         override val label = R.string.photo_widget_configure_border_dynamic
 
         @IgnoredOnParcel
         override val serializedName: String = "DYNAMIC"
+
+        enum class Type(@AttrRes val colorAttr: Int, @StringRes val label: Int) {
+            PRIMARY_INVERSE(
+                colorAttr = com.google.android.material.R.attr.colorPrimaryInverse,
+                label = R.string.photo_widget_configure_border_dynamic_inverse,
+            ),
+            PRIMARY(
+                colorAttr = androidx.appcompat.R.attr.colorPrimary,
+                label = R.string.photo_widget_configure_border_dynamic_primary,
+            ),
+            PRIMARY_FIXED(
+                colorAttr = com.google.android.material.R.attr.colorPrimaryFixed,
+                label = R.string.photo_widget_configure_border_dynamic_primary_fixed,
+            ),
+            SECONDARY(
+                colorAttr = com.google.android.material.R.attr.colorSecondary,
+                label = R.string.photo_widget_configure_border_dynamic_secondary,
+            ),
+            SECONDARY_FIXED(
+                colorAttr = com.google.android.material.R.attr.colorSecondaryFixed,
+                label = R.string.photo_widget_configure_border_dynamic_secondary_fixed,
+            ),
+        }
     }
 
     @Parcelize
@@ -53,10 +77,10 @@ sealed interface PhotoWidgetBorder : Parcelable {
         @IgnoredOnParcel
         override val serializedName: String = "MATCH_PHOTO"
 
-        enum class Type {
-            DOMINANT,
-            VIBRANT,
-            MUTED,
+        enum class Type(@StringRes val label: Int) {
+            DOMINANT(R.string.photo_widget_configure_border_color_palette_dominant),
+            VIBRANT(R.string.photo_widget_configure_border_color_palette_vibrant),
+            MUTED(R.string.photo_widget_configure_border_color_palette_muted),
         }
     }
 
@@ -81,7 +105,7 @@ sealed interface PhotoWidgetBorder : Parcelable {
 
                 add(MatchPhoto(type = MatchPhoto.Type.DOMINANT, width = DEFAULT_WIDTH))
 
-                add(Color(colorHex = "ffffff", width = DEFAULT_WIDTH))
+                add(Color(colorHex = "FFFFFF", width = DEFAULT_WIDTH))
             }
         }
 

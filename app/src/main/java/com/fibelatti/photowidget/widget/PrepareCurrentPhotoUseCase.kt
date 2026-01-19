@@ -55,7 +55,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
             is PhotoWidgetBorder.None -> null
             is PhotoWidgetBorder.Color -> "#${photoWidget.border.colorHex}".toColorInt()
             is PhotoWidgetBorder.Dynamic -> context.getDynamicAttributeColor(
-                com.google.android.material.R.attr.colorPrimaryInverse,
+                photoWidget.border.type.colorAttr,
             )
 
             is PhotoWidgetBorder.MatchPhoto -> getColorPalette(bitmap).colorForType(photoWidget.border.type)

@@ -173,6 +173,11 @@
     <string name="photo_widget_configure_border">Граница</string>
     <string name="photo_widget_configure_border_none">Нет</string>
     <string name="photo_widget_configure_border_dynamic">Динамичный</string>
+    <string name="photo_widget_configure_border_dynamic_inverse">Цвет 1</string>
+    <string name="photo_widget_configure_border_dynamic_primary">Цвет 2</string>
+    <string name="photo_widget_configure_border_dynamic_primary_fixed">Цвет 3</string>
+    <string name="photo_widget_configure_border_dynamic_secondary">Цвет 4</string>
+    <string name="photo_widget_configure_border_dynamic_secondary_fixed">Цвет 5</string>
     <string name="photo_widget_configure_border_color">Цветной</string>
     <string name="photo_widget_configure_border_color_palette">Палитра</string>
     <string name="photo_widget_configure_border_color_palette_dominant">Доминирующий цвет</string>

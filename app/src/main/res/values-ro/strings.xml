@@ -167,6 +167,11 @@
     <string name="photo_widget_configure_border">Margine</string>
     <string name="photo_widget_configure_border_none">Nimic</string>
     <string name="photo_widget_configure_border_dynamic">Dinamic</string>
+    <string name="photo_widget_configure_border_dynamic_inverse">Culoare 1</string>
+    <string name="photo_widget_configure_border_dynamic_primary">Culoare 2</string>
+    <string name="photo_widget_configure_border_dynamic_primary_fixed">Culoare 3</string>
+    <string name="photo_widget_configure_border_dynamic_secondary">Culoare 4</string>
+    <string name="photo_widget_configure_border_dynamic_secondary_fixed">Culoare 5</string>
     <string name="photo_widget_configure_border_color">Colorat</string>
     <string name="photo_widget_configure_border_color_palette">Paletă</string>
     <string name="photo_widget_configure_border_color_palette_dominant">Culoare dominantă</string>

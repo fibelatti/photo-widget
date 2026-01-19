@@ -161,6 +161,11 @@
     <string name="photo_widget_configure_border">Rahmen</string>
     <string name="photo_widget_configure_border_none">Keine</string>
     <string name="photo_widget_configure_border_dynamic">Dynamisch</string>
+    <string name="photo_widget_configure_border_dynamic_inverse">Farbe 1</string>
+    <string name="photo_widget_configure_border_dynamic_primary">Farbe 2</string>
+    <string name="photo_widget_configure_border_dynamic_primary_fixed">Farbe 3</string>
+    <string name="photo_widget_configure_border_dynamic_secondary">Farbe 4</string>
+    <string name="photo_widget_configure_border_dynamic_secondary_fixed">Farbe 5</string>
     <string name="photo_widget_configure_border_color">Farbig</string>
     <string name="photo_widget_configure_border_color_palette">Palette</string>
     <string name="photo_widget_configure_border_color_palette_dominant">Dominante Farbe</string>

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,6 +42,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastRoundToInt
@@ -111,7 +111,11 @@ private fun BorderPickerContent(
                 )
             },
             onButtonClick = { item ->
-                border = PhotoWidgetBorder.fromSerializedName(item.id)
+                border = if (item.id == currentBorder.serializedName) {
+                    currentBorder
+                } else {
+                    PhotoWidgetBorder.fromSerializedName(item.id)
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -140,6 +144,8 @@ private fun BorderPickerContent(
             is PhotoWidgetBorder.Dynamic -> {
                 DynamicBorderContent(
                     sampleBitmap = sampleBitmap,
+                    currentType = current.type,
+                    onTypeChange = { border = current.copy(type = it) },
                     currentWidth = current.width,
                     onWidthChange = { border = current.copy(width = it) },
                     modifier = Modifier.padding(horizontal = 16.dp),
@@ -264,7 +270,7 @@ private fun ColorBorderContent(
                 textStyle = MaterialTheme.typography.labelMedium,
                 placeholder = {
                     Text(
-                        text = "ffffff",
+                        text = "FFFFFF",
                         style = MaterialTheme.typography.labelMedium,
                     )
                 },
@@ -274,7 +280,10 @@ private fun ColorBorderContent(
                         style = MaterialTheme.typography.labelMedium,
                     )
                 },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Characters,
+                    imeAction = ImeAction.Done,
+                ),
                 singleLine = true,
                 maxLines = 1,
             )
@@ -291,6 +300,8 @@ private fun ColorBorderContent(
 @Composable
 private fun DynamicBorderContent(
     sampleBitmap: Bitmap,
+    currentType: PhotoWidgetBorder.Dynamic.Type,
+    onTypeChange: (PhotoWidgetBorder.Dynamic.Type) -> Unit,
     currentWidth: Int,
     onWidthChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -300,21 +311,42 @@ private fun DynamicBorderContent(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        val localContext = LocalContext.current
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            val localContext = LocalContext.current
+            val localResources = LocalResources.current
+            val radioTypes = PhotoWidgetBorder.Dynamic.Type.entries
+            val (selectedType, onTypeSelected) = remember { mutableStateOf(currentType) }
 
-        Image(
-            bitmap = sampleBitmap
-                .withRoundedCorners(
-                    radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
-                    borderColor = localContext.getDynamicAttributeColor(
-                        com.google.android.material.R.attr.colorPrimaryInverse,
-                    ),
-                    borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
-                )
-                .asImageBitmap(),
-            contentDescription = null,
-            modifier = Modifier.size(200.dp),
-        )
+            Image(
+                bitmap = sampleBitmap
+                    .withRoundedCorners(
+                        radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
+                        borderColor = localContext.getDynamicAttributeColor(currentType.colorAttr),
+                        borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
+                    )
+                    .asImageBitmap(),
+                contentDescription = null,
+                modifier = Modifier
+                    .weight(1f, fill = false)
+                    .widthIn(max = 200.dp)
+                    .aspectRatio(1f),
+            )
+
+            RadioGroup(
+                items = radioTypes,
+                itemSelected = { type -> type == selectedType },
+                onItemClick = { type ->
+                    onTypeSelected(type)
+                    onTypeChange(type)
+                },
+                itemTitle = { type -> localResources.getString(type.label) },
+                modifier = Modifier.weight(1f),
+            )
+        }
 
         BorderWidthPicker(
             currentWidth = currentWidth,
@@ -327,7 +359,7 @@ private fun DynamicBorderContent(
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp),
+                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
             style = MaterialTheme.typography.bodyMedium,
         )
     }
@@ -379,23 +411,7 @@ private fun MatchPhotoBorderContent(
                     onTypeSelected(type)
                     onTypeChange(type)
                 },
-                itemTitle = { type ->
-                    val resId: Int = when (type) {
-                        PhotoWidgetBorder.MatchPhoto.Type.DOMINANT -> {
-                            R.string.photo_widget_configure_border_color_palette_dominant
-                        }
-
-                        PhotoWidgetBorder.MatchPhoto.Type.VIBRANT -> {
-                            R.string.photo_widget_configure_border_color_palette_vibrant
-                        }
-
-                        PhotoWidgetBorder.MatchPhoto.Type.MUTED -> {
-                            R.string.photo_widget_configure_border_color_palette_muted
-                        }
-                    }
-
-                    localResources.getString(resId)
-                },
+                itemTitle = { type -> localResources.getString(type.label) },
                 modifier = Modifier.weight(1f),
             )
         }

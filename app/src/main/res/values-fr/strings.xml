@@ -161,6 +161,11 @@
     <string name="photo_widget_configure_border">Bordure</string>
     <string name="photo_widget_configure_border_none">Aucune</string>
     <string name="photo_widget_configure_border_dynamic">Dynamique</string>
+    <string name="photo_widget_configure_border_dynamic_inverse">Couleur 1</string>
+    <string name="photo_widget_configure_border_dynamic_primary">Couleur 2</string>
+    <string name="photo_widget_configure_border_dynamic_primary_fixed">Couleur 3</string>
+    <string name="photo_widget_configure_border_dynamic_secondary">Couleur 4</string>
+    <string name="photo_widget_configure_border_dynamic_secondary_fixed">Couleur 5</string>
     <string name="photo_widget_configure_border_color">Coloré</string>
     <string name="photo_widget_configure_border_color_palette">Palette</string>
     <string name="photo_widget_configure_border_color_palette_dominant">Couleur dominante</string>

@@ -161,6 +161,11 @@
     <string name="photo_widget_configure_border">Kenarlık</string>
     <string name="photo_widget_configure_border_none">Yok</string>
     <string name="photo_widget_configure_border_dynamic">Dinamik</string>
+    <string name="photo_widget_configure_border_dynamic_inverse">Renk 1</string>
+    <string name="photo_widget_configure_border_dynamic_primary">Renk 2</string>
+    <string name="photo_widget_configure_border_dynamic_primary_fixed">Renk 3</string>
+    <string name="photo_widget_configure_border_dynamic_secondary">Renk 4</string>
+    <string name="photo_widget_configure_border_dynamic_secondary_fixed">Renk 5</string>
     <string name="photo_widget_configure_border_color">Renkli</string>
     <string name="photo_widget_configure_border_color_palette">Palet</string>
     <string name="photo_widget_configure_border_color_palette_dominant">Baskın renk</string>

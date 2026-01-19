@@ -191,28 +191,28 @@ fun PhotoWidgetConfigureAppearanceTab(
         }
 
         if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
+            val currentValue: String = buildString {
+                append(stringResource(photoWidget.border.label))
+
+                when (photoWidget.border) {
+                    is PhotoWidgetBorder.None -> Unit
+                    is PhotoWidgetBorder.Color -> {
+                        append(" (#${photoWidget.border.colorHex.toUpperCase(Locale.current)})")
+                    }
+
+                    is PhotoWidgetBorder.Dynamic -> {
+                        append(" (${stringResource(photoWidget.border.type.label)})")
+                    }
+
+                    is PhotoWidgetBorder.MatchPhoto -> {
+                        append(" (${stringResource(photoWidget.border.type.label)})")
+                    }
+                }
+            }
+
             PickerDefault(
                 title = stringResource(R.string.photo_widget_configure_border),
-                currentValue = when (photoWidget.border) {
-                    is PhotoWidgetBorder.None -> stringResource(id = R.string.photo_widget_configure_border_none)
-                    is PhotoWidgetBorder.Color -> "#${photoWidget.border.colorHex}".toUpperCase(Locale.current)
-                    is PhotoWidgetBorder.Dynamic -> stringResource(R.string.photo_widget_configure_border_dynamic)
-                    is PhotoWidgetBorder.MatchPhoto -> {
-                        when (photoWidget.border.type) {
-                            PhotoWidgetBorder.MatchPhoto.Type.DOMINANT -> {
-                                stringResource(R.string.photo_widget_configure_border_color_palette_dominant)
-                            }
-
-                            PhotoWidgetBorder.MatchPhoto.Type.VIBRANT -> {
-                                stringResource(R.string.photo_widget_configure_border_color_palette_vibrant)
-                            }
-
-                            PhotoWidgetBorder.MatchPhoto.Type.MUTED -> {
-                                stringResource(R.string.photo_widget_configure_border_color_palette_muted)
-                            }
-                        }
-                    }
-                },
+                currentValue = currentValue,
                 onClick = onBorderClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )

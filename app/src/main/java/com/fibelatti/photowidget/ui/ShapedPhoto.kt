@@ -57,10 +57,7 @@ fun ShapedPhoto(
             val borderColor = when (border) {
                 is PhotoWidgetBorder.None -> null
                 is PhotoWidgetBorder.Color -> "#${border.colorHex}".toColorInt()
-                is PhotoWidgetBorder.Dynamic -> localContext.getDynamicAttributeColor(
-                    com.google.android.material.R.attr.colorPrimaryInverse,
-                )
-
+                is PhotoWidgetBorder.Dynamic -> localContext.getDynamicAttributeColor(border.type.colorAttr)
                 is PhotoWidgetBorder.MatchPhoto -> getColorPalette(bitmap).colorForType(border.type)
             }
             val borderPercent = border.borderPercent()

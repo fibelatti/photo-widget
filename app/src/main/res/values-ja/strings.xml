@@ -155,6 +155,11 @@
     <string name="photo_widget_configure_border">枠線</string>
     <string name="photo_widget_configure_border_none">なし</string>
     <string name="photo_widget_configure_border_dynamic">ダイナミック</string>
+    <string name="photo_widget_configure_border_dynamic_inverse">カラー 1</string>
+    <string name="photo_widget_configure_border_dynamic_primary">カラー 2</string>
+    <string name="photo_widget_configure_border_dynamic_primary_fixed">カラー 3</string>
+    <string name="photo_widget_configure_border_dynamic_secondary">カラー 4</string>
+    <string name="photo_widget_configure_border_dynamic_secondary_fixed">カラー 5</string>
     <string name="photo_widget_configure_border_color">色付き</string>
     <string name="photo_widget_configure_border_color_palette">パレット</string>
     <string name="photo_widget_configure_border_color_palette_dominant">支配的な色</string>

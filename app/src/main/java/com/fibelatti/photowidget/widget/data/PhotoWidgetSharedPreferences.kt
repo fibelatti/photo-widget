@@ -269,6 +269,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 is PhotoWidgetBorder.None -> {
                     remove("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId")
                     remove("${PreferencePrefix.BORDER_DYNAMIC}$appWidgetId")
+                    remove("${PreferencePrefix.BORDER_DYNAMIC_TYPE}$appWidgetId")
                     remove("${PreferencePrefix.BORDER_COLOR_PALETTE_TYPE}$appWidgetId")
                     remove("${PreferencePrefix.BORDER_WIDTH}$appWidgetId")
                 }
@@ -277,11 +278,13 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     putString("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId", border.colorHex)
                     putInt("${PreferencePrefix.BORDER_WIDTH}$appWidgetId", border.width)
                     remove("${PreferencePrefix.BORDER_DYNAMIC}$appWidgetId")
+                    remove("${PreferencePrefix.BORDER_DYNAMIC_TYPE}$appWidgetId")
                     remove("${PreferencePrefix.BORDER_COLOR_PALETTE_TYPE}$appWidgetId")
                 }
 
                 is PhotoWidgetBorder.Dynamic -> {
                     putBoolean("${PreferencePrefix.BORDER_DYNAMIC}$appWidgetId", true)
+                    putString("${PreferencePrefix.BORDER_DYNAMIC_TYPE}$appWidgetId", border.type.name)
                     putInt("${PreferencePrefix.BORDER_WIDTH}$appWidgetId", border.width)
                     remove("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId")
                     remove("${PreferencePrefix.BORDER_COLOR_PALETTE_TYPE}$appWidgetId")
@@ -291,6 +294,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     putString("${PreferencePrefix.BORDER_COLOR_PALETTE_TYPE}$appWidgetId", border.type.name)
                     putInt("${PreferencePrefix.BORDER_WIDTH}$appWidgetId", border.width)
                     remove("${PreferencePrefix.BORDER_DYNAMIC}$appWidgetId")
+                    remove("${PreferencePrefix.BORDER_DYNAMIC_TYPE}$appWidgetId")
                     remove("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId")
                 }
             }
@@ -299,6 +303,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
 
     fun getWidgetBorder(appWidgetId: Int): PhotoWidgetBorder {
         val borderDynamic = sharedPreferences.getBoolean("${PreferencePrefix.BORDER_DYNAMIC}$appWidgetId", false)
+        val borderDynamicType = sharedPreferences.getString(
+            "${PreferencePrefix.BORDER_DYNAMIC_TYPE}$appWidgetId",
+            null,
+        )
         val borderColorHex = sharedPreferences.getString("${PreferencePrefix.BORDER_COLOR_HEX}$appWidgetId", null)
         val borderColorPaletteType = sharedPreferences.getString(
             "${PreferencePrefix.BORDER_COLOR_PALETTE_TYPE}$appWidgetId",
@@ -307,7 +315,11 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         val borderWidth = sharedPreferences.getInt("${PreferencePrefix.BORDER_WIDTH}$appWidgetId", 0)
 
         return when {
-            borderDynamic -> PhotoWidgetBorder.Dynamic(width = borderWidth)
+            borderDynamic -> PhotoWidgetBorder.Dynamic(
+                width = borderWidth,
+                type = enumValueOfOrNull<PhotoWidgetBorder.Dynamic.Type>(borderDynamicType)
+                    ?: PhotoWidgetBorder.Dynamic.Type.PRIMARY_INVERSE,
+            )
 
             borderColorPaletteType != null -> PhotoWidgetBorder.MatchPhoto(
                 width = borderWidth,
@@ -619,6 +631,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         CORNER_RADIUS_DP(value = "appwidget_corner_radius_dp_"),
         BORDER_COLOR_HEX(value = "appwidget_border_color_hex_"),
         BORDER_DYNAMIC(value = "appwidget_border_dynamic_"),
+        BORDER_DYNAMIC_TYPE(value = "appwidget_border_dynamic_type_"),
         BORDER_COLOR_PALETTE_TYPE(value = "appwidget_border_color_palette_type_"),
         BORDER_WIDTH(value = "appwidget_border_width_"),
         OPACITY(value = "appwidget_opacity_"),

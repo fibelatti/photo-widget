@@ -159,6 +159,11 @@
     <string name="photo_widget_configure_border">Border</string>
     <string name="photo_widget_configure_border_none">Wala</string>
     <string name="photo_widget_configure_border_dynamic">Dinamiko</string>
+    <string name="photo_widget_configure_border_dynamic_inverse">Kulay 1</string>
+    <string name="photo_widget_configure_border_dynamic_primary">Kulay 2</string>
+    <string name="photo_widget_configure_border_dynamic_primary_fixed">Kulay 3</string>
+    <string name="photo_widget_configure_border_dynamic_secondary">Kulay 4</string>
+    <string name="photo_widget_configure_border_dynamic_secondary_fixed">Kulay 5</string>
     <string name="photo_widget_configure_border_color">May kulay</string>
     <string name="photo_widget_configure_border_color_palette">Palette</string>
     <string name="photo_widget_configure_border_color_palette_dominant">Pangunahing kulay</string>

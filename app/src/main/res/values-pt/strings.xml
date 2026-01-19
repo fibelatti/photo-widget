@@ -161,6 +161,11 @@
     <string name="photo_widget_configure_border">Borda</string>
     <string name="photo_widget_configure_border_none">Nenhuma</string>
     <string name="photo_widget_configure_border_dynamic">Dinâmica</string>
+    <string name="photo_widget_configure_border_dynamic_inverse">Cor 1</string>
+    <string name="photo_widget_configure_border_dynamic_primary">Cor 2</string>
+    <string name="photo_widget_configure_border_dynamic_primary_fixed">Cor 3</string>
+    <string name="photo_widget_configure_border_dynamic_secondary">Cor 4</string>
+    <string name="photo_widget_configure_border_dynamic_secondary_fixed">Cor 5</string>
     <string name="photo_widget_configure_border_color">Colorida</string>
     <string name="photo_widget_configure_border_color_palette">Paleta</string>
     <string name="photo_widget_configure_border_color_palette_dominant">Cor dominante</string>

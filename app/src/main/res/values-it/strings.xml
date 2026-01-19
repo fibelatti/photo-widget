@@ -161,6 +161,11 @@
     <string name="photo_widget_configure_border">Bordo</string>
     <string name="photo_widget_configure_border_none">Nessuno</string>
     <string name="photo_widget_configure_border_dynamic">Dinamico</string>
+    <string name="photo_widget_configure_border_dynamic_inverse">Colore 1</string>
+    <string name="photo_widget_configure_border_dynamic_primary">Colore 2</string>
+    <string name="photo_widget_configure_border_dynamic_primary_fixed">Colore 3</string>
+    <string name="photo_widget_configure_border_dynamic_secondary">Colore 4</string>
+    <string name="photo_widget_configure_border_dynamic_secondary_fixed">Colore 5</string>
     <string name="photo_widget_configure_border_color">Colorato</string>
     <string name="photo_widget_configure_border_color_palette">Tavolozza</string>
     <string name="photo_widget_configure_border_color_palette_dominant">Colore dominante</string>

@@ -173,6 +173,11 @@
     <string name="photo_widget_configure_border">גבול</string>
     <string name="photo_widget_configure_border_none">ללא</string>
     <string name="photo_widget_configure_border_dynamic">דינמי</string>
+    <string name="photo_widget_configure_border_dynamic_inverse">צבע 1</string>
+    <string name="photo_widget_configure_border_dynamic_primary">צבע 2</string>
+    <string name="photo_widget_configure_border_dynamic_primary_fixed">צבע 3</string>
+    <string name="photo_widget_configure_border_dynamic_secondary">צבע 4</string>
+    <string name="photo_widget_configure_border_dynamic_secondary_fixed">צבע 5</string>
     <string name="photo_widget_configure_border_color">צבעוני</string>
     <string name="photo_widget_configure_border_color_palette">לוח צבעים</string>
     <string name="photo_widget_configure_border_color_palette_dominant">צבע דומיננטי</string>
