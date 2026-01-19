@@ -30,7 +30,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
@@ -303,7 +302,6 @@ private fun HomeNavigation(
                             painter = painterResource(id = iconRes),
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
-                            tint = Color.Unspecified,
                         )
                     }
                 },
