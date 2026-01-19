@@ -512,10 +512,18 @@ class PhotoWidgetSharedPreferences @Inject constructor(
     ) {
         sharedPreferences.edit {
             putString("${PreferencePrefix.TEXT_TYPE}$appWidgetId", text.serializedName)
-            putString("${PreferencePrefix.TEXT_VALUE}$appWidgetId", text.value)
-            putInt("${PreferencePrefix.TEXT_SIZE}$appWidgetId", text.size)
-            putInt("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId", text.verticalOffset)
-            putBoolean("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId", text.hasShadow)
+
+            if (text is PhotoWidgetText.None) {
+                remove("${PreferencePrefix.TEXT_VALUE}$appWidgetId")
+                remove("${PreferencePrefix.TEXT_SIZE}$appWidgetId")
+                remove("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId")
+                remove("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId")
+            } else {
+                putString("${PreferencePrefix.TEXT_VALUE}$appWidgetId", text.value)
+                putInt("${PreferencePrefix.TEXT_SIZE}$appWidgetId", text.size)
+                putInt("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId", text.verticalOffset)
+                putBoolean("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId", text.hasShadow)
+            }
         }
     }
 
@@ -640,11 +648,11 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         PREFERRED_GALLERY_APP(value = "appwidget_preferred_gallery_app_"),
         DISABLE_TAP(value = "appwidget_disable_tap_"),
 
-        TEXT_TYPE("appwidget_text_type_"),
-        TEXT_VALUE("appwidget_text_value_"),
-        TEXT_SIZE("appwidget_text_size_"),
-        TEXT_VERTICAL_OFFSET("appwidget_text_vertical_offset_"),
-        TEXT_HAS_SHADOW("appwidget_text_has_shadow_"),
+        TEXT_TYPE(value = "appwidget_text_type_"),
+        TEXT_VALUE(value = "appwidget_text_value_"),
+        TEXT_SIZE(value = "appwidget_text_size_"),
+        TEXT_VERTICAL_OFFSET(value = "appwidget_text_vertical_offset_"),
+        TEXT_HAS_SHADOW(value = "appwidget_text_has_shadow_"),
 
         DELETION_TIMESTAMP(value = "appwidget_deletion_timestamp_"),
         ;
