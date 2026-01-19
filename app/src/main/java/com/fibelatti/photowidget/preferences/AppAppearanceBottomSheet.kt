@@ -15,6 +15,7 @@ import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
+import com.fibelatti.ui.foundation.hideBottomSheet
 
 @Composable
 fun AppAppearanceBottomSheet(
@@ -43,6 +44,8 @@ fun AppAppearanceBottomSheet(
         },
         onOptionSelected = { newAppearance ->
             userPreferencesStorage.appearance = newAppearance
+
+            sheetState.hideBottomSheet()
 
             val mode = when (newAppearance) {
                 Appearance.DARK -> AppCompatDelegate.MODE_NIGHT_YES

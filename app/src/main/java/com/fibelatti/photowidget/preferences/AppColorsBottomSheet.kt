@@ -13,6 +13,7 @@ import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
+import com.fibelatti.ui.foundation.hideBottomSheet
 
 @Composable
 fun AppColorsBottomSheet(
@@ -42,6 +43,9 @@ fun AppColorsBottomSheet(
         },
         onOptionSelected = { newValue ->
             userPreferencesStorage.dynamicColors = newValue
+
+            sheetState.hideBottomSheet()
+
             localActivity?.let(ActivityCompat::recreate)
         },
         modifier = modifier,
