@@ -189,6 +189,8 @@
     <string name="photo_widget_configure_tap_action_view_previous_photo">Vorheriges Foto anzeigen</string>
     <string name="photo_widget_configure_tap_action_choose_next_photo">Nächstes Foto auswählen</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Eine App öffnen</string>
+    <string name="photo_widget_configure_tap_action_app_folder">App-Ordner</string>
+    <string name="photo_widget_configure_tap_action_app_folder_description">Wähle bis zu 12 Apps</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Einen Link öffnen</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Timer aktivieren/deaktivieren</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Tippen, um den Foto-Timer zu pausieren. Nochmals tippen, um fortzusetzen. Diese Aktion ist deaktiviert, wenn das Widget gesperrt ist.</string>
@@ -262,6 +264,9 @@
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Timer pausiert</string>
     <string name="photo_widget_cycling_feedback_resumed">Timer fortgesetzt</string>
+    <!-- Folder -->
+    <string name="photo_widget_app_folder_empty">Du hast diesem Ordner noch keine Apps hinzugefügt. Tippe auf „Weiter“, um den Widget-Editor zu öffnen.</string>
+    <string name="photo_widget_app_folder_add_app">App hinzufügen</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Ja</string>
     <string name="photo_widget_action_no">Nein</string>

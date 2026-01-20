@@ -189,6 +189,8 @@
     <string name="photo_widget_configure_tap_action_view_previous_photo">Ver foto anterior</string>
     <string name="photo_widget_configure_tap_action_choose_next_photo">Elige la siguiente foto</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Abrir una aplicación</string>
+    <string name="photo_widget_configure_tap_action_app_folder">Carpeta de apps</string>
+    <string name="photo_widget_configure_tap_action_app_folder_description">Elige hasta 12 apps</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Abrir un enlace</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Activar/desactivar temporizador</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Toca para pausar el temporizador de fotos. Toca de nuevo para reanudar. Esta acción estará deshabilitada mientras el widget esté bloqueado.</string>
@@ -262,6 +264,9 @@
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Temporizador en pausa</string>
     <string name="photo_widget_cycling_feedback_resumed">Temporizador reanudado</string>
+    <!-- Folder -->
+    <string name="photo_widget_app_folder_empty">Aún no has añadido apps a esta carpeta. Toca continuar para abrir el editor de widgets.</string>
+    <string name="photo_widget_app_folder_add_app">Añadir app</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Sí</string>
     <string name="photo_widget_action_no">No</string>

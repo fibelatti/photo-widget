@@ -226,6 +226,8 @@
     <string name="photo_widget_configure_tap_action_view_previous_photo">View previous photo</string>
     <string name="photo_widget_configure_tap_action_choose_next_photo">Choose next photo</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Open an app</string>
+    <string name="photo_widget_configure_tap_action_app_folder">App folder</string>
+    <string name="photo_widget_configure_tap_action_app_folder_description">Choose up to 12 apps</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Open a link</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Enable/disable timer</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Tap to pause the photo timer. Tap again to resume. This action will be disabled while the widget is locked.</string>
@@ -320,6 +322,10 @@
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Timer paused</string>
     <string name="photo_widget_cycling_feedback_resumed">Timer resumed</string>
+
+    <!-- Folder -->
+    <string name="photo_widget_app_folder_empty">You haven\'t added apps to this folder yet. Tap continue to open the widget editor.</string>
+    <string name="photo_widget_app_folder_add_app">Add app</string>
 
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Yes</string>

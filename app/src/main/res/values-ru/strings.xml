@@ -201,6 +201,8 @@
     <string name="photo_widget_configure_tap_action_view_previous_photo">Просмотреть предыдущую фотографию</string>
     <string name="photo_widget_configure_tap_action_choose_next_photo">Выбрать следующее фото</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Открыть приложение</string>
+    <string name="photo_widget_configure_tap_action_app_folder">Папка приложений</string>
+    <string name="photo_widget_configure_tap_action_app_folder_description">Выберите до 12 приложений</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Открыть ссылку</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Включить/выключить таймер</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Нажмите, чтобы приостановить таймер фото. Нажмите ещё раз, чтобы продолжить. Это действие будет недоступно, пока виджет заблокирован.</string>
@@ -274,6 +276,9 @@
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Таймер приостановлен</string>
     <string name="photo_widget_cycling_feedback_resumed">Таймер возобновлён</string>
+    <!-- Folder -->
+    <string name="photo_widget_app_folder_empty">Вы ещё не добавили приложения в эту папку. Нажмите «Продолжить», чтобы открыть редактор виджетов.</string>
+    <string name="photo_widget_app_folder_add_app">Добавить приложение</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Да</string>
     <string name="photo_widget_action_no">Нет</string>

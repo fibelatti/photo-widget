@@ -21,6 +21,7 @@ import com.fibelatti.photowidget.configure.PhotoWidgetPinningCache
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
+import com.fibelatti.photowidget.folder.PhotoWidgetAppFolderActivity
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
@@ -522,6 +523,20 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         /* context = */ context,
                         /* requestCode = */ appWidgetId,
                         /* intent = */ launchIntent,
+                        /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                    )
+                }
+
+                is PhotoWidgetTapAction.AppFolder -> {
+                    val intent: Intent = PhotoWidgetAppFolderActivity.newIntent(
+                        context = context,
+                        appWidgetId = appWidgetId,
+                        appFolderTapAction = tapAction,
+                    )
+                    return PendingIntent.getActivity(
+                        /* context = */ context,
+                        /* requestCode = */ appWidgetId + tapAction.hashCode(),
+                        /* intent = */ intent,
                         /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                     )
                 }

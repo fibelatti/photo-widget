@@ -195,6 +195,8 @@
     <string name="photo_widget_configure_tap_action_view_previous_photo">Vezi fotografia anterioară</string>
     <string name="photo_widget_configure_tap_action_choose_next_photo">Alege poza următoare</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Deschide o aplicație</string>
+    <string name="photo_widget_configure_tap_action_app_folder">Folder de aplicații</string>
+    <string name="photo_widget_configure_tap_action_app_folder_description">Alege până la 12 aplicații</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Deschide un link</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Activează/dezactivează temporizatorul</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Atinge pentru a întrerupe temporizatorul foto. Apasă din nou pentru a relua. Această acțiune va fi dezactivată în timp ce widget-ul este blocat.</string>
@@ -268,6 +270,9 @@
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Temporizator întrerupt</string>
     <string name="photo_widget_cycling_feedback_resumed">Temporizator reluat</string>
+    <!-- Folder -->
+    <string name="photo_widget_app_folder_empty">Nu ai adăugat încă aplicații în acest folder. Apasă pe Continuare pentru a deschide editorul de widgeturi.</string>
+    <string name="photo_widget_app_folder_add_app">Adaugă aplicație</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Da</string>
     <string name="photo_widget_action_no">Nu</string>

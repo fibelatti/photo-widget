@@ -201,6 +201,8 @@
     <string name="photo_widget_configure_tap_action_view_previous_photo">צפייה בתמונה הקודמת</string>
     <string name="photo_widget_configure_tap_action_choose_next_photo">בחר את התמונה הבאה</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">פתח אפליקציה</string>
+    <string name="photo_widget_configure_tap_action_app_folder">תיקיית אפליקציות</string>
+    <string name="photo_widget_configure_tap_action_app_folder_description">בחר עד 12 אפליקציות</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">פתח קישור</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">הפעל/השבת טיימר</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">הקש כדי להשהות את טיימר התמונות. הקש שוב כדי לחדש. פעולה זו תושבת כאשר הווידג\'ט נעול.</string>
@@ -274,6 +276,9 @@
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">הטיימר הושהה</string>
     <string name="photo_widget_cycling_feedback_resumed">הטיימר חודש</string>
+    <!-- Folder -->
+    <string name="photo_widget_app_folder_empty">עדיין לא הוספת אפליקציות לתיקייה זו. הקש על המשך כדי לפתוח את עורך הווידג׳ט.</string>
+    <string name="photo_widget_app_folder_add_app">הוסף אפליקציה</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">כן</string>
     <string name="photo_widget_action_no">לא</string>

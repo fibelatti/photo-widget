@@ -33,7 +33,7 @@ fun Context.getDynamicAttributeColor(
     @ColorInt default: Int = -1,
     @StyleRes theme: Int = com.google.android.material.R.style.ThemeOverlay_Material3_DynamicColors_DayNight,
 ): Int {
-    return DynamicColors.wrapContextIfAvailable(this, theme).getAttributeColor(attrId, default)
+    return DynamicColors.wrapContextIfAvailable(applicationContext, theme).getAttributeColor(attrId, default)
 }
 
 fun Context?.findActivity(): AppCompatActivity? {

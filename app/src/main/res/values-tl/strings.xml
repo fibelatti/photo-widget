@@ -187,6 +187,8 @@
     <string name="photo_widget_configure_tap_action_view_previous_photo">Tingnan ang nakaraang larawan</string>
     <string name="photo_widget_configure_tap_action_choose_next_photo">Piliin ang susunod na larawan</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Magbukas ng app</string>
+    <string name="photo_widget_configure_tap_action_app_folder">Folder ng app</string>
+    <string name="photo_widget_configure_tap_action_app_folder_description">Pumili ng hanggang 12 app</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Magbukas ng link</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">I-on/i-off ang timer</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Pindutin upang ihinto ang timer sa paglipat ng larawan. Muling pumindot upang ituloy. I-o-off ang aksyong ito pag naka-lock ang widget.</string>
@@ -260,6 +262,9 @@
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Naka-hinto ang timer</string>
     <string name="photo_widget_cycling_feedback_resumed">Pinatuloy ang timer</string>
+    <!-- Folder -->
+    <string name="photo_widget_app_folder_empty">Wala ka pang idinadagdag na app sa folder na ito. I-tap ang Magpatuloy para buksan ang widget editor.</string>
+    <string name="photo_widget_app_folder_add_app">Magdagdag ng app</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Oo</string>
     <string name="photo_widget_action_no">Hindi</string>

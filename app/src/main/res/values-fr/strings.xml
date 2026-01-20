@@ -189,6 +189,8 @@
     <string name="photo_widget_configure_tap_action_view_previous_photo">Voir la photo précédente</string>
     <string name="photo_widget_configure_tap_action_choose_next_photo">Choisissez la photo suivante</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Ouvrir une application</string>
+    <string name="photo_widget_configure_tap_action_app_folder">Dossier d\'apps</string>
+    <string name="photo_widget_configure_tap_action_app_folder_description">Choisissez jusqu\'à 12 apps</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Ouvrir un lien</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Activer/désactiver le minuteur</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Appuyez pour mettre le minuteur photo en pause. Appuyez de nouveau pour reprendre. Cette action sera désactivée lorsque le widget est verrouillé.</string>
@@ -262,6 +264,9 @@
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Minuteur en pause</string>
     <string name="photo_widget_cycling_feedback_resumed">Minuteur repris</string>
+    <!-- Folder -->
+    <string name="photo_widget_app_folder_empty">Vous n\'avez pas encore ajouté d\'apps à ce dossier. Appuyez sur Continuer pour ouvrir l\'éditeur de widgets.</string>
+    <string name="photo_widget_app_folder_add_app">Ajouter une app</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Oui</string>
     <string name="photo_widget_action_no">Non</string>

@@ -189,6 +189,8 @@
     <string name="photo_widget_configure_tap_action_view_previous_photo">Ver a foto anterior</string>
     <string name="photo_widget_configure_tap_action_choose_next_photo">Escolher a próxima foto</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Abrir um app</string>
+    <string name="photo_widget_configure_tap_action_app_folder">Pasta de apps</string>
+    <string name="photo_widget_configure_tap_action_app_folder_description">Escolha até 12 apps</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Abrir um link</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Ativar/desativar timer</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Toque para pausar o timer de fotos. Toque novamente para retomar. Esta ação será desativada enquanto o widget estiver bloqueado.</string>
@@ -262,6 +264,9 @@
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Timer pausado</string>
     <string name="photo_widget_cycling_feedback_resumed">Timer retomado</string>
+    <!-- Folder -->
+    <string name="photo_widget_app_folder_empty">Você ainda não adicionou apps a esta pasta. Toque em Continuar para abrir o editor de widgets.</string>
+    <string name="photo_widget_app_folder_add_app">Adicionar app</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Sim</string>
     <string name="photo_widget_action_no">Não</string>

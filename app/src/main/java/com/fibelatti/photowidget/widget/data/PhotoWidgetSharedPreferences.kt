@@ -422,6 +422,12 @@ class PhotoWidgetSharedPreferences @Inject constructor(
             TapActionArea.RIGHT -> "${PreferencePrefix.APP_SHORTCUT_RIGHT}$appWidgetId"
         }
 
+        val appFolderKey = when (tapActionArea) {
+            TapActionArea.LEFT -> "${PreferencePrefix.APP_FOLDER_LEFT}$appWidgetId"
+            TapActionArea.CENTER -> "${PreferencePrefix.APP_FOLDER_CENTER}$appWidgetId"
+            TapActionArea.RIGHT -> "${PreferencePrefix.APP_FOLDER_RIGHT}$appWidgetId"
+        }
+
         val urlShortcutKey = when (tapActionArea) {
             TapActionArea.LEFT -> "${PreferencePrefix.URL_SHORTCUT_LEFT}$appWidgetId"
             TapActionArea.CENTER -> "${PreferencePrefix.URL_SHORTCUT_CENTER}$appWidgetId"
@@ -430,6 +436,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
 
         sharedPreferences.edit {
             putString(mainPrefKey, tapAction.serializedName)
+
+            remove(appShortcutKey)
+            remove(appFolderKey)
+            remove(urlShortcutKey)
 
             when (tapAction) {
                 is PhotoWidgetTapAction.ViewFullScreen -> {
@@ -445,6 +455,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
 
                 is PhotoWidgetTapAction.AppShortcut -> {
                     putString(appShortcutKey, tapAction.appShortcut)
+                }
+
+                is PhotoWidgetTapAction.AppFolder -> {
+                    putString(appFolderKey, tapAction.shortcuts.joinToString(separator = ",").ifEmpty { null })
                 }
 
                 is PhotoWidgetTapAction.UrlShortcut -> {
@@ -476,6 +490,12 @@ class PhotoWidgetSharedPreferences @Inject constructor(
             TapActionArea.RIGHT -> "${PreferencePrefix.APP_SHORTCUT_RIGHT}$appWidgetId"
         }
 
+        val appFolderKey = when (tapActionArea) {
+            TapActionArea.LEFT -> "${PreferencePrefix.APP_FOLDER_LEFT}$appWidgetId"
+            TapActionArea.CENTER -> "${PreferencePrefix.APP_FOLDER_CENTER}$appWidgetId"
+            TapActionArea.RIGHT -> "${PreferencePrefix.APP_FOLDER_RIGHT}$appWidgetId"
+        }
+
         val urlShortcutKey = when (tapActionArea) {
             TapActionArea.LEFT -> "${PreferencePrefix.URL_SHORTCUT_LEFT}$appWidgetId"
             TapActionArea.CENTER -> "${PreferencePrefix.URL_SHORTCUT_CENTER}$appWidgetId"
@@ -504,6 +524,15 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 is PhotoWidgetTapAction.AppShortcut -> tapAction.copy(
                     appShortcut = getString(appShortcutKey, null),
                 )
+
+                is PhotoWidgetTapAction.AppFolder -> {
+                    val shortcuts: List<String> = getString(appFolderKey, null)
+                        ?.split(",")
+                        ?.filter { it.isNotEmpty() }
+                        .orEmpty()
+
+                    tapAction.copy(shortcuts = shortcuts)
+                }
 
                 is PhotoWidgetTapAction.UrlShortcut -> tapAction.copy(
                     url = getString(urlShortcutKey, null),
@@ -655,6 +684,9 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         APP_SHORTCUT_LEFT(value = "appwidget_app_shortcut_left_"),
         APP_SHORTCUT_CENTER(value = "appwidget_app_shortcut_"),
         APP_SHORTCUT_RIGHT(value = "appwidget_app_shortcut_right_"),
+        APP_FOLDER_LEFT(value = "appwidget_app_folder_left_"),
+        APP_FOLDER_CENTER(value = "appwidget_app_folder_"),
+        APP_FOLDER_RIGHT(value = "appwidget_app_folder_right_"),
         URL_SHORTCUT_LEFT(value = "appwidget_url_shortcut_left_"),
         URL_SHORTCUT_CENTER(value = "appwidget_url_shortcut_"),
         URL_SHORTCUT_RIGHT(value = "appwidget_url_shortcut_right_"),

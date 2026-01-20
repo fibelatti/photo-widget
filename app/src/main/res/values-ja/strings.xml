@@ -183,6 +183,8 @@
     <string name="photo_widget_configure_tap_action_view_previous_photo">前の写真を表示</string>
     <string name="photo_widget_configure_tap_action_choose_next_photo">次の写真を選択</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">アプリを開く</string>
+    <string name="photo_widget_configure_tap_action_app_folder">アプリフォルダ</string>
+    <string name="photo_widget_configure_tap_action_app_folder_description">最大12個のアプリを選択</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">リンクを開く</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">タイマーの有効化/無効化</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">タップして写真タイマーを一時停止します。再度タップすると再開します。ウィジェットがロックされている間は、この操作は無効になります。</string>
@@ -256,6 +258,9 @@
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">タイマーを一時停止しました</string>
     <string name="photo_widget_cycling_feedback_resumed">タイマーを再開しました</string>
+    <!-- Folder -->
+    <string name="photo_widget_app_folder_empty">このフォルダにはまだアプリが追加されていません。「続行」をタップしてウィジェットエディタを開いてください。</string>
+    <string name="photo_widget_app_folder_add_app">アプリを追加</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">はい</string>
     <string name="photo_widget_action_no">いいえ</string>

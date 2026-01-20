@@ -189,6 +189,8 @@
     <string name="photo_widget_configure_tap_action_view_previous_photo">Önceki fotoğrafı görüntüle</string>
     <string name="photo_widget_configure_tap_action_choose_next_photo">Sonraki fotoğrafı seçin</string>
     <string name="photo_widget_configure_tap_action_app_shortcut">Bir uygulama açın</string>
+    <string name="photo_widget_configure_tap_action_app_folder">Uygulama klasörü</string>
+    <string name="photo_widget_configure_tap_action_app_folder_description">En fazla 12 uygulama seçin</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Bir bağlantı aç</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Zamanlayıcıyı etkinleştir/devre dışı bırak</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Fotoğraf zamanlayıcısını duraklatmak için dokunun. Devam ettirmek için tekrar dokunun. Bu işlem, widget kilitliyken devre dışı olacaktır.</string>
@@ -262,6 +264,9 @@
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Zamanlayıcı duraklatıldı</string>
     <string name="photo_widget_cycling_feedback_resumed">Zamanlayıcı devam etti</string>
+    <!-- Folder -->
+    <string name="photo_widget_app_folder_empty">Bu klasöre henüz uygulama eklemediniz. Widget düzenleyicisini açmak için Devam\'a dokunun.</string>
+    <string name="photo_widget_app_folder_add_app">Uygulama ekle</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Evet</string>
     <string name="photo_widget_action_no">Hayır</string>

@@ -1,5 +1,8 @@
 package com.fibelatti.photowidget.model
 
+import android.content.Context
+import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import androidx.annotation.StringRes
 import com.fibelatti.photowidget.R
@@ -93,6 +96,18 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     }
 
     @Parcelize
+    data class AppFolder(
+        val shortcuts: List<String> = emptyList(),
+    ) : PhotoWidgetTapAction {
+
+        @IgnoredOnParcel
+        override val label: Int = R.string.photo_widget_configure_tap_action_app_folder
+
+        @IgnoredOnParcel
+        override val serializedName: String = "APP_FOLDER"
+    }
+
+    @Parcelize
     data class UrlShortcut(
         val url: String? = null,
     ) : PhotoWidgetTapAction {
@@ -140,6 +155,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
                 ChooseNextPhoto,
                 ToggleCycling(),
                 AppShortcut(),
+                AppFolder(),
                 UrlShortcut(),
                 SharePhoto,
             )
@@ -148,5 +164,16 @@ sealed interface PhotoWidgetTapAction : Parcelable {
         fun fromSerializedName(serializedName: String): PhotoWidgetTapAction {
             return entries.firstOrNull { it.serializedName == serializedName } ?: DEFAULT
         }
+    }
+}
+
+fun PhotoWidgetTapAction.AppFolder.toIconLabelPair(context: Context): List<Pair<Drawable, String>> {
+    val pm = context.packageManager
+
+    return shortcuts.mapNotNull { shortcut ->
+        runCatching {
+            val appInfo = pm.getApplicationInfo(shortcut, PackageManager.MATCH_DEFAULT_ONLY)
+            pm.getApplicationIcon(appInfo) to pm.getApplicationLabel(appInfo).toString()
+        }.getOrNull()
     }
 }
