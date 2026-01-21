@@ -28,6 +28,8 @@ import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.tapActionDisableTap
 import com.fibelatti.photowidget.model.textToBitmap
+import com.fibelatti.photowidget.platform.getInstalledApp
+import com.fibelatti.photowidget.platform.getLaunchIntent
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.platform.sharePhotoChooserIntent
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
@@ -446,7 +448,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         .setIdentifierCompat("$appWidgetId")
 
-                    if (tapAction.galleryApp != null) {
+                    if (context.getInstalledApp(packageName = tapAction.galleryApp) != null) {
                         intent.setPackage(tapAction.galleryApp)
                     }
 
@@ -503,19 +505,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 is PhotoWidgetTapAction.AppShortcut -> {
                     if (tapAction.appShortcut == null) return null
 
-                    val pm = context.packageManager
-                    var launchIntent = pm.getLaunchIntentForPackage(tapAction.appShortcut)
-
-                    if (launchIntent == null) {
-                        val queryIntent = Intent(Intent.ACTION_MAIN).setPackage(tapAction.appShortcut)
-                        val activity = pm.queryIntentActivities(queryIntent, 0).firstOrNull()?.activityInfo
-                        if (activity != null) {
-                            launchIntent = Intent(Intent.ACTION_MAIN)
-                                .setComponent(ComponentName(activity.applicationInfo.packageName, activity.name))
-                        }
-                    }
-
-                    if (launchIntent == null) return null
+                    val launchIntent: Intent = context.getLaunchIntent(packageName = tapAction.appShortcut)
+                        ?: return null
 
                     launchIntent.setIdentifierCompat("$appWidgetId")
 

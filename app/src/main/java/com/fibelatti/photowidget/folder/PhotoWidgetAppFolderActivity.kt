@@ -1,10 +1,7 @@
 package com.fibelatti.photowidget.folder
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -44,9 +41,12 @@ import androidx.core.graphics.drawable.toBitmap
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.configure.appWidgetId
+import com.fibelatti.photowidget.model.InstalledApp
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
+import com.fibelatti.photowidget.platform.getInstalledApp
+import com.fibelatti.photowidget.platform.getLaunchIntent
 import com.fibelatti.photowidget.platform.intentExtras
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.ui.WarningSign
@@ -62,7 +62,7 @@ class PhotoWidgetAppFolderActivity : AppCompatActivity() {
         setContent {
             AppTheme {
                 ScreenContent(
-                    shortcuts = intent.appFolderTapAction.shortcuts.mapNotNull(::createAppShortcut),
+                    apps = intent.appFolderTapAction.shortcuts.mapNotNull(::getInstalledApp),
                     onEditWidgetClick = {
                         startActivity(
                             PhotoWidgetConfigureActivity.editWidgetIntent(
@@ -79,31 +79,8 @@ class PhotoWidgetAppFolderActivity : AppCompatActivity() {
         }
     }
 
-    private fun createAppShortcut(appPackage: String): AppShortcut? {
-        return runCatching {
-            val appInfo = packageManager.getApplicationInfo(
-                appPackage,
-                PackageManager.MATCH_DEFAULT_ONLY,
-            )
-            AppShortcut(
-                appPackage = appPackage,
-                appIcon = packageManager.getApplicationIcon(appInfo),
-                appLabel = packageManager.getApplicationLabel(appInfo).toString(),
-            )
-        }.getOrNull()
-    }
-
-    private fun launchApp(appShortcut: AppShortcut) {
-        var launchIntent = packageManager.getLaunchIntentForPackage(appShortcut.appPackage)
-
-        if (launchIntent == null) {
-            val queryIntent = Intent(Intent.ACTION_MAIN).setPackage(appShortcut.appPackage)
-            val activity = packageManager.queryIntentActivities(queryIntent, 0).firstOrNull()?.activityInfo
-            if (activity != null) {
-                launchIntent = Intent(Intent.ACTION_MAIN)
-                    .setComponent(ComponentName(activity.applicationInfo.packageName, activity.name))
-            }
-        }
+    private fun launchApp(app: InstalledApp) {
+        val launchIntent: Intent? = getLaunchIntent(packageName = app.appPackage)
 
         if (launchIntent != null) {
             startActivity(launchIntent)
@@ -130,17 +107,11 @@ class PhotoWidgetAppFolderActivity : AppCompatActivity() {
     }
 }
 
-private data class AppShortcut(
-    val appPackage: String,
-    val appIcon: Drawable,
-    val appLabel: String,
-)
-
 @Composable
 private fun ScreenContent(
-    shortcuts: List<AppShortcut>,
+    apps: List<InstalledApp>,
     onEditWidgetClick: () -> Unit,
-    onAppClick: (AppShortcut) -> Unit,
+    onAppClick: (InstalledApp) -> Unit,
     onBackgroundClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -157,7 +128,7 @@ private fun ScreenContent(
             .safeContentPadding(),
         contentAlignment = Alignment.Center,
     ) {
-        if (shortcuts.isEmpty()) {
+        if (apps.isEmpty()) {
             WarningSign(
                 text = stringResource(R.string.photo_widget_app_folder_empty),
                 textStyle = MaterialTheme.typography.bodyLarge,
@@ -184,11 +155,11 @@ private fun ScreenContent(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                val rows: List<List<AppShortcut>> = remember(shortcuts) {
-                    shortcuts.chunked(
+                val rows: List<List<InstalledApp>> = remember(apps) {
+                    apps.chunked(
                         size = when {
-                            shortcuts.size <= 4 -> 2
-                            shortcuts.size <= 6 || shortcuts.size == 9 -> 3
+                            apps.size <= 4 -> 2
+                            apps.size <= 6 || apps.size == 9 -> 3
                             else -> 4
                         },
                     )
@@ -199,12 +170,12 @@ private fun ScreenContent(
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                         verticalAlignment = Alignment.Top,
                     ) {
-                        for (shortcut in row) {
+                        for (app in row) {
                             AppItem(
-                                appShortcut = shortcut,
+                                app = app,
                                 modifier = Modifier
                                     .clip(shape = MaterialTheme.shapes.small)
-                                    .clickable(onClick = { onAppClick(shortcut) }),
+                                    .clickable(onClick = { onAppClick(app) }),
                                 labelColor = labelColor,
                             )
                         }
@@ -217,7 +188,7 @@ private fun ScreenContent(
 
 @Composable
 private fun AppItem(
-    appShortcut: AppShortcut,
+    app: InstalledApp,
     modifier: Modifier = Modifier,
     labelColor: Color = MaterialTheme.colorScheme.onSurface,
 ) {
@@ -229,13 +200,13 @@ private fun AppItem(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            bitmap = appShortcut.appIcon.toBitmap().asImageBitmap(),
+            bitmap = app.appIcon.toBitmap().asImageBitmap(),
             contentDescription = null,
             modifier = Modifier.size(48.dp),
         )
 
         Text(
-            text = appShortcut.appLabel,
+            text = app.appLabel,
             modifier = Modifier.fillMaxWidth(),
             color = labelColor,
             fontSize = 12.sp,

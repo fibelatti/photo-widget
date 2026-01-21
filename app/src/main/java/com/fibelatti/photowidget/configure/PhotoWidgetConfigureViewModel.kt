@@ -19,6 +19,7 @@ import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
 import com.fibelatti.photowidget.widget.DuplicatePhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.RestoreWidgetUseCase
+import com.fibelatti.photowidget.widget.SanitizeTapActionsUseCase
 import com.fibelatti.photowidget.widget.SavePhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -47,6 +48,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val photoWidgetStorage: PhotoWidgetStorage,
     loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
+    private val sanitizeTapActionsUseCase: SanitizeTapActionsUseCase,
     private val duplicatePhotoWidgetUseCase: DuplicatePhotoWidgetUseCase,
     private val restoreWidgetUseCase: RestoreWidgetUseCase,
     private val savePhotoWidgetUseCase: SavePhotoWidgetUseCase,
@@ -83,11 +85,26 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             )
 
             if (sourceWidget != null) {
-                updateState(photoWidget = sourceWidget, hasEdits = true)
+                val sanitized: PhotoWidget = sanitizeTapActionsUseCase(
+                    appWidgetId = appWidgetId,
+                    photoWidget = sourceWidget,
+                )
+
+                updateState(photoWidget = sanitized, hasEdits = true)
             } else {
                 loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
                     .onEach { photoWidget -> updateState(photoWidget = photoWidget, hasEdits = false) }
-                    .onCompletion { trackEdits() }
+                    .onCompletion { throwable ->
+                        if (throwable != null) return@onCompletion
+
+                        val sanitized: PhotoWidget = sanitizeTapActionsUseCase(
+                            appWidgetId = appWidgetId,
+                            photoWidget = state.value.photoWidget,
+                        )
+                        updateState(photoWidget = sanitized, hasEdits = false)
+
+                        trackEdits()
+                    }
                     .launchIn(viewModelScope)
             }
         }

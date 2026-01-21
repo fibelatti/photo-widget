@@ -1,8 +1,13 @@
 package com.fibelatti.photowidget.platform
 
 import android.app.ActivityManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.PowerManager
 import android.util.DisplayMetrics
@@ -11,6 +16,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
+import com.fibelatti.photowidget.model.InstalledApp
 import com.google.android.material.color.DynamicColors
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
@@ -98,4 +104,40 @@ fun Context.getMaxBitmapWidgetDimension(coerceMaxMemory: Boolean = false): Int {
     Timber.d("Max dimension allowed: $maxDimension (maxMemoryAllowed=$maxMemoryAllowed)")
 
     return maxDimension
+}
+
+fun Context.getInstalledApp(packageName: String?): InstalledApp? {
+    if (packageName == null) return null
+
+    return runCatching {
+        val appInfo: ApplicationInfo = packageManager.getApplicationInfo(
+            /* packageName = */ packageName,
+            /* flags = */ PackageManager.MATCH_DEFAULT_ONLY,
+        )
+
+        InstalledApp(
+            appPackage = packageName,
+            appIcon = packageManager.getApplicationIcon(appInfo),
+            appLabel = packageManager.getApplicationLabel(appInfo).toString(),
+        )
+    }.getOrNull()
+}
+
+fun Context.getLaunchIntent(packageName: String?): Intent? {
+    if (packageName == null) return null
+
+    var launchIntent: Intent? = packageManager.getLaunchIntentForPackage(/* packageName = */ packageName)
+
+    if (launchIntent == null) {
+        val queryIntent: Intent = Intent(Intent.ACTION_MAIN)
+            .setPackage(packageName)
+        val activity: ActivityInfo? = packageManager.queryIntentActivities(queryIntent, 0).firstOrNull()?.activityInfo
+
+        if (activity != null) {
+            launchIntent = Intent(Intent.ACTION_MAIN)
+                .setComponent(ComponentName(activity.applicationInfo.packageName, activity.name))
+        }
+    }
+
+    return launchIntent
 }

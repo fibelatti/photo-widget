@@ -4,9 +4,7 @@ package com.fibelatti.photowidget.configure
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.res.Resources
-import android.graphics.drawable.Drawable
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -68,7 +66,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asImageBitmap
@@ -93,11 +90,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.model.InstalledApp
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.TapActionArea
-import com.fibelatti.photowidget.model.toIconLabelPair
+import com.fibelatti.photowidget.platform.getInstalledApp
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.photowidget.ui.DefaultSheetContent
@@ -679,35 +677,24 @@ private fun AppPicker(
             Text(text = stringResource(id = R.string.photo_widget_configure_tap_action_choose_app))
         }
 
-        val packageManager = LocalContext.current.packageManager
-        val (appIcon: ImageBitmap, appLabel: String) = value
-            ?.runCatching {
-                val appInfo = packageManager.getApplicationInfo(
-                    value,
-                    PackageManager.MATCH_DEFAULT_ONLY,
-                )
-                Pair(
-                    first = packageManager.getApplicationIcon(appInfo).toBitmap().asImageBitmap(),
-                    second = packageManager.getApplicationLabel(appInfo).toString(),
-                )
-            }
-            ?.getOrNull()
-            ?: return
+        val installedApp: InstalledApp? = LocalContext.current.getInstalledApp(packageName = value)
 
-        Image(
-            bitmap = appIcon,
-            contentDescription = null,
-            modifier = Modifier.size(40.dp),
-        )
+        if (installedApp != null) {
+            Image(
+                bitmap = installedApp.appIcon.toBitmap().asImageBitmap(),
+                contentDescription = null,
+                modifier = Modifier.size(40.dp),
+            )
 
-        AutoSizeText(
-            text = appLabel,
-            modifier = Modifier.weight(1f),
-            color = MaterialTheme.colorScheme.onSurface,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
-            style = MaterialTheme.typography.labelLarge,
-        )
+            AutoSizeText(
+                text = installedApp.appLabel,
+                modifier = Modifier.weight(1f),
+                color = MaterialTheme.colorScheme.onSurface,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                style = MaterialTheme.typography.labelLarge,
+            )
+        }
     }
 }
 
@@ -833,7 +820,7 @@ private fun AppFolderCustomizationContent(
     ) {
         ReorderableColumn(
             list = remember(value, localContext) {
-                value.toIconLabelPair(context = localContext)
+                value.shortcuts.mapNotNull(localContext::getInstalledApp)
             },
             onSettle = { fromIndex: Int, toIndex: Int ->
                 onValueChange(
@@ -846,9 +833,8 @@ private fun AppFolderCustomizationContent(
             },
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(1.dp),
-        ) ReorderableColumnItem@{ index: Int, item: Pair<Drawable, String>, isDragging: Boolean ->
+        ) ReorderableColumnItem@{ index: Int, item: InstalledApp, isDragging: Boolean ->
             ReorderableItem {
-                val (appIcon: Drawable, appLabel: String) = item
                 val topCorner: Dp by animateDpAsState(
                     targetValue = when {
                         index == 0 || isDragging -> 12.dp
@@ -863,7 +849,7 @@ private fun AppFolderCustomizationContent(
                 )
 
                 AppFolderCustomizationItem(
-                    label = appLabel,
+                    label = item.appLabel,
                     modifier = Modifier.longPressDraggableHandle(
                         onDragStarted = {
                             localHaptics.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate)
@@ -874,7 +860,7 @@ private fun AppFolderCustomizationContent(
                     ),
                     leadingIcon = {
                         Image(
-                            bitmap = appIcon.toBitmap().asImageBitmap(),
+                            bitmap = item.appIcon.toBitmap().asImageBitmap(),
                             contentDescription = null,
                             modifier = Modifier.size(40.dp),
                         )

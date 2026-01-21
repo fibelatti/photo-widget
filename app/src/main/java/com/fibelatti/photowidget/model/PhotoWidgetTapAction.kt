@@ -1,8 +1,5 @@
 package com.fibelatti.photowidget.model
 
-import android.content.Context
-import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import androidx.annotation.StringRes
 import com.fibelatti.photowidget.R
@@ -164,16 +161,5 @@ sealed interface PhotoWidgetTapAction : Parcelable {
         fun fromSerializedName(serializedName: String): PhotoWidgetTapAction {
             return entries.firstOrNull { it.serializedName == serializedName } ?: DEFAULT
         }
-    }
-}
-
-fun PhotoWidgetTapAction.AppFolder.toIconLabelPair(context: Context): List<Pair<Drawable, String>> {
-    val pm = context.packageManager
-
-    return shortcuts.mapNotNull { shortcut ->
-        runCatching {
-            val appInfo = pm.getApplicationInfo(shortcut, PackageManager.MATCH_DEFAULT_ONLY)
-            pm.getApplicationIcon(appInfo) to pm.getApplicationLabel(appInfo).toString()
-        }.getOrNull()
     }
 }
