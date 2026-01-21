@@ -1,0 +1,7 @@
+This version brings the following updates:
+
+* New tap action: app folder
+* New color options for the dynamic border
+* Fixes vertical offset not working when horizontal offset is also applied
+
+Thanks for using the app!
