@@ -23,7 +23,7 @@ material = { module = "com.google.android.material:material", version = "1.13.0"
 lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version = "2.10.0" }
 graphics-shapes = { module = "androidx.graphics:graphics-shapes", version = "1.1.0" }
 palette = { module = "androidx.palette:palette-ktx", version = "1.0.0" }
-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version = "2.11.0" }
+work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version = "2.11.1" }
 
 navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3" }
 navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3" }
