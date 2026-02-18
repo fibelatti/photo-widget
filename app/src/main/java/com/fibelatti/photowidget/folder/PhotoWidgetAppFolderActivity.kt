@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -44,6 +43,8 @@ import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.model.InstalledApp
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.AppTheme
+import com.fibelatti.photowidget.platform.disableWindowNavigationBarContrastEnforced
+import com.fibelatti.photowidget.platform.enableEdgeToEdgeTransparent
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.getInstalledApp
 import com.fibelatti.photowidget.platform.getLaunchIntent
@@ -56,7 +57,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class PhotoWidgetAppFolderActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
+        enableEdgeToEdgeTransparent()
+        disableWindowNavigationBarContrastEnforced()
         super.onCreate(savedInstanceState)
 
         setContent {

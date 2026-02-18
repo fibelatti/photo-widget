@@ -42,7 +42,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
@@ -104,10 +103,6 @@ fun PhotoWidgetViewerScreen(
     }
     var showControls: Boolean by remember { mutableStateOf(false) }
 
-    val backgroundAlpha: Float by animateFloatAsState(
-        targetValue = if (showContent) .8f else 0f,
-        animationSpec = tween(ANIM_DURATION),
-    )
     val contentAlpha: Float by animateFloatAsState(
         targetValue = if (showContent) 1f else 0f,
         animationSpec = tween(ANIM_DURATION),
@@ -148,7 +143,7 @@ fun PhotoWidgetViewerScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = Color.Black.copy(alpha = backgroundAlpha)),
+            .background(color = MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center,
     ) {
         AnimatedVisibility(

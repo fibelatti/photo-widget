@@ -34,12 +34,16 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         WindowCompat.getInsetsController(window, window.decorView).run {
+            isAppearanceLightStatusBars = false
+            isAppearanceLightNavigationBars = false
             systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             hide(WindowInsetsCompat.Type.systemBars())
         }
 
         setContent {
-            AppTheme {
+            AppTheme(
+                darkTheme = true,
+            ) {
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
                 state.photoWidget?.let { photoWidget ->

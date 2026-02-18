@@ -86,8 +86,7 @@
             android:name=".viewer.PhotoWidgetViewerActivity"
             android:enableOnBackInvokedCallback="false"
             android:exported="false"
-            android:launchMode="singleInstance"
-            android:theme="@style/AppTheme.TransparentActivity" />
+            android:launchMode="singleInstance" />
 
         <activity
             android:name=".chooser.PhotoWidgetChooserActivity"

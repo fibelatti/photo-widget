@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.platform
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -15,11 +16,13 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun AppTheme(
     appThemeViewModel: AppThemeViewModel = hiltViewModel(),
+    darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
     val userPreferences by appThemeViewModel.userPreferences.collectAsStateWithLifecycle()
 
     ExtendedTheme(
+        darkTheme = darkTheme,
         dynamicColor = userPreferences.dynamicColors,
         useTrueBlack = userPreferences.useTrueBlack,
         content = content,

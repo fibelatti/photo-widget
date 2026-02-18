@@ -2,7 +2,6 @@ package com.fibelatti.photowidget.chooser
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -48,6 +47,8 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.platform.AppTheme
+import com.fibelatti.photowidget.platform.disableWindowNavigationBarContrastEnforced
+import com.fibelatti.photowidget.platform.enableEdgeToEdgeTransparent
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
@@ -63,7 +64,8 @@ import kotlinx.coroutines.withContext
 class PhotoWidgetChooserActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
+        enableEdgeToEdgeTransparent()
+        disableWindowNavigationBarContrastEnforced()
         super.onCreate(savedInstanceState)
 
         setContent {
