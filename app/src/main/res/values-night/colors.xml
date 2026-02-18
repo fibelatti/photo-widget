@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Only colors that change depending on the configuration should be defined here
-    everything else should be follow the style and use the query syntax (?attr/) -->
+    everything else should follow the style and use the query syntax (?attr/) -->
     <color name="color_primary">#9FD49B</color>
     <color name="color_surface_container_high">#272B25</color>
     <color name="color_on_surface">#E0E4DB</color>
