@@ -68,7 +68,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version = "2.3.5" }
+ksp = { id = "com.google.devtools.ksp", version = "2.3.6" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 room = { id = "androidx.room", version.ref = "room" }
 spotless = { id = "com.diffplug.spotless", version = "8.2.1" }
