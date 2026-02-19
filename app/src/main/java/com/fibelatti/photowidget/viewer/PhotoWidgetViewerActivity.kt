@@ -6,7 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -14,6 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.chooser.PhotoWidgetChooserActivity
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.model.LocalPhoto
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.tapActionIncreaseBrightness
 import com.fibelatti.photowidget.model.tapActionViewOriginalPhoto
@@ -33,45 +36,8 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        WindowCompat.getInsetsController(window, window.decorView).run {
-            isAppearanceLightStatusBars = false
-            isAppearanceLightNavigationBars = false
-            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            hide(WindowInsetsCompat.Type.systemBars())
-        }
-
-        setContent {
-            AppTheme(
-                darkTheme = true,
-            ) {
-                val state by viewModel.state.collectAsStateWithLifecycle()
-
-                state.photoWidget?.let { photoWidget ->
-                    RememberedEffect(Unit) {
-                        if (photoWidget.tapActionIncreaseBrightness) {
-                            setScreenBrightness(value = 0.9f)
-                        }
-                    }
-
-                    PhotoWidgetViewerScreen(
-                        photo = photoWidget.currentPhoto,
-                        isLoading = photoWidget.isLoading,
-                        viewOriginalPhoto = photoWidget.tapActionViewOriginalPhoto,
-                        aspectRatio = if (photoWidget.tapActionViewOriginalPhoto) {
-                            PhotoWidgetAspectRatio.ORIGINAL
-                        } else {
-                            photoWidget.aspectRatio
-                        },
-                        onDismissClick = ::finishAndRemoveTask,
-                        showFlipControls = state.showMoveControls,
-                        onPreviousClick = viewModel::viewPreviousPhoto,
-                        onNextClick = viewModel::viewNextPhoto,
-                        onAllPhotosClick = ::showPhotoChooser,
-                        onShareClick = ::sharePhoto,
-                    )
-                }
-            }
-        }
+        setFullScreen()
+        setContent()
     }
 
     override fun onResume() {
@@ -82,6 +48,49 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
     override fun onDestroy() {
         currentScreenBrightness?.let(::setScreenBrightness)
         super.onDestroy()
+    }
+
+    private fun setFullScreen() {
+        WindowCompat.getInsetsController(window, window.decorView).run {
+            isAppearanceLightStatusBars = false
+            isAppearanceLightNavigationBars = false
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            hide(WindowInsetsCompat.Type.systemBars())
+        }
+    }
+
+    private fun setContent() {
+        setContent {
+            AppTheme(
+                darkTheme = true,
+            ) {
+                val state: PhotoWidgetViewerViewModel.State by viewModel.state.collectAsStateWithLifecycle()
+                val photoWidget: PhotoWidget by remember { derivedStateOf { state.photoWidget } }
+
+                RememberedEffect(Unit) {
+                    if (photoWidget.tapActionIncreaseBrightness) {
+                        setScreenBrightness(value = 0.9f)
+                    }
+                }
+
+                PhotoWidgetViewerScreen(
+                    photo = photoWidget.currentPhoto,
+                    isLoading = photoWidget.isLoading,
+                    viewOriginalPhoto = photoWidget.tapActionViewOriginalPhoto,
+                    aspectRatio = if (photoWidget.tapActionViewOriginalPhoto) {
+                        PhotoWidgetAspectRatio.ORIGINAL
+                    } else {
+                        photoWidget.aspectRatio
+                    },
+                    onDismissClick = ::finishAndRemoveTask,
+                    showFlipControls = state.showMoveControls,
+                    onPreviousClick = viewModel::viewPreviousPhoto,
+                    onNextClick = viewModel::viewNextPhoto,
+                    onAllPhotosClick = ::showPhotoChooser,
+                    onShareClick = ::sharePhoto,
+                )
+            }
+        }
     }
 
     private fun setScreenBrightness(value: Float) {

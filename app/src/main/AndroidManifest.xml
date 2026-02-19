@@ -84,7 +84,6 @@
 
         <activity
             android:name=".viewer.PhotoWidgetViewerActivity"
-            android:enableOnBackInvokedCallback="false"
             android:exported="false"
             android:launchMode="singleInstance" />
 

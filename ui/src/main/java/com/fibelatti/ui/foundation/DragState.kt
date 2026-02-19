@@ -5,12 +5,18 @@ import androidx.compose.animation.core.AnimationState
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.animateTo
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.awaitHorizontalPointerSlopOrCancellation
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
+import androidx.compose.foundation.gestures.horizontalDrag
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.systemGestures
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
@@ -18,9 +24,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.input.pointer.util.addPointerInputChange
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Velocity
 import kotlin.math.abs
 
@@ -33,7 +43,7 @@ import kotlin.math.abs
  * @param enabled whether the gesture detector is enabled.
  */
 fun Modifier.onVerticalDrag(
-    onDrag: (amount: Offset) -> Unit,
+    onDrag: (amount: Float) -> Unit,
     onDragStopped: (velocity: Velocity) -> Unit,
     enabled: Boolean = true,
 ): Modifier {
@@ -44,7 +54,7 @@ fun Modifier.onVerticalDrag(
         detectVerticalDragGestures(
             onVerticalDrag = { change, dragAmount ->
                 velocityTracker.addPointerInputChange(change)
-                onDrag(Offset(x = 0F, y = dragAmount))
+                onDrag(dragAmount)
             },
             onDragEnd = {
                 onDragStopped(velocityTracker.calculateVelocity())
@@ -64,27 +74,52 @@ fun Modifier.onVerticalDrag(
  * pointer input, cancelling the drag.
  * @param enabled whether the gesture detector is enabled.
  */
+@Composable
 fun Modifier.onHorizontalDrag(
-    onDrag: (dragAmount: Offset) -> Unit,
+    onDrag: (dragAmount: Float) -> Unit,
     onDragStopped: (velocity: Velocity) -> Unit,
     enabled: Boolean = true,
 ): Modifier {
-    val velocityTracker = VelocityTracker()
+    val systemGesturesInset: WindowInsets = WindowInsets.systemGestures
+    val leftInset: Int = systemGesturesInset.getLeft(LocalDensity.current, LocalLayoutDirection.current)
+    val rightInset: Int = systemGesturesInset.getRight(LocalDensity.current, LocalLayoutDirection.current)
+
+    val velocityTracker = remember { VelocityTracker() }
+    val onHorizontalDrag by rememberUpdatedState { change: PointerInputChange, dragAmount: Float ->
+        velocityTracker.addPointerInputChange(change)
+        onDrag(dragAmount)
+    }
+
     return Modifier.pointerInput(onDrag, onDragStopped, enabled) {
         if (!enabled) return@pointerInput
 
-        detectHorizontalDragGestures(
-            onHorizontalDrag = { change, dragAmount ->
-                velocityTracker.addPointerInputChange(change)
-                onDrag(Offset(x = 0F, y = dragAmount))
-            },
-            onDragEnd = {
+        awaitEachGesture {
+            val down: PointerInputChange = awaitFirstDown(requireUnconsumed = false)
+            val startX: Float = down.position.x
+
+            // Avoid conflicting with system navigation gestures
+            if (startX < leftInset || startX > size.width - rightInset) return@awaitEachGesture
+
+            var overSlop = 0f
+            val drag: PointerInputChange? = awaitHorizontalPointerSlopOrCancellation(
+                pointerId = down.id,
+                pointerType = down.type,
+            ) { change: PointerInputChange, over: Float ->
+                change.consume()
+                overSlop = over
+            }
+
+            if (drag != null) {
+                onHorizontalDrag(drag, overSlop)
+
+                horizontalDrag(drag.id) {
+                    onHorizontalDrag(it, it.positionChange().x)
+                    it.consume()
+                }
+
                 onDragStopped(velocityTracker.calculateVelocity())
-            },
-            onDragCancel = {
-                onDragStopped(velocityTracker.calculateVelocity())
-            },
-        )
+            }
+        }
     } then this
 }
 
@@ -149,10 +184,10 @@ class DragState internal constructor(private val mode: Mode) {
      *
      * @param amount the amount to add to the current offset.
      */
-    fun onDrag(amount: Offset) {
+    fun onDrag(amount: Float) {
         cancelAnimation()
 
-        currentOffsetPixel += amount.y
+        currentOffsetPixel += amount
         currentOffsetFraction = (abs(currentOffsetPixel) / threshold).coerceIn(0f, 1f)
 
         if (!didNotifyThreshold && currentOffsetForMode >= threshold) {

@@ -51,7 +51,7 @@ class PhotoWidgetViewerViewModel @Inject constructor(
 
     private fun cycleWidget(direction: CyclePhotoUseCase.Direction) {
         viewModelScope.launch {
-            val photoWidget = _state.value.photoWidget ?: return@launch
+            val photoWidget = _state.value.photoWidget
             val newPhotoId = cyclePhotoUseCase(
                 appWidgetId = appWidgetId,
                 direction = direction,
@@ -82,7 +82,7 @@ class PhotoWidgetViewerViewModel @Inject constructor(
     }
 
     data class State(
-        val photoWidget: PhotoWidget? = null,
+        val photoWidget: PhotoWidget = PhotoWidget(),
         val showMoveControls: Boolean = false,
     )
 }

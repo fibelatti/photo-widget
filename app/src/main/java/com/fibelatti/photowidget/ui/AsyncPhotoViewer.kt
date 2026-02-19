@@ -119,7 +119,7 @@ fun AsyncPhotoViewer(
 
         LaunchedEffect(*dataKey) {
             // Avoid flickering the indicator, only show if the photos takes a while to load
-            delay(timeMillis = 300)
+            delay(timeMillis = 500)
             showLoading = isLoading || (data != null && photoBitmap == null && !showError)
         }
 

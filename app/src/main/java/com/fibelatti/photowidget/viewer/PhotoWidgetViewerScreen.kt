@@ -3,7 +3,6 @@
 package com.fibelatti.photowidget.viewer
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -35,13 +34,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
@@ -98,15 +95,7 @@ fun PhotoWidgetViewerScreen(
     onAllPhotosClick: () -> Unit = {},
     onShareClick: (LocalPhoto) -> Unit = {},
 ) {
-    val showContent: Boolean by produceState(initialValue = false) {
-        value = true
-    }
     var showControls: Boolean by remember { mutableStateOf(false) }
-
-    val contentAlpha: Float by animateFloatAsState(
-        targetValue = if (showContent) 1f else 0f,
-        animationSpec = tween(ANIM_DURATION),
-    )
 
     val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
     val zoomState: ZoomState = rememberZoomState()
@@ -190,55 +179,56 @@ fun PhotoWidgetViewerScreen(
             )
         }
 
-        AsyncPhotoViewer(
-            data = photo?.getPhotoPath(viewOriginalPhoto = viewOriginalPhoto),
-            dataKey = arrayOf(photo, aspectRatio),
-            isLoading = isLoading,
-            contentScale = ContentScale.Inside,
-            modifier = Modifier
-                .onGloballyPositioned { coordinates ->
-                    val height = coordinates.size.height
-                    val width = coordinates.size.width
+        if (photo != null) {
+            AsyncPhotoViewer(
+                data = photo.getPhotoPath(viewOriginalPhoto = viewOriginalPhoto),
+                dataKey = arrayOf(photo, aspectRatio),
+                isLoading = isLoading,
+                contentScale = ContentScale.Inside,
+                modifier = Modifier
+                    .onGloballyPositioned { coordinates ->
+                        val height = coordinates.size.height
+                        val width = coordinates.size.width
 
-                    if (height > width) {
-                        verticalDragState.setThreshold(height * LARGEST_DIMENSION_FRACTION)
-                        horizontalDragState.setThreshold(width * SMALLEST_DIMENSION_FRACTION)
-                    } else {
-                        verticalDragState.setThreshold(height * SMALLEST_DIMENSION_FRACTION)
-                        horizontalDragState.setThreshold(width * LARGEST_DIMENSION_FRACTION)
+                        if (height > width) {
+                            verticalDragState.setThreshold(height * LARGEST_DIMENSION_FRACTION)
+                            horizontalDragState.setThreshold(width * SMALLEST_DIMENSION_FRACTION)
+                        } else {
+                            verticalDragState.setThreshold(height * SMALLEST_DIMENSION_FRACTION)
+                            horizontalDragState.setThreshold(width * LARGEST_DIMENSION_FRACTION)
+                        }
                     }
-                }
-                .alpha(contentAlpha)
-                .zoomable(
-                    zoomState = zoomState,
-                    onTap = { showControls = !showControls },
-                )
-                .onVerticalDrag(
-                    onDrag = verticalDragState::onDrag,
-                    onDragStopped = {
-                        coroutineScope.launch {
-                            verticalDragState.onDragStopped()
-                        }
-                    },
-                    enabled = zoomState.scale == 1f,
-                )
-                .onHorizontalDrag(
-                    onDrag = { offset ->
-                        horizontalDragState.onDrag(amount = offset)
-                    },
-                    onDragStopped = {
-                        coroutineScope.launch {
-                            horizontalDragState.onDragStopped(resetOnConfirm = true)
-                        }
-                    },
-                    enabled = showFlipControls && zoomState.scale == 1f,
-                )
-                .offset(
-                    x = horizontalDragState.currentOffsetPixel.pxToDp(),
-                    y = verticalDragState.currentOffsetPixel.pxToDp(),
-                ),
-            constraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED,
-        )
+                    .zoomable(
+                        zoomState = zoomState,
+                        onTap = { showControls = !showControls },
+                    )
+                    .onVerticalDrag(
+                        onDrag = verticalDragState::onDrag,
+                        onDragStopped = {
+                            coroutineScope.launch {
+                                verticalDragState.onDragStopped()
+                            }
+                        },
+                        enabled = zoomState.scale == 1f,
+                    )
+                    .onHorizontalDrag(
+                        onDrag = { offset ->
+                            horizontalDragState.onDrag(amount = offset)
+                        },
+                        onDragStopped = {
+                            coroutineScope.launch {
+                                horizontalDragState.onDragStopped(resetOnConfirm = true)
+                            }
+                        },
+                        enabled = showFlipControls && zoomState.scale == 1f,
+                    )
+                    .offset(
+                        x = horizontalDragState.currentOffsetPixel.pxToDp(),
+                        y = verticalDragState.currentOffsetPixel.pxToDp(),
+                    ),
+                constraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED,
+            )
+        }
 
         AnimatedVisibility(
             visible = showControls,
