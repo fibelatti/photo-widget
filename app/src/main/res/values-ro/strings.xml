@@ -192,6 +192,7 @@
     <string name="photo_widget_configure_padding">Umplutură</string>
     <string name="photo_widget_configure_tap_action">Acțiune la atingere</string>
     <string name="photo_widget_configure_tap_action_description">Personalizează acțiunea la atingere a fiecărei zone.</string>
+    <string name="photo_widget_configure_tap_action_copy_from">Copiază din…</string>
     <string name="photo_widget_configure_tap_action_area_left">Stânga</string>
     <string name="photo_widget_configure_tap_action_area_center">Centru</string>
     <string name="photo_widget_configure_tap_action_area_right">Dreapta</string>

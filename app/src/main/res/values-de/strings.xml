@@ -186,6 +186,7 @@
     <string name="photo_widget_configure_padding">Polsterung</string>
     <string name="photo_widget_configure_tap_action">Tipp-Aktion</string>
     <string name="photo_widget_configure_tap_action_description">Passen Sie die Tipp-Aktion jedes Bereichs an.</string>
+    <string name="photo_widget_configure_tap_action_copy_from">Kopieren von…</string>
     <string name="photo_widget_configure_tap_action_area_left">Links</string>
     <string name="photo_widget_configure_tap_action_area_center">Mitte</string>
     <string name="photo_widget_configure_tap_action_area_right">Rechts</string>

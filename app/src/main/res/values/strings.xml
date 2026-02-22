@@ -225,6 +225,7 @@
 
     <string name="photo_widget_configure_tap_action">Tap action</string>
     <string name="photo_widget_configure_tap_action_description">Customize the tap action of each area.</string>
+    <string name="photo_widget_configure_tap_action_copy_from">Copy from…</string>
     <string name="photo_widget_configure_tap_action_area_left">Left</string>
     <string name="photo_widget_configure_tap_action_area_center">Center</string>
     <string name="photo_widget_configure_tap_action_area_right">Right</string>

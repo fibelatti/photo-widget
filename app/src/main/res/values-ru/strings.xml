@@ -198,6 +198,7 @@
     <string name="photo_widget_configure_padding">Отступ</string>
     <string name="photo_widget_configure_tap_action">Действие по нажатию</string>
     <string name="photo_widget_configure_tap_action_description">Настройте действие при нажатии для каждой области.</string>
+    <string name="photo_widget_configure_tap_action_copy_from">Копировать из…</string>
     <string name="photo_widget_configure_tap_action_area_left">Слева</string>
     <string name="photo_widget_configure_tap_action_area_center">Центр</string>
     <string name="photo_widget_configure_tap_action_area_right">Справа</string>

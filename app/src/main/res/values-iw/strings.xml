@@ -198,6 +198,7 @@
     <string name="photo_widget_configure_padding">ריפוד</string>
     <string name="photo_widget_configure_tap_action">פעולת הקשה</string>
     <string name="photo_widget_configure_tap_action_description">התאם אישית את פעולת ההקשה של כל אזור.</string>
+    <string name="photo_widget_configure_tap_action_copy_from">העתקה מתוך…</string>
     <string name="photo_widget_configure_tap_action_area_left">שמאל</string>
     <string name="photo_widget_configure_tap_action_area_center">מרכז</string>
     <string name="photo_widget_configure_tap_action_area_right">ימין</string>

@@ -186,6 +186,7 @@
     <string name="photo_widget_configure_padding">Marge intérieure</string>
     <string name="photo_widget_configure_tap_action">Action tactile</string>
     <string name="photo_widget_configure_tap_action_description">Personnalisez l\'action au toucher pour chaque zone.</string>
+    <string name="photo_widget_configure_tap_action_copy_from">Copier à partir de…</string>
     <string name="photo_widget_configure_tap_action_area_left">Gauche</string>
     <string name="photo_widget_configure_tap_action_area_center">Centre</string>
     <string name="photo_widget_configure_tap_action_area_right">Droite</string>

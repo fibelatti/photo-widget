@@ -186,6 +186,7 @@
     <string name="photo_widget_configure_padding">Dolgu</string>
     <string name="photo_widget_configure_tap_action">Dokunma eylemi</string>
     <string name="photo_widget_configure_tap_action_description">Her alan için dokunma eylemini özelleştirin.</string>
+    <string name="photo_widget_configure_tap_action_copy_from">Şuradan kopyala…</string>
     <string name="photo_widget_configure_tap_action_area_left">Sol</string>
     <string name="photo_widget_configure_tap_action_area_center">Merkez</string>
     <string name="photo_widget_configure_tap_action_area_right">Sağ</string>

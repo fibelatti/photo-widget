@@ -49,6 +49,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.minimumInteractiveComponentSize
@@ -106,6 +107,7 @@ import com.fibelatti.photowidget.ui.rememberSampleBitmap
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.ConnectedButtonRowItem
+import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.foundation.hideBottomSheet
@@ -154,6 +156,17 @@ fun PhotoWidgetTapActionPicker(
         },
         onTapActionChange = { newAction ->
             tapActions = onTapActionChange(tapActions = tapActions, newAction = newAction, selectedArea = selectedArea)
+        },
+        onCopyFromClick = { sourceArea ->
+            tapActions = onTapActionChange(
+                tapActions = tapActions,
+                newAction = when (sourceArea) {
+                    TapActionArea.LEFT -> tapActions.left
+                    TapActionArea.CENTER -> tapActions.center
+                    TapActionArea.RIGHT -> tapActions.right
+                },
+                selectedArea = selectedArea,
+            )
         },
         onChooseAppShortcutClick = {
             appShortcutPickerLauncher.launch(
@@ -313,6 +326,7 @@ private fun TapActionPickerContent(
     onSelectedAreaChange: (TapActionArea) -> Unit,
     currentTapAction: PhotoWidgetTapAction,
     onTapActionChange: (PhotoWidgetTapAction) -> Unit,
+    onCopyFromClick: (TapActionArea) -> Unit,
     onChooseAppShortcutClick: () -> Unit,
     onAddAppToFolderClick: () -> Unit,
     onChooseGalleryAppClick: () -> Unit,
@@ -390,6 +404,8 @@ private fun TapActionPickerContent(
             TapOptionsPicker(
                 currentTapAction = currentTapAction,
                 onTapActionClick = onTapActionChange,
+                selectedArea = selectedArea,
+                onCopyFromClick = onCopyFromClick,
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -435,13 +451,7 @@ private fun TapAreaSelector(
                 onCheckedChange = { onSelectedAreaChange(area) },
                 itemIndex = index,
                 itemCount = TapActionArea.entries.size,
-                label = stringResource(
-                    when (area) {
-                        TapActionArea.LEFT -> R.string.photo_widget_configure_tap_action_area_left
-                        TapActionArea.CENTER -> R.string.photo_widget_configure_tap_action_area_center
-                        TapActionArea.RIGHT -> R.string.photo_widget_configure_tap_action_area_right
-                    },
-                ),
+                label = stringResource(area.label),
                 modifier = Modifier.weight(weight),
             )
         }
@@ -528,20 +538,34 @@ private fun TapAreaIndicator(
 private fun TapOptionsPicker(
     currentTapAction: PhotoWidgetTapAction,
     onTapActionClick: (PhotoWidgetTapAction) -> Unit,
+    selectedArea: TapActionArea,
+    onCopyFromClick: (TapActionArea) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val sheetState: AppSheetState = rememberAppSheetState()
+    val tapActionSheetState: AppSheetState = rememberAppSheetState()
+    val copyFromSheetState: AppSheetState = rememberAppSheetState()
     val localResources: Resources = LocalResources.current
 
-    PickerDefault(
-        title = stringResource(R.string.photo_widget_configure_tap_action),
-        currentValue = stringResource(currentTapAction.label),
-        onClick = sheetState::showBottomSheet,
+    Column(
         modifier = modifier.fillMaxWidth(),
-    )
+    ) {
+        PickerDefault(
+            title = stringResource(R.string.photo_widget_configure_tap_action),
+            currentValue = stringResource(currentTapAction.label),
+            onClick = tapActionSheetState::showBottomSheet,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        TextButton(
+            onClick = { copyFromSheetState.showBottomSheet() },
+            modifier = Modifier.align(Alignment.End),
+        ) {
+            Text(text = stringResource(R.string.photo_widget_configure_tap_action_copy_from))
+        }
+    }
 
     AppBottomSheet(
-        sheetState = sheetState,
+        sheetState = tapActionSheetState,
     ) {
         DefaultSheetContent(
             title = stringResource(R.string.photo_widget_configure_tap_action),
@@ -557,7 +581,7 @@ private fun TapOptionsPicker(
                             selection
                         },
                     )
-                    sheetState.hideBottomSheet()
+                    tapActionSheetState.hideBottomSheet()
                 },
                 itemTitle = { action -> localResources.getString(action.label) },
                 modifier = Modifier
@@ -581,6 +605,14 @@ private fun TapOptionsPicker(
             )
         }
     }
+
+    SelectionDialogBottomSheet(
+        sheetState = copyFromSheetState,
+        title = stringResource(R.string.photo_widget_configure_tap_action_copy_from),
+        options = TapActionArea.entries - selectedArea,
+        optionName = { option -> localResources.getString(option.label) },
+        onOptionSelected = onCopyFromClick,
+    )
 }
 
 // region Customization Content
@@ -958,6 +990,7 @@ private fun PhotoWidgetTapActionPickerPreview() {
             onSelectedAreaChange = {},
             currentTapAction = PhotoWidgetTapAction.DEFAULT,
             onTapActionChange = {},
+            onCopyFromClick = {},
             onChooseAppShortcutClick = {},
             onAddAppToFolderClick = {},
             onChooseGalleryAppClick = {},

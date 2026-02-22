@@ -186,6 +186,7 @@
     <string name="photo_widget_configure_padding">Imbottitura</string>
     <string name="photo_widget_configure_tap_action">Azione al tocco</string>
     <string name="photo_widget_configure_tap_action_description">Personalizza l\'azione al tocco di ogni area.</string>
+    <string name="photo_widget_configure_tap_action_copy_from">Copia da…</string>
     <string name="photo_widget_configure_tap_action_area_left">Sinistra</string>
     <string name="photo_widget_configure_tap_action_area_center">Centro</string>
     <string name="photo_widget_configure_tap_action_area_right">Destra</string>

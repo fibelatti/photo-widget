@@ -184,6 +184,7 @@
     <string name="photo_widget_configure_padding">Padding</string>
     <string name="photo_widget_configure_tap_action">Aksyon sa pagpindot</string>
     <string name="photo_widget_configure_tap_action_description">Isaayos ang aksyon sa pagpindot ng bawat lugar.</string>
+    <string name="photo_widget_configure_tap_action_copy_from">Kopyahin mula sa…</string>
     <string name="photo_widget_configure_tap_action_area_left">Kaliwa</string>
     <string name="photo_widget_configure_tap_action_area_center">Gitna</string>
     <string name="photo_widget_configure_tap_action_area_right">Kanan</string>

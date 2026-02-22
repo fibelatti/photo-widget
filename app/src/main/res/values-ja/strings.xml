@@ -180,6 +180,7 @@
     <string name="photo_widget_configure_padding">パディング</string>
     <string name="photo_widget_configure_tap_action">タップアクション</string>
     <string name="photo_widget_configure_tap_action_description">各エリアのタップアクションをカスタマイズします。</string>
+    <string name="photo_widget_configure_tap_action_copy_from">コピー元…</string>
     <string name="photo_widget_configure_tap_action_area_left">左</string>
     <string name="photo_widget_configure_tap_action_area_center">中央</string>
     <string name="photo_widget_configure_tap_action_area_right">右</string>
