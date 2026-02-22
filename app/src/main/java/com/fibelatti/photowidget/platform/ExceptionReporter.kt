@@ -27,8 +27,8 @@ class ExceptionReporter @Inject constructor(
     }
 
     fun collectReport(throwable: Throwable) {
-        coroutineScope.launch(NonCancellable) {
-            withContext(Dispatchers.IO) {
+        coroutineScope.launch {
+            withContext(NonCancellable + Dispatchers.IO) {
                 val stringWriter = StringWriter()
 
                 throwable.printStackTrace(PrintWriter(stringWriter))
@@ -51,8 +51,8 @@ class ExceptionReporter @Inject constructor(
     }
 
     fun clearPendingReports() {
-        coroutineScope.launch(NonCancellable) {
-            withContext(Dispatchers.IO) {
+        coroutineScope.launch {
+            withContext(NonCancellable + Dispatchers.IO) {
                 parentDir.listFiles()?.forEach { it.delete() }
             }
         }

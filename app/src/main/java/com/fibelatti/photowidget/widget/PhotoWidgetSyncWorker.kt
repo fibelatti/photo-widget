@@ -16,6 +16,7 @@ import java.time.Duration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @HiltWorker
@@ -43,8 +44,10 @@ class PhotoWidgetSyncWorker @AssistedInject constructor(
                 val source = photoWidgetStorage.getWidgetSource(appWidgetId = id)
 
                 if (PhotoWidgetSource.DIRECTORY == source) {
-                    coroutineScope.launch(NonCancellable) {
-                        photoWidgetStorage.syncWidgetPhotos(appWidgetId = id)
+                    coroutineScope.launch {
+                        withContext(NonCancellable) {
+                            photoWidgetStorage.syncWidgetPhotos(appWidgetId = id)
+                        }
                     }
                 }
             } catch (e: Exception) {
