@@ -11,7 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Hide the system bars in the full screen viewer
 * Add landscape support to the full screen viewer
-* Full screen viewer now supports landscape mode
+
+### Fixed
+
+* My Widgets screen now displays widgets with configuration error
 
 ## [v1.37.0] - 2026-01-21
 [v1.37.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.37.0

@@ -43,6 +43,8 @@
     <string name="photo_widget_home_locked_label">נעול</string>
     <string name="photo_widget_home_removed_label">הוסר</string>
     <string name="photo_widget_home_removed_widgets_hint">ווידג\'טים שהוסרו אינם מופיעים עוד במסך הבית. הם נמחקים לצמיתות מהאפליקציה לאחר 7 ימים. ניתן לבחור \"לשמור\" אותם.</string>
+    <string name="photo_widget_home_invalid_label">נדרשת תשומת לב</string>
+    <string name="photo_widget_home_invalid_widgets_hint">ייתכן שווידג\'ט זה אינו מופיע או אינו פועל כראוי. נסה לערוך או למחוק את ההגדרות שלו באפליקציה. אם זה לא עוזר, נסה להסיר את הווידג\'ט ממסך הבית ולהוסיף אחד חדש.</string>
     <string name="photo_widget_home_my_widget_action_sync">סנכרון עם תמונות בתיקייה</string>
     <string name="photo_widget_home_my_widget_action_edit">צפייה/ עריכה</string>
     <string name="photo_widget_home_my_widget_action_duplicate">שכפול</string>

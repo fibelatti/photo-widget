@@ -38,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -59,7 +60,6 @@ import com.fibelatti.photowidget.model.isWidgetRemoved
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
-import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.ui.foundation.conditional
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
@@ -71,6 +71,7 @@ fun MyWidgetsScreen(
     widgets: List<Pair<Int, PhotoWidget>>,
     onCurrentWidgetClick: (appWidgetId: Int, canSync: Boolean, canLock: Boolean, isLocked: Boolean) -> Unit,
     onRemovedWidgetClick: (appWidgetId: Int, PhotoWidgetStatus) -> Unit,
+    onInvalidWidgetClick: (appWidgetId: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -83,9 +84,6 @@ fun MyWidgetsScreen(
             derivedStateOf {
                 widgets.filter { selectedSource == null || it.second.source == selectedSource }
             }
-        }
-        val hasDeletedWidgets: Boolean = remember(widgets) {
-            filteredWidgets.any { it.second.status.isWidgetRemoved }
         }
 
         val enforcedShape: Shape = RoundedCornerShape(28.dp)
@@ -119,15 +117,23 @@ fun MyWidgetsScreen(
                                 .fillMaxWidth()
                                 .aspectRatio(1f)
                                 .clickable {
-                                    if (widget.status.isWidgetRemoved) {
-                                        onRemovedWidgetClick(id, widget.status)
-                                    } else {
-                                        onCurrentWidgetClick(
-                                            /* appWidgetId = */ id,
-                                            /* canSync = */ widget.source == PhotoWidgetSource.DIRECTORY,
-                                            /* canLock = */ widget.photos.isNotEmpty(),
-                                            /* isLocked = */ PhotoWidgetStatus.LOCKED == widget.status,
-                                        )
+                                    when {
+                                        widget.status.isWidgetRemoved -> {
+                                            onRemovedWidgetClick(id, widget.status)
+                                        }
+
+                                        PhotoWidgetStatus.INVALID == widget.status -> {
+                                            onInvalidWidgetClick(id)
+                                        }
+
+                                        else -> {
+                                            onCurrentWidgetClick(
+                                                /* appWidgetId = */ id,
+                                                /* canSync = */ widget.source == PhotoWidgetSource.DIRECTORY,
+                                                /* canLock = */ widget.photos.isNotEmpty(),
+                                                /* isLocked = */ PhotoWidgetStatus.LOCKED == widget.status,
+                                            )
+                                        }
                                     }
                                 },
                             contentAlignment = Alignment.BottomCenter,
@@ -166,6 +172,15 @@ fun MyWidgetsScreen(
                                         modifier = Modifier.padding(bottom = 8.dp),
                                         icon = painterResource(R.drawable.ic_trash_clock)
                                             .takeIf { PhotoWidgetStatus.REMOVED == widget.status },
+                                    )
+                                }
+
+                                PhotoWidgetStatus.INVALID == widget.status -> {
+                                    MyWidgetBadge(
+                                        text = stringResource(R.string.photo_widget_home_invalid_label),
+                                        backgroundColor = Color(0xFFFF8A65),
+                                        contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                                        modifier = Modifier.padding(bottom = 8.dp),
                                     )
                                 }
                             }
@@ -226,16 +241,6 @@ fun MyWidgetsScreen(
                 }
             }
         }
-
-        if (hasDeletedWidgets) {
-            WarningSign(
-                text = stringResource(id = R.string.photo_widget_home_removed_widgets_hint),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-                    .padding(start = 32.dp, bottom = 16.dp, end = 32.dp),
-            )
-        }
     }
 }
 
@@ -252,6 +257,7 @@ private fun MyWidgetsScreenPreview() {
                 val status = when (index) {
                     2 -> PhotoWidgetStatus.REMOVED
                     3 -> PhotoWidgetStatus.KEPT
+                    4 -> PhotoWidgetStatus.INVALID
                     else -> PhotoWidgetStatus.ACTIVE
                 }
 
@@ -270,6 +276,7 @@ private fun MyWidgetsScreenPreview() {
             },
             onCurrentWidgetClick = { _, _, _, _ -> },
             onRemovedWidgetClick = { _, _ -> },
+            onInvalidWidgetClick = {},
         )
     }
 }
@@ -282,6 +289,7 @@ private fun MyWidgetsScreenEmptyPreview() {
             widgets = emptyList(),
             onCurrentWidgetClick = { _, _, _, _ -> },
             onRemovedWidgetClick = { _, _ -> },
+            onInvalidWidgetClick = {},
         )
     }
 }

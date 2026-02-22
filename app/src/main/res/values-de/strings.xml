@@ -41,6 +41,8 @@
     <string name="photo_widget_home_locked_label">Gesperrt</string>
     <string name="photo_widget_home_removed_label">Entfernt</string>
     <string name="photo_widget_home_removed_widgets_hint">Entfernte Widgets befinden sich nicht mehr auf Ihrem Startbildschirm. Sie werden nach 7 Tagen endgültig aus der App gelöscht. Sie können sie \"Behalten\".</string>
+    <string name="photo_widget_home_invalid_label">Handlung erforderlich</string>
+    <string name="photo_widget_home_invalid_widgets_hint">Dieses Widget wird möglicherweise nicht richtig angezeigt oder funktioniert nicht korrekt. Versuchen Sie, die Einstellungen in der App zu bearbeiten oder zu löschen. Wenn das nicht hilft, entfernen Sie das Widget von Ihrem Startbildschirm und fügen Sie ein neues hinzu.</string>
     <string name="photo_widget_home_my_widget_action_sync">Mit Ordnerfotos synchronisieren</string>
     <string name="photo_widget_home_my_widget_action_edit">Anzeigen / Bearbeiten</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplizieren</string>

@@ -41,6 +41,8 @@
     <string name="photo_widget_home_locked_label">Verrouillé</string>
     <string name="photo_widget_home_removed_label">Supprimé</string>
     <string name="photo_widget_home_removed_widgets_hint">Les widgets supprimés ne sont plus sur votre écran d\'accueil. Ils sont définitivement supprimés de l\'application après 7 jours. Vous pouvez choisir de les « Garder ».</string>
+    <string name="photo_widget_home_invalid_label">Attention requise</string>
+    <string name="photo_widget_home_invalid_widgets_hint">Ce widget risque de ne pas s\'afficher ou de ne pas fonctionner correctement. Essayez de modifier ou de supprimer ses paramètres dans l\'application. Si le problème persiste, retirez le widget de votre écran d\'accueil et ajoutez-en un nouveau.</string>
     <string name="photo_widget_home_my_widget_action_sync">Synchroniser avec les photos du dossier</string>
     <string name="photo_widget_home_my_widget_action_edit">Afficher / Modifier</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Dupliquer</string>

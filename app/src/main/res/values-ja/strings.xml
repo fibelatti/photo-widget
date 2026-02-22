@@ -40,6 +40,8 @@
     <string name="photo_widget_home_locked_label">ロック済み</string>
     <string name="photo_widget_home_removed_label">削除済み</string>
     <string name="photo_widget_home_removed_widgets_hint">削除されたウィジェットはホーム画面には表示されなくなります。7日後にアプリから完全に削除されます。「保持」を選択することもできます。</string>
+    <string name="photo_widget_home_invalid_label">要確認</string>
+    <string name="photo_widget_home_invalid_widgets_hint">このウィジェットが正しく表示されないか、正常に動作していない可能性があります。アプリ内で設定を編集または削除してみてください。解決しない場合は、ホーム画面からウィジェットを一度削除し、新しく追加し直してください。</string>
     <string name="photo_widget_home_my_widget_action_sync">フォルダーの写真と同期</string>
     <string name="photo_widget_home_my_widget_action_edit">表示 / 編集</string>
     <string name="photo_widget_home_my_widget_action_duplicate">複製</string>

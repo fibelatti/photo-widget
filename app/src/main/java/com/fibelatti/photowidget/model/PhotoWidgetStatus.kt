@@ -22,6 +22,12 @@ enum class PhotoWidgetStatus {
      * chooses to.
      */
     KEPT,
+
+    /**
+     * The widget is in an invalid state (e.g. no photos, out of sync with the launcher, etc.).
+     * The user may try adding it to the home screen again.
+     */
+    INVALID,
 }
 
 val PhotoWidgetStatus.isWidgetRemoved: Boolean

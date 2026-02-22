@@ -71,6 +71,7 @@ fun HomeScreen(
 
     val existingWidgetMenuSheetState = rememberAppSheetState()
     val removedWidgetSheetState = rememberAppSheetState()
+    val invalidWidgetSheetState = rememberAppSheetState()
     val appAppearanceSheetState = rememberAppSheetState()
     val appColorsSheetState = rememberAppSheetState()
 
@@ -115,6 +116,11 @@ fun HomeScreen(
                 ),
             )
         },
+        onInvalidWidgetClick = { appWidgetId ->
+            invalidWidgetSheetState.showBottomSheet(
+                data = appWidgetId,
+            )
+        },
         onDefaultsClick = {
             localContext.startActivity(Intent(localContext, WidgetDefaultsActivity::class.java))
         },
@@ -155,6 +161,11 @@ fun HomeScreen(
         onDelete = homeViewModel::deleteWidget,
     )
 
+    InvalidWidgetBottomSheet(
+        sheetState = invalidWidgetSheetState,
+        onDelete = homeViewModel::deleteWidget,
+    )
+
     AppAppearanceBottomSheet(
         sheetState = appAppearanceSheetState,
     )
@@ -171,6 +182,7 @@ fun HomeScreen(
     currentWidgets: List<Pair<Int, PhotoWidget>>,
     onCurrentWidgetClick: (appWidgetId: Int, canSync: Boolean, canLock: Boolean, isLocked: Boolean) -> Unit,
     onRemovedWidgetClick: (appWidgetId: Int, PhotoWidgetStatus) -> Unit,
+    onInvalidWidgetClick: (appWidgetId: Int) -> Unit,
     onDefaultsClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
@@ -232,6 +244,7 @@ fun HomeScreen(
                         widgets = currentWidgets,
                         onCurrentWidgetClick = onCurrentWidgetClick,
                         onRemovedWidgetClick = onRemovedWidgetClick,
+                        onInvalidWidgetClick = onInvalidWidgetClick,
                     )
                 }
 
@@ -350,6 +363,7 @@ private fun HomeScreenPreview() {
             currentWidgets = emptyList(),
             onCurrentWidgetClick = { _, _, _, _ -> },
             onRemovedWidgetClick = { _, _ -> },
+            onInvalidWidgetClick = {},
             onDefaultsClick = {},
             onAppearanceClick = {},
             onColorsClick = {},

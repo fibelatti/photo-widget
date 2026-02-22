@@ -63,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        homeViewModel.loadCurrentWidgets()
+        homeViewModel.loadWidgets()
         homeViewModel.checkForPendingExceptionReports()
     }
 

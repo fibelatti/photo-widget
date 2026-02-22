@@ -57,7 +57,7 @@ fun ImportFromWidgetBottomSheet(
         val currentWidgets by homeViewModel.currentWidgets.collectAsStateWithLifecycle()
 
         RememberedEffect(homeViewModel) {
-            homeViewModel.loadCurrentWidgets()
+            homeViewModel.loadWidgets()
         }
 
         ImportFromWidgetContent(

@@ -43,6 +43,8 @@
     <string name="photo_widget_home_locked_label">Заблокировано</string>
     <string name="photo_widget_home_removed_label">Удаленный</string>
     <string name="photo_widget_home_removed_widgets_hint">Удаленные виджеты больше не отображаются на главном экране. Они навсегда удаляются из приложения через 7 дней. Вы можете выбрать «Сохранить» их.</string>
+    <string name="photo_widget_home_invalid_label">Требуется внимание</string>
+    <string name="photo_widget_home_invalid_widgets_hint">Этот виджет может отображаться или работать некорректно. Попробуйте изменить или удалить его настройки в приложении. Если это не поможет, удалите виджет с главного экрана и добавьте новый.</string>
     <string name="photo_widget_home_my_widget_action_sync">Синхронизировать с папкой photos</string>
     <string name="photo_widget_home_my_widget_action_edit">Просмотреть / Редактировать</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Дублировать</string>

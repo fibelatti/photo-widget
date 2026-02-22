@@ -41,6 +41,8 @@
     <string name="photo_widget_home_locked_label">Travado</string>
     <string name="photo_widget_home_removed_label">Removido</string>
     <string name="photo_widget_home_removed_widgets_hint">Os widgets removidos não estão mais na sua tela inicial. Eles são excluídos permanentemente do aplicativo após 7 dias. Você pode escolher \"Mantê-los\".</string>
+    <string name="photo_widget_home_invalid_label">Atenção necessária</string>
+    <string name="photo_widget_home_invalid_widgets_hint">Este widget pode não estar aparecendo ou funcionando corretamente. Tente editar ou excluir as configurações dele no app. Se isso não ajudar, remova o widget da tela inicial e adicione um novo.</string>
     <string name="photo_widget_home_my_widget_action_sync">Sincronizar com fotos da pasta</string>
     <string name="photo_widget_home_my_widget_action_edit">Ver / Editar</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicar</string>

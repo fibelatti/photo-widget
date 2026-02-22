@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -33,7 +34,8 @@ fun MyWidgetBadge(
         Text(
             text = text,
             color = contentColor,
-            style = MaterialTheme.typography.labelLarge,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.labelMedium,
         )
 
         if (icon != null) {

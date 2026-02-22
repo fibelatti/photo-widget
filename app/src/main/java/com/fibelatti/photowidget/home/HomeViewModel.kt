@@ -18,13 +18,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -46,35 +46,7 @@ class HomeViewModel @Inject constructor(
     private val widgetIds: MutableStateFlow<List<Int>> = MutableStateFlow(emptyList())
     private val updateSignal: Channel<Unit> = Channel()
 
-    val currentWidgets: StateFlow<List<Pair<Int, PhotoWidget>>> = widgetIds
-        .combine(updateSignal.receiveAsFlow()) { ids, _ -> ids }
-        .flatMapLatest { allIds ->
-            val flows = allIds.map(loadPhotoWidgetUseCase::invoke)
-            if (flows.isNotEmpty()) {
-                combine(flows, Array<PhotoWidget>::toList)
-            } else {
-                flowOf(emptyList())
-            }
-        }
-        .withIndex()
-        .map { (emissionIndex, widgets) ->
-            val providerIds = PhotoWidgetProvider.ids(context)
-
-            widgets.withIndex().mapNotNull { (index, widget) ->
-                if (emissionIndex > 0 && widget.photos.isEmpty()) return@mapNotNull null
-                val widgetId = widgetIds.value.getOrNull(index) ?: return@mapNotNull null
-                val isLocked = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = widgetId)
-
-                widgetId to widget.copy(
-                    status = when {
-                        widget.deletionTimestamp > 0L -> PhotoWidgetStatus.REMOVED
-                        widgetId in providerIds && isLocked -> PhotoWidgetStatus.LOCKED
-                        widgetId in providerIds -> PhotoWidgetStatus.ACTIVE
-                        else -> PhotoWidgetStatus.KEPT
-                    },
-                )
-            }
-        }
+    val currentWidgets: StateFlow<List<Pair<Int, PhotoWidget>>> = loadWidgetsById()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
@@ -84,11 +56,40 @@ class HomeViewModel @Inject constructor(
     private val _pendingReport: MutableStateFlow<String?> = MutableStateFlow(null)
     val pendingReport: StateFlow<String?> = _pendingReport.asStateFlow()
 
-    fun loadCurrentWidgets() {
+    fun loadWidgets() {
         viewModelScope.launch {
             widgetIds.update { photoWidgetStorage.getKnownWidgetIds() }
             updateSignal.send(Unit)
         }
+    }
+
+    private fun loadWidgetsById(): Flow<List<Pair<Int, PhotoWidget>>> {
+        return combine(widgetIds, updateSignal.receiveAsFlow()) { ids: List<Int>, _: Unit -> ids }
+            .flatMapLatest { allIds: List<Int> ->
+                combine(
+                    flows = allIds.map(loadPhotoWidgetUseCase::invoke),
+                    transform = Array<PhotoWidget>::toList,
+                )
+            }
+            .withIndex()
+            .map { (emissionIndex: Int, widgets: List<PhotoWidget>) ->
+                val providerIds: List<Int> = PhotoWidgetProvider.ids(context)
+
+                widgets.withIndex().mapNotNull { (index: Int, widget: PhotoWidget) ->
+                    val widgetId: Int = widgetIds.value.getOrNull(index) ?: return@mapNotNull null
+                    val isLocked: Boolean = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = widgetId)
+
+                    widgetId to widget.copy(
+                        status = when {
+                            (emissionIndex > 0 && widget.photos.isEmpty()) -> PhotoWidgetStatus.INVALID
+                            widget.deletionTimestamp > 0L -> PhotoWidgetStatus.REMOVED
+                            widgetId in providerIds && isLocked -> PhotoWidgetStatus.LOCKED
+                            widgetId in providerIds -> PhotoWidgetStatus.ACTIVE
+                            else -> PhotoWidgetStatus.KEPT
+                        },
+                    )
+                }
+            }
     }
 
     fun syncPhotos(appWidgetId: Int) {

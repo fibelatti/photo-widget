@@ -41,6 +41,8 @@
     <string name="photo_widget_home_locked_label">Kilitli</string>
     <string name="photo_widget_home_removed_label">Kaldırıldı</string>
     <string name="photo_widget_home_removed_widgets_hint">Silinen widget\'lar artık ana ekranınızda yer almayacak. 7 gün sonra uygulamadan kalıcı olarak silinirler. Bunları \"Tutmayı\" seçebilirsiniz.</string>
+    <string name="photo_widget_home_invalid_label">İşlem gerekiyor</string>
+    <string name="photo_widget_home_invalid_widgets_hint">Bu araç düzgün görünmüyor veya çalışmıyor olabilir. Uygulama içinden ayarlarını düzenlemeyi veya silmeyi deneyin. Sorun devam ederse, aracı ana ekranınızdan kaldırıp yenisini eklemeyi deneyin.</string>
     <string name="photo_widget_home_my_widget_action_sync">Klasör fotoğraflarıyla senkronize et</string>
     <string name="photo_widget_home_my_widget_action_edit">Görüntüle / Düzenle</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Çoğalt</string>

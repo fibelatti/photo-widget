@@ -40,6 +40,8 @@
     <string name="photo_widget_home_locked_label">Naka-lock</string>
     <string name="photo_widget_home_removed_label">Tinanggal</string>
     <string name="photo_widget_home_removed_widgets_hint">Wala na sa iyong home screen ang mga tinanggal na widget. Binubura ang mga ito sa app pagkalipas ng 7 araw. Maaari mong piliing \"Panatilihin\" sila.</string>
+    <string name="photo_widget_home_invalid_label">Kailangang pansinin</string>
+    <string name="photo_widget_home_invalid_widgets_hint">Maaaring hindi lumalabas o hindi gumagana nang tama ang widget na ito. Subukang i-edit o i-delete ang mga setting nito sa app. Kung hindi ito makatulong, subukang alisin ang widget mula sa iyong home screen at magdagdag ng bago.</string>
     <string name="photo_widget_home_my_widget_action_sync">I-sync sa mga larawang nasa folder</string>
     <string name="photo_widget_home_my_widget_action_edit">Tingnan / Baguhin</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplikahin</string>

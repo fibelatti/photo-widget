@@ -42,6 +42,8 @@
     <string name="photo_widget_home_locked_label">Blocat</string>
     <string name="photo_widget_home_removed_label">Eliminat</string>
     <string name="photo_widget_home_removed_widgets_hint">Widget-urile șterse nu mai sunt pe ecranul de pornire. Ele sunt șterse definitiv din aplicație după 7 zile. Puteți alege „Păstrează”.</string>
+    <string name="photo_widget_home_invalid_label">Necesită atenție</string>
+    <string name="photo_widget_home_invalid_widgets_hint">Este posibil ca acest widget să nu apară sau să nu funcționeze corect. Încearcă să editezi sau să ștergi setările acestuia din aplicație. Dacă problema persistă, elimină widgetul de pe ecranul principal și adaugă unul nou.</string>
     <string name="photo_widget_home_my_widget_action_sync">Sincronizează cu fotografiile din dosar</string>
     <string name="photo_widget_home_my_widget_action_edit">Vezi / Editează</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplică</string>

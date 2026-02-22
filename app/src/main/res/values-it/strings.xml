@@ -41,6 +41,8 @@
     <string name="photo_widget_home_locked_label">Bloccato</string>
     <string name="photo_widget_home_removed_label">Rimosso</string>
     <string name="photo_widget_home_removed_widgets_hint">I widget rimossi non sono più sulla tua schermata iniziale. Vengono eliminati definitivamente dall\'app dopo 7 giorni. Puoi scegliere di \"Mantenerli\".</string>
+    <string name="photo_widget_home_invalid_label">Intervento necessario</string>
+    <string name="photo_widget_home_invalid_widgets_hint">Questo widget potrebbe non apparire o non funzionare correttamente. Prova a modificare o eliminare le sue impostazioni nell\'app. Se il problema persiste, rimuovi il widget dalla schermata home e aggiungine uno nuovo.</string>
     <string name="photo_widget_home_my_widget_action_sync">Sincronizza con le foto della cartella</string>
     <string name="photo_widget_home_my_widget_action_edit">Visualizza / Modifica</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplica</string>
