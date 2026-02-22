@@ -13,23 +13,27 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CornerBasedShape
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -161,13 +165,18 @@ private fun SettingsScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
-                .padding(top = 16.dp, bottom = footerHeight + 16.dp),
+                .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = footerHeight + 16.dp),
+            verticalArrangement = Arrangement.spacedBy(1.dp),
         ) {
             SettingsAction(
                 icon = R.drawable.ic_default,
                 label = R.string.widget_defaults_title,
                 onClick = onDefaultsClick,
                 description = R.string.widget_defaults_description,
+                shape = MaterialTheme.shapes.medium.copy(
+                    bottomStart = CornerSize(2.dp),
+                    bottomEnd = CornerSize(2.dp),
+                ),
             )
 
             SettingsAction(
@@ -191,12 +200,22 @@ private fun SettingsScreen(
                 label = R.string.photo_widget_configure_battery_optimization,
                 onClick = onBatteryOptimizationClick,
                 description = R.string.photo_widget_configure_battery_optimization_description,
+                shape = MaterialTheme.shapes.medium.copy(
+                    topStart = CornerSize(2.dp),
+                    topEnd = CornerSize(2.dp),
+                ),
             )
+
+            Spacer(modifier = Modifier.height(30.dp))
 
             SettingsAction(
                 icon = R.drawable.ic_appearance,
                 label = R.string.photo_widget_home_appearance,
                 onClick = onAppearanceClick,
+                shape = MaterialTheme.shapes.medium.copy(
+                    bottomStart = CornerSize(2.dp),
+                    bottomEnd = CornerSize(2.dp),
+                ),
             )
 
             if (DynamicColors.isDynamicColorAvailable() || LocalInspectionMode.current) {
@@ -211,20 +230,31 @@ private fun SettingsScreen(
                 icon = R.drawable.ic_translation,
                 label = R.string.photo_widget_home_translations,
                 onClick = onAppLanguageClick,
+                shape = MaterialTheme.shapes.medium.copy(
+                    topStart = CornerSize(2.dp),
+                    topEnd = CornerSize(2.dp),
+                ),
             )
+
+            Spacer(modifier = Modifier.height(30.dp))
 
             SettingsAction(
                 icon = R.drawable.ic_backup,
                 label = R.string.photo_widget_home_backup,
                 onClick = onBackupClick,
+                shape = MaterialTheme.shapes.medium,
             )
 
-            HorizontalDivider()
+            Spacer(modifier = Modifier.height(30.dp))
 
             SettingsAction(
                 icon = R.drawable.ic_question,
                 label = R.string.photo_widget_home_help,
                 onClick = onSendFeedbackClick,
+                shape = MaterialTheme.shapes.medium.copy(
+                    bottomStart = CornerSize(2.dp),
+                    bottomEnd = CornerSize(2.dp),
+                ),
             )
 
             SettingsAction(
@@ -237,14 +267,19 @@ private fun SettingsScreen(
                 icon = R.drawable.ic_send,
                 label = R.string.photo_widget_home_share,
                 onClick = onShareClick,
+                shape = MaterialTheme.shapes.medium.copy(
+                    topStart = CornerSize(2.dp),
+                    topEnd = CornerSize(2.dp),
+                ),
             )
 
-            HorizontalDivider()
+            Spacer(modifier = Modifier.height(30.dp))
 
             SettingsAction(
                 icon = R.drawable.ic_privacy_policy,
                 label = R.string.photo_widget_home_privacy_policy,
                 onClick = onPrivacyPolicyClick,
+                shape = MaterialTheme.shapes.medium,
             )
         }
 
@@ -333,15 +368,20 @@ private fun SettingsAction(
     @StringRes label: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    shape: CornerBasedShape = RoundedCornerShape(2.dp),
     @StringRes description: Int? = null,
 ) {
-    TextButton(
+    Button(
         onClick = onClick,
-        shapes = ButtonDefaults.shapes(),
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 60.dp)
-            .minimumInteractiveComponentSize(),
+            .heightIn(min = 60.dp),
+        shape = shape,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+        ),
+        contentPadding = PaddingValues(all = 12.dp),
     ) {
         Icon(
             painter = painterResource(id = icon),
