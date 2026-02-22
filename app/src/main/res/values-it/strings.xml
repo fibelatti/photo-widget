@@ -11,6 +11,7 @@
     <string name="photo_widget_home_current">I miei Widget</string>
     <string name="photo_widget_home_settings">Impostazioni</string>
     <string name="photo_widget_home_data_saver">Archiviazione ottimizzata</string>
+    <string name="photo_widget_home_data_saver_description">Controlla la qualità dell\'immagine delle foto importate</string>
     <string name="photo_widget_home_appearance">Tema dell\'app</string>
     <string name="photo_widget_home_true_black_background">Sfondo nero puro</string>
     <string name="photo_widget_home_dynamic_colors">Colori dell\'app</string>
@@ -63,6 +64,7 @@
     <string name="preferences_dynamic_colors_disabled">Colori predefiniti</string>
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Predefiniti widget</string>
+    <string name="widget_defaults_description">Impostazioni comuni per tutti i nuovi widget</string>
     <string name="widget_defaults_explanation">Questi valori vengono precaricati quando crei un nuovo widget. Sono utili per impostare più widget con la stessa configurazione, eliminando la necessità di regolare le impostazioni ogni volta. Tieni presente che eventuali modifiche a questi valori non influiranno sui widget esistenti.</string>
     <string name="widget_defaults_source">Sorgente</string>
     <string name="widget_defaults_shuffle">Casuale</string>
@@ -157,9 +159,12 @@
     </plurals>
     <string name="photo_widget_configure_interval_warning">L\'intervallo effettivo o l\'ora programmata possono variare a causa delle restrizioni imposte da Android per ottimizzare la durata della batteria. Per assicurarti che funzioni come desiderato, concedi l\'autorizzazione di seguito</string>
     <string name="photo_widget_configure_interval_grant_permission">Concedi l\'autorizzazione per allarmi esatti</string>
+    <string name="photo_widget_configure_interval_grant_permission_description">Assicura che i widget con intervalli brevi si aggiornino regolarmente</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">Informazioni su questa autorizzazione</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">Android può limitare il lavoro in background per ottimizzare la durata della batteria, con conseguente intervallo più lungo tra ogni foto.\n\nPer aggiornare i widget esattamente all\'intervallo selezionato, apri le impostazioni e consenti di impostare allarmi e promemoria.</string>
     <string name="photo_widget_configure_interval_open_settings">Apri impostazioni</string>
+    <string name="photo_widget_configure_battery_optimization">Disattiva ottimizzazione batteria</string>
+    <string name="photo_widget_configure_battery_optimization_description">Assicura che l\'app funzioni senza interruzioni e che i tuoi widget rimangano aggiornati</string>
     <string name="photo_widget_configure_border">Bordo</string>
     <string name="photo_widget_configure_border_none">Nessuno</string>
     <string name="photo_widget_configure_border_dynamic">Dinamico</string>
@@ -240,9 +245,9 @@
     <string name="help_article_body_5">L\'app stessa non viene utilizzata di frequente — solo quando è necessario modificare un widget. I widget vengono eseguiti indipendentemente all\'interno del launcher dell\'app. Questo può indurre Android a pensare che l\'app non sia importante e il sistema la interromperà per recuperare risorse. Quando l\'app viene interrotta, anche i suoi widget lo sono. Per evitare ciò, aggiorna la politica di utilizzo della batteria per l\'app, impostandola su "Senza restrizioni".</string>
     <string name="restriction_warning_hint">L\'attività in background è limitata. I widget potrebbero non funzionare correttamente. Tocca per saperne di più.</string>
     <string name="restriction_warning_dialog_title">Restrizioni sul lavoro in background e ottimizzazione della batteria</string>
-    <string name="restriction_warning_dialog_body_1">Material Photo Widget deve essere eseguito in background per aggiornare i tuoi widget. Viene eseguito solo quando necessario, ma se l\'utilizzo della batteria è impostato su \"ottimizzato\", Android potrebbe bloccare l\'app, causando il malfunzionamento dei widget.</string>
-    <string name="restriction_warning_dialog_body_2">Apri le impostazioni dell\'app e cambia l\'utilizzo della batteria su \"Nessuna restrizione\". Se questa opzione non è disponibile, controlla le impostazioni di alimentazione del telefono.</string>
-    <string name="restriction_warning_dialog_body_3">Alcuni telefoni sono ancora più restrittivi e potrebbero impedire all\'app di avviarsi automaticamente dopo un riavvio. Le impostazioni variano in base al dispositivo — visita https://dontkillmyapp.com per istruzioni specifiche.</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widget deve essere eseguito in background per aggiornare i tuoi widget. Se l\'uso della batteria è impostato su \"Ottimizzato\", Android potrebbe arrestare l\'app, impedendo il corretto aggiornamento dei widget.</string>
+    <string name="restriction_warning_dialog_body_2">Vai nelle impostazioni dell\'app, poi su \"Uso batteria app\". Fai clic su \"Consenti uso in background\" e seleziona \"Senza restrizioni\" per garantire aggiornamenti affidabili. Se questa opzione non è visibile, controlla le impostazioni di risparmio energetico del telefono.</string>
+    <string name="restriction_warning_dialog_body_3">Alcuni dispositivi potrebbero anche impedire all\'app di avviarsi dopo un riavvio. Cerca \"avvio automatico\" nelle impostazioni o visita https://dontkillmyapp.com per istruzioni specifiche per la marca del tuo telefono.</string>
     <string name="restriction_warning_open_app_settings">Apri impostazioni app</string>
     <string name="restriction_warning_open_power_settings">Apri impostazioni alimentazione</string>
     <!-- Translations -->

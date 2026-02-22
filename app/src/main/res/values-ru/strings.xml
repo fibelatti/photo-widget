@@ -11,6 +11,7 @@
     <string name="photo_widget_home_current">Мои виджеты</string>
     <string name="photo_widget_home_settings">Настройки</string>
     <string name="photo_widget_home_data_saver">Оптимизированное хранилище</string>
+    <string name="photo_widget_home_data_saver_description">Управление качеством импортированных фотографий</string>
     <string name="photo_widget_home_appearance">Тема приложения</string>
     <string name="photo_widget_home_true_black_background">Настоящий черный фон</string>
     <string name="photo_widget_home_dynamic_colors">Цвета приложения</string>
@@ -65,6 +66,7 @@
     <string name="preferences_dynamic_colors_disabled">Цвета по умолчанию</string>
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Параметры виджета по умолчанию</string>
+    <string name="widget_defaults_description">Общие настройки для всех новых виджетов</string>
     <string name="widget_defaults_explanation">Эти значения загружаются автоматически при создании нового виджета. Они полезны для настройки нескольких виджетов с одинаковой конфигурацией, что устраняет необходимость настраивать их каждый раз. Обратите внимание, что изменения этих значений не повлияют на уже существующие виджеты.</string>
     <string name="widget_defaults_source">Источник</string>
     <string name="widget_defaults_shuffle">Перемешивание</string>
@@ -169,9 +171,12 @@
     </plurals>
     <string name="photo_widget_configure_interval_warning">Фактический интервал или запланированное время могут варьироваться из-за ограничений, накладываемых Android для оптимизации времени работы от батареи. Чтобы обеспечить его работу по желанию, предоставьте разрешение ниже</string>
     <string name="photo_widget_configure_interval_grant_permission">Предоставить разрешение на точный будильник</string>
+    <string name="photo_widget_configure_interval_grant_permission_description">Обеспечить своевременное обновление виджетов с короткими интервалами</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">Об этом разрешении</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">Android может ограничивать фоновую работу, чтобы оптимизировать время работы аккумулятора, что приводит к увеличению интервалов между снимками.\n\nЧтобы обновлять виджеты точно с выбранным интервалом, откройте настройки и разрешите установку будильников и напоминаний.</string>
     <string name="photo_widget_configure_interval_open_settings">Открыть настройки</string>
+    <string name="photo_widget_configure_battery_optimization">Отключить оптимизацию батареи</string>
+    <string name="photo_widget_configure_battery_optimization_description">Обеспечить бесперебойную работу приложения и актуальность ваших виджетов</string>
     <string name="photo_widget_configure_border">Граница</string>
     <string name="photo_widget_configure_border_none">Нет</string>
     <string name="photo_widget_configure_border_dynamic">Динамичный</string>
@@ -252,9 +257,9 @@
     <string name="help_article_body_5">Само приложение используется нечасто — только когда вам нужно отредактировать виджет. Виджеты работают независимо в программе запуска приложений. Это может заставить Android решить, что приложение не важно, и система остановит его, чтобы освободить ресурсы. Когда приложение остановлено, его виджеты тоже. Чтобы предотвратить это, обновите политику использования батареи для приложения, установив для нее значение \"Без ограничений\".</string>
     <string name="restriction_warning_hint">Фоновая активность ограничена. Виджеты могут работать некорректно. Нажмите, чтобы узнать больше.</string>
     <string name="restriction_warning_dialog_title">Ограничения фоновой работы и оптимизация батареи</string>
-    <string name="restriction_warning_dialog_body_1">Приложению Material Photo Widget необходимо работать в фоновом режиме для обновления виджетов. Оно запускается только при необходимости, но если использование батареи установлено как \"оптимизированное\", Android может остановить приложение, что приведет к некорректной работе виджетов.</string>
-    <string name="restriction_warning_dialog_body_2">Откройте настройки приложения и измените использование батареи на Без ограничений. Если такой опции нет, проверьте настройки энергопотребления телефона.</string>
-    <string name="restriction_warning_dialog_body_3">Некоторые телефоны имеют еще более строгие ограничения и могут блокировать автоматический запуск приложения после перезагрузки. Настройки зависят от устройства — посетите https://dontkillmyapp.com для получения конкретных инструкций.</string>
+    <string name="restriction_warning_dialog_body_1">Приложению Material Photo Widget необходимо работать в фоновом режиме для обновления виджетов. Если для батареи выбрано значение \"Оптимизировано\", Android может остановить приложение, что помешает корректному обновлению виджетов.</string>
+    <string name="restriction_warning_dialog_body_2">Перейдите в настройки приложения, затем в раздел \"Расход заряда батареи\". Нажмите \"Разрешить работу в фоновом режиме\" и выберите \"Не ограничено\" для стабильного обновления. Если этот параметр не виден, проверьте настройки питания телефона.</string>
+    <string name="restriction_warning_dialog_body_3">Некоторые устройства также могут блокировать запуск приложения после перезагрузки. Найдите в настройках \"автозапуск\" или посетите сайт https://dontkillmyapp.com для получения инструкций для вашей марки телефона.</string>
     <string name="restriction_warning_open_app_settings">Открыть настройки приложения</string>
     <string name="restriction_warning_open_power_settings">Открыть настройки питания</string>
     <!-- Translations -->

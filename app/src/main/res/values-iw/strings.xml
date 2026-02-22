@@ -11,6 +11,7 @@
     <string name="photo_widget_home_current">הווידג\'טים שלי</string>
     <string name="photo_widget_home_settings">הגדרות</string>
     <string name="photo_widget_home_data_saver">אחסון אופטימלי</string>
+    <string name="photo_widget_home_data_saver_description">שליטה באיכות התמונה של תמונות מיובאות</string>
     <string name="photo_widget_home_appearance">עיצוב</string>
     <string name="photo_widget_home_true_black_background">רקע שחור אמיתי</string>
     <string name="photo_widget_home_dynamic_colors">צבעי אפליקציה</string>
@@ -65,6 +66,7 @@
     <string name="preferences_dynamic_colors_disabled">צבעי ברירת מחדל</string>
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">ברירות מחדל של ווידג\'ט</string>
+    <string name="widget_defaults_description">הגדרות משותפות לכל הווידג\'טים החדשים</string>
     <string name="widget_defaults_explanation">ערכים אלה נטענים מראש בעת יצירת ווידג\'ט חדש. הם שימושיים להגדרת ווידג\'טים מרובים עם אותה תצורה, ומבטלים את הצורך להתאים הגדרות בכל פעם. שים לב שכל שינוי בערכים אלה לא ישפיע על ווידג\'טים קיימים.</string>
     <string name="widget_defaults_source">מקור</string>
     <string name="widget_defaults_shuffle">ערבוב</string>
@@ -169,9 +171,12 @@
     </plurals>
     <string name="photo_widget_configure_interval_warning">זמן המרווח בפועל או הזמן שתוזמן עשויים להשתנות עקב הגבלות אנדרואיד שנועדו כדי לייעל את חיי הסוללה. כדי להבטיח שהכל יעבוד כצפוי, הענק את ההרשאה למטה</string>
     <string name="photo_widget_configure_interval_grant_permission">הענק הרשאת שעון מעורר ותזכורות</string>
+    <string name="photo_widget_configure_interval_grant_permission_description">ודא שווידג\'טים עם מרווחי זמן קצרים מתעדכנים לפי לוח הזמנים</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">אודות הרשאה זו</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">אנדרואיד יכולה להגביל עבודה ברקע כדי לייעל את חיי הסוללה, וכתוצאה מכך מרווחים ארוכים יותר בין כל תמונה.\n\nכדי לעדכן ווידג\'טים בדיוק במרווח הזמן שנבחר, פתח את ההגדרות ואפשר הגדרת שעון מעורר ותזכורות.</string>
     <string name="photo_widget_configure_interval_open_settings">פתח הגדרות</string>
+    <string name="photo_widget_configure_battery_optimization">ביטול אופטימיזציית סוללה</string>
+    <string name="photo_widget_configure_battery_optimization_description">ודא שהאפליקציה פועלת ללא הפרעה והווידג\'טים שלך נשארים מעודכנים</string>
     <string name="photo_widget_configure_border">גבול</string>
     <string name="photo_widget_configure_border_none">ללא</string>
     <string name="photo_widget_configure_border_dynamic">דינמי</string>
@@ -252,9 +257,9 @@
     <string name="help_article_body_5">האפליקציה עצמה אינה בשימוש תדיר - רק כאשר אתה צריך לערוך ווידג\'ט. ווידג\'טים פועלים באופן עצמאי בתוך מפעיל היישומים שלך. זה יכול לגרום לאנדרואיד לחשוב שהאפליקציה אינה חשובה, והמערכת תעצור אותה כדי לתבוע בחזרה משאבים. כאשר האפליקציה נעצרת, גם הווידג\'טים שלה נעצרים. כדי למנוע זאת, עדכן את מדיניות השימוש בסוללה עבור האפליקציה, והגדר אותה כ\"ללא הגבלה\".</string>
     <string name="restriction_warning_hint">פעילות ברקע מוגבלת. ייתכן שווידג\'טים לא יפעלו כראוי. הקש למידע נוסף.</string>
     <string name="restriction_warning_dialog_title">הגבלות עבודה ברקע ואופטימיזציה של סוללה</string>
-    <string name="restriction_warning_dialog_body_1">יישומון התמונות של Material Photo צריך לפעול ברקע כדי לעדכן את הווידג\'טים שלך. הוא פועל רק בעת הצורך, אך אם צריכת הסוללה מוגדרת ל\"אופטימלית\", ייתכן שאנדרואיד יעצור את האפליקציה, מה שיגרום לוידג\'טים להפסיק לפעול כראוי.</string>
-    <string name="restriction_warning_dialog_body_2">פתח את הגדרות האפליקציה ושנה את צריכת הסוללה ל\"ללא הגבלה\". אם אפשרות זו אינה זמינה, בדוק את הגדרות צריכת החשמל של הטלפון.</string>
-    <string name="restriction_warning_dialog_body_3">חלק מהטלפונים מגבילים אף יותר ועשויים לחסום את ההפעלה האוטומטית של האפליקציה לאחר הפעלה מחדש. ההגדרות משתנות בהתאם למכשיר - בקרו באתר https://dontkillmyapp.com לקבלת הוראות ספציפיות.</string>
+    <string name="restriction_warning_dialog_body_1">היישומון Material Photo Widget צריך לפעול ברקע כדי לעדכן את הווידג\'טים שלך. אם השימוש בסוללה מוגדר כ-\"אופטימלי\", Android עלולה לעצור את האפליקציה, מה שמונע מהווידג\'טים להתעדכן כראוי.</string>
+    <string name="restriction_warning_dialog_body_2">עבור להגדרות האפליקציה, ואז ל-\"שימוש באפליקציה בסוללה\". לחץ על \"אפשר שימוש ברקע\" ובחר ב-\"ללא הגבלה\" כדי להבטיח עדכונים אמינים. אם אפשרות זו אינה גלויה, בדוק את הגדרות הסוללה של הטלפון.</string>
+    <string name="restriction_warning_dialog_body_3">מכשירים מסוימים עשויים גם לחסום את הפעלת האפליקציה לאחר הפעלה מחדש. חפש בהגדרות שלך \"הפעלה אוטומטית\" או בקר באתר https://dontkillmyapp.com להוראות ספציפיות עבור מותג הטלפון שלך.</string>
     <string name="restriction_warning_open_app_settings">פתח את הגדרות האפליקציה</string>
     <string name="restriction_warning_open_power_settings">פתח הגדרות צריכת חשמל</string>
     <!-- Translations -->

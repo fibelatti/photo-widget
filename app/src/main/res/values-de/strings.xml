@@ -11,6 +11,7 @@
     <string name="photo_widget_home_current">Meine Widgets</string>
     <string name="photo_widget_home_settings">Einstellungen</string>
     <string name="photo_widget_home_data_saver">Optimierter Speicher</string>
+    <string name="photo_widget_home_data_saver_description">Bildqualität importierter Fotos steuern</string>
     <string name="photo_widget_home_appearance">App-Theme</string>
     <string name="photo_widget_home_true_black_background">Echter schwarzer Hintergrund</string>
     <string name="photo_widget_home_dynamic_colors">App-Farben</string>
@@ -63,6 +64,7 @@
     <string name="preferences_dynamic_colors_disabled">Standardfarben</string>
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Widget-Standardeinstellungen</string>
+    <string name="widget_defaults_description">Allgemeine Einstellungen für alle neuen Widgets</string>
     <string name="widget_defaults_explanation">Diese Werte werden beim Erstellen eines neuen Widgets vorgeladen. Sie sind nützlich, um mehrere Widgets mit derselben Konfiguration einzurichten, wodurch Sie die Einstellungen nicht jedes Mal anpassen müssen. Beachten Sie, dass Änderungen an diesen Werten keine Auswirkungen auf bestehende Widgets haben.</string>
     <string name="widget_defaults_source">Quelle</string>
     <string name="widget_defaults_shuffle">Zufällig</string>
@@ -157,9 +159,12 @@
     </plurals>
     <string name="photo_widget_configure_interval_warning">Das tatsächliche Intervall oder die geplante Zeit kann aufgrund von Einschränkungen, die Android zur Optimierung der Akkulaufzeit auferlegt, variieren. Um sicherzustellen, dass es wie gewünscht funktioniert, erteilen Sie die unten stehende Berechtigung</string>
     <string name="photo_widget_configure_interval_grant_permission">Berechtigung für genaue Alarme erteilen</string>
+    <string name="photo_widget_configure_interval_grant_permission_description">Sicherstellen, dass Widgets mit kurzen Intervallen planmäßig aktualisiert werden</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">Über diese Berechtigung</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">Android kann Hintergrundarbeiten einschränken, um die Akkulaufzeit zu optimieren, was zu längeren Intervallen zwischen den einzelnen Fotos führen kann.\n\nUm Widgets genau im ausgewählten Intervall zu aktualisieren, öffnen Sie die Einstellungen und erlauben Sie das Festlegen von Alarmen und Erinnerungen.</string>
     <string name="photo_widget_configure_interval_open_settings">Einstellungen öffnen</string>
+    <string name="photo_widget_configure_battery_optimization">Akku-Optimierung deaktivieren</string>
+    <string name="photo_widget_configure_battery_optimization_description">Sicherstellen, dass die App unterbrechungsfrei läuft und Ihre Widgets auf dem neuesten Stand bleiben</string>
     <string name="photo_widget_configure_border">Rahmen</string>
     <string name="photo_widget_configure_border_none">Keine</string>
     <string name="photo_widget_configure_border_dynamic">Dynamisch</string>
@@ -240,9 +245,9 @@
     <string name="help_article_body_5">Die App selbst wird nicht häufig verwendet – nur, wenn Sie ein Widget bearbeiten müssen. Widgets laufen unabhängig in Ihrem App-Launcher. Dies kann Android dazu verleiten zu denken, dass die App nicht wichtig ist, und das System stoppt sie, um Ressourcen zurückzugewinnen. Wenn die App gestoppt wird, sind es auch ihre Widgets. Um dies zu verhindern, aktualisieren Sie die Akkunutzungsrichtlinie für die App und setzen Sie sie auf \"Uneingeschränkt\".</string>
     <string name="restriction_warning_hint">Hintergrundaktivität ist eingeschränkt. Widgets funktionieren möglicherweise nicht korrekt. Tippen Sie hier, um mehr zu erfahren.</string>
     <string name="restriction_warning_dialog_title">Hintergrundarbeitsbeschränkungen und Akkuoptimierung</string>
-    <string name="restriction_warning_dialog_body_1">Material Photo Widget muss im Hintergrund ausgeführt werden, um Ihre Widgets zu aktualisieren. Es wird nur bei Bedarf ausgeführt, aber wenn die Akkunutzung auf „optimiert“ eingestellt ist, kann Android die App beenden, wodurch Widgets nicht mehr korrekt funktionieren.</string>
-    <string name="restriction_warning_dialog_body_2">Öffnen Sie die App-Einstellungen und ändern Sie die Akkunutzung auf „Uneingeschränkt“. Wenn diese Option nicht verfügbar ist, überprüfen Sie die Energieeinstellungen des Telefons.</string>
-    <string name="restriction_warning_dialog_body_3">Einige Telefone sind noch restriktiver und können die App daran hindern, nach einem Neustart automatisch zu starten. Die Einstellungen variieren je nach Gerät – besuchen Sie https://dontkillmyapp.com für spezifische Anweisungen.</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widget muss im Hintergrund ausgeführt werden, um Ihre Widgets zu aktualisieren. Wenn die Akkunutzung auf \"Optimiert\" eingestellt ist, beendet Android die App möglicherweise, was eine korrekte Aktualisierung der Widgets verhindert.</string>
+    <string name="restriction_warning_dialog_body_2">Gehen Sie zu den App-Einstellungen und dann zu \"App-Akkunutzung\". Klicken Sie auf \"Hintergrundnutzung zulassen\" und wählen Sie \"Nicht eingeschränkt\", um zuverlässige Updates zu gewährleisten. Wenn diese Option nicht sichtbar ist, prüfen Sie die Energieeinstellungen des Telefons.</string>
+    <string name="restriction_warning_dialog_body_3">Einige Geräte blockieren möglicherweise auch den automatischen Start der App nach einem Neustart. Suchen Sie in Ihren Einstellungen nach \"Autostart\" oder besuchen Sie https://dontkillmyapp.com für gerätespezifische Anweisungen.</string>
     <string name="restriction_warning_open_app_settings">App-Einstellungen öffnen</string>
     <string name="restriction_warning_open_power_settings">Energieeinstellungen öffnen</string>
     <!-- Translations -->

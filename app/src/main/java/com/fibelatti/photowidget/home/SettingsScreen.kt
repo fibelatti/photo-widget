@@ -53,9 +53,12 @@ import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.getSystemService
 import com.fibelatti.photowidget.BuildConfig
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.configure.BackgroundRestrictionBottomSheet
 import com.fibelatti.photowidget.configure.ExactAlarmsDialog
 import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
+import com.fibelatti.ui.foundation.rememberAppSheetState
+import com.fibelatti.ui.foundation.showBottomSheet
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
@@ -85,18 +88,23 @@ fun SettingsScreen(
     var showExactAlarmsDialog by remember {
         mutableStateOf(false)
     }
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    val exactAlarmsPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) {
         canScheduleExactAlarms = AlarmManagerCompat.canScheduleExactAlarms(alarmManager)
         if (canScheduleExactAlarms) {
             localContext.sendBroadcast(PhotoWidgetRescheduleReceiver.intent(localContext))
         }
     }
 
+    val batteryOptimizationSheetState = rememberAppSheetState()
+
     SettingsScreen(
         onDefaultsClick = onDefaultsClick,
         onDataSaverClick = onDataSaverClick,
         canScheduleExactAlarms = canScheduleExactAlarms,
         onScheduleExactAlarmsClick = { showExactAlarmsDialog = true },
+        onBatteryOptimizationClick = { batteryOptimizationSheetState.showBottomSheet() },
         onAppearanceClick = onAppearanceClick,
         onColorsClick = onColorsClick,
         onAppLanguageClick = onAppLanguageClick,
@@ -115,11 +123,15 @@ fun SettingsScreen(
                 showExactAlarmsDialog = false
             },
             onConfirm = {
-                launcher.launch(requestScheduleExactAlarmIntent(localContext))
+                exactAlarmsPermissionLauncher.launch(requestScheduleExactAlarmIntent(localContext))
                 showExactAlarmsDialog = false
             },
         )
     }
+
+    BackgroundRestrictionBottomSheet(
+        sheetState = batteryOptimizationSheetState,
+    )
 }
 
 @Composable
@@ -128,6 +140,7 @@ private fun SettingsScreen(
     onDataSaverClick: () -> Unit,
     canScheduleExactAlarms: Boolean,
     onScheduleExactAlarmsClick: () -> Unit,
+    onBatteryOptimizationClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
@@ -148,21 +161,20 @@ private fun SettingsScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
-                .padding(
-                    top = 16.dp,
-                    bottom = footerHeight + 16.dp,
-                ),
+                .padding(top = 16.dp, bottom = footerHeight + 16.dp),
         ) {
             SettingsAction(
                 icon = R.drawable.ic_default,
                 label = R.string.widget_defaults_title,
                 onClick = onDefaultsClick,
+                description = R.string.widget_defaults_description,
             )
 
             SettingsAction(
                 icon = R.drawable.ic_hard_drive,
                 label = R.string.photo_widget_home_data_saver,
                 onClick = onDataSaverClick,
+                description = R.string.photo_widget_home_data_saver_description,
             )
 
             AnimatedVisibility(visible = !canScheduleExactAlarms) {
@@ -170,8 +182,16 @@ private fun SettingsScreen(
                     icon = R.drawable.ic_alarm,
                     label = R.string.photo_widget_configure_interval_grant_permission,
                     onClick = onScheduleExactAlarmsClick,
+                    description = R.string.photo_widget_configure_interval_grant_permission_description,
                 )
             }
+
+            SettingsAction(
+                icon = R.drawable.ic_battery,
+                label = R.string.photo_widget_configure_battery_optimization,
+                onClick = onBatteryOptimizationClick,
+                description = R.string.photo_widget_configure_battery_optimization_description,
+            )
 
             SettingsAction(
                 icon = R.drawable.ic_appearance,
@@ -313,6 +333,7 @@ private fun SettingsAction(
     @StringRes label: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    @StringRes description: Int? = null,
 ) {
     TextButton(
         onClick = onClick,
@@ -326,19 +347,32 @@ private fun SettingsAction(
             painter = painterResource(id = icon),
             contentDescription = null,
             modifier = Modifier.size(24.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            tint = MaterialTheme.colorScheme.onSurface,
         )
 
         Spacer(modifier = Modifier.size(16.dp))
 
-        AutoSizeText(
-            text = stringResource(id = label),
+        Column(
             modifier = Modifier.weight(1f),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-            minFontSize = 8.sp,
-            style = MaterialTheme.typography.titleMedium,
-        )
+        ) {
+            AutoSizeText(
+                text = stringResource(id = label),
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                minFontSize = 8.sp,
+                style = MaterialTheme.typography.titleMedium,
+            )
+
+            if (description != null) {
+                AutoSizeText(
+                    text = stringResource(id = description),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                    minFontSize = 8.sp,
+                    style = MaterialTheme.typography.labelMedium,
+                )
+            }
+        }
     }
 }
 
@@ -352,6 +386,7 @@ private fun SettingsScreenPreview() {
             onDataSaverClick = {},
             canScheduleExactAlarms = false,
             onScheduleExactAlarmsClick = {},
+            onBatteryOptimizationClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
             onAppLanguageClick = {},

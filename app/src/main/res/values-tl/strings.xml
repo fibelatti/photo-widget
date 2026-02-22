@@ -11,6 +11,7 @@
     <string name="photo_widget_home_current">Mga Widget Ko</string>
     <string name="photo_widget_home_settings">Mga Setting</string>
     <string name="photo_widget_home_data_saver">Storage na naka-optimize</string>
+    <string name="photo_widget_home_data_saver_description">Kontrolin ang kalidad ng imahe ng mga na-import na larawan</string>
     <string name="photo_widget_home_appearance">Tema ng app</string>
     <string name="photo_widget_home_true_black_background">True black na background</string>
     <string name="photo_widget_home_dynamic_colors">Mga kulay ng app</string>
@@ -62,6 +63,7 @@
     <string name="preferences_dynamic_colors_disabled">Paunang setting ng kulay</string>
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Mga paunang setting ng widget</string>
+    <string name="widget_defaults_description">Mga karaniwang setting para sa lahat ng bagong widget</string>
     <string name="widget_defaults_explanation">Ito ang mga setting na ito ay awtomikong nilalagay kapag gumawa ka ng bagong widget. Nakakatulong ito sa paggawa ng maramihang widget na may parehong pagkakaayos ng setting, kaya hindi mo na kakailanganing baguhin ang mga setting sa bawat widget na linilikha. Hindi makakaapekto ang mga pagbabago rito sa mga widget na nagawa mo na.</string>
     <string name="widget_defaults_source">Pinagmulan</string>
     <string name="widget_defaults_shuffle">Paghalu-haluin</string>
@@ -155,9 +157,12 @@
     </plurals>
     <string name="photo_widget_configure_interval_warning">Maaaring magbago ang aktwal na agwat o iskedyul dahil sa mga limitasyong ipinapataw ng Android upang magtipid ng baterya. Upang tiyaking gagana ito ayon sa inaasahan, ibigay ang pahintulot sa ibaba</string>
     <string name="photo_widget_configure_interval_grant_permission">Ibigay ang pahintulot sa eksaktong alarma</string>
+    <string name="photo_widget_configure_interval_grant_permission_description">Tiyaking nag-a-update sa iskedyul ang mga widget na may maiikling interval</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">Tungkol sa pahintulot na ito</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">Maaaring paghigpitan ng Android ang aktibidad sa background upang magtipid ng baterya, at nagiging sanhi ito ng mas mahabang agwat ng oras sa paglipat ng larawan.\n\nPara makapaglipat ng larawan ang mga widget sa tamang agwat ng oras, buksan ang mga setting at pahintulutan ang pagtatakda ng mga alarma at paalala.</string>
     <string name="photo_widget_configure_interval_open_settings">Buksan ang mga setting</string>
+    <string name="photo_widget_configure_battery_optimization">I-disable ang pag-optimize ng baterya</string>
+    <string name="photo_widget_configure_battery_optimization_description">Tiyaking tumatakbo ang app nang walang hinto at manatiling updated ang iyong mga widget</string>
     <string name="photo_widget_configure_border">Border</string>
     <string name="photo_widget_configure_border_none">Wala</string>
     <string name="photo_widget_configure_border_dynamic">Dinamiko</string>
@@ -238,9 +243,9 @@
     <string name="help_article_body_5">Ang app mismo ay hindi madalas gamitin — kapag kailangan mo lang i-edit ang isang widget. Ang mga widget ay tumatakbo nang hiwalay sa loob ng iyong app launcher. Maaari itong magdulot sa Android na isipin na hindi mahalaga ang app, at ihinto ito ng system upang bawiin ang mga mapagkukunan. Kapag huminto ang app, humihinto din ang mga widget nito. Upang maiwasan ito, i-update ang patakaran sa paggamit ng baterya para sa app, itakda ito sa \"Walang limitasyon\".</string>
     <string name="restriction_warning_hint">May limitasyon sa aktibidad sa background. Maaaring hindi umandar nang maayos ang mga widget. Pumindot para matuto pa.</string>
     <string name="restriction_warning_dialog_title">Mga limitasyon sa aktibidad sa background at optimisasyon sa baterya</string>
-    <string name="restriction_warning_dialog_body_1">Kailangang umandar sa background ang Material Photo Widget upang i-update ang iyong mga widget. Umaandar lang ito pag kailangan, pero maaaring ihinto ng Android ang app at magdulot ng problema sa pag-andar ng mga widget pag naka-set ang paggamit ng baterya sa \"naka-optimize.\"</string>
-    <string name="restriction_warning_dialog_body_2">Buksan ang mga setting ng app at gawing \"Unrestricted\" ang paggamit nito ng baterya. Kung wala ang opsyon na ito, tingnan ang mga setting ng telepono sa power o baterya.</string>
-    <string name="restriction_warning_dialog_body_3">May mga teleponong mas mahigpit pa at maaaring harangin ang awtomatikong pagsimula ng app pagkatapos ng pag-restart ng telepono. Iba-iba ang mga setting depende sa device — bisitahin ang https://dontkillmyapp.com para sa mas espesipikong mga hakbang.</string>
+    <string name="restriction_warning_dialog_body_1">Kailangang tumakbo ng Material Photo Widget sa background para ma-update ang iyong mga widget. Kung ang paggamit ng baterya ay naka-set sa \"Optimized,\" maaaring ihinto ng Android ang app, na pumipigil sa tamang pag-update ng mga widget.</string>
+    <string name="restriction_warning_dialog_body_2">Pumunta sa mga setting ng app, pagkatapos ay sa \"App battery usage.\" I-click ang \"Payagan ang paggamit sa background\" at piliin ang \"Walang limitasyon\" para matiyak ang maaasahang mga update. Kung hindi makita ang opsyong ito, suriin ang mga power setting ng telepono.</string>
+    <string name="restriction_warning_dialog_body_3">Ang ilang device ay maaari ding harangan ang pag-start ng app pagkatapos ng restart. Hanapin sa iyong mga setting ang \"auto-start\" o bisitahin ang https://dontkillmyapp.com para sa mga tagubilin na partikular sa brand ng iyong telepono.</string>
     <string name="restriction_warning_open_app_settings">Buksan ang mga setting ng app</string>
     <string name="restriction_warning_open_power_settings">Buksan ang mga setting sa power</string>
     <!-- Translations -->

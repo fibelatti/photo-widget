@@ -11,6 +11,7 @@
     <string name="photo_widget_home_current">Mes widgets</string>
     <string name="photo_widget_home_settings">Paramètres</string>
     <string name="photo_widget_home_data_saver">Stockage optimisé</string>
+    <string name="photo_widget_home_data_saver_description">Contrôler la qualité d\'image des photos importées</string>
     <string name="photo_widget_home_appearance">Thème de l\'application</string>
     <string name="photo_widget_home_true_black_background">Fond noir véritable</string>
     <string name="photo_widget_home_dynamic_colors">Couleurs de l\'application</string>
@@ -63,6 +64,7 @@
     <string name="preferences_dynamic_colors_disabled">Couleurs par défaut</string>
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Valeurs par défaut du widget</string>
+    <string name="widget_defaults_description">Paramètres communs à tous les nouveaux widgets</string>
     <string name="widget_defaults_explanation">Ces valeurs sont préchargées lorsque vous créez un nouveau widget. Elles sont utiles pour configurer plusieurs widgets avec la même configuration, sans avoir besoin d\'ajuster les paramètres à chaque fois. Notez que toute modification de ces valeurs n\'affectera pas les widgets existants.</string>
     <string name="widget_defaults_source">Source</string>
     <string name="widget_defaults_shuffle">Aléatoire</string>
@@ -157,9 +159,12 @@
     </plurals>
     <string name="photo_widget_configure_interval_warning">L\'intervalle ou l\'horaire réel peut varier en raison des restrictions imposées par Android pour optimiser l\'autonomie de la batterie. Pour garantir le bon fonctionnement, accordez l\'autorisation ci-dessous</string>
     <string name="photo_widget_configure_interval_grant_permission">Accorder l\'autorisation d\'alarme exacte</string>
+    <string name="photo_widget_configure_interval_grant_permission_description">S\'assurer que les widgets avec des intervalles courts se mettent à jour à l\'heure</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">À propos de cette autorisation</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">Android peut restreindre le travail en arrière-plan pour optimiser la durée de vie de la batterie, ce qui entraîne des intervalles plus longs entre chaque photo.\n\nPour mettre à jour les widgets précisément à l\'intervalle sélectionné, ouvrez les paramètres et autorisez le réglage des alarmes et des rappels.</string>
     <string name="photo_widget_configure_interval_open_settings">Ouvrir les paramètres</string>
+    <string name="photo_widget_configure_battery_optimization">Désactiver l\'optimisation de la batterie</string>
+    <string name="photo_widget_configure_battery_optimization_description">S\'assurer que l\'application fonctionne sans interruption et que vos widgets restent à jour</string>
     <string name="photo_widget_configure_border">Bordure</string>
     <string name="photo_widget_configure_border_none">Aucune</string>
     <string name="photo_widget_configure_border_dynamic">Dynamique</string>
@@ -240,9 +245,9 @@
     <string name="help_article_body_5">L\'application elle-même n\'est pas utilisée fréquemment — seulement lorsque vous devez modifier un widget. Les widgets s\'exécutent indépendamment dans votre lanceur d\'applications. Cela peut amener Android à penser que l\'application n\'est pas importante, et le système l\'arrêtera pour récupérer des ressources. Lorsque l\'application est arrêtée, ses widgets le sont aussi. Pour éviter cela, mettez à jour la politique d\'utilisation de la batterie pour l\'application, en la réglant sur \"Sans restriction\".</string>
     <string name="restriction_warning_hint">L\'activité en arrière-plan est restreinte. Les widgets peuvent ne pas fonctionner correctement. Appuyez pour en savoir plus.</string>
     <string name="restriction_warning_dialog_title">Restrictions d\'activité en arrière-plan et optimisation de la batterie</string>
-    <string name="restriction_warning_dialog_body_1">Material Photo Widget doit s\'exécuter en arrière-plan pour mettre à jour vos widgets. Il ne fonctionne que lorsque c\'est nécessaire, mais si l\'utilisation de la batterie est définie sur \"optimisée\", Android peut arrêter l\'application, ce qui peut empêcher les widgets de fonctionner correctement.</string>
-    <string name="restriction_warning_dialog_body_2">Ouvrez les paramètres de l\'application et changez l\'utilisation de la batterie en Non restreinte. Si cette option n\'est pas disponible, vérifiez les paramètres d\'alimentation du téléphone.</string>
-    <string name="restriction_warning_dialog_body_3">Certains téléphones sont encore plus restrictifs et peuvent empêcher l\'application de se lancer automatiquement après un redémarrage. Les paramètres varient selon l\'appareil — visitez https://dontkillmyapp.com pour des instructions spécifiques.</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widget doit s\'exécuter en arrière-plan pour mettre à jour vos widgets. Si l\'utilisation de la batterie est réglée sur \"Optimisée\", Android peut arrêter l\'application, ce qui empêche la mise à jour correcte des widgets.</string>
+    <string name="restriction_warning_dialog_body_2">Allez dans les paramètres de l\'application, puis dans \"Utilisation de la batterie par l\'application\". Cliquez sur \"Autoriser l\'utilisation en arrière-plan\" et sélectionnez \"Non restreinte\" pour garantir des mises à jour fiables. Si cette option n\'est pas visible, vérifiez les paramètres d\'alimentation du téléphone.</string>
+    <string name="restriction_warning_dialog_body_3">Certains appareils peuvent également empêcher l\'application de démarrer après un redémarrage. Recherchez \"démarrage automatique\" dans vos paramètres ou visitez https://dontkillmyapp.com pour des instructions spécifiques à la marque de votre téléphone.</string>
     <string name="restriction_warning_open_app_settings">Ouvrir les paramètres de l\'application</string>
     <string name="restriction_warning_open_power_settings">Ouvrir les paramètres d\'alimentation</string>
     <!-- Translations -->

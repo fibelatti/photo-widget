@@ -11,6 +11,7 @@
     <string name="photo_widget_home_current">Widget-urile mele</string>
     <string name="photo_widget_home_settings">Setări</string>
     <string name="photo_widget_home_data_saver">Stocare optimizată</string>
+    <string name="photo_widget_home_data_saver_description">Controlează calitatea imaginii pentru fotografiile importate</string>
     <string name="photo_widget_home_appearance">Tema aplicației</string>
     <string name="photo_widget_home_true_black_background">Fundal negru adevărat</string>
     <string name="photo_widget_home_dynamic_colors">Culorile aplicației</string>
@@ -64,6 +65,7 @@
     <string name="preferences_dynamic_colors_disabled">Culori implicite</string>
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Setări widget prestabilite</string>
+    <string name="widget_defaults_description">Setări comune pentru toate widgeturile noi</string>
     <string name="widget_defaults_explanation">Aceste valori sunt pre-încărcate când creați un widget nou. Sunt utile pentru configurarea mai multor widget-uri cu aceeași configurație, eliminând necesitatea de a ajusta setările de fiecare dată. Țineți cont că orice modificare a acestor valori nu va afecta widget-urile existente.</string>
     <string name="widget_defaults_source">Sursă</string>
     <string name="widget_defaults_shuffle">Amestecare</string>
@@ -163,9 +165,12 @@
     </plurals>
     <string name="photo_widget_configure_interval_warning">Intervalul real sau ora programată poate varia din cauza restricțiilor impuse de Android pentru a optimiza durata bateriei. Pentru a vă asigura că funcționează corespunzător, acordă permisiunea de mai jos</string>
     <string name="photo_widget_configure_interval_grant_permission">Acordă permisiunea pentru alarma exactă</string>
+    <string name="photo_widget_configure_interval_grant_permission_description">Asigură-te că widgeturile cu intervale scurte se actualizează conform programului</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">Despre această permisiune</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">Android poate restricționa lucrul în fundal pentru a optimiza durata bateriei, rezultând intervale mai lungi între fiecare fotografie.\n\nPentru a actualiza widget-urile exact la intervalul selectat, deschide setările și permite setarea alarmelor și a alertelor.</string>
     <string name="photo_widget_configure_interval_open_settings">Deschide setările</string>
+    <string name="photo_widget_configure_battery_optimization">Dezactivează optimizarea bateriei</string>
+    <string name="photo_widget_configure_battery_optimization_description">Asigură-te că aplicația rulează neîntrerupt și widgeturile tale rămân actualizate</string>
     <string name="photo_widget_configure_border">Margine</string>
     <string name="photo_widget_configure_border_none">Nimic</string>
     <string name="photo_widget_configure_border_dynamic">Dinamic</string>
@@ -246,9 +251,9 @@
     <string name="help_article_body_5">Aplicația în sine nu este utilizată frecvent — doar atunci când ai nevoie să editezi un widget. Widget-urile rulează independent în lansatorul de aplicații. Acest lucru poate face Android să creadă că aplicația nu este importantă, iar sistemul o va opri pentru a salva resurse. Când aplicația este oprită, și widget-urile sale sunt. Pentru a preveni acest lucru, actualizați politica de utilizare a bateriei pentru aplicație, setați-o la \"Nerestricționată\".</string>
     <string name="restriction_warning_hint">Activitatea de fundal este restricționată. Este posibil ca widget-urile să nu funcționeze corect. Atingeți pentru a afla mai multe.</string>
     <string name="restriction_warning_dialog_title">Restricții de lucru în fundal și optimizarea bateriei</string>
-    <string name="restriction_warning_dialog_body_1">Material Photo Widget trebuie să ruleze în fundal pentru a actualiza widget-urile. Se execută doar atunci când este necesar, dar dacă utilizarea bateriei pe Android, este setată la „optimizat” poate opri aplicația, făcând ca widget-urile să nu mai funcționeze corect.</string>
-    <string name="restriction_warning_dialog_body_2">Deschide setările aplicației și schimbă utilizarea bateriei în mod Nerestricționat. Dacă această opțiune nu este disponibilă, verifică setările de alimentare ale telefonului.</string>
-    <string name="restriction_warning_dialog_body_3">Unele telefoane sunt și mai restrictive și pot bloca pornirea automată a aplicației după o repornire. Setările variază pe dispozitiv - vizitați https://dontkillmyapp.com pentru instrucțiuni specifice.</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widget trebuie să ruleze în fundal pentru a vă actualiza widgeturile. Dacă utilizarea bateriei este setată pe \"Optimizat\", Android poate opri aplicația, ceea ce previne actualizarea corectă a widgeturilor.</string>
+    <string name="restriction_warning_dialog_body_2">Mergeți la setările aplicației, apoi la \"Utilizarea bateriei de către aplicație\". Faceți clic pe \"Permiteți utilizarea pe fundal\" și selectați \"Fără restricții\" pentru a asigura actualizări constante. Dacă această opțiune nu este vizibilă, verificați setările de alimentare ale telefonului.</string>
+    <string name="restriction_warning_dialog_body_3">Unele dispozitive pot, de asemenea, să blocheze pornirea aplicației după o repornire. Căutați în setări \"pornire automată\" sau vizitați https://dontkillmyapp.com pentru instrucțiuni specifice mărcii telefonului dumneavoastră.</string>
     <string name="restriction_warning_open_app_settings">Deschide aplicația setări</string>
     <string name="restriction_warning_open_power_settings">Deschide setările de putere</string>
     <!-- Translations -->

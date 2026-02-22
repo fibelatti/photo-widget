@@ -11,6 +11,7 @@
     <string name="photo_widget_home_current">Widget\'larım</string>
     <string name="photo_widget_home_settings">Ayarlar</string>
     <string name="photo_widget_home_data_saver">Optimize edilmiş depolama</string>
+    <string name="photo_widget_home_data_saver_description">İçe aktarılan fotoğrafların görüntü kalitesini kontrol edin</string>
     <string name="photo_widget_home_appearance">Uygulama teması</string>
     <string name="photo_widget_home_true_black_background">Gerçek siyah arka plan</string>
     <string name="photo_widget_home_dynamic_colors">Uygulama renkleri</string>
@@ -63,6 +64,7 @@
     <string name="preferences_dynamic_colors_disabled">Varsayılan renkler</string>
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Widget varsayılanları</string>
+    <string name="widget_defaults_description">Tüm yeni araç takımları için ortak ayarlar</string>
     <string name="widget_defaults_explanation">Bu değerler, yeni bir widget oluşturduğunuzda önceden yüklenir. Aynı ayarlara sahip birden fazla widget oluştururken ayarları her seferinde değiştirme ihtiyacını ortadan kaldırdığı için kullanışlıdır. Bu değerlerde yapılan değişikliklerin mevcut widget\'ları etkilemeyeceğini unutmayın.</string>
     <string name="widget_defaults_source">Kaynak</string>
     <string name="widget_defaults_shuffle">Karıştır</string>
@@ -157,9 +159,12 @@
     </plurals>
     <string name="photo_widget_configure_interval_warning">Gerçek aralık veya planlanan zaman, Android\'in pil ömrünü optimize etmek için uyguladığı kısıtlamalar nedeniyle değişebilir. İstediğiniz gibi çalışmasını sağlamak için aşağıdaki izni verin</string>
     <string name="photo_widget_configure_interval_grant_permission">Kesin alarm izni ver</string>
+    <string name="photo_widget_configure_interval_grant_permission_description">Kısa aralıklı araç takımlarının planlandığı gibi güncellenmesini sağlayın</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">Bu izin hakkında</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">Android, pil ömrünü optimize etmek için arka plan çalışmalarını kısıtlayabilir; bu da her fotoğraf arasındaki aralıkların uzamasıyla sonuçlanır.\n\nWidget\'ları tam olarak seçilen aralıkta güncellemek için ayarları açın ve alarmlar ile hatırlatıcılar ayarlamaya izin verin.</string>
     <string name="photo_widget_configure_interval_open_settings">Ayarları aç</string>
+    <string name="photo_widget_configure_battery_optimization">Pil optimizasyonunu devre dışı bırak</string>
+    <string name="photo_widget_configure_battery_optimization_description">Uygulamanın kesintisiz çalışmasını ve araç takımlarınızın güncel kalmasını sağlayın</string>
     <string name="photo_widget_configure_border">Kenarlık</string>
     <string name="photo_widget_configure_border_none">Yok</string>
     <string name="photo_widget_configure_border_dynamic">Dinamik</string>
@@ -240,9 +245,9 @@
     <string name="help_article_body_5">Uygulamanın kendisi sık kullanılmaz — sadece bir widget düzenlemeniz gerektiğinde. Widget\'lar, uygulama başlatıcınız içinde bağımsız olarak çalışır. Bu, Android\'in uygulamanın önemli olmadığını düşünmesine neden olabilir ve sistem kaynakları geri kazanmak için onu durdurur. Uygulama durdurulduğunda, widget\'ları da durur. Bunu önlemek için, uygulama için pil kullanım politikasını \"Kısıtlanmamış\" olarak güncelleyin.</string>
     <string name="restriction_warning_hint">Arka plan etkinliği kısıtlandı. Widget\'lar düzgün çalışmayabilir. Daha fazla bilgi için dokunun.</string>
     <string name="restriction_warning_dialog_title">Arka plan çalıştırma kısıtlamaları ve pil optimizasyonu</string>
-    <string name="restriction_warning_dialog_body_1">Material Photo Widget, widget\'larınızı güncellemek için arka planda çalışmalıdır. Sadece gerektiğinde çalışır, ancak pil kullanımı \"optimize edilmiş\" olarak ayarlanmışsa, Android uygulamayı durdurabilir ve bu da widget\'ların düzgün çalışmamasına neden olabilir.</string>
-    <string name="restriction_warning_dialog_body_2">Uygulama ayarlarını açın ve pil kullanımını Kısıtlamasız olarak değiştirin. Bu seçenek mevcut değilse, telefonun güç ayarlarını kontrol edin.</string>
-    <string name="restriction_warning_dialog_body_3">Bazı telefonlar daha da kısıtlayıcı olabilir ve uygulamanın yeniden başlatmadan sonra otomatik olarak başlamasını engelleyebilir. Ayarlar cihaza göre değişir — özel talimatlar için https://dontkillmyapp.com adresini ziyaret edin.</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widget\'ın araç takımlarınızı güncellemesi için arka planda çalışması gerekir. Pil kullanımı \"Optimize edilmiş\" olarak ayarlanmışsa Android uygulamayı durdurabilir ve bu da araç takımlarının düzgün güncellenmesini engelleyebilir.</string>
+    <string name="restriction_warning_dialog_body_2">Uygulama ayarlarına, ardından \"Uygulama pil kullanımı\"na gidin. \"Arka planda kullanıma izin ver\"e tıklayın ve güvenilir güncellemeler sağlamak için \"Kısıtlanmamış\"ı seçin. Bu seçenek görünmüyorsa telefonun güç ayarlarını kontrol edin.</string>
+    <string name="restriction_warning_dialog_body_3">Bazı cihazlar, yeniden başlatmanın ardından uygulamanın çalışmasını da engelleyebilir. Ayarlarınızda \"otomatik başlatma\" seçeneğini arayın veya telefon markanıza özel talimatlar için https://dontkillmyapp.com adresini ziyaret edin.</string>
     <string name="restriction_warning_open_app_settings">Uygulama ayarlarını aç</string>
     <string name="restriction_warning_open_power_settings">Güç ayarlarını aç</string>
     <!-- Translations -->

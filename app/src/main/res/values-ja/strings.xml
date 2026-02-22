@@ -11,6 +11,7 @@
     <string name="photo_widget_home_current">マイウィジェット</string>
     <string name="photo_widget_home_settings">設定</string>
     <string name="photo_widget_home_data_saver">最適化されたストレージ</string>
+    <string name="photo_widget_home_data_saver_description">インポートされた写真の画質を制御する</string>
     <string name="photo_widget_home_appearance">アプリのテーマ</string>
     <string name="photo_widget_home_true_black_background">純粋な黒の背景</string>
     <string name="photo_widget_home_dynamic_colors">アプリの色</string>
@@ -62,6 +63,7 @@
     <string name="preferences_dynamic_colors_disabled">デフォルトカラー</string>
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">ウィジェットのデフォルト設定</string>
+    <string name="widget_defaults_description">すべての新しいウィジェットに共通の設定</string>
     <string name="widget_defaults_explanation">これらの値は、新しいウィジェットを作成する際に事前に読み込まれます。同じ設定で複数のウィジェットを設定する際に便利で、毎回設定を調整する必要がなくなります。これらの値を変更しても、既存のウィジェットには影響しません。</string>
     <string name="widget_defaults_source">ソース</string>
     <string name="widget_defaults_shuffle">シャッフル</string>
@@ -151,9 +153,12 @@
     </plurals>
     <string name="photo_widget_configure_interval_warning">実際の切り替え間隔やスケジュール時間は、Androidがバッテリー寿命を最適化するために課す制限により異なる場合があります。希望どおりに機能するようにするには、以下の権限を付与してください。</string>
     <string name="photo_widget_configure_interval_grant_permission">正確なアラーム権限を付与</string>
+    <string name="photo_widget_configure_interval_grant_permission_description">更新間隔が短いウィジェットを予定通りに更新する</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">この権限について</string>
     <string name="photo_widget_configure_interval_permission_dialog_description">Androidはバッテリー寿命を最適化するためにバックグラウンド作業を制限することがあり、写真ごとの間隔が長くなる可能性があります。\n\n選択した間隔でウィジェットを正確に更新するには、設定を開き、アラームとリマインダーの設定を許可してください。</string>
     <string name="photo_widget_configure_interval_open_settings">設定を開く</string>
+    <string name="photo_widget_configure_battery_optimization">バッテリーの最適化を無効にする</string>
+    <string name="photo_widget_configure_battery_optimization_description">アプリが中断されることなく実行され、ウィジェットが常に最新の状態に保たれるようにします</string>
     <string name="photo_widget_configure_border">枠線</string>
     <string name="photo_widget_configure_border_none">なし</string>
     <string name="photo_widget_configure_border_dynamic">ダイナミック</string>
@@ -234,9 +239,9 @@
     <string name="help_article_body_5">アプリ自体は頻繁には使用されません。ウィジェットを編集する必要がある場合にのみ使用されます。ウィジェットは、アプリランチャー内で独立して実行されます。これにより、Androidはアプリが重要ではないと考え、システムがリソースを取り戻すために停止することがあります。アプリが停止すると、そのウィジェットも停止します。これを防ぐには、アプリのバッテリー使用ポリシーを更新し、「制限なし」に設定してください。</string>
     <string name="restriction_warning_hint">バックグラウンドアクティビティが制限されています。ウィジェットが正しく機能しない場合があります。詳細についてはタップしてください。</string>
     <string name="restriction_warning_dialog_title">バックグラウンド作業の制限とバッテリー最適化</string>
-    <string name="restriction_warning_dialog_body_1">Material Photo Widget はウィジェットを更新するためにバックグラウンドで実行する必要があります。必要なときにのみ実行されますが、バッテリー使用量が「最適化」に設定されている場合、Androidはアプリを停止させ、ウィジェットが正しく機能しなくなる可能性があります。</string>
-    <string name="restriction_warning_dialog_body_2">アプリ設定を開き、バッテリー使用量を「制限なし」に変更してください。このオプションが利用できない場合は、スマートフォンの電源設定を確認してください。</string>
-    <string name="restriction_warning_dialog_body_3">一部のスマートフォンではさらに制限が厳しく、再起動後にアプリが自動的に起動するのをブロックする場合があります。設定はデバイスによって異なります — 詳細な手順については https://dontkillmyapp.com を参照してください。</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widgetは、ウィジェットを更新するためにバックグラウンドで実行される必要があります。バッテリーの使用状況が「最適化済み」に設定されていると、Androidがアプリを停止させ、ウィジェットが正しく更新されなくなる場合があります。</string>
+    <string name="restriction_warning_dialog_body_2">アプリの設定から「アプリのバッテリー使用状況」に進みます。「バックグラウンド使用を許可」をクリックし、「制限なし」を選択して、確実な更新を可能にします。このオプションが表示されない場合は、スマートフォンの電源設定を確認してください。</string>
+    <string name="restriction_warning_dialog_body_3">一部のデバイスでは、再起動後にアプリが自動的に開始されるのをブロックする場合があります。設定で「自動起動」を検索するか、https://dontkillmyapp.com でお使いのメーカー別の手順を確認してください。</string>
     <string name="restriction_warning_open_app_settings">アプリ設定を開く</string>
     <string name="restriction_warning_open_power_settings">電源設定を開く</string>
     <!-- Translations -->
