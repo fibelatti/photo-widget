@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.38.0] - 2026-02-22
+[v1.38.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.38.0
+
 ### Changed
 
 * Hide the system bars in the full screen viewer

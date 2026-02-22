@@ -1,0 +1,6 @@
+This version brings the following updates:
+
+* Improves the full screen viewer, including landscape support
+* Improves the settings screen and troubleshooting menus
+
+Thanks for using the app!
