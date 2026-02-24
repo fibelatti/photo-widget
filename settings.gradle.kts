@@ -35,3 +35,11 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":app")
 include(":ui")
+
+check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)) {
+    """
+    The project requires JDK 21+ but it is currently using JDK ${JavaVersion.current()}.
+    Java Home: [${System.getProperty("java.home")}]
+    https://developer.android.com/build/jdks#jdk-config-in-studio
+    """.trimIndent()
+}
