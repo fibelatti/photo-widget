@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.viewer
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Window
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -67,7 +68,7 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
                 val state: PhotoWidgetViewerViewModel.State by viewModel.state.collectAsStateWithLifecycle()
                 val photoWidget: PhotoWidget by remember { derivedStateOf { state.photoWidget } }
 
-                RememberedEffect(Unit) {
+                RememberedEffect(photoWidget.tapActionIncreaseBrightness) {
                     if (photoWidget.tapActionIncreaseBrightness) {
                         setScreenBrightness(value = 0.9f)
                     }
@@ -94,7 +95,8 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
     }
 
     private fun setScreenBrightness(value: Float) {
-        window?.attributes = window?.attributes?.apply {
+        val window: Window = window ?: return
+        window.attributes = window.attributes.apply {
             currentScreenBrightness = screenBrightness
             screenBrightness = value
         }

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+* Fix full screen viewer brightness toggle not working as expected
+
 ## [v1.38.1] - 2026-02-24
 [v1.38.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.38.1
 
