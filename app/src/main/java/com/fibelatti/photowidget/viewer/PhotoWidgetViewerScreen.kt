@@ -67,7 +67,7 @@ import net.engawapg.lib.zoomable.ZoomState
 import net.engawapg.lib.zoomable.rememberZoomState
 import net.engawapg.lib.zoomable.zoomable
 
-private const val ANIM_DURATION: Int = 600
+private const val ANIM_DURATION: Int = 500
 
 /**
  * The drag state uses a spring animation. Without a minimum threshold both indicators would
