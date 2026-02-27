@@ -23,9 +23,10 @@ jobs:
 
       - name: Upload APK
         if: success()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           path: app/build/outputs/apk/debug/*.apk
+          archive: false
 
   code_analysis:
     name: Code Analysis
