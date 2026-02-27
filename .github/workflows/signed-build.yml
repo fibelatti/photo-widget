@@ -85,3 +85,4 @@ jobs:
         with:
           name: signed-aab
           path: app/build/outputs/bundle/release/*.aab
+          archive: false
