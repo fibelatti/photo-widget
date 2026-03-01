@@ -52,7 +52,7 @@ jobs:
       - name: Setup Android build
         uses: ./.github/actions/setup-android-build
 
-      - name: Build
+      - name: Run lint checks
         run: ./gradlew lint
 
   license-check:
@@ -65,5 +65,5 @@ jobs:
       - name: Setup Android build
         uses: ./.github/actions/setup-android-build
 
-      - name: Build
+      - name: Run license checks
         run: ./gradlew licensee
