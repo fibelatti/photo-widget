@@ -134,6 +134,7 @@ private fun PhotoCycleModePickerContent(
 
     DefaultSheetContent(
         title = stringResource(id = R.string.photo_widget_configure_select_cycling_mode),
+        modifier = modifier,
     ) {
         Row(
             modifier = Modifier
