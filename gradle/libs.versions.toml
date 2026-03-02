@@ -61,6 +61,9 @@ leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version = 
 
 compose-lint-checks = { module = "com.slack.lint.compose:compose-lint-checks", version = "1.4.2" }
 
+# Dependencies of the included build-logic
+android-gradle-plugin = { module = "com.android.tools.build:gradle-api", version.ref = "agp" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -75,3 +78,6 @@ spotless = { id = "com.diffplug.spotless", version = "8.2.1" }
 cache-fix = { id = "org.gradle.android.cache-fix", version = "3.0.3" }
 about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }
 licensee = { id = "app.cash.licensee", version = "1.14.1" }
+
+# Plugins from the included build-logic
+fibelatti-manifest-permission-validation = { id = "com.fibelatti.manifest-permission-validation" }

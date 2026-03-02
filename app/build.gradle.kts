@@ -11,6 +11,8 @@ plugins {
     alias(libs.plugins.room)
     alias(libs.plugins.about.libraries)
     alias(libs.plugins.licensee)
+
+    alias(libs.plugins.fibelatti.manifest.permission.validation)
 }
 
 object AppInfo {
