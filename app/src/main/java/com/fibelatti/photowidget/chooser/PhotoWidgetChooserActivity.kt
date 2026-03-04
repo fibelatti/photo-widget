@@ -5,7 +5,6 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -98,7 +97,6 @@ class PhotoWidgetChooserActivity : AppCompatActivity() {
 }
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 private fun ScreenContent(
     photos: List<LocalPhoto>?,
     selectedPhoto: LocalPhoto?,

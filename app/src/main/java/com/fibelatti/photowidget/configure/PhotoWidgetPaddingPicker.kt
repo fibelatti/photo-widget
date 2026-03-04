@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -23,7 +21,6 @@ import com.fibelatti.photowidget.ui.NumberSpinner
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 fun PhotoWidgetPaddingPicker(
     currentValue: Int,
     onApplyClick: (newValue: Int) -> Unit,
