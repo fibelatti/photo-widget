@@ -53,7 +53,7 @@ android {
     }
 
     androidResources {
-        generateLocaleConfig = true
+        generateLocaleConfig = false
     }
 
     defaultConfig {
