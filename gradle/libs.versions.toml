@@ -7,6 +7,7 @@ hiltExtensions = "1.3.0"
 kotlin = "2.3.10"
 nav3 = "1.0.1"
 room = "2.8.4"
+spotless = "8.3.0"
 aboutLibraries = "13.2.1"
 
 [libraries]
@@ -63,6 +64,7 @@ compose-lint-checks = { module = "com.slack.lint.compose:compose-lint-checks", v
 
 # Dependencies of the included build-logic
 android-gradle-plugin = { module = "com.android.tools.build:gradle-api", version.ref = "agp" }
+spotless-gradle-plugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -74,10 +76,11 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 ksp = { id = "com.google.devtools.ksp", version = "2.3.6" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 room = { id = "androidx.room", version.ref = "room" }
-spotless = { id = "com.diffplug.spotless", version = "8.3.0" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 cache-fix = { id = "org.gradle.android.cache-fix", version = "3.0.3" }
 about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }
 licensee = { id = "app.cash.licensee", version = "1.14.1" }
 
 # Plugins from the included build-logic
 fibelatti-manifest-permission-validation = { id = "com.fibelatti.manifest-permission-validation" }
+fibelatti-spotless = { id = "com.fibelatti.spotless" }

@@ -1,7 +1,4 @@
 import com.android.build.api.dsl.CommonExtension
-import com.diffplug.gradle.spotless.SpotlessExtension
-import com.diffplug.gradle.spotless.SpotlessExtensionPredeclare
-import com.diffplug.gradle.spotless.SpotlessPlugin
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -18,6 +15,8 @@ plugins {
     alias(libs.plugins.cache.fix) apply false
     alias(libs.plugins.about.libraries) apply false
     alias(libs.plugins.licensee) apply false
+
+    alias(libs.plugins.fibelatti.spotless)
 }
 
 buildscript {
@@ -27,70 +26,6 @@ buildscript {
 }
 
 val javaVersion = JavaVersion.VERSION_21
-
-allprojects {
-    apply<SpotlessPlugin>()
-
-    val configuredRules = mapOf(
-        "ktlint_code_style" to "android_studio",
-        "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
-        "ktlint_ignore_back_ticked_identifier" to true,
-    )
-
-    val disabledRules = listOf(
-        "ktlint_standard_comment-wrapping",
-        "ktlint_standard_class-signature",
-        "ktlint_standard_function-expression-body",
-        "ktlint_standard_function-signature",
-    ).associateWith { "disabled" }
-
-    val allRules = configuredRules + disabledRules
-
-    val configureSpotless: SpotlessExtension.() -> Unit = {
-        kotlin {
-            target("**/*.kt")
-            targetExclude("**/build/**/*.kt")
-
-            ktlint("1.7.1")
-                .setEditorConfigPath("${rootProject.projectDir}/.editorconfig")
-                .editorConfigOverride(allRules)
-
-            trimTrailingWhitespace()
-            leadingTabsToSpaces()
-            endWithNewline()
-        }
-        kotlinGradle {
-            target("**/*.kts")
-            targetExclude("**/build/**/*.kts")
-
-            ktlint("1.7.1")
-                .setEditorConfigPath("${rootProject.projectDir}/.editorconfig")
-                .editorConfigOverride(allRules)
-
-            trimTrailingWhitespace()
-            leadingTabsToSpaces()
-            endWithNewline()
-        }
-        format("xml") {
-            target("**/*.xml")
-            targetExclude("**/build/**/*.xml")
-        }
-        format("misc") {
-            target("*.gradle", "*.md", ".gitignore")
-
-            trimTrailingWhitespace()
-            leadingTabsToSpaces()
-            endWithNewline()
-        }
-    }
-
-    if (project === rootProject) {
-        extensions.getByType<SpotlessExtension>().predeclareDeps()
-        extensions.configure<SpotlessExtensionPredeclare>(configureSpotless)
-    } else {
-        extensions.configure(configureSpotless)
-    }
-}
 
 subprojects {
     afterEvaluate {

@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.licensee)
 
     alias(libs.plugins.fibelatti.manifest.permission.validation)
+    alias(libs.plugins.fibelatti.spotless)
 }
 
 object AppInfo {
