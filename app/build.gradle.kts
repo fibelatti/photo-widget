@@ -47,6 +47,7 @@ android {
 
     buildFeatures {
         buildConfig = true
+        resValues = true
         viewBinding = true
     }
 
@@ -106,25 +107,8 @@ android {
         }
     }
 
-    androidComponents {
-        onVariants { variant ->
-            val appName = StringBuilder().apply {
-                append(AppInfo.APP_NAME)
-                if (variant.name.contains("debug", ignoreCase = true)) append(" Dev")
-            }.toString()
-
-            variant.resValues.put(
-                variant.makeResValueKey("string", "app_name"),
-                com.android.build.api.variant.ResValue(appName, null),
-            )
-
-            variant.androidResources.localeFilters
-                .addAll("en", "de", "es", "fr", "it", "iw", "ja", "pt", "ro", "ru", "fil", "tr")
-        }
-    }
-
     sourceSets {
-        forEach { sourceSet -> getByName(sourceSet.name).java.srcDirs("src/${sourceSet.name}/kotlin") }
+        forEach { sourceSet -> sourceSet.java.directories += "src/${sourceSet.name}/kotlin" }
     }
 
     packaging {
@@ -141,6 +125,23 @@ android {
 
     lint {
         warningsAsErrors = true
+    }
+}
+
+androidComponents {
+    onVariants { variant ->
+        val appName = StringBuilder().apply {
+            append(AppInfo.APP_NAME)
+            if (variant.name.contains("debug", ignoreCase = true)) append(" Dev")
+        }.toString()
+
+        variant.resValues.put(
+            variant.makeResValueKey("string", "app_name"),
+            com.android.build.api.variant.ResValue(appName, null),
+        )
+
+        variant.androidResources.localeFilters
+            .addAll("en", "de", "es", "fr", "it", "iw", "ja", "pt", "ro", "ru", "fil", "tr")
     }
 }
 

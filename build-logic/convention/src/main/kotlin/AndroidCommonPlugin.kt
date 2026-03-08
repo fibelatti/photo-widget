@@ -4,6 +4,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
@@ -37,14 +38,14 @@ class AndroidCommonPlugin : Plugin<Project> {
         val compileSdkVersion: Int by this
         val minSdkVersion: Int by this
 
-        extensions.findByType(CommonExtension::class.java)?.apply {
+        extensions.getByType<CommonExtension>().apply {
             compileSdk = compileSdkVersion
 
-            defaultConfig {
+            defaultConfig.apply {
                 minSdk = minSdkVersion
             }
 
-            compileOptions {
+            compileOptions.apply {
                 sourceCompatibility(javaVersion)
                 targetCompatibility(javaVersion)
             }
@@ -52,8 +53,6 @@ class AndroidCommonPlugin : Plugin<Project> {
     }
 
     private fun Project.configureKotlin() {
-        apply(plugin = versionCatalog.findPlugin("kotlin-android").get().get().pluginId)
-
         tasks.withType<KotlinCompile>().configureEach {
             compilerOptions {
                 jvmTarget.set(JvmTarget.fromTarget(javaVersion.toString()))
@@ -76,8 +75,8 @@ class AndroidCommonPlugin : Plugin<Project> {
     private fun Project.configureCompose() {
         apply(plugin = versionCatalog.findPlugin("compose-compiler").get().get().pluginId)
 
-        extensions.findByType(CommonExtension::class.java)?.apply {
-            buildFeatures {
+        extensions.getByType<CommonExtension>().apply {
+            buildFeatures.apply {
                 compose = true
             }
         }
@@ -105,8 +104,8 @@ class AndroidCommonPlugin : Plugin<Project> {
     }
 
     private fun Project.configureCoreLibraryDesugaring() {
-        extensions.findByType(CommonExtension::class.java)?.apply {
-            compileOptions {
+        extensions.getByType<CommonExtension>().apply {
+            compileOptions.apply {
                 isCoreLibraryDesugaringEnabled = true
             }
         }
