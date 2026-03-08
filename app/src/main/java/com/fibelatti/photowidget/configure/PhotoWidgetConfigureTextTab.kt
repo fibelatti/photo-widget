@@ -218,6 +218,7 @@ private fun PhotoWidgetTextTypePicker(
                 itemDescription = { item ->
                     when (item) {
                         is PhotoWidgetText.None -> null
+
                         is PhotoWidgetText.Label -> {
                             localResources.getString(R.string.photo_widget_configure_text_type_label_description)
                         }

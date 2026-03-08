@@ -196,6 +196,7 @@ fun PhotoWidgetConfigureAppearanceTab(
 
                 when (photoWidget.border) {
                     is PhotoWidgetBorder.None -> Unit
+
                     is PhotoWidgetBorder.Color -> {
                         append(" (#${photoWidget.border.colorHex.toUpperCase(Locale.current)})")
                     }

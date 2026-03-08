@@ -53,7 +53,9 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
 
         val borderColor = when (photoWidget.border) {
             is PhotoWidgetBorder.None -> null
+
             is PhotoWidgetBorder.Color -> "#${photoWidget.border.colorHex}".toColorInt()
+
             is PhotoWidgetBorder.Dynamic -> context.getDynamicAttributeColor(
                 photoWidget.border.type.colorAttr,
             )

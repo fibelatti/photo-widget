@@ -30,7 +30,7 @@ class SpotlessPlugin : Plugin<Project> {
             target("**/*.kt")
             targetExclude("**/build/**/*.kt")
 
-            ktlint("1.7.1")
+            ktlint("1.8.0")
                 .setEditorConfigPath("${target.rootProject.projectDir}/.editorconfig")
                 .editorConfigOverride(allRules)
 
@@ -42,7 +42,7 @@ class SpotlessPlugin : Plugin<Project> {
             target("**/*.kts")
             targetExclude("**/build/**/*.kts")
 
-            ktlint("1.7.1")
+            ktlint("1.8.0")
                 .setEditorConfigPath("${target.rootProject.projectDir}/.editorconfig")
                 .editorConfigOverride(allRules)
 

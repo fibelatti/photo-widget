@@ -1,6 +1,3 @@
-/**
- * See the original implementation at https://github.com/0xZhangKe/ImageViewer/.
- */
 package com.fibelatti.ui.imageviewer
 
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -34,6 +31,9 @@ import kotlinx.coroutines.launch
 
 private val infinityConstraints = Constraints()
 
+/**
+ * See the original implementation at https://github.com/0xZhangKe/ImageViewer/.
+ */
 @Composable
 fun ZoomableImageViewer(
     modifier: Modifier = Modifier,
