@@ -16,7 +16,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.RememberedEffect
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
@@ -104,17 +104,17 @@ class PhotoWidgetBackupActivity : AppCompatActivity() {
             }
 
             is PhotoWidgetBackupViewModel.State.Message.BackupFailed -> {
-                MaterialAlertDialogBuilder(this)
-                    .setMessage(R.string.backup_feedback_error)
-                    .setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
-                    .show()
+                showMaterialAlertDialog {
+                    setMessage(R.string.backup_feedback_error)
+                    setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+                }
             }
 
             is PhotoWidgetBackupViewModel.State.Message.RestoreBackupFailed -> {
-                MaterialAlertDialogBuilder(this)
-                    .setMessage(R.string.backup_feedback_restore_error)
-                    .setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
-                    .show()
+                showMaterialAlertDialog {
+                    setMessage(R.string.backup_feedback_restore_error)
+                    setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+                }
             }
         }
 

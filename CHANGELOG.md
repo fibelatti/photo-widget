@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+* Fix dialog appearance when using dynamic colors
+
 ## [v1.38.3] - 2026-03-05
 [v1.38.3]: https://github.com/fibelatti/photo-widget/releases/tag/v1.38.3
 

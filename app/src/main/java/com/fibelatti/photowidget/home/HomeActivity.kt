@@ -22,8 +22,8 @@ import com.fibelatti.photowidget.configure.aspectRatio
 import com.fibelatti.photowidget.configure.sharedPhotos
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
+import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.platform.widgetPinningNotAvailable
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
@@ -92,19 +92,19 @@ class HomeActivity : AppCompatActivity() {
             return
         }
 
-        MaterialAlertDialogBuilder(this)
-            .setMessage(resources.getQuantityString(R.plurals.photo_widget_home_share_received, size, size))
-            .setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
-            .show()
+        showMaterialAlertDialog {
+            setMessage(resources.getQuantityString(R.plurals.photo_widget_home_share_received, size, size))
+            setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+        }
     }
 
     private fun createNewWidget(aspectRatio: PhotoWidgetAspectRatio) {
         if (widgetPinningNotAvailable()) {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.photo_widget_home_pinning_not_supported_title)
-                .setMessage(R.string.photo_widget_home_pinning_not_supported_message)
-                .setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
-                .show()
+            showMaterialAlertDialog {
+                setTitle(R.string.photo_widget_home_pinning_not_supported_title)
+                setMessage(R.string.photo_widget_home_pinning_not_supported_message)
+                setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+            }
 
             return
         }
@@ -118,14 +118,14 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showTranslationsDialog() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.translations_dialog_title)
-            .setMessage(R.string.translations_dialog_body)
-            .setPositiveButton(R.string.translations_dialog_positive_action) { _, _ ->
+        showMaterialAlertDialog {
+            setTitle(R.string.translations_dialog_title)
+            setMessage(R.string.translations_dialog_body)
+            setPositiveButton(R.string.translations_dialog_positive_action) { _, _ ->
                 startActivity(Intent(Intent.ACTION_VIEW, "https://crowdin.com/project/material-photo-widget".toUri()))
             }
-            .setNegativeButton(R.string.translations_dialog_negative_action) { _, _ -> }
-            .show()
+            setNegativeButton(R.string.translations_dialog_negative_action) { _, _ -> }
+        }
     }
 
     private fun shareApp() {
@@ -137,10 +137,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showCrashReportDialog(reportText: String) {
-        MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.photo_widget_home_crash_report_title))
-            .setMessage(getString(R.string.photo_widget_home_crash_report_body))
-            .setPositiveButton(getString(R.string.photo_widget_home_crash_report_action_confirm)) { dialog, _ ->
+        showMaterialAlertDialog {
+            setTitle(getString(R.string.photo_widget_home_crash_report_title))
+            setMessage(getString(R.string.photo_widget_home_crash_report_body))
+            setPositiveButton(getString(R.string.photo_widget_home_crash_report_action_confirm)) { dialog, _ ->
                 val emailBody = buildString {
                     appendLine("Android Version: ${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})")
                     appendLine()
@@ -166,14 +166,14 @@ class HomeActivity : AppCompatActivity() {
                 homeViewModel.clearPendingExceptionReports()
                 dialog?.dismiss()
             }
-            .setNegativeButton(getString(R.string.photo_widget_home_crash_report_action_cancel)) { dialog, _ ->
+            setNegativeButton(getString(R.string.photo_widget_home_crash_report_action_cancel)) { dialog, _ ->
                 homeViewModel.clearPendingExceptionReports()
                 dialog?.dismiss()
             }
-            .setOnDismissListener {
+            setOnDismissListener {
                 homeViewModel.clearPendingExceptionReports()
             }
-            .show()
+        }
     }
 
     private companion object {

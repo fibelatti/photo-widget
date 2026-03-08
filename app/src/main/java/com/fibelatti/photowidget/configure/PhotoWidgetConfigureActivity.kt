@@ -28,8 +28,8 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.setIdentifierCompat
+import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -101,37 +101,37 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     }
 
     private fun showExitConfirmationDialog() {
-        MaterialAlertDialogBuilder(this)
-            .setMessage(
+        showMaterialAlertDialog {
+            setMessage(
                 if (intent.restoreFromId != null || intent.backupWidget != null) {
                     R.string.photo_widget_configure_navigate_back_warning_restore
                 } else {
                     R.string.photo_widget_configure_navigate_back_warning
                 },
             )
-            .setPositiveButton(R.string.photo_widget_action_yes) { _, _ ->
+            setPositiveButton(R.string.photo_widget_action_yes) { _, _ ->
                 finish()
             }
-            .setNegativeButton(R.string.photo_widget_action_no) { _, _ -> }
-            .show()
+            setNegativeButton(R.string.photo_widget_action_no) { _, _ -> }
+        }
     }
 
     private fun handleMessage(message: PhotoWidgetConfigureState.Message) {
         when (message) {
             is PhotoWidgetConfigureState.Message.ImportFailed -> {
-                MaterialAlertDialogBuilder(this)
-                    .setMessage(R.string.photo_widget_configure_import_error)
-                    .setPositiveButton(R.string.photo_widget_action_continue) { _, _ -> }
-                    .setOnDismissListener { viewModel.messageHandled(message = message) }
-                    .show()
+                showMaterialAlertDialog {
+                    setMessage(R.string.photo_widget_configure_import_error)
+                    setPositiveButton(R.string.photo_widget_action_continue) { _, _ -> }
+                    setOnDismissListener { viewModel.messageHandled(message = message) }
+                }
             }
 
             is PhotoWidgetConfigureState.Message.TooManyPhotos -> {
-                MaterialAlertDialogBuilder(this)
-                    .setMessage(R.string.photo_widget_configure_too_many_photos_error)
-                    .setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
-                    .setOnDismissListener { viewModel.messageHandled(message = message) }
-                    .show()
+                showMaterialAlertDialog {
+                    setMessage(R.string.photo_widget_configure_too_many_photos_error)
+                    setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+                    setOnDismissListener { viewModel.messageHandled(message = message) }
+                }
             }
 
             is PhotoWidgetConfigureState.Message.LaunchCrop -> {
@@ -154,19 +154,19 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             }
 
             is PhotoWidgetConfigureState.Message.MissingPhotos -> {
-                MaterialAlertDialogBuilder(this)
-                    .setMessage(R.string.photo_widget_configure_missing_photos_error)
-                    .setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
-                    .setOnDismissListener { viewModel.messageHandled(message = message) }
-                    .show()
+                showMaterialAlertDialog {
+                    setMessage(R.string.photo_widget_configure_missing_photos_error)
+                    setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+                    setOnDismissListener { viewModel.messageHandled(message = message) }
+                }
             }
 
             is PhotoWidgetConfigureState.Message.MissingBackupData -> {
-                MaterialAlertDialogBuilder(this)
-                    .setMessage(R.string.backup_feedback_restore_error)
-                    .setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
-                    .setOnDismissListener { viewModel.messageHandled(message = message) }
-                    .show()
+                showMaterialAlertDialog {
+                    setMessage(R.string.backup_feedback_restore_error)
+                    setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+                    setOnDismissListener { viewModel.messageHandled(message = message) }
+                }
             }
 
             is PhotoWidgetConfigureState.Message.CancelWidget -> {
