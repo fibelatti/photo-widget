@@ -64,6 +64,7 @@ compose-lint-checks = { module = "com.slack.lint.compose:compose-lint-checks", v
 
 # Dependencies of the included build-logic
 android-gradle-plugin = { module = "com.android.tools.build:gradle-api", version.ref = "agp" }
+compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 spotless-gradle-plugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 
 [plugins]
@@ -82,5 +83,6 @@ about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "ab
 licensee = { id = "app.cash.licensee", version = "1.14.1" }
 
 # Plugins from the included build-logic
+fibelatti-android-common = { id = "com.fibelatti.android-common" }
 fibelatti-manifest-permission-validation = { id = "com.fibelatti.manifest-permission-validation" }
 fibelatti-spotless = { id = "com.fibelatti.spotless" }

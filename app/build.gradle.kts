@@ -2,18 +2,16 @@
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.room)
     alias(libs.plugins.about.libraries)
     alias(libs.plugins.licensee)
 
+    alias(libs.plugins.fibelatti.android.common)
     alias(libs.plugins.fibelatti.manifest.permission.validation)
-    alias(libs.plugins.fibelatti.spotless)
 }
 
 object AppInfo {
@@ -49,7 +47,6 @@ android {
 
     buildFeatures {
         buildConfig = true
-        compose = true
         viewBinding = true
     }
 
@@ -180,10 +177,8 @@ dependencies {
     implementation(projects.ui)
 
     // Kotlin
-    implementation(libs.kotlin)
     implementation(libs.kotlin.serialization)
     implementation(libs.kotlin.datetime)
-    implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
 
     // Android Platform
@@ -199,14 +194,7 @@ dependencies {
     implementation(libs.navigation3.ui)
 
     // Compose
-    implementation(platform(libs.compose.bom))
-    implementation(libs.compose.runtime)
     implementation(libs.compose.material)
-    implementation(libs.compose.material3)
-    implementation(libs.compose.ui)
-    implementation(libs.compose.ui.tooling.preview)
-    debugImplementation(libs.compose.ui.tooling)
-
     implementation(libs.adaptive.android)
 
     // Misc
