@@ -14,6 +14,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.Time
+import com.fibelatti.photowidget.model.WidgetOffset
 import com.fibelatti.photowidget.model.minutesToLoopingInterval
 import com.fibelatti.photowidget.model.repeatIntervalAsSeconds
 import com.fibelatti.photowidget.model.secondsToLoopingInterval
@@ -385,13 +386,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         }
     }
 
-    fun getWidgetOffset(appWidgetId: Int): Pair<Int, Int> {
-        return sharedPreferences.getInt(
-            "${PreferencePrefix.HORIZONTAL_OFFSET}$appWidgetId",
-            0,
-        ) to sharedPreferences.getInt(
-            "${PreferencePrefix.VERTICAL_OFFSET}$appWidgetId",
-            0,
+    fun getWidgetOffset(appWidgetId: Int): WidgetOffset {
+        return WidgetOffset(
+            horizontal = sharedPreferences.getInt("${PreferencePrefix.HORIZONTAL_OFFSET}$appWidgetId", 0),
+            vertical = sharedPreferences.getInt("${PreferencePrefix.VERTICAL_OFFSET}$appWidgetId", 0),
         )
     }
 

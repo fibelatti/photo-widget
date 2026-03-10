@@ -67,8 +67,8 @@ class LoadPhotoWidgetUseCase @Inject constructor(
 
             val offset = getWidgetOffset(appWidgetId = appWidgetId)
 
-            horizontalOffset = offset.first
-            verticalOffset = offset.second
+            horizontalOffset = offset.horizontal
+            verticalOffset = offset.vertical
             padding = getWidgetPadding(appWidgetId = appWidgetId)
         }
 

@@ -10,6 +10,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.TapActionArea
+import com.fibelatti.photowidget.model.WidgetOffset
 import com.fibelatti.photowidget.model.WidgetPhotos
 import com.fibelatti.photowidget.model.allWidgetPhotos
 import java.io.File
@@ -450,7 +451,7 @@ class PhotoWidgetStorage @Inject constructor(
         )
     }
 
-    fun getWidgetOffset(appWidgetId: Int): Pair<Int, Int> {
+    fun getWidgetOffset(appWidgetId: Int): WidgetOffset {
         return sharedPreferences.getWidgetOffset(appWidgetId = appWidgetId)
     }
 
