@@ -181,7 +181,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
     fun changeSource(newSource: PhotoWidgetSource) {
         photoWidgetStorage.saveWidgetSource(appWidgetId = appWidgetId, source = newSource)
-        photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+        photoWidgetStorage.loadWidgetPhotos(appWidgetId = appWidgetId)
             .onEach { widgetPhotos ->
                 _state.getAndUpdate { current ->
                     current.copy(
@@ -303,7 +303,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     }
 
     private fun reloadDirPhotos(syncedDir: Collection<Uri>) {
-        photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+        photoWidgetStorage.loadWidgetPhotos(appWidgetId = appWidgetId)
             .onEach { widgetPhotos ->
                 _state.getAndUpdate { current ->
                     current.copy(

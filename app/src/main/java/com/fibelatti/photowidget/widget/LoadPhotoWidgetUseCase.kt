@@ -27,7 +27,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             emit(widget.copy(isLoading = true))
 
             val currentPhotoId: String? = getCurrentPhotoId(appWidgetId = appWidgetId)
-            val widgetPhotosFlow: Flow<PhotoWidget> = getWidgetPhotos(appWidgetId = appWidgetId)
+            val widgetPhotosFlow: Flow<PhotoWidget> = loadWidgetPhotos(appWidgetId = appWidgetId)
                 .map { widgetPhotos ->
                     val currentPhoto = widgetPhotos.current.run {
                         firstOrNull { it.photoId == currentPhotoId }

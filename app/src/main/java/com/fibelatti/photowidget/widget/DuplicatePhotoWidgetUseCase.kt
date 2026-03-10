@@ -49,7 +49,7 @@ class DuplicatePhotoWidgetUseCase @Inject constructor(
             photoIds = photoWidgetStorage.getExcludedPhotoIds(appWidgetId = originalAppWidgetId),
         )
 
-        val photos = photoWidgetStorage.getWidgetPhotos(appWidgetId = newAppWidgetId)
+        val photos = photoWidgetStorage.loadWidgetPhotos(appWidgetId = newAppWidgetId)
             .last()
             .current
 

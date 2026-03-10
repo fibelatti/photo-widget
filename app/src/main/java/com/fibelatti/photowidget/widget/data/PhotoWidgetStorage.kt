@@ -77,7 +77,7 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
-    fun getWidgetPhotos(appWidgetId: Int): Flow<WidgetPhotos> = flow {
+    fun loadWidgetPhotos(appWidgetId: Int): Flow<WidgetPhotos> = flow {
         Timber.d("Retrieving photos (appWidgetId=$appWidgetId)")
 
         val excludedPhotos = getExcludedPhotoIds(appWidgetId = appWidgetId)

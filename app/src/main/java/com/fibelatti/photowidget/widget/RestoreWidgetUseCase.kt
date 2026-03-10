@@ -40,7 +40,7 @@ class RestoreWidgetUseCase @Inject constructor(
             sourceDir = sourceDir,
         )
 
-        val photos: List<LocalPhoto> = photoWidgetStorage.getWidgetPhotos(appWidgetId = newAppWidgetId)
+        val photos: List<LocalPhoto> = photoWidgetStorage.loadWidgetPhotos(appWidgetId = newAppWidgetId)
             .last()
             .current
 

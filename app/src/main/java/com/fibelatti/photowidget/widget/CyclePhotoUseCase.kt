@@ -39,7 +39,7 @@ class CyclePhotoUseCase @Inject constructor(
                 ")",
         )
 
-        val widgetPhotoIds: List<String> = photoWidgetStorage.getWidgetPhotos(appWidgetId = appWidgetId)
+        val widgetPhotoIds: List<String> = photoWidgetStorage.loadWidgetPhotos(appWidgetId = appWidgetId)
             .first()
             .current
             .map { it.photoId }
