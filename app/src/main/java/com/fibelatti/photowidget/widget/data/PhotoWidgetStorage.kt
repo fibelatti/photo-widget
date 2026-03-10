@@ -222,12 +222,18 @@ class PhotoWidgetStorage @Inject constructor(
         val allPhotos: List<LocalPhoto> = currentPhotos?.plus(removedPhotos.orEmpty())
             ?: getSourceWidgetPhotos(appWidgetId = appWidgetId, excludedPhotos = excludedPhotos).allWidgetPhotos()
 
-        val newLocalPhotos: List<LocalPhotoDto> = allPhotos.map { localPhoto ->
+        val newLocalPhotos: List<LocalPhotoDto> = allPhotos.map { localPhoto: LocalPhoto ->
             LocalPhotoDto(
                 widgetId = appWidgetId,
                 photoId = localPhoto.photoId,
-                croppedPhotoPath = localPhoto.croppedPhotoPath?.replace("widgets/0", "widgets/$appWidgetId"),
-                originalPhotoPath = localPhoto.originalPhotoPath?.replace("widgets/0", "widgets/$appWidgetId"),
+                croppedPhotoPath = internalFileStorage.rewriteDraftPaths(
+                    appWidgetId = appWidgetId,
+                    path = localPhoto.croppedPhotoPath,
+                ),
+                originalPhotoPath = internalFileStorage.rewriteDraftPaths(
+                    appWidgetId = appWidgetId,
+                    path = localPhoto.originalPhotoPath,
+                ),
                 externalUri = localPhoto.externalUri?.toString(),
                 timestamp = localPhoto.timestamp,
             )
@@ -523,7 +529,7 @@ class PhotoWidgetStorage @Inject constructor(
         val currentTimestamp: Long = System.currentTimeMillis()
 
         Timber.d("Deleting draft widget data")
-        deleteWidgetData(appWidgetId = 0)
+        deleteWidgetData(appWidgetId = PhotoWidgetInternalFileStorage.DRAFT_WIDGET_ID)
 
         for (id in unplacedWidgetIds) {
             Timber.d("Stale data found (appWidgetId=$id)")

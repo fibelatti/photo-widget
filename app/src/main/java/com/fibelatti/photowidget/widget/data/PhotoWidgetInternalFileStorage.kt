@@ -233,9 +233,13 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
             .distinct()
     }
 
+    fun rewriteDraftPaths(appWidgetId: Int, path: String?): String? {
+        return path?.replace(oldValue = "$rootDir/$DRAFT_WIDGET_ID", newValue = "$rootDir/$appWidgetId")
+    }
+
     suspend fun renameTemporaryWidgetDir(appWidgetId: Int) {
         withContext(Dispatchers.IO) {
-            val tempDir = File("$rootDir/0")
+            val tempDir = File("$rootDir/$DRAFT_WIDGET_ID")
             if (tempDir.exists()) {
                 tempDir.renameTo(File("$rootDir/$appWidgetId"))
             }
@@ -276,7 +280,9 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
     }
 
-    private companion object {
+    companion object {
+
+        const val DRAFT_WIDGET_ID = 0
 
         val samsungPackages: List<String> = listOf(
             "com.samsung.android.goodlock",
