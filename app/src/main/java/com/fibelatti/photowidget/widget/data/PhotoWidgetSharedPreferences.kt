@@ -410,29 +410,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         tapAction: PhotoWidgetTapAction,
         tapActionArea: TapActionArea,
     ) {
-        val mainPrefKey = when (tapActionArea) {
-            TapActionArea.LEFT -> "${PreferencePrefix.TAP_ACTION_LEFT}$appWidgetId"
-            TapActionArea.CENTER -> "${PreferencePrefix.TAP_ACTION_CENTER}$appWidgetId"
-            TapActionArea.RIGHT -> "${PreferencePrefix.TAP_ACTION_RIGHT}$appWidgetId"
-        }
-
-        val appShortcutKey = when (tapActionArea) {
-            TapActionArea.LEFT -> "${PreferencePrefix.APP_SHORTCUT_LEFT}$appWidgetId"
-            TapActionArea.CENTER -> "${PreferencePrefix.APP_SHORTCUT_CENTER}$appWidgetId"
-            TapActionArea.RIGHT -> "${PreferencePrefix.APP_SHORTCUT_RIGHT}$appWidgetId"
-        }
-
-        val appFolderKey = when (tapActionArea) {
-            TapActionArea.LEFT -> "${PreferencePrefix.APP_FOLDER_LEFT}$appWidgetId"
-            TapActionArea.CENTER -> "${PreferencePrefix.APP_FOLDER_CENTER}$appWidgetId"
-            TapActionArea.RIGHT -> "${PreferencePrefix.APP_FOLDER_RIGHT}$appWidgetId"
-        }
-
-        val urlShortcutKey = when (tapActionArea) {
-            TapActionArea.LEFT -> "${PreferencePrefix.URL_SHORTCUT_LEFT}$appWidgetId"
-            TapActionArea.CENTER -> "${PreferencePrefix.URL_SHORTCUT_CENTER}$appWidgetId"
-            TapActionArea.RIGHT -> "${PreferencePrefix.URL_SHORTCUT_RIGHT}$appWidgetId"
-        }
+        val (mainPrefKey, appShortcutKey, appFolderKey, urlShortcutKey) = tapActionKeys(tapActionArea, appWidgetId)
 
         sharedPreferences.edit {
             putString(mainPrefKey, tapAction.serializedName)
@@ -478,29 +456,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         appWidgetId: Int,
         tapActionArea: TapActionArea,
     ): PhotoWidgetTapAction = with(sharedPreferences) {
-        val mainPrefKey = when (tapActionArea) {
-            TapActionArea.LEFT -> "${PreferencePrefix.TAP_ACTION_LEFT}$appWidgetId"
-            TapActionArea.CENTER -> "${PreferencePrefix.TAP_ACTION_CENTER}$appWidgetId"
-            TapActionArea.RIGHT -> "${PreferencePrefix.TAP_ACTION_RIGHT}$appWidgetId"
-        }
-
-        val appShortcutKey = when (tapActionArea) {
-            TapActionArea.LEFT -> "${PreferencePrefix.APP_SHORTCUT_LEFT}$appWidgetId"
-            TapActionArea.CENTER -> "${PreferencePrefix.APP_SHORTCUT_CENTER}$appWidgetId"
-            TapActionArea.RIGHT -> "${PreferencePrefix.APP_SHORTCUT_RIGHT}$appWidgetId"
-        }
-
-        val appFolderKey = when (tapActionArea) {
-            TapActionArea.LEFT -> "${PreferencePrefix.APP_FOLDER_LEFT}$appWidgetId"
-            TapActionArea.CENTER -> "${PreferencePrefix.APP_FOLDER_CENTER}$appWidgetId"
-            TapActionArea.RIGHT -> "${PreferencePrefix.APP_FOLDER_RIGHT}$appWidgetId"
-        }
-
-        val urlShortcutKey = when (tapActionArea) {
-            TapActionArea.LEFT -> "${PreferencePrefix.URL_SHORTCUT_LEFT}$appWidgetId"
-            TapActionArea.CENTER -> "${PreferencePrefix.URL_SHORTCUT_CENTER}$appWidgetId"
-            TapActionArea.RIGHT -> "${PreferencePrefix.URL_SHORTCUT_RIGHT}$appWidgetId"
-        }
+        val (mainPrefKey, appShortcutKey, appFolderKey, urlShortcutKey) = tapActionKeys(tapActionArea, appWidgetId)
 
         val name = getString(mainPrefKey, null) ?: return when (tapActionArea) {
             TapActionArea.LEFT -> PhotoWidgetTapAction.ViewPreviousPhoto
@@ -544,6 +500,34 @@ class PhotoWidgetSharedPreferences @Inject constructor(
 
                 else -> tapAction
             }
+        }
+    }
+
+    private fun tapActionKeys(
+        tapActionArea: TapActionArea,
+        appWidgetId: Int,
+    ): TapActionKeys {
+        return when (tapActionArea) {
+            TapActionArea.LEFT -> TapActionKeys(
+                mainKey = "${PreferencePrefix.TAP_ACTION_LEFT}$appWidgetId",
+                appShortcutKey = "${PreferencePrefix.APP_SHORTCUT_LEFT}$appWidgetId",
+                appFolderKey = "${PreferencePrefix.APP_FOLDER_LEFT}$appWidgetId",
+                urlShortcutKey = "${PreferencePrefix.URL_SHORTCUT_LEFT}$appWidgetId",
+            )
+
+            TapActionArea.CENTER -> TapActionKeys(
+                mainKey = "${PreferencePrefix.TAP_ACTION_CENTER}$appWidgetId",
+                appShortcutKey = "${PreferencePrefix.APP_SHORTCUT_CENTER}$appWidgetId",
+                appFolderKey = "${PreferencePrefix.APP_FOLDER_CENTER}$appWidgetId",
+                urlShortcutKey = "${PreferencePrefix.URL_SHORTCUT_CENTER}$appWidgetId",
+            )
+
+            TapActionArea.RIGHT -> TapActionKeys(
+                mainKey = "${PreferencePrefix.TAP_ACTION_RIGHT}$appWidgetId",
+                appShortcutKey = "${PreferencePrefix.APP_SHORTCUT_RIGHT}$appWidgetId",
+                appFolderKey = "${PreferencePrefix.APP_FOLDER_RIGHT}$appWidgetId",
+                urlShortcutKey = "${PreferencePrefix.URL_SHORTCUT_RIGHT}$appWidgetId",
+            )
         }
     }
 
@@ -611,6 +595,13 @@ class PhotoWidgetSharedPreferences @Inject constructor(
             .mapNotNull { (key, _) -> key.substringAfterLast("_").toIntOrNull()?.takeIf { it > 0 } }
             .distinct()
     }
+
+    private data class TapActionKeys(
+        val mainKey: String,
+        val appShortcutKey: String,
+        val appFolderKey: String,
+        val urlShortcutKey: String,
+    )
 
     private enum class PreferencePrefix(val value: String) {
         SOURCE(value = "appwidget_source_"),
