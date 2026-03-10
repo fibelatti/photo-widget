@@ -25,7 +25,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.tapActionDisableTap
 import com.fibelatti.photowidget.model.textToBitmap
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
-import java.lang.ref.WeakReference
 import kotlin.math.abs
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
@@ -33,6 +32,7 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import timber.log.Timber
 
 class PhotoWidgetProvider : AppWidgetProvider() {
@@ -121,7 +121,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
     companion object {
 
-        private val updateJobMap: MutableMap<Int, WeakReference<Job>> = mutableMapOf()
+        private val updateJobMap: MutableMap<Int, Job> = mutableMapOf()
 
         fun ids(context: Context): List<Int> = AppWidgetManager.getInstance(context)
             .getAppWidgetIds(ComponentName(context, PhotoWidgetProvider::class.java))
@@ -142,11 +142,12 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val pinningCache: PhotoWidgetPinningCache = entryPoint.photoWidgetPinningCache()
             val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
 
-            val currentJob: Job? = updateJobMap[appWidgetId]?.get()
+            val currentJob: Job? = updateJobMap[appWidgetId]
             Timber.d("Current update job (isActive=${currentJob?.isActive})")
 
             val newJob: Job = coroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
-                currentJob?.join()
+                // Timeout to avoid hanging waiting more than what's acceptable
+                currentJob?.let { job -> withTimeoutOrNull(5_000L) { job.join() } }
 
                 val photoWidget: PhotoWidget = pinningCache.pendingWidget
                     ?.takeIf { appWidgetId !in photoWidgetStorage.getKnownWidgetIds() }
@@ -182,7 +183,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 }
             }
 
-            updateJobMap[appWidgetId] = WeakReference(newJob)
+            updateJobMap[appWidgetId] = newJob
+            newJob.invokeOnCompletion {
+                // Only remove if we're still the current job (avoid racing with a newer update)
+                if (updateJobMap[appWidgetId] === newJob) updateJobMap.remove(appWidgetId)
+            }
         }
 
         // region RemoteViews
