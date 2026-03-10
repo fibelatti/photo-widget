@@ -56,7 +56,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
         Timber.d("Cancelling existing alarms for widget (appWidgetId=$appWidgetId)")
 
         alarmManager.cancel(
-            PhotoWidgetProvider.getChangePhotoPendingIntent(context = context, appWidgetId = appWidgetId),
+            TapActionPendingIntentFactory.getChangePhotoPendingIntent(context = context, appWidgetId = appWidgetId),
         )
         alarmManager.cancel(
             ExactRepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId),
@@ -107,7 +107,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
             /* triggerAtMillis = */ triggerAtMillis,
             /* intervalMillis = */ intervalMillis,
             /* operation = */
-            PhotoWidgetProvider.getChangePhotoPendingIntent(context = context, appWidgetId = appWidgetId),
+            TapActionPendingIntentFactory.getChangePhotoPendingIntent(context = context, appWidgetId = appWidgetId),
         )
     }
 
