@@ -46,7 +46,7 @@ fun <T> SavedStateHandle.savedState(
     key: String? = null,
     default: T? = null,
 ): ReadOnlyProperty<ViewModel, T> = ReadOnlyProperty { _, property ->
-    get<T>(key ?: property.name) ?: default as T
+    get(key ?: property.name) ?: default as T
 }
 
 fun <T> Bundle.asDelegate(
@@ -76,6 +76,7 @@ private class BundleDelegate<T>(
         property: KProperty<*>,
     ): T = (thisRef.get(key ?: property.name) ?: default) as T
 
+    @Suppress("DEPRECATION")
     override fun setValue(
         thisRef: Bundle,
         property: KProperty<*>,
