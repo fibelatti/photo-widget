@@ -56,24 +56,24 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         val action: Action = Action.fromValue(intent.action) ?: return
 
         handler.post {
-            val entryPoint: PhotoWidgetEntryPoint = entryPoint(context)
-
-            entryPoint.coroutineScope().launch {
-                entryPoint.cyclePhotoUseCase().invoke(
-                    appWidgetId = intent.appWidgetId,
-                    direction = when (action) {
-                        Action.VIEW_NEXT_PHOTO -> CyclePhotoUseCase.Direction.NEXT
-                        Action.VIEW_PREVIOUS_PHOTO -> CyclePhotoUseCase.Direction.PREVIOUS
-                    },
-                )
-                entryPoint.photoWidgetStorage().saveWidgetNextCycleTime(
-                    appWidgetId = intent.appWidgetId,
-                    nextCycleTime = null,
-                )
-                entryPoint.photoWidgetAlarmManager().setup(
-                    appWidgetId = intent.appWidgetId,
-                )
-            }
+            entryPoint<PhotoWidgetEntryPoint>(context).photoWidgetProviderActionHandler().invoke(
+                action = action,
+                appWidgetId = intent.appWidgetId,
+                onRemoveActionHandled = { didRemove: Boolean ->
+                    context.startActivity(
+                        HeadlessFeedbackActivity.newIntent(
+                            context = context,
+                            message = context.getString(
+                                if (didRemove) {
+                                    R.string.photo_widget_remove_action_feedback_positive
+                                } else {
+                                    R.string.photo_widget_remove_action_feedback_negative
+                                },
+                            ),
+                        ),
+                    )
+                },
+            )
         }
     }
 
@@ -119,6 +119,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
         VIEW_NEXT_PHOTO(value = "ACTION_VIEW_NEXT_PHOTO"),
         VIEW_PREVIOUS_PHOTO(value = "ACTION_VIEW_PREVIOUS_PHOTO"),
+        REMOVE_PHOTO(value = "ACTION_REMOVE_PHOTO"),
         ;
 
         companion object {
@@ -410,6 +411,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val photoChangingAction: Boolean = tapAction is PhotoWidgetTapAction.ViewNextPhoto ||
                 tapAction is PhotoWidgetTapAction.ViewPreviousPhoto ||
                 tapAction is PhotoWidgetTapAction.ChooseNextPhoto ||
+                tapAction is PhotoWidgetTapAction.RemovePhoto ||
                 tapAction is PhotoWidgetTapAction.ToggleCycling
 
             val shouldIgnoreAction: Boolean = when {
@@ -560,6 +562,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         /* requestCode = */ appWidgetId,
                         /* intent = */ intent,
                         /* flags = */ PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                    )
+                }
+
+                is PhotoWidgetTapAction.RemovePhoto -> {
+                    return getChangePhotoPendingIntent(
+                        context = context,
+                        appWidgetId = appWidgetId,
+                        action = Action.REMOVE_PHOTO,
                     )
                 }
             }

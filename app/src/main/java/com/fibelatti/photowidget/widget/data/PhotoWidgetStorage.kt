@@ -106,6 +106,13 @@ class PhotoWidgetStorage @Inject constructor(
         emit(source)
     }
 
+    suspend fun getWidgetPhotoCountEstimate(appWidgetId: Int): Int {
+        return localPhotoDao.getLocalPhotos(widgetId = appWidgetId)
+            .map { it.photoId }
+            .minus(getExcludedPhotoIds(appWidgetId = appWidgetId))
+            .size
+    }
+
     private suspend fun getSourceWidgetPhotos(
         appWidgetId: Int,
         excludedPhotos: Set<String>,
@@ -286,7 +293,12 @@ class PhotoWidgetStorage @Inject constructor(
         return internalFileStorage.getCropSources(appWidgetId = appWidgetId, localPhoto = localPhoto)
     }
 
-    suspend fun markPhotosForDeletion(appWidgetId: Int, photoIds: Collection<String>) {
+    suspend fun replacePhotosForDeletion(appWidgetId: Int, photoIds: Collection<String>) {
+        pendingDeletionPhotosDao.deletePhotosByWidgetId(widgetId = appWidgetId)
+        appendPhotosForDeletion(appWidgetId = appWidgetId, photoIds = photoIds)
+    }
+
+    suspend fun appendPhotosForDeletion(appWidgetId: Int, photoIds: Collection<String>) {
         val deletionTimestamp = System.currentTimeMillis() + DELETION_THRESHOLD_MILLIS
 
         val photos = photoIds.map { photoId ->
@@ -297,11 +309,15 @@ class PhotoWidgetStorage @Inject constructor(
             )
         }
 
-        pendingDeletionPhotosDao.deletePhotosByWidgetId(widgetId = appWidgetId)
         pendingDeletionPhotosDao.savePendingDeletionPhotos(photos = photos)
     }
 
-    suspend fun saveExcludedPhotos(appWidgetId: Int, photoIds: Collection<String>) {
+    suspend fun replaceExcludedPhotos(appWidgetId: Int, photoIds: Collection<String>) {
+        excludedPhotosDao.deletePhotosByWidgetId(widgetId = appWidgetId)
+        appendExcludedPhotos(appWidgetId = appWidgetId, photoIds = photoIds)
+    }
+
+    suspend fun appendExcludedPhotos(appWidgetId: Int, photoIds: Collection<String>) {
         val photos = photoIds.map { photoId ->
             ExcludedWidgetPhotoDto(
                 widgetId = appWidgetId,
@@ -309,7 +325,6 @@ class PhotoWidgetStorage @Inject constructor(
             )
         }
 
-        excludedPhotosDao.deletePhotosByWidgetId(widgetId = appWidgetId)
         excludedPhotosDao.saveExcludedPhotos(photos = photos)
     }
 

@@ -138,6 +138,16 @@ sealed interface PhotoWidgetTapAction : Parcelable {
         override val serializedName: String = "SHARE_PHOTO"
     }
 
+    @Parcelize
+    data object RemovePhoto : PhotoWidgetTapAction {
+
+        @IgnoredOnParcel
+        override val label: Int = R.string.photo_widget_configure_tap_action_remove_photo
+
+        @IgnoredOnParcel
+        override val serializedName: String = "REMOVE_PHOTO"
+    }
+
     companion object {
 
         val DEFAULT: PhotoWidgetTapAction = None
@@ -155,6 +165,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
                 AppFolder(),
                 UrlShortcut(),
                 SharePhoto,
+                RemovePhoto,
             )
         }
 

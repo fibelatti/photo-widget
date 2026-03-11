@@ -209,6 +209,12 @@
     <string name="photo_widget_configure_tap_action_toggle_cycling">Activează/dezactivează temporizatorul</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Atinge pentru a întrerupe temporizatorul foto. Apasă din nou pentru a relua. Această acțiune va fi dezactivată în timp ce widget-ul este blocat.</string>
     <string name="photo_widget_configure_tap_action_share_photo">Distribuie fotografia</string>
+    <string name="photo_widget_configure_tap_action_remove_photo">Elimină fotografia</string>
+    <string name="photo_widget_configure_tap_action_remove_photo_description">Exclude-o din widget. Fotografia originală nu este eliminată de pe telefon.</string>
+
+    <string name="photo_widget_remove_action_feedback_positive">Fotografie eliminată!</string>
+    <string name="photo_widget_remove_action_feedback_negative">A rămas doar o fotografie, nu se poate elimina.</string>
+
     <string name="photo_widget_configure_tap_action_increase_brightness">Crește automat luminozitatea</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Vezi fotografia originală (fără tăiere sau rotație)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Nu amesteca fotografiile la schimbarea lor în vizualizator</string>

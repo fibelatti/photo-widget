@@ -203,6 +203,12 @@
     <string name="photo_widget_configure_tap_action_toggle_cycling">Activar/desactivar temporizador</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Toca para pausar el temporizador de fotos. Toca de nuevo para reanudar. Esta acción estará deshabilitada mientras el widget esté bloqueado.</string>
     <string name="photo_widget_configure_tap_action_share_photo">Compartir foto</string>
+    <string name="photo_widget_configure_tap_action_remove_photo">Eliminar foto</string>
+    <string name="photo_widget_configure_tap_action_remove_photo_description">Excluirla del widget. La foto original no se elimina de tu teléfono.</string>
+
+    <string name="photo_widget_remove_action_feedback_positive">¡Foto eliminada!</string>
+    <string name="photo_widget_remove_action_feedback_negative">Solo queda una foto, no se puede eliminar.</string>
+
     <string name="photo_widget_configure_tap_action_increase_brightness">Aumentar automáticamente el brillo</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Ver foto original (sin recorte ni rotación)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">No mezclar las fotos al cambiar de foto en el visor</string>

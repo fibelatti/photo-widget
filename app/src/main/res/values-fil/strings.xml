@@ -201,6 +201,12 @@
     <string name="photo_widget_configure_tap_action_toggle_cycling">I-on/i-off ang timer</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Pindutin upang ihinto ang timer sa paglipat ng larawan. Muling pumindot upang ituloy. I-o-off ang aksyong ito pag naka-lock ang widget.</string>
     <string name="photo_widget_configure_tap_action_share_photo">Ibahagi ang larawan</string>
+    <string name="photo_widget_configure_tap_action_remove_photo">Alisin ang larawan</string>
+    <string name="photo_widget_configure_tap_action_remove_photo_description">Ibukod ito sa widget. Hindi tinanggal ang orihinal na larawan sa iyong telepono.</string>
+
+    <string name="photo_widget_remove_action_feedback_positive">Natanggal na ang larawan!</string>
+    <string name="photo_widget_remove_action_feedback_negative">Isang larawan na lang ang natitira, hindi maaaring alisin.</string>
+
     <string name="photo_widget_configure_tap_action_increase_brightness">Awtomatikong itaas ang liwanag</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Tingnan ang orihinal na larawan (walang krop o pag-ikot)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Huwag i-shuffle ang mga larawan kapag nagpapalit sa viewer</string>

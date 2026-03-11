@@ -43,10 +43,12 @@ class CyclePhotoUseCase @Inject constructor(
             .first()
             .current
             .map { it.photoId }
+            .ifEmpty { return "" }
 
-        when {
-            widgetPhotoIds.isEmpty() -> return ""
-            widgetPhotoIds.size == 1 -> return widgetPhotoIds.first()
+        if (widgetPhotoIds.size == 1) {
+            // Cannot cycle, but if a photo was recently removed the widget still needs to be updated
+            PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+            return widgetPhotoIds.first()
         }
 
         val displayedPhotos = photoWidgetStorage.getDisplayedPhotoIds(appWidgetId = appWidgetId).toMutableSet()
@@ -98,8 +100,9 @@ class CyclePhotoUseCase @Inject constructor(
 
         if (!skipSaving) {
             photoWidgetStorage.saveDisplayedPhoto(appWidgetId = appWidgetId, photoId = newPhotoId)
-            PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
         }
+
+        PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
 
         return newPhotoId
     }

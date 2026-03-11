@@ -54,8 +54,8 @@ class SavePhotoWidgetUseCase @Inject constructor(
             removedPhotos = photoWidget.removedPhotos,
         )
 
-        val currentPhotoId = photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)
-        val removedPhotos = photoWidget.removedPhotos.map { it.photoId }
+        val currentPhotoId: String? = photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)
+        val removedPhotoIds: List<String> = photoWidget.removedPhotos.map { it.photoId }
 
         when (currentPhotoId) {
             null -> {
@@ -65,7 +65,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
                 )
             }
 
-            in removedPhotos if photoWidget.currentPhoto?.photoId != null -> {
+            in removedPhotoIds if photoWidget.currentPhoto?.photoId != null -> {
                 photoWidgetStorage.saveDisplayedPhoto(
                     appWidgetId = appWidgetId,
                     photoId = photoWidget.currentPhoto.photoId,
@@ -75,16 +75,16 @@ class SavePhotoWidgetUseCase @Inject constructor(
 
         when (photoWidget.source) {
             PhotoWidgetSource.PHOTOS -> {
-                photoWidgetStorage.markPhotosForDeletion(
+                photoWidgetStorage.replacePhotosForDeletion(
                     appWidgetId = appWidgetId,
-                    photoIds = removedPhotos,
+                    photoIds = removedPhotoIds,
                 )
             }
 
             PhotoWidgetSource.DIRECTORY -> {
-                photoWidgetStorage.saveExcludedPhotos(
+                photoWidgetStorage.replaceExcludedPhotos(
                     appWidgetId = appWidgetId,
-                    photoIds = removedPhotos,
+                    photoIds = removedPhotoIds,
                 )
             }
         }

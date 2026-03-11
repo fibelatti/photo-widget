@@ -110,6 +110,13 @@
             android:theme="@style/AppTheme.TransparentActivity" />
 
         <activity
+            android:name=".widget.HeadlessFeedbackActivity"
+            android:enableOnBackInvokedCallback="false"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme.TransparentActivity" />
+
+        <activity
             android:name=".licenses.OssLicensesActivity"
             android:exported="false" />
 

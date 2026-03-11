@@ -597,6 +597,10 @@ private fun TapOptionsPicker(
                             R.string.photo_widget_configure_tap_action_app_folder_description
                         }
 
+                        is PhotoWidgetTapAction.RemovePhoto -> {
+                            R.string.photo_widget_configure_tap_action_remove_photo_description
+                        }
+
                         else -> return@itemDescription null
                     }
 
@@ -626,8 +630,6 @@ private fun TapActionCustomizationContent(
     modifier: Modifier = Modifier,
 ) {
     when (tapAction) {
-        is PhotoWidgetTapAction.None -> Unit
-
         is PhotoWidgetTapAction.ViewFullScreen -> {
             ViewFullScreenCustomizationContent(
                 value = tapAction,
@@ -643,12 +645,6 @@ private fun TapActionCustomizationContent(
                 modifier = modifier,
             )
         }
-
-        is PhotoWidgetTapAction.ViewNextPhoto -> Unit
-
-        is PhotoWidgetTapAction.ViewPreviousPhoto -> Unit
-
-        is PhotoWidgetTapAction.ChooseNextPhoto -> Unit
 
         is PhotoWidgetTapAction.ToggleCycling -> {
             ToggleCyclingCustomizationContent(
@@ -687,7 +683,7 @@ private fun TapActionCustomizationContent(
             )
         }
 
-        is PhotoWidgetTapAction.SharePhoto -> Unit
+        else -> return // No content
     }
 }
 
