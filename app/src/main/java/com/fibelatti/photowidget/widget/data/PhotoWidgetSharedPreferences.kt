@@ -590,7 +590,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
     fun getKnownWidgetIds(): List<Int> {
         return sharedPreferences.all
             .filter { (key, _) -> key.startsWith(PreferencePrefix.SOURCE.value) }
-            .mapNotNull { (key, _) -> key.substringAfterLast("_").toIntOrNull()?.takeIf { it > 0 } }
+            .mapNotNull { (key, _) -> key.removePrefix(PreferencePrefix.SOURCE.value).toIntOrNull()?.takeIf { it > 0 } }
             .distinct()
     }
 
