@@ -199,10 +199,8 @@
     <string name="photo_widget_configure_tap_action_share_photo">写真を共有</string>
     <string name="photo_widget_configure_tap_action_remove_photo">写真を削除</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">ウィジェットから除外します。元の写真はスマートフォンから削除されません。</string>
-
     <string name="photo_widget_remove_action_feedback_positive">写真を削除しました！</string>
     <string name="photo_widget_remove_action_feedback_negative">写真が1枚しかないため、削除できません。</string>
-
     <string name="photo_widget_configure_tap_action_increase_brightness">明るさを自動的に上げる</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">元の写真を表示（切り抜きや回転なし）</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">ビューアで写真を切り替えるときにシャッフルしない</string>
