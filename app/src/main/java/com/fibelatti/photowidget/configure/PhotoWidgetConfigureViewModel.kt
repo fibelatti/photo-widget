@@ -28,7 +28,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -230,7 +229,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         if (source.isEmpty()) return
 
         viewModelScope.launch {
-            while (_state.value.isProcessing) delay(timeMillis = 100L)
+            state.first { !it.isProcessing }
 
             _state.update { current -> current.copy(isProcessing = true) }
 
