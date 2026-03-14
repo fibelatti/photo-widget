@@ -13,6 +13,8 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
     val serializedName: String
 
+    val isPhotoChangingAction: Boolean get() = false
+
     @Parcelize
     data object None : PhotoWidgetTapAction {
 
@@ -58,6 +60,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
         @IgnoredOnParcel
         override val serializedName: String = "VIEW_NEXT_PHOTO"
+
+        @IgnoredOnParcel
+        override val isPhotoChangingAction: Boolean = true
     }
 
     @Parcelize
@@ -68,6 +73,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
         @IgnoredOnParcel
         override val serializedName: String = "VIEW_PREVIOUS_PHOTO"
+
+        @IgnoredOnParcel
+        override val isPhotoChangingAction: Boolean = true
     }
 
     @Parcelize
@@ -78,6 +86,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
         @IgnoredOnParcel
         override val serializedName: String = "CHOOSE_NEXT_PHOTO"
+
+        @IgnoredOnParcel
+        override val isPhotoChangingAction: Boolean = true
     }
 
     @Parcelize
@@ -126,6 +137,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
         @IgnoredOnParcel
         override val serializedName: String = "TOGGLE_CYCLING"
+
+        @IgnoredOnParcel
+        override val isPhotoChangingAction: Boolean = true
     }
 
     @Parcelize
@@ -146,6 +160,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
         @IgnoredOnParcel
         override val serializedName: String = "REMOVE_PHOTO"
+
+        @IgnoredOnParcel
+        override val isPhotoChangingAction: Boolean = true
     }
 
     companion object {

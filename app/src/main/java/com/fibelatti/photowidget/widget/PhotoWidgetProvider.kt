@@ -408,15 +408,9 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     ")",
             )
 
-            val photoChangingAction: Boolean = tapAction is PhotoWidgetTapAction.ViewNextPhoto ||
-                tapAction is PhotoWidgetTapAction.ViewPreviousPhoto ||
-                tapAction is PhotoWidgetTapAction.ChooseNextPhoto ||
-                tapAction is PhotoWidgetTapAction.RemovePhoto ||
-                tapAction is PhotoWidgetTapAction.ToggleCycling
-
             val shouldIgnoreAction: Boolean = when {
                 shouldDisableTap && tapAction !is PhotoWidgetTapAction.ToggleCycling -> true
-                photoChangingAction -> isLocked
+                tapAction.isPhotoChangingAction -> isLocked
                 else -> false
             }
 
