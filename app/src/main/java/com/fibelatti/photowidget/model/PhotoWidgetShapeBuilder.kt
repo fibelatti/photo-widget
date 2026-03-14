@@ -67,12 +67,10 @@ object PhotoWidgetShapeBuilder {
         PhotoWidgetShape.Material(
             id = "bun",
             roundedPolygon = MaterialShapes.Bun,
-            enabled = false, // Scaling is broken
         ),
         PhotoWidgetShape.Material(
             id = "diamond",
             roundedPolygon = MaterialShapes.Diamond,
-            enabled = false, // Scaling is broken
         ),
         PhotoWidgetShape.Material(
             id = "gem",
@@ -88,11 +86,6 @@ object PhotoWidgetShapeBuilder {
             rounding = .5f,
             innerRadius = .5f,
             innerRounding = 0f,
-        ),
-        PhotoWidgetShape.Material(
-            id = "soft-boom",
-            roundedPolygon = MaterialShapes.SoftBoom,
-            enabled = false, // Doesn't show much of the photo
         ),
         PhotoWidgetShape.Material(
             id = "flower",
@@ -139,13 +132,11 @@ object PhotoWidgetShapeBuilder {
         PhotoWidgetShape.Material(
             id = "clam-shell",
             roundedPolygon = MaterialShapes.ClamShell,
-            enabled = false, // Scaling is broken
         ),
         PhotoWidgetShape.CustomPath(id = "heart"),
         PhotoWidgetShape.Material(
             id = "puffy",
             roundedPolygon = MaterialShapes.Puffy,
-            enabled = false, // Scaling is broken
         ),
         PhotoWidgetShape.Material(
             id = "puffy-diamond",
