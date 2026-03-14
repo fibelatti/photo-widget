@@ -217,10 +217,8 @@
     <string name="photo_widget_configure_tap_action_share_photo">שתף תמונה</string>
     <string name="photo_widget_configure_tap_action_remove_photo">הסר תמונה</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">הוצא אותה מהווידג\'ט. התמונה המקורית לא מוסרת מהטלפון שלך.</string>
-
     <string name="photo_widget_remove_action_feedback_positive">התמונה הוסרה!</string>
     <string name="photo_widget_remove_action_feedback_negative">נותרה רק תמונה אחת, לא ניתן להסיר.</string>
-
     <string name="photo_widget_configure_tap_action_increase_brightness">הגברת בהירות באופן אוטומטי</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">צפה בתמונה המקורית (ללא חיתוך או סיבוב)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">לא לערבב תמונות בעת החלפת תמונות בצופה</string>
