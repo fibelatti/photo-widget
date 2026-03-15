@@ -2,6 +2,8 @@ name: Bug Report
 description: Report something that's not working as expected
 title: "[Bug]: "
 labels: [ bug ]
+assignees:
+  - fibelatti
 body:
   - type: textarea
     attributes:
