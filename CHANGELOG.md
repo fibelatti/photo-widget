@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * New tap action: remove photo
+* New tap action: set as wallpaper
 * 4 new shapes
 
 ### Fixed

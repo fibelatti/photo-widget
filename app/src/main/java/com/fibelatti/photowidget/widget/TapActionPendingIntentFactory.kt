@@ -12,6 +12,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.getInstalledApp
 import com.fibelatti.photowidget.platform.getLaunchIntent
 import com.fibelatti.photowidget.platform.setIdentifierCompat
+import com.fibelatti.photowidget.platform.setWallpaperIntent
 import com.fibelatti.photowidget.platform.sharePhotoChooserIntent
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
 import timber.log.Timber
@@ -174,6 +175,21 @@ object TapActionPendingIntentFactory {
 
             is PhotoWidgetTapAction.SharePhoto -> {
                 val intent: Intent = sharePhotoChooserIntent(
+                    context = context,
+                    originalPhotoPath = originalPhotoPath,
+                    externalUri = externalUri,
+                ) ?: return null
+
+                return PendingIntent.getActivity(
+                    /* context = */ context,
+                    /* requestCode = */ appWidgetId,
+                    /* intent = */ intent,
+                    /* flags = */ PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                )
+            }
+
+            is PhotoWidgetTapAction.SetWallpaper -> {
+                val intent: Intent = setWallpaperIntent(
                     context = context,
                     originalPhotoPath = originalPhotoPath,
                     externalUri = externalUri,

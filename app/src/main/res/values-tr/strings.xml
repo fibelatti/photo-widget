@@ -203,6 +203,7 @@
     <string name="photo_widget_configure_tap_action_toggle_cycling">Zamanlayıcıyı etkinleştir/devre dışı bırak</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Fotoğraf zamanlayıcısını duraklatmak için dokunun. Devam ettirmek için tekrar dokunun. Bu işlem, widget kilitliyken devre dışı olacaktır.</string>
     <string name="photo_widget_configure_tap_action_share_photo">Fotoğrafı paylaş</string>
+    <string name="photo_widget_configure_tap_action_set_wallpaper">Duvar kağıdı olarak ayarla</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Fotoğrafı kaldır</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">Widget\'tan hariç tut. Orijinal fotoğraf telefonunuzdan kaldırılmaz.</string>
     <string name="photo_widget_remove_action_feedback_positive">Fotoğraf kaldırıldı!</string>

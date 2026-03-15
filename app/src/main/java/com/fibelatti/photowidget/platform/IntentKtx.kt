@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.platform
 
+import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -30,33 +31,42 @@ fun batteryUsageSettingsIntent(): Intent {
     return Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
 }
 
-fun sharePhotoChooserIntent(
-    context: Context,
-    originalPhotoPath: String?,
-    externalUri: Uri?,
-): Intent? {
-    val uri: Uri
-    when {
-        originalPhotoPath != null -> {
-            uri = FileProvider.getUriForFile(
-                /* context = */ context,
-                /* authority = */ "${context.packageName}.fileprovider",
-                /* file = */ File(originalPhotoPath),
-            )
-        }
-
-        externalUri != null -> {
-            uri = externalUri
-        }
-
-        else -> {
-            return null
-        }
-    }
+fun sharePhotoChooserIntent(context: Context, originalPhotoPath: String?, externalUri: Uri?): Intent? {
+    val uri: Uri = getPhotoUri(
+        context = context,
+        originalPhotoPath = originalPhotoPath,
+        externalUri = externalUri,
+    ) ?: return null
 
     val shareIntent: Intent = Intent(Intent.ACTION_SEND)
         .putExtra(Intent.EXTRA_STREAM, uri)
         .setType("image/*")
 
     return Intent.createChooser(shareIntent, null)
+}
+
+fun setWallpaperIntent(context: Context, originalPhotoPath: String?, externalUri: Uri?): Intent? {
+    val uri: Uri = getPhotoUri(
+        context = context,
+        originalPhotoPath = originalPhotoPath,
+        externalUri = externalUri,
+    ) ?: return null
+
+    return WallpaperManager.getInstance(context).getCropAndSetWallpaperIntent(uri)
+}
+
+private fun getPhotoUri(context: Context, originalPhotoPath: String?, externalUri: Uri?): Uri? {
+    return when {
+        originalPhotoPath != null -> {
+            FileProvider.getUriForFile(
+                /* context = */ context,
+                /* authority = */ "${context.packageName}.fileprovider",
+                /* file = */ File(originalPhotoPath),
+            )
+        }
+
+        externalUri != null -> externalUri
+
+        else -> null
+    }
 }

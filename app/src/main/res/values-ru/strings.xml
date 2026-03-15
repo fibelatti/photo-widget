@@ -215,6 +215,7 @@
     <string name="photo_widget_configure_tap_action_toggle_cycling">Включить/выключить таймер</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Нажмите, чтобы приостановить таймер фото. Нажмите ещё раз, чтобы продолжить. Это действие будет недоступно, пока виджет заблокирован.</string>
     <string name="photo_widget_configure_tap_action_share_photo">Поделиться фото</string>
+    <string name="photo_widget_configure_tap_action_set_wallpaper">Установить как обои</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Удалить фото</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">Исключить из виджета. Оригинальное фото не удаляется с вашего телефона.</string>
     <string name="photo_widget_remove_action_feedback_positive">Фото удалено!</string>

@@ -203,6 +203,7 @@
     <string name="photo_widget_configure_tap_action_toggle_cycling">Attiva/disattiva timer</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Tocca per mettere in pausa il timer delle foto. Tocca di nuovo per riprendere. Questa azione sarà disattivata mentre il widget è bloccato.</string>
     <string name="photo_widget_configure_tap_action_share_photo">Condividi foto</string>
+    <string name="photo_widget_configure_tap_action_set_wallpaper">Imposta come sfondo</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Rimuovi foto</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">Escludila dal widget. La foto originale non viene rimossa dal tuo telefono.</string>
 

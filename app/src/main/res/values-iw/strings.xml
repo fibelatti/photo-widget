@@ -215,6 +215,7 @@
     <string name="photo_widget_configure_tap_action_toggle_cycling">הפעל/השבת טיימר</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">הקש כדי להשהות את טיימר התמונות. הקש שוב כדי לחדש. פעולה זו תושבת כאשר הווידג\'ט נעול.</string>
     <string name="photo_widget_configure_tap_action_share_photo">שתף תמונה</string>
+    <string name="photo_widget_configure_tap_action_set_wallpaper">הגדר כטפט</string>
     <string name="photo_widget_configure_tap_action_remove_photo">הסר תמונה</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">הוצא אותה מהווידג\'ט. התמונה המקורית לא מוסרת מהטלפון שלך.</string>
     <string name="photo_widget_remove_action_feedback_positive">התמונה הוסרה!</string>

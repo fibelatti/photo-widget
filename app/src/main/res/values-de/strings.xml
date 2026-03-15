@@ -203,6 +203,7 @@
     <string name="photo_widget_configure_tap_action_toggle_cycling">Timer aktivieren/deaktivieren</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Tippen, um den Foto-Timer zu pausieren. Nochmals tippen, um fortzusetzen. Diese Aktion ist deaktiviert, wenn das Widget gesperrt ist.</string>
     <string name="photo_widget_configure_tap_action_share_photo">Foto teilen</string>
+    <string name="photo_widget_configure_tap_action_set_wallpaper">Als Hintergrundbild festlegen</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Foto entfernen</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">Vom Widget ausschließen. Das Originalfoto wird nicht von Ihrem Telefon entfernt.</string>
 

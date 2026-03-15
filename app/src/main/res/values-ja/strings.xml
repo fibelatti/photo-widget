@@ -197,6 +197,7 @@
     <string name="photo_widget_configure_tap_action_toggle_cycling">タイマーの有効化/無効化</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">タップして写真タイマーを一時停止します。再度タップすると再開します。ウィジェットがロックされている間は、この操作は無効になります。</string>
     <string name="photo_widget_configure_tap_action_share_photo">写真を共有</string>
+    <string name="photo_widget_configure_tap_action_set_wallpaper">壁紙として設定</string>
     <string name="photo_widget_configure_tap_action_remove_photo">写真を削除</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">ウィジェットから除外します。元の写真はスマートフォンから削除されません。</string>
     <string name="photo_widget_remove_action_feedback_positive">写真を削除しました！</string>

@@ -153,6 +153,16 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     }
 
     @Parcelize
+    data object SetWallpaper : PhotoWidgetTapAction {
+
+        @IgnoredOnParcel
+        override val label: Int = R.string.photo_widget_configure_tap_action_set_wallpaper
+
+        @IgnoredOnParcel
+        override val serializedName: String = "SET_WALLPAPER"
+    }
+
+    @Parcelize
     data object RemovePhoto : PhotoWidgetTapAction {
 
         @IgnoredOnParcel
@@ -182,6 +192,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
                 AppFolder(),
                 UrlShortcut(),
                 SharePhoto,
+                SetWallpaper,
                 RemovePhoto,
             )
         }

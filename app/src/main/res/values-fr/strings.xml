@@ -203,6 +203,7 @@
     <string name="photo_widget_configure_tap_action_toggle_cycling">Activer/désactiver le minuteur</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Appuyez pour mettre le minuteur photo en pause. Appuyez de nouveau pour reprendre. Cette action sera désactivée lorsque le widget est verrouillé.</string>
     <string name="photo_widget_configure_tap_action_share_photo">Partager la photo</string>
+    <string name="photo_widget_configure_tap_action_set_wallpaper">Définir comme fond d\'écran</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Supprimer la photo</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">L\'exclure du widget. La photo originale n\'est pas supprimée de votre téléphone.</string>
 
