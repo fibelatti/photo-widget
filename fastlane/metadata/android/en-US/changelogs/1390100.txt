@@ -1,0 +1,6 @@
+This version brings the following updates:
+
+* Two new tap actions: remove current photo and set photo as wallpaper
+* Four new shapes
+
+Thanks for using the app!
