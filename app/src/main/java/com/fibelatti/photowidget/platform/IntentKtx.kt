@@ -52,7 +52,9 @@ fun setWallpaperIntent(context: Context, originalPhotoPath: String?, externalUri
         externalUri = externalUri,
     ) ?: return null
 
-    return WallpaperManager.getInstance(context).getCropAndSetWallpaperIntent(uri)
+    return Intent(WallpaperManager.ACTION_CROP_AND_SET_WALLPAPER)
+        .setDataAndType(uri, "image/*")
+        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 }
 
 private fun getPhotoUri(context: Context, originalPhotoPath: String?, externalUri: Uri?): Uri? {
