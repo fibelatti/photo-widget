@@ -1,6 +1,7 @@
 package tasks
 
 import java.io.File
+import java.io.StringWriter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Objects
@@ -119,6 +120,7 @@ internal object PermissionsBaselineParser {
             },
         )
         document.insertBefore(header, root)
+        document.insertBefore(document.createComment("@formatter:off"), root)
 
         permissions
             .sortedWith(comparator)
@@ -136,6 +138,8 @@ internal object PermissionsBaselineParser {
                 root.appendChild(element)
             }
 
+        val outputXmlStringWriter = StringWriter()
+
         TransformerFactory.newInstance()
             .newTransformer()
             .apply {
@@ -143,7 +147,12 @@ internal object PermissionsBaselineParser {
                 setOutputProperty(OutputKeys.ENCODING, "utf-8")
                 setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4")
             }
-            .transform(DOMSource(document), StreamResult(outputFile))
+            .transform(DOMSource(document), StreamResult(outputXmlStringWriter))
+
+        val outputXmlString = outputXmlStringWriter.toString()
+            .replace("-->", "-->\n")
+
+        outputFile.writeText(outputXmlString)
     }
 }
 
