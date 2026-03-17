@@ -10,6 +10,8 @@ plugins {
     alias(libs.plugins.about.libraries) apply false
     alias(libs.plugins.licensee) apply false
 
+    alias(libs.plugins.fibelatti.android.common) apply false
+    alias(libs.plugins.fibelatti.manifest.permission.validation) apply false
     alias(libs.plugins.fibelatti.spotless)
 }
 

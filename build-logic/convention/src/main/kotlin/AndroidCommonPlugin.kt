@@ -1,5 +1,4 @@
 import com.android.build.api.dsl.CommonExtension
-import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -14,12 +13,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 @Suppress("Unused")
 class AndroidCommonPlugin : Plugin<Project> {
 
-    private val javaVersion = JavaVersion.VERSION_21
-
     override fun apply(target: Project) {
         with(target) {
             applyCommonPlugins()
-            configureVersions()
+            configureSdkCompatibility()
             configureKotlin()
             configureCompose()
             configureCoreLibraryDesugaring()
@@ -27,14 +24,11 @@ class AndroidCommonPlugin : Plugin<Project> {
     }
 
     private fun Project.applyCommonPlugins() {
-        plugins.withType<com.android.build.gradle.api.AndroidBasePlugin> {
-            apply(plugin = versionCatalog.findPlugin("cache-fix").get().get().pluginId)
-        }
-
-        apply(plugin = versionCatalog.findPlugin("fibelatti-spotless").get().get().pluginId)
+        apply(plugin = versionCatalog.findPluginIdByAlias("cache-fix"))
+        apply(plugin = versionCatalog.findPluginIdByAlias("fibelatti-spotless"))
     }
 
-    private fun Project.configureVersions() {
+    private fun Project.configureSdkCompatibility() {
         val compileSdkVersion: Int by this
         val minSdkVersion: Int by this
 
@@ -67,13 +61,13 @@ class AndroidCommonPlugin : Plugin<Project> {
         }
 
         dependencies {
-            "implementation"(versionCatalog.findLibrary("kotlin").get())
-            "implementation"(versionCatalog.findLibrary("coroutines-core").get())
+            implementation("kotlin")
+            implementation("coroutines-core")
         }
     }
 
     private fun Project.configureCompose() {
-        apply(plugin = versionCatalog.findPlugin("compose-compiler").get().get().pluginId)
+        apply(plugin = versionCatalog.findPluginIdByAlias("compose-compiler"))
 
         extensions.getByType<CommonExtension>().apply {
             buildFeatures.apply {
@@ -94,12 +88,12 @@ class AndroidCommonPlugin : Plugin<Project> {
         dependencies {
             val bom = versionCatalog.findLibrary("compose-bom").get()
 
-            "implementation"(platform(bom))
-            "implementation"(versionCatalog.findLibrary("compose-runtime").get())
-            "implementation"(versionCatalog.findLibrary("compose-material3").get())
-            "implementation"(versionCatalog.findLibrary("compose-ui").get())
-            "implementation"(versionCatalog.findLibrary("compose-ui-tooling-preview").get())
-            "debugImplementation"(versionCatalog.findLibrary("compose-ui-tooling").get())
+            implementation(platform(bom))
+            implementation("compose-runtime")
+            implementation("compose-material3")
+            implementation("compose-ui")
+            implementation("compose-ui-tooling-preview")
+            debugImplementation("compose-ui-tooling")
         }
     }
 

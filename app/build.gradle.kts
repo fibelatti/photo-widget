@@ -38,12 +38,9 @@ object AppInfo {
 }
 
 android {
-    val compileSdkVersion: Int by project
     val targetSdkVersion: Int by project
-    val minSdkVersion: Int by project
 
     namespace = "com.fibelatti.photowidget"
-    compileSdk = compileSdkVersion
 
     buildFeatures {
         buildConfig = true
@@ -60,7 +57,6 @@ android {
         versionCode = AppInfo.versionCode
         versionName = AppInfo.versionName
         targetSdk = targetSdkVersion
-        minSdk = minSdkVersion
 
         base.archivesName = "$applicationId-v$versionName-$versionCode"
 
