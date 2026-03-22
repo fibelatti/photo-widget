@@ -36,11 +36,11 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.model.isWidgetRemoved
 import com.fibelatti.photowidget.platform.RememberedEffect
+import com.fibelatti.photowidget.platform.letIf
 import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
-import com.fibelatti.ui.foundation.conditional
 import com.fibelatti.ui.foundation.hideBottomSheet
 
 @Composable
@@ -120,10 +120,9 @@ private fun ImportFromWidgetContent(
                         cornerRadius = widget.cornerRadius,
                         modifier = Modifier
                             .fillMaxSize()
-                            .conditional(
-                                predicate = widget.aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET,
-                                ifTrue = { clip(enforcedShape) },
-                            ),
+                            .letIf(widget.aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET) {
+                                it.clip(enforcedShape)
+                            },
                         colors = widget.colors,
                         border = widget.border,
                         isLoading = widget.isLoading,

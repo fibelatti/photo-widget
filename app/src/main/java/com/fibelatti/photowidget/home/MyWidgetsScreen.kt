@@ -57,10 +57,10 @@ import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.model.isWidgetRemoved
+import com.fibelatti.photowidget.platform.letIf
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
-import com.fibelatti.ui.foundation.conditional
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
@@ -145,10 +145,9 @@ fun MyWidgetsScreen(
                                 cornerRadius = widget.cornerRadius,
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .conditional(
-                                        predicate = widget.aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET,
-                                        ifTrue = { clip(enforcedShape) },
-                                    ),
+                                    .letIf(widget.aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET) {
+                                        it.clip(enforcedShape)
+                                    },
                                 colors = widget.colors,
                                 border = widget.border,
                                 isLoading = widget.isLoading,
