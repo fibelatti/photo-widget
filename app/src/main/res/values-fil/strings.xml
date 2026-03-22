@@ -149,9 +149,9 @@
     <string name="photo_widget_configure_interval_minutes_label">Minuto</string>
     <string name="photo_widget_configure_interval_hours_label">Oras</string>
     <string name="photo_widget_configure_interval_days_label">Araw</string>
-    <string name="photo_widget_configure_schedule_placeholder">Iskedyul nang hindi lalampas sa 4 na beses upang awtomatikong palitan ang mga larawan.</string>
+    <string name="photo_widget_configure_schedule_placeholder">Iskedyul nang hindi lalampas sa %d na beses upang awtomatikong palitan ang mga larawan.</string>
     <string name="photo_widget_configure_schedule_add_new">Magdagdag ng bago</string>
-    <string name="photo_widget_configure_schedule_limit_reached">Umabot na sa maximum na 4 na beses</string>
+    <string name="photo_widget_configure_schedule_limit_reached">Umabot na sa maximum na %d na beses</string>
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="other">%d beses na pinili</item>
     </plurals>

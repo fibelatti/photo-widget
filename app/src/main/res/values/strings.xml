@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Widget Host -->
     <string name="photo_widget_host_description">Add your favorite photos or sync folders. Set actions. Choose the format when customizing and the size after placing it.</string>
     <string name="photo_widget_host_loading">Loading widget…</string>
@@ -181,9 +181,9 @@
     <string name="photo_widget_configure_interval_hours_label">Hours</string>
     <string name="photo_widget_configure_interval_days_label">Days</string>
 
-    <string name="photo_widget_configure_schedule_placeholder">Schedule up to 4 times to switch your photos automatically.</string>
+    <string name="photo_widget_configure_schedule_placeholder" tools:ignore="PluralsCandidate">Schedule up to %d times to switch your photos automatically.</string>
     <string name="photo_widget_configure_schedule_add_new">Add new</string>
-    <string name="photo_widget_configure_schedule_limit_reached">Maximum of 4 times reached</string>
+    <string name="photo_widget_configure_schedule_limit_reached" tools:ignore="PluralsCandidate">Maximum of %d times reached</string>
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="one">1 time selected</item>
         <item quantity="other">%d times selected</item>

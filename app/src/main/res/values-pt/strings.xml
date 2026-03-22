@@ -150,9 +150,9 @@
     <string name="photo_widget_configure_interval_minutes_label">Minutos</string>
     <string name="photo_widget_configure_interval_hours_label">Horas</string>
     <string name="photo_widget_configure_interval_days_label">Dias</string>
-    <string name="photo_widget_configure_schedule_placeholder">Agende até 4 horários para alternar as fotos automaticamente.</string>
+    <string name="photo_widget_configure_schedule_placeholder">Agende até %d horários para alternar as fotos automaticamente.</string>
     <string name="photo_widget_configure_schedule_add_new">Agendar novo</string>
-    <string name="photo_widget_configure_schedule_limit_reached">Máximo de 4 horários agendados</string>
+    <string name="photo_widget_configure_schedule_limit_reached">Máximo de %d horários agendados</string>
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="one">%d horário agendado</item>
         <item quantity="other">%d horários agendados</item>

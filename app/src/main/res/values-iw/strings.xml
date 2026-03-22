@@ -160,9 +160,9 @@
     <string name="photo_widget_configure_interval_minutes_label">דקות</string>
     <string name="photo_widget_configure_interval_hours_label">שעות</string>
     <string name="photo_widget_configure_interval_days_label">ימים</string>
-    <string name="photo_widget_configure_schedule_placeholder">קבע עד 4 זמנים כדי להחלפת תמונות באופן אוטומטי.</string>
+    <string name="photo_widget_configure_schedule_placeholder">קבע עד %d זמנים כדי להחלפת תמונות באופן אוטומטי.</string>
     <string name="photo_widget_configure_schedule_add_new">הוסף חדש</string>
-    <string name="photo_widget_configure_schedule_limit_reached">הגעתם למקסימום של 4 פעמים</string>
+    <string name="photo_widget_configure_schedule_limit_reached">הגעתם למקסימום של %d פעמים</string>
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="one">נבחר פעם אחת</item>
         <item quantity="two">נבחרו %d פעמים</item>

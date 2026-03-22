@@ -150,9 +150,9 @@
     <string name="photo_widget_configure_interval_minutes_label">Minuten</string>
     <string name="photo_widget_configure_interval_hours_label">Stunden</string>
     <string name="photo_widget_configure_interval_days_label">Tage</string>
-    <string name="photo_widget_configure_schedule_placeholder">Planen Sie bis zu 4 Zeiten ein, um Ihre Fotos automatisch zu wechseln.</string>
+    <string name="photo_widget_configure_schedule_placeholder">Planen Sie bis zu %d Zeiten ein, um Ihre Fotos automatisch zu wechseln.</string>
     <string name="photo_widget_configure_schedule_add_new">Neu hinzufügen</string>
-    <string name="photo_widget_configure_schedule_limit_reached">Maximum von 4 Zeiten erreicht</string>
+    <string name="photo_widget_configure_schedule_limit_reached">Maximum von %d Zeiten erreicht</string>
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="one">1 Zeit ausgewählt</item>
         <item quantity="other">%d Zeiten ausgewählt</item>

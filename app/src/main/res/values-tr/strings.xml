@@ -150,9 +150,9 @@
     <string name="photo_widget_configure_interval_minutes_label">Dakika</string>
     <string name="photo_widget_configure_interval_hours_label">Saat</string>
     <string name="photo_widget_configure_interval_days_label">Gün</string>
-    <string name="photo_widget_configure_schedule_placeholder">Fotoğraflarınızı otomatik olarak değiştirmek için en fazla 4 zaman belirleyin.</string>
+    <string name="photo_widget_configure_schedule_placeholder">Fotoğraflarınızı otomatik olarak değiştirmek için en fazla %d zaman belirleyin.</string>
     <string name="photo_widget_configure_schedule_add_new">Yeni ekle</string>
-    <string name="photo_widget_configure_schedule_limit_reached">Maksimum 4 zaman sınırına ulaşıldı</string>
+    <string name="photo_widget_configure_schedule_limit_reached">Maksimum %d zaman sınırına ulaşıldı</string>
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="one">1 zaman seçildi</item>
         <item quantity="other">%d zaman seçildi</item>

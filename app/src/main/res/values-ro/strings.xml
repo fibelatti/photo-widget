@@ -155,9 +155,9 @@
     <string name="photo_widget_configure_interval_minutes_label">Minute</string>
     <string name="photo_widget_configure_interval_hours_label">Ore</string>
     <string name="photo_widget_configure_interval_days_label">Zile</string>
-    <string name="photo_widget_configure_schedule_placeholder">Programează până la 4 ori pentru a schimba automat fotografiile.</string>
+    <string name="photo_widget_configure_schedule_placeholder">Programează până la %d ori pentru a schimba automat fotografiile.</string>
     <string name="photo_widget_configure_schedule_add_new">Adaugă nou</string>
-    <string name="photo_widget_configure_schedule_limit_reached">Maxim de 4 ori atins</string>
+    <string name="photo_widget_configure_schedule_limit_reached">Maxim de %d ori atins</string>
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="one">1 dată selectată</item>
         <item quantity="few">%d dăți selectate</item>

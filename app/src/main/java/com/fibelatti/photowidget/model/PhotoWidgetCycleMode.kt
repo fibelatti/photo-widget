@@ -17,6 +17,8 @@ sealed interface PhotoWidgetCycleMode : Parcelable {
     companion object {
 
         val DEFAULT = Interval(loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY)
+
+        const val MAX_SCHEDULE_AMOUNT: Int = 12
     }
 }
 

@@ -160,9 +160,9 @@
     <string name="photo_widget_configure_interval_minutes_label">Минуты</string>
     <string name="photo_widget_configure_interval_hours_label">Часы</string>
     <string name="photo_widget_configure_interval_days_label">Дни</string>
-    <string name="photo_widget_configure_schedule_placeholder">Запланируйте до 4 раз для автоматической смены фотографий.</string>
+    <string name="photo_widget_configure_schedule_placeholder">Запланируйте до %d раз для автоматической смены фотографий.</string>
     <string name="photo_widget_configure_schedule_add_new">Добавить новое</string>
-    <string name="photo_widget_configure_schedule_limit_reached">Достигнут максимум в 4 раза</string>
+    <string name="photo_widget_configure_schedule_limit_reached">Достигнут максимум в %d раза</string>
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="one">%d раз выбран</item>
         <item quantity="few">%d раза выбраны</item>

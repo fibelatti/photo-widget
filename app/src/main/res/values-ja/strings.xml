@@ -145,9 +145,9 @@
     <string name="photo_widget_configure_interval_minutes_label">分</string>
     <string name="photo_widget_configure_interval_hours_label">時間</string>
     <string name="photo_widget_configure_interval_days_label">日</string>
-    <string name="photo_widget_configure_schedule_placeholder">写真を自動的に切り替える時間を最大4つまでスケジュールします。</string>
+    <string name="photo_widget_configure_schedule_placeholder">写真を自動的に切り替える時間を最大%dつまでスケジュールします。</string>
     <string name="photo_widget_configure_schedule_add_new">新規追加</string>
-    <string name="photo_widget_configure_schedule_limit_reached">最大4つの時間に達しました</string>
+    <string name="photo_widget_configure_schedule_limit_reached">最大%dつの時間に達しました</string>
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="other">%dつの時間が選択されました</item>
     </plurals>
