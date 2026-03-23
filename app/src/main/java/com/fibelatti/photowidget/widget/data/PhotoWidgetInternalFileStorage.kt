@@ -2,17 +2,14 @@ package com.fibelatti.photowidget.widget.data
 
 import android.content.ContentResolver
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
-import androidx.core.content.FileProvider
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.platform.ImageFormat
 import com.fibelatti.photowidget.platform.ImageFormatDetector
 import com.fibelatti.photowidget.platform.PhotoDecoder
+import com.fibelatti.photowidget.platform.UriPermissionGrantor
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
@@ -32,6 +29,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
     private val userPreferencesStorage: UserPreferencesStorage,
     private val imageFormatDetector: ImageFormatDetector,
     private val decoder: PhotoDecoder,
+    private val uriPermissionGrantor: UriPermissionGrantor,
 ) {
 
     private val contentResolver: ContentResolver = context.contentResolver
@@ -185,12 +183,6 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         directoryName: String,
         currentPhoto: Bitmap,
     ): Uri? = withContext(Dispatchers.IO) {
-        val launcherPackages: List<String> = getLauncherPackages()
-        if (launcherPackages.isEmpty()) {
-            Timber.w("No launcher packages found, unable to generate URI.")
-            return@withContext null
-        }
-
         val dir: File = getCurrentPhotoDir(directoryName = directoryName).apply {
             listFiles()?.toList()?.sortedBy { it.name }?.dropLast(1)?.forEach { it.delete() }
         }
@@ -202,38 +194,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
             currentPhoto.compress(Bitmap.CompressFormat.PNG, 100, fos)
         }
 
-        if (!file.exists()) {
-            Timber.w("Failed to create file, unable to generate URI.")
-            return@withContext null
-        }
-
-        val uri: Uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
-        Timber.d("New URI for widget (directoryName=$directoryName): $uri")
-
-        val packages: List<String> = launcherPackages
-            .plus(
-                if (Build.MANUFACTURER.equals("samsung", ignoreCase = true)) {
-                    samsungPackages
-                } else {
-                    emptyList()
-                },
-            )
-
-        for (pkg in packages) {
-            context.grantUriPermission(pkg, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            Timber.d("Granted URI permission for package: $pkg")
-        }
-
-        return@withContext uri
-    }
-
-    private fun getLauncherPackages(): List<String> {
-        val intent = Intent("android.intent.action.MAIN")
-            .addCategory("android.intent.category.HOME")
-
-        return context.packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-            .mapNotNull { resolveInfo -> resolveInfo.activityInfo?.packageName }
-            .distinct()
+        return@withContext uriPermissionGrantor(path = file.path)
     }
 
     suspend fun duplicateWidgetDir(sourceDirectoryName: String, targetDirectoryName: String) {
@@ -273,10 +234,5 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
     companion object {
 
         const val DRAFT_WIDGET_ID = 0
-
-        val samsungPackages: List<String> = listOf(
-            "com.samsung.android.goodlock",
-            "com.samsung.systemui.lockstar",
-        )
     }
 }
