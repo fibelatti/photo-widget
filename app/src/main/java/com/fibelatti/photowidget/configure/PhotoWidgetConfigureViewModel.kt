@@ -14,6 +14,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.PhotoWidgetText
+import com.fibelatti.photowidget.model.coerceTapActions
 import com.fibelatti.photowidget.platform.savedState
 import com.fibelatti.photowidget.widget.DuplicatePhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
@@ -198,6 +199,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                             source = newSource,
                             photos = widgetPhotos.current,
                             currentPhoto = widgetPhotos.current.firstOrNull(),
+                            tapActions = current.photoWidget.tapActions.coerceTapActions(source = newSource),
                             removedPhotos = widgetPhotos.excluded,
                         ),
                         selectedPhoto = widgetPhotos.current.firstOrNull(),

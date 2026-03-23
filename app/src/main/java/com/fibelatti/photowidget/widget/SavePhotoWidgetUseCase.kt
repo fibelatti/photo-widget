@@ -5,9 +5,10 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.model.PhotoWidgetTapAction
+import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.canShuffle
+import com.fibelatti.photowidget.model.coerceTapActions
 import com.fibelatti.photowidget.model.photoCycleEnabled
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import javax.inject.Inject
@@ -194,33 +195,22 @@ class SavePhotoWidgetUseCase @Inject constructor(
             cycleMode = photoWidget.cycleMode,
         )
 
+        val tapActions: PhotoWidgetTapActions = photoWidget.tapActions.coerceTapActions(source = photoWidget.source)
+
         photoWidgetStorage.saveWidgetTapAction(
             appWidgetId = appWidgetId,
-            tapAction = coerceTapAction(tapAction = photoWidget.tapActions.left, source = photoWidget.source),
+            tapAction = tapActions.left,
             tapActionArea = TapActionArea.LEFT,
         )
         photoWidgetStorage.saveWidgetTapAction(
             appWidgetId = appWidgetId,
-            tapAction = coerceTapAction(tapAction = photoWidget.tapActions.center, source = photoWidget.source),
+            tapAction = tapActions.center,
             tapActionArea = TapActionArea.CENTER,
         )
         photoWidgetStorage.saveWidgetTapAction(
             appWidgetId = appWidgetId,
-            tapAction = coerceTapAction(tapAction = photoWidget.tapActions.right, source = photoWidget.source),
+            tapAction = tapActions.right,
             tapActionArea = TapActionArea.RIGHT,
         )
-    }
-
-    private fun coerceTapAction(
-        tapAction: PhotoWidgetTapAction,
-        source: PhotoWidgetSource,
-    ): PhotoWidgetTapAction {
-        return when {
-            tapAction is PhotoWidgetTapAction.ViewInGallery && PhotoWidgetSource.PHOTOS == source -> {
-                PhotoWidgetTapAction.ViewFullScreen()
-            }
-
-            else -> tapAction
-        }
     }
 }

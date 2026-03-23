@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import com.fibelatti.photowidget.R
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import timber.log.Timber
 
 sealed interface PhotoWidgetTapAction : Parcelable {
 
@@ -200,5 +201,27 @@ sealed interface PhotoWidgetTapAction : Parcelable {
         fun fromSerializedName(serializedName: String): PhotoWidgetTapAction {
             return entries.firstOrNull { it.serializedName == serializedName } ?: DEFAULT
         }
+    }
+}
+
+fun PhotoWidgetTapActions.coerceTapActions(source: PhotoWidgetSource): PhotoWidgetTapActions {
+    return copy(
+        left = left.coerceTapAction(source = source),
+        center = center.coerceTapAction(source = source),
+        right = right.coerceTapAction(source = source),
+    )
+}
+
+private fun PhotoWidgetTapAction.coerceTapAction(source: PhotoWidgetSource): PhotoWidgetTapAction {
+    Timber.tag("PhotoWidgetTapAction").d("Check action validity (tapAction=$this,source=$source)")
+
+    return when (source) {
+        PhotoWidgetSource.PHOTOS if this is PhotoWidgetTapAction.ViewInGallery -> {
+            PhotoWidgetTapAction.ViewFullScreen()
+        }
+
+        else -> this
+    }.also {
+        Timber.tag("PhotoWidgetTapAction").d("Check result — tapAction=$it")
     }
 }
