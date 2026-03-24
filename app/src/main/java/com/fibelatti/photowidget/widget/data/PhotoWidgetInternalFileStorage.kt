@@ -10,6 +10,7 @@ import com.fibelatti.photowidget.platform.ImageFormat
 import com.fibelatti.photowidget.platform.ImageFormatDetector
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.UriPermissionGrantor
+import com.fibelatti.photowidget.platform.runWithFileOutputStream
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
@@ -68,7 +69,9 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
                         }
                         newFiles.map { file ->
                             async {
-                                writeToFile(file) { fos -> importedPhoto.compress(compressFormat, 95, fos) }
+                                file.runWithFileOutputStream { fos ->
+                                    importedPhoto.compress(compressFormat, 95, fos)
+                                }
                             }
                         }.awaitAll()
                     }
@@ -76,7 +79,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
                     newFiles.map { file ->
                         async {
                             contentResolver.openInputStream(source)?.use { input ->
-                                writeToFile(file, input::copyTo)
+                                file.runWithFileOutputStream(input::copyTo)
                             }
                         }
                     }.awaitAll()
@@ -92,19 +95,6 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
                     null
                 }
             }.getOrNull()
-        }
-    }
-
-    private fun writeToFile(file: File, operation: (FileOutputStream) -> Unit) {
-        if (!file.exists()) file.createNewFile()
-        runCatching {
-            FileOutputStream(file).use { fos -> operation(fos) }
-            require(file.length() > 0) { "File is empty" }
-        }.onSuccess {
-            Timber.d("Successfully saved to $file")
-        }.onFailure {
-            Timber.e(it, "Failed to save to $file")
-            file.delete()
         }
     }
 
@@ -190,7 +180,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         // otherwise the widget won't update if the same file is overwritten every time
         val file = File("$dir/${System.currentTimeMillis()}.png")
 
-        writeToFile(file) { fos ->
+        file.runWithFileOutputStream { fos ->
             currentPhoto.compress(Bitmap.CompressFormat.PNG, 100, fos)
         }
 
