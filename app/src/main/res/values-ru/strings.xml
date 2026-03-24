@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Widget Host -->
     <string name="photo_widget_host_description">Добавьте любимые фото или синхронизируйте папки. Настройте действия. Выберите формат при настройке и размер после размещения.</string>
     <string name="photo_widget_host_loading">Загрузка виджета…</string>
@@ -160,9 +160,9 @@
     <string name="photo_widget_configure_interval_minutes_label">Минуты</string>
     <string name="photo_widget_configure_interval_hours_label">Часы</string>
     <string name="photo_widget_configure_interval_days_label">Дни</string>
-    <string name="photo_widget_configure_schedule_placeholder">Запланируйте до %d раз для автоматической смены фотографий.</string>
+    <string name="photo_widget_configure_schedule_placeholder" tools:ignore="PluralsCandidate">Запланируйте до %d раз для автоматической смены фотографий.</string>
     <string name="photo_widget_configure_schedule_add_new">Добавить новое</string>
-    <string name="photo_widget_configure_schedule_limit_reached">Достигнут максимум в %d раза</string>
+    <string name="photo_widget_configure_schedule_limit_reached" tools:ignore="PluralsCandidate">Достигнут максимум в %d раза</string>
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="one">%d раз выбран</item>
         <item quantity="few">%d раза выбраны</item>

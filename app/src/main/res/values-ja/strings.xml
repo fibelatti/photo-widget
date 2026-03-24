@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Widget Host -->
     <string name="photo_widget_host_description">お気に入りの写真を追加するかフォルダを同期。アクションを設定し、カスタマイズ時に形式、配置後にサイズを選択できます。</string>
     <string name="photo_widget_host_loading">ウィジェットを読み込み中…</string>
@@ -145,9 +145,9 @@
     <string name="photo_widget_configure_interval_minutes_label">分</string>
     <string name="photo_widget_configure_interval_hours_label">時間</string>
     <string name="photo_widget_configure_interval_days_label">日</string>
-    <string name="photo_widget_configure_schedule_placeholder">写真を自動的に切り替える時間を最大%dつまでスケジュールします。</string>
+    <string name="photo_widget_configure_schedule_placeholder" tools:ignore="PluralsCandidate">写真を自動的に切り替える時間を最大%dつまでスケジュールします。</string>
     <string name="photo_widget_configure_schedule_add_new">新規追加</string>
-    <string name="photo_widget_configure_schedule_limit_reached">最大%dつの時間に達しました</string>
+    <string name="photo_widget_configure_schedule_limit_reached" tools:ignore="PluralsCandidate">最大%dつの時間に達しました</string>
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="other">%dつの時間が選択されました</item>
     </plurals>
