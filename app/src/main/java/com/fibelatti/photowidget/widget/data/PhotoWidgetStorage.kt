@@ -78,7 +78,7 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     fun loadWidgetPhotos(appWidgetId: Int): Flow<WidgetPhotos> = flow {
-        Timber.d("Retrieving photos (appWidgetId=$appWidgetId)")
+        Timber.i("Retrieving photos (appWidgetId=$appWidgetId)")
 
         val excludedPhotos = getExcludedPhotoIds(appWidgetId = appWidgetId)
 
@@ -215,7 +215,7 @@ class PhotoWidgetStorage @Inject constructor(
         currentPhotos: List<LocalPhoto>? = null,
         removedPhotos: List<LocalPhoto>? = null,
     ) {
-        Timber.d("Syncing photos (appWidgetId=$appWidgetId, fromWidget=${currentPhotos != null})")
+        Timber.i("Syncing photos (appWidgetId=$appWidgetId, fromWidget=${currentPhotos != null})")
 
         val excludedPhotos: Set<String> = removedPhotos?.map { it.photoId }?.toSet()
             ?: getExcludedPhotoIds(appWidgetId = appWidgetId)
@@ -501,7 +501,7 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     suspend fun deleteWidgetData(appWidgetId: Int) {
-        Timber.d("Deleting widget data (appWidgetId=$appWidgetId)")
+        Timber.i("Deleting widget data (appWidgetId=$appWidgetId)")
         sharedPreferences.deleteWidgetData(appWidgetId = appWidgetId)
         internalFileStorage.deleteWidgetData(appWidgetId = appWidgetId)
 

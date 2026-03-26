@@ -26,7 +26,7 @@ class CreateBackupUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(): File = withContext(Dispatchers.IO) {
-        Timber.d("Creating backup. Loading widgets...")
+        Timber.i("Creating backup. Loading widgets...")
 
         val widgetsToExport: Map<Int, PhotoWidget> = photoWidgetStorage.getKnownWidgetIds()
             .associateWith { id: Int -> loadPhotoWidgetUseCase(appWidgetId = id).first() }
@@ -44,7 +44,7 @@ class CreateBackupUseCase @Inject constructor(
             backupDir.deleteRecursively()
         }
 
-        Timber.d("Backup file created successfully!")
+        Timber.i("Backup file created successfully!")
 
         return@withContext zipFile
     }

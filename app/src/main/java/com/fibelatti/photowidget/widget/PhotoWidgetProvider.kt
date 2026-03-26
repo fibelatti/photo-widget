@@ -42,7 +42,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
 
-        Timber.d("Broadcast received (action=${intent.action}, appWidgetId=${intent.appWidgetId})")
+        Timber.i("Broadcast received (action=${intent.action}, appWidgetId=${intent.appWidgetId})")
 
         val action: Action = Action.fromValue(intent.action) ?: return
 
@@ -69,7 +69,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
     }
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        Timber.d("Update requested by the system (appWidgetIds=${appWidgetIds.toList()})")
+        Timber.i("Update requested by the system (appWidgetIds=${appWidgetIds.toList()})")
 
         handler.post {
             for (appWidgetId in appWidgetIds) {
@@ -84,7 +84,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         appWidgetId: Int,
         newOptions: Bundle?,
     ) {
-        Timber.d("Options changed by the system (appWidgetId=$appWidgetId)")
+        Timber.i("Options changed by the system (appWidgetId=$appWidgetId)")
 
         handler.post {
             update(context = context, appWidgetId = appWidgetId)
@@ -92,7 +92,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
     }
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
-        Timber.d("Delete requested by the system (appWidgetIds=${appWidgetIds.toList()})")
+        Timber.i("Delete requested by the system (appWidgetIds=${appWidgetIds.toList()})")
 
         handler.post {
             val entryPoint: PhotoWidgetEntryPoint = entryPoint(context)
@@ -133,7 +133,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             appWidgetId: Int,
             recoveryMode: Boolean = false,
         ) {
-            Timber.d("Updating widget (appWidgetId=$appWidgetId)")
+            Timber.i("Updating widget (appWidgetId=$appWidgetId)")
 
             val appWidgetManager: AppWidgetManager = AppWidgetManager.getInstance(context)
             val entryPoint: PhotoWidgetEntryPoint = entryPoint(context)
@@ -210,7 +210,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val remoteViews = RemoteViews(context.packageName, R.layout.photo_widget)
 
             if (result == null) {
-                Timber.d("Failed to prepare current photo")
+                Timber.e("Failed to prepare current photo")
                 return setErrorState(
                     remoteViews = remoteViews,
                     context = context,

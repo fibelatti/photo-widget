@@ -28,7 +28,7 @@ class PhotoWidgetSyncWorker @AssistedInject constructor(
 ) : CoroutineWorker(appContext = context, params = workerParams) {
 
     override suspend fun doWork(): Result {
-        Timber.d("Working...")
+        Timber.i("Working...")
 
         val ids: List<Int> = PhotoWidgetProvider.ids(applicationContext).ifEmpty {
             Timber.d("There are no widgets.")
@@ -64,7 +64,7 @@ class PhotoWidgetSyncWorker @AssistedInject constructor(
         private const val UNIQUE_WORK_NAME = "PhotoWidgetSyncWorker"
 
         fun enqueueWork(context: Context) {
-            Timber.d("Enqueuing work...")
+            Timber.i("Enqueuing work...")
 
             val workRequest: PeriodicWorkRequest.Builder = PeriodicWorkRequestBuilder<PhotoWidgetSyncWorker>(
                 repeatInterval = Duration.ofHours(6),

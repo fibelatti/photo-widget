@@ -72,7 +72,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     val state: StateFlow<PhotoWidgetConfigureState> = _state.asStateFlow()
 
     init {
-        Timber.d("Configuring widget (appWidgetId=$appWidgetId)")
+        Timber.i("Configuring widget (appWidgetId=$appWidgetId)")
 
         viewModelScope.launch {
             deleteStaleDataUseCase()

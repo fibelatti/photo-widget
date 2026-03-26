@@ -16,7 +16,7 @@ import timber.log.Timber
 class PhotoWidgetPinnedReceiver : EntryPointBroadcastReceiver() {
 
     override suspend fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
-        Timber.d("Working... (appWidgetId=${intent.appWidgetId})")
+        Timber.i("Working... (appWidgetId=${intent.appWidgetId})")
 
         val widgetId = intent.appWidgetId
             .takeUnless { it == AppWidgetManager.INVALID_APPWIDGET_ID }

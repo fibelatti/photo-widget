@@ -31,7 +31,7 @@ class ZipUtils @Inject constructor() {
             error("No files found in $sourceDir.")
         }
 
-        Timber.i("Successfully zipped $count files to $zipFile ($size bytes total)")
+        Timber.d("Successfully zipped $count files to $zipFile ($size bytes total)")
 
         return@withContext zipFile
     }
@@ -119,7 +119,7 @@ class ZipUtils @Inject constructor() {
             throw e
         }
 
-        Timber.i("Successfully extracted ${extractedFiles.size} files to $parentDir ($totalSize bytes total)")
+        Timber.d("Successfully extracted ${extractedFiles.size} files to $parentDir ($totalSize bytes total)")
 
         return@withContext parentDir
     }

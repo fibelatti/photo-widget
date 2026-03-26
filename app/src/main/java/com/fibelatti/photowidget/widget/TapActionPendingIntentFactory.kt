@@ -28,7 +28,7 @@ object TapActionPendingIntentFactory {
         originalPhotoPath: String?,
         externalUri: Uri?,
     ): PendingIntent? {
-        Timber.d(
+        Timber.i(
             "Determining intent (" +
                 "appWidgetId=$appWidgetId," +
                 "tapAction=$tapAction," +

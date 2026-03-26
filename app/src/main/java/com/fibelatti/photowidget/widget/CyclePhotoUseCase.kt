@@ -29,7 +29,7 @@ class CyclePhotoUseCase @Inject constructor(
         skipSaving: Boolean = false,
         currentPhoto: String? = null,
     ): String {
-        Timber.d(
+        Timber.i(
             "Cycling photo (" +
                 "appWidgetId=$appWidgetId," +
                 "direction=$direction," +

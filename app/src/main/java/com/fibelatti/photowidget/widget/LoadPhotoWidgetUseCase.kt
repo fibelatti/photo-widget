@@ -19,7 +19,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
 ) {
 
     operator fun invoke(appWidgetId: Int): Flow<PhotoWidget> = with(photoWidgetStorage) {
-        Timber.d("Loading widget data (appWidgetId=$appWidgetId)")
+        Timber.i("Loading widget data (appWidgetId=$appWidgetId)")
 
         val widget = loadWidgetData(appWidgetId = appWidgetId)
 

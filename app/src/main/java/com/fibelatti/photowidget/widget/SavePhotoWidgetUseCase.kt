@@ -21,7 +21,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
         appWidgetId: Int,
         photoWidget: PhotoWidget,
     ) {
-        Timber.d("Saving widget data (appWidgetId=$appWidgetId)")
+        Timber.i("Saving widget data (appWidgetId=$appWidgetId)")
 
         saveWidgetContent(appWidgetId = appWidgetId, photoWidget = photoWidget)
         saveWidgetAppearance(appWidgetId = appWidgetId, photoWidget = photoWidget)

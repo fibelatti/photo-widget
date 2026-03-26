@@ -46,7 +46,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     private val finishReceiver: BroadcastReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
-            Timber.d("Broadcast received (action=${intent.action})")
+            Timber.i("Broadcast received (action=${intent.action})")
 
             if (ACTION_FINISH == intent.action) {
                 Toast.makeText(

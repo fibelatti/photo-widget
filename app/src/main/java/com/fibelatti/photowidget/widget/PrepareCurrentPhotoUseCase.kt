@@ -33,7 +33,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
     ): Result? {
         val currentPhotoPath: String = photoWidget.currentPhoto?.getPhotoPath() ?: return null
 
-        Timber.d(
+        Timber.i(
             "Preparing current photo (" +
                 "appWidgetId=$appWidgetId," +
                 "recoveryMode=$recoveryMode," +

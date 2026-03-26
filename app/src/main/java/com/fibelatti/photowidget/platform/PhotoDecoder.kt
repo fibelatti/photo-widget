@@ -33,7 +33,7 @@ class PhotoDecoder @Inject constructor(
         imageLoader.execute(request)
             .also { result ->
                 when (result) {
-                    is ErrorResult -> Timber.d("Decoding error (data=$data, message=${result.throwable.message})")
+                    is ErrorResult -> Timber.e(result.throwable, "Decoding error (data=$data)")
                     is SuccessResult -> Timber.d("Decoding success (data=$data)")
                 }
             }

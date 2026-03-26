@@ -9,7 +9,7 @@ import timber.log.Timber
 class PhotoWidgetRescheduleReceiver : EntryPointBroadcastReceiver() {
 
     override suspend fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
-        Timber.d("Working...")
+        Timber.i("Working...")
 
         val isBoot = Intent.ACTION_BOOT_COMPLETED == intent.action ||
             Intent.ACTION_LOCKED_BOOT_COMPLETED == intent.action

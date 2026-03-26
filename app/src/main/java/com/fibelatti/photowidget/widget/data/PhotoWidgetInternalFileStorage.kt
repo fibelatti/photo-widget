@@ -105,7 +105,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }.onSuccess {
             Timber.d("Successfully saved to $file")
         }.onFailure {
-            Timber.d("Failed to save to $file")
+            Timber.e(it, "Failed to save to $file")
             file.delete()
         }
     }
@@ -184,7 +184,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
     ): Uri? = withContext(Dispatchers.IO) {
         val launcherPackages: List<String> = getLauncherPackages()
         if (launcherPackages.isEmpty()) {
-            Timber.d("No launcher packages found, unable to generate URI.")
+            Timber.w("No launcher packages found, unable to generate URI.")
             return@withContext null
         }
 
@@ -200,7 +200,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
 
         if (!file.exists()) {
-            Timber.d("Failed to create file, unable to generate URI.")
+            Timber.w("Failed to create file, unable to generate URI.")
             return@withContext null
         }
 
