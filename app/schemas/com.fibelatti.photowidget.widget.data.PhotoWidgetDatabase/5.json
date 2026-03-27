@@ -1,0 +1,201 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 5,
+    "identityHash": "680f2bb16430c5d0ed19be4132285d96",
+    "entities": [
+      {
+        "tableName": "local_widget_photos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`widgetId` INTEGER NOT NULL, `photoId` TEXT NOT NULL, `croppedPhotoPath` TEXT, `originalPhotoPath` TEXT, `externalUri` TEXT, `timestamp` INTEGER NOT NULL, PRIMARY KEY(`widgetId`, `photoId`))",
+        "fields": [
+          {
+            "fieldPath": "widgetId",
+            "columnName": "widgetId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "photoId",
+            "columnName": "photoId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "croppedPhotoPath",
+            "columnName": "croppedPhotoPath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "originalPhotoPath",
+            "columnName": "originalPhotoPath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "externalUri",
+            "columnName": "externalUri",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "widgetId",
+            "photoId"
+          ]
+        }
+      },
+      {
+        "tableName": "displayed_widget_photos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`widgetId` INTEGER NOT NULL, `photoId` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, PRIMARY KEY(`widgetId`, `photoId`))",
+        "fields": [
+          {
+            "fieldPath": "widgetId",
+            "columnName": "widgetId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "photoId",
+            "columnName": "photoId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "widgetId",
+            "photoId"
+          ]
+        }
+      },
+      {
+        "tableName": "photo_widget_order",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`widgetId` INTEGER NOT NULL, `photoIndex` INTEGER NOT NULL, `photoId` TEXT NOT NULL, PRIMARY KEY(`widgetId`, `photoId`))",
+        "fields": [
+          {
+            "fieldPath": "widgetId",
+            "columnName": "widgetId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "photoIndex",
+            "columnName": "photoIndex",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "photoId",
+            "columnName": "photoId",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "widgetId",
+            "photoId"
+          ]
+        }
+      },
+      {
+        "tableName": "pending_deletion_widget_photos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`widgetId` INTEGER NOT NULL, `photoId` TEXT NOT NULL, `deletionTimestamp` INTEGER NOT NULL, PRIMARY KEY(`widgetId`, `photoId`))",
+        "fields": [
+          {
+            "fieldPath": "widgetId",
+            "columnName": "widgetId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "photoId",
+            "columnName": "photoId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deletionTimestamp",
+            "columnName": "deletionTimestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "widgetId",
+            "photoId"
+          ]
+        }
+      },
+      {
+        "tableName": "excluded_widget_photos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`widgetId` INTEGER NOT NULL, `photoId` TEXT NOT NULL, PRIMARY KEY(`widgetId`, `photoId`))",
+        "fields": [
+          {
+            "fieldPath": "widgetId",
+            "columnName": "widgetId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "photoId",
+            "columnName": "photoId",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "widgetId",
+            "photoId"
+          ]
+        }
+      },
+      {
+        "tableName": "widget_directories",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`directoryName` TEXT NOT NULL, `widgetId` INTEGER NOT NULL, PRIMARY KEY(`directoryName`))",
+        "fields": [
+          {
+            "fieldPath": "directoryName",
+            "columnName": "directoryName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "widgetId",
+            "columnName": "widgetId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "directoryName"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '680f2bb16430c5d0ed19be4132285d96')"
+    ]
+  }
+}

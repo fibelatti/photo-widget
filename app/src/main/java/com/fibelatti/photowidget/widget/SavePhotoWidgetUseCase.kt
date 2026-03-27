@@ -40,7 +40,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
         appWidgetId: Int,
         photoWidget: PhotoWidget,
     ) {
-        photoWidgetStorage.renameTemporaryWidgetDir(appWidgetId = appWidgetId)
+        photoWidgetStorage.assignWidgetId(appWidgetId = appWidgetId)
 
         photoWidgetStorage.saveWidgetSource(appWidgetId = appWidgetId, source = photoWidget.source)
 

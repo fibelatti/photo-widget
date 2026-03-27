@@ -4,6 +4,7 @@ import androidx.room.AutoMigration
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.RoomDatabase
 import androidx.room.Transaction
@@ -16,13 +17,15 @@ import androidx.room.Upsert
         PhotoWidgetOrderDto::class,
         PendingDeletionWidgetPhotoDto::class,
         ExcludedWidgetPhotoDto::class,
+        WidgetDirectoryDto::class,
     ],
-    version = 4,
+    version = 5,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 2, to = 3),
         AutoMigration(from = 3, to = 4),
+        AutoMigration(from = 4, to = 5),
     ],
 )
 abstract class PhotoWidgetDatabase : RoomDatabase() {
@@ -36,6 +39,8 @@ abstract class PhotoWidgetDatabase : RoomDatabase() {
     abstract fun pendingDeletionWidgetPhotoDao(): PendingDeletionWidgetPhotoDao
 
     abstract fun excludedWidgetPhotoDao(): ExcludedWidgetPhotoDao
+
+    abstract fun widgetDirectoryDao(): WidgetDirectoryDao
 }
 
 @Entity(
@@ -222,4 +227,38 @@ interface ExcludedWidgetPhotoDao {
 
     @Query("delete from excluded_widget_photos where widgetId = :widgetId")
     suspend fun deletePhotosByWidgetId(widgetId: Int)
+}
+
+@Entity(tableName = "widget_directories")
+data class WidgetDirectoryDto(
+    @PrimaryKey val directoryName: String,
+    val widgetId: Int,
+)
+
+@Dao
+interface WidgetDirectoryDao {
+
+    @Query("select directoryName from widget_directories where widgetId = :widgetId")
+    suspend fun getDirectoryName(widgetId: Int): String?
+
+    @Query("select * from widget_directories")
+    suspend fun getAll(): List<WidgetDirectoryDto>
+
+    @Query("select * from widget_directories where widgetId = 0")
+    suspend fun getDraftDirectories(): List<WidgetDirectoryDto>
+
+    @Query("update widget_directories set widgetId = :newWidgetId where widgetId = :oldWidgetId")
+    suspend fun updateWidgetId(oldWidgetId: Int, newWidgetId: Int)
+
+    @Upsert
+    suspend fun insert(directory: WidgetDirectoryDto)
+
+    @Upsert
+    suspend fun insert(directories: List<WidgetDirectoryDto>)
+
+    @Query("delete from widget_directories where widgetId = :widgetId")
+    suspend fun deleteByWidgetId(widgetId: Int)
+
+    @Query("delete from widget_directories where directoryName = :directoryName")
+    suspend fun deleteByDirectoryName(directoryName: String)
 }

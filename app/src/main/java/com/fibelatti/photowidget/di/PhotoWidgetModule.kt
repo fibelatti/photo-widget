@@ -17,6 +17,7 @@ import com.fibelatti.photowidget.widget.data.LocalPhotoDao
 import com.fibelatti.photowidget.widget.data.PendingDeletionWidgetPhotoDao
 import com.fibelatti.photowidget.widget.data.PhotoWidgetDatabase
 import com.fibelatti.photowidget.widget.data.PhotoWidgetOrderDao
+import com.fibelatti.photowidget.widget.data.WidgetDirectoryDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -71,6 +72,11 @@ object PhotoWidgetModule {
     fun excludedPhotoDao(
         photoWidgetDatabase: PhotoWidgetDatabase,
     ): ExcludedWidgetPhotoDao = photoWidgetDatabase.excludedWidgetPhotoDao()
+
+    @Provides
+    fun widgetDirectoryDao(
+        photoWidgetDatabase: PhotoWidgetDatabase,
+    ): WidgetDirectoryDao = photoWidgetDatabase.widgetDirectoryDao()
 
     @Provides
     @Singleton
