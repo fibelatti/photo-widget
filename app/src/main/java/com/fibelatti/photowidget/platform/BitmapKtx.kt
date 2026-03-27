@@ -146,7 +146,7 @@ private fun Bitmap.sourceRect(aspectRatio: PhotoWidgetAspectRatio): Rect {
         "Calculating source rect for bitmap (" +
             "width=$width," +
             "height=$height," +
-            "aspectRatio=$aspectRatio," +
+            "aspectRatio=$aspectRatio" +
             ")",
     )
 
