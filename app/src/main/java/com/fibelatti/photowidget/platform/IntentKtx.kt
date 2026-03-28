@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.platform
 
+import android.annotation.SuppressLint
 import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
@@ -27,8 +28,14 @@ fun appSettingsIntent(context: Context): Intent {
     }
 }
 
-fun batteryUsageSettingsIntent(): Intent {
-    return Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+@SuppressLint("BatteryLife")
+fun disableBatteryOptimizationIntent(context: Context): Intent {
+    return Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+        setData(Uri.fromParts("package", context.packageName, null))
+    }
 }
 
 fun sharePhotoChooserIntent(context: Context, originalPhotoPath: String?, externalUri: Uri?): Intent? {

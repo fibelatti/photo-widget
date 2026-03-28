@@ -254,10 +254,10 @@
     <string name="restriction_warning_hint">La actividad en segundo plano está restringida. Es posible que los widgets no funcionen correctamente. Toca para obtener más información.</string>
     <string name="restriction_warning_dialog_title">Restricciones de actividad en segundo plano y optimización de batería</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget necesita ejecutarse en segundo plano para actualizar tus widgets. Si el uso de batería está en \"Optimizado\", Android podría detener la aplicación, lo que impide que los widgets se actualicen correctamente.</string>
-    <string name="restriction_warning_dialog_body_2">Ve a los ajustes de la aplicación, luego a \"Uso de batería de la aplicación\". Haz clic en \"Permitir uso en segundo plano\" y selecciona \"Sin restricciones\" para garantizar actualizaciones fiables. Si esta opción no aparece, consulta los ajustes de energía del teléfono.</string>
+    <string name="restriction_warning_dialog_body_2">Puedes conceder el permiso usando el botón de abajo, o ir a los ajustes de la aplicación y acceder a \"Uso de batería de la aplicación\". Toca \"Permitir uso en segundo plano\" y selecciona \"Sin restricciones\" para garantizar actualizaciones fiables.</string>
     <string name="restriction_warning_dialog_body_3">Es posible que algunos dispositivos también impidan que la aplicación se inicie tras un reinicio. Busca \"inicio automático\" en los ajustes o visita https://dontkillmyapp.com para obtener instrucciones específicas según la marca de tu teléfono.</string>
+    <string name="restriction_warning_grant_battery_permission">Conceder permiso</string>
     <string name="restriction_warning_open_app_settings">Abrir configuración de la aplicación</string>
-    <string name="restriction_warning_open_power_settings">Abrir configuración de energía</string>
     <!-- Translations -->
     <string name="translations_dialog_title">¡Ayuda a traducir a tu idioma!</string>
     <string name="translations_dialog_body">Esta aplicación utiliza un enfoque comunitario para las traducciones, y tu ayuda puede mejorarla. Puedes contribuir si quieres ver un nuevo idioma disponible o si detectas algo que no se ve bien.</string>

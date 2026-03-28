@@ -252,10 +252,10 @@
     <string name="restriction_warning_hint">May limitasyon sa aktibidad sa background. Maaaring hindi umandar nang maayos ang mga widget. Pumindot para matuto pa.</string>
     <string name="restriction_warning_dialog_title">Mga limitasyon sa aktibidad sa background at optimisasyon sa baterya</string>
     <string name="restriction_warning_dialog_body_1">Kailangang tumakbo ng Material Photo Widget sa background para ma-update ang iyong mga widget. Kung ang paggamit ng baterya ay naka-set sa \"Optimized,\" maaaring ihinto ng Android ang app, na pumipigil sa tamang pag-update ng mga widget.</string>
-    <string name="restriction_warning_dialog_body_2">Pumunta sa mga setting ng app, pagkatapos ay sa \"App battery usage.\" I-click ang \"Payagan ang paggamit sa background\" at piliin ang \"Walang limitasyon\" para matiyak ang maaasahang mga update. Kung hindi makita ang opsyong ito, suriin ang mga power setting ng telepono.</string>
+    <string name="restriction_warning_dialog_body_2">Maaari kang magbigay ng pahintulot gamit ang pindutan sa ibaba, o buksan ang mga setting ng app at pumunta sa \"App battery usage.\" I-tap ang \"Payagan ang paggamit sa background\" at piliin ang \"Walang limitasyon\" para matiyak ang maaasahang mga update.</string>
     <string name="restriction_warning_dialog_body_3">Ang ilang device ay maaari ding harangan ang pag-start ng app pagkatapos ng restart. Hanapin sa iyong mga setting ang \"auto-start\" o bisitahin ang https://dontkillmyapp.com para sa mga tagubilin na partikular sa brand ng iyong telepono.</string>
+    <string name="restriction_warning_grant_battery_permission">Magbigay ng pahintulot</string>
     <string name="restriction_warning_open_app_settings">Buksan ang mga setting ng app</string>
-    <string name="restriction_warning_open_power_settings">Buksan ang mga setting sa power</string>
     <!-- Translations -->
     <string name="translations_dialog_title">Tumulong sa pagsasalin-wika!</string>
     <string name="translations_dialog_body">Pinangungunahan ng komunidad ang pagsasalin ng app na ito, at maaari kang tumulong. Puwede kang mag-ambag kung nais mong makakita ng bagong wika, o kung may nakita kang mukhang mali.</string>

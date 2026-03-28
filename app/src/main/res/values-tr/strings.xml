@@ -252,10 +252,10 @@
     <string name="restriction_warning_hint">Arka plan etkinliği kısıtlandı. Widget\'lar düzgün çalışmayabilir. Daha fazla bilgi için dokunun.</string>
     <string name="restriction_warning_dialog_title">Arka plan çalıştırma kısıtlamaları ve pil optimizasyonu</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget\'ın araç takımlarınızı güncellemesi için arka planda çalışması gerekir. Pil kullanımı \"Optimize edilmiş\" olarak ayarlanmışsa Android uygulamayı durdurabilir ve bu da araç takımlarının düzgün güncellenmesini engelleyebilir.</string>
-    <string name="restriction_warning_dialog_body_2">Uygulama ayarlarına, ardından \"Uygulama pil kullanımı\"na gidin. \"Arka planda kullanıma izin ver\"e tıklayın ve güvenilir güncellemeler sağlamak için \"Kısıtlanmamış\"ı seçin. Bu seçenek görünmüyorsa telefonun güç ayarlarını kontrol edin.</string>
+    <string name="restriction_warning_dialog_body_2">Aşağıdaki düğmeyi kullanarak izni verebilir veya uygulama ayarlarını açıp \"Uygulama pil kullanımı\"na gidebilirsiniz. \"Arka planda kullanıma izin ver\"e dokunun ve güvenilir güncellemeler sağlamak için \"Kısıtlanmamış\"ı seçin.</string>
     <string name="restriction_warning_dialog_body_3">Bazı cihazlar, yeniden başlatmanın ardından uygulamanın çalışmasını da engelleyebilir. Ayarlarınızda \"otomatik başlatma\" seçeneğini arayın veya telefon markanıza özel talimatlar için https://dontkillmyapp.com adresini ziyaret edin.</string>
+    <string name="restriction_warning_grant_battery_permission">İzin ver</string>
     <string name="restriction_warning_open_app_settings">Uygulama ayarlarını aç</string>
-    <string name="restriction_warning_open_power_settings">Güç ayarlarını aç</string>
     <!-- Translations -->
     <string name="translations_dialog_title">Kendi dilinize çeviriye yardım edin!</string>
     <string name="translations_dialog_body">Bu uygulama çeviriler için topluluk odaklı bir yaklaşım kullanır ve sizin yardımınız onu daha iyi hale getirebilir. Yeni bir dilin kullanılabilir olmasını istiyorsanız veya doğru görünmeyen bir şey fark ettiyseniz katkıda bulunabilirsiniz.</string>

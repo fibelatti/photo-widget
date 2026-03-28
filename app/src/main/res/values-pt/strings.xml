@@ -254,10 +254,10 @@
     <string name="restriction_warning_hint">A atividade em segundo plano está restrita. Os widgets podem não funcionar corretamente. Toque para saber mais.</string>
     <string name="restriction_warning_dialog_title">Restrições de execução em segundo plano e otimização de bateria</string>
     <string name="restriction_warning_dialog_body_1">O Material Photo Widget precisa ser executado em segundo plano para atualizar seus widgets. Se o uso da bateria estiver definido como \"Otimizado\", o Android poderá interromper o aplicativo, o que impede que os widgets sejam atualizados corretamente.</string>
-    <string name="restriction_warning_dialog_body_2">Vá para as configurações do aplicativo e depois em \"Uso da bateria do aplicativo\". Clique em \"Permitir uso em segundo plano\" e selecione \"Sem restrições\" para garantir atualizações confiáveis. Se essa opção não estiver visível, verifique as configurações de energia do telefone.</string>
+    <string name="restriction_warning_dialog_body_2">Você pode conceder a permissão usando o botão abaixo, ou abrir as configurações do aplicativo e ir em \"Uso da bateria do aplicativo\". Toque em \"Permitir uso em segundo plano\" e selecione \"Sem restrições\" para garantir atualizações confiáveis.</string>
     <string name="restriction_warning_dialog_body_3">Alguns dispositivos também podem bloquear a inicialização do aplicativo após uma reinicialização. Pesquise por \"início automático\" nas configurações ou visite https://dontkillmyapp.com para obter instruções específicas para a marca do seu telefone.</string>
+    <string name="restriction_warning_grant_battery_permission">Conceder permissão</string>
     <string name="restriction_warning_open_app_settings">Abrir configurações do aplicativo</string>
-    <string name="restriction_warning_open_power_settings">Abrir configurações de energia</string>
     <!-- Translations -->
     <string name="translations_dialog_title">Ajude a traduzir para o seu idioma!</string>
     <string name="translations_dialog_body">Este aplicativo utiliza uma abordagem de tradução orientada pela comunidade, e sua ajuda pode melhorá-lo. Você pode contribuir se quiser ver um novo idioma disponível ou se notar algo que não parece certo.</string>

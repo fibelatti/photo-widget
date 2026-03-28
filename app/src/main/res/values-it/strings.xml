@@ -254,10 +254,10 @@
     <string name="restriction_warning_hint">L\'attività in background è limitata. I widget potrebbero non funzionare correttamente. Tocca per saperne di più.</string>
     <string name="restriction_warning_dialog_title">Restrizioni sul lavoro in background e ottimizzazione della batteria</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget deve essere eseguito in background per aggiornare i tuoi widget. Se l\'uso della batteria è impostato su \"Ottimizzato\", Android potrebbe arrestare l\'app, impedendo il corretto aggiornamento dei widget.</string>
-    <string name="restriction_warning_dialog_body_2">Vai nelle impostazioni dell\'app, poi su \"Uso batteria app\". Fai clic su \"Consenti uso in background\" e seleziona \"Senza restrizioni\" per garantire aggiornamenti affidabili. Se questa opzione non è visibile, controlla le impostazioni di risparmio energetico del telefono.</string>
+    <string name="restriction_warning_dialog_body_2">Puoi concedere l\'autorizzazione tramite il pulsante in basso, oppure aprire le impostazioni dell\'app e andare su \"Uso batteria app\". Tocca \"Consenti uso in background\" e seleziona \"Senza restrizioni\" per garantire aggiornamenti affidabili.</string>
     <string name="restriction_warning_dialog_body_3">Alcuni dispositivi potrebbero anche impedire all\'app di avviarsi dopo un riavvio. Cerca \"avvio automatico\" nelle impostazioni o visita https://dontkillmyapp.com per istruzioni specifiche per la marca del tuo telefono.</string>
+    <string name="restriction_warning_grant_battery_permission">Concedi autorizzazione</string>
     <string name="restriction_warning_open_app_settings">Apri impostazioni app</string>
-    <string name="restriction_warning_open_power_settings">Apri impostazioni alimentazione</string>
     <!-- Translations -->
     <string name="translations_dialog_title">Aiuta a tradurre nella tua lingua!</string>
     <string name="translations_dialog_body">Questa app utilizza un approccio basato sulla community per le traduzioni, e il tuo aiuto può renderla migliore. Puoi contribuire se desideri vedere una nuova lingua disponibile, o hai notato qualcosa che non ti sembra corretto.</string>

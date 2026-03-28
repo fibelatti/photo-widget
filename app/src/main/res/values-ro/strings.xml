@@ -260,10 +260,10 @@
     <string name="restriction_warning_hint">Activitatea de fundal este restricționată. Este posibil ca widget-urile să nu funcționeze corect. Atingeți pentru a afla mai multe.</string>
     <string name="restriction_warning_dialog_title">Restricții de lucru în fundal și optimizarea bateriei</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget trebuie să ruleze în fundal pentru a vă actualiza widgeturile. Dacă utilizarea bateriei este setată pe \"Optimizat\", Android poate opri aplicația, ceea ce previne actualizarea corectă a widgeturilor.</string>
-    <string name="restriction_warning_dialog_body_2">Mergeți la setările aplicației, apoi la \"Utilizarea bateriei de către aplicație\". Faceți clic pe \"Permiteți utilizarea pe fundal\" și selectați \"Fără restricții\" pentru a asigura actualizări constante. Dacă această opțiune nu este vizibilă, verificați setările de alimentare ale telefonului.</string>
+    <string name="restriction_warning_dialog_body_2">Puteți acorda permisiunea folosind butonul de mai jos sau deschideți setările aplicației și accesați \"Utilizarea bateriei de către aplicație\". Apăsați pe \"Permiteți utilizarea pe fundal\" și selectați \"Fără restricții\" pentru a asigura actualizări constante.</string>
     <string name="restriction_warning_dialog_body_3">Unele dispozitive pot, de asemenea, să blocheze pornirea aplicației după o repornire. Căutați în setări \"pornire automată\" sau vizitați https://dontkillmyapp.com pentru instrucțiuni specifice mărcii telefonului dumneavoastră.</string>
+    <string name="restriction_warning_grant_battery_permission">Acordați permisiunea</string>
     <string name="restriction_warning_open_app_settings">Deschide aplicația setări</string>
-    <string name="restriction_warning_open_power_settings">Deschide setările de putere</string>
     <!-- Translations -->
     <string name="translations_dialog_title">Ajută la traducerea în limba ta!</string>
     <string name="translations_dialog_body">Această aplicație folosește o abordare bazată pe comunitate pentru traduceri, iar ajutorul dvs. poate să o facă mai bună. Puteți contribui dacă doriți să vedeți o nouă limbă disponibilă sau dacă ați găsit ceva care nu arată corect.</string>

@@ -308,11 +308,11 @@
 
     <string name="restriction_warning_hint">Background activity is restricted. Widgets may not work correctly. Tap to learn more.</string>
     <string name="restriction_warning_dialog_title">Background work restrictions and battery optimization</string>
-    <string name="restriction_warning_dialog_body_1">Material Photo Widget needs to run in the background to update your widgets. If battery usage is set to \"Optimized,\" Android may stop the app, which prevents widgets from updating correctly.</string>
-    <string name="restriction_warning_dialog_body_2">Go to app settings, then \"App battery usage.\" Click \"Allow background usage\" and select \"Unrestricted\" to ensure reliable updates. If this option isn\'t visible, pcheck the phone\'s power settings.</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widget needs to run in the background to update your widgets. If battery usage is set to \"Optimized,\" Android may stop the app, preventing widgets from updating correctly.</string>
+    <string name="restriction_warning_dialog_body_2">You can grant the permission using the button below, or open app settings and go to \"App battery usage.\" Tap \"Allow background usage\" and select \"Unrestricted\" to ensure reliable updates.</string>
     <string name="restriction_warning_dialog_body_3">Some devices may also block the app from starting after a restart. Search your settings for \"auto-start\" or visit https://dontkillmyapp.com for instructions specific to your phone brand.</string>
+    <string name="restriction_warning_grant_battery_permission">Grant permission</string>
     <string name="restriction_warning_open_app_settings">Open app settings</string>
-    <string name="restriction_warning_open_power_settings">Open power settings</string>
 
     <!-- Translations -->
     <string name="translations_dialog_title">Help translate to your language!</string>

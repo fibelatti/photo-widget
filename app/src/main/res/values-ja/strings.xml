@@ -246,10 +246,10 @@
     <string name="restriction_warning_hint">バックグラウンドアクティビティが制限されています。ウィジェットが正しく機能しない場合があります。詳細についてはタップしてください。</string>
     <string name="restriction_warning_dialog_title">バックグラウンド作業の制限とバッテリー最適化</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widgetは、ウィジェットを更新するためにバックグラウンドで実行される必要があります。バッテリーの使用状況が「最適化済み」に設定されていると、Androidがアプリを停止させ、ウィジェットが正しく更新されなくなる場合があります。</string>
-    <string name="restriction_warning_dialog_body_2">アプリの設定から「アプリのバッテリー使用状況」に進みます。「バックグラウンド使用を許可」をクリックし、「制限なし」を選択して、確実な更新を可能にします。このオプションが表示されない場合は、スマートフォンの電源設定を確認してください。</string>
+    <string name="restriction_warning_dialog_body_2">下のボタンから権限を許可するか、アプリの設定から「アプリのバッテリー使用状況」に進んでください。「バックグラウンド使用を許可」をタップし、「制限なし」を選択して、確実な更新を可能にします。</string>
     <string name="restriction_warning_dialog_body_3">一部のデバイスでは、再起動後にアプリが自動的に開始されるのをブロックする場合があります。設定で「自動起動」を検索するか、https://dontkillmyapp.com でお使いのメーカー別の手順を確認してください。</string>
+    <string name="restriction_warning_grant_battery_permission">権限を許可</string>
     <string name="restriction_warning_open_app_settings">アプリ設定を開く</string>
-    <string name="restriction_warning_open_power_settings">電源設定を開く</string>
     <!-- Translations -->
     <string name="translations_dialog_title">あなたの言語への翻訳にご協力ください！</string>
     <string name="translations_dialog_body">このアプリはコミュニティ主導の翻訳アプローチを採用しており、皆様のご協力によりさらに改善されます。新しい言語の追加をご希望の場合や、誤りを見つけた場合はご貢献いただけます。</string>

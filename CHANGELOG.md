@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Increase the amount of max scheduled times to 12
+* Added direct button to disable battery optimization
 
 ## [v1.39.1] - 2026-03-15
 [v1.39.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.39.1

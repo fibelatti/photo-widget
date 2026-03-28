@@ -264,10 +264,10 @@
     <string name="restriction_warning_hint">פעילות ברקע מוגבלת. ייתכן שווידג\'טים לא יפעלו כראוי. הקש למידע נוסף.</string>
     <string name="restriction_warning_dialog_title">הגבלות עבודה ברקע ואופטימיזציה של סוללה</string>
     <string name="restriction_warning_dialog_body_1">היישומון Material Photo Widget צריך לפעול ברקע כדי לעדכן את הווידג\'טים שלך. אם השימוש בסוללה מוגדר כ-\"אופטימלי\", Android עלולה לעצור את האפליקציה, מה שמונע מהווידג\'טים להתעדכן כראוי.</string>
-    <string name="restriction_warning_dialog_body_2">עבור להגדרות האפליקציה, ואז ל-\"שימוש באפליקציה בסוללה\". לחץ על \"אפשר שימוש ברקע\" ובחר ב-\"ללא הגבלה\" כדי להבטיח עדכונים אמינים. אם אפשרות זו אינה גלויה, בדוק את הגדרות הסוללה של הטלפון.</string>
+    <string name="restriction_warning_dialog_body_2">ניתן להעניק את ההרשאה באמצעות הכפתור למטה, או לפתוח את הגדרות האפליקציה ולעבור ל-\"שימוש באפליקציה בסוללה\". הקש על \"אפשר שימוש ברקע\" ובחר ב-\"ללא הגבלה\" כדי להבטיח עדכונים אמינים.</string>
     <string name="restriction_warning_dialog_body_3">מכשירים מסוימים עשויים גם לחסום את הפעלת האפליקציה לאחר הפעלה מחדש. חפש בהגדרות שלך \"הפעלה אוטומטית\" או בקר באתר https://dontkillmyapp.com להוראות ספציפיות עבור מותג הטלפון שלך.</string>
+    <string name="restriction_warning_grant_battery_permission">הענק הרשאה</string>
     <string name="restriction_warning_open_app_settings">פתח את הגדרות האפליקציה</string>
-    <string name="restriction_warning_open_power_settings">פתח הגדרות צריכת חשמל</string>
     <!-- Translations -->
     <string name="translations_dialog_title">עזור לתרגם לשפה שלך!</string>
     <string name="translations_dialog_body">אפליקציה זו משתמשת בגישה קהילתית לתרגומים, והעזרה שלך יכולה לשפר אותה. אתה יכול לתרום אם תרצה לראות שפה חדשה זמינה, או אם הבחנת במשהו שלא נראה טוב.</string>

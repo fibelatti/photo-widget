@@ -254,10 +254,10 @@
     <string name="restriction_warning_hint">Hintergrundaktivität ist eingeschränkt. Widgets funktionieren möglicherweise nicht korrekt. Tippen Sie hier, um mehr zu erfahren.</string>
     <string name="restriction_warning_dialog_title">Hintergrundarbeitsbeschränkungen und Akkuoptimierung</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget muss im Hintergrund ausgeführt werden, um Ihre Widgets zu aktualisieren. Wenn die Akkunutzung auf \"Optimiert\" eingestellt ist, beendet Android die App möglicherweise, was eine korrekte Aktualisierung der Widgets verhindert.</string>
-    <string name="restriction_warning_dialog_body_2">Gehen Sie zu den App-Einstellungen und dann zu \"App-Akkunutzung\". Klicken Sie auf \"Hintergrundnutzung zulassen\" und wählen Sie \"Nicht eingeschränkt\", um zuverlässige Updates zu gewährleisten. Wenn diese Option nicht sichtbar ist, prüfen Sie die Energieeinstellungen des Telefons.</string>
+    <string name="restriction_warning_dialog_body_2">Sie können die Berechtigung über die Schaltfläche unten erteilen oder zu den App-Einstellungen gehen und \"App-Akkunutzung\" öffnen. Tippen Sie auf \"Hintergrundnutzung zulassen\" und wählen Sie \"Nicht eingeschränkt\", um zuverlässige Updates zu gewährleisten.</string>
     <string name="restriction_warning_dialog_body_3">Einige Geräte blockieren möglicherweise auch den automatischen Start der App nach einem Neustart. Suchen Sie in Ihren Einstellungen nach \"Autostart\" oder besuchen Sie https://dontkillmyapp.com für gerätespezifische Anweisungen.</string>
+    <string name="restriction_warning_grant_battery_permission">Berechtigung erteilen</string>
     <string name="restriction_warning_open_app_settings">App-Einstellungen öffnen</string>
-    <string name="restriction_warning_open_power_settings">Energieeinstellungen öffnen</string>
     <!-- Translations -->
     <string name="translations_dialog_title">Helfen Sie beim Übersetzen in Ihre Sprache!</string>
     <string name="translations_dialog_body">Diese App verwendet einen Community-basierten Ansatz für Übersetzungen, und Ihre Hilfe kann sie verbessern. Sie können dazu beitragen, wenn Sie eine neue Sprache verfügbar sehen möchten oder etwas entdeckt haben, das nicht richtig aussieht.</string>

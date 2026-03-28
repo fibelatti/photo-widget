@@ -55,6 +55,9 @@ app.
 * SCHEDULE_EXACT_ALARM (optional) — This is an optional permission that is
   needed if you would like to use shorter intervals to switch photos, ensuring
   that they follow the selected schedule exactly.
+* REQUEST_IGNORE_BATTERY_OPTIMIZATIONS (optional) — This is an optional
+  permission that is needed to ensure that widgets are updated as expected in
+  Android flavors that tend to kill apps that mostly run in the background.
 * WAKE_LOCK & FOREGROUND_SERVICE — These permissions are used by Work Manager;
   a standard Android library to manage background work, in this case, used to
   ensure that the widget keeps functioning as expected.
