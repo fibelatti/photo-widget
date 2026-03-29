@@ -64,7 +64,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        // Set the result to CANCELED. This will cause the widget host to cancel
+        // Set the result to "CANCELED". This will cause the widget host to cancel
         // out of the widget placement if the user presses the back button.
         setResult(RESULT_CANCELED)
 
@@ -75,7 +75,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 PhotoWidgetConfigureScreen(
                     viewModel = viewModel,
                     isUpdating = intent.appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID,
-                    onBack = ::showExitConfirmationDialog,
+                    onBack = ::handleBackPress,
                 )
 
                 RememberedEffect(state.messages) {
@@ -98,6 +98,36 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
     private fun checkIntent() {
         intent.sharedPhotos?.let(viewModel::photoPicked)
+    }
+
+    private fun handleBackPress() {
+        val stateValue: PhotoWidgetConfigureState = viewModel.state.value
+        when {
+            stateValue.isDraft && stateValue.hasEdits -> showSaveDraftDialog()
+
+            stateValue.hasEdits -> showExitConfirmationDialog()
+
+            else -> {
+                if (stateValue.isDraft) {
+                    viewModel.discardDraft()
+                }
+                finish()
+            }
+        }
+    }
+
+    private fun showSaveDraftDialog() {
+        showMaterialAlertDialog {
+            setMessage(R.string.photo_widget_configure_save_draft_prompt)
+            setPositiveButton(R.string.photo_widget_action_yes) { _, _ ->
+                viewModel.saveDraft()
+                finish()
+            }
+            setNegativeButton(R.string.photo_widget_action_no) { _, _ ->
+                viewModel.discardDraft()
+                finish()
+            }
+        }
     }
 
     private fun showExitConfirmationDialog() {
@@ -170,8 +200,9 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             }
 
             is PhotoWidgetConfigureState.Message.CancelWidget -> {
-                finish()
+                viewModel.discardDraft()
                 viewModel.messageHandled(message = message)
+                finish()
             }
         }
     }

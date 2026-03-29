@@ -39,6 +39,8 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Você não adicionou nenhum widget.\nWidgets adicionados à sua tela inicial irão aparecer aqui.</string>
     <string name="photo_widget_home_filter_all">Todos</string>
+    <string name="photo_widget_home_draft_label">Rascunho</string>
+    <string name="photo_widget_home_draft_action_discard">Descartar rascunho</string>
     <string name="photo_widget_home_locked_label">Travado</string>
     <string name="photo_widget_home_removed_label">Removido</string>
     <string name="photo_widget_home_removed_widgets_hint">Os widgets removidos não estão mais na sua tela inicial. Eles são excluídos permanentemente do aplicativo após 7 dias. Você pode escolher \"Mantê-los\".</string>
@@ -96,6 +98,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget">Preencher</string>
     <string name="photo_widget_aspect_ratio_fill_widget_description">Corresponder ao tamanho do widget</string>
     <!-- Configure -->
+    <string name="photo_widget_configure_save_draft_prompt">Salvar suas alterações como rascunho?</string>
     <string name="photo_widget_configure_navigate_back_warning">As alterações serão perdidas, voltar mesmo assim?</string>
     <string name="photo_widget_configure_navigate_back_warning_restore">Para finalizar a restauração do widget, você deve adicioná-lo à tela inicial. Sair sem restaurar?</string>
     <string name="photo_widget_configure_tab_content">Conteúdo</string>

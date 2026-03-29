@@ -39,6 +39,8 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Aún no has agregado ningún widget.\nLos widgets agregados a tu pantalla de inicio aparecerán aquí.</string>
     <string name="photo_widget_home_filter_all">Todos</string>
+    <string name="photo_widget_home_draft_label">Borrador</string>
+    <string name="photo_widget_home_draft_action_discard">Descartar borrador</string>
     <string name="photo_widget_home_locked_label">Bloqueado</string>
     <string name="photo_widget_home_removed_label">Eliminado</string>
     <string name="photo_widget_home_removed_widgets_hint">Los widgets eliminados ya no aparecen en la pantalla de inicio. Se eliminan de forma permanente de la aplicación después de 7 días. Puedes elegir \"Mantener\" ellos.</string>
@@ -96,6 +98,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget">Rellenar</string>
     <string name="photo_widget_aspect_ratio_fill_widget_description">Ajustar al tamaño del widget</string>
     <!-- Configure -->
+    <string name="photo_widget_configure_save_draft_prompt">¿Guardar los cambios como borrador?</string>
     <string name="photo_widget_configure_navigate_back_warning">¿Se perderán los cambios, volver de todos modos?</string>
     <string name="photo_widget_configure_navigate_back_warning_restore">Para finalizar la restauración del widget, debes agregarlo a la pantalla de inicio. ¿Salir sin restaurar?</string>
     <string name="photo_widget_configure_tab_content">Contenido</string>

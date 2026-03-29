@@ -3,6 +3,7 @@ package com.fibelatti.photowidget.widget
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
+import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.TapActionArea
@@ -18,16 +19,20 @@ class SavePhotoWidgetUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(
+        draftWidgetId: Int,
         appWidgetId: Int,
         photoWidget: PhotoWidget,
     ) {
-        Timber.i("Saving widget data (appWidgetId=$appWidgetId)")
+        Timber.i("Saving widget data (draftWidgetId=$draftWidgetId, appWidgetId=$appWidgetId)")
 
-        saveWidgetContent(appWidgetId = appWidgetId, photoWidget = photoWidget)
+        saveWidgetContent(draftWidgetId = draftWidgetId, appWidgetId = appWidgetId, photoWidget = photoWidget)
         saveWidgetAppearance(appWidgetId = appWidgetId, photoWidget = photoWidget)
         saveWidgetBehavior(appWidgetId = appWidgetId, photoWidget = photoWidget)
 
         photoWidgetStorage.saveWidgetText(appWidgetId = appWidgetId, text = photoWidget.text)
+
+        // Draft widgets won't have alarms yet...
+        if (PhotoWidget.isDraftWidgetId(appWidgetId)) return
 
         if (photoWidget.photoCycleEnabled) {
             photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
@@ -37,10 +42,13 @@ class SavePhotoWidgetUseCase @Inject constructor(
     }
 
     private suspend fun saveWidgetContent(
+        draftWidgetId: Int,
         appWidgetId: Int,
         photoWidget: PhotoWidget,
     ) {
-        photoWidgetStorage.assignWidgetId(appWidgetId = appWidgetId)
+        if (draftWidgetId != appWidgetId) {
+            photoWidgetStorage.migrateDraftToWidget(draftWidgetId = draftWidgetId, appWidgetId = appWidgetId)
+        }
 
         photoWidgetStorage.saveWidgetSource(appWidgetId = appWidgetId, source = photoWidget.source)
 
@@ -54,18 +62,19 @@ class SavePhotoWidgetUseCase @Inject constructor(
             removedPhotos = photoWidget.removedPhotos,
         )
 
+        val isDraftWidget: Boolean = PhotoWidget.isDraftWidgetId(appWidgetId)
         val currentPhotoId: String? = photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)
         val removedPhotoIds: List<String> = photoWidget.removedPhotos.map { it.photoId }
 
         when (currentPhotoId) {
-            null -> {
+            null if !isDraftWidget -> {
                 photoWidgetStorage.saveDisplayedPhoto(
                     appWidgetId = appWidgetId,
                     photoId = photoWidget.photos.first().photoId,
                 )
             }
 
-            in removedPhotoIds if photoWidget.currentPhoto?.photoId != null -> {
+            in removedPhotoIds if photoWidget.currentPhoto?.photoId != null && !isDraftWidget -> {
                 photoWidgetStorage.saveDisplayedPhoto(
                     appWidgetId = appWidgetId,
                     photoId = photoWidget.currentPhoto.photoId,
@@ -73,15 +82,22 @@ class SavePhotoWidgetUseCase @Inject constructor(
             }
         }
 
-        when (photoWidget.source) {
-            PhotoWidgetSource.PHOTOS -> {
+        when {
+            isDraftWidget -> {
+                photoWidgetStorage.deletePhotos(
+                    appWidgetId = appWidgetId,
+                    photoIds = removedPhotoIds,
+                )
+            }
+
+            PhotoWidgetSource.PHOTOS == photoWidget.source -> {
                 photoWidgetStorage.replacePhotosForDeletion(
                     appWidgetId = appWidgetId,
                     photoIds = removedPhotoIds,
                 )
             }
 
-            PhotoWidgetSource.DIRECTORY -> {
+            PhotoWidgetSource.DIRECTORY == photoWidget.source -> {
                 photoWidgetStorage.replaceExcludedPhotos(
                     appWidgetId = appWidgetId,
                     photoIds = removedPhotoIds,
@@ -168,7 +184,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
             sorting = photoWidget.directorySorting,
         )
 
-        val currentCycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = appWidgetId)
+        val currentCycleMode: PhotoWidgetCycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = appWidgetId)
         if (photoWidget.cycleMode != currentCycleMode) {
             photoWidgetStorage.saveWidgetNextCycleTime(appWidgetId = appWidgetId, nextCycleTime = null)
         }

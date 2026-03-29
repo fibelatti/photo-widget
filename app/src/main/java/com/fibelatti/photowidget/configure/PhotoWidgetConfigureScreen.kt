@@ -155,10 +155,7 @@ private fun PhotoWidgetConfigureHomeScreen(
         .padding(vertical = 16.dp)
         .fadingEdges(scrollState = tabContentScrollState)
 
-    BackHandler(
-        enabled = state.hasEdits,
-        onBack = onBack,
-    )
+    BackHandler(onBack = onBack)
 
     CompositionLocalProvider(LocalSamplePhoto provides state.selectedPhoto) {
         PhotoWidgetConfigureScreen(

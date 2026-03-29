@@ -41,6 +41,8 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">עדיין לא הוספת ווידג\'טים.\nווידג\'טים שתוסיף למסך הבית שלך יופיעו כאן.</string>
     <string name="photo_widget_home_filter_all">הכל</string>
+    <string name="photo_widget_home_draft_label">טיוטה</string>
+    <string name="photo_widget_home_draft_action_discard">מחק טיוטה</string>
     <string name="photo_widget_home_locked_label">נעול</string>
     <string name="photo_widget_home_removed_label">הוסר</string>
     <string name="photo_widget_home_removed_widgets_hint">ווידג\'טים שהוסרו אינם מופיעים עוד במסך הבית. הם נמחקים לצמיתות מהאפליקציה לאחר 7 ימים. ניתן לבחור \"לשמור\" אותם.</string>
@@ -98,6 +100,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget">מילוי</string>
     <string name="photo_widget_aspect_ratio_fill_widget_description">התאם את גודל הווידג\'ט</string>
     <!-- Configure -->
+    <string name="photo_widget_configure_save_draft_prompt">לשמור את השינויים כטיוטה?</string>
     <string name="photo_widget_configure_navigate_back_warning">כל השינויים יאבדו, לחזור בכל זאת?</string>
     <string name="photo_widget_configure_navigate_back_warning_restore">כדי לסיים את שחזור הווידג\'ט עליך להוסיף אותו למסך הבית. לצאת מבלי לשחזר?</string>
     <string name="photo_widget_configure_tab_content">תוכן</string>

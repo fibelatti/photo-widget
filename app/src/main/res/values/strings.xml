@@ -45,6 +45,8 @@
     <string name="photo_widget_home_empty_widgets">You haven\'t added any widgets yet.\nWidgets added to your home screen will appear here.</string>
     <string name="photo_widget_home_filter_all">All</string>
 
+    <string name="photo_widget_home_draft_label">Draft</string>
+    <string name="photo_widget_home_draft_action_discard">Discard draft</string>
     <string name="photo_widget_home_locked_label">Locked</string>
     <string name="photo_widget_home_removed_label">Removed</string>
     <string name="photo_widget_home_removed_widgets_hint">Removed widgets are no longer on your home screen. They are permanently deleted from the app after 7 days. You can choose to "Keep" them.</string>
@@ -116,6 +118,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget_description">Match the widget size</string>
 
     <!-- Configure -->
+    <string name="photo_widget_configure_save_draft_prompt">Save your changes as a draft?</string>
     <string name="photo_widget_configure_navigate_back_warning">Any changes will be lost, go back anyway?</string>
     <string name="photo_widget_configure_navigate_back_warning_restore">To finish restoring the widget you must add it to home screen. Exit without restoring?</string>
 

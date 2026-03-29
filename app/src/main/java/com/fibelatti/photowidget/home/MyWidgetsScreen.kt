@@ -72,6 +72,7 @@ fun MyWidgetsScreen(
     onCurrentWidgetClick: (appWidgetId: Int, canSync: Boolean, canLock: Boolean, isLocked: Boolean) -> Unit,
     onRemovedWidgetClick: (appWidgetId: Int, PhotoWidgetStatus) -> Unit,
     onInvalidWidgetClick: (appWidgetId: Int) -> Unit,
+    onDraftWidgetClick: (appWidgetId: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -118,6 +119,10 @@ fun MyWidgetsScreen(
                                 .aspectRatio(1f)
                                 .clickable {
                                     when {
+                                        PhotoWidgetStatus.DRAFT == widget.status -> {
+                                            onDraftWidgetClick(id)
+                                        }
+
                                         widget.status.isWidgetRemoved -> {
                                             onRemovedWidgetClick(id, widget.status)
                                         }
@@ -154,6 +159,15 @@ fun MyWidgetsScreen(
                             )
 
                             when {
+                                PhotoWidgetStatus.DRAFT == widget.status -> {
+                                    MyWidgetBadge(
+                                        text = stringResource(R.string.photo_widget_home_draft_label),
+                                        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                        modifier = Modifier.padding(bottom = 8.dp),
+                                    )
+                                }
+
                                 PhotoWidgetStatus.LOCKED == widget.status -> {
                                     MyWidgetBadge(
                                         text = stringResource(R.string.photo_widget_home_locked_label),
@@ -276,6 +290,7 @@ private fun MyWidgetsScreenPreview() {
             onCurrentWidgetClick = { _, _, _, _ -> },
             onRemovedWidgetClick = { _, _ -> },
             onInvalidWidgetClick = {},
+            onDraftWidgetClick = {},
         )
     }
 }
@@ -289,6 +304,7 @@ private fun MyWidgetsScreenEmptyPreview() {
             onCurrentWidgetClick = { _, _, _, _ -> },
             onRemovedWidgetClick = { _, _ -> },
             onInvalidWidgetClick = {},
+            onDraftWidgetClick = {},
         )
     }
 }

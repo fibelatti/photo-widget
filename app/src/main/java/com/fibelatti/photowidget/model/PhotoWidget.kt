@@ -66,6 +66,8 @@ data class PhotoWidget(
          * the Android grid.
          */
         const val POSITIONING_MULTIPLIER: Int = 4
+
+        fun isDraftWidgetId(widgetId: Int): Boolean = widgetId < 0
     }
 }
 

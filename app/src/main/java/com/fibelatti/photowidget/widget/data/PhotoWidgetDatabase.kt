@@ -9,6 +9,7 @@ import androidx.room.Query
 import androidx.room.RoomDatabase
 import androidx.room.Transaction
 import androidx.room.Upsert
+import kotlinx.coroutines.flow.Flow
 
 @Database(
     entities = [
@@ -81,6 +82,9 @@ interface LocalPhotoDao {
     @Query("delete from local_widget_photos where widgetId = :widgetId")
     suspend fun deletePhotosByWidgetId(widgetId: Int)
 
+    @Query("update local_widget_photos set widgetId = :newWidgetId where widgetId = :oldWidgetId")
+    suspend fun updateWidgetId(oldWidgetId: Int, newWidgetId: Int)
+
     @Transaction
     suspend fun replacePhotos(
         widgetId: Int,
@@ -122,6 +126,9 @@ interface DisplayedPhotoDao {
     @Query("delete from displayed_widget_photos where widgetId = :widgetId")
     suspend fun deletePhotosByWidgetId(widgetId: Int)
 
+    @Query("update displayed_widget_photos set widgetId = :newWidgetId where widgetId = :oldWidgetId")
+    suspend fun updateWidgetId(oldWidgetId: Int, newWidgetId: Int)
+
     @Query(
         "delete from displayed_widget_photos " +
             "where widgetId = :widgetId " +
@@ -158,6 +165,9 @@ interface PhotoWidgetOrderDao {
 
     @Query("delete from photo_widget_order where widgetId = :widgetId")
     suspend fun deletePhotosByWidgetId(widgetId: Int)
+
+    @Query("update photo_widget_order set widgetId = :newWidgetId where widgetId = :oldWidgetId")
+    suspend fun updateWidgetId(oldWidgetId: Int, newWidgetId: Int)
 
     @Transaction
     suspend fun replaceWidgetOrder(
@@ -200,6 +210,9 @@ interface PendingDeletionWidgetPhotoDao {
     @Query("delete from pending_deletion_widget_photos where widgetId = :widgetId")
     suspend fun deletePhotosByWidgetId(widgetId: Int)
 
+    @Query("update pending_deletion_widget_photos set widgetId = :newWidgetId where widgetId = :oldWidgetId")
+    suspend fun updateWidgetId(oldWidgetId: Int, newWidgetId: Int)
+
     @Query("select * from pending_deletion_widget_photos where deletionTimestamp <= :timestamp")
     suspend fun getPhotosToDelete(timestamp: Long): List<PendingDeletionWidgetPhotoDto>
 
@@ -227,6 +240,9 @@ interface ExcludedWidgetPhotoDao {
 
     @Query("delete from excluded_widget_photos where widgetId = :widgetId")
     suspend fun deletePhotosByWidgetId(widgetId: Int)
+
+    @Query("update excluded_widget_photos set widgetId = :newWidgetId where widgetId = :oldWidgetId")
+    suspend fun updateWidgetId(oldWidgetId: Int, newWidgetId: Int)
 }
 
 @Entity(tableName = "widget_directories")
@@ -241,11 +257,14 @@ interface WidgetDirectoryDao {
     @Query("select directoryName from widget_directories where widgetId = :widgetId")
     suspend fun getDirectoryName(widgetId: Int): String?
 
-    @Query("select * from widget_directories")
-    suspend fun getAll(): List<WidgetDirectoryDto>
+    @Query("select distinct widgetId from widget_directories")
+    fun getAllWidgetIds(): Flow<List<Int>>
 
-    @Query("select * from widget_directories where widgetId = 0")
-    suspend fun getDraftDirectories(): List<WidgetDirectoryDto>
+    @Query("select distinct widgetId from widget_directories where widgetId < 0")
+    fun getDraftWidgetIds(): Flow<List<Int>>
+
+    @Query("select min(widgetId) from widget_directories")
+    suspend fun getMinWidgetId(): Int?
 
     @Query("update widget_directories set widgetId = :newWidgetId where widgetId = :oldWidgetId")
     suspend fun updateWidgetId(oldWidgetId: Int, newWidgetId: Int)
@@ -258,7 +277,4 @@ interface WidgetDirectoryDao {
 
     @Query("delete from widget_directories where widgetId = :widgetId")
     suspend fun deleteByWidgetId(widgetId: Int)
-
-    @Query("delete from widget_directories where directoryName = :directoryName")
-    suspend fun deleteByDirectoryName(directoryName: String)
 }

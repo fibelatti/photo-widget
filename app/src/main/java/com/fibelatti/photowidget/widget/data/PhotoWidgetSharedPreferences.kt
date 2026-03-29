@@ -587,6 +587,36 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         }
     }
 
+    fun migrateWidgetData(oldWidgetId: Int, newWidgetId: Int) {
+        sharedPreferences.edit {
+            for (prefix in PreferencePrefix.entries) {
+                val oldKey = "$prefix$oldWidgetId"
+                val newKey = "$prefix$newWidgetId"
+
+                if (!sharedPreferences.contains(oldKey)) continue
+
+                when (val value = sharedPreferences.all[oldKey]) {
+                    is String -> putString(newKey, value)
+
+                    is Int -> putInt(newKey, value)
+
+                    is Long -> putLong(newKey, value)
+
+                    is Float -> putFloat(newKey, value)
+
+                    is Boolean -> putBoolean(newKey, value)
+
+                    is Set<*> -> {
+                        @Suppress("UNCHECKED_CAST")
+                        putStringSet(newKey, value as Set<String>)
+                    }
+                }
+
+                remove(oldKey)
+            }
+        }
+    }
+
     fun getKnownWidgetIds(): List<Int> {
         return sharedPreferences.all
             .filter { (key, _) -> key.startsWith(PreferencePrefix.SOURCE.value) }

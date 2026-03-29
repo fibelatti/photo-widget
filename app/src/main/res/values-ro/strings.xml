@@ -40,6 +40,8 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Nu ai adăugat încă nici un widget.\nWidget-urile adăugate pe ecranul de pornire vor apărea aici.</string>
     <string name="photo_widget_home_filter_all">Toate</string>
+    <string name="photo_widget_home_draft_label">Ciornă</string>
+    <string name="photo_widget_home_draft_action_discard">Șterge ciorna</string>
     <string name="photo_widget_home_locked_label">Blocat</string>
     <string name="photo_widget_home_removed_label">Eliminat</string>
     <string name="photo_widget_home_removed_widgets_hint">Widget-urile șterse nu mai sunt pe ecranul de pornire. Ele sunt șterse definitiv din aplicație după 7 zile. Puteți alege „Păstrează”.</string>
@@ -97,6 +99,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget">Umple</string>
     <string name="photo_widget_aspect_ratio_fill_widget_description">Potrivește dimensiunea widget-ului</string>
     <!-- Configure -->
+    <string name="photo_widget_configure_save_draft_prompt">Salvați modificările ca ciornă?</string>
     <string name="photo_widget_configure_navigate_back_warning">Orice modificări se vor pierde, vă întoarceți oricum?</string>
     <string name="photo_widget_configure_navigate_back_warning_restore">Pentru a finaliza restaurarea widget-ului, trebuie să îl adăugați pe ecranul de pornire. Ieșiți fără restaurare?</string>
     <string name="photo_widget_configure_tab_content">Conținut</string>

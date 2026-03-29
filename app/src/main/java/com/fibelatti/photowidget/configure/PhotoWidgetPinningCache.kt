@@ -28,14 +28,29 @@ class PhotoWidgetPinningCache @Inject constructor() {
         private set
 
     /**
+     * Returns the draft ID of the widget being pinned, so its data can be migrated to the real ID.
+     */
+    var pendingDraftId: Int? = null
+        private set
+
+    /**
      * Sets the data corresponding to the widget that's being pinned.
      */
-    fun populate(pendingWidget: PhotoWidget) {
+    fun populate(pendingWidget: PhotoWidget, draftWidgetId: Int) {
         this.pendingWidget = pendingWidget
+        this.pendingDraftId = draftWidgetId
     }
 
     /**
      * Gets the data for the widget being pinned and clears the cache.
+     *
+     * @return A pair of the [PhotoWidget] and the draft widget ID, or null if no data is cached.
      */
-    fun consume(): PhotoWidget? = pendingWidget.also { pendingWidget = null }
+    fun consume(): Pair<PhotoWidget, Int>? {
+        val widget = pendingWidget ?: return null
+        val draftId = pendingDraftId ?: return null
+        pendingWidget = null
+        pendingDraftId = null
+        return widget to draftId
+    }
 }

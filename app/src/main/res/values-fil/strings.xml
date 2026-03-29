@@ -38,6 +38,8 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Wala ka pang nagawang na widget.\nDito mo mahahanap ang mga widget na nakalagay na sa iyong home screen.</string>
     <string name="photo_widget_home_filter_all">Lahat</string>
+    <string name="photo_widget_home_draft_label">Draft</string>
+    <string name="photo_widget_home_draft_action_discard">I-discard ang draft</string>
     <string name="photo_widget_home_locked_label">Naka-lock</string>
     <string name="photo_widget_home_removed_label">Tinanggal</string>
     <string name="photo_widget_home_removed_widgets_hint">Wala na sa iyong home screen ang mga tinanggal na widget. Binubura ang mga ito sa app pagkalipas ng 7 araw. Maaari mong piliing \"Panatilihin\" sila.</string>
@@ -95,6 +97,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget">Punuin</string>
     <string name="photo_widget_aspect_ratio_fill_widget_description">Angkop sa laki ng widget</string>
     <!-- Configure -->
+    <string name="photo_widget_configure_save_draft_prompt">I-save ang mga pagbabago bilang draft?</string>
     <string name="photo_widget_configure_navigate_back_warning">Bumalik? Mawawala ang mga pagbabago.</string>
     <string name="photo_widget_configure_navigate_back_warning_restore">To finish restoring the widget you must add it to home screen. Exit without restoring?</string>
     <string name="photo_widget_configure_tab_content">Laman</string>

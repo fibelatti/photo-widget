@@ -41,6 +41,8 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Вы ещё не добавили ни одного виджета.\nДобавленные на главный экран виджеты появятся здесь.</string>
     <string name="photo_widget_home_filter_all">Все</string>
+    <string name="photo_widget_home_draft_label">Черновик</string>
+    <string name="photo_widget_home_draft_action_discard">Удалить черновик</string>
     <string name="photo_widget_home_locked_label">Заблокировано</string>
     <string name="photo_widget_home_removed_label">Удаленный</string>
     <string name="photo_widget_home_removed_widgets_hint">Удаленные виджеты больше не отображаются на главном экране. Они навсегда удаляются из приложения через 7 дней. Вы можете выбрать «Сохранить» их.</string>
@@ -98,6 +100,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget">Заполнить</string>
     <string name="photo_widget_aspect_ratio_fill_widget_description">Соответствовать размеру виджета</string>
     <!-- Configure -->
+    <string name="photo_widget_configure_save_draft_prompt">Сохранить изменения как черновик?</string>
     <string name="photo_widget_configure_navigate_back_warning">Все изменения будут потеряны, вернуться назад?</string>
     <string name="photo_widget_configure_navigate_back_warning_restore">Чтобы завершить восстановление виджета, вы должны добавить его на главный экран. Выйти без восстановления?</string>
     <string name="photo_widget_configure_tab_content">Содержание</string>

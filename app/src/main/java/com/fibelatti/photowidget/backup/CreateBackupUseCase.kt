@@ -29,6 +29,7 @@ class CreateBackupUseCase @Inject constructor(
         Timber.i("Creating backup. Loading widgets...")
 
         val widgetsToExport: Map<Int, PhotoWidget> = photoWidgetStorage.getKnownWidgetIds()
+            .first()
             .associateWith { id: Int -> loadPhotoWidgetUseCase(appWidgetId = id).first() }
             .filterValues { widget: PhotoWidget -> widget.source == PhotoWidgetSource.PHOTOS }
 

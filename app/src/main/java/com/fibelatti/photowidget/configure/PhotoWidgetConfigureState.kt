@@ -14,6 +14,7 @@ data class PhotoWidgetConfigureState(
     val cropQueue: List<LocalPhoto> = emptyList(),
     val messages: List<Message> = emptyList(),
     val hasEdits: Boolean = false,
+    val isDraft: Boolean = false,
     val isImportAvailable: Boolean = false,
 ) {
 

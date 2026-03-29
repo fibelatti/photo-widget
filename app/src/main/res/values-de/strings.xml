@@ -39,6 +39,8 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Sie haben noch keine Widgets hinzugefügt.\nHier erscheinen Widgets, die Ihrem Startbildschirm hinzugefügt wurden.</string>
     <string name="photo_widget_home_filter_all">Alle</string>
+    <string name="photo_widget_home_draft_label">Entwurf</string>
+    <string name="photo_widget_home_draft_action_discard">Entwurf verwerfen</string>
     <string name="photo_widget_home_locked_label">Gesperrt</string>
     <string name="photo_widget_home_removed_label">Entfernt</string>
     <string name="photo_widget_home_removed_widgets_hint">Entfernte Widgets befinden sich nicht mehr auf Ihrem Startbildschirm. Sie werden nach 7 Tagen endgültig aus der App gelöscht. Sie können sie \"Behalten\".</string>
@@ -96,6 +98,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget">Ausfüllen</string>
     <string name="photo_widget_aspect_ratio_fill_widget_description">Widget-Größe anpassen</string>
     <!-- Configure -->
+    <string name="photo_widget_configure_save_draft_prompt">Änderungen als Entwurf speichern?</string>
     <string name="photo_widget_configure_navigate_back_warning">Alle Änderungen gehen verloren. Trotzdem zurückgehen?</string>
     <string name="photo_widget_configure_navigate_back_warning_restore">Um die Wiederherstellung des Widgets abzuschließen, müssen Sie es zum Startbildschirm hinzufügen. Ohne Wiederherstellung beenden?</string>
     <string name="photo_widget_configure_tab_content">Inhalt</string>

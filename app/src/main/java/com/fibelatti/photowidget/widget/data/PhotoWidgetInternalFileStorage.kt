@@ -139,8 +139,15 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
     suspend fun deleteWidgetData(directoryName: String) {
         withContext(Dispatchers.IO) {
-            getWidgetDir(directoryName).deleteRecursively()
-            getCurrentPhotoDir(directoryName).deleteRecursively()
+            val deleteOp: suspend () -> Boolean = {
+                getWidgetDir(directoryName).deleteRecursively() &&
+                    getCurrentPhotoDir(directoryName).deleteRecursively()
+            }
+            var count = 1
+
+            while (!deleteOp() && count <= 3) {
+                count++
+            }
         }
     }
 
@@ -219,10 +226,5 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         withContext(Dispatchers.IO) {
             sourceDir.copyRecursively(target = getWidgetDir(directoryName = directoryName))
         }
-    }
-
-    companion object {
-
-        const val DRAFT_WIDGET_ID = 0
     }
 }

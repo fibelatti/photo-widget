@@ -19,7 +19,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.days
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import timber.log.Timber
@@ -48,7 +51,7 @@ class PhotoWidgetStorage @Inject constructor(
             // Double-checked locking so concurrent callers can exit early
             if (migrationChecked) return
 
-            if (widgetDirectoryDao.getAll().isNotEmpty()) {
+            if (widgetDirectoryDao.getAllWidgetIds().first().isNotEmpty()) {
                 migrationChecked = true
                 return
             }
@@ -558,10 +561,10 @@ class PhotoWidgetStorage @Inject constructor(
     suspend fun deleteWidgetData(appWidgetId: Int) {
         Timber.i("Deleting widget data (appWidgetId=$appWidgetId)")
 
-        val directoryName: String? = widgetDirectoryDao.getDirectoryName(appWidgetId)
+        val directoryName: String? = widgetDirectoryDao.getDirectoryName(widgetId = appWidgetId)
         if (directoryName != null) {
             internalFileStorage.deleteWidgetData(directoryName = directoryName)
-            widgetDirectoryDao.deleteByWidgetId(appWidgetId)
+            widgetDirectoryDao.deleteByWidgetId(widgetId = appWidgetId)
         }
 
         localPhotoDao.deletePhotosByWidgetId(widgetId = appWidgetId)
@@ -573,17 +576,13 @@ class PhotoWidgetStorage @Inject constructor(
         sharedPreferences.deleteWidgetData(appWidgetId = appWidgetId)
     }
 
-    private suspend fun deleteDraftWidgetData() {
+    private suspend fun deleteLegacyDraftWidgetData() {
         Timber.d("Deleting draft widget data")
 
-        val draftWidgetId: Int = PhotoWidgetInternalFileStorage.DRAFT_WIDGET_ID
-        val draftDirectories: List<WidgetDirectoryDto> = widgetDirectoryDao.getDraftDirectories()
+        val draftWidgetId: Int = LEGACY_DRAFT_WIDGET_ID
 
-        for (draft in draftDirectories) {
-            internalFileStorage.deleteWidgetData(directoryName = draft.directoryName)
-            widgetDirectoryDao.deleteByDirectoryName(draft.directoryName)
-        }
-
+        internalFileStorage.deleteWidgetData(directoryName = "$LEGACY_DRAFT_WIDGET_ID")
+        widgetDirectoryDao.deleteByWidgetId(widgetId = draftWidgetId)
         localPhotoDao.deletePhotosByWidgetId(widgetId = draftWidgetId)
         displayedPhotoDao.deletePhotosByWidgetId(widgetId = draftWidgetId)
         orderDao.deletePhotosByWidgetId(widgetId = draftWidgetId)
@@ -597,7 +596,7 @@ class PhotoWidgetStorage @Inject constructor(
      * 2. Get all IDs known by the app ([getKnownWidgetIds]).
      * 3. Identify which IDs are known by the app, but not by the OS. These will be processed by
      * this function.
-     * 4. Delete draft data.
+     * 4. Delete legacy draft data (widgetId = 0, one-time migration).
      * 5. For each identified ID, check if the widget was kept by the user and skip.
      * 6. For each identified ID that was not kept, check if the deletion threshold was not
      * reached yet and skip.
@@ -605,10 +604,10 @@ class PhotoWidgetStorage @Inject constructor(
      * 8. Delete recently removed photos that are past the threshold.
      */
     suspend fun deleteUnusedWidgetData(existingWidgetIds: List<Int>) {
-        val unplacedWidgetIds: List<Int> = getKnownWidgetIds() - existingWidgetIds.toSet()
+        val unplacedWidgetIds: List<Int> = getKnownWidgetIds().first() - existingWidgetIds.toSet()
         val currentTimestamp: Long = System.currentTimeMillis()
 
-        deleteDraftWidgetData()
+        deleteLegacyDraftWidgetData()
 
         for (id in unplacedWidgetIds) {
             Timber.d("Stale data found (appWidgetId=$id)")
@@ -629,23 +628,41 @@ class PhotoWidgetStorage @Inject constructor(
 
         val photosToDelete = pendingDeletionPhotosDao.getPhotosToDelete(timestamp = currentTimestamp)
         for (photo in photosToDelete) {
-            val dirName: String? = widgetDirectoryDao.getDirectoryName(photo.widgetId)
-            if (dirName != null) {
-                internalFileStorage.deleteWidgetPhoto(directoryName = dirName, photoId = photo.photoId)
+            val directoryName: String? = widgetDirectoryDao.getDirectoryName(photo.widgetId)
+            if (directoryName != null) {
+                internalFileStorage.deleteWidgetPhoto(directoryName = directoryName, photoId = photo.photoId)
             }
         }
         pendingDeletionPhotosDao.deletePhotosBeforeTimestamp(timestamp = currentTimestamp)
     }
 
-    fun getKnownWidgetIds(): List<Int> {
-        return sharedPreferences.getKnownWidgetIds()
+    fun getKnownWidgetIds(): Flow<List<Int>> {
+        return widgetDirectoryDao.getAllWidgetIds()
+            .map { value: List<Int> -> value.filter { id: Int -> id > 0 } }
+            .onStart { ensureDirectoryMigration() }
     }
 
-    suspend fun assignWidgetId(appWidgetId: Int) {
-        widgetDirectoryDao.updateWidgetId(
-            oldWidgetId = PhotoWidgetInternalFileStorage.DRAFT_WIDGET_ID,
-            newWidgetId = appWidgetId,
-        )
+    suspend fun createNewDraftId(): Int {
+        ensureDirectoryMigration()
+        val minId: Int = widgetDirectoryDao.getMinWidgetId() ?: 0
+        return minOf(minId, 0) - 1
+    }
+
+    fun getDraftWidgetIds(): Flow<List<Int>> {
+        return widgetDirectoryDao.getDraftWidgetIds()
+            .onStart { ensureDirectoryMigration() }
+    }
+
+    suspend fun migrateDraftToWidget(draftWidgetId: Int, appWidgetId: Int) {
+        Timber.i("Migrating draft to widget (draftWidgetId=$draftWidgetId, appWidgetId=$appWidgetId)")
+
+        widgetDirectoryDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+        localPhotoDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+        displayedPhotoDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+        orderDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+        pendingDeletionPhotosDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+        excludedPhotosDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+        sharedPreferences.migrateWidgetData(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
     }
 
     suspend fun duplicateWidgetDir(originalAppWidgetId: Int, newAppWidgetId: Int) {
@@ -674,6 +691,8 @@ class PhotoWidgetStorage @Inject constructor(
     companion object {
 
         private val DELETION_THRESHOLD_MILLIS: Long = 7.days.inWholeMilliseconds
+
+        private const val LEGACY_DRAFT_WIDGET_ID: Int = 0
 
         const val SEPARATOR = "#mpw#"
     }

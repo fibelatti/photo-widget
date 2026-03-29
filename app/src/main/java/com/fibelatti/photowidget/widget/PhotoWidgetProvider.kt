@@ -150,7 +150,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 currentJob?.let { job -> withTimeoutOrNull(5_000L) { job.join() } }
 
                 val photoWidget: PhotoWidget = pinningCache.pendingWidget
-                    ?.takeIf { appWidgetId !in photoWidgetStorage.getKnownWidgetIds() }
+                    ?.takeIf { appWidgetId !in photoWidgetStorage.getKnownWidgetIds().first() }
                     ?.also { Timber.d("Updating using the pending widget data") }
                     ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId).first { !it.isLoading }
 

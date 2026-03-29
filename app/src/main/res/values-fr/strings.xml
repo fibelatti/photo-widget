@@ -39,6 +39,8 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Vous n\'avez pas encore ajouté de widgets.\nLes widgets ajoutés à votre écran d\'accueil apparaîtront ici.</string>
     <string name="photo_widget_home_filter_all">Tous</string>
+    <string name="photo_widget_home_draft_label">Brouillon</string>
+    <string name="photo_widget_home_draft_action_discard">Supprimer le brouillon</string>
     <string name="photo_widget_home_locked_label">Verrouillé</string>
     <string name="photo_widget_home_removed_label">Supprimé</string>
     <string name="photo_widget_home_removed_widgets_hint">Les widgets supprimés ne sont plus sur votre écran d\'accueil. Ils sont définitivement supprimés de l\'application après 7 jours. Vous pouvez choisir de les « Garder ».</string>
@@ -96,6 +98,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget">Remplir</string>
     <string name="photo_widget_aspect_ratio_fill_widget_description">Adapter à la taille du widget</string>
     <!-- Configure -->
+    <string name="photo_widget_configure_save_draft_prompt">Enregistrer vos modifications comme brouillon ?</string>
     <string name="photo_widget_configure_navigate_back_warning">Tous les changements seront perdus, revenir quand même ?</string>
     <string name="photo_widget_configure_navigate_back_warning_restore">Pour terminer la restauration du widget, vous devez l\'ajouter à l\'écran d\'accueil. Quitter sans restaurer ?</string>
     <string name="photo_widget_configure_tab_content">Contenu</string>

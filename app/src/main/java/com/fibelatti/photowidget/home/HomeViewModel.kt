@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -43,7 +44,6 @@ class HomeViewModel @Inject constructor(
     private val scope: CoroutineScope,
 ) : ViewModel() {
 
-    private val widgetIds: MutableStateFlow<List<Int>> = MutableStateFlow(emptyList())
     private val updateSignal: Channel<Unit> = Channel()
 
     val currentWidgets: StateFlow<List<Pair<Int, PhotoWidget>>> = loadWidgetsById()
@@ -58,37 +58,40 @@ class HomeViewModel @Inject constructor(
 
     fun loadWidgets() {
         viewModelScope.launch {
-            widgetIds.update { photoWidgetStorage.getKnownWidgetIds() }
             updateSignal.send(Unit)
         }
     }
 
     private fun loadWidgetsById(): Flow<List<Pair<Int, PhotoWidget>>> {
-        return combine(widgetIds, updateSignal.receiveAsFlow()) { ids: List<Int>, _: Unit -> ids }
+        return combine(
+            photoWidgetStorage.getKnownWidgetIds(),
+            photoWidgetStorage.getDraftWidgetIds(),
+            updateSignal.receiveAsFlow(),
+        ) { ids: List<Int>, draftIds: List<Int>, _: Unit -> ids + draftIds }
             .flatMapLatest { allIds: List<Int> ->
-                combine(
-                    flows = allIds.map(loadPhotoWidgetUseCase::invoke),
-                    transform = Array<PhotoWidget>::toList,
-                )
+                if (allIds.isEmpty()) return@flatMapLatest flowOf(emptyMap())
+
+                combine(flows = allIds.map(loadPhotoWidgetUseCase::invoke)) { widgets ->
+                    allIds.withIndex().associate { (index, id) -> id to widgets[index] }
+                }
             }
             .withIndex()
-            .map { (emissionIndex: Int, widgets: List<PhotoWidget>) ->
+            .map { (emissionIndex: Int, widgets: Map<Int, PhotoWidget>) ->
                 val providerIds: List<Int> = PhotoWidgetProvider.ids(context)
 
-                widgets.withIndex().mapNotNull { (index: Int, widget: PhotoWidget) ->
-                    val widgetId: Int = widgetIds.value.getOrNull(index) ?: return@mapNotNull null
+                widgets.mapValues { (widgetId: Int, widget: PhotoWidget) ->
                     val isLocked: Boolean = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = widgetId)
+                    val status: PhotoWidgetStatus = when {
+                        PhotoWidget.isDraftWidgetId(widgetId) -> PhotoWidgetStatus.DRAFT
+                        (emissionIndex > 0 && widget.photos.isEmpty()) -> PhotoWidgetStatus.INVALID
+                        widget.deletionTimestamp > 0L -> PhotoWidgetStatus.REMOVED
+                        widgetId in providerIds && isLocked -> PhotoWidgetStatus.LOCKED
+                        widgetId in providerIds -> PhotoWidgetStatus.ACTIVE
+                        else -> PhotoWidgetStatus.KEPT
+                    }
 
-                    widgetId to widget.copy(
-                        status = when {
-                            (emissionIndex > 0 && widget.photos.isEmpty()) -> PhotoWidgetStatus.INVALID
-                            widget.deletionTimestamp > 0L -> PhotoWidgetStatus.REMOVED
-                            widgetId in providerIds && isLocked -> PhotoWidgetStatus.LOCKED
-                            widgetId in providerIds -> PhotoWidgetStatus.ACTIVE
-                            else -> PhotoWidgetStatus.KEPT
-                        },
-                    )
-                }
+                    widget.copy(status = status)
+                }.toList()
             }
     }
 
@@ -132,7 +135,6 @@ class HomeViewModel @Inject constructor(
     fun deleteWidget(appWidgetId: Int) {
         viewModelScope.launch {
             photoWidgetStorage.deleteWidgetData(appWidgetId = appWidgetId)
-            widgetIds.update { current -> current - appWidgetId }
         }
     }
 

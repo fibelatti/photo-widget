@@ -39,6 +39,8 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Henüz herhangi bir widget eklemediniz.\nAna ekranınıza eklenen widget\'lar burada görünecektir.</string>
     <string name="photo_widget_home_filter_all">Hepsi</string>
+    <string name="photo_widget_home_draft_label">Taslak</string>
+    <string name="photo_widget_home_draft_action_discard">Taslağı sil</string>
     <string name="photo_widget_home_locked_label">Kilitli</string>
     <string name="photo_widget_home_removed_label">Kaldırıldı</string>
     <string name="photo_widget_home_removed_widgets_hint">Silinen widget\'lar artık ana ekranınızda yer almayacak. 7 gün sonra uygulamadan kalıcı olarak silinirler. Bunları \"Tutmayı\" seçebilirsiniz.</string>
@@ -96,6 +98,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget">Doldur</string>
     <string name="photo_widget_aspect_ratio_fill_widget_description">Widget boyutuna uyum sağla</string>
     <!-- Configure -->
+    <string name="photo_widget_configure_save_draft_prompt">Değişikliklerinizi taslak olarak kaydedilsin mi?</string>
     <string name="photo_widget_configure_navigate_back_warning">Değişiklikler kaybolacak, yine de geri dönmek istiyor musunuz?</string>
     <string name="photo_widget_configure_navigate_back_warning_restore">Widget\'ı geri yüklemeyi tamamlamak için ana ekrana eklemeniz gerekir. Geri yüklemeden çıkılsın mı?</string>
     <string name="photo_widget_configure_tab_content">İçerik</string>

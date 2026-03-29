@@ -38,6 +38,8 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">ウィジェットはまだ追加されていません。\nホーム画面に追加されたウィジェットがここに表示されます。</string>
     <string name="photo_widget_home_filter_all">すべて</string>
+    <string name="photo_widget_home_draft_label">下書き</string>
+    <string name="photo_widget_home_draft_action_discard">下書きを削除</string>
     <string name="photo_widget_home_locked_label">ロック済み</string>
     <string name="photo_widget_home_removed_label">削除済み</string>
     <string name="photo_widget_home_removed_widgets_hint">削除されたウィジェットはホーム画面には表示されなくなります。7日後にアプリから完全に削除されます。「保持」を選択することもできます。</string>
@@ -95,6 +97,7 @@
     <string name="photo_widget_aspect_ratio_fill_widget">全体に合わせる</string>
     <string name="photo_widget_aspect_ratio_fill_widget_description">ウィジェットサイズに合わせる</string>
     <!-- Configure -->
+    <string name="photo_widget_configure_save_draft_prompt">変更を下書きとして保存しますか？</string>
     <string name="photo_widget_configure_navigate_back_warning">変更は失われます。戻ってもよろしいですか？</string>
     <string name="photo_widget_configure_navigate_back_warning_restore">ウィジェットの復元を完了するには、ホーム画面に追加する必要があります。復元せずに終了しますか？</string>
     <string name="photo_widget_configure_tab_content">コンテンツ</string>

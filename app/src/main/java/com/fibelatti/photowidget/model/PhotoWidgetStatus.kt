@@ -3,6 +3,11 @@ package com.fibelatti.photowidget.model
 enum class PhotoWidgetStatus {
 
     /**
+     * The widget is a draft that hasn't been placed on a home screen yet.
+     */
+    DRAFT,
+
+    /**
      * The widget is currently added to a home screen.
      */
     ACTIVE,
