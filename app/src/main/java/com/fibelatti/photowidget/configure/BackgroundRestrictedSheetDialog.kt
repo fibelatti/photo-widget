@@ -102,6 +102,7 @@ fun BackgroundRestrictionWarningDialog(
 @Composable
 fun BackgroundRestrictionBottomSheet(
     sheetState: AppSheetState,
+    onDismissRequest: () -> Unit = {},
 ) {
     val localContext: Context = LocalContext.current
     val powerManager: PowerManager? = remember { localContext.getSystemService<PowerManager>() }
@@ -110,6 +111,7 @@ fun BackgroundRestrictionBottomSheet(
 
     AppBottomSheet(
         sheetState = sheetState,
+        onDismissRequest = onDismissRequest,
     ) {
         BackgroundPickerContent(
             isBatteryUsageRestricted = isBatteryUsageRestricted,

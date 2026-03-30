@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.home
 
 import android.app.AlarmManager
+import android.os.PowerManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
@@ -82,20 +83,28 @@ fun SettingsScreen(
 ) {
     val localContext = LocalContext.current
     val alarmManager: AlarmManager = remember { requireNotNull(localContext.getSystemService()) }
+    val powerManager: PowerManager? = remember { localContext.getSystemService<PowerManager>() }
 
+    var isBatteryUsageRestricted by remember {
+        mutableStateOf(powerManager?.isIgnoringBatteryOptimizations(localContext.packageName) != true)
+    }
     var canScheduleExactAlarms by remember {
         mutableStateOf(AlarmManagerCompat.canScheduleExactAlarms(alarmManager))
     }
+
     var showExactAlarmsDialog by remember {
         mutableStateOf(false)
     }
-    val exactAlarmsPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.StartActivityForResult(),
-    ) {
+    val checkExactAlarmBehaviorChange = {
         canScheduleExactAlarms = AlarmManagerCompat.canScheduleExactAlarms(alarmManager)
         if (canScheduleExactAlarms) {
             localContext.sendBroadcast(PhotoWidgetRescheduleReceiver.intent(localContext))
         }
+    }
+    val exactAlarmsPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) {
+        checkExactAlarmBehaviorChange()
     }
 
     val batteryOptimizationSheetState = rememberAppSheetState()
@@ -105,6 +114,7 @@ fun SettingsScreen(
         onDataSaverClick = onDataSaverClick,
         canScheduleExactAlarms = canScheduleExactAlarms,
         onScheduleExactAlarmsClick = { showExactAlarmsDialog = true },
+        isBatteryUsageRestricted = isBatteryUsageRestricted,
         onBatteryOptimizationClick = { batteryOptimizationSheetState.showBottomSheet() },
         onAppearanceClick = onAppearanceClick,
         onColorsClick = onColorsClick,
@@ -132,6 +142,10 @@ fun SettingsScreen(
 
     BackgroundRestrictionBottomSheet(
         sheetState = batteryOptimizationSheetState,
+        onDismissRequest = {
+            isBatteryUsageRestricted = powerManager?.isIgnoringBatteryOptimizations(localContext.packageName) != true
+            checkExactAlarmBehaviorChange()
+        },
     )
 }
 
@@ -141,6 +155,7 @@ private fun SettingsScreen(
     onDataSaverClick: () -> Unit,
     canScheduleExactAlarms: Boolean,
     onScheduleExactAlarmsClick: () -> Unit,
+    isBatteryUsageRestricted: Boolean,
     onBatteryOptimizationClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
@@ -192,16 +207,18 @@ private fun SettingsScreen(
                 )
             }
 
-            SettingsAction(
-                icon = R.drawable.ic_battery,
-                label = R.string.photo_widget_configure_battery_optimization,
-                onClick = onBatteryOptimizationClick,
-                description = R.string.photo_widget_configure_battery_optimization_description,
-                shape = MaterialTheme.shapes.medium.copy(
-                    topStart = CornerSize(2.dp),
-                    topEnd = CornerSize(2.dp),
-                ),
-            )
+            AnimatedVisibility(visible = isBatteryUsageRestricted) {
+                SettingsAction(
+                    icon = R.drawable.ic_battery,
+                    label = R.string.photo_widget_configure_battery_optimization,
+                    onClick = onBatteryOptimizationClick,
+                    description = R.string.photo_widget_configure_battery_optimization_description,
+                    shape = MaterialTheme.shapes.medium.copy(
+                        topStart = CornerSize(2.dp),
+                        topEnd = CornerSize(2.dp),
+                    ),
+                )
+            }
 
             Spacer(modifier = Modifier.height(30.dp))
 
@@ -423,6 +440,7 @@ private fun SettingsScreenPreview() {
             onDataSaverClick = {},
             canScheduleExactAlarms = false,
             onScheduleExactAlarmsClick = {},
+            isBatteryUsageRestricted = true,
             onBatteryOptimizationClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
