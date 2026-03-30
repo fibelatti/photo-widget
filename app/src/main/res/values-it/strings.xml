@@ -286,6 +286,13 @@
     <!-- Folder -->
     <string name="photo_widget_app_folder_empty">Non hai ancora aggiunto app a questa cartella. Tocca Continua per aprire l\'editor dei widget.</string>
     <string name="photo_widget_app_folder_add_app">Aggiungi app</string>
+    <!-- Keep-alive service -->
+    <string name="photo_widget_keep_alive_service_dialog_title">Servizio in background</string>
+    <string name="photo_widget_keep_alive_service_dialog_toggle">Abilita servizio in background</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">Puoi abilitare il servizio in background per far sapere ad Android che l\'app è importante e che non dovrebbe essere arrestata. Non preoccuparti, l\'app fa solo ciò che è necessario per mantenere i tuoi widget che mostrano le foto in programma, senza un consumo aggiuntivo della batteria.&lt;br/>&lt;br/>I widget sulla tua schermata iniziale sono gestiti dal tuo launcher, non direttamente dall\'app. Poiché l\'app raramente viene eseguita in primo piano, &lt;b>il sistema potrebbe presumere che non sia importante e interromperla&lt;/b>. Quando ciò accade, &lt;b>anche i widget vengono interrotti, causando la mancata visualizzazione delle foto&lt;/b>. Questo è particolarmente comune sui &lt;b>dispositivi Samsung&lt;/b>.</string>
+    <!-- Notifications -->
+    <string name="notification_channel_name_keep_alive">Servizio in background</string>
+    <string name="notification_channel_description_keep_alive">Mantiene l\'app attiva, anche se è rimasta in background per molto tempo. Garantisce che i widget possano essere aggiornati come previsto.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Sì</string>
     <string name="photo_widget_action_no">No</string>

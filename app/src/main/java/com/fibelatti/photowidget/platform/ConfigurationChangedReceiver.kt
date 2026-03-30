@@ -12,8 +12,7 @@ class ConfigurationChangedReceiver : EntryPointBroadcastReceiver() {
     override suspend fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
         Timber.i("Working...")
 
-        val acceptedAction = Intent.ACTION_CONFIGURATION_CHANGED == intent.action ||
-            Intent.ACTION_SCREEN_ON == intent.action
+        val acceptedAction: Boolean = Intent.ACTION_CONFIGURATION_CHANGED == intent.action
 
         if (!acceptedAction) {
             return
@@ -39,9 +38,7 @@ class ConfigurationChangedReceiver : EntryPointBroadcastReceiver() {
 
         fun register(context: Context) {
             val receiver = ConfigurationChangedReceiver()
-            val intentFilter = IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED).apply {
-                addAction(Intent.ACTION_SCREEN_ON)
-            }
+            val intentFilter = IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED)
 
             context.registerReceiver(receiver, intentFilter)
         }

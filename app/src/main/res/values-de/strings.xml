@@ -285,6 +285,13 @@
     <!-- Folder -->
     <string name="photo_widget_app_folder_empty">Du hast diesem Ordner noch keine Apps hinzugefügt. Tippe auf „Weiter“, um den Widget-Editor zu öffnen.</string>
     <string name="photo_widget_app_folder_add_app">App hinzufügen</string>
+    <!-- Keep-alive service -->
+    <string name="photo_widget_keep_alive_service_dialog_title">Hintergrunddienst</string>
+    <string name="photo_widget_keep_alive_service_dialog_toggle">Hintergrunddienst aktivieren</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">Du kannst den Hintergrunddienst aktivieren, um Android mitzuteilen, dass die App wichtig ist und nicht beendet werden soll. Keine Sorge, die App macht nur das Nötigste, damit deine Widgets Fotos nach Zeitplan anzeigen, ohne den Akku zusätzlich zu belasten.&lt;br/>&lt;br/>Widgets auf deinem Startbildschirm werden von deinem App-Launcher verwaltet, nicht direkt von der App. Da die App selten im Vordergrund läuft, &lt;b>könnte das System annehmen, dass sie nicht wichtig ist, und sie beenden&lt;/b>. Wenn das passiert, &lt;b>werden auch die Widgets beendet, sodass keine Fotos mehr angezeigt werden&lt;/b>. Dies tritt besonders häufig auf &lt;b>Samsung-Geräten&lt;/b> auf.</string>
+    <!-- Notifications -->
+    <string name="notification_channel_name_keep_alive">Hintergrunddienst</string>
+    <string name="notification_channel_description_keep_alive">Hält die App am Leben, auch wenn sie lange im Hintergrund ist. Stellt sicher, dass Widgets wie erwartet aktualisiert werden können.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Ja</string>
     <string name="photo_widget_action_no">Nein</string>

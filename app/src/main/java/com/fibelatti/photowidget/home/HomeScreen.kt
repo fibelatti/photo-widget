@@ -51,6 +51,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.preferences.AppAppearanceBottomSheet
 import com.fibelatti.photowidget.preferences.AppColorsBottomSheet
 import com.fibelatti.photowidget.preferences.DataSaverBottomSheet
+import com.fibelatti.photowidget.preferences.KeepAliveServiceBottomSheet
 import com.fibelatti.photowidget.preferences.WidgetDefaultsActivity
 import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.foundation.rememberAppSheetState
@@ -215,6 +216,7 @@ fun HomeScreen(
     val helpSheetState = rememberAppSheetState()
     val backgroundRestrictionSheetState = rememberAppSheetState()
     val dataSaverSheetState = rememberAppSheetState()
+    val keepAliveSheetState = rememberAppSheetState()
 
     Scaffold(
         modifier = modifier,
@@ -265,6 +267,7 @@ fun HomeScreen(
                     SettingsScreen(
                         onDefaultsClick = onDefaultsClick,
                         onDataSaverClick = dataSaverSheetState::showBottomSheet,
+                        onKeepAliveClick = keepAliveSheetState::showBottomSheet,
                         onAppearanceClick = onAppearanceClick,
                         onColorsClick = onColorsClick,
                         onAppLanguageClick = onAppLanguageClick,
@@ -294,6 +297,10 @@ fun HomeScreen(
 
     DataSaverBottomSheet(
         sheetState = dataSaverSheetState,
+    )
+
+    KeepAliveServiceBottomSheet(
+        sheetState = keepAliveSheetState,
     )
 }
 

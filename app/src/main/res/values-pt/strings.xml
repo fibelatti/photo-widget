@@ -285,6 +285,13 @@
     <!-- Folder -->
     <string name="photo_widget_app_folder_empty">Você ainda não adicionou apps a esta pasta. Toque em Continuar para abrir o editor de widgets.</string>
     <string name="photo_widget_app_folder_add_app">Adicionar app</string>
+    <!-- Keep-alive service -->
+    <string name="photo_widget_keep_alive_service_dialog_title">Serviço em segundo plano</string>
+    <string name="photo_widget_keep_alive_service_dialog_toggle">Ativar serviço em segundo plano</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">Você pode ativar o serviço em segundo plano para informar ao Android que o app é importante e que não deve ser encerrado. Não se preocupe, o app faz apenas o necessário para manter seus widgets exibindo fotos no horário programado, sem consumo extra de bateria.&lt;br/>&lt;br/>Os widgets na sua tela inicial são gerenciados pelo seu launcher, não diretamente pelo app. Como o app raramente fica em primeiro plano, &lt;b>o sistema pode presumir que não é importante e encerrá-lo&lt;/b>. Quando isso acontece, &lt;b>os widgets também são encerrados, fazendo com que as fotos não apareçam&lt;/b>. Isso é especialmente comum em &lt;b>dispositivos Samsung&lt;/b>.</string>
+    <!-- Notifications -->
+    <string name="notification_channel_name_keep_alive">Serviço em segundo plano</string>
+    <string name="notification_channel_description_keep_alive">Mantém o app ativo, mesmo quando em segundo plano por muito tempo. Garante que os widgets possam ser atualizados conforme esperado.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Sim</string>
     <string name="photo_widget_action_no">Não</string>

@@ -70,6 +70,7 @@ import com.google.android.material.color.DynamicColors
 fun SettingsScreen(
     onDefaultsClick: () -> Unit,
     onDataSaverClick: () -> Unit,
+    onKeepAliveClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
@@ -116,6 +117,7 @@ fun SettingsScreen(
         onScheduleExactAlarmsClick = { showExactAlarmsDialog = true },
         isBatteryUsageRestricted = isBatteryUsageRestricted,
         onBatteryOptimizationClick = { batteryOptimizationSheetState.showBottomSheet() },
+        onKeepAliveClick = onKeepAliveClick,
         onAppearanceClick = onAppearanceClick,
         onColorsClick = onColorsClick,
         onAppLanguageClick = onAppLanguageClick,
@@ -157,6 +159,7 @@ private fun SettingsScreen(
     onScheduleExactAlarmsClick: () -> Unit,
     isBatteryUsageRestricted: Boolean,
     onBatteryOptimizationClick: () -> Unit,
+    onKeepAliveClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
@@ -213,12 +216,18 @@ private fun SettingsScreen(
                     label = R.string.photo_widget_configure_battery_optimization,
                     onClick = onBatteryOptimizationClick,
                     description = R.string.photo_widget_configure_battery_optimization_description,
-                    shape = MaterialTheme.shapes.medium.copy(
-                        topStart = CornerSize(2.dp),
-                        topEnd = CornerSize(2.dp),
-                    ),
                 )
             }
+
+            SettingsAction(
+                icon = R.drawable.ic_keep_alive,
+                label = R.string.photo_widget_keep_alive_service_dialog_title,
+                onClick = onKeepAliveClick,
+                shape = MaterialTheme.shapes.medium.copy(
+                    topStart = CornerSize(2.dp),
+                    topEnd = CornerSize(2.dp),
+                ),
+            )
 
             Spacer(modifier = Modifier.height(30.dp))
 
@@ -442,6 +451,7 @@ private fun SettingsScreenPreview() {
             onScheduleExactAlarmsClick = {},
             isBatteryUsageRestricted = true,
             onBatteryOptimizationClick = {},
+            onKeepAliveClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
             onAppLanguageClick = {},

@@ -295,6 +295,13 @@
     <!-- Folder -->
     <string name="photo_widget_app_folder_empty">עדיין לא הוספת אפליקציות לתיקייה זו. הקש על המשך כדי לפתוח את עורך הווידג׳ט.</string>
     <string name="photo_widget_app_folder_add_app">הוסף אפליקציה</string>
+    <!-- Keep-alive service -->
+    <string name="photo_widget_keep_alive_service_dialog_title">שירות רקע</string>
+    <string name="photo_widget_keep_alive_service_dialog_toggle">הפעל שירות רקע</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">ניתן להפעיל את שירות הרקע כדי ליידע את Android שהאפליקציה חשובה ושלא צריך לעצור אותה. אל תדאג, האפליקציה עושה רק את הנדרש כדי לשמור על הווידג\'טים שלך מציגים תמונות לפי לוח הזמנים, ללא ניקוז נוסף של הסוללה.&lt;br/>&lt;br/>הווידג\'טים על מסך הבית שלך מנוהלים על ידי מפעיל האפליקציות שלך, לא ישירות על ידי האפליקציה. מכיוון שהאפליקציה לעתים רחוקות פועלת בחזית, &lt;b>המערכת עשויה להניח שהיא אינה חשובה ולעצור אותה&lt;/b>. כשזה קורה, &lt;b>גם הווידג\'טים נעצרים, מה שגורם לכך שתמונות לא יוצגו&lt;/b>. זה נפוץ במיוחד על &lt;b>מכשירי Samsung&lt;/b>.</string>
+    <!-- Notifications -->
+    <string name="notification_channel_name_keep_alive">שירות רקע</string>
+    <string name="notification_channel_description_keep_alive">שומר את האפליקציה פעילה, גם אם היא פועלת ברקע לאורך זמן. מבטיח שהווידג\'טים יכולים להתעדכן כמצופה.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">כן</string>
     <string name="photo_widget_action_no">לא</string>

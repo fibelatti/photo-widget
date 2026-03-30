@@ -346,6 +346,15 @@
     <string name="photo_widget_app_folder_empty">You haven\'t added apps to this folder yet. Tap continue to open the widget editor.</string>
     <string name="photo_widget_app_folder_add_app">Add app</string>
 
+    <!-- Keep-alive service -->
+    <string name="photo_widget_keep_alive_service_dialog_title">Background Service</string>
+    <string name="photo_widget_keep_alive_service_dialog_toggle">Enable Background Service</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">You can enable the background service to let Android know the app is important and that it shouldn\'t be stopped. Don\'t worry, the app only does what\'s needed to keep your widgets showing photos on schedule, without extra battery drain.&lt;br/>&lt;br/>Widgets on your home screen are managed by your app launcher, not directly by the app. Since the app rarely runs in the foreground, &lt;b>the system may assume it\'s not important and stop it&lt;/b>. When that happens, &lt;b>widgets are stopped too, causing photos not to appear&lt;/b>. This is especially common on &lt;b>Samsung devices&lt;/b>.</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name_keep_alive">Background Service</string>
+    <string name="notification_channel_description_keep_alive">Keeps the app alive, even if backgrounded for a long time. Ensures that widgets can be updated as expected.</string>
+
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Yes</string>
     <string name="photo_widget_action_no">No</string>

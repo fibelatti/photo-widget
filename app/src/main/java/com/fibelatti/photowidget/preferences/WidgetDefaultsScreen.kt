@@ -544,6 +544,7 @@ private fun WidgetDefaultsScreenPreview() {
         WidgetDefaultsScreen(
             userPreferences = UserPreferences(
                 dataSaver = true,
+                keepAlive = true,
                 appearance = Appearance.FOLLOW_SYSTEM,
                 useTrueBlack = false,
                 dynamicColors = true,

@@ -295,6 +295,13 @@
     <!-- Folder -->
     <string name="photo_widget_app_folder_empty">Вы ещё не добавили приложения в эту папку. Нажмите «Продолжить», чтобы открыть редактор виджетов.</string>
     <string name="photo_widget_app_folder_add_app">Добавить приложение</string>
+    <!-- Keep-alive service -->
+    <string name="photo_widget_keep_alive_service_dialog_title">Фоновый сервис</string>
+    <string name="photo_widget_keep_alive_service_dialog_toggle">Включить фоновый сервис</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">Вы можете включить фоновый сервис, чтобы сообщить Android о важности приложения и предотвратить его остановку. Не беспокойтесь — приложение делает только необходимое для своевременного показа фотографий в виджетах, без дополнительного расхода батареи.&lt;br/>&lt;br/>Виджеты на вашем главном экране управляются лаунчером, а не напрямую приложением. Поскольку приложение редко работает на переднем плане, &lt;b>система может посчитать его неважным и завершить его работу&lt;/b>. Когда это происходит, &lt;b>виджеты тоже перестают работать, и фотографии перестают отображаться&lt;/b>. Это особенно часто встречается на &lt;b>устройствах Samsung&lt;/b>.</string>
+    <!-- Notifications -->
+    <string name="notification_channel_name_keep_alive">Фоновый сервис</string>
+    <string name="notification_channel_description_keep_alive">Поддерживает работу приложения в фоновом режиме. Обеспечивает своевременное обновление виджетов.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Да</string>
     <string name="photo_widget_action_no">Нет</string>

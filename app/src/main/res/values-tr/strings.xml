@@ -283,6 +283,13 @@
     <!-- Folder -->
     <string name="photo_widget_app_folder_empty">Bu klasöre henüz uygulama eklemediniz. Widget düzenleyicisini açmak için Devam\'a dokunun.</string>
     <string name="photo_widget_app_folder_add_app">Uygulama ekle</string>
+    <!-- Keep-alive service -->
+    <string name="photo_widget_keep_alive_service_dialog_title">Arka plan hizmeti</string>
+    <string name="photo_widget_keep_alive_service_dialog_toggle">Arka plan hizmetini etkinleştir</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">Arka plan hizmetini etkinleştirerek Android\'e uygulamanın önemli olduğunu ve durdurulmaması gerektiğini bildirebilirsiniz. Merak etmeyin, uygulama yalnızca widget\'larınızın fotoğrafları zamanlamaya göre göstermesini sağlamak için gerekeni yapar ve ekstra pil tüketimi olmaz.&lt;br/>&lt;br/>Ana ekranınızdaki widget\'lar, doğrudan uygulama tarafından değil, uygulama başlatıcınız tarafından yönetilir. Uygulama ön planda nadiren çalıştığından, &lt;b>sistem uygulamanın önemsiz olduğunu varsayarak durdurabilir&lt;/b>. Bu olduğunda, &lt;b>widget\'lar da durur ve fotoğraflar görünmez hale gelir&lt;/b>. Bu durum özellikle &lt;b>Samsung cihazlarda&lt;/b> yaygındır.</string>
+    <!-- Notifications -->
+    <string name="notification_channel_name_keep_alive">Arka plan hizmeti</string>
+    <string name="notification_channel_description_keep_alive">Arka planda uzun süre olsa bile uygulamayı aktif tutar. Widget\'ların beklendiği gibi güncellenebilmesini sağlar.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Evet</string>
     <string name="photo_widget_action_no">Hayır</string>

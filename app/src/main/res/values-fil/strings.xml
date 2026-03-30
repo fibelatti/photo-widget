@@ -283,6 +283,13 @@
     <!-- Folder -->
     <string name="photo_widget_app_folder_empty">Wala ka pang idinadagdag na app sa folder na ito. I-tap ang Magpatuloy para buksan ang widget editor.</string>
     <string name="photo_widget_app_folder_add_app">Magdagdag ng app</string>
+    <!-- Keep-alive service -->
+    <string name="photo_widget_keep_alive_service_dialog_title">Serbisyo sa background</string>
+    <string name="photo_widget_keep_alive_service_dialog_toggle">I-enable ang serbisyo sa background</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">Maaari mong i-enable ang serbisyong pangkomunikasyon para malaman ng Android na mahalaga ang app at hindi ito dapat itigil. Huwag mag-alala, ginagawa lang ng app ang kailangan para maipakita ng iyong mga widget ang mga larawan ayon sa iskedyul, nang walang dagdag na pagkonsumo ng baterya.&lt;br/>&lt;br/>Ang mga widget sa iyong home screen ay pinamamahalaan ng iyong app launcher, hindi direkta ng app. Dahil bihirang tumatakbo ang app sa foreground, &lt;b>maaaring isipin ng system na hindi ito mahalaga at itigil ito&lt;/b>. Kapag nangyari iyon, &lt;b>ang mga widget ay titigil din, na magiging sanhi ng hindi paglitaw ng mga larawan&lt;/b>. Ito ay lalo na karaniwan sa &lt;b>mga Samsung na device&lt;/b>.</string>
+    <!-- Notifications -->
+    <string name="notification_channel_name_keep_alive">Serbisyo sa background</string>
+    <string name="notification_channel_description_keep_alive">Pinapanatiling buhay ang app, kahit na matagal itong naka-background. Tinitiyak na maaaring ma-update ang mga widget gaya ng inaasahan.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Oo</string>
     <string name="photo_widget_action_no">Hindi</string>

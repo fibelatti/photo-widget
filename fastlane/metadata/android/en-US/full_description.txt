@@ -58,9 +58,10 @@ app.
 * REQUEST_IGNORE_BATTERY_OPTIMIZATIONS (optional) — This is an optional
   permission that is needed to ensure that widgets are updated as expected in
   Android flavors that tend to kill apps that mostly run in the background.
-* WAKE_LOCK & FOREGROUND_SERVICE — These permissions are used by Work Manager;
-  a standard Android library to manage background work, in this case, used to
-  ensure that the widget keeps functioning as expected.
+* WAKE_LOCK, FOREGROUND_SERVICE and FOREGROUND_SERVICE_SPECIAL_USE — This
+  permission is used by both the app (optionally, via in-app settings toggle)
+  and Work Manager to manage background work. In this case, used to ensure that
+  widgets are synced and are updated as expected.
 
 The app does not require any storage permissions. Photos and directories are
 selected using the native pickers and stored within the app to keep data

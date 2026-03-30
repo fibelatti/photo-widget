@@ -35,6 +35,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
     private val _userPreferences = MutableStateFlow(
         UserPreferences(
             dataSaver = dataSaver,
+            keepAlive = keepAlive,
             appearance = appearance,
             useTrueBlack = useTrueBlack,
             dynamicColors = dynamicColors,
@@ -60,6 +61,15 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         set(value) {
             sharedPreferences.edit { putBoolean(Preference.DATA_SAVER.value, value) }
             _userPreferences.update { current -> current.copy(dataSaver = value) }
+        }
+
+    var keepAlive: Boolean
+        get() {
+            return sharedPreferences.getBoolean(Preference.KEEP_ALIVE.value, false)
+        }
+        set(value) {
+            sharedPreferences.edit { putBoolean(Preference.KEEP_ALIVE.value, value) }
+            _userPreferences.update { current -> current.copy(keepAlive = value) }
         }
 
     var appearance: Appearance
@@ -282,6 +292,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         _userPreferences.update {
             UserPreferences(
                 dataSaver = dataSaver,
+                keepAlive = keepAlive,
                 appearance = appearance,
                 useTrueBlack = useTrueBlack,
                 dynamicColors = dynamicColors,
@@ -301,6 +312,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
 
     private enum class Preference(val value: String) {
         DATA_SAVER(value = "user_preferences_data_saver"),
+        KEEP_ALIVE(value = "user_preferences_keep_alive"),
         APP_APPEARANCE(value = "user_preferences_appearance"),
         USE_TRUE_BLACK(value = "user_preferences_use_true_black"),
         APP_DYNAMIC_COLORS(value = "user_preferences_dynamic_colors"),

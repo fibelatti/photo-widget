@@ -291,6 +291,13 @@
     <!-- Folder -->
     <string name="photo_widget_app_folder_empty">Nu ai adăugat încă aplicații în acest folder. Apasă pe Continuare pentru a deschide editorul de widgeturi.</string>
     <string name="photo_widget_app_folder_add_app">Adaugă aplicație</string>
+    <!-- Keep-alive service -->
+    <string name="photo_widget_keep_alive_service_dialog_title">Serviciu de fundal</string>
+    <string name="photo_widget_keep_alive_service_dialog_toggle">Activează serviciul de fundal</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">Poți activa serviciul de fundal pentru a informa Android că aplicația este importantă și că nu trebuie oprită. Nu-ți face griji, aplicația face doar ce este necesar pentru ca widget-urile tale să afișeze fotografii conform programului, fără consum suplimentar de baterie.&lt;br/>&lt;br/>Widget-urile de pe ecranul de pornire sunt gestionate de lansatorul de aplicații, nu direct de aplicație. Deoarece aplicația rulează rar în prim-plan, &lt;b>sistemul poate presupune că nu este importantă și o poate opri&lt;/b>. Când se întâmplă acest lucru, &lt;b>și widget-urile sunt oprite, ceea ce face ca fotografiile să nu mai apară&lt;/b>. Acest lucru este deosebit de frecvent pe &lt;b>dispozitivele Samsung&lt;/b>.</string>
+    <!-- Notifications -->
+    <string name="notification_channel_name_keep_alive">Serviciu de fundal</string>
+    <string name="notification_channel_description_keep_alive">Menține aplicația activă, chiar dacă este în fundal pentru o perioadă lungă de timp. Asigură că widget-urile pot fi actualizate după cum se așteaptă.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Da</string>
     <string name="photo_widget_action_no">Nu</string>

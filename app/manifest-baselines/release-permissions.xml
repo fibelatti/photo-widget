@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--
 Auto-generated baseline file with the expected permissions for this app.
-Last updated: 2026-03-28T12:33:52.811564
+Last updated: 2026-03-30T18:03:45.477156
 -->
 <!--@formatter:off-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:documentation="custom">
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" documentation:comment="This permission is used by Work Manager to manage background work, in this case, used to ensure that widgets are synced and are updated as expected."/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" documentation:comment="This permission is used by both the app (optionally, via in-app settings toggle) and Work Manager to manage background work. In this case, used to ensure that widgets are synced and are updated as expected."/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" documentation:comment="Optional permission to manage background work. In this case, used to ensure that widgets are synced and are updated as expected."/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" documentation:comment="This permission is needed to restore widgets after a device restart. It instructs Android to run the application every time you start your phone."/>
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" documentation:comment="Optional permission to ignore battery optimizations, making sure widgets are updated as expected."/>
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" documentation:comment="This is an optional permission needed to use shorter intervals to switch photos, ensuring that they follow the selected schedule exactly. An app holding this permission can schedule work to happen at a desired time in the future. This also means that the app can run when not actively using the device. The system invokes an exact alarm at a precise moment in the future."/>

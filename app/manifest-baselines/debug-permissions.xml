@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--
 Auto-generated baseline file with the expected permissions for this app.
-Last updated: 2026-03-28T12:33:49.692047
+Last updated: 2026-03-30T18:00:50.962331
 -->
 <!--@formatter:off-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:documentation="custom">
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" documentation:comment="This permission is used by Work Manager to manage background work, in this case, used to ensure that widgets are synced and are updated as expected."/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" documentation:comment="This permission is used by both the app (optionally, via in-app settings toggle) and Work Manager to manage background work. In this case, used to ensure that widgets are synced and are updated as expected."/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" documentation:comment="Optional permission to manage background work. In this case, used to ensure that widgets are synced and are updated as expected."/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" documentation:comment="Used by LeakCanary in debug builds only."/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" documentation:comment="Used by LeakCanary in debug builds only."/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" documentation:comment="This permission is needed to restore widgets after a device restart. It instructs Android to run the application every time you start your phone."/>

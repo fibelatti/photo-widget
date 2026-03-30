@@ -285,6 +285,13 @@
     <!-- Folder -->
     <string name="photo_widget_app_folder_empty">Vous n\'avez pas encore ajouté d\'apps à ce dossier. Appuyez sur Continuer pour ouvrir l\'éditeur de widgets.</string>
     <string name="photo_widget_app_folder_add_app">Ajouter une app</string>
+    <!-- Keep-alive service -->
+    <string name="photo_widget_keep_alive_service_dialog_title">Service en arrière-plan</string>
+    <string name="photo_widget_keep_alive_service_dialog_toggle">Activer le service en arrière-plan</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">Vous pouvez activer le service en arrière-plan pour indiquer à Android que l\'application est importante et qu\'elle ne doit pas être arrêtée. Ne vous inquiétez pas, l\'application fait uniquement ce qui est nécessaire pour que vos widgets affichent les photos selon le calendrier, sans consommation supplémentaire de la batterie.&lt;br/>&lt;br/>Les widgets sur votre écran d\'accueil sont gérés par votre lanceur d\'applications, pas directement par l\'application. Comme l\'application s\'exécute rarement au premier plan, &lt;b>le système peut supposer qu\'elle n\'est pas importante et l\'arrêter&lt;/b>. Dans ce cas, &lt;b>les widgets sont également arrêtés, empêchant l\'affichage des photos&lt;/b>. Cela est particulièrement courant sur les &lt;b>appareils Samsung&lt;/b>.</string>
+    <!-- Notifications -->
+    <string name="notification_channel_name_keep_alive">Service en arrière-plan</string>
+    <string name="notification_channel_description_keep_alive">Maintient l\'application active, même si elle est en arrière-plan pendant une longue période. Garantit que les widgets peuvent être mis à jour comme prévu.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Oui</string>
     <string name="photo_widget_action_no">Non</string>
