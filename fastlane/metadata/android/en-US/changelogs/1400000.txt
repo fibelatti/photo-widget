@@ -1,0 +1,8 @@
+This version brings the following updates:
+
+* Support for multiple widget drafts
+* Increase the maximum number of scheduled times to 12
+* New shortcut to disable battery optimization directly from the app
+* Optional foreground service to improve reliability
+
+Thanks for using the app!
