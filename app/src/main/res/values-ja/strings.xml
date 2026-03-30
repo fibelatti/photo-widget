@@ -280,7 +280,7 @@
     <!-- Keep-alive service -->
     <string name="photo_widget_keep_alive_service_dialog_title">バックグラウンドサービス</string>
     <string name="photo_widget_keep_alive_service_dialog_toggle">バックグラウンドサービスを有効にする</string>
-    <string name="photo_widget_keep_alive_service_dialog_body">バックグラウンドサービスを有効にすると、Androidにアプリが重要であり停止しないよう伝えることができます。ご安心ください。アプリはウィジェットが予定通りに写真を表示し続けるために必要なことだけを行い、余分なバッテリー消耗はありません。&lt;br/>&lt;br/>ホーム画面のウィジェットはアプリランチャーによって管理されており、アプリが直接管理しているわけではありません。アプリがフォアグラウンドで実行されることはほとんどないため、&lt;b>システムはアプリが重要ではないと判断して停止する場合があります&lt;/b>。そうなると、&lt;b>ウィジェットも停止し、写真が表示されなくなります&lt;/b>。これは特に&lt;b>Samsungデバイス&lt;/b>でよく起こります。</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">バックグラウンドサービスを有効にすると、Androidにアプリが重要であり停止しないよう伝えることができます。ご安心ください。アプリはウィジェットが予定通りに写真を表示し続けるために必要なことだけを行い、余分なバッテリー消耗はありません。&lt;br/&gt;&lt;br/&gt;ホーム画面のウィジェットはアプリランチャーによって管理されており、アプリが直接管理しているわけではありません。アプリがフォアグラウンドで実行されることはほとんどないため、&lt;b&gt;システムはアプリが重要ではないと判断して停止する場合があります&lt;/b&gt;。そうなると、&lt;b&gt;ウィジェットも停止し、写真が表示されなくなります&lt;/b&gt;。これは特に&lt;b&gt;Samsungデバイス&lt;/b&gt;でよく起こります。</string>
     <!-- Notifications -->
     <string name="notification_channel_name_keep_alive">バックグラウンドサービス</string>
     <string name="notification_channel_description_keep_alive">アプリを長時間バックグラウンドでも維持します。ウィジェットが期待通りに更新できることを保証します。</string>
