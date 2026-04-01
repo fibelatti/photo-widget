@@ -185,7 +185,7 @@ dependencies {
     implementation(libs.graphics.shapes)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.palette)
-    implementation(libs.work.runtime.ktx)
+    implementation(libs.work.runtime)
 
     implementation(libs.navigation3.runtime)
     implementation(libs.navigation3.ui)
