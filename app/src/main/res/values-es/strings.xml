@@ -280,8 +280,8 @@
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Todas las fotos</string>
     <!-- Cycling feedback -->
-    <string name="photo_widget_cycling_feedback_paused">Temporizador en pausa</string>
-    <string name="photo_widget_cycling_feedback_resumed">Temporizador reanudado</string>
+    <string name="photo_widget_cycling_feedback_paused">Widget en pausa</string>
+    <string name="photo_widget_cycling_feedback_resumed">Widget reanudado</string>
     <!-- Folder -->
     <string name="photo_widget_app_folder_empty">Aún no has añadido apps a esta carpeta. Toca continuar para abrir el editor de widgets.</string>
     <string name="photo_widget_app_folder_add_app">Añadir app</string>

@@ -286,8 +286,8 @@
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Toate fotografiile</string>
     <!-- Cycling feedback -->
-    <string name="photo_widget_cycling_feedback_paused">Temporizator întrerupt</string>
-    <string name="photo_widget_cycling_feedback_resumed">Temporizator reluat</string>
+    <string name="photo_widget_cycling_feedback_paused">Widget întrerupt</string>
+    <string name="photo_widget_cycling_feedback_resumed">Widget reluat</string>
     <!-- Folder -->
     <string name="photo_widget_app_folder_empty">Nu ai adăugat încă aplicații în acest folder. Apasă pe Continuare pentru a deschide editorul de widgeturi.</string>
     <string name="photo_widget_app_folder_add_app">Adaugă aplicație</string>

@@ -278,8 +278,8 @@
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Tüm fotoğraflar</string>
     <!-- Cycling feedback -->
-    <string name="photo_widget_cycling_feedback_paused">Zamanlayıcı duraklatıldı</string>
-    <string name="photo_widget_cycling_feedback_resumed">Zamanlayıcı devam etti</string>
+    <string name="photo_widget_cycling_feedback_paused">Widget duraklatıldı</string>
+    <string name="photo_widget_cycling_feedback_resumed">Widget devam etti</string>
     <!-- Folder -->
     <string name="photo_widget_app_folder_empty">Bu klasöre henüz uygulama eklemediniz. Widget düzenleyicisini açmak için Devam\'a dokunun.</string>
     <string name="photo_widget_app_folder_add_app">Uygulama ekle</string>

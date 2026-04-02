@@ -278,8 +278,8 @@
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Lahat ng larawan</string>
     <!-- Cycling feedback -->
-    <string name="photo_widget_cycling_feedback_paused">Naka-hinto ang timer</string>
-    <string name="photo_widget_cycling_feedback_resumed">Pinatuloy ang timer</string>
+    <string name="photo_widget_cycling_feedback_paused">Naka-hinto ang widget</string>
+    <string name="photo_widget_cycling_feedback_resumed">Pinatuloy ang widget</string>
     <!-- Folder -->
     <string name="photo_widget_app_folder_empty">Wala ka pang idinadagdag na app sa folder na ito. I-tap ang Magpatuloy para buksan ang widget editor.</string>
     <string name="photo_widget_app_folder_add_app">Magdagdag ng app</string>

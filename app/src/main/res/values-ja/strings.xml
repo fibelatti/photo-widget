@@ -272,8 +272,8 @@
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">すべての写真</string>
     <!-- Cycling feedback -->
-    <string name="photo_widget_cycling_feedback_paused">タイマーを一時停止しました</string>
-    <string name="photo_widget_cycling_feedback_resumed">タイマーを再開しました</string>
+    <string name="photo_widget_cycling_feedback_paused">ウィジェットを一時停止しました</string>
+    <string name="photo_widget_cycling_feedback_resumed">ウィジェットを再開しました</string>
     <!-- Folder -->
     <string name="photo_widget_app_folder_empty">このフォルダにはまだアプリが追加されていません。「続行」をタップしてウィジェットエディタを開いてください。</string>
     <string name="photo_widget_app_folder_add_app">アプリを追加</string>
