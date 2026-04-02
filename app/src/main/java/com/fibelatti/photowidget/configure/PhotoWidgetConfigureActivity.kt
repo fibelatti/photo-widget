@@ -90,6 +90,11 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         checkIntent()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.maybeClearPinRequest()
+    }
+
     override fun onDestroy() {
         LocalBroadcastManager.getInstance(this)
             .unregisterReceiver(/* receiver = */ finishReceiver)
@@ -121,7 +126,6 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             setMessage(R.string.photo_widget_configure_save_draft_prompt)
             setPositiveButton(R.string.photo_widget_action_yes) { _, _ ->
                 viewModel.saveDraft()
-                finish()
             }
             setNegativeButton(R.string.photo_widget_action_no) { _, _ ->
                 viewModel.discardDraft()
@@ -201,6 +205,11 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
             is PhotoWidgetConfigureState.Message.CancelWidget -> {
                 viewModel.discardDraft()
+                viewModel.messageHandled(message = message)
+                finish()
+            }
+
+            is PhotoWidgetConfigureState.Message.DraftSaved -> {
                 viewModel.messageHandled(message = message)
                 finish()
             }

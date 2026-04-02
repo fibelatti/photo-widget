@@ -11,6 +11,7 @@ data class PhotoWidgetConfigureState(
     val photoWidget: PhotoWidget = PhotoWidget(),
     val selectedPhoto: LocalPhoto? = null,
     val isProcessing: Boolean = true,
+    val isProcessingPin: Boolean = true,
     val cropQueue: List<LocalPhoto> = emptyList(),
     val messages: List<Message> = emptyList(),
     val hasEdits: Boolean = false,
@@ -39,6 +40,8 @@ data class PhotoWidgetConfigureState(
         data object MissingBackupData : Message()
 
         data object CancelWidget : Message()
+
+        data object DraftSaved : Message()
     }
 }
 

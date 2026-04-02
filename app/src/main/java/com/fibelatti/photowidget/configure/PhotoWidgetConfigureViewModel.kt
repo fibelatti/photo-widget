@@ -608,19 +608,28 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             currentState.isDraft -> {
                 pinningCache.populate(currentState.photoWidget, draftWidgetId = effectiveWidgetId)
 
-                _state += PhotoWidgetConfigureState.Message.RequestPin
+                _state.getAndUpdate { current ->
+                    current.copy(isProcessingPin = true) + PhotoWidgetConfigureState.Message.RequestPin
+                }
             }
 
             // The user started configuring from the home screen, it will be added automatically
             else -> {
-                viewModelScope.launch {
-                    savePhotoWidgetUseCase(
-                        draftWidgetId = effectiveWidgetId,
-                        appWidgetId = appWidgetId,
-                        photoWidget = currentState.photoWidget,
-                    )
+                scope.launch {
+                    _state.update { current -> current.copy(isProcessing = true) }
 
-                    _state += PhotoWidgetConfigureState.Message.AddWidget(appWidgetId = appWidgetId)
+                    withContext(NonCancellable) {
+                        savePhotoWidgetUseCase(
+                            draftWidgetId = effectiveWidgetId,
+                            appWidgetId = appWidgetId,
+                            photoWidget = currentState.photoWidget,
+                        )
+                    }
+
+                    _state.getAndUpdate { current ->
+                        current.copy(isProcessing = false) +
+                            PhotoWidgetConfigureState.Message.AddWidget(appWidgetId = appWidgetId)
+                    }
                 }
             }
         }
@@ -634,14 +643,24 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
+    fun maybeClearPinRequest() {
+        _state.update { current -> current.copy(isProcessingPin = false) }
+    }
+
     fun saveDraft() {
         scope.launch {
+            _state.update { current -> current.copy(isProcessing = true) }
+
             withContext(NonCancellable) {
                 savePhotoWidgetUseCase(
                     draftWidgetId = effectiveWidgetId,
                     appWidgetId = effectiveWidgetId,
                     photoWidget = state.value.photoWidget,
                 )
+            }
+
+            _state.getAndUpdate { current ->
+                current.copy(isProcessing = false) + PhotoWidgetConfigureState.Message.DraftSaved
             }
         }
     }

@@ -161,7 +161,7 @@ private fun PhotoWidgetConfigureHomeScreen(
         PhotoWidgetConfigureScreen(
             photoWidget = state.photoWidget,
             selectedPhoto = state.selectedPhoto,
-            isProcessing = state.isProcessing,
+            isProcessing = state.isProcessing || state.isProcessingPin,
             onNavClick = { localBackHandler?.onBackPressedDispatcher?.onBackPressed() },
             onCropClick = viewModel::requestCrop,
             onRemoveClick = viewModel::removePhoto,
