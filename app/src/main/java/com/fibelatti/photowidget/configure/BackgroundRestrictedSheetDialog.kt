@@ -32,12 +32,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.getSystemService
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.appSettingsIntent
 import com.fibelatti.photowidget.platform.disableBatteryOptimizationIntent
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.TextWithLinks
+import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -108,6 +110,15 @@ fun BackgroundRestrictionBottomSheet(
     val powerManager: PowerManager? = remember { localContext.getSystemService<PowerManager>() }
     val isBatteryUsageRestricted: Boolean = powerManager
         ?.isIgnoringBatteryOptimizations(localContext.packageName) != true
+
+    LifecycleResumeEffect(localContext) {
+        if (powerManager?.isIgnoringBatteryOptimizations(localContext.packageName) == true) {
+            onDismissRequest()
+            sheetState.hideBottomSheet()
+        }
+
+        onPauseOrDispose { /* Do nothing */ }
+    }
 
     AppBottomSheet(
         sheetState = sheetState,
