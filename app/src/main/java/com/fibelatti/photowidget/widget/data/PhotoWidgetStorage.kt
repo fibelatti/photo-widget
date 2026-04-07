@@ -667,7 +667,7 @@ class PhotoWidgetStorage @Inject constructor(
 
     suspend fun duplicateWidgetDir(originalAppWidgetId: Int, newAppWidgetId: Int) {
         val sourceDirectoryName: String = getOrCreateDirectoryName(originalAppWidgetId)
-        val targetDirectoryName: String = createDirectoryName(newAppWidgetId)
+        val targetDirectoryName: String = getOrCreateDirectoryName(newAppWidgetId)
         internalFileStorage.duplicateWidgetDir(
             sourceDirectoryName = sourceDirectoryName,
             targetDirectoryName = targetDirectoryName,
