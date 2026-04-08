@@ -203,6 +203,8 @@
     <string name="photo_widget_configure_tap_action_app_folder">Cartella app</string>
     <string name="photo_widget_configure_tap_action_app_folder_description">Scegli fino a 12 app</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Apri un link</string>
+    <string name="photo_widget_configure_tap_action_file_shortcut">Apri un file</string>
+    <string name="photo_widget_configure_tap_action_choose_file">Scegli file</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Attiva/disattiva timer</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Tocca per mettere in pausa il timer delle foto. Tocca di nuovo per riprendere. Questa azione sarà disattivata mentre il widget è bloccato.</string>
     <string name="photo_widget_configure_tap_action_share_photo">Condividi foto</string>

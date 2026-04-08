@@ -209,6 +209,8 @@
     <string name="photo_widget_configure_tap_action_app_folder">Folder de aplicații</string>
     <string name="photo_widget_configure_tap_action_app_folder_description">Alege până la 12 aplicații</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Deschide un link</string>
+    <string name="photo_widget_configure_tap_action_file_shortcut">Deschide un fișier</string>
+    <string name="photo_widget_configure_tap_action_choose_file">Alege fișierul</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Activează/dezactivează temporizatorul</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Atinge pentru a întrerupe temporizatorul foto. Apasă din nou pentru a relua. Această acțiune va fi dezactivată în timp ce widget-ul este blocat.</string>
     <string name="photo_widget_configure_tap_action_share_photo">Distribuie fotografia</string>

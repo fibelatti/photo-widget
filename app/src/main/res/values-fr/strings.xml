@@ -203,6 +203,8 @@
     <string name="photo_widget_configure_tap_action_app_folder">Dossier d\'apps</string>
     <string name="photo_widget_configure_tap_action_app_folder_description">Choisissez jusqu\'à 12 apps</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Ouvrir un lien</string>
+    <string name="photo_widget_configure_tap_action_file_shortcut">Ouvrir un fichier</string>
+    <string name="photo_widget_configure_tap_action_choose_file">Choisir un fichier</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Activer/désactiver le minuteur</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Appuyez pour mettre le minuteur photo en pause. Appuyez de nouveau pour reprendre. Cette action sera désactivée lorsque le widget est verrouillé.</string>
     <string name="photo_widget_configure_tap_action_share_photo">Partager la photo</string>

@@ -203,6 +203,8 @@
     <string name="photo_widget_configure_tap_action_app_folder">App-Ordner</string>
     <string name="photo_widget_configure_tap_action_app_folder_description">Wähle bis zu 12 Apps</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Einen Link öffnen</string>
+    <string name="photo_widget_configure_tap_action_file_shortcut">Eine Datei öffnen</string>
+    <string name="photo_widget_configure_tap_action_choose_file">Datei auswählen</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Timer aktivieren/deaktivieren</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Tippen, um den Foto-Timer zu pausieren. Nochmals tippen, um fortzusetzen. Diese Aktion ist deaktiviert, wenn das Widget gesperrt ist.</string>
     <string name="photo_widget_configure_tap_action_share_photo">Foto teilen</string>

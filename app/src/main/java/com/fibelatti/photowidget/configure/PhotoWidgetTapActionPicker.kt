@@ -5,6 +5,7 @@ package com.fibelatti.photowidget.configure
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -145,6 +146,18 @@ fun PhotoWidgetTapActionPicker(
         tapActions = onGalleryAppPickerResult(result = result, tapActions = tapActions)
     }
 
+    val context = LocalContext.current
+    val filePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument(),
+    ) { uri ->
+        tapActions = onFilePickerResult(
+            context = context,
+            uri = uri,
+            tapActions = tapActions,
+            selectedArea = selectedArea,
+        )
+    }
+
     TapActionPickerContent(
         onNavClick = onNavClick,
         selectedArea = selectedArea,
@@ -191,6 +204,9 @@ fun PhotoWidgetTapActionPicker(
                     Intent(Intent.ACTION_VIEW).setDataAndType("content://sample".toUri(), "image/*"),
                 ),
             )
+        },
+        onChooseFileClick = {
+            filePickerLauncher.launch(arrayOf("*/*"))
         },
         onApplyClick = { onApplyClick(tapActions) },
     )
@@ -240,6 +256,25 @@ private fun onAppFolderPickerResult(
         TapActionArea.LEFT -> tapActions.copy(left = updatedAction)
         TapActionArea.CENTER -> tapActions.copy(center = updatedAction)
         TapActionArea.RIGHT -> tapActions.copy(right = updatedAction)
+    }
+}
+
+private fun onFilePickerResult(
+    context: Context,
+    uri: Uri?,
+    tapActions: PhotoWidgetTapActions,
+    selectedArea: TapActionArea,
+): PhotoWidgetTapActions {
+    if (uri == null) return tapActions
+
+    context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+    val newTapAction = PhotoWidgetTapAction.FileShortcut(fileUri = uri.toString())
+
+    return when (selectedArea) {
+        TapActionArea.LEFT -> tapActions.copy(left = newTapAction)
+        TapActionArea.CENTER -> tapActions.copy(center = newTapAction)
+        TapActionArea.RIGHT -> tapActions.copy(right = newTapAction)
     }
 }
 
@@ -330,6 +365,7 @@ private fun TapActionPickerContent(
     onChooseAppShortcutClick: () -> Unit,
     onAddAppToFolderClick: () -> Unit,
     onChooseGalleryAppClick: () -> Unit,
+    onChooseFileClick: () -> Unit,
     onApplyClick: () -> Unit,
 ) {
     Column(
@@ -415,6 +451,7 @@ private fun TapActionPickerContent(
                 onChooseAppShortcutClick = onChooseAppShortcutClick,
                 onAddAppToFolderClick = onAddAppToFolderClick,
                 onChooseGalleryAppClick = onChooseGalleryAppClick,
+                onChooseFileClick = onChooseFileClick,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -627,6 +664,7 @@ private fun TapActionCustomizationContent(
     onChooseAppShortcutClick: () -> Unit,
     onAddAppToFolderClick: () -> Unit,
     onChooseGalleryAppClick: () -> Unit,
+    onChooseFileClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (tapAction) {
@@ -680,6 +718,14 @@ private fun TapActionCustomizationContent(
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 singleLine = true,
                 shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+            )
+        }
+
+        is PhotoWidgetTapAction.FileShortcut -> {
+            FileShortcutCustomizationContent(
+                value = tapAction,
+                onChooseFileClick = onChooseFileClick,
+                modifier = modifier,
             )
         }
 
@@ -829,6 +875,38 @@ private fun ToggleCyclingCustomizationContent(
         WarningSign(
             text = stringResource(id = R.string.photo_widget_configure_tap_action_shared_preferences),
         )
+    }
+}
+
+@Composable
+private fun FileShortcutCustomizationContent(
+    value: PhotoWidgetTapAction.FileShortcut,
+    onChooseFileClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        OutlinedButton(
+            onClick = onChooseFileClick,
+            shapes = ButtonDefaults.shapes(),
+        ) {
+            Text(text = stringResource(id = R.string.photo_widget_configure_tap_action_choose_file))
+        }
+
+        if (value.fileUri != null) {
+            AutoSizeText(
+                // lastPathSegment only takes care of the URI structure, the file can be in a nested directory
+                text = value.fileUri.toUri().lastPathSegment.orEmpty().substringAfterLast("/"),
+                modifier = Modifier.weight(1f),
+                color = MaterialTheme.colorScheme.onSurface,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                style = MaterialTheme.typography.labelLarge,
+            )
+        }
     }
 }
 
@@ -990,6 +1068,7 @@ private fun PhotoWidgetTapActionPickerPreview() {
             onChooseAppShortcutClick = {},
             onAddAppToFolderClick = {},
             onChooseGalleryAppClick = {},
+            onChooseFileClick = {},
             onApplyClick = {},
         )
     }

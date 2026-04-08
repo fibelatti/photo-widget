@@ -203,6 +203,8 @@
     <string name="photo_widget_configure_tap_action_app_folder">Uygulama klasörü</string>
     <string name="photo_widget_configure_tap_action_app_folder_description">En fazla 12 uygulama seçin</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Bir bağlantı aç</string>
+    <string name="photo_widget_configure_tap_action_file_shortcut">Bir dosya aç</string>
+    <string name="photo_widget_configure_tap_action_choose_file">Dosya seç</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Zamanlayıcıyı etkinleştir/devre dışı bırak</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Fotoğraf zamanlayıcısını duraklatmak için dokunun. Devam ettirmek için tekrar dokunun. Bu işlem, widget kilitliyken devre dışı olacaktır.</string>
     <string name="photo_widget_configure_tap_action_share_photo">Fotoğrafı paylaş</string>

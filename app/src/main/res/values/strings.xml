@@ -242,6 +242,8 @@
     <string name="photo_widget_configure_tap_action_app_folder">App folder</string>
     <string name="photo_widget_configure_tap_action_app_folder_description">Choose up to 12 apps</string>
     <string name="photo_widget_configure_tap_action_url_shortcut">Open a link</string>
+    <string name="photo_widget_configure_tap_action_file_shortcut">Open a file</string>
+    <string name="photo_widget_configure_tap_action_choose_file">Choose file</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Enable/disable timer</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Tap to pause the photo timer. Tap again to resume. This action will be disabled while the widget is locked.</string>
     <string name="photo_widget_configure_tap_action_share_photo">Share photo</string>
