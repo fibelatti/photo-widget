@@ -13,9 +13,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ExperimentalFlexBoxApi
+import androidx.compose.foundation.layout.FlexAlignContent
+import androidx.compose.foundation.layout.FlexAlignItems
+import androidx.compose.foundation.layout.FlexBox
+import androidx.compose.foundation.layout.FlexDirection
+import androidx.compose.foundation.layout.FlexJustifyContent
+import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalIconButton
@@ -29,6 +41,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -92,7 +105,7 @@ class PhotoCropActivity : AppCompatActivity() {
             finishWithResult(result)
         }
 
-        setupCropShortcuts()
+        setupCropControls()
     }
 
     private fun setupSourceAndOptions() {
@@ -142,12 +155,14 @@ class PhotoCropActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun setupCropShortcuts() {
+    private fun setupCropControls() {
         binding.composeViewRatioShortcuts.setContent {
             AppTheme {
                 CropControls(
                     onRotateLeftClick = { binding.cropImageView.rotatedDegrees -= 90 },
                     onRotateRightClick = { binding.cropImageView.rotatedDegrees += 90 },
+                    onFlipHorizontalClick = binding.cropImageView::flipImageHorizontally,
+                    onFlipVerticalClick = binding.cropImageView::flipImageVertically,
                     showAspectRatioShortcuts = !intent.aspectRatio.isConstrained,
                     onFreeFormClick = { binding.cropImageView.setFixedAspectRatio(false) },
                     onSquareClick = {
@@ -189,9 +204,12 @@ class PhotoCropActivity : AppCompatActivity() {
 }
 
 @Composable
+@OptIn(ExperimentalFlexBoxApi::class)
 private fun CropControls(
     onRotateLeftClick: () -> Unit,
     onRotateRightClick: () -> Unit,
+    onFlipHorizontalClick: () -> Unit,
+    onFlipVerticalClick: () -> Unit,
     showAspectRatioShortcuts: Boolean,
     onFreeFormClick: () -> Unit,
     onSquareClick: () -> Unit,
@@ -199,38 +217,91 @@ private fun CropControls(
     onWideClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    FlexBox(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(space = 4.dp, alignment = Alignment.CenterHorizontally),
-        verticalAlignment = Alignment.CenterVertically,
+        config = {
+            direction(FlexDirection.Row)
+            wrap(FlexWrap.Wrap)
+            justifyContent(FlexJustifyContent.Center)
+            alignItems(FlexAlignItems.Center)
+            alignContent(FlexAlignContent.Center)
+            rowGap(8.dp)
+            columnGap(12.dp)
+        },
     ) {
-        FilledTonalIconButton(
-            onClick = onRotateLeftClick,
-            shapes = IconButtonDefaults.shapes(),
-        ) {
-            Icon(
-                painter = painterResource(com.canhub.cropper.R.drawable.ic_rotate_left_24),
-                contentDescription = null,
-            )
-        }
-
-        FilledTonalIconButton(
-            onClick = onRotateRightClick,
-            shapes = IconButtonDefaults.shapes(),
-        ) {
-            Icon(
-                painter = painterResource(com.canhub.cropper.R.drawable.ic_rotate_right_24),
-                contentDescription = null,
-            )
-        }
-
         if (showAspectRatioShortcuts) {
             RatioShortcuts(
                 onFreeFormClick = onFreeFormClick,
                 onSquareClick = onSquareClick,
                 onTallClick = onTallClick,
                 onWideClick = onWideClick,
+                modifier = Modifier.height(48.dp),
             )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(space = 1.dp, alignment = Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            FilledTonalIconButton(
+                onClick = onRotateLeftClick,
+                shapes = IconButtonDefaults.shapes(
+                    shape = ButtonGroupDefaults.connectedLeadingButtonShape,
+                    pressedShape = ButtonGroupDefaults.connectedLeadingButtonPressShape,
+                ),
+                modifier = Modifier.size(48.dp),
+            ) {
+                Icon(
+                    painter = painterResource(com.canhub.cropper.R.drawable.ic_rotate_left_24),
+                    contentDescription = null,
+                )
+            }
+
+            FilledTonalIconButton(
+                onClick = onRotateRightClick,
+                shapes = IconButtonDefaults.shapes(
+                    shape = ButtonGroupDefaults.connectedTrailingButtonShape,
+                    pressedShape = ButtonGroupDefaults.connectedTrailingButtonPressShape,
+                ),
+                modifier = Modifier.size(48.dp),
+            ) {
+                Icon(
+                    painter = painterResource(com.canhub.cropper.R.drawable.ic_rotate_right_24),
+                    contentDescription = null,
+                )
+            }
+
+            Spacer(modifier = Modifier.width(6.dp))
+
+            FilledTonalIconButton(
+                onClick = onFlipHorizontalClick,
+                shapes = IconButtonDefaults.shapes(
+                    shape = ButtonGroupDefaults.connectedLeadingButtonShape,
+                    pressedShape = ButtonGroupDefaults.connectedLeadingButtonPressShape,
+                ),
+                modifier = Modifier.size(48.dp),
+            ) {
+                Icon(
+                    painter = painterResource(com.canhub.cropper.R.drawable.ic_flip_24),
+                    contentDescription = null,
+                )
+            }
+
+            FilledTonalIconButton(
+                onClick = onFlipVerticalClick,
+                shapes = IconButtonDefaults.shapes(
+                    shape = ButtonGroupDefaults.connectedTrailingButtonShape,
+                    pressedShape = ButtonGroupDefaults.connectedTrailingButtonPressShape,
+                ),
+                modifier = Modifier.size(48.dp),
+            ) {
+                Icon(
+                    painter = painterResource(com.canhub.cropper.R.drawable.ic_flip_24),
+                    contentDescription = null,
+                    modifier = Modifier.rotate(90f),
+                )
+            }
         }
     }
 }
@@ -272,7 +343,9 @@ private fun RatioShortcuts(
                 itemIndex = index,
                 itemCount = items.size,
                 label = label,
-                modifier = Modifier.weight(weight),
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(weight),
             )
         }
     }
@@ -285,11 +358,14 @@ private fun RatioShortcutsPreview() {
         CropControls(
             onRotateLeftClick = {},
             onRotateRightClick = {},
+            onFlipHorizontalClick = {},
+            onFlipVerticalClick = {},
             showAspectRatioShortcuts = true,
             onFreeFormClick = {},
             onSquareClick = {},
             onTallClick = {},
             onWideClick = {},
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
