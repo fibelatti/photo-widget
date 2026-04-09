@@ -35,7 +35,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -109,6 +108,7 @@ import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.ConnectedButtonRowItem
 import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
+import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.foundation.hideBottomSheet
@@ -997,14 +997,7 @@ private fun AppFolderCustomizationContent(
             AppFolderCustomizationItem(
                 label = stringResource(R.string.photo_widget_app_folder_add_app),
                 modifier = Modifier.clickable(onClick = onAddAppClick),
-                backgroundShape = if (value.shortcuts.isEmpty()) {
-                    MaterialTheme.shapes.medium
-                } else {
-                    MaterialTheme.shapes.medium.copy(
-                        topStart = CornerSize(2.dp),
-                        topEnd = CornerSize(2.dp),
-                    )
-                },
+                backgroundShape = if (value.shortcuts.isEmpty()) Shapes.StandaloneShape else Shapes.BottomShape,
                 labelTextAlign = TextAlign.Center,
                 labelTextStyle = MaterialTheme.typography.titleMedium,
             )

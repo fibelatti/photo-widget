@@ -22,8 +22,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CornerBasedShape
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -41,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -59,6 +58,7 @@ import com.fibelatti.photowidget.configure.BackgroundRestrictionBottomSheet
 import com.fibelatti.photowidget.configure.ExactAlarmsDialog
 import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
+import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
 import com.fibelatti.ui.preview.AllPreviews
@@ -188,10 +188,7 @@ private fun SettingsScreen(
                 label = R.string.widget_defaults_title,
                 onClick = onDefaultsClick,
                 description = R.string.widget_defaults_description,
-                shape = MaterialTheme.shapes.medium.copy(
-                    bottomStart = CornerSize(2.dp),
-                    bottomEnd = CornerSize(2.dp),
-                ),
+                shape = Shapes.TopShape,
             )
 
             SettingsAction(
@@ -223,10 +220,7 @@ private fun SettingsScreen(
                 icon = R.drawable.ic_keep_alive,
                 label = R.string.photo_widget_keep_alive_service_dialog_title,
                 onClick = onKeepAliveClick,
-                shape = MaterialTheme.shapes.medium.copy(
-                    topStart = CornerSize(2.dp),
-                    topEnd = CornerSize(2.dp),
-                ),
+                shape = Shapes.BottomShape,
             )
 
             Spacer(modifier = Modifier.height(30.dp))
@@ -235,10 +229,7 @@ private fun SettingsScreen(
                 icon = R.drawable.ic_appearance,
                 label = R.string.photo_widget_home_appearance,
                 onClick = onAppearanceClick,
-                shape = MaterialTheme.shapes.medium.copy(
-                    bottomStart = CornerSize(2.dp),
-                    bottomEnd = CornerSize(2.dp),
-                ),
+                shape = Shapes.TopShape,
             )
 
             if (DynamicColors.isDynamicColorAvailable() || LocalInspectionMode.current) {
@@ -253,10 +244,7 @@ private fun SettingsScreen(
                 icon = R.drawable.ic_translation,
                 label = R.string.photo_widget_home_translations,
                 onClick = onAppLanguageClick,
-                shape = MaterialTheme.shapes.medium.copy(
-                    topStart = CornerSize(2.dp),
-                    topEnd = CornerSize(2.dp),
-                ),
+                shape = Shapes.BottomShape,
             )
 
             Spacer(modifier = Modifier.height(30.dp))
@@ -274,10 +262,7 @@ private fun SettingsScreen(
                 icon = R.drawable.ic_question,
                 label = R.string.photo_widget_home_help,
                 onClick = onSendFeedbackClick,
-                shape = MaterialTheme.shapes.medium.copy(
-                    bottomStart = CornerSize(2.dp),
-                    bottomEnd = CornerSize(2.dp),
-                ),
+                shape = Shapes.TopShape,
             )
 
             SettingsAction(
@@ -290,10 +275,7 @@ private fun SettingsScreen(
                 icon = R.drawable.ic_send,
                 label = R.string.photo_widget_home_share,
                 onClick = onShareClick,
-                shape = MaterialTheme.shapes.medium.copy(
-                    topStart = CornerSize(2.dp),
-                    topEnd = CornerSize(2.dp),
-                ),
+                shape = Shapes.BottomShape,
             )
 
             Spacer(modifier = Modifier.height(30.dp))
@@ -391,7 +373,7 @@ private fun SettingsAction(
     @StringRes label: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    shape: CornerBasedShape = RoundedCornerShape(2.dp),
+    shape: Shape = RoundedCornerShape(2.dp),
     @StringRes description: Int? = null,
 ) {
     Button(

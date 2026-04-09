@@ -55,6 +55,7 @@ import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
@@ -90,7 +91,7 @@ fun PhotoWidgetConfigureTextTab(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         PickerDefault(
             title = stringResource(R.string.photo_widget_configure_text_type),
@@ -101,6 +102,7 @@ fun PhotoWidgetConfigureTextTab(
                 },
             ),
             onClick = textTypeSheetState::showBottomSheet,
+            shape = if (photoWidgetText is PhotoWidgetText.None) Shapes.StandaloneShape else Shapes.TopShape,
         )
 
         when (photoWidgetText) {
@@ -131,7 +133,10 @@ fun PhotoWidgetConfigureTextTab(
                     onCheckedChange = { newValue ->
                         onPhotoWidgetTextChange(photoWidgetText.copy(hasShadow = newValue))
                     },
+                    shape = Shapes.BottomShape,
                 )
+
+                Spacer(modifier = Modifier.height(10.dp))
 
                 WarningSign(
                     text = stringResource(R.string.photo_widget_configure_text_caveat),

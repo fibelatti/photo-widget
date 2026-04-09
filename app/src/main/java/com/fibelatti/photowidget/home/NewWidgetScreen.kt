@@ -22,13 +22,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
@@ -56,6 +56,7 @@ import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.ShapesBanner
 import com.fibelatti.photowidget.ui.WarningSign
+import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
@@ -161,13 +162,21 @@ fun AspectRatioPicker(
     ) {
         LazyRow(
             state = state,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
             contentPadding = PaddingValues(horizontal = 16.dp),
         ) {
-            items(PhotoWidgetAspectRatio.entries) { item ->
+            itemsIndexed(
+                items = PhotoWidgetAspectRatio.entries,
+                key = { _, item -> item.hashCode() },
+            ) { index, item ->
                 AspectRatioItem(
                     item = item,
                     onClick = { onAspectRatioSelected(item) },
+                    shape = when (index) {
+                        0 -> Shapes.StartShape
+                        PhotoWidgetAspectRatio.entries.lastIndex -> Shapes.EndShape
+                        else -> Shapes.MiddleShape
+                    },
                     itemRepresentation = {
                         when (item) {
                             PhotoWidgetAspectRatio.SQUARE -> ShapedAspectRatioItemRepresentation()
@@ -208,17 +217,18 @@ private fun AspectRatioItem(
     item: PhotoWidgetAspectRatio,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    shape: Shape = CardDefaults.elevatedShape,
     itemRepresentation: @Composable () -> Unit = {
         DefaultAspectRatioItemRepresentation(item = item)
     },
 ) {
-    ElevatedCard(
+    Column(
         modifier = modifier
             .width(160.dp)
             .height(240.dp)
-            .clip(shape = CardDefaults.elevatedShape)
+            .background(shape = shape, color = MaterialTheme.colorScheme.surfaceContainer)
+            .clip(shape = shape)
             .clickable(onClick = onClick),
-        colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
     ) {
         Box(
             modifier = Modifier

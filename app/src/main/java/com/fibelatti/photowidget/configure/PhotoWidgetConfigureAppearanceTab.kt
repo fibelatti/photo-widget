@@ -25,6 +25,7 @@ import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.photowidget.preferences.ShapeDefault
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
@@ -165,13 +166,14 @@ fun PhotoWidgetConfigureAppearanceTab(
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         PickerDefault(
             title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
             currentValue = stringResource(id = photoWidget.aspectRatio.label),
             onClick = onAspectRatioClick,
             modifier = Modifier.padding(horizontal = 16.dp),
+            shape = Shapes.TopShape,
         )
 
         if (PhotoWidgetAspectRatio.SQUARE == photoWidget.aspectRatio) {
@@ -238,6 +240,11 @@ fun PhotoWidgetConfigureAppearanceTab(
             currentValue = formatRangeValue(value = photoWidget.colors.brightness),
             onClick = onBrightnessClick,
             modifier = Modifier.padding(horizontal = 16.dp),
+            shape = if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
+                Shapes.MiddleShape
+            } else {
+                Shapes.BottomShape
+            },
         )
 
         if (PhotoWidgetAspectRatio.FILL_WIDGET != photoWidget.aspectRatio) {
@@ -257,6 +264,7 @@ fun PhotoWidgetConfigureAppearanceTab(
                 currentValue = photoWidget.padding.toString(),
                 onClick = onPaddingClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
+                shape = Shapes.BottomShape,
             )
         }
     }

@@ -3,9 +3,7 @@ package com.fibelatti.photowidget.configure
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
@@ -29,6 +27,7 @@ import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
 import com.fibelatti.ui.preview.AllPreviews
@@ -109,7 +108,26 @@ fun PhotoWidgetConfigureBehaviorTab(
             .fillMaxSize()
             .padding(horizontal = 16.dp),
     ) {
-        if (photoWidget.photos.size > 1) {
+        val showTimerPicker: Boolean = photoWidget.photos.size > 1
+        val showShufflePicker: Boolean = photoWidget.canShuffle
+        val showSortPicker: Boolean = PhotoWidgetSource.DIRECTORY == photoWidget.source && !photoWidget.shuffle
+
+        PickerDefault(
+            title = stringResource(id = R.string.widget_defaults_tap_action),
+            currentValue = buildString {
+                appendLine(stringResource(id = photoWidget.tapActions.left.label))
+                appendLine(stringResource(id = photoWidget.tapActions.center.label))
+                appendLine(stringResource(id = photoWidget.tapActions.right.label))
+            },
+            onClick = onTapActionPickerClick,
+            shape = if (showTimerPicker || showShufflePicker || showSortPicker) {
+                Shapes.TopShape
+            } else {
+                Shapes.StandaloneShape
+            },
+        )
+
+        if (showTimerPicker) {
             PickerDefault(
                 title = stringResource(id = R.string.widget_defaults_cycling),
                 currentValue = when (photoWidget.cycleMode) {
@@ -140,41 +158,30 @@ fun PhotoWidgetConfigureBehaviorTab(
                     }
                 },
                 onClick = onCycleModePickerClick,
+                modifier = Modifier.padding(top = 2.dp),
+                shape = if (showShufflePicker || showSortPicker) Shapes.MiddleShape else Shapes.BottomShape,
             )
         }
 
-        if (photoWidget.canShuffle) {
-            Spacer(modifier = Modifier.height(12.dp))
-
+        if (showShufflePicker) {
             BooleanDefault(
                 title = stringResource(R.string.widget_defaults_shuffle),
                 currentValue = photoWidget.shuffle,
                 onCheckedChange = onShuffleChange,
+                modifier = Modifier.padding(top = 2.dp),
+                shape = if (showSortPicker) Shapes.MiddleShape else Shapes.BottomShape,
             )
         }
 
-        AnimatedVisibility(
-            visible = PhotoWidgetSource.DIRECTORY == photoWidget.source && !photoWidget.shuffle,
-        ) {
+        AnimatedVisibility(visible = showSortPicker) {
             PickerDefault(
                 title = stringResource(R.string.photo_widget_directory_sort_title),
                 currentValue = stringResource(id = photoWidget.directorySorting.label),
                 onClick = onSortClick,
-                modifier = Modifier.padding(top = 12.dp),
+                modifier = Modifier.padding(top = 2.dp),
+                shape = Shapes.BottomShape,
             )
         }
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        PickerDefault(
-            title = stringResource(id = R.string.widget_defaults_tap_action),
-            currentValue = buildString {
-                appendLine(stringResource(id = photoWidget.tapActions.left.label))
-                appendLine(stringResource(id = photoWidget.tapActions.center.label))
-                appendLine(stringResource(id = photoWidget.tapActions.right.label))
-            },
-            onClick = onTapActionPickerClick,
-        )
     }
 }
 

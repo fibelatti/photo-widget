@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -42,6 +40,7 @@ import com.fibelatti.photowidget.ui.RadioGroup
 import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.preview.AllPreviews
 import com.fibelatti.ui.text.AutoSizeText
@@ -140,19 +139,10 @@ private fun SourcePickerContent(
                             dirList = dirList - dir
                         },
                         backgroundShape = when (index) {
-                            0 if dirList.size == 1 -> MaterialTheme.shapes.medium
-
-                            0 if dirList.size > 1 -> MaterialTheme.shapes.medium.copy(
-                                bottomStart = CornerSize(2.dp),
-                                bottomEnd = CornerSize(2.dp),
-                            )
-
-                            dirList.lastIndex if dirList.size > 1 -> MaterialTheme.shapes.medium.copy(
-                                topStart = CornerSize(2.dp),
-                                topEnd = CornerSize(2.dp),
-                            )
-
-                            else -> RoundedCornerShape(2.dp)
+                            0 if dirList.size == 1 -> Shapes.StandaloneShape
+                            0 if dirList.size > 1 -> Shapes.TopShape
+                            dirList.lastIndex if dirList.size > 1 -> Shapes.BottomShape
+                            else -> Shapes.MiddleShape
                         },
                     )
                 }

@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -45,6 +44,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
@@ -76,6 +77,7 @@ import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
+import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
@@ -277,12 +279,13 @@ private fun WidgetDefaultsContent(
         modifier = modifier
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp, bottom = 32.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         PickerDefault(
             title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
             currentValue = stringResource(id = userPreferences.defaultAspectRatio.label),
             onClick = onAspectRatioClick,
+            shape = Shapes.TopShape,
         )
 
         PickerDefault(
@@ -365,6 +368,7 @@ private fun WidgetDefaultsContent(
             title = stringResource(R.string.photo_widget_directory_sort_title),
             currentValue = stringResource(id = userPreferences.defaultDirectorySorting.label),
             onClick = onSortClick,
+            shape = Shapes.BottomShape,
         )
 
         OutlinedButton(
@@ -392,10 +396,13 @@ fun BooleanDefault(
     currentValue: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    shape: Shape = Shapes.MiddleShape,
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(shape),
+        shape = shape,
         colors = CardDefaults.cardColors().run {
             copy(containerColor = containerColor.copy(alpha = 0.6f))
         },
@@ -444,12 +451,15 @@ fun PickerDefault(
     currentValue: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    shape: Shape = Shapes.MiddleShape,
     warning: String? = null,
 ) {
     Card(
         onClick = onClick,
-        modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.small,
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(shape),
+        shape = shape,
         colors = CardDefaults.cardColors().run {
             copy(containerColor = containerColor.copy(alpha = 0.6f))
         },
@@ -501,11 +511,14 @@ fun ShapeDefault(
     currentValue: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    shape: Shape = Shapes.MiddleShape,
 ) {
     Card(
         onClick = onClick,
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(shape),
+        shape = shape,
         colors = CardDefaults.cardColors().run {
             copy(containerColor = containerColor.copy(alpha = 0.6f))
         },
