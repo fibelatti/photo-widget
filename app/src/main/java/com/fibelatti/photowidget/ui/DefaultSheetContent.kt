@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -23,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
+import com.fibelatti.ui.foundation.fadingEdges
 
 @Composable
 fun DefaultSheetContent(
@@ -30,12 +32,16 @@ fun DefaultSheetContent(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .fillMaxHeight(fraction = .8f)
             .nestedScroll(rememberNestedScrollInteropConnection())
-            .verticalScroll(rememberScrollState())
-            .padding(bottom = 16.dp),
+            .verticalScroll(scrollState)
+            .fadingEdges(scrollState)
+            .padding(bottom = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
