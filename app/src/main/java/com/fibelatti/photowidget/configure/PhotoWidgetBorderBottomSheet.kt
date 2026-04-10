@@ -40,11 +40,13 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.R
@@ -62,8 +64,6 @@ import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.photowidget.ui.rememberSampleBitmap
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
-import com.fibelatti.ui.foundation.ColumnToggleButtonGroup
-import com.fibelatti.ui.foundation.ToggleButtonGroup
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.preview.ThemePreviews
@@ -98,33 +98,26 @@ private fun BorderPickerContent(
 ) {
     var border: PhotoWidgetBorder by remember { mutableStateOf(currentBorder) }
     val sampleBitmap = rememberSampleBitmap()
+    val localResources = LocalResources.current
 
     DefaultSheetContent(
         title = stringResource(R.string.photo_widget_configure_border),
         modifier = Modifier.animateContentSize(),
     ) {
-        ColumnToggleButtonGroup(
-            items = PhotoWidgetBorder.entries.map {
-                ToggleButtonGroup.Item(
-                    id = it.serializedName,
-                    text = stringResource(id = it.label),
-                )
-            },
-            onButtonClick = { item ->
-                border = if (item.id == currentBorder.serializedName) {
+        RadioGroup(
+            items = PhotoWidgetBorder.entries,
+            itemSelected = { item -> item.serializedName == border.serializedName },
+            onItemClick = { item ->
+                border = if (item.serializedName == currentBorder.serializedName) {
                     currentBorder
                 } else {
-                    PhotoWidgetBorder.fromSerializedName(item.id)
+                    item
                 }
             },
+            itemTitle = { item -> localResources.getString(item.label) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            selectedIndex = PhotoWidgetBorder.entries.indexOfFirst {
-                it.serializedName == border.serializedName
-            },
-            colors = ToggleButtonGroup.colors(unselectedButtonColor = MaterialTheme.colorScheme.surfaceContainerLow),
-            iconPosition = ToggleButtonGroup.IconPosition.End,
         )
 
         when (val current = border) {
@@ -331,8 +324,7 @@ private fun DynamicBorderContent(
                     .asImageBitmap(),
                 contentDescription = null,
                 modifier = Modifier
-                    .weight(1f, fill = false)
-                    .widthIn(max = 200.dp)
+                    .widthIn(max = min(200.dp, LocalWindowInfo.current.containerDpSize.width / 2))
                     .aspectRatio(1f),
             )
 
@@ -399,8 +391,7 @@ private fun MatchPhotoBorderContent(
                     .asImageBitmap(),
                 contentDescription = null,
                 modifier = Modifier
-                    .weight(1f, fill = false)
-                    .widthIn(max = 200.dp)
+                    .widthIn(max = min(200.dp, LocalWindowInfo.current.containerDpSize.width / 2))
                     .aspectRatio(1f),
             )
 
