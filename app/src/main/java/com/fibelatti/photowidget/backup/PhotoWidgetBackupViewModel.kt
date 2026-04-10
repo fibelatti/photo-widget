@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,6 +33,8 @@ class PhotoWidgetBackupViewModel @Inject constructor(
             try {
                 val backup: File = createBackupUseCase()
                 state = state.copy(isProcessing = false, preparedBackupFile = backup)
+            } catch (e: CancellationException) {
+                throw e
             } catch (_: Exception) {
                 state = state.copy(isProcessing = false, messages = state.messages + State.Message.BackupFailed)
             }
@@ -71,6 +74,8 @@ class PhotoWidgetBackupViewModel @Inject constructor(
                     restoredBackupFile = restoredFile,
                     restoredWidgets = widgets,
                 )
+            } catch (e: CancellationException) {
+                throw e
             } catch (_: Exception) {
                 state = state.copy(
                     isProcessing = false,

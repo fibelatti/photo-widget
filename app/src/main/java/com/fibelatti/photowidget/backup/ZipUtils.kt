@@ -9,6 +9,7 @@ import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
@@ -73,6 +74,7 @@ class ZipUtils @Inject constructor() {
         try {
             var zipEntry: ZipEntry?
             while (zipInputStream.nextEntry.also { zipEntry = it } != null) {
+                ensureActive()
                 val currentEntry: ZipEntry = zipEntry ?: continue
                 val sanitizedName: String = sanitizeFileName(fileName = currentEntry.name)
                 val destFile = File(destinationDir, sanitizedName)

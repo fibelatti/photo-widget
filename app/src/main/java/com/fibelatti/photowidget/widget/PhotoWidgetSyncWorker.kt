@@ -13,8 +13,10 @@ import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.time.Duration
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -38,6 +40,7 @@ class PhotoWidgetSyncWorker @AssistedInject constructor(
         var shouldRetry = false
 
         for (id in ids) {
+            coroutineContext.ensureActive()
             try {
                 Timber.d("Processing widget (id=$id)")
 
@@ -50,6 +53,8 @@ class PhotoWidgetSyncWorker @AssistedInject constructor(
                         }
                     }
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 Timber.e(e, "Error processing widget (id=$id). Will retry.")
                 shouldRetry = true

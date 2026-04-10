@@ -18,6 +18,8 @@ import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.time.Duration
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.ensureActive
 import timber.log.Timber
 
 /**
@@ -48,6 +50,7 @@ class PhotoWidgetRescheduleWorker @AssistedInject constructor(
 
         val ids: List<Int> = PhotoWidgetProvider.ids(applicationContext)
         for (id in ids) {
+            coroutineContext.ensureActive()
             try {
                 val cycleMode: PhotoWidgetCycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = id)
                 val isLocked: Boolean = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = id)
@@ -60,6 +63,8 @@ class PhotoWidgetRescheduleWorker @AssistedInject constructor(
                 }
 
                 PhotoWidgetProvider.update(context = applicationContext, appWidgetId = id)
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 Timber.e(e, "Error processing widget (id=$id). Will retry.")
                 shouldRetry = true

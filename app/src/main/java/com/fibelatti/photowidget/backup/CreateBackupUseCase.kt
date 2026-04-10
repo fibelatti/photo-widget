@@ -12,6 +12,8 @@ import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -79,7 +81,8 @@ class CreateBackupUseCase @Inject constructor(
     private suspend fun exportPhotos(backupDir: File, widgets: Map<Int, PhotoWidget>) {
         Timber.d("Copying photo files...")
 
-        widgets.keys.forEach { widgetId: Int ->
+        for (widgetId in widgets.keys) {
+            currentCoroutineContext().ensureActive()
             photoWidgetStorage.exportWidgetDir(appWidgetId = widgetId, destinationDir = backupDir)
         }
     }

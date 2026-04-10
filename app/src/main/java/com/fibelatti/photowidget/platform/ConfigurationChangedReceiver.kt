@@ -5,6 +5,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import timber.log.Timber
 
 class ConfigurationChangedReceiver : EntryPointBroadcastReceiver() {
@@ -24,10 +27,13 @@ class ConfigurationChangedReceiver : EntryPointBroadcastReceiver() {
         }
 
         for (id in ids) {
+            currentCoroutineContext().ensureActive()
             try {
                 Timber.d("Processing widget (id=$id)")
 
                 PhotoWidgetProvider.update(context = context, appWidgetId = id)
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 Timber.e(e, "Error processing widget (id=$id)")
             }
