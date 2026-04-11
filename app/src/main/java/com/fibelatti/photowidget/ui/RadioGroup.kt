@@ -98,14 +98,14 @@ private fun RadioGroupItem(
             Text(
                 text = title,
                 color = contentColorFor(backgroundColor),
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleMediumEmphasized,
             )
 
             if (description != null) {
                 Text(
                     text = description,
                     color = contentColorFor(backgroundColor),
-                    style = MaterialTheme.typography.labelMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             }
         }
