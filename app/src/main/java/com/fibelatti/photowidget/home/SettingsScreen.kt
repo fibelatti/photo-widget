@@ -61,7 +61,7 @@ import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import com.google.android.material.color.DynamicColors
@@ -423,7 +423,7 @@ private fun SettingsAction(
 
 // region Previews
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun SettingsScreenPreview() {
     ExtendedTheme {
         SettingsScreen(

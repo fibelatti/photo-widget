@@ -41,7 +41,7 @@ fun AppColorsBottomSheet(
                 },
             )
         },
-        onOptionSelected = { newValue ->
+        onOptionSelect = { newValue ->
             userPreferencesStorage.dynamicColors = newValue
 
             sheetState.hideBottomSheet()

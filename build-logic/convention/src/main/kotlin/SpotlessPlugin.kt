@@ -33,6 +33,7 @@ class SpotlessPlugin : Plugin<Project> {
             ktlint("1.8.0")
                 .setEditorConfigPath("${target.rootProject.projectDir}/.editorconfig")
                 .editorConfigOverride(allRules)
+                .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.5.7"))
 
             trimTrailingWhitespace()
             leadingTabsToSpaces()
@@ -68,6 +69,7 @@ class SpotlessPlugin : Plugin<Project> {
             "ktlint_code_style" to "android_studio",
             "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
             "ktlint_ignore_back_ticked_identifier" to true,
+            "compose_allowed_composition_locals" to "LocalSamplePhoto",
         )
 
         val disabledRules: Map<String, String> = listOf(

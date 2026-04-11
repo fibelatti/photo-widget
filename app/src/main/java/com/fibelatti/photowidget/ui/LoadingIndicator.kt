@@ -9,7 +9,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialShapes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
@@ -46,7 +46,7 @@ object LoadingIndicator {
 }
 
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun LoadingIndicatorPreview() {
     ExtendedTheme {
         LoadingIndicator()

@@ -45,7 +45,7 @@ class HomeActivity : AppCompatActivity() {
                 HomeScreen(
                     homeViewModel = homeViewModel,
                     preparedIntent = preparedIntent,
-                    onIntentConsumed = { preparedIntent = null },
+                    onIntentConsume = { preparedIntent = null },
                     onCreateNewWidgetClick = ::createNewWidget,
                     onAppLanguageClick = ::showTranslationsDialog,
                     onShareClick = ::shareApp,

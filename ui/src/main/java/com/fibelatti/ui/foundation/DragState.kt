@@ -70,14 +70,14 @@ fun Modifier.onVerticalDrag(
  * A [Modifier] that detects horizontal drag gestures and notifies the caller.
  *
  * @param onDrag called for each vertical drag event with the total [amount][Offset].
- * @param onDragStopped called when the gesture ends, or if another gesture has consumed the
+ * @param onDragStop called when the gesture ends, or if another gesture has consumed the
  * pointer input, cancelling the drag.
  * @param enabled whether the gesture detector is enabled.
  */
 @Composable
 fun Modifier.onHorizontalDrag(
     onDrag: (dragAmount: Float) -> Unit,
-    onDragStopped: (velocity: Velocity) -> Unit,
+    onDragStop: (velocity: Velocity) -> Unit,
     enabled: Boolean = true,
 ): Modifier {
     val systemGesturesInset: WindowInsets = WindowInsets.systemGestures
@@ -90,7 +90,7 @@ fun Modifier.onHorizontalDrag(
         onDrag(dragAmount)
     }
 
-    return Modifier.pointerInput(onDrag, onDragStopped, enabled) {
+    return Modifier.pointerInput(onDrag, onDragStop, enabled) {
         if (!enabled) return@pointerInput
 
         awaitEachGesture {
@@ -117,7 +117,7 @@ fun Modifier.onHorizontalDrag(
                     it.consume()
                 }
 
-                onDragStopped(velocityTracker.calculateVelocity())
+                onDragStop(velocityTracker.calculateVelocity())
             }
         }
     } then this

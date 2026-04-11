@@ -30,7 +30,7 @@ import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit
 
@@ -186,7 +186,7 @@ fun PhotoWidgetConfigureBehaviorTab(
 }
 
 // region Previews
-@AllPreviews
+@PreviewsAll
 @Composable
 private fun PhotoWidgetConfigureBehaviorTabSinglePhotoPreview() {
     ExtendedTheme {
@@ -203,7 +203,7 @@ private fun PhotoWidgetConfigureBehaviorTabSinglePhotoPreview() {
     }
 }
 
-@AllPreviews
+@PreviewsAll
 @Composable
 private fun PhotoWidgetConfigureBehaviorTabMultiPhotoPreview() {
     ExtendedTheme {

@@ -86,9 +86,10 @@ import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.LocalSamplePhoto
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
 import com.fibelatti.ui.foundation.fadingEdges
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.theme.ExtendedTheme
 
+@Suppress("ktlint:compose:vm-forwarding-check")
 @Composable
 fun PhotoWidgetConfigureScreen(
     viewModel: PhotoWidgetConfigureViewModel,
@@ -137,6 +138,7 @@ private fun NavBackStack<*>.pop() {
     if (size > 1) removeLastOrNull()
 }
 
+@Suppress("ktlint:compose:vm-forwarding-check")
 @Composable
 private fun PhotoWidgetConfigureHomeScreen(
     viewModel: PhotoWidgetConfigureViewModel,
@@ -552,7 +554,7 @@ private fun PhotoWidgetEditor(
 
 // region Previews
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun PhotoWidgetConfigureScreenPreview() {
     ExtendedTheme {
         PhotoWidgetConfigureScreen(
@@ -577,7 +579,7 @@ private fun PhotoWidgetConfigureScreenPreview() {
 }
 
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun PhotoWidgetConfigureScreenTallPreview() {
     ExtendedTheme {
         PhotoWidgetConfigureScreen(

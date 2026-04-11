@@ -58,7 +58,7 @@ import com.fibelatti.photowidget.ui.ShapesBanner
 import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.fadingEdges
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -114,7 +114,7 @@ fun NewWidgetScreen(
             val state = rememberLazyListState()
 
             AspectRatioPicker(
-                onAspectRatioSelected = onCreateNewWidgetClick,
+                onAspectRatioSelect = onCreateNewWidgetClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .fadingEdges(
@@ -152,7 +152,7 @@ fun NewWidgetScreen(
 
 @Composable
 fun AspectRatioPicker(
-    onAspectRatioSelected: (PhotoWidgetAspectRatio) -> Unit,
+    onAspectRatioSelect: (PhotoWidgetAspectRatio) -> Unit,
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
 ) {
@@ -171,7 +171,7 @@ fun AspectRatioPicker(
             ) { index, item ->
                 AspectRatioItem(
                     item = item,
-                    onClick = { onAspectRatioSelected(item) },
+                    onClick = { onAspectRatioSelect(item) },
                     shape = when (index) {
                         0 -> Shapes.StartShape
                         PhotoWidgetAspectRatio.entries.lastIndex -> Shapes.EndShape
@@ -351,7 +351,7 @@ private fun FillAspectRatioRepresentation(
 }
 
 // region Previews
-@AllPreviews
+@PreviewsAll
 @Composable
 private fun NewWidgetScreenPreview() {
     ExtendedTheme {

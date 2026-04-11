@@ -68,7 +68,7 @@ private fun RadioGroupItem(
             MaterialTheme.colorScheme.primaryContainer
         } else {
             MaterialTheme.colorScheme.surfaceContainerHigh
-        }
+        },
     )
 
     Row(
@@ -76,12 +76,12 @@ private fun RadioGroupItem(
             .fillMaxWidth()
             .heightIn(min = 60.dp)
             .background(color = backgroundColor, shape = shape)
+            .clip(shape)
             .selectable(
                 selected = selected,
                 role = Role.RadioButton,
                 onClick = onClick,
             )
-            .clip(shape)
             .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,

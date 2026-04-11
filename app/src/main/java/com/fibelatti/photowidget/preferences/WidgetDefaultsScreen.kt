@@ -81,8 +81,8 @@ import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
-import com.fibelatti.ui.preview.AllPreviews
-import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.preview.PreviewsAll
+import com.fibelatti.ui.preview.PreviewsThemes
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit
@@ -125,7 +125,7 @@ fun WidgetDefaultsScreen(
     // region Bottom Sheets
     PhotoWidgetAspectRatioBottomSheet(
         sheetState = aspectRatioPickerSheetState,
-        onAspectRatioSelected = preferencesViewModel::saveDefaultAspectRatio,
+        onAspectRatioSelect = preferencesViewModel::saveDefaultAspectRatio,
     )
 
     SelectionDialogBottomSheet(
@@ -133,7 +133,7 @@ fun WidgetDefaultsScreen(
         title = stringResource(R.string.widget_defaults_source),
         options = PhotoWidgetSource.entries,
         optionName = { option -> localResources.getString(option.label) },
-        onOptionSelected = preferencesViewModel::saveDefaultSource,
+        onOptionSelect = preferencesViewModel::saveDefaultSource,
     )
 
     AppBottomSheet(
@@ -215,6 +215,7 @@ private fun WidgetDefaultsScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopAppBar(
                 title = {
@@ -251,7 +252,7 @@ private fun WidgetDefaultsScreen(
             onShuffleChange = onShuffleChange,
             onSortClick = onSortClick,
             onClearDefaultsClick = onClearDefaultsClick,
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(contentPadding),
@@ -551,7 +552,7 @@ fun ShapeDefault(
 
 // region Previews
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun WidgetDefaultsScreenPreview() {
     ExtendedTheme {
         WidgetDefaultsScreen(
@@ -589,7 +590,7 @@ private fun WidgetDefaultsScreenPreview() {
 }
 
 @Composable
-@ThemePreviews
+@PreviewsThemes
 private fun PickerDefaultPreview() {
     ExtendedTheme {
         PickerDefault(
@@ -601,7 +602,7 @@ private fun PickerDefaultPreview() {
 }
 
 @Composable
-@ThemePreviews
+@PreviewsThemes
 private fun BooleanDefaultPreview() {
     ExtendedTheme {
         BooleanDefault(

@@ -60,8 +60,6 @@ about-libraries = { module = "com.mikepenz:aboutlibraries-compose", version.ref 
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.14" }
 
-compose-lint-checks = { module = "com.slack.lint.compose:compose-lint-checks", version = "1.4.2" }
-
 # Dependencies of the included build-logic
 android-gradle-plugin = { module = "com.android.tools.build:gradle-api", version.ref = "agp" }
 compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }

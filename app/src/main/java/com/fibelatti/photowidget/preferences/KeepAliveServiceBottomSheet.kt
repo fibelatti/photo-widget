@@ -24,8 +24,8 @@ import com.fibelatti.photowidget.platform.KeepAliveService
 import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
-import com.fibelatti.ui.preview.LocalePreviews
-import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.preview.PreviewsLocales
+import com.fibelatti.ui.preview.PreviewsThemes
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
@@ -92,8 +92,8 @@ private fun KeepAliveServiceContent(
 }
 
 @Composable
-@ThemePreviews
-@LocalePreviews
+@PreviewsThemes
+@PreviewsLocales
 private fun KeepAliveServiceContentPreview() {
     ExtendedTheme {
         KeepAliveServiceContent(

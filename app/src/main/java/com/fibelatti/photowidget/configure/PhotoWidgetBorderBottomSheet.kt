@@ -66,7 +66,7 @@ import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.foundation.hideBottomSheet
-import com.fibelatti.ui.preview.ThemePreviews
+import com.fibelatti.ui.preview.PreviewsThemes
 import com.fibelatti.ui.theme.ExtendedTheme
 import com.github.skydoves.colorpicker.compose.BrightnessSlider
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
@@ -456,7 +456,7 @@ private fun BorderWidthPicker(
 
 // region Previews
 @Composable
-@ThemePreviews
+@PreviewsThemes
 private fun ColorBorderPickerContentPreview() {
     ExtendedTheme {
         BorderPickerContent(
@@ -470,7 +470,7 @@ private fun ColorBorderPickerContentPreview() {
 }
 
 @Composable
-@ThemePreviews
+@PreviewsThemes
 private fun DynamicBorderPickerContentPreview() {
     ExtendedTheme {
         BorderPickerContent(

@@ -77,7 +77,7 @@ import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.ConnectedButtonRowItem
 import com.fibelatti.ui.foundation.hideBottomSheet
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.Calendar
@@ -497,8 +497,8 @@ private fun SelectedTimeItem(
 ) {
     Row(
         modifier = modifier
-            .clickable(onClick = onClick)
             .background(color = backgroundColor, shape = backgroundShape)
+            .clickable(onClick = onClick)
             .padding(all = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -629,7 +629,7 @@ fun TimePickerDialog(
 
 // region Previews
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun IntervalPreview() {
     ExtendedTheme {
         PhotoCycleModePickerContent(
@@ -647,7 +647,7 @@ private fun IntervalPreview() {
 }
 
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun ScheduleEmptyPreview() {
     ExtendedTheme {
         PhotoCycleModePickerContent(
@@ -662,7 +662,7 @@ private fun ScheduleEmptyPreview() {
 }
 
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun SchedulePreview() {
     ExtendedTheme {
         PhotoCycleModePickerContent(
@@ -684,7 +684,7 @@ private fun SchedulePreview() {
 }
 
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun DisabledPreview() {
     ExtendedTheme {
         PhotoCycleModePickerContent(

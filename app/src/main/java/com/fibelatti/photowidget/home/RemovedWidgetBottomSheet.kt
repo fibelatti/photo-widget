@@ -40,7 +40,7 @@ fun RemovedWidgetBottomSheet(
             add(RemovedWidgetOptions.DELETE)
         },
         optionName = { option -> localResources.getString(option.label) },
-        onOptionSelected = { option ->
+        onOptionSelect = { option ->
             when (option) {
                 RemovedWidgetOptions.RESTORE -> {
                     val intent = PhotoWidgetConfigureActivity.restoreWidgetIntent(

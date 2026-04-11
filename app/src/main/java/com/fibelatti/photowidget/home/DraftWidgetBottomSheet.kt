@@ -27,7 +27,7 @@ fun DraftWidgetBottomSheet(
         sheetState = sheetState,
         options = DraftWidgetOptions.entries,
         optionName = { option -> localResources.getString(option.label) },
-        onOptionSelected = { option ->
+        onOptionSelect = { option ->
             when (option) {
                 DraftWidgetOptions.EDIT -> {
                     val intent = PhotoWidgetConfigureActivity.editWidgetIntent(

@@ -42,7 +42,7 @@ fun AppAppearanceBottomSheet(
                 },
             )
         },
-        onOptionSelected = { newAppearance ->
+        onOptionSelect = { newAppearance ->
             userPreferencesStorage.appearance = newAppearance
 
             sheetState.hideBottomSheet()

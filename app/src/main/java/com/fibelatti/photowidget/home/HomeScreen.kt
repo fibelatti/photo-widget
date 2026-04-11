@@ -56,14 +56,14 @@ import com.fibelatti.photowidget.preferences.WidgetDefaultsActivity
 import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel,
     preparedIntent: Intent?,
-    onIntentConsumed: () -> Unit,
+    onIntentConsume: () -> Unit,
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
     onAppLanguageClick: () -> Unit,
     onShareClick: () -> Unit,
@@ -94,7 +94,7 @@ fun HomeScreen(
             preparedIntent?.let { intent ->
                 intent.appWidgetId = appWidgetId
 
-                onIntentConsumed()
+                onIntentConsume()
 
                 localContext.startActivity(intent)
 
@@ -375,7 +375,7 @@ private enum class HomeNavigationDestination(
 
 // region Previews
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun HomeScreenPreview() {
     ExtendedTheme {
         HomeScreen(

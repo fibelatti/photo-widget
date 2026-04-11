@@ -25,7 +25,7 @@ fun <T> SelectionDialogBottomSheet(
     sheetState: AppSheetState,
     options: List<T>,
     optionName: (T) -> String,
-    onOptionSelected: (T) -> Unit,
+    onOptionSelect: (T) -> Unit,
     modifier: Modifier = Modifier,
     optionIcon: (T) -> Int? = { null },
     header: @Composable () -> Unit = {},
@@ -39,8 +39,8 @@ fun <T> SelectionDialogBottomSheet(
             options = options,
             optionName = optionName,
             optionIcon = optionIcon,
-            onOptionSelected = { option ->
-                onOptionSelected(option)
+            onOptionSelect = { option ->
+                onOptionSelect(option)
                 sheetState.hideBottomSheet()
             },
             header = header,
@@ -55,7 +55,7 @@ fun <T> SelectionDialogBottomSheet(
     title: String,
     options: List<T>,
     optionName: (T) -> String,
-    onOptionSelected: (T) -> Unit,
+    onOptionSelect: (T) -> Unit,
     modifier: Modifier = Modifier,
     optionIcon: (T) -> Int? = { null },
     footer: @Composable () -> Unit = {},
@@ -68,8 +68,8 @@ fun <T> SelectionDialogBottomSheet(
             options = options,
             optionName = optionName,
             optionIcon = optionIcon,
-            onOptionSelected = { option ->
-                onOptionSelected(option)
+            onOptionSelect = { option ->
+                onOptionSelect(option)
                 sheetState.hideBottomSheet()
             },
             header = {
@@ -92,7 +92,7 @@ private fun <T> SelectionDialogContent(
     options: List<T>,
     optionName: (T) -> String,
     optionIcon: (T) -> Int?,
-    onOptionSelected: (T) -> Unit,
+    onOptionSelect: (T) -> Unit,
     header: @Composable () -> Unit,
     footer: @Composable () -> Unit,
 ) {
@@ -109,7 +109,7 @@ private fun <T> SelectionDialogContent(
 
         items(options) { option ->
             FilledTonalButton(
-                onClick = { onOptionSelected(option) },
+                onClick = { onOptionSelect(option) },
                 shapes = ButtonDefaults.shapes(),
                 modifier = Modifier.fillMaxWidth(),
             ) {

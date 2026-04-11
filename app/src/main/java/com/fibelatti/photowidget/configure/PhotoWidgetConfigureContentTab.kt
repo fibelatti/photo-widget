@@ -61,7 +61,7 @@ import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import sh.calvin.reorderable.ReorderableItem
@@ -96,7 +96,7 @@ fun PhotoWidgetConfigureContentTab(
         onPhotoPickerClick = { photoPickerLauncher.launch(input = "image/*") },
         onDirPickerClick = { dirPickerLauncher.launch(input = null) },
         onPhotoClick = viewModel::previewPhoto,
-        onReorderFinished = viewModel::reorderPhotos,
+        onReorderFinish = viewModel::reorderPhotos,
         onRemovedPhotoClick = { photo ->
             recentlyDeletedPhotoSheetState.showBottomSheet(data = photo)
         },
@@ -108,13 +108,13 @@ fun PhotoWidgetConfigureContentTab(
         sheetState = sourceSheetState,
         currentSource = state.photoWidget.source,
         syncedDir = state.photoWidget.syncedDir,
-        onDirRemoved = viewModel::removeDir,
+        onDirRemove = viewModel::removeDir,
         onChangeSource = viewModel::changeSource,
     )
 
     ImportFromWidgetBottomSheet(
         sheetState = importFromWidgetSheetState,
-        onWidgetSelected = viewModel::importFromWidget,
+        onWidgetSelect = viewModel::importFromWidget,
     )
 
     RecentlyDeletedPhotoBottomSheet(
@@ -134,7 +134,7 @@ fun PhotoWidgetConfigureContentTab(
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
-    onReorderFinished: (List<LocalPhoto>) -> Unit,
+    onReorderFinish: (List<LocalPhoto>) -> Unit,
     onRemovedPhotoClick: (LocalPhoto) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -148,7 +148,7 @@ fun PhotoWidgetConfigureContentTab(
         onPhotoPickerClick = onPhotoPickerClick,
         onDirPickerClick = onDirPickerClick,
         onPhotoClick = onPhotoClick,
-        onReorderFinished = onReorderFinished,
+        onReorderFinish = onReorderFinish,
         removedPhotos = photoWidget.removedPhotos,
         onRemovedPhotoClick = onRemovedPhotoClick,
         aspectRatio = photoWidget.aspectRatio,
@@ -168,7 +168,7 @@ private fun PhotoPicker(
     onPhotoPickerClick: () -> Unit,
     onDirPickerClick: () -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
-    onReorderFinished: (List<LocalPhoto>) -> Unit,
+    onReorderFinish: (List<LocalPhoto>) -> Unit,
     removedPhotos: List<LocalPhoto>,
     onRemovedPhotoClick: (LocalPhoto) -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
@@ -221,7 +221,7 @@ private fun PhotoPicker(
                                     localHaptics.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate)
                                 },
                                 onDragStopped = {
-                                    onReorderFinished(currentPhotos)
+                                    onReorderFinish(currentPhotos)
                                     localHaptics.performHapticFeedback(HapticFeedbackType.GestureEnd)
                                 },
                             )
@@ -426,7 +426,7 @@ private fun RemovedPhotosPicker(
 }
 
 // region Previews
-@AllPreviews
+@PreviewsAll
 @Composable
 private fun PhotoWidgetConfigureContentTabPreview() {
     ExtendedTheme {
@@ -440,14 +440,14 @@ private fun PhotoWidgetConfigureContentTabPreview() {
             onPhotoPickerClick = {},
             onDirPickerClick = {},
             onPhotoClick = {},
-            onReorderFinished = {},
+            onReorderFinish = {},
             onRemovedPhotoClick = {},
             modifier = Modifier.safeDrawingPadding(),
         )
     }
 }
 
-@AllPreviews
+@PreviewsAll
 @Composable
 private fun PhotoWidgetConfigureContentTabDirectoryPreview() {
     ExtendedTheme {
@@ -462,7 +462,7 @@ private fun PhotoWidgetConfigureContentTabDirectoryPreview() {
             onPhotoPickerClick = {},
             onDirPickerClick = {},
             onPhotoClick = {},
-            onReorderFinished = {},
+            onReorderFinish = {},
             onRemovedPhotoClick = {},
             modifier = Modifier.safeDrawingPadding(),
         )

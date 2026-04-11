@@ -52,7 +52,7 @@ import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.fibelatti.ui.foundation.fadingEdges
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.theme.ExtendedTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -180,7 +180,7 @@ private fun ScreenContent(
 }
 
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun ScreenContentPreview() {
     ExtendedTheme {
         ScreenContent(

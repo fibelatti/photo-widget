@@ -32,7 +32,7 @@ fun InvalidWidgetBottomSheet(
         sheetState = sheetState,
         options = InvalidWidgetOptions.entries,
         optionName = { option -> localResources.getString(option.label) },
-        onOptionSelected = { option ->
+        onOptionSelect = { option ->
             when (option) {
                 InvalidWidgetOptions.EDIT -> {
                     val intent = PhotoWidgetConfigureActivity.editWidgetIntent(

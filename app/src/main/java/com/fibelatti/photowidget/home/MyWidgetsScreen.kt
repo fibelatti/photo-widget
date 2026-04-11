@@ -61,7 +61,7 @@ import com.fibelatti.photowidget.platform.letIf
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -259,7 +259,7 @@ fun MyWidgetsScreen(
 
 // region Previews
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun MyWidgetsScreenPreview() {
     ExtendedTheme {
         val allShapeIds = PhotoWidgetShapeBuilder.shapes.map { it.id }
@@ -296,7 +296,7 @@ private fun MyWidgetsScreenPreview() {
 }
 
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun MyWidgetsScreenEmptyPreview() {
     ExtendedTheme {
         MyWidgetsScreen(

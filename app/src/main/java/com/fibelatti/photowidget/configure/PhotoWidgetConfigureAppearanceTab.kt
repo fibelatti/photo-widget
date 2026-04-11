@@ -29,7 +29,7 @@ import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
@@ -66,7 +66,7 @@ fun PhotoWidgetConfigureAppearanceTab(
     // region Sheets
     PhotoWidgetAspectRatioBottomSheet(
         sheetState = aspectRatioPickerSheetState,
-        onAspectRatioSelected = viewModel::setAspectRatio,
+        onAspectRatioSelect = viewModel::setAspectRatio,
     )
 
     AppBottomSheet(
@@ -271,7 +271,7 @@ fun PhotoWidgetConfigureAppearanceTab(
 }
 
 // region Previews
-@AllPreviews
+@PreviewsAll
 @Composable
 private fun PhotoWidgetConfigureAppearanceTabPreview() {
     ExtendedTheme {
@@ -294,7 +294,7 @@ private fun PhotoWidgetConfigureAppearanceTabPreview() {
     }
 }
 
-@AllPreviews
+@PreviewsAll
 @Composable
 private fun PhotoWidgetConfigureAppearanceTabShapePreview() {
     ExtendedTheme {
@@ -317,7 +317,7 @@ private fun PhotoWidgetConfigureAppearanceTabShapePreview() {
     }
 }
 
-@AllPreviews
+@PreviewsAll
 @Composable
 private fun PhotoWidgetConfigureAppearanceTabFillPreview() {
     ExtendedTheme {

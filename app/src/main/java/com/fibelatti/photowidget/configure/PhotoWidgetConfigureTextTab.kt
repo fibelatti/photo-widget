@@ -59,7 +59,7 @@ import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
@@ -150,7 +150,7 @@ fun PhotoWidgetConfigureTextTab(
     PhotoWidgetTextTypePicker(
         appSheetState = textTypeSheetState,
         currentValue = photoWidgetText,
-        onOptionSelected = onPhotoWidgetTextChange,
+        onOptionSelect = onPhotoWidgetTextChange,
     )
 
     PhotoWidgetTextValuePicker(
@@ -193,7 +193,7 @@ fun PhotoWidgetConfigureTextTab(
 private fun PhotoWidgetTextTypePicker(
     appSheetState: AppSheetState,
     currentValue: PhotoWidgetText,
-    onOptionSelected: (PhotoWidgetText) -> Unit,
+    onOptionSelect: (PhotoWidgetText) -> Unit,
 ) {
     AppBottomSheet(
         sheetState = appSheetState,
@@ -208,7 +208,7 @@ private fun PhotoWidgetTextTypePicker(
                 itemSelected = { item: PhotoWidgetText -> item::class == currentValue::class },
                 onItemClick = { item: PhotoWidgetText ->
                     if (item::class != currentValue::class) {
-                        onOptionSelected(item)
+                        onOptionSelect(item)
                     }
                     appSheetState.hideBottomSheet()
                 },
@@ -393,7 +393,7 @@ private fun PhotoWidgetVerticalOffsetPicker(
 // endregion Pickers
 
 // region Previews
-@AllPreviews
+@PreviewsAll
 @Composable
 private fun PhotoWidgetConfigureTextTabPreview() {
     ExtendedTheme {

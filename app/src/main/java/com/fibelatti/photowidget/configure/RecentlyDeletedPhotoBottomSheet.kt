@@ -33,7 +33,7 @@ fun RecentlyDeletedPhotoBottomSheet(
         sheetState = sheetState,
         options = PhotoOptions.entries,
         optionName = { option -> localResources.getString(option.label) },
-        onOptionSelected = { option ->
+        onOptionSelect = { option ->
             when (option) {
                 PhotoOptions.RESTORE -> onRestore(photo)
                 PhotoOptions.DELETE -> onDelete(photo)

@@ -42,7 +42,7 @@ import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.hideBottomSheet
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -51,7 +51,7 @@ fun PhotoWidgetSourceBottomSheet(
     sheetState: AppSheetState,
     currentSource: PhotoWidgetSource,
     syncedDir: Set<Uri>,
-    onDirRemoved: (Uri) -> Unit,
+    onDirRemove: (Uri) -> Unit,
     onChangeSource: (PhotoWidgetSource) -> Unit,
 ) {
     AppBottomSheet(
@@ -60,7 +60,7 @@ fun PhotoWidgetSourceBottomSheet(
         SourcePickerContent(
             currentSource = currentSource,
             syncedDir = syncedDir,
-            onDirRemoved = onDirRemoved,
+            onDirRemove = onDirRemove,
             onConfirm = { newSource ->
                 if (newSource != currentSource) {
                     onChangeSource(newSource)
@@ -77,7 +77,7 @@ fun PhotoWidgetSourceBottomSheet(
 private fun SourcePickerContent(
     currentSource: PhotoWidgetSource,
     syncedDir: Set<Uri>,
-    onDirRemoved: (Uri) -> Unit,
+    onDirRemove: (Uri) -> Unit,
     onConfirm: (PhotoWidgetSource) -> Unit,
     onCancel: () -> Unit,
     modifier: Modifier = Modifier,
@@ -135,7 +135,7 @@ private fun SourcePickerContent(
                     DirListItem(
                         dir = dir,
                         onRemoveClick = {
-                            onDirRemoved(dir)
+                            onDirRemove(dir)
                             dirList = dirList - dir
                         },
                         backgroundShape = when (index) {
@@ -199,8 +199,8 @@ private fun DirListItem(
         modifier = modifier
             .fillMaxWidth()
             .height(48.dp)
-            .clickable(onClick = onRemoveClick)
             .background(color = backgroundColor, shape = backgroundShape)
+            .clickable(onClick = onRemoveClick)
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -222,13 +222,13 @@ private fun DirListItem(
 
 // region Previews
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun SourcePickerContentPhotosPreview() {
     ExtendedTheme {
         SourcePickerContent(
             currentSource = PhotoWidgetSource.PHOTOS,
             syncedDir = emptySet(),
-            onDirRemoved = {},
+            onDirRemove = {},
             onConfirm = {},
             onCancel = {},
         )
@@ -236,13 +236,13 @@ private fun SourcePickerContentPhotosPreview() {
 }
 
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun SourcePickerContentDirectoryPreview() {
     ExtendedTheme {
         SourcePickerContent(
             currentSource = PhotoWidgetSource.DIRECTORY,
             syncedDir = List(10) { "https://test/$it".toUri() }.toSet(),
-            onDirRemoved = {},
+            onDirRemove = {},
             onConfirm = {},
             onCancel = {},
         )

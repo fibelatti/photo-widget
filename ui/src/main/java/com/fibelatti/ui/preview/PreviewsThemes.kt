@@ -47,4 +47,4 @@ import androidx.compose.ui.tooling.preview.Wallpapers
     showBackground = true,
     wallpaper = Wallpapers.YELLOW_DOMINATED_EXAMPLE,
 )
-annotation class ThemePreviews
+annotation class PreviewsThemes

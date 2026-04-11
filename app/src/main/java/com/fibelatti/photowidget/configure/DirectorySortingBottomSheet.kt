@@ -28,7 +28,7 @@ fun DirectorySortingBottomSheet(
         title = stringResource(R.string.photo_widget_directory_sort_title),
         options = DirectorySorting.entries,
         optionName = { localResources.getString(it.label) },
-        onOptionSelected = onItemClick,
+        onOptionSelect = onItemClick,
         modifier = modifier,
         footer = {
             Text(

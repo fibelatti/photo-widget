@@ -114,7 +114,7 @@ import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import sh.calvin.reorderable.ReorderableColumn
@@ -652,7 +652,7 @@ private fun TapOptionsPicker(
         title = stringResource(R.string.photo_widget_configure_tap_action_copy_from),
         options = TapActionArea.entries - selectedArea,
         optionName = { option -> localResources.getString(option.label) },
-        onOptionSelected = onCopyFromClick,
+        onOptionSelect = onCopyFromClick,
     )
 }
 
@@ -1048,7 +1048,7 @@ private fun AppFolderCustomizationItem(
 
 // region Previews
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun PhotoWidgetTapActionPickerPreview() {
     ExtendedTheme {
         TapActionPickerContent(

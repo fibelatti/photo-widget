@@ -40,7 +40,7 @@ import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
@@ -180,7 +180,7 @@ private fun HelpCard(
 }
 
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun HelpScreenPreview() {
     ExtendedTheme {
         HelpScreen(

@@ -23,7 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.fibelatti.ui.preview.DevicePreviews
+import com.fibelatti.ui.preview.PreviewsDevices
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
@@ -75,7 +75,7 @@ fun ShapesBanner(
 }
 
 @Composable
-@DevicePreviews
+@PreviewsDevices
 private fun ShapesBannerPreview() {
     ExtendedTheme {
         ShapesBanner()

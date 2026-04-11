@@ -22,7 +22,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -40,7 +42,7 @@ import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.TextWithLinks
 import com.fibelatti.ui.foundation.hideBottomSheet
-import com.fibelatti.ui.preview.AllPreviews
+import com.fibelatti.ui.preview.PreviewsAll
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
@@ -111,9 +113,11 @@ fun BackgroundRestrictionBottomSheet(
     val isBatteryUsageRestricted: Boolean = powerManager
         ?.isIgnoringBatteryOptimizations(localContext.packageName) != true
 
+    val currentOnDismissRequest by rememberUpdatedState(onDismissRequest)
+
     LifecycleResumeEffect(localContext) {
         if (powerManager?.isIgnoringBatteryOptimizations(localContext.packageName) == true) {
-            onDismissRequest()
+            currentOnDismissRequest()
             sheetState.hideBottomSheet()
         }
 
@@ -205,7 +209,7 @@ private fun BackgroundPickerContent(
 }
 
 @Composable
-@AllPreviews
+@PreviewsAll
 private fun BackgroundPickerContentPreviews() {
     ExtendedTheme {
         BackgroundPickerContent(

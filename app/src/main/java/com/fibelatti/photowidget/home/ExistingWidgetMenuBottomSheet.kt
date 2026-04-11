@@ -35,7 +35,7 @@ fun ExistingWidgetMenuBottomSheet(
         sheetState = sheetState,
         options = MyWidgetOptions.options(canSync = data.canSync, canLock = data.canLock, isLocked = data.isLocked),
         optionName = { option -> localResources.getString(option.label) },
-        onOptionSelected = { option ->
+        onOptionSelect = { option ->
             when (option) {
                 MyWidgetOptions.SYNC_PHOTOS -> {
                     onSync(data.appWidgetId)

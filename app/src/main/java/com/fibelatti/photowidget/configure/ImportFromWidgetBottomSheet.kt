@@ -43,10 +43,11 @@ import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.hideBottomSheet
 
+@Suppress("ktlint:compose:vm-forwarding-check")
 @Composable
 fun ImportFromWidgetBottomSheet(
     sheetState: AppSheetState,
-    onWidgetSelected: (appWidgetId: Int) -> Unit,
+    onWidgetSelect: (appWidgetId: Int) -> Unit,
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -62,8 +63,8 @@ fun ImportFromWidgetBottomSheet(
 
         ImportFromWidgetContent(
             currentWidgets = currentWidgets,
-            onWidgetSelected = { id ->
-                onWidgetSelected(id)
+            onWidgetSelect = { id ->
+                onWidgetSelect(id)
                 sheetState.hideBottomSheet()
             },
         )
@@ -73,7 +74,7 @@ fun ImportFromWidgetBottomSheet(
 @Composable
 private fun ImportFromWidgetContent(
     currentWidgets: List<Pair<Int, PhotoWidget>>,
-    onWidgetSelected: (widgetId: Int) -> Unit,
+    onWidgetSelect: (widgetId: Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -110,7 +111,7 @@ private fun ImportFromWidgetContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1f)
-                        .clickable { onWidgetSelected(id) },
+                        .clickable { onWidgetSelect(id) },
                     contentAlignment = Alignment.BottomCenter,
                 ) {
                     ShapedPhoto(

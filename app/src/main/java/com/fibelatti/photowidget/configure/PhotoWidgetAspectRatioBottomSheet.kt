@@ -15,14 +15,14 @@ import com.fibelatti.ui.foundation.hideBottomSheet
 @Composable
 fun PhotoWidgetAspectRatioBottomSheet(
     sheetState: AppSheetState,
-    onAspectRatioSelected: (PhotoWidgetAspectRatio) -> Unit,
+    onAspectRatioSelect: (PhotoWidgetAspectRatio) -> Unit,
 ) {
     AppBottomSheet(
         sheetState = sheetState,
     ) {
         AspectRatioPickerContent(
-            onAspectRatioSelected = { newAspectRatio ->
-                onAspectRatioSelected(newAspectRatio)
+            onAspectRatioSelect = { newAspectRatio ->
+                onAspectRatioSelect(newAspectRatio)
                 sheetState.hideBottomSheet()
             },
         )
@@ -31,13 +31,13 @@ fun PhotoWidgetAspectRatioBottomSheet(
 
 @Composable
 private fun AspectRatioPickerContent(
-    onAspectRatioSelected: (PhotoWidgetAspectRatio) -> Unit,
+    onAspectRatioSelect: (PhotoWidgetAspectRatio) -> Unit,
 ) {
     DefaultSheetContent(
         title = stringResource(R.string.photo_widget_aspect_ratio_title),
     ) {
         AspectRatioPicker(
-            onAspectRatioSelected = onAspectRatioSelected,
+            onAspectRatioSelect = onAspectRatioSelect,
             modifier = Modifier.fillMaxWidth(),
         )
     }
