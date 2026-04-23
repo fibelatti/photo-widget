@@ -264,7 +264,6 @@ private fun PhotoCycleModePickerContent(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun PhotoCycleModeIntervalContent(
     photoWidgetCycleMode: PhotoWidgetCycleMode.Interval,
     onApplyClick: (newMode: PhotoWidgetCycleMode) -> Unit,
