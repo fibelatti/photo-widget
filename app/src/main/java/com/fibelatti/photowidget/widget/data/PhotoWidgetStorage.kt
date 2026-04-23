@@ -191,6 +191,12 @@ class PhotoWidgetStorage @Inject constructor(
         emit(source)
     }
 
+    suspend fun getSyncedWidgetPhotoIds(appWidgetId: Int): List<String> {
+        val excluded: Set<String> = getExcludedPhotoIds(appWidgetId = appWidgetId)
+        return localPhotoDao.getOrderedLocalPhotoIds(widgetId = appWidgetId)
+            .filterNot { id -> id in excluded || id.substringAfterLast(SEPARATOR) in excluded }
+    }
+
     suspend fun getWidgetPhotoCountEstimate(appWidgetId: Int): Int {
         return localPhotoDao.getLocalPhotos(widgetId = appWidgetId)
             .map { it.photoId }

@@ -69,13 +69,14 @@ class PhotoWidgetViewerViewModel @Inject constructor(
     private fun updateState(fromWidget: PhotoWidget? = null) {
         loadWidgetJob?.cancel()
         loadWidgetJob = viewModelScope.launch {
-            val photoWidget = fromWidget
+            val photoWidget: PhotoWidget = fromWidget
                 ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId).first { !it.isLoading }
 
             _state.update { current ->
                 current.copy(
                     photoWidget = photoWidget,
-                    showMoveControls = photoWidget.photos.size > 1,
+                    showNextButton = photoWidget.photos.size > 1,
+                    showPreviousButton = photoWidget.photos.size > 1,
                 )
             }
         }
@@ -83,6 +84,7 @@ class PhotoWidgetViewerViewModel @Inject constructor(
 
     data class State(
         val photoWidget: PhotoWidget = PhotoWidget(),
-        val showMoveControls: Boolean = false,
+        val showNextButton: Boolean = false,
+        val showPreviousButton: Boolean = false,
     )
 }

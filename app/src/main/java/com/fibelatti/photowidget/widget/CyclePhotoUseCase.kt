@@ -4,7 +4,6 @@ import android.content.Context
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import kotlinx.coroutines.flow.first
 import timber.log.Timber
 
 class CyclePhotoUseCase @Inject constructor(
@@ -39,10 +38,7 @@ class CyclePhotoUseCase @Inject constructor(
                 ")",
         )
 
-        val widgetPhotoIds: List<String> = photoWidgetStorage.loadWidgetPhotos(appWidgetId = appWidgetId)
-            .first()
-            .current
-            .map { it.photoId }
+        val widgetPhotoIds: List<String> = photoWidgetStorage.getSyncedWidgetPhotoIds(appWidgetId = appWidgetId)
             .ifEmpty { return "" }
 
         if (widgetPhotoIds.size == 1) {
@@ -51,48 +47,61 @@ class CyclePhotoUseCase @Inject constructor(
             return widgetPhotoIds.first()
         }
 
-        val displayedPhotos = photoWidgetStorage.getDisplayedPhotoIds(appWidgetId = appWidgetId).toMutableSet()
+        val displayedPhotos: MutableList<String> = photoWidgetStorage.getDisplayedPhotoIds(appWidgetId = appWidgetId)
+            .toMutableList()
 
         var didClear = false
-        if (direction == Direction.NEXT && displayedPhotos.size >= widgetPhotoIds.size && !skipSaving) {
+        if (direction == Direction.NEXT && displayedPhotos.size >= widgetPhotoIds.size) {
             Timber.d("All photos displayed, starting over")
-            photoWidgetStorage.clearDisplayedPhotos(appWidgetId = appWidgetId)
+
+            if (!skipSaving) {
+                photoWidgetStorage.clearDisplayedPhotos(appWidgetId = appWidgetId)
+            }
+
             displayedPhotos.clear()
             didClear = true
         }
 
-        val currentPhotoId: suspend () -> String? = {
-            val resolved: String? = currentPhoto
-                ?: photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)
-                ?: widgetPhotoIds.getOrNull(photoWidgetStorage.getWidgetIndex(appWidgetId = appWidgetId))
+        val resolvedPhotoId: String? = currentPhoto
+            ?: photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)
+            ?: widgetPhotoIds.getOrNull(photoWidgetStorage.getWidgetIndex(appWidgetId = appWidgetId))
+        val currentPhotoId: String? = resolvedPhotoId?.ifEmpty { null }
 
-            resolved?.ifEmpty { null }
-        }
         val shuffle: Boolean = photoWidgetStorage.getWidgetShuffle(appWidgetId = appWidgetId) && !noShuffle
-        val nextRandomPhoto: () -> String = { widgetPhotoIds.subtract(displayedPhotos).random() }
+
+        // After a clear, the current photo is no longer in displayedPhotos, so without this it
+        // could be picked again immediately, showing the same photo twice in a row.
+        if (didClear && shuffle && currentPhotoId != null) {
+            displayedPhotos.add(currentPhotoId)
+        }
 
         val newPhotoId: String = when {
-            didClear || currentPhotoId() == null -> widgetPhotoIds.first()
+            currentPhotoId == null || (didClear && !shuffle) -> {
+                widgetPhotoIds.first()
+            }
 
             shuffle && direction == Direction.PREVIOUS -> {
                 if (!skipSaving) {
                     photoWidgetStorage.clearMostRecentPhoto(appWidgetId = appWidgetId)
                 }
-                currentPhotoId() ?: nextRandomPhoto()
+
+                previousShufflePhoto(
+                    displayedPhotos = displayedPhotos,
+                    widgetPhotoIds = widgetPhotoIds,
+                    currentPhotoId = currentPhotoId,
+                )
             }
 
-            shuffle -> nextRandomPhoto()
+            shuffle -> {
+                widgetPhotoIds.subtract(displayedPhotos.toSet()).random()
+            }
 
             else -> {
-                val currentIndex: Int = widgetPhotoIds.indexOfFirst { it == currentPhotoId() }
-                val newIndex: Int = when {
-                    direction == Direction.PREVIOUS && currentIndex <= 0 -> widgetPhotoIds.size - 1
-                    direction == Direction.PREVIOUS -> currentIndex - 1
-                    currentIndex == widgetPhotoIds.size - 1 -> 0
-                    else -> currentIndex + 1
-                }.coerceIn(0, widgetPhotoIds.size - 1)
-
-                widgetPhotoIds.get(index = newIndex)
+                getNextId(
+                    widgetPhotoIds = widgetPhotoIds,
+                    currentPhotoId = currentPhotoId,
+                    direction = direction,
+                )
             }
         }
 
@@ -105,6 +114,43 @@ class CyclePhotoUseCase @Inject constructor(
         PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
 
         return newPhotoId
+    }
+
+    private fun previousShufflePhoto(
+        displayedPhotos: MutableList<String>,
+        widgetPhotoIds: List<String>,
+        currentPhotoId: String,
+    ): String {
+        if (displayedPhotos.isNotEmpty()) {
+            // Last index points to the current photo, get it out of the way
+            displayedPhotos.removeAt(displayedPhotos.lastIndex)
+        }
+
+        return if (displayedPhotos.isNotEmpty()) {
+            // Return the previous to last...
+            displayedPhotos.removeAt(displayedPhotos.lastIndex)
+        } else {
+            // `displayedPhotos` contains at most all photos.
+            // If we're back at the beginning, just go back in order
+            getNextId(widgetPhotoIds = widgetPhotoIds, currentPhotoId = currentPhotoId, direction = Direction.PREVIOUS)
+        }
+    }
+
+    private fun getNextId(
+        widgetPhotoIds: List<String>,
+        currentPhotoId: String,
+        direction: Direction,
+    ): String {
+        val currentIndex: Int = widgetPhotoIds.indexOf(currentPhotoId)
+        val lastIndex: Int = widgetPhotoIds.lastIndex
+        val newIndex: Int = when {
+            direction == Direction.PREVIOUS && currentIndex <= 0 -> lastIndex
+            direction == Direction.PREVIOUS -> currentIndex - 1
+            currentIndex == lastIndex -> 0
+            else -> currentIndex + 1
+        }
+
+        return widgetPhotoIds.get(index = newIndex)
     }
 
     enum class Direction {
