@@ -74,12 +74,16 @@ class GifPlaybackController @Inject constructor(
 
     fun setPlaybackAllowed(value: Boolean, appWidgetId: Int? = null) {
         logger.d("Updating playback allowed (value=$value,appWidgetId=$appWidgetId)")
-        playbackAllowed.update { currentMap ->
-            if (appWidgetId == null) {
-                currentMap.mapValues { (key, _) ->
-                    value && !photoWidgetStorage.getWidgetCyclePaused(appWidgetId = key)
+        if (appWidgetId == null) {
+            coroutineScope.launch {
+                playbackAllowed.update { currentMap ->
+                    currentMap.mapValues { (key, _) ->
+                        value && !photoWidgetStorage.getWidgetCyclePaused(appWidgetId = key)
+                    }
                 }
-            } else {
+            }
+        } else {
+            playbackAllowed.update { currentMap ->
                 currentMap.toMutableMap().apply { put(appWidgetId, value) }.toMap()
             }
         }

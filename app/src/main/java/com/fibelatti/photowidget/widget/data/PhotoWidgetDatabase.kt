@@ -73,6 +73,16 @@ interface LocalPhotoDao {
     @Query("select photoId from local_widget_photos where widgetId = :widgetId")
     suspend fun getLocalPhotoIds(widgetId: Int): List<String>
 
+    @Query(
+        "select lwp.photoId from local_widget_photos as lwp " +
+            "left join photo_widget_order pwo " +
+            "on lwp.widgetId = pwo.widgetId " +
+            "and lwp.photoId = pwo.photoId " +
+            "where lwp.widgetId = :widgetId " +
+            "order by pwo.photoIndex asc",
+    )
+    suspend fun getOrderedLocalPhotoIds(widgetId: Int): List<String>
+
     @Upsert
     suspend fun saveLocalPhotos(photos: Collection<LocalPhotoDto>)
 
@@ -111,7 +121,7 @@ data class DisplayedWidgetPhotoDto(
 @Dao
 interface DisplayedPhotoDao {
 
-    @Query("select photoId from displayed_widget_photos where widgetId = :widgetId")
+    @Query("select photoId from displayed_widget_photos where widgetId = :widgetId order by timestamp asc")
     suspend fun getDisplayedPhotoIds(widgetId: Int): List<String>
 
     @Query("select photoId from displayed_widget_photos where widgetId = :widgetId order by timestamp desc limit 1")

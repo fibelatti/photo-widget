@@ -84,9 +84,10 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
                         photoWidget.aspectRatio
                     },
                     onDismissClick = ::finishAndRemoveTask,
-                    showFlipControls = state.showMoveControls,
-                    onPreviousClick = viewModel::viewPreviousPhoto,
+                    showNextButton = state.showNextButton,
+                    showPreviousButton = state.showPreviousButton,
                     onNextClick = viewModel::viewNextPhoto,
+                    onPreviousClick = viewModel::viewPreviousPhoto,
                     onAllPhotosClick = ::showPhotoChooser,
                     onShareClick = ::sharePhoto,
                 )

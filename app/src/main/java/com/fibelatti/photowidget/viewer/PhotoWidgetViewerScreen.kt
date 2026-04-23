@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.visible
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -89,9 +90,10 @@ fun PhotoWidgetViewerScreen(
     aspectRatio: PhotoWidgetAspectRatio,
     onDismissClick: () -> Unit,
     modifier: Modifier = Modifier,
-    showFlipControls: Boolean = false,
-    onPreviousClick: () -> Unit = {},
+    showNextButton: Boolean = false,
+    showPreviousButton: Boolean = false,
     onNextClick: () -> Unit = {},
+    onPreviousClick: () -> Unit = {},
     onAllPhotosClick: () -> Unit = {},
     onShareClick: (LocalPhoto) -> Unit = {},
 ) {
@@ -108,8 +110,9 @@ fun PhotoWidgetViewerScreen(
         mode = DragState.Mode.BIDIRECTIONAL,
         onConfirm = { direction ->
             when (direction) {
-                DragState.Direction.START -> onNextClick()
-                DragState.Direction.END -> onPreviousClick()
+                DragState.Direction.START if showNextButton -> onNextClick()
+                DragState.Direction.END if showPreviousButton -> onPreviousClick()
+                else -> Unit
             }
         },
         onThreshold = { localHapticFeedback.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate) },
@@ -136,7 +139,7 @@ fun PhotoWidgetViewerScreen(
         contentAlignment = Alignment.Center,
     ) {
         AnimatedVisibility(
-            visible = horizontalDragState.currentOffsetPixel > MIN_OFFSET,
+            visible = showPreviousButton && horizontalDragState.currentOffsetPixel > MIN_OFFSET,
             modifier = Modifier
                 .safeDrawingPadding()
                 .padding(all = 32.dp)
@@ -158,7 +161,7 @@ fun PhotoWidgetViewerScreen(
         }
 
         AnimatedVisibility(
-            visible = horizontalDragState.currentOffsetPixel < MIN_OFFSET * -1,
+            visible = showNextButton && horizontalDragState.currentOffsetPixel < MIN_OFFSET * -1,
             modifier = Modifier
                 .safeDrawingPadding()
                 .padding(all = 32.dp)
@@ -220,7 +223,7 @@ fun PhotoWidgetViewerScreen(
                                 horizontalDragState.onDragStopped(resetOnConfirm = true)
                             }
                         },
-                        enabled = showFlipControls && zoomState.scale == 1f,
+                        enabled = showNextButton && zoomState.scale == 1f,
                     )
                     .offset(
                         x = horizontalDragState.currentOffsetPixel.pxToDp(),
@@ -248,7 +251,7 @@ fun PhotoWidgetViewerScreen(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                if (showFlipControls) {
+                if (showNextButton) {
                     FilledTonalButton(
                         onClick = onAllPhotosClick,
                         shapes = ButtonDefaults.shapes(),
@@ -300,10 +303,11 @@ fun PhotoWidgetViewerScreen(
             ),
         ) {
             Controls(
-                showFlipControls = showFlipControls,
+                showNextButton = showNextButton,
+                showPreviousButton = showPreviousButton,
+                onNextClick = onNextClick,
                 onPreviousClick = onPreviousClick,
                 onDismiss = onDismissClick,
-                onNextClick = onNextClick,
             )
         }
     }
@@ -311,10 +315,11 @@ fun PhotoWidgetViewerScreen(
 
 @Composable
 private fun Controls(
-    showFlipControls: Boolean,
+    showNextButton: Boolean,
+    showPreviousButton: Boolean,
+    onNextClick: () -> Unit,
     onPreviousClick: () -> Unit,
     onDismiss: () -> Unit,
-    onNextClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -322,14 +327,14 @@ private fun Controls(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (showFlipControls) {
-            FilledTonalIconButton(
-                onClick = onPreviousClick,
-                shapes = IconButtonDefaults.shapes(),
-                modifier = Modifier.size(smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Wide)),
-            ) {
-                Icon(painterResource(id = R.drawable.ic_chevron_left), contentDescription = null)
-            }
+        FilledTonalIconButton(
+            onClick = onPreviousClick,
+            shapes = IconButtonDefaults.shapes(),
+            modifier = Modifier
+                .visible(showPreviousButton)
+                .size(smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Wide)),
+        ) {
+            Icon(painterResource(id = R.drawable.ic_chevron_left), contentDescription = null)
         }
 
         Button(
@@ -339,14 +344,14 @@ private fun Controls(
             Text(text = stringResource(R.string.photo_widget_action_dismiss))
         }
 
-        if (showFlipControls) {
-            FilledTonalIconButton(
-                onClick = onNextClick,
-                shapes = IconButtonDefaults.shapes(),
-                modifier = Modifier.size(smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Wide)),
-            ) {
-                Icon(painterResource(id = R.drawable.ic_chevron_right), contentDescription = null)
-            }
+        FilledTonalIconButton(
+            onClick = onNextClick,
+            shapes = IconButtonDefaults.shapes(),
+            modifier = Modifier
+                .visible(showNextButton)
+                .size(smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Wide)),
+        ) {
+            Icon(painterResource(id = R.drawable.ic_chevron_right), contentDescription = null)
         }
     }
 }
@@ -361,7 +366,8 @@ private fun ScreenContentPreview() {
             viewOriginalPhoto = false,
             aspectRatio = PhotoWidgetAspectRatio.SQUARE,
             onDismissClick = {},
-            showFlipControls = true,
+            showNextButton = true,
+            showPreviousButton = true,
         )
     }
 }
