@@ -44,3 +44,9 @@
 # Material
 -dontnote com.google.android.material.**
 -dontnote android.widget.**
+
+# Compose
+# TODO: uncomment this rule after validating the new Slot Table
+#-assumevalues public class androidx.compose.runtime.ComposeRuntimeFlags {
+#    static boolean isLinkBufferComposerEnabled return true;
+#}

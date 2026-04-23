@@ -3,7 +3,9 @@ package com.fibelatti.photowidget
 import android.app.Application
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.runtime.ComposeRuntimeFlags
 import androidx.compose.runtime.Composer
+import androidx.compose.runtime.ExperimentalComposeApi
 import androidx.compose.runtime.tooling.ComposeStackTraceMode
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
@@ -52,6 +54,7 @@ class App : Application(), Configuration.Provider {
         getReadyToWork()
     }
 
+    @OptIn(ExperimentalComposeApi::class)
     private fun setupDebugMode() {
         if (!BuildConfig.DEBUG) return
 
@@ -72,6 +75,8 @@ class App : Application(), Configuration.Provider {
         )
 
         Composer.setDiagnosticStackTraceMode(ComposeStackTraceMode.Auto)
+
+        ComposeRuntimeFlags.isLinkBufferComposerEnabled = true
     }
 
     private fun setupNightMode() {
