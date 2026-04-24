@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.configure
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
@@ -35,9 +36,10 @@ import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.hideBottomSheet
+import com.fibelatti.ui.preview.PreviewAll
+import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 fun PhotoWidgetGifIntervalBottomSheet(
     sheetState: AppSheetState,
     gifInterval: Long,
@@ -48,96 +50,128 @@ fun PhotoWidgetGifIntervalBottomSheet(
         sheetState = sheetState,
         modifier = modifier,
     ) {
-        DefaultSheetContent(
-            title = stringResource(R.string.photo_widget_configure_gif_frame_interval),
-        ) {
-            var value: Long by remember(gifInterval) { mutableLongStateOf(gifInterval) }
+        PhotoWidgetGifIntervalContent(
+            gifInterval = gifInterval,
+            onApplyClick = { newValue: Long ->
+                onApplyClick(newValue)
+                sheetState.hideBottomSheet()
+            },
+        )
+    }
+}
 
-            Text(
-                text = stringResource(R.string.photo_widget_configure_gif_frame_interval_description),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyMedium,
+@Composable
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+fun PhotoWidgetGifIntervalContent(
+    gifInterval: Long,
+    onApplyClick: (newInterval: Long) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    DefaultSheetContent(
+        title = stringResource(R.string.photo_widget_configure_gif_frame_interval),
+        modifier = modifier,
+    ) {
+        var value: Long by remember(gifInterval) { mutableLongStateOf(gifInterval) }
+
+        Text(
+            text = stringResource(R.string.photo_widget_configure_gif_frame_interval_description),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
+            color = MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyMedium,
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
+            RememberedEffect(value) {
+                localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
+            }
+
+            Slider(
+                value = value.toFloat(),
+                onValueChange = { value = it.fastRoundToInt().toLong() },
+                modifier = Modifier.weight(1f),
+                valueRange = GifFrames.MIN_INTERVAL_MS.toFloat()..GifFrames.MAX_INTERVAL_MS.toFloat(),
+                thumb = { SliderSmallThumb() },
             )
 
-            Row(
+            Text(
+                text = "$value ms",
+                modifier = Modifier.width(48.dp),
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.End,
+                style = MaterialTheme.typography.labelLarge,
+            )
+        }
+
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp, alignment = Alignment.CenterHorizontally),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            itemVerticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(R.string.photo_widget_configure_gif_frame_interval_presets),
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
-                RememberedEffect(value) {
-                    localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
-                }
-
-                Slider(
-                    value = value.toFloat(),
-                    onValueChange = { value = it.fastRoundToInt().toLong() },
-                    modifier = Modifier.weight(1f),
-                    valueRange = GifFrames.MIN_INTERVAL_MS.toFloat()..GifFrames.MAX_INTERVAL_MS.toFloat(),
-                    thumb = { SliderSmallThumb() },
-                )
-
-                Text(
-                    text = "$value ms",
-                    modifier = Modifier.width(48.dp),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.labelLarge,
-                )
-            }
-
-            FlowRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp, alignment = Alignment.CenterHorizontally),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                itemVerticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = stringResource(R.string.photo_widget_configure_gif_frame_interval_presets),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.labelLarge,
-                )
-
-                val presets: Map<String, Long> = remember {
-                    mapOf(
-                        "10 fps" to 100,
-                        "12 fps" to 83,
-                        "15 fps" to 66,
-                        "24 fps" to 41,
-                        "30 fps" to 33,
-                        "50 fps" to 20,
+                    .background(
+                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        shape = MaterialTheme.shapes.medium,
                     )
-                }
+                    .padding(vertical = 8.dp, horizontal = 16.dp),
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.titleMedium,
+            )
 
-                for (item in presets) {
-                    OutlinedButton(
-                        onClick = { value = item.value },
-                    ) {
-                        Text(text = item.key)
-                    }
-                }
+            val presets: Map<String, Long> = remember {
+                mapOf(
+                    "10 fps" to 100,
+                    "12 fps" to 83,
+                    "15 fps" to 66,
+                    "24 fps" to 41,
+                    "30 fps" to 33,
+                    "50 fps" to 20,
+                )
             }
 
-            Button(
-                onClick = {
-                    onApplyClick(value)
-                    sheetState.hideBottomSheet()
-                },
-                shapes = ButtonDefaults.shapes(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-            ) {
-                Text(text = stringResource(id = R.string.photo_widget_action_apply))
+            for (item in presets) {
+                OutlinedButton(
+                    onClick = { value = item.value },
+                ) {
+                    Text(text = item.key)
+                }
             }
         }
+
+        Button(
+            onClick = { onApplyClick(value) },
+            shapes = ButtonDefaults.shapes(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+        ) {
+            Text(text = stringResource(id = R.string.photo_widget_action_apply))
+        }
+    }
+}
+
+@PreviewAll
+@Composable
+private fun PhotoWidgetGifIntervalContentPreview() {
+    ExtendedTheme {
+        PhotoWidgetGifIntervalContent(
+            gifInterval = 66,
+            onApplyClick = {},
+            modifier = Modifier.background(color = MaterialTheme.colorScheme.surface),
+        )
     }
 }
