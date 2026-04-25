@@ -20,6 +20,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.configure.aspectRatio
 import com.fibelatti.photowidget.configure.sharedPhotos
+import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.showMaterialAlertDialog
@@ -47,6 +48,7 @@ class HomeActivity : AppCompatActivity() {
                     preparedIntent = preparedIntent,
                     onIntentConsume = { preparedIntent = null },
                     onCreateNewWidgetClick = ::createNewWidget,
+                    onRestoreWidgetClick = ::restoreWidget,
                     onAppLanguageClick = ::showTranslationsDialog,
                     onShareClick = ::shareApp,
                 )
@@ -114,6 +116,14 @@ class HomeActivity : AppCompatActivity() {
 
         preparedIntent = null
 
+        startActivity(intent)
+    }
+
+    private fun restoreWidget(photoWidget: PhotoWidget) {
+        val intent: Intent = PhotoWidgetConfigureActivity.importWidgetIntent(
+            context = this,
+            photoWidget = photoWidget,
+        )
         startActivity(intent)
     }
 

@@ -92,13 +92,13 @@ class PhotoWidgetBackupViewModel @Inject constructor(
         state = state.copy(preparedBackupFile = null)
     }
 
-    fun deleteRestoredBackup() {
-        state.restoredBackupFile?.deleteRecursively()
-        state = state.copy(restoredBackupFile = null)
-    }
-
     fun messageHandled(message: State.Message) {
         state = state.copy(messages = state.messages - message)
+    }
+
+    override fun onCleared() {
+        state.restoredBackupFile?.deleteRecursively()
+        super.onCleared()
     }
 
     data class State(

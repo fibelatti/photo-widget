@@ -12,5 +12,8 @@ sealed interface HomeNav : NavKey {
     data object WidgetDefaults : HomeNav
 
     @Serializable
+    data object WidgetBackup : HomeNav
+
+    @Serializable
     data object OssLicenses : HomeNav
 }

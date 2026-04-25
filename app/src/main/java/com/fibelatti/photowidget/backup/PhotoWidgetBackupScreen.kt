@@ -2,6 +2,14 @@
 
 package com.fibelatti.photowidget.backup
 
+import android.app.Activity.RESULT_OK
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
@@ -52,19 +60,100 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.getPhotoPath
+import com.fibelatti.photowidget.platform.RememberedEffect
+import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
+
+@Composable
+fun PhotoWidgetBackupScreen(
+    onNavClick: () -> Unit,
+    onRestoreClick: (PhotoWidget) -> Unit,
+    backupViewModel: PhotoWidgetBackupViewModel = hiltViewModel(),
+) {
+    val state: PhotoWidgetBackupViewModel.State = backupViewModel.state
+
+    val saveFileLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = { result: ActivityResult ->
+            val destinationUri: Uri? = result.data?.data
+            if (result.resultCode == RESULT_OK && destinationUri != null) {
+                backupViewModel.exportBackup(destinationUri = destinationUri)
+            } else {
+                backupViewModel.deletePreparedBackup()
+            }
+        },
+    )
+
+    val backupPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? ->
+            if (uri != null) backupViewModel.restoreFromBackup(uri)
+        },
+    )
+
+    val localContext: Context = LocalContext.current
+
+    PhotoWidgetBackupScreen(
+        onNavClick = onNavClick,
+        isProcessing = state.isProcessing,
+        onCreateBackupClick = backupViewModel::createBackup,
+        onRestoreFromBackupClick = { backupPickerLauncher.launch("application/zip") },
+        widgets = state.restoredWidgets,
+        onRestoreClick = onRestoreClick,
+    )
+
+    RememberedEffect(state.preparedBackupFile) {
+        state.preparedBackupFile?.let { file ->
+            val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "application/zip"
+                putExtra(Intent.EXTRA_TITLE, file.name)
+            }
+            saveFileLauncher.launch(intent)
+        }
+    }
+
+    RememberedEffect(state.messages) {
+        state.messages.firstOrNull()?.let { message ->
+            when (message) {
+                is PhotoWidgetBackupViewModel.State.Message.BackupExportedSuccessfully -> {
+                    Toast.makeText(localContext, R.string.backup_feedback_success, Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                is PhotoWidgetBackupViewModel.State.Message.BackupFailed -> {
+                    localContext.showMaterialAlertDialog {
+                        setMessage(R.string.backup_feedback_error)
+                        setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+                    }
+                }
+
+                is PhotoWidgetBackupViewModel.State.Message.RestoreBackupFailed -> {
+                    localContext.showMaterialAlertDialog {
+                        setMessage(R.string.backup_feedback_restore_error)
+                        setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+                    }
+                }
+            }
+
+            backupViewModel.messageHandled(message)
+        }
+    }
+}
 
 @Composable
 fun PhotoWidgetBackupScreen(

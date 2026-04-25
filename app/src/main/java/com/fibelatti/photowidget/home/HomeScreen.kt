@@ -47,7 +47,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.fibelatti.photowidget.R
-import com.fibelatti.photowidget.backup.PhotoWidgetBackupActivity
+import com.fibelatti.photowidget.backup.PhotoWidgetBackupScreen
 import com.fibelatti.photowidget.configure.BackgroundRestrictionBottomSheet
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
@@ -76,6 +76,7 @@ fun HomeScreenNavDisplay(
     preparedIntent: Intent?,
     onIntentConsume: () -> Unit,
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
+    onRestoreWidgetClick: (PhotoWidget) -> Unit,
     onAppLanguageClick: () -> Unit,
     onShareClick: () -> Unit,
 ) {
@@ -100,6 +101,7 @@ fun HomeScreenNavDisplay(
                     onIntentConsume = onIntentConsume,
                     onCreateNewWidgetClick = onCreateNewWidgetClick,
                     onDefaultsClick = { navBackStack.add(HomeNav.WidgetDefaults) },
+                    onBackupClick = { navBackStack.add(HomeNav.WidgetBackup) },
                     onAppLanguageClick = onAppLanguageClick,
                     onShareClick = onShareClick,
                     onViewLicensesClick = { navBackStack.add(HomeNav.OssLicenses) },
@@ -109,6 +111,13 @@ fun HomeScreenNavDisplay(
             entry<HomeNav.WidgetDefaults> {
                 WidgetDefaultsScreen(
                     onNavClick = navBackStack::popNavKey,
+                )
+            }
+
+            entry<HomeNav.WidgetBackup> {
+                PhotoWidgetBackupScreen(
+                    onNavClick = navBackStack::popNavKey,
+                    onRestoreClick = onRestoreWidgetClick,
                 )
             }
 
@@ -128,6 +137,7 @@ private fun HomeScreen(
     onIntentConsume: () -> Unit,
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
     onDefaultsClick: () -> Unit,
+    onBackupClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
     onShareClick: () -> Unit,
     onViewLicensesClick: () -> Unit,
@@ -196,9 +206,7 @@ private fun HomeScreen(
         onAppearanceClick = appAppearanceSheetState::showBottomSheet,
         onColorsClick = appColorsSheetState::showBottomSheet,
         onAppLanguageClick = onAppLanguageClick,
-        onBackupClick = {
-            localContext.startActivity(PhotoWidgetBackupActivity.newIntent(localContext))
-        },
+        onBackupClick = onBackupClick,
         onRateClick = {
             localUriHandler.openUri("https://play.google.com/store/apps/details?id=com.fibelatti.photowidget")
         },
