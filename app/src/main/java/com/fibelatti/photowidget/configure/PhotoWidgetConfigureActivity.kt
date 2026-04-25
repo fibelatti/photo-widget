@@ -12,9 +12,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.getValue
@@ -22,7 +19,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.R
-import com.fibelatti.photowidget.configure.PhotoCropActivity.Companion.outputPath
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
@@ -38,11 +34,6 @@ import timber.log.Timber
 class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
     private val viewModel: PhotoWidgetConfigureViewModel by viewModels()
-
-    private val photoCropLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        callback = ::onPhotoCropped,
-    )
 
     private val finishReceiver: BroadcastReceiver = object : BroadcastReceiver() {
 
@@ -165,12 +156,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             }
 
             is PhotoWidgetConfigureState.Message.LaunchCrop -> {
-                launchPhotoCrop(
-                    sourceUri = message.source,
-                    destinationUri = message.destination,
-                    aspectRatio = message.aspectRatio,
-                )
-                viewModel.messageHandled(message = message)
+                // Do nothing, handled by PhotoWidgetConfigureScreen
             }
 
             is PhotoWidgetConfigureState.Message.RequestPin -> {
@@ -222,27 +208,6 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun launchPhotoCrop(
-        sourceUri: Uri,
-        destinationUri: Uri,
-        aspectRatio: PhotoWidgetAspectRatio,
-    ) {
-        val intent = PhotoCropActivity.newIntent(
-            context = this,
-            sourceUri = sourceUri,
-            destinationUri = destinationUri,
-            aspectRatio = aspectRatio,
-        )
-
-        photoCropLauncher.launch(intent)
-    }
-
-    private fun onPhotoCropped(result: ActivityResult) {
-        result.data?.outputPath
-            ?.let(viewModel::photoCropped)
-            ?: run { viewModel.cropCancelled() }
     }
 
     private fun addNewWidget(appWidgetId: Int) {

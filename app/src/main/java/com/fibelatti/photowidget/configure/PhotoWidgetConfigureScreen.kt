@@ -78,6 +78,8 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import androidx.window.core.layout.WindowSizeClass
+import com.canhub.cropper.CropImageOptions
+import com.canhub.cropper.CropImageView
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -85,12 +87,14 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.canSort
+import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.LocalSamplePhoto
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
+import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
 
@@ -103,6 +107,20 @@ fun PhotoWidgetConfigureScreen(
 ) {
     val state: PhotoWidgetConfigureState by viewModel.state.collectAsStateWithLifecycle()
     val configureBackStack: NavBackStack<NavKey> = rememberNavBackStack(PhotoWidgetConfigureNav.Home)
+
+    RememberedEffect(state.messages) {
+        val currentMessage: PhotoWidgetConfigureState.Message? = state.messages.firstOrNull()
+        if (currentMessage is PhotoWidgetConfigureState.Message.LaunchCrop) {
+            val key = PhotoWidgetConfigureNav.PhotoCrop(
+                sourceUri = currentMessage.source,
+                destinationUri = currentMessage.destination,
+                aspectRatio = currentMessage.aspectRatio,
+            )
+
+            configureBackStack.add(key)
+            viewModel.messageHandled(message = currentMessage)
+        }
+    }
 
     NavDisplay(
         backStack = configureBackStack,
@@ -134,6 +152,32 @@ fun PhotoWidgetConfigureScreen(
                         viewModel.tapActionSelected(actions)
                         configureBackStack.pop()
                     },
+                )
+            }
+
+            entry<PhotoWidgetConfigureNav.PhotoCrop> { key: PhotoWidgetConfigureNav.PhotoCrop ->
+                PhotoCropScreen(
+                    sourceUri = key.sourceUri,
+                    destinationUri = key.destinationUri,
+                    cropImageOptions = CropImageOptions(
+                        guidelines = CropImageView.Guidelines.ON_TOUCH,
+                        showProgressBar = false,
+                        maxZoom = 8,
+                        fixAspectRatio = key.aspectRatio.isConstrained,
+                        aspectRatioX = key.aspectRatio.x.roundToInt(),
+                        aspectRatioY = key.aspectRatio.y.roundToInt(),
+                    ),
+                    onBackClick = configureBackStack::pop,
+                    onCropComplete = { cropResult ->
+                        val destinationPath: String? = key.destinationUri.path
+                        if (cropResult.isSuccessful && cropResult.uriContent != null && destinationPath != null) {
+                            viewModel.photoCropped(destinationPath)
+                        } else {
+                            viewModel.cropCancelled()
+                        }
+                        configureBackStack.pop()
+                    },
+                    showAspectRatioShortcuts = !key.aspectRatio.isConstrained,
                 )
             }
         },

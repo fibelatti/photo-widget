@@ -86,10 +86,6 @@
         </activity>
 
         <activity
-            android:name=".configure.PhotoCropActivity"
-            android:exported="false" />
-
-        <activity
             android:name=".viewer.PhotoWidgetViewerActivity"
             android:exported="false"
             android:launchMode="singleInstance" />

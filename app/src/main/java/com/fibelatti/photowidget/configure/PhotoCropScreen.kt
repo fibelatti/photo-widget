@@ -3,15 +3,10 @@
 package com.fibelatti.photowidget.configure
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Bundle
 import android.webkit.MimeTypeMap
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -45,6 +40,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -62,81 +58,56 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.FileProvider
 import androidx.core.net.toFile
+import androidx.core.view.WindowInsetsControllerCompat
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.fibelatti.photowidget.R
-import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
-import com.fibelatti.photowidget.platform.intentExtras
+import com.fibelatti.photowidget.platform.LocalAppCompatActivity
 import com.fibelatti.ui.foundation.ConnectedButtonRowItem
 import com.fibelatti.ui.preview.PreviewAccessibility
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.preview.PreviewThemesAndColors
 import com.fibelatti.ui.theme.ExtendedTheme
-import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.roundToInt
 
-@AndroidEntryPoint
-class PhotoCropActivity : AppCompatActivity() {
+@Composable
+fun PhotoCropScreen(
+    sourceUri: Uri,
+    destinationUri: Uri,
+    cropImageOptions: CropImageOptions,
+    onBackClick: () -> Unit,
+    onCropComplete: (CropImageView.CropResult) -> Unit,
+    showAspectRatioShortcuts: Boolean,
+) {
+    AppTheme(
+        darkTheme = true,
+    ) {
+        val localActivity: AppCompatActivity = LocalAppCompatActivity.current
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
-        getDelegate().localNightMode = AppCompatDelegate.MODE_NIGHT_YES
-        super.onCreate(savedInstanceState)
+        DisposableEffect(Unit) {
+            val controller = WindowInsetsControllerCompat(localActivity.window, localActivity.window.decorView)
+            val previousValue: Boolean = controller.isAppearanceLightStatusBars
 
-        setContent {
-            AppTheme(
-                darkTheme = true,
-            ) {
-                PhotoCropScreen(
-                    sourceUri = intent.sourceUri,
-                    destinationUri = intent.destinationUri,
-                    cropImageOptions = CropImageOptions(
-                        guidelines = CropImageView.Guidelines.ON_TOUCH,
-                        showProgressBar = false,
-                        maxZoom = 8,
-                        fixAspectRatio = intent.aspectRatio.isConstrained,
-                        aspectRatioX = intent.aspectRatio.x.roundToInt(),
-                        aspectRatioY = intent.aspectRatio.y.roundToInt(),
-                    ),
-                    onBackClick = onBackPressedDispatcher::onBackPressed,
-                    onCropComplete = ::finishWithResult,
-                    showAspectRatioShortcuts = !intent.aspectRatio.isConstrained,
-                )
+            controller.isAppearanceLightStatusBars = false
+
+            onDispose {
+                controller.isAppearanceLightStatusBars = previousValue
             }
         }
-    }
 
-    private fun finishWithResult(result: CropImageView.CropResult) {
-        setResult(
-            /* resultCode = */ if (result.isSuccessful && result.uriContent != null) RESULT_OK else RESULT_CANCELED,
-            /* data = */ result.uriContent?.let { Intent().apply { this.outputPath = intent.destinationUri.path } },
+        PhotoCropContent(
+            sourceUri = sourceUri,
+            destinationUri = destinationUri,
+            cropImageOptions = cropImageOptions,
+            onBackClick = onBackClick,
+            onCropComplete = onCropComplete,
+            showAspectRatioShortcuts = showAspectRatioShortcuts,
         )
-        finish()
-    }
-
-    companion object {
-
-        private var Intent.sourceUri: Uri by intentExtras()
-        private var Intent.destinationUri: Uri by intentExtras()
-        private var Intent.aspectRatio: PhotoWidgetAspectRatio by intentExtras()
-        var Intent.outputPath: String? by intentExtras()
-
-        fun newIntent(
-            context: Context,
-            sourceUri: Uri,
-            destinationUri: Uri,
-            aspectRatio: PhotoWidgetAspectRatio,
-        ): Intent = Intent(context, PhotoCropActivity::class.java).apply {
-            this.sourceUri = sourceUri
-            this.destinationUri = destinationUri
-            this.aspectRatio = aspectRatio
-        }
     }
 }
 
 @Composable
-private fun PhotoCropScreen(
+private fun PhotoCropContent(
     sourceUri: Uri,
     destinationUri: Uri,
     cropImageOptions: CropImageOptions,
@@ -426,9 +397,9 @@ private fun RatioShortcuts(
 // region Previews
 @Composable
 @PreviewAll
-private fun PhotoCropScreenPreview() {
+private fun PhotoCropContentPreview() {
     ExtendedTheme(darkTheme = true) {
-        PhotoCropScreen(
+        PhotoCropContent(
             sourceUri = Uri.EMPTY,
             destinationUri = Uri.EMPTY,
             cropImageOptions = CropImageOptions(
