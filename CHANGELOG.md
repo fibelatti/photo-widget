@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Fix "view previous" not working as expected when shuffle is enabled
+* Fix draft widgets not showing in "My Widgets"
 
 ## [v1.41.0] - 2026-04-18
 [v1.41.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.41.0

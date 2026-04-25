@@ -68,7 +68,7 @@ class HomeViewModel @Inject constructor(
             photoWidgetStorage.getKnownWidgetIds(),
             photoWidgetStorage.getDraftWidgetIds(),
             updateSignal.receiveAsFlow(),
-        ) { ids: List<Int>, draftIds: List<Int>, _: Unit -> ids + draftIds.filterNot(PhotoWidget::isDraftWidgetId) }
+        ) { ids: List<Int>, draftIds: List<Int>, _: Unit -> ids + draftIds }
             .flatMapLatest { allIds: List<Int> ->
                 if (allIds.isEmpty()) return@flatMapLatest flowOf(emptyMap())
 
