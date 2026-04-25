@@ -22,6 +22,21 @@ import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import timber.log.Timber
 
+/**
+ * Returns the first [ContextWrapper] with type [T] found in the hierarchy if any, or null if none
+ * could be found.
+ */
+inline fun <reified T> Context.findOwner(): T? {
+    var innerContext = this
+    while (innerContext is ContextWrapper) {
+        if (innerContext is T) {
+            return innerContext
+        }
+        innerContext = innerContext.baseContext
+    }
+    return null
+}
+
 @ColorInt
 fun Context.getAttributeColor(
     @AttrRes attrId: Int,
