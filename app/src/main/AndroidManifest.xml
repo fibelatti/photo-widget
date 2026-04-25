@@ -68,10 +68,6 @@
         </activity>
 
         <activity
-            android:name=".preferences.WidgetDefaultsActivity"
-            android:exported="false" />
-
-        <activity
             android:name=".backup.PhotoWidgetBackupActivity"
             android:exported="false" />
 
@@ -117,10 +113,6 @@
             android:exported="false"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme.TransparentActivity" />
-
-        <activity
-            android:name=".licenses.OssLicensesActivity"
-            android:exported="false" />
 
         <service
             android:name=".platform.KeepAliveService"

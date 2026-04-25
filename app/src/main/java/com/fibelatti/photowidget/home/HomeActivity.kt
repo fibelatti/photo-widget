@@ -42,7 +42,7 @@ class HomeActivity : AppCompatActivity() {
 
         setContent {
             AppTheme {
-                HomeScreen(
+                HomeScreenNavDisplay(
                     homeViewModel = homeViewModel,
                     preparedIntent = preparedIntent,
                     onIntentConsume = { preparedIntent = null },

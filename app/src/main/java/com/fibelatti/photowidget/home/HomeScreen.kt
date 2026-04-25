@@ -4,11 +4,15 @@ import android.content.Intent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
@@ -37,6 +41,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.ui.NavDisplay
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.backup.PhotoWidgetBackupActivity
 import com.fibelatti.photowidget.configure.BackgroundRestrictionBottomSheet
@@ -44,29 +53,84 @@ import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.help.HelpBottomSheet
-import com.fibelatti.photowidget.licenses.OssLicensesActivity
+import com.fibelatti.photowidget.licenses.OssLicensesScreen
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
+import com.fibelatti.photowidget.platform.popNavKey
 import com.fibelatti.photowidget.preferences.AppAppearanceBottomSheet
 import com.fibelatti.photowidget.preferences.AppColorsBottomSheet
 import com.fibelatti.photowidget.preferences.DataSaverBottomSheet
 import com.fibelatti.photowidget.preferences.KeepAliveServiceBottomSheet
-import com.fibelatti.photowidget.preferences.WidgetDefaultsActivity
+import com.fibelatti.photowidget.preferences.WidgetDefaultsScreen
 import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 
+@Suppress("ktlint:compose:vm-forwarding-check")
 @Composable
-fun HomeScreen(
+fun HomeScreenNavDisplay(
     homeViewModel: HomeViewModel,
     preparedIntent: Intent?,
     onIntentConsume: () -> Unit,
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
     onAppLanguageClick: () -> Unit,
     onShareClick: () -> Unit,
+) {
+    val navBackStack: NavBackStack<NavKey> = rememberNavBackStack(HomeNav.Home)
+
+    NavDisplay(
+        backStack = navBackStack,
+        transitionSpec = {
+            slideInHorizontally(initialOffsetX = { it }) togetherWith ExitTransition.KeepUntilTransitionsFinished
+        },
+        popTransitionSpec = {
+            EnterTransition.None togetherWith slideOutHorizontally(targetOffsetX = { it })
+        },
+        predictivePopTransitionSpec = {
+            EnterTransition.None togetherWith slideOutHorizontally(targetOffsetX = { it })
+        },
+        entryProvider = entryProvider {
+            entry<HomeNav.Home> {
+                HomeScreen(
+                    homeViewModel = homeViewModel,
+                    preparedIntent = preparedIntent,
+                    onIntentConsume = onIntentConsume,
+                    onCreateNewWidgetClick = onCreateNewWidgetClick,
+                    onDefaultsClick = { navBackStack.add(HomeNav.WidgetDefaults) },
+                    onAppLanguageClick = onAppLanguageClick,
+                    onShareClick = onShareClick,
+                    onViewLicensesClick = { navBackStack.add(HomeNav.OssLicenses) },
+                )
+            }
+
+            entry<HomeNav.WidgetDefaults> {
+                WidgetDefaultsScreen(
+                    onNavClick = navBackStack::popNavKey,
+                )
+            }
+
+            entry<HomeNav.OssLicenses> {
+                OssLicensesScreen(
+                    onBackNavClick = navBackStack::popNavKey,
+                )
+            }
+        },
+    )
+}
+
+@Composable
+private fun HomeScreen(
+    homeViewModel: HomeViewModel,
+    preparedIntent: Intent?,
+    onIntentConsume: () -> Unit,
+    onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
+    onDefaultsClick: () -> Unit,
+    onAppLanguageClick: () -> Unit,
+    onShareClick: () -> Unit,
+    onViewLicensesClick: () -> Unit,
 ) {
     val currentWidgets by homeViewModel.currentWidgets.collectAsStateWithLifecycle()
 
@@ -128,9 +192,7 @@ fun HomeScreen(
                 data = appWidgetId,
             )
         },
-        onDefaultsClick = {
-            localContext.startActivity(Intent(localContext, WidgetDefaultsActivity::class.java))
-        },
+        onDefaultsClick = onDefaultsClick,
         onAppearanceClick = appAppearanceSheetState::showBottomSheet,
         onColorsClick = appColorsSheetState::showBottomSheet,
         onAppLanguageClick = onAppLanguageClick,
@@ -149,9 +211,7 @@ fun HomeScreen(
         onPrivacyPolicyClick = {
             localUriHandler.openUri("https://www.fibelatti.com/privacy-policy/material-photo-widget")
         },
-        onViewLicensesClick = {
-            localContext.startActivity(Intent(localContext, OssLicensesActivity::class.java))
-        },
+        onViewLicensesClick = onViewLicensesClick,
     )
 
     // region Bottom sheets

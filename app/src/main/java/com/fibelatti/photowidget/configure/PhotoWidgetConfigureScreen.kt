@@ -88,6 +88,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.canSort
 import com.fibelatti.photowidget.platform.RememberedEffect
+import com.fibelatti.photowidget.platform.popNavKey
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.LocalSamplePhoto
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
@@ -145,12 +146,12 @@ fun PhotoWidgetConfigureScreen(
 
             entry<PhotoWidgetConfigureNav.TapActionPicker> {
                 PhotoWidgetTapActionPicker(
-                    onNavClick = configureBackStack::pop,
+                    onNavClick = configureBackStack::popNavKey,
                     currentTapActions = state.photoWidget.tapActions,
                     source = state.photoWidget.source,
                     onApplyClick = { actions ->
                         viewModel.tapActionSelected(actions)
-                        configureBackStack.pop()
+                        configureBackStack.popNavKey()
                     },
                 )
             }
@@ -167,7 +168,7 @@ fun PhotoWidgetConfigureScreen(
                         aspectRatioX = key.aspectRatio.x.roundToInt(),
                         aspectRatioY = key.aspectRatio.y.roundToInt(),
                     ),
-                    onBackClick = configureBackStack::pop,
+                    onBackClick = configureBackStack::popNavKey,
                     onCropComplete = { cropResult ->
                         val destinationPath: String? = key.destinationUri.path
                         if (cropResult.isSuccessful && cropResult.uriContent != null && destinationPath != null) {
@@ -175,17 +176,13 @@ fun PhotoWidgetConfigureScreen(
                         } else {
                             viewModel.cropCancelled()
                         }
-                        configureBackStack.pop()
+                        configureBackStack.popNavKey()
                     },
                     showAspectRatioShortcuts = !key.aspectRatio.isConstrained,
                 )
             }
         },
     )
-}
-
-private fun NavBackStack<*>.pop() {
-    if (size > 1) removeLastOrNull()
 }
 
 @Suppress("ktlint:compose:vm-forwarding-check")
