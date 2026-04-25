@@ -8,11 +8,15 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.webkit.MimeTypeMap
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalFlexBoxApi
 import androidx.compose.foundation.layout.FlexAlignContent
 import androidx.compose.foundation.layout.FlexAlignItems
@@ -20,46 +24,53 @@ import androidx.compose.foundation.layout.FlexBox
 import androidx.compose.foundation.layout.FlexDirection
 import androidx.compose.foundation.layout.FlexJustifyContent
 import androidx.compose.foundation.layout.FlexWrap
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonGroupDefaults
+import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.FileProvider
 import androidx.core.net.toFile
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.fibelatti.photowidget.R
-import com.fibelatti.photowidget.databinding.PhotoCropActivityBinding
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.intentExtras
 import com.fibelatti.ui.foundation.ConnectedButtonRowItem
+import com.fibelatti.ui.preview.PreviewAccessibility
+import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.preview.PreviewThemesAndColors
 import com.fibelatti.ui.theme.ExtendedTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,83 +79,32 @@ import kotlin.math.roundToInt
 @AndroidEntryPoint
 class PhotoCropActivity : AppCompatActivity() {
 
-    private val binding: PhotoCropActivityBinding by lazy { PhotoCropActivityBinding.inflate(layoutInflater) }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         getDelegate().localNightMode = AppCompatDelegate.MODE_NIGHT_YES
         super.onCreate(savedInstanceState)
 
-        setContentView(binding.root)
-        setupViews()
-        setupSourceAndOptions()
-    }
-
-    private fun setupViews() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
-            val insets = windowInsets.getInsets(
-                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout(),
-            )
-
-            view.updatePadding(
-                left = insets.left,
-                top = insets.top,
-                right = insets.right,
-                bottom = insets.bottom,
-            )
-            windowInsets
+        setContent {
+            AppTheme(
+                darkTheme = true,
+            ) {
+                PhotoCropScreen(
+                    sourceUri = intent.sourceUri,
+                    destinationUri = intent.destinationUri,
+                    cropImageOptions = CropImageOptions(
+                        guidelines = CropImageView.Guidelines.ON_TOUCH,
+                        showProgressBar = false,
+                        maxZoom = 8,
+                        fixAspectRatio = intent.aspectRatio.isConstrained,
+                        aspectRatioX = intent.aspectRatio.x.roundToInt(),
+                        aspectRatioY = intent.aspectRatio.y.roundToInt(),
+                    ),
+                    onBackClick = onBackPressedDispatcher::onBackPressed,
+                    onCropComplete = ::finishWithResult,
+                    showAspectRatioShortcuts = !intent.aspectRatio.isConstrained,
+                )
+            }
         }
-
-        binding.backButton.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-        binding.cropButton.setOnClickListener {
-            cropImage()
-        }
-        binding.cropImageView.setOnCropImageCompleteListener { _: CropImageView, result: CropImageView.CropResult ->
-            finishWithResult(result)
-        }
-
-        setupCropControls()
-    }
-
-    private fun setupSourceAndOptions() {
-        val cropOptions = CropImageOptions(
-            guidelines = CropImageView.Guidelines.ON_TOUCH,
-            showProgressBar = false,
-            maxZoom = 8,
-            fixAspectRatio = intent.aspectRatio.isConstrained,
-            aspectRatioX = intent.aspectRatio.x.roundToInt(),
-            aspectRatioY = intent.aspectRatio.y.roundToInt(),
-        )
-
-        binding.cropImageView.setImageUriAsync(intent.sourceUri)
-        binding.cropImageView.setImageCropOptions(cropOptions)
-    }
-
-    private fun cropImage() {
-        val typeExtension: String? = MimeTypeMap.getSingleton()
-            .getExtensionFromMimeType(contentResolver.getType(intent.sourceUri))
-            ?.lowercase()
-        val urlExtension: String? = MimeTypeMap.getFileExtensionFromUrl(intent.sourceUri.toString())
-            ?.lowercase()
-        val jpeg: Array<String> = arrayOf("jpeg", "jpg")
-        val compressFormat: Bitmap.CompressFormat = if (typeExtension in jpeg || urlExtension in jpeg) {
-            Bitmap.CompressFormat.JPEG
-        } else {
-            Bitmap.CompressFormat.PNG
-        }
-
-        binding.cropButton.isInvisible = true
-        binding.progressIndicator.isVisible = true
-        binding.cropImageView.croppedImageAsync(
-            saveCompressFormat = compressFormat,
-            customOutputUri = FileProvider.getUriForFile(
-                /* context = */ this,
-                /* authority = */ "$packageName.fileprovider",
-                /* file = */ intent.destinationUri.toFile(),
-            ),
-        )
     }
 
     private fun finishWithResult(result: CropImageView.CropResult) {
@@ -153,34 +113,6 @@ class PhotoCropActivity : AppCompatActivity() {
             /* data = */ result.uriContent?.let { Intent().apply { this.outputPath = intent.destinationUri.path } },
         )
         finish()
-    }
-
-    private fun setupCropControls() {
-        binding.composeViewRatioShortcuts.setContent {
-            AppTheme {
-                CropControls(
-                    onRotateLeftClick = { binding.cropImageView.rotatedDegrees -= 90 },
-                    onRotateRightClick = { binding.cropImageView.rotatedDegrees += 90 },
-                    onFlipHorizontalClick = binding.cropImageView::flipImageHorizontally,
-                    onFlipVerticalClick = binding.cropImageView::flipImageVertically,
-                    showAspectRatioShortcuts = !intent.aspectRatio.isConstrained,
-                    onFreeFormClick = { binding.cropImageView.setFixedAspectRatio(false) },
-                    onSquareClick = {
-                        binding.cropImageView.setFixedAspectRatio(true)
-                        binding.cropImageView.setAspectRatio(aspectRatioX = 1, aspectRatioY = 1)
-                    },
-                    onTallClick = {
-                        binding.cropImageView.setFixedAspectRatio(true)
-                        binding.cropImageView.setAspectRatio(aspectRatioX = 10, aspectRatioY = 16)
-                    },
-                    onWideClick = {
-                        binding.cropImageView.setFixedAspectRatio(true)
-                        binding.cropImageView.setAspectRatio(aspectRatioX = 16, aspectRatioY = 10)
-                    },
-                    modifier = Modifier.padding(all = 16.dp),
-                )
-            }
-        }
     }
 
     companion object {
@@ -201,6 +133,146 @@ class PhotoCropActivity : AppCompatActivity() {
             this.aspectRatio = aspectRatio
         }
     }
+}
+
+@Composable
+private fun PhotoCropScreen(
+    sourceUri: Uri,
+    destinationUri: Uri,
+    cropImageOptions: CropImageOptions,
+    onBackClick: () -> Unit,
+    onCropComplete: (CropImageView.CropResult) -> Unit,
+    showAspectRatioShortcuts: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background)
+            .safeDrawingPadding(),
+    ) {
+        val localContext: Context = LocalContext.current
+        val cropImageView: CropImageView = remember(localContext) {
+            CropImageView(localContext).apply {
+                setImageUriAsync(sourceUri)
+                setImageCropOptions(cropImageOptions)
+                setOnCropImageCompleteListener { _: CropImageView, result: CropImageView.CropResult ->
+                    onCropComplete(result)
+                }
+            }
+        }
+        var isCropping: Boolean by remember { mutableStateOf(false) }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min)
+                .padding(all = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            IconButton(
+                onClick = onBackClick,
+                shapes = IconButtonDefaults.shapes(),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_back),
+                    contentDescription = null,
+                    tint = Color.White,
+                )
+            }
+
+            Crossfade(
+                targetState = isCropping,
+                modifier = Modifier.fillMaxHeight(),
+            ) { value: Boolean ->
+                if (value) {
+                    CircularWavyProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .aspectRatio(1f),
+                    )
+                } else {
+                    IconButton(
+                        onClick = {
+                            isCropping = true
+                            cropImage(
+                                context = localContext,
+                                cropImageView = cropImageView,
+                                sourceUri = sourceUri,
+                                destinationUri = destinationUri,
+                            )
+                        },
+                        shapes = IconButtonDefaults.shapes(),
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_check),
+                            contentDescription = null,
+                            tint = Color.White,
+                        )
+                    }
+                }
+            }
+        }
+
+        AndroidView(
+            factory = { cropImageView },
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+        )
+
+        CropControls(
+            onRotateLeftClick = { cropImageView.rotatedDegrees -= 90 },
+            onRotateRightClick = { cropImageView.rotatedDegrees += 90 },
+            onFlipHorizontalClick = cropImageView::flipImageHorizontally,
+            onFlipVerticalClick = cropImageView::flipImageVertically,
+            showAspectRatioShortcuts = showAspectRatioShortcuts,
+            onFreeFormClick = { cropImageView.setFixedAspectRatio(false) },
+            onSquareClick = {
+                cropImageView.setFixedAspectRatio(true)
+                cropImageView.setAspectRatio(aspectRatioX = 1, aspectRatioY = 1)
+            },
+            onTallClick = {
+                cropImageView.setFixedAspectRatio(true)
+                cropImageView.setAspectRatio(aspectRatioX = 10, aspectRatioY = 16)
+            },
+            onWideClick = {
+                cropImageView.setFixedAspectRatio(true)
+                cropImageView.setAspectRatio(aspectRatioX = 16, aspectRatioY = 10)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 16.dp),
+        )
+    }
+}
+
+private fun cropImage(
+    context: Context,
+    cropImageView: CropImageView,
+    sourceUri: Uri,
+    destinationUri: Uri,
+) {
+    val typeExtension: String? = MimeTypeMap.getSingleton()
+        .getExtensionFromMimeType(context.contentResolver.getType(sourceUri))
+        ?.lowercase()
+    val urlExtension: String? = MimeTypeMap.getFileExtensionFromUrl(sourceUri.toString())
+        ?.lowercase()
+    val jpeg: Array<String> = arrayOf("jpeg", "jpg")
+    val compressFormat: Bitmap.CompressFormat = if (typeExtension in jpeg || urlExtension in jpeg) {
+        Bitmap.CompressFormat.JPEG
+    } else {
+        Bitmap.CompressFormat.PNG
+    }
+
+    cropImageView.croppedImageAsync(
+        saveCompressFormat = compressFormat,
+        customOutputUri = FileProvider.getUriForFile(
+            /* context = */ context,
+            /* authority = */ "${context.packageName}.fileprovider",
+            /* file = */ destinationUri.toFile(),
+        ),
+    )
 }
 
 @Composable
@@ -351,10 +423,31 @@ private fun RatioShortcuts(
     }
 }
 
+// region Previews
+@Composable
+@PreviewAll
+private fun PhotoCropScreenPreview() {
+    ExtendedTheme(darkTheme = true) {
+        PhotoCropScreen(
+            sourceUri = Uri.EMPTY,
+            destinationUri = Uri.EMPTY,
+            cropImageOptions = CropImageOptions(
+                guidelines = CropImageView.Guidelines.ON_TOUCH,
+                showProgressBar = false,
+            ),
+            onBackClick = {},
+            onCropComplete = {},
+            showAspectRatioShortcuts = true,
+            modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
+        )
+    }
+}
+
 @Composable
 @PreviewThemesAndColors
-private fun RatioShortcutsPreview() {
-    ExtendedTheme {
+@PreviewAccessibility
+private fun CropControlsPreview() {
+    ExtendedTheme(darkTheme = true) {
         CropControls(
             onRotateLeftClick = {},
             onRotateRightClick = {},
@@ -365,7 +458,10 @@ private fun RatioShortcutsPreview() {
             onSquareClick = {},
             onTallClick = {},
             onWideClick = {},
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = MaterialTheme.colorScheme.background),
         )
     }
 }
+// endregion Previews
