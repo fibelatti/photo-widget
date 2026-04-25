@@ -2,8 +2,6 @@
 
 package com.fibelatti.photowidget.configure
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -76,6 +74,9 @@ import sh.calvin.reorderable.rememberReorderableLazyGridState
 @Composable
 fun PhotoWidgetConfigureContentTab(
     viewModel: PhotoWidgetConfigureViewModel,
+    onPhotoPickerClick: () -> Unit,
+    onDirPickerClick: () -> Unit,
+    onGifPickerClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state: PhotoWidgetConfigureState by viewModel.state.collectAsStateWithLifecycle()
@@ -84,21 +85,6 @@ fun PhotoWidgetConfigureContentTab(
     val importFromWidgetSheetState: AppSheetState = rememberAppSheetState()
     val recentlyDeletedPhotoSheetState: AppSheetState = rememberAppSheetState()
 
-    val photoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetMultipleContents(),
-        onResult = viewModel::photoPicked,
-    )
-
-    val dirPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.OpenDocumentTree(),
-        onResult = viewModel::dirPicked,
-    )
-
-    val gifPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = viewModel::gifPicked,
-    )
-
     var showGifReplaceDialog by rememberSaveable { mutableStateOf(false) }
 
     PhotoWidgetConfigureContentTab(
@@ -106,13 +92,13 @@ fun PhotoWidgetConfigureContentTab(
         onChangeSourceClick = sourceSheetState::showBottomSheet,
         isImportAvailable = state.isImportAvailable,
         onImportClick = importFromWidgetSheetState::showBottomSheet,
-        onPhotoPickerClick = { photoPickerLauncher.launch(input = "image/*") },
-        onDirPickerClick = { dirPickerLauncher.launch(input = null) },
+        onPhotoPickerClick = onPhotoPickerClick,
+        onDirPickerClick = onDirPickerClick,
         onGifPickerClick = {
             if (state.photoWidget.photos.isNotEmpty()) {
                 showGifReplaceDialog = true
             } else {
-                gifPickerLauncher.launch(input = "image/gif")
+                onGifPickerClick()
             }
         },
         onPhotoClick = viewModel::previewPhoto,
@@ -130,7 +116,7 @@ fun PhotoWidgetConfigureContentTab(
                 Button(
                     onClick = {
                         showGifReplaceDialog = false
-                        gifPickerLauncher.launch(input = "image/gif")
+                        onGifPickerClick()
                     },
                     shapes = ButtonDefaults.shapes(),
                 ) {

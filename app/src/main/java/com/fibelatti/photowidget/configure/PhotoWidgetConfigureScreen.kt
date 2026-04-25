@@ -5,6 +5,8 @@ package com.fibelatti.photowidget.configure
 import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -57,6 +59,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -71,6 +74,9 @@ import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
@@ -204,6 +210,26 @@ private fun PhotoWidgetConfigureHomeScreen(
         .padding(vertical = 16.dp)
         .fadingEdges(scrollState = tabContentScrollState)
 
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetMultipleContents(),
+        onResult = viewModel::photoPicked,
+    )
+
+    val dirPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocumentTree(),
+        onResult = viewModel::dirPicked,
+    )
+
+    val gifPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = viewModel::gifPicked,
+    )
+
+    val localLifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
+    val isLifecycleStateValid: () -> Boolean by rememberUpdatedState {
+        localLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)
+    }
+
     BackHandler(onBack = onBack)
 
     CompositionLocalProvider(LocalSamplePhoto provides state.selectedPhoto) {
@@ -219,6 +245,15 @@ private fun PhotoWidgetConfigureHomeScreen(
             contentTab = {
                 PhotoWidgetConfigureContentTab(
                     viewModel = viewModel,
+                    onPhotoPickerClick = {
+                        if (isLifecycleStateValid()) photoPickerLauncher.launch(input = "image/*")
+                    },
+                    onDirPickerClick = {
+                        if (isLifecycleStateValid()) dirPickerLauncher.launch(input = null)
+                    },
+                    onGifPickerClick = {
+                        if (isLifecycleStateValid()) gifPickerLauncher.launch(input = "image/gif")
+                    },
                 )
             },
             appearanceTab = {
