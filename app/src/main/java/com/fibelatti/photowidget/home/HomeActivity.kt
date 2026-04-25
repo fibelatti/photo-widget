@@ -73,12 +73,12 @@ class HomeActivity : AppCompatActivity() {
 
         preparedIntent = PhotoWidgetConfigureActivity.newWidgetIntent(
             context = this,
-            sharedPhotos = when {
-                intent.action == Intent.ACTION_SEND -> {
+            sharedPhotos = when (intent.action) {
+                Intent.ACTION_SEND -> {
                     (intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let(::listOf)
                 }
 
-                intent.action == Intent.ACTION_SEND_MULTIPLE -> {
+                Intent.ACTION_SEND_MULTIPLE -> {
                     intent.getParcelableArrayListExtra<Parcelable>(Intent.EXTRA_STREAM)?.mapNotNull { it as? Uri }
                 }
 
