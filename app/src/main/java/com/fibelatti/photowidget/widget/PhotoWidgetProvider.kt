@@ -25,6 +25,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.tapActionDisableTap
 import com.fibelatti.photowidget.model.textToBitmap
+import com.fibelatti.photowidget.platform.ExceptionReporter
 import com.fibelatti.photowidget.platform.KeepAliveService
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import kotlin.math.abs
@@ -144,6 +145,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val photoWidgetStorage: PhotoWidgetStorage = entryPoint.photoWidgetStorage()
             val pinningCache: PhotoWidgetPinningCache = entryPoint.photoWidgetPinningCache()
             val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
+            val exceptionReporter: ExceptionReporter = entryPoint.exceptionReporter()
 
             val currentJob: Job? = updateJobMap[appWidgetId]
             Timber.d("Current update job (isActive=${currentJob?.isActive})")
@@ -185,7 +187,13 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     if (!recoveryMode) {
                         update(context = context, appWidgetId = appWidgetId, recoveryMode = true)
                     } else {
-                        throw RuntimeException("Unable to update widget using recovery mode", ex)
+                        exceptionReporter.collectReport(ex)
+                        val views: RemoteViews = setErrorState(
+                            remoteViews = RemoteViews(context.packageName, R.layout.photo_widget),
+                            context = context,
+                            appWidgetId = appWidgetId,
+                        )
+                        appWidgetManager.updateAppWidget(appWidgetId, views)
                     }
                 }
             }
