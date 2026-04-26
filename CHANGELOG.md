@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.41.1] - 2026-04-26
+[v1.41.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.41.1
+
 ### Fixed
 
 * Fix "view previous" not working as expected when shuffle is enabled
