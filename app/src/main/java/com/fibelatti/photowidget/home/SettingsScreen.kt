@@ -226,6 +226,24 @@ private fun SettingsScreen(
             Spacer(modifier = Modifier.height(30.dp))
 
             SettingsAction(
+                icon = R.drawable.ic_backup,
+                label = R.string.photo_widget_home_backup,
+                onClick = onBackupClick,
+                shape = MaterialTheme.shapes.medium,
+            )
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            SettingsAction(
+                icon = R.drawable.ic_privacy_policy,
+                label = R.string.photo_widget_home_privacy_policy,
+                onClick = onPrivacyPolicyClick,
+                shape = MaterialTheme.shapes.medium,
+            )
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            SettingsAction(
                 icon = R.drawable.ic_appearance,
                 label = R.string.photo_widget_home_appearance,
                 onClick = onAppearanceClick,
@@ -250,15 +268,6 @@ private fun SettingsScreen(
             Spacer(modifier = Modifier.height(30.dp))
 
             SettingsAction(
-                icon = R.drawable.ic_backup,
-                label = R.string.photo_widget_home_backup,
-                onClick = onBackupClick,
-                shape = MaterialTheme.shapes.medium,
-            )
-
-            Spacer(modifier = Modifier.height(30.dp))
-
-            SettingsAction(
                 icon = R.drawable.ic_question,
                 label = R.string.photo_widget_home_help,
                 onClick = onSendFeedbackClick,
@@ -276,15 +285,6 @@ private fun SettingsScreen(
                 label = R.string.photo_widget_home_share,
                 onClick = onShareClick,
                 shape = Shapes.BottomShape,
-            )
-
-            Spacer(modifier = Modifier.height(30.dp))
-
-            SettingsAction(
-                icon = R.drawable.ic_privacy_policy,
-                label = R.string.photo_widget_home_privacy_policy,
-                onClick = onPrivacyPolicyClick,
-                shape = MaterialTheme.shapes.medium,
             )
         }
 
