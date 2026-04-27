@@ -74,6 +74,7 @@ import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -119,8 +120,8 @@ fun PhotoWidgetConfigureScreen(
         val currentMessage: PhotoWidgetConfigureState.Message? = state.messages.firstOrNull()
         if (currentMessage is PhotoWidgetConfigureState.Message.LaunchCrop) {
             val key = PhotoWidgetConfigureNav.PhotoCrop(
-                sourceUri = currentMessage.source,
-                destinationUri = currentMessage.destination,
+                sourceUri = currentMessage.source.toString(),
+                destinationUri = currentMessage.destination.toString(),
                 aspectRatio = currentMessage.aspectRatio,
             )
 
@@ -164,8 +165,8 @@ fun PhotoWidgetConfigureScreen(
 
             entry<PhotoWidgetConfigureNav.PhotoCrop> { key: PhotoWidgetConfigureNav.PhotoCrop ->
                 PhotoCropScreen(
-                    sourceUri = key.sourceUri,
-                    destinationUri = key.destinationUri,
+                    sourceUri = key.sourceUri.toUri(),
+                    destinationUri = key.destinationUri.toUri(),
                     cropImageOptions = CropImageOptions(
                         guidelines = CropImageView.Guidelines.ON_TOUCH,
                         showProgressBar = false,
@@ -176,7 +177,7 @@ fun PhotoWidgetConfigureScreen(
                     ),
                     onBackClick = configureBackStack::popNavKey,
                     onCropComplete = { cropResult ->
-                        val destinationPath: String? = key.destinationUri.path
+                        val destinationPath: String? = key.destinationUri.toUri().path
                         if (cropResult.isSuccessful && cropResult.uriContent != null && destinationPath != null) {
                             viewModel.photoCropped(destinationPath)
                         } else {

@@ -1,9 +1,7 @@
 package com.fibelatti.photowidget.configure
 
-import android.net.Uri
 import androidx.navigation3.runtime.NavKey
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 sealed interface PhotoWidgetConfigureNav : NavKey {
@@ -16,8 +14,8 @@ sealed interface PhotoWidgetConfigureNav : NavKey {
 
     @Serializable
     data class PhotoCrop(
-        @Contextual val sourceUri: Uri,
-        @Contextual val destinationUri: Uri,
+        val sourceUri: String,
+        val destinationUri: String,
         val aspectRatio: PhotoWidgetAspectRatio,
     ) : PhotoWidgetConfigureNav
 }
