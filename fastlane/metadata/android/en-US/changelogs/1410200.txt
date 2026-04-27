@@ -1,0 +1,9 @@
+This version brings the following updates:
+
+* Fix "view previous" not working as expected when shuffle is enabled
+* Fix draft widgets not showing in "My Widgets"
+* Fix a crash when opening the photo picker in some scenarios
+* Fix a crash when the system tries to update a widget in some scenarios
+* Fix a crash from 1.41.1 that could happen when launching the photo crop tool
+
+Thanks for using the app!

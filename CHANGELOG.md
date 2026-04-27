@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.41.2] - 2026-04-27
+[v1.41.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.41.2
+
+### Fixed
+
+* Fix a crash that could happen when launching the photo crop tool
+
+### Changed
+
+* Reorder the settings menu, surfacing the backup and privacy policy items
+
 ## [v1.41.1] - 2026-04-26
 [v1.41.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.41.1
 
