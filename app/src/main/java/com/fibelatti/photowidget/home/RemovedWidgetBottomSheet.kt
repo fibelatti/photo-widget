@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
-import com.fibelatti.photowidget.ui.WarningSign
+import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
 import com.fibelatti.ui.foundation.data
@@ -62,7 +62,7 @@ fun RemovedWidgetBottomSheet(
         },
         modifier = modifier,
         footer = {
-            WarningSign(
+            InformationalPanel(
                 text = stringResource(id = R.string.photo_widget_home_removed_widgets_hint),
                 modifier = Modifier
                     .fillMaxWidth()

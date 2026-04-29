@@ -101,9 +101,9 @@ import com.fibelatti.photowidget.platform.getInstalledApp
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.photowidget.ui.DefaultSheetContent
+import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.RadioGroup
 import com.fibelatti.photowidget.ui.Toggle
-import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.photowidget.ui.rememberSampleBitmap
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
@@ -808,7 +808,7 @@ private fun ViewFullScreenCustomizationContent(
             onCheckedChange = { onValueChange(value.copy(keepCurrentPhoto = it)) },
         )
 
-        WarningSign(
+        InformationalPanel(
             text = stringResource(id = R.string.photo_widget_configure_tap_action_shared_preferences),
             modifier = Modifier.padding(top = 8.dp),
         )
@@ -846,7 +846,7 @@ private fun ViewInGalleryCustomizationContent(
             onChooseAppClick = onChooseGalleryAppClick,
         )
 
-        WarningSign(
+        InformationalPanel(
             text = stringResource(id = R.string.photo_widget_configure_tap_action_shared_selected_app),
         )
     }
@@ -874,7 +874,7 @@ private fun ToggleCyclingCustomizationContent(
             onCheckedChange = { onValueChange(value.copy(disableTap = it)) },
         )
 
-        WarningSign(
+        InformationalPanel(
             text = stringResource(id = R.string.photo_widget_configure_tap_action_shared_preferences),
         )
     }

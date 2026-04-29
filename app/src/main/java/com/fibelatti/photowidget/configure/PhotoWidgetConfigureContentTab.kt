@@ -59,8 +59,8 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.canSort
+import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.ShapedPhoto
-import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.foundation.rememberAppSheetState
@@ -411,7 +411,7 @@ private fun PhotoPicker(
         }
 
         if (source == PhotoWidgetSource.GIF) {
-            WarningSign(
+            InformationalPanel(
                 text = stringResource(R.string.warning_gif_widget_battery_usage),
                 modifier = Modifier
                     .fillMaxWidth()

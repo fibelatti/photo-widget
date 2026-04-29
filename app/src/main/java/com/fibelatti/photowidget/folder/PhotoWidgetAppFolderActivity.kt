@@ -50,7 +50,7 @@ import com.fibelatti.photowidget.platform.getInstalledApp
 import com.fibelatti.photowidget.platform.getLaunchIntent
 import com.fibelatti.photowidget.platform.intentExtras
 import com.fibelatti.photowidget.platform.setIdentifierCompat
-import com.fibelatti.photowidget.ui.WarningSign
+import com.fibelatti.photowidget.ui.InformationalPanel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -131,12 +131,12 @@ private fun ScreenContent(
         contentAlignment = Alignment.Center,
     ) {
         if (apps.isEmpty()) {
-            WarningSign(
+            InformationalPanel(
                 text = stringResource(R.string.photo_widget_app_folder_empty),
                 textStyle = MaterialTheme.typography.bodyLarge,
-                showDismissButton = true,
-                dismissButtonText = stringResource(R.string.photo_widget_action_continue),
-                onDismissClick = onEditWidgetClick,
+                showActionButton = true,
+                actionButtonText = stringResource(R.string.photo_widget_action_continue),
+                onActionButtonClick = onEditWidgetClick,
             )
         } else {
             val backgroundColor = Color(

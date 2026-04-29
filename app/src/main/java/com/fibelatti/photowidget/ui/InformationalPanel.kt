@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -20,20 +22,21 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 
 @Composable
-fun WarningSign(
+fun InformationalPanel(
     text: String,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.bodySmall,
-    showDismissButton: Boolean = false,
-    dismissButtonText: String = stringResource(R.string.photo_widget_action_got_it),
-    onDismissClick: () -> Unit = {},
+    icon: Painter = painterResource(R.drawable.ic_warning),
+    backgroundShape: Shape = MaterialTheme.shapes.medium,
+    backgroundColor: Color = Color(0xFFFFE57F),
+    contentColor: Color = Color.Black,
+    showActionButton: Boolean = false,
+    actionButtonText: String = stringResource(R.string.photo_widget_action_got_it),
+    onActionButtonClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
-            .background(
-                color = Color(0xFFFFE57F),
-                shape = MaterialTheme.shapes.medium,
-            )
+            .background(color = backgroundColor, shape = backgroundShape)
             .padding(all = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -42,24 +45,24 @@ fun WarningSign(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_warning),
+                painter = icon,
                 contentDescription = null,
-                tint = Color.Black,
+                tint = contentColor,
             )
 
             Text(
                 text = text,
-                color = Color.Black,
+                color = contentColor,
                 style = textStyle,
             )
         }
 
-        if (showDismissButton) {
+        if (showActionButton) {
             TextButton(
-                onClick = onDismissClick,
+                onClick = onActionButtonClick,
                 modifier = Modifier.align(Alignment.End),
             ) {
-                Text(text = dismissButtonText, color = Color.Black)
+                Text(text = actionButtonText, color = contentColor)
             }
         }
     }

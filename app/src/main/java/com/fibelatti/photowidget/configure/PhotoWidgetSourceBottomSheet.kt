@@ -36,8 +36,8 @@ import androidx.core.net.toUri
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.ui.DefaultSheetContent
+import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.RadioGroup
-import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.Shapes
@@ -167,7 +167,7 @@ private fun SourcePickerContent(
             }
         }
 
-        WarningSign(
+        InformationalPanel(
             text = stringResource(id = R.string.photo_widget_configure_source_warning),
             modifier = Modifier
                 .fillMaxWidth()

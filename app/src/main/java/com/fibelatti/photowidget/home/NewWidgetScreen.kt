@@ -54,8 +54,8 @@ import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.rawAspectRatio
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.ui.ColoredShape
+import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.ShapesBanner
-import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.PreviewAll
@@ -134,7 +134,7 @@ fun NewWidgetScreen(
             }
 
             if (localInspectionMode || (showBackgroundRestrictionHint && localContext.isBackgroundRestricted())) {
-                WarningSign(
+                InformationalPanel(
                     text = stringResource(R.string.restriction_warning_hint),
                     modifier = Modifier
                         .widthIn(max = 300.dp)
@@ -142,8 +142,8 @@ fun NewWidgetScreen(
                             onClick = onBackgroundRestrictionClick,
                             role = Role.Button,
                         ),
-                    showDismissButton = true,
-                    onDismissClick = onDismissWarningClick,
+                    showActionButton = true,
+                    onActionButtonClick = onDismissWarningClick,
                 )
             }
         }

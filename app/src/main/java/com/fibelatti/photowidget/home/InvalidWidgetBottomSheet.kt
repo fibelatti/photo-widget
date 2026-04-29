@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
-import com.fibelatti.photowidget.ui.WarningSign
+import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
 import com.fibelatti.ui.foundation.data
@@ -50,7 +50,7 @@ fun InvalidWidgetBottomSheet(
         },
         modifier = modifier,
         footer = {
-            WarningSign(
+            InformationalPanel(
                 text = stringResource(R.string.photo_widget_home_invalid_widgets_hint),
                 modifier = Modifier
                     .fillMaxWidth()

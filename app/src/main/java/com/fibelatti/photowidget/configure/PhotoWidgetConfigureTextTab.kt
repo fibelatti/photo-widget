@@ -48,10 +48,10 @@ import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.DefaultSheetFooterButtons
+import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.LocalSamplePhoto
 import com.fibelatti.photowidget.ui.NumberSpinner
 import com.fibelatti.photowidget.ui.RadioGroup
-import com.fibelatti.photowidget.ui.WarningSign
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
@@ -138,7 +138,7 @@ fun PhotoWidgetConfigureTextTab(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                WarningSign(
+                InformationalPanel(
                     text = stringResource(R.string.photo_widget_configure_text_caveat),
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )

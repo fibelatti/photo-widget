@@ -37,7 +37,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
-import com.fibelatti.photowidget.ui.WarningSign
+import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.preview.PreviewAll
@@ -98,7 +98,7 @@ private fun HelpScreen(
 
         if (localInspectionMode || localContext.isBackgroundRestricted()) {
             item {
-                WarningSign(
+                InformationalPanel(
                     text = stringResource(R.string.restriction_warning_hint),
                     modifier = Modifier
                         .padding(top = 8.dp)
