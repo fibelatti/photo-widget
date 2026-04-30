@@ -28,7 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +46,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.platform.AppTheme
+import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.disableWindowNavigationBarContrastEnforced
 import com.fibelatti.photowidget.platform.enableEdgeToEdgeTransparent
 import com.fibelatti.photowidget.ui.LoadingIndicator
@@ -127,7 +128,13 @@ private fun ScreenContent(
         }
 
         val lazyGridState = rememberLazyGridState()
-        val currentPhotos by rememberUpdatedState(photos.toMutableStateList())
+        val currentPhotos: SnapshotStateList<LocalPhoto> = remember { photos.toMutableStateList() }
+        RememberedEffect(photos) {
+            if (currentPhotos != photos) {
+                currentPhotos.clear()
+                currentPhotos.addAll(photos)
+            }
+        }
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(count = 5),

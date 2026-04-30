@@ -115,91 +115,15 @@ fun MyWidgetsScreen(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     items(items, key = { (id, _) -> id }) { (id, widget) ->
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .aspectRatio(1f)
-                                .clickable {
-                                    when {
-                                        widget.status == PhotoWidgetStatus.DRAFT -> {
-                                            onDraftWidgetClick(id)
-                                        }
-
-                                        widget.status.isWidgetRemoved -> {
-                                            onRemovedWidgetClick(id, widget.status)
-                                        }
-
-                                        widget.status == PhotoWidgetStatus.INVALID -> {
-                                            onInvalidWidgetClick(id)
-                                        }
-
-                                        else -> {
-                                            onCurrentWidgetClick(
-                                                /* appWidgetId = */ id,
-                                                /* canSync = */ widget.canSync,
-                                                /* canLock = */ widget.canLock,
-                                                /* isLocked = */ widget.status == PhotoWidgetStatus.LOCKED,
-                                            )
-                                        }
-                                    }
-                                },
-                            contentAlignment = Alignment.BottomCenter,
-                        ) {
-                            ShapedPhoto(
-                                photo = widget.currentPhoto,
-                                aspectRatio = widget.aspectRatio,
-                                shapeId = widget.shapeId,
-                                cornerRadius = widget.cornerRadius,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .letIf(widget.aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET) {
-                                        it.clip(enforcedShape)
-                                    },
-                                colors = widget.colors,
-                                border = widget.border,
-                                isLoading = widget.isLoading,
-                            )
-
-                            when {
-                                widget.status == PhotoWidgetStatus.DRAFT -> {
-                                    MyWidgetBadge(
-                                        text = stringResource(R.string.photo_widget_home_draft_label),
-                                        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
-                                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        modifier = Modifier.padding(bottom = 8.dp),
-                                    )
-                                }
-
-                                widget.status == PhotoWidgetStatus.LOCKED -> {
-                                    MyWidgetBadge(
-                                        text = stringResource(R.string.photo_widget_home_locked_label),
-                                        backgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                                        contentColor = MaterialTheme.colorScheme.onSurface,
-                                        modifier = Modifier.padding(bottom = 8.dp),
-                                    )
-                                }
-
-                                widget.status.isWidgetRemoved -> {
-                                    MyWidgetBadge(
-                                        text = stringResource(R.string.photo_widget_home_removed_label),
-                                        backgroundColor = MaterialTheme.colorScheme.errorContainer,
-                                        contentColor = MaterialTheme.colorScheme.onErrorContainer,
-                                        modifier = Modifier.padding(bottom = 8.dp),
-                                        icon = painterResource(R.drawable.ic_trash_clock)
-                                            .takeIf { widget.status == PhotoWidgetStatus.REMOVED },
-                                    )
-                                }
-
-                                widget.status == PhotoWidgetStatus.INVALID -> {
-                                    MyWidgetBadge(
-                                        text = stringResource(R.string.photo_widget_home_invalid_label),
-                                        backgroundColor = Color(0xFFFF8A65),
-                                        contentColor = MaterialTheme.colorScheme.onErrorContainer,
-                                        modifier = Modifier.padding(bottom = 8.dp),
-                                    )
-                                }
-                            }
-                        }
+                        WidgetGridItem(
+                            widget = widget,
+                            appWidgetId = id,
+                            onCurrentWidgetClick = onCurrentWidgetClick,
+                            onRemovedWidgetClick = onRemovedWidgetClick,
+                            onInvalidWidgetClick = onInvalidWidgetClick,
+                            onDraftWidgetClick = onDraftWidgetClick,
+                            enforcedShape = enforcedShape
+                        )
                     }
                 }
             } else {
@@ -254,6 +178,98 @@ fun MyWidgetsScreen(
                         maxLines = 1,
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun WidgetGridItem(
+    widget: PhotoWidget,
+    appWidgetId: Int,
+    onCurrentWidgetClick: (appWidgetId: Int, canSync: Boolean, canLock: Boolean, isLocked: Boolean) -> Unit,
+    onRemovedWidgetClick: (appWidgetId: Int, PhotoWidgetStatus) -> Unit,
+    onInvalidWidgetClick: (appWidgetId: Int) -> Unit,
+    onDraftWidgetClick: (appWidgetId: Int) -> Unit,
+    enforcedShape: Shape,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .aspectRatio(1f)
+            .clickable {
+                when {
+                    widget.status == PhotoWidgetStatus.DRAFT -> onDraftWidgetClick(appWidgetId)
+
+                    widget.status.isWidgetRemoved -> onRemovedWidgetClick(appWidgetId, widget.status)
+
+                    widget.status == PhotoWidgetStatus.INVALID -> onInvalidWidgetClick(appWidgetId)
+
+                    else -> {
+                        onCurrentWidgetClick(
+                            /* appWidgetId = */ appWidgetId,
+                            /* canSync = */ widget.canSync,
+                            /* canLock = */ widget.canLock,
+                            /* isLocked = */ widget.status == PhotoWidgetStatus.LOCKED,
+                        )
+                    }
+                }
+            },
+        contentAlignment = Alignment.BottomCenter,
+    ) {
+        ShapedPhoto(
+            photo = widget.currentPhoto,
+            aspectRatio = widget.aspectRatio,
+            shapeId = widget.shapeId,
+            cornerRadius = widget.cornerRadius,
+            modifier = Modifier
+                .fillMaxSize()
+                .letIf(widget.aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET) {
+                    it.clip(enforcedShape)
+                },
+            colors = widget.colors,
+            border = widget.border,
+            isLoading = widget.isLoading,
+        )
+
+        when {
+            widget.status == PhotoWidgetStatus.DRAFT -> {
+                MyWidgetBadge(
+                    text = stringResource(R.string.photo_widget_home_draft_label),
+                    backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
+            }
+
+            widget.status == PhotoWidgetStatus.LOCKED -> {
+                MyWidgetBadge(
+                    text = stringResource(R.string.photo_widget_home_locked_label),
+                    backgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
+            }
+
+            widget.status.isWidgetRemoved -> {
+                MyWidgetBadge(
+                    text = stringResource(R.string.photo_widget_home_removed_label),
+                    backgroundColor = MaterialTheme.colorScheme.errorContainer,
+                    contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    icon = painterResource(R.drawable.ic_trash_clock)
+                        .takeIf { widget.status == PhotoWidgetStatus.REMOVED },
+                )
+            }
+
+            widget.status == PhotoWidgetStatus.INVALID -> {
+                MyWidgetBadge(
+                    text = stringResource(R.string.photo_widget_home_invalid_label),
+                    backgroundColor = Color(0xFFFF8A65),
+                    contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
             }
         }
     }

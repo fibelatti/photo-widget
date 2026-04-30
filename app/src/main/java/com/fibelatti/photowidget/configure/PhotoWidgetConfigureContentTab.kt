@@ -36,9 +36,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,6 +59,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.canSort
+import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.ui.foundation.AppSheetState
@@ -218,7 +219,14 @@ private fun PhotoPicker(
     ) {
         val localHaptics = LocalHapticFeedback.current
 
-        val currentPhotos by rememberUpdatedState(photos.toMutableStateList())
+        val currentPhotos: SnapshotStateList<LocalPhoto> = remember { photos.toMutableStateList() }
+        RememberedEffect(photos) {
+            if (currentPhotos != photos) {
+                currentPhotos.clear()
+                currentPhotos.addAll(photos)
+            }
+        }
+
         val lazyGridState = rememberLazyGridState()
         val reorderableLazyGridState = rememberReorderableLazyGridState(lazyGridState) { from, to ->
             currentPhotos.apply {

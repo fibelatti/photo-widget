@@ -2,9 +2,11 @@ package com.fibelatti.photowidget.model
 
 import android.net.Uri
 import android.os.Parcelable
+import androidx.compose.runtime.Immutable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
+@Immutable
 data class LocalPhoto(
     val photoId: String,
     val croppedPhotoPath: String? = null,

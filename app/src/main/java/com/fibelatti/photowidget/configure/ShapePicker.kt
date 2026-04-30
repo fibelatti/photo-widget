@@ -48,7 +48,7 @@ fun ShapePicker(
             horizontalArrangement = Arrangement.spacedBy(spacing),
             verticalArrangement = Arrangement.spacedBy(spacing),
         ) {
-            items(PhotoWidgetShapeBuilder.shapes) { shape ->
+            items(PhotoWidgetShapeBuilder.shapes, key = { shape -> shape.id }) { shape ->
                 val color by animateColorAsState(
                     targetValue = if (shape.id == selectedShapeId || selectedShapeId == null) {
                         MaterialTheme.colorScheme.primary

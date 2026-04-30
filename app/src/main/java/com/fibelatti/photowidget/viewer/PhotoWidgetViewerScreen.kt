@@ -44,6 +44,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -57,7 +58,6 @@ import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.ui.foundation.DragState
 import com.fibelatti.ui.foundation.onHorizontalDrag
 import com.fibelatti.ui.foundation.onVerticalDrag
-import com.fibelatti.ui.foundation.pxToDp
 import com.fibelatti.ui.foundation.rememberDragState
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
@@ -225,10 +225,12 @@ fun PhotoWidgetViewerScreen(
                         },
                         enabled = showNextButton && zoomState.scale == 1f,
                     )
-                    .offset(
-                        x = horizontalDragState.currentOffsetPixel.pxToDp(),
-                        y = verticalDragState.currentOffsetPixel.pxToDp(),
-                    ),
+                    .offset {
+                        IntOffset(
+                            x = horizontalDragState.currentOffsetPixel.toInt(),
+                            y = verticalDragState.currentOffsetPixel.toInt(),
+                        )
+                    },
                 constraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED,
             )
         }
