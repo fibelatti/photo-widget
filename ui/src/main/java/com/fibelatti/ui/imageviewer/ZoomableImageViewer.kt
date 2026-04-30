@@ -3,9 +3,6 @@ package com.fibelatti.ui.imageviewer
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,11 +18,11 @@ import androidx.compose.ui.input.pointer.util.addPointerInputChange
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.Placeable
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Velocity
 import com.fibelatti.ui.foundation.detectZoom
-import com.fibelatti.ui.foundation.pxToDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -88,13 +85,17 @@ fun ZoomableImageViewer(
             },
         content = {
             Layout(
-                modifier = Modifier
-                    .offset(
-                        x = state.currentOffsetXPixel.pxToDp(),
-                        y = state.currentOffsetYPixel.pxToDp(),
-                    )
-                    .width(state.currentWidthPixel.pxToDp())
-                    .height(state.currentHeightPixel.pxToDp()),
+                modifier = Modifier.layout { measurable, constraints ->
+                    val widthPx = state.currentWidthPixel.toInt()
+                    val heightPx = state.currentHeightPixel.toInt()
+                    val placeable = measurable.measure(Constraints.fixed(widthPx, heightPx))
+                    layout(widthPx, heightPx) {
+                        placeable.placeRelative(
+                            x = state.currentOffsetXPixel.toInt(),
+                            y = state.currentOffsetYPixel.toInt(),
+                        )
+                    }
+                },
                 content = content,
             ) { measurables, constraints ->
                 if (measurables.size > 1) {
