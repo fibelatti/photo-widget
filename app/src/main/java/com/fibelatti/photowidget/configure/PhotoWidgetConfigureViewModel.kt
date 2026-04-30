@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.GifFrames
 import com.fibelatti.photowidget.model.LocalPhoto
@@ -149,7 +150,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 runCatching { restoreWidgetUseCase(originalWidget = backupWidget, newAppWidgetId = effectiveWidgetId) }
                     .onFailure {
                         Timber.e(it, "Failed to restore widget from backup.")
-                        _state += PhotoWidgetConfigureState.Message.MissingBackupData
+                        _state += PhotoWidgetConfigureState.Message.UserPrompt(
+                            textRes = R.string.backup_feedback_restore_error,
+                        )
                     }
                     .getOrNull()
             }
@@ -272,7 +275,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             }.awaitAll().filterNotNull()
 
             val message = if (newPhotos.size < source.size) {
-                PhotoWidgetConfigureState.Message.ImportFailed
+                PhotoWidgetConfigureState.Message.UserPrompt(
+                    textRes = R.string.photo_widget_configure_import_error,
+                )
             } else {
                 null
             }
@@ -314,7 +319,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             )
 
             val message = if (gifFrames.frames.isEmpty()) {
-                PhotoWidgetConfigureState.Message.ImportFailed
+                PhotoWidgetConfigureState.Message.UserPrompt(
+                    textRes = R.string.photo_widget_configure_import_error,
+                )
             } else {
                 null
             }
@@ -340,7 +347,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             )
             if (newDirPhotos == null) {
                 _state.update { current ->
-                    current.copy(isProcessing = false) + PhotoWidgetConfigureState.Message.TooManyPhotos
+                    current.copy(isProcessing = false) + PhotoWidgetConfigureState.Message.UserPrompt(
+                        textRes = R.string.photo_widget_configure_too_many_photos_error,
+                    )
                 }
 
                 return@launch
@@ -660,7 +669,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             }
 
             currentState.photoWidget.photos.isEmpty() -> {
-                _state += PhotoWidgetConfigureState.Message.MissingPhotos
+                _state += PhotoWidgetConfigureState.Message.UserPrompt(
+                    textRes = R.string.photo_widget_configure_missing_photos_error,
+                )
             }
 
             // The user started configuring from within the app, request to pin, but they might cancel

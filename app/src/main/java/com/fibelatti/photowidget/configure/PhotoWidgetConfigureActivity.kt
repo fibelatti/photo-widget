@@ -139,18 +139,10 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
     private fun handleMessage(message: PhotoWidgetConfigureState.Message) {
         when (message) {
-            is PhotoWidgetConfigureState.Message.ImportFailed -> {
+            is PhotoWidgetConfigureState.Message.UserPrompt -> {
                 showMaterialAlertDialog {
-                    setMessage(R.string.photo_widget_configure_import_error)
-                    setPositiveButton(R.string.photo_widget_action_continue) { _, _ -> }
-                    setOnDismissListener { viewModel.messageHandled(message = message) }
-                }
-            }
-
-            is PhotoWidgetConfigureState.Message.TooManyPhotos -> {
-                showMaterialAlertDialog {
-                    setMessage(R.string.photo_widget_configure_too_many_photos_error)
-                    setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+                    setMessage(message.textRes)
+                    setPositiveButton(message.buttonRes) { _, _ -> }
                     setOnDismissListener { viewModel.messageHandled(message = message) }
                 }
             }
@@ -167,22 +159,6 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             is PhotoWidgetConfigureState.Message.AddWidget -> {
                 addNewWidget(appWidgetId = message.appWidgetId)
                 viewModel.messageHandled(message = message)
-            }
-
-            is PhotoWidgetConfigureState.Message.MissingPhotos -> {
-                showMaterialAlertDialog {
-                    setMessage(R.string.photo_widget_configure_missing_photos_error)
-                    setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
-                    setOnDismissListener { viewModel.messageHandled(message = message) }
-                }
-            }
-
-            is PhotoWidgetConfigureState.Message.MissingBackupData -> {
-                showMaterialAlertDialog {
-                    setMessage(R.string.backup_feedback_restore_error)
-                    setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
-                    setOnDismissListener { viewModel.messageHandled(message = message) }
-                }
             }
 
             is PhotoWidgetConfigureState.Message.CancelWidget -> {

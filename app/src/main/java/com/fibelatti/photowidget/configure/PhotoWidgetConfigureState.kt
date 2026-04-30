@@ -1,6 +1,8 @@
 package com.fibelatti.photowidget.configure
 
 import android.net.Uri
+import androidx.annotation.StringRes
+import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -20,9 +22,10 @@ data class PhotoWidgetConfigureState(
 
     sealed class Message {
 
-        data object ImportFailed : Message()
-
-        data object TooManyPhotos : Message()
+        data class UserPrompt(
+            @StringRes val textRes: Int,
+            @StringRes val buttonRes: Int = R.string.photo_widget_action_got_it,
+        ) : Message()
 
         data class LaunchCrop(
             val source: Uri,
@@ -33,10 +36,6 @@ data class PhotoWidgetConfigureState(
         data object RequestPin : Message()
 
         data class AddWidget(val appWidgetId: Int) : Message()
-
-        data object MissingPhotos : Message()
-
-        data object MissingBackupData : Message()
 
         data object CancelWidget : Message()
 
