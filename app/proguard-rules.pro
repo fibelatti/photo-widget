@@ -16,7 +16,6 @@
 -keepattributes Signature, Exceptions, InnerClasses, EnclosingMethod, *Annotation*
 
 # Kotlin
--keep class kotlin.** { *; }
 -keep class kotlin.Metadata { *; }
 -keepclassmembers class kotlin.Metadata {
     public <methods>;
@@ -31,14 +30,7 @@
 -dontnote kotlin.reflect.jvm.internal.KClassImpl**
 -dontwarn kotlinx.atomicfu.AtomicBoolean
 
-# Coroutines
--keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
--keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
--keepclassmembernames class kotlinx.** {
-    volatile <fields>;
-}
--keepnames class kotlinx.coroutines.android.AndroidExceptionPreHandler {}
--keepnames class kotlinx.coroutines.android.AndroidDispatcherFactory {}
+# Coroutines (remaining rules are shipped in coroutines consumer rules)
 -dontwarn kotlinx.coroutines.flow.**inlined**
 
 # Material
