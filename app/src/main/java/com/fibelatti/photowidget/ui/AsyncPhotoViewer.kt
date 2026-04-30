@@ -62,7 +62,15 @@ fun AsyncPhotoViewer(
         val localContext: Context = LocalContext.current
         val localResources: Resources = LocalResources.current
 
-        var photoBitmap: Bitmap? by remember { mutableStateOf(null) }
+        var photoBitmap: Bitmap? by remember {
+            mutableStateOf(
+                if (localInspectionMode) {
+                    BitmapFactory.decodeResource(localResources, R.drawable.widget_preview)
+                } else {
+                    null
+                },
+            )
+        }
         val bitmapTransformer: (Bitmap) -> Bitmap by rememberUpdatedState(transformer)
         val transformedBitmap: ImageBitmap? by remember(*dataKey) {
             derivedStateOf { photoBitmap?.let(bitmapTransformer)?.asImageBitmap() }
@@ -96,9 +104,7 @@ fun AsyncPhotoViewer(
 
         LaunchedEffect(data, maxDimension, isLoading) {
             when {
-                localInspectionMode -> {
-                    photoBitmap = BitmapFactory.decodeResource(localResources, R.drawable.widget_preview)
-                }
+                localInspectionMode -> return@LaunchedEffect
 
                 data != null -> {
                     photoBitmap = decoder.decode(data = data, maxDimension = maxDimension)
