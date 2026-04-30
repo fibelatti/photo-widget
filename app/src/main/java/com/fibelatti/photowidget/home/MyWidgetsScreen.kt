@@ -122,7 +122,8 @@ fun MyWidgetsScreen(
                             onRemovedWidgetClick = onRemovedWidgetClick,
                             onInvalidWidgetClick = onInvalidWidgetClick,
                             onDraftWidgetClick = onDraftWidgetClick,
-                            enforcedShape = enforcedShape
+                            enforcedShape = enforcedShape,
+                            modifier = Modifier.animateItem(),
                         )
                     }
                 }

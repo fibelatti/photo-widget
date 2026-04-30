@@ -83,7 +83,7 @@ private fun HelpScreen(
             )
         }
 
-        items(HelpArticle.allArticles()) { article ->
+        items(HelpArticle.allArticles(), key = { article -> article.title }) { article ->
             HelpCard(
                 cardTitle = stringResource(id = article.title),
                 cardText = stringResource(id = article.body),

@@ -27,6 +27,7 @@ fun <T> SelectionDialogBottomSheet(
     optionName: (T) -> String,
     onOptionSelect: (T) -> Unit,
     modifier: Modifier = Modifier,
+    optionKey: ((T) -> Any)? = null,
     optionIcon: (T) -> Int? = { null },
     header: @Composable () -> Unit = {},
     footer: @Composable () -> Unit = {},
@@ -37,6 +38,7 @@ fun <T> SelectionDialogBottomSheet(
     ) {
         SelectionDialogContent(
             options = options,
+            optionKey = optionKey,
             optionName = optionName,
             optionIcon = optionIcon,
             onOptionSelect = { option ->
@@ -57,6 +59,7 @@ fun <T> SelectionDialogBottomSheet(
     optionName: (T) -> String,
     onOptionSelect: (T) -> Unit,
     modifier: Modifier = Modifier,
+    optionKey: ((T) -> Any)? = null,
     optionIcon: (T) -> Int? = { null },
     footer: @Composable () -> Unit = {},
 ) {
@@ -66,6 +69,7 @@ fun <T> SelectionDialogBottomSheet(
     ) {
         SelectionDialogContent(
             options = options,
+            optionKey = optionKey,
             optionName = optionName,
             optionIcon = optionIcon,
             onOptionSelect = { option ->
@@ -90,6 +94,7 @@ fun <T> SelectionDialogBottomSheet(
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private fun <T> SelectionDialogContent(
     options: List<T>,
+    optionKey: ((T) -> Any)?,
     optionName: (T) -> String,
     optionIcon: (T) -> Int?,
     onOptionSelect: (T) -> Unit,
@@ -107,7 +112,7 @@ private fun <T> SelectionDialogContent(
             header()
         }
 
-        items(options) { option ->
+        items(options, key = optionKey) { option ->
             FilledTonalButton(
                 onClick = { onOptionSelect(option) },
                 shapes = ButtonDefaults.shapes(),

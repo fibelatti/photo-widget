@@ -314,7 +314,7 @@ private fun PhotoWidgetBackupContent(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(widgets) { widget ->
+            items(widgets, key = { widget -> widget.photos.firstOrNull()?.photoId ?: widget.hashCode() }) { widget ->
                 RestoredWidgetItem(
                     photoWidget = widget,
                     onRestoreClick = { onRestoreClick(widget) },

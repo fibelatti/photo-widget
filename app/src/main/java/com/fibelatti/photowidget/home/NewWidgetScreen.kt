@@ -167,7 +167,7 @@ fun AspectRatioPicker(
         ) {
             itemsIndexed(
                 items = PhotoWidgetAspectRatio.entries,
-                key = { _, item -> item.hashCode() },
+                key = { _, item -> item.name },
             ) { index, item ->
                 AspectRatioItem(
                     item = item,
