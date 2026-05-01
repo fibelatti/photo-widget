@@ -13,10 +13,13 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
+import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.PhotoWidgetText
+import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.coerceTapActions
+import com.fibelatti.photowidget.model.orderedPhotosForDisplay
 import com.fibelatti.photowidget.platform.savedState
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.DuplicatePhotoWidgetUseCase
@@ -27,6 +30,7 @@ import com.fibelatti.photowidget.widget.SanitizeTapActionsUseCase
 import com.fibelatti.photowidget.widget.SavePhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -112,16 +116,35 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     .onCompletion { throwable ->
                         if (throwable != null) return@onCompletion
 
-                        val sanitized: PhotoWidget = sanitizeTapActionsUseCase(
+                        val sanitizedCycleMode: PhotoWidget = sanitizeCycleMode()
+                        val sanitizedTapActions: PhotoWidget = sanitizeTapActionsUseCase(
                             appWidgetId = effectiveWidgetId,
-                            photoWidget = state.value.photoWidget,
+                            photoWidget = sanitizedCycleMode,
                         )
-                        updateState(photoWidget = sanitized, hasEdits = false)
+                        updateState(photoWidget = sanitizedTapActions, hasEdits = false)
 
                         trackEdits()
                     }
                     .launchIn(viewModelScope)
             }
+        }
+    }
+
+    private fun sanitizeCycleMode(): PhotoWidget {
+        val current: PhotoWidget = state.value.photoWidget
+        val needsChecking = current.cycleMode is PhotoWidgetCycleMode.AdvancedSchedule &&
+            current.photos.size > PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS
+
+        return if (needsChecking) {
+            _state += PhotoWidgetConfigureState.Message.AdvancedScheduleCoerced
+
+            current.copy(
+                cycleMode = PhotoWidgetCycleMode.Interval(
+                    loopingInterval = PhotoWidgetLoopingInterval(repeatInterval = 15, timeUnit = TimeUnit.MINUTES),
+                ),
+            )
+        } else {
+            current
         }
     }
 
@@ -263,6 +286,18 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         viewModelScope.launch {
             state.first { !it.isProcessing }
 
+            val currentState: PhotoWidgetConfigureState = _state.value
+            if (currentState.photoWidget.cycleMode is PhotoWidgetCycleMode.AdvancedSchedule) {
+                val totalSize: Int = currentState.photoWidget.photos.size + source.size
+                if (totalSize > PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS) {
+                    _state += PhotoWidgetConfigureState.Message.UserPrompt(
+                        textRes = R.string.photo_widget_configure_too_many_photos_for_advanced_schedule_error,
+                        textFormatArgs = arrayOf(PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS),
+                    )
+                    return@launch
+                }
+            }
+
             _state.update { current -> current.copy(isProcessing = true) }
 
             val newPhotos = source.map { uri ->
@@ -353,6 +388,18 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 }
 
                 return@launch
+            }
+
+            val currentState: PhotoWidgetConfigureState = _state.value
+            if (currentState.photoWidget.cycleMode is PhotoWidgetCycleMode.AdvancedSchedule) {
+                val totalSize: Int = currentState.photoWidget.photos.size + newDirPhotos.size
+                if (totalSize > PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS) {
+                    _state += PhotoWidgetConfigureState.Message.UserPrompt(
+                        textRes = R.string.photo_widget_configure_too_many_photos_for_advanced_schedule_error,
+                        textFormatArgs = arrayOf(PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS),
+                    )
+                    return@launch
+                }
             }
 
             val updatedState = _state.getAndUpdate { current ->
@@ -461,6 +508,17 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             val newIndex = current.photoWidget.photos.indexOfFirst { it.photoId == photo.photoId }
                 .coerceAtMost(updatedPhotos.size - 1)
 
+            val updatedCycleMode = if (current.photoWidget.cycleMode is PhotoWidgetCycleMode.AdvancedSchedule) {
+                current.photoWidget.cycleMode.copy(
+                    schedule = current.photoWidget.cycleMode.schedule
+                        .toMutableMap()
+                        .apply { remove(photo.photoId) }
+                        .toMap(),
+                )
+            } else {
+                current.photoWidget.cycleMode
+            }
+
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     photos = updatedPhotos,
@@ -472,6 +530,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     removedPhotos = current.photoWidget.removedPhotos.let { removedPhotos ->
                         if (removedPhoto != null) removedPhotos + removedPhoto else removedPhotos
                     },
+                    cycleMode = updatedCycleMode,
                 ),
                 selectedPhoto = if (current.selectedPhoto?.photoId == photo.photoId) {
                     updatedPhotos.getOrNull(newIndex)
@@ -537,6 +596,71 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     fun cycleModeSelected(cycleMode: PhotoWidgetCycleMode) {
         _state.update { current ->
             current.copy(photoWidget = current.photoWidget.copy(cycleMode = cycleMode))
+        }
+    }
+
+    fun setPhotoScheduledTime(photoId: String, time: Time) {
+        var didError = false
+
+        updateAdvancedSchedule {
+            if (time in values) {
+                didError = true
+                return@updateAdvancedSchedule
+            }
+
+            put(photoId, time)
+        }
+
+        if (didError) {
+            _state.update { current ->
+                current + PhotoWidgetConfigureState.Message.UserPrompt(
+                    textRes = R.string.photo_widget_configure_cycle_mode_advanced_schedule_existing_time,
+                )
+            }
+        }
+    }
+
+    fun clearPhotoScheduledTime(photoId: String) {
+        updateAdvancedSchedule {
+            remove(photoId)
+        }
+    }
+
+    fun applyEvenSplitSchedule() {
+        _state.update { current ->
+            if (current.photoWidget.cycleMode !is PhotoWidgetCycleMode.AdvancedSchedule) return
+
+            val photos: List<LocalPhoto> = current.photoWidget.orderedPhotosForDisplay().ifEmpty { return }
+            val n: Int = photos.size
+            val updatedSchedule = HashMap<String, Time>(n)
+
+            for (i in 0 until n) {
+                val totalMinutes = i * 24 * 60 / n
+                updatedSchedule[photos[i].photoId] = Time(hour = totalMinutes / 60, minute = totalMinutes % 60)
+            }
+
+            current.copy(
+                photoWidget = current.photoWidget.copy(
+                    cycleMode = current.photoWidget.cycleMode.copy(schedule = updatedSchedule),
+                ),
+            )
+        }
+    }
+
+    private inline fun updateAdvancedSchedule(crossinline block: MutableMap<String, Time>.() -> Unit) {
+        _state.update { current ->
+            if (current.photoWidget.cycleMode !is PhotoWidgetCycleMode.AdvancedSchedule) return
+
+            val cycleMode: PhotoWidgetCycleMode.AdvancedSchedule = current.photoWidget.cycleMode
+            val updatedSchedule: Map<String, Time> = cycleMode.schedule.toMutableMap()
+                .apply(block)
+                .toMap()
+
+            current.copy(
+                photoWidget = current.photoWidget.copy(
+                    cycleMode = cycleMode.copy(schedule = updatedSchedule),
+                ),
+            )
         }
     }
 

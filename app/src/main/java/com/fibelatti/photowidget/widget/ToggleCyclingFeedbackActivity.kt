@@ -57,7 +57,7 @@ class ToggleCyclingFeedbackActivity : AppCompatActivity() {
         }
     }
 
-    private fun togglePaused(appWidgetId: Int): Boolean? {
+    private suspend fun togglePaused(appWidgetId: Int): Boolean? {
         if (photoWidgetStorage.getWidgetLockedInApp(appWidgetId = appWidgetId)) return null
 
         val paused: Boolean = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = appWidgetId)

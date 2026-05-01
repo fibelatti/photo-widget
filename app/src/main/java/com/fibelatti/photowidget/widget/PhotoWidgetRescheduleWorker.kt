@@ -18,6 +18,7 @@ import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.time.Duration
+import kotlin.reflect.KClass
 import kotlinx.coroutines.CancellationException
 import timber.log.Timber
 
@@ -50,14 +51,18 @@ class PhotoWidgetRescheduleWorker @AssistedInject constructor(
         val ids: List<Int> = PhotoWidgetProvider.ids(applicationContext)
         for (id in ids) {
             try {
-                val cycleMode: PhotoWidgetCycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = id)
+                val cycleMode: KClass<out PhotoWidgetCycleMode> = photoWidgetStorage.getWidgetCycleModeType(
+                    appWidgetId = id,
+                )
                 val isLocked: Boolean = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = id)
                 val isPaused: Boolean = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = id)
 
                 Timber.d("Processing widget (id=$id,cycleMode=$cycleMode,isLocked=$isLocked,isPaused=$isPaused)")
 
-                if (cycleMode !is PhotoWidgetCycleMode.Disabled && !isLocked && !isPaused) {
+                if (cycleMode != PhotoWidgetCycleMode.Disabled::class && !isLocked && !isPaused) {
                     photoWidgetAlarmManager.setup(appWidgetId = id)
+                } else {
+                    Timber.d("Skipping alarm setup (cycleMode=$cycleMode)")
                 }
 
                 PhotoWidgetProvider.update(context = applicationContext, appWidgetId = id)

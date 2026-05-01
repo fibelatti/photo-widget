@@ -116,6 +116,26 @@ fun PhotoWidgetConfigureScreen(
     val state: PhotoWidgetConfigureState by viewModel.state.collectAsStateWithLifecycle()
     val configureBackStack: NavBackStack<NavKey> = rememberNavBackStack(PhotoWidgetConfigureNav.Home)
 
+    val localLifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
+    val isLifecycleStateValid: () -> Boolean by rememberUpdatedState {
+        localLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)
+    }
+
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetMultipleContents(),
+        onResult = viewModel::photoPicked,
+    )
+
+    val dirPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocumentTree(),
+        onResult = viewModel::dirPicked,
+    )
+
+    val gifPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = viewModel::gifPicked,
+    )
+
     RememberedEffect(state.messages) {
         val currentMessage: PhotoWidgetConfigureState.Message? = state.messages.firstOrNull()
         if (currentMessage is PhotoWidgetConfigureState.Message.LaunchCrop) {
@@ -148,6 +168,15 @@ fun PhotoWidgetConfigureScreen(
                     isUpdating = isUpdating,
                     onNav = configureBackStack::add,
                     onBack = onBack,
+                    onPickFromSourceClick = {
+                        if (isLifecycleStateValid()) {
+                            when (state.photoWidget.source) {
+                                PhotoWidgetSource.PHOTOS -> photoPickerLauncher.launch(input = "image/*")
+                                PhotoWidgetSource.DIRECTORY -> dirPickerLauncher.launch(input = null)
+                                PhotoWidgetSource.GIF -> gifPickerLauncher.launch(input = "image/gif")
+                            }
+                        }
+                    },
                 )
             }
 
@@ -199,6 +228,7 @@ private fun PhotoWidgetConfigureHomeScreen(
     isUpdating: Boolean,
     onNav: (PhotoWidgetConfigureNav) -> Unit,
     onBack: () -> Unit,
+    onPickFromSourceClick: () -> Unit,
 ) {
     val state: PhotoWidgetConfigureState by viewModel.state.collectAsStateWithLifecycle()
 
@@ -210,26 +240,6 @@ private fun PhotoWidgetConfigureHomeScreen(
         .verticalScroll(tabContentScrollState)
         .padding(vertical = 16.dp)
         .fadingEdges(scrollState = tabContentScrollState)
-
-    val photoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetMultipleContents(),
-        onResult = viewModel::photoPicked,
-    )
-
-    val dirPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.OpenDocumentTree(),
-        onResult = viewModel::dirPicked,
-    )
-
-    val gifPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = viewModel::gifPicked,
-    )
-
-    val localLifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-    val isLifecycleStateValid: () -> Boolean by rememberUpdatedState {
-        localLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)
-    }
 
     BackHandler(onBack = onBack)
 
@@ -246,15 +256,7 @@ private fun PhotoWidgetConfigureHomeScreen(
             contentTab = {
                 PhotoWidgetConfigureContentTab(
                     viewModel = viewModel,
-                    onPhotoPickerClick = {
-                        if (isLifecycleStateValid()) photoPickerLauncher.launch(input = "image/*")
-                    },
-                    onDirPickerClick = {
-                        if (isLifecycleStateValid()) dirPickerLauncher.launch(input = null)
-                    },
-                    onGifPickerClick = {
-                        if (isLifecycleStateValid()) gifPickerLauncher.launch(input = "image/gif")
-                    },
+                    onPickFromSourceClick = onPickFromSourceClick,
                 )
             },
             appearanceTab = {

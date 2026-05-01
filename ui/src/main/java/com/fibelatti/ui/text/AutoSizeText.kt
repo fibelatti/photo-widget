@@ -28,6 +28,7 @@ fun AutoSizeText(
     fontWeight: FontWeight? = null,
     fontFamily: FontFamily? = null,
     textAlign: TextAlign = TextAlign.Left,
+    lineHeight: TextUnit = TextUnit.Unspecified,
     overflow: TextOverflow = TextOverflow.Clip,
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
@@ -41,6 +42,7 @@ fun AutoSizeText(
         textAlign = textAlign,
         fontFamily = fontFamily,
         fontStyle = fontStyle,
+        lineHeight = lineHeight,
     )
     val autoSize: TextAutoSize = TextAutoSize.StepBased(
         minFontSize = minFontSize,

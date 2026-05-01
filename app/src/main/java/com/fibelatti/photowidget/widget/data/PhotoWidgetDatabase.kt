@@ -19,14 +19,16 @@ import kotlinx.coroutines.flow.Flow
         PendingDeletionWidgetPhotoDto::class,
         ExcludedWidgetPhotoDto::class,
         WidgetDirectoryDto::class,
+        AdvancedScheduleTimeDto::class,
     ],
-    version = 5,
+    version = 6,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 2, to = 3),
         AutoMigration(from = 3, to = 4),
         AutoMigration(from = 4, to = 5),
+        AutoMigration(from = 5, to = 6),
     ],
 )
 abstract class PhotoWidgetDatabase : RoomDatabase() {
@@ -42,6 +44,8 @@ abstract class PhotoWidgetDatabase : RoomDatabase() {
     abstract fun excludedWidgetPhotoDao(): ExcludedWidgetPhotoDao
 
     abstract fun widgetDirectoryDao(): WidgetDirectoryDao
+
+    abstract fun advancedScheduleTimeDao(): AdvancedScheduleTimeDao
 }
 
 @Entity(
@@ -287,4 +291,42 @@ interface WidgetDirectoryDao {
 
     @Query("delete from widget_directories where widgetId = :widgetId")
     suspend fun deleteByWidgetId(widgetId: Int)
+}
+
+@Entity(
+    tableName = "advanced_schedule_times",
+    primaryKeys = ["widgetId", "photoId"],
+)
+data class AdvancedScheduleTimeDto(
+    val widgetId: Int,
+    val photoId: String,
+    val time: String,
+)
+
+@Dao
+interface AdvancedScheduleTimeDao {
+
+    @Query("select * from advanced_schedule_times where widgetId = :widgetId")
+    suspend fun getTimes(widgetId: Int): List<AdvancedScheduleTimeDto>
+
+    @Upsert
+    suspend fun saveTimes(times: Collection<AdvancedScheduleTimeDto>)
+
+    @Query("delete from advanced_schedule_times where widgetId = :widgetId")
+    suspend fun deleteByWidgetId(widgetId: Int)
+
+    @Query("update advanced_schedule_times set widgetId = :newWidgetId where widgetId = :oldWidgetId")
+    suspend fun updateWidgetId(oldWidgetId: Int, newWidgetId: Int)
+
+    @Transaction
+    suspend fun replaceTimes(widgetId: Int, times: Collection<AdvancedScheduleTimeDto>) {
+        deleteByWidgetId(widgetId)
+        saveTimes(times)
+    }
+
+    @Transaction
+    suspend fun copyTimes(sourceWidgetId: Int, targetWidgetId: Int) {
+        val source = getTimes(sourceWidgetId)
+        saveTimes(source.map { it.copy(widgetId = targetWidgetId) })
+    }
 }

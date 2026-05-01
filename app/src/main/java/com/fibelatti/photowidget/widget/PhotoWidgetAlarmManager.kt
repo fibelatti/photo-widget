@@ -11,6 +11,7 @@ import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.platform.EntryPointBroadcastReceiver
+import com.fibelatti.photowidget.platform.intentExtras
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -31,7 +32,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
         get() = AlarmManagerCompat.canScheduleExactAlarms(alarmManager)
             .also { Timber.d("Schedule exact alarms permission granted: $it") }
 
-    fun setup(appWidgetId: Int) {
+    suspend fun setup(appWidgetId: Int) {
         Timber.i("Setting alarm for widget (appWidgetId=$appWidgetId)")
 
         if (photoWidgetStorage.getWidgetLockedInApp(appWidgetId = appWidgetId)) {
@@ -47,7 +48,14 @@ class PhotoWidgetAlarmManager @Inject constructor(
 
         when (cycleMode) {
             is PhotoWidgetCycleMode.Interval -> setupIntervalAlarm(cycleMode = cycleMode, appWidgetId = appWidgetId)
+
             is PhotoWidgetCycleMode.Schedule -> setupScheduleAlarm(cycleMode = cycleMode, appWidgetId = appWidgetId)
+
+            is PhotoWidgetCycleMode.AdvancedSchedule -> setupAdvancedScheduleAlarm(
+                cycleMode = cycleMode,
+                appWidgetId = appWidgetId,
+            )
+
             is PhotoWidgetCycleMode.Disabled -> return
         }
     }
@@ -150,28 +158,94 @@ class PhotoWidgetAlarmManager @Inject constructor(
             set(Calendar.MILLISECOND, 0)
         }
 
+        val pendingIntent: PendingIntent = ExactRepeatingAlarmReceiver.pendingIntent(
+            context = context,
+            appWidgetId = appWidgetId,
+        )
+
         if (canScheduleExactAlarms) {
             try {
                 alarmManager.setExactAndAllowWhileIdle(
                     /* type = */ AlarmManager.RTC_WAKEUP,
                     /* triggerAtMillis = */ calendar.timeInMillis,
-                    /* operation = */
-                    ExactRepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId),
+                    /* operation = */ pendingIntent,
                 )
             } catch (_: SecurityException) {
                 Timber.w("SecurityException: fallback to inexact alarm")
-                setAlarm(triggerAtMillis = calendar.timeInMillis, appWidgetId = appWidgetId)
+                setAlarm(triggerAtMillis = calendar.timeInMillis, pendingIntent = pendingIntent)
             }
         } else {
-            setAlarm(triggerAtMillis = calendar.timeInMillis, appWidgetId = appWidgetId)
+            setAlarm(triggerAtMillis = calendar.timeInMillis, pendingIntent = pendingIntent)
         }
     }
 
-    private fun setAlarm(triggerAtMillis: Long, appWidgetId: Int) {
+    private fun setupAdvancedScheduleAlarm(cycleMode: PhotoWidgetCycleMode.AdvancedSchedule, appWidgetId: Int) {
+        if (cycleMode.schedule.isEmpty()) {
+            Timber.w("No schedule defined for widget (appWidgetId=$appWidgetId). Skipping advanced schedule alarm.")
+            return
+        }
+
+        val calendar: Calendar = Calendar.getInstance(TimeZone.getDefault())
+        val currentHour: Int = calendar.get(Calendar.HOUR_OF_DAY)
+        val currentMinute: Int = calendar.get(Calendar.MINUTE)
+
+        val sortedEntries: List<Map.Entry<String, Time>> = cycleMode.schedule.entries.sortedWith(
+            compareBy({ it.value.hour }, { it.value.minute }),
+        )
+
+        var nextEntry: Map.Entry<String, Time>? = null
+        var advanceToNextDay = false
+
+        for (entry in sortedEntries) {
+            val (hour, minute) = entry.value
+            if (hour > currentHour || (hour == currentHour && minute > currentMinute)) {
+                nextEntry = entry
+                break
+            }
+        }
+
+        if (nextEntry == null) {
+            nextEntry = sortedEntries.first()
+            advanceToNextDay = true
+        }
+
+        calendar.apply {
+            if (advanceToNextDay) {
+                add(Calendar.DAY_OF_MONTH, 1)
+            }
+            set(Calendar.HOUR_OF_DAY, nextEntry.value.hour)
+            set(Calendar.MINUTE, nextEntry.value.minute)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+
+        val pendingIntent: PendingIntent = ExactRepeatingAlarmReceiver.pendingIntent(
+            context = context,
+            appWidgetId = appWidgetId,
+            nextPhotoId = nextEntry.key,
+        )
+
+        if (canScheduleExactAlarms) {
+            try {
+                alarmManager.setExactAndAllowWhileIdle(
+                    /* type = */ AlarmManager.RTC_WAKEUP,
+                    /* triggerAtMillis = */ calendar.timeInMillis,
+                    /* operation = */ pendingIntent,
+                )
+            } catch (_: SecurityException) {
+                Timber.w("SecurityException: fallback to inexact alarm")
+                setAlarm(triggerAtMillis = calendar.timeInMillis, pendingIntent = pendingIntent)
+            }
+        } else {
+            setAlarm(triggerAtMillis = calendar.timeInMillis, pendingIntent = pendingIntent)
+        }
+    }
+
+    private fun setAlarm(triggerAtMillis: Long, pendingIntent: PendingIntent) {
         alarmManager.setAndAllowWhileIdle(
             /* type = */ AlarmManager.RTC_WAKEUP,
             /* triggerAtMillis = */ triggerAtMillis,
-            /* operation = */ ExactRepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId),
+            /* operation = */ pendingIntent,
         )
     }
 }
@@ -181,22 +255,33 @@ class ExactRepeatingAlarmReceiver : EntryPointBroadcastReceiver() {
     override suspend fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
         Timber.i("Working... (appWidgetId=${intent.appWidgetId})")
 
+        val nextPhotoId: String? = intent.nextPhotoId
+
         entryPoint.run {
-            cyclePhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
-            photoWidgetStorage().saveWidgetNextCycleTime(appWidgetId = intent.appWidgetId, nextCycleTime = -1)
+            if (nextPhotoId != null) {
+                photoWidgetStorage().saveDisplayedPhoto(appWidgetId = intent.appWidgetId, photoId = nextPhotoId)
+                PhotoWidgetProvider.update(context = context, appWidgetId = intent.appWidgetId)
+            } else {
+                cyclePhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
+                photoWidgetStorage().saveWidgetNextCycleTime(appWidgetId = intent.appWidgetId, nextCycleTime = -1)
+            }
             photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
         }
     }
 
     companion object {
 
+        private var Intent.nextPhotoId: String? by intentExtras()
+
         fun pendingIntent(
             context: Context,
             appWidgetId: Int,
+            nextPhotoId: String? = null,
         ): PendingIntent {
             val intent = Intent(context, ExactRepeatingAlarmReceiver::class.java).apply {
                 setIdentifierCompat("$appWidgetId")
                 this.appWidgetId = appWidgetId
+                this.nextPhotoId = nextPhotoId
             }
             return PendingIntent.getBroadcast(
                 /* context = */ context,

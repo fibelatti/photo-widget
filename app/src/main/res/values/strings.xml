@@ -136,6 +136,7 @@
 
     <string name="photo_widget_configure_import_error">Unable to import all selected photos</string>
     <string name="photo_widget_configure_too_many_photos_error">Each synced folder can contain a maximum of 3000 photos. You can select more than one, and each subfolder is counted separately.\n\nYou cannot select your camera roll. Photos are processed one by one, and folders with many thousands result in severe performance issues in the widget editor, as well as on the home screen when switching photos.</string>
+    <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">Widgets using advanced schedule can have at most 96 photos.</string>
     <string name="photo_widget_configure_missing_photos_error">The widget must have at least one photo. Widgets can only be deleted directly from the home screen.</string>
 
     <string name="photo_widget_configure_menu_source">Source</string>
@@ -162,9 +163,17 @@
     <string name="photo_widget_configure_cycling_mode_schedule">Schedule</string>
     <string name="photo_widget_configure_cycling_mode_disabled">Disabled</string>
 
-    <string name="photo_widget_configure_cycling_mode_interval_description">The widget will automatically change to the next photo at the following interval:</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description">The widget will automatically change to the next photo every day at the following scheduled times:</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">The widget won\'t change photos automatically.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule">Advanced schedule</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_no_time_warning">Photos without a scheduled time will never be displayed, and times must be unique.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_even_split">Evenly split day</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">Set time</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced" tools:ignore="PluralsCandidate">This widget had more than %d photos, so its schedule fell back to a 15-minute timer.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Time is already assigned to a different photo.</string>
+
+    <string name="photo_widget_configure_cycling_mode_interval_description">Switch to the next photo at a regular interval</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Switch to the next photo at scheduled times (max. %d times)</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Set a time for each photo via the content tab (max. %d photos)</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Don\'t switch photos automatically</string>
 
     <string name="photo_widget_configure_interval_current_label">Every %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
@@ -188,7 +197,6 @@
     <string name="photo_widget_configure_interval_hours_label">Hours</string>
     <string name="photo_widget_configure_interval_days_label">Days</string>
 
-    <string name="photo_widget_configure_schedule_placeholder" tools:ignore="PluralsCandidate">Schedule up to %d times to switch your photos automatically.</string>
     <string name="photo_widget_configure_schedule_add_new">Add new</string>
     <string name="photo_widget_configure_schedule_limit_reached" tools:ignore="PluralsCandidate">Maximum of %d times reached</string>
     <plurals name="photo_widget_configure_schedule_times">

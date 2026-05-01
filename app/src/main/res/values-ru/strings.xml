@@ -115,6 +115,7 @@
     <string name="photo_widget_configure_import_dialog_description">Все фотографии и конфигурации будут скопированы в новый виджет</string>
     <string name="photo_widget_configure_import_error">Не удалось импортировать все выбранные фотографии</string>
     <string name="photo_widget_configure_too_many_photos_error">Каждая синхронизированная папка может содержать не более 3000 фотографий. Вы можете выбрать больше одной, и каждая подпапка считается отдельно.\n\nВы не можете выбрать свою камеру. Фотографии обрабатываются по одной, и папки с несколькими тысячами приводят к серьезным проблемам с производительностью в редакторе виджетов, а также на главном экране при переключении фотографий.</string>
+    <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">Виджеты с расширенным расписанием могут содержать не более 96 фотографий.</string>
     <string name="photo_widget_configure_missing_photos_error">Виджет должен содержать хотя бы одну фотографию. Виджеты можно удалять только прямо с главного экрана.</string>
     <string name="photo_widget_configure_menu_source">Источник</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Этот виджет еще не синхронизирован с какой-либо папкой.</string>
@@ -135,9 +136,16 @@
     <string name="photo_widget_configure_cycling_mode_interval">Интервал</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Расписание</string>
     <string name="photo_widget_configure_cycling_mode_disabled">Выключено</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">Виджет будет автоматически переключаться на следующее фото через указанный интервал:</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description">Виджет будет автоматически переключаться на следующее фото каждый день в указанные запланированные часы:</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Виджет не будет автоматически менять фотографии.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule">Расширенное расписание</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_no_time_warning">Фотографии без запланированного времени никогда не будут отображаться, а времена должны быть уникальными.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_even_split">Равномерно разделить день</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">Установить время</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">Этот виджет содержал более %d фотографий, поэтому его расписание переключилось на 15-минутный таймер.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Это время уже назначено другой фотографии.</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">Переключать на следующее фото через регулярные интервалы</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Переключать на следующее фото по расписанию (макс. %d раз)</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Назначить время каждой фотографии во вкладке содержимого (макс. %d фото)</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Не менять фотографии автоматически</string>
     <string name="photo_widget_configure_interval_current_label">Каждые %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d секунда</item>
@@ -167,7 +175,6 @@
     <string name="photo_widget_configure_interval_minutes_label">Минуты</string>
     <string name="photo_widget_configure_interval_hours_label">Часы</string>
     <string name="photo_widget_configure_interval_days_label">Дни</string>
-    <string name="photo_widget_configure_schedule_placeholder" tools:ignore="PluralsCandidate">Запланируйте до %d раз для автоматической смены фотографий.</string>
     <string name="photo_widget_configure_schedule_add_new">Добавить новое</string>
     <string name="photo_widget_configure_schedule_limit_reached" tools:ignore="PluralsCandidate">Достигнут максимум в %d раза</string>
     <plurals name="photo_widget_configure_schedule_times">

@@ -48,7 +48,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    private fun loadWidgetData(appWidgetId: Int): PhotoWidget = with(photoWidgetStorage) {
+    private suspend fun loadWidgetData(appWidgetId: Int): PhotoWidget = with(photoWidgetStorage) {
         val aspectRatio: PhotoWidgetAspectRatio = getWidgetAspectRatio(appWidgetId = appWidgetId)
         val cornerRadius: Int
         val border: PhotoWidgetBorder

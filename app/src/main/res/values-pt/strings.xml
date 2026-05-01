@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Widget Host -->
     <string name="photo_widget_host_description">Adicione fotos favoritas ou sincronize pastas. Defina ações. Escolha o formato ao personalizar e o tamanho após colocá-lo.</string>
     <string name="photo_widget_host_loading">Carregando widget…</string>
@@ -113,6 +113,7 @@
     <string name="photo_widget_configure_import_dialog_description">Todas as fotos e configurações serão copiadas para o novo widget</string>
     <string name="photo_widget_configure_import_error">Não foi possível importar todas as fotos escolhidas</string>
     <string name="photo_widget_configure_too_many_photos_error">Cada pasta sincronizada pode conter no máximo 3000 fotos. Você pode selecionar mais de uma e cada subpasta é contada separadamente.\n\nVocê não pode selecionar seu rolo da câmera. As fotos são processadas uma por uma e pastas com muitos milhares resultam em problemas graves de desempenho no editor de widgets, bem como na tela inicial ao alternar fotos.</string>
+    <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">Widgets com agendamento avançado podem ter no máximo 96 fotos.</string>
     <string name="photo_widget_configure_missing_photos_error">O widget deve ter pelo menos uma foto. Os widgets só podem ser excluídos diretamente da tela inicial.</string>
     <string name="photo_widget_configure_menu_source">Origem</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Este widget ainda não está sincronizado com nenhuma pasta.</string>
@@ -133,9 +134,16 @@
     <string name="photo_widget_configure_cycling_mode_interval">Intervalo</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Agendado</string>
     <string name="photo_widget_configure_cycling_mode_disabled">Desativado</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">O widget mudará automaticamente para a próxima foto no seguinte intervalo:</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description">O widget mudará automaticamente para a próxima foto todos os dias nos seguintes horários programados:</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">O widget não mudará as fotos automaticamente.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule">Agendamento avançado</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_no_time_warning">Fotos sem horário agendado nunca serão exibidas e os horários devem ser únicos.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_even_split">Dividir o dia uniformemente</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">Definir horário</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">Este widget tinha mais de %d fotos, então o agendamento foi alterado para um timer de 15 minutos.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Este horário já está atribuído a outra foto.</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">Mudar para a próxima foto em intervalos regulares</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Mudar para a próxima foto em horários agendados (máx. %d horários)</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Definir um horário para cada foto pela aba de conteúdo (máx. %d fotos)</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Não mudar as fotos automaticamente</string>
     <string name="photo_widget_configure_interval_current_label">A cada %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d segundo</item>
@@ -157,7 +165,6 @@
     <string name="photo_widget_configure_interval_minutes_label">Minutos</string>
     <string name="photo_widget_configure_interval_hours_label">Horas</string>
     <string name="photo_widget_configure_interval_days_label">Dias</string>
-    <string name="photo_widget_configure_schedule_placeholder">Agende até %d horários para alternar as fotos automaticamente.</string>
     <string name="photo_widget_configure_schedule_add_new">Agendar novo</string>
     <string name="photo_widget_configure_schedule_limit_reached">Máximo de %d horários agendados</string>
     <plurals name="photo_widget_configure_schedule_times">

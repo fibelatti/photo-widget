@@ -106,6 +106,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 is PhotoWidgetCycleMode.Interval -> {
                     remove("${PreferencePrefix.SCHEDULE}$appWidgetId")
                     remove("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId")
+                    remove("${PreferencePrefix.ADVANCED_SCHEDULE_ENABLED}$appWidgetId")
 
                     putLong(
                         "${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId",
@@ -116,6 +117,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 is PhotoWidgetCycleMode.Schedule -> {
                     remove("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId")
                     remove("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId")
+                    remove("${PreferencePrefix.ADVANCED_SCHEDULE_ENABLED}$appWidgetId")
 
                     putStringSet(
                         "${PreferencePrefix.SCHEDULE}$appWidgetId",
@@ -123,9 +125,18 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     )
                 }
 
+                is PhotoWidgetCycleMode.AdvancedSchedule -> {
+                    remove("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId")
+                    remove("${PreferencePrefix.SCHEDULE}$appWidgetId")
+                    remove("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId")
+
+                    putBoolean("${PreferencePrefix.ADVANCED_SCHEDULE_ENABLED}$appWidgetId", true)
+                }
+
                 is PhotoWidgetCycleMode.Disabled -> {
                     remove("${PreferencePrefix.INTERVAL_SECONDS}$appWidgetId")
                     remove("${PreferencePrefix.SCHEDULE}$appWidgetId")
+                    remove("${PreferencePrefix.ADVANCED_SCHEDULE_ENABLED}$appWidgetId")
 
                     putBoolean("${PreferencePrefix.INTERVAL_ENABLED}$appWidgetId", false)
                 }
@@ -151,6 +162,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                         .map(Time::fromString)
                         .toSet(),
                 )
+            }
+
+            sharedPreferences.getBoolean("${PreferencePrefix.ADVANCED_SCHEDULE_ENABLED}$appWidgetId", false) -> {
+                PhotoWidgetCycleMode.AdvancedSchedule()
             }
 
             else -> userPreferencesStorage.defaultCycleMode
@@ -691,6 +706,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         INTERVAL_SECONDS(value = "appwidget_interval_seconds_"),
         INTERVAL_ENABLED(value = "appwidget_interval_enabled_"),
         SCHEDULE(value = "appwidget_schedule_"),
+        ADVANCED_SCHEDULE_ENABLED(value = "appwidget_advanced_schedule_enabled_"),
         NEXT_CYCLE_TIME(value = "appwidget_next_cycle_time_"),
         CYCLE_PAUSED(value = "appwidget_cycle_paused_"),
         LOCKED_IN_APP(value = "appwidget_locked_in_app_"),

@@ -12,6 +12,7 @@ import com.fibelatti.photowidget.model.coerceTapActions
 import com.fibelatti.photowidget.model.photoCycleEnabled
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import javax.inject.Inject
+import kotlin.reflect.KClass
 import timber.log.Timber
 
 class SavePhotoWidgetUseCase @Inject constructor(
@@ -173,7 +174,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
         }
     }
 
-    private fun saveWidgetBehavior(
+    private suspend fun saveWidgetBehavior(
         appWidgetId: Int,
         photoWidget: PhotoWidget,
     ) {
@@ -187,8 +188,10 @@ class SavePhotoWidgetUseCase @Inject constructor(
             sorting = photoWidget.directorySorting,
         )
 
-        val currentCycleMode: PhotoWidgetCycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = appWidgetId)
-        if (photoWidget.cycleMode != currentCycleMode) {
+        val currentCycleMode: KClass<out PhotoWidgetCycleMode> = photoWidgetStorage.getWidgetCycleModeType(
+            appWidgetId = appWidgetId,
+        )
+        if (photoWidget.cycleMode::class != currentCycleMode) {
             photoWidgetStorage.saveWidgetNextCycleTime(appWidgetId = appWidgetId, nextCycleTime = null)
         }
 

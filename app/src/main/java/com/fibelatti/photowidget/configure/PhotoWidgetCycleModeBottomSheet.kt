@@ -3,6 +3,7 @@
 package com.fibelatti.photowidget.configure
 
 import android.app.AlarmManager
+import android.content.res.Resources
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -45,6 +46,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
@@ -55,6 +57,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -71,6 +74,7 @@ import com.fibelatti.photowidget.model.intervalRange
 import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
 import com.fibelatti.photowidget.ui.DefaultSheetContent
+import com.fibelatti.photowidget.ui.RadioGroup
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
 import com.fibelatti.ui.foundation.AppBottomSheet
@@ -101,7 +105,9 @@ fun PhotoWidgetCycleModeBottomSheet(
             mutableStateOf(AlarmManagerCompat.canScheduleExactAlarms(alarmManager))
         }
 
-        val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        val launcher = rememberLauncherForActivityResult(
+            ActivityResultContracts.StartActivityForResult(),
+        ) {
             canScheduleExactAlarms = AlarmManagerCompat.canScheduleExactAlarms(alarmManager)
             if (canScheduleExactAlarms) {
                 localContext.sendBroadcast(PhotoWidgetRescheduleReceiver.intent(localContext))
@@ -128,61 +134,83 @@ private fun PhotoCycleModePickerContent(
     onApplyClick: (newMode: PhotoWidgetCycleMode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var mode by remember { mutableStateOf(cycleMode) }
-    var showExplainerDialog by remember { mutableStateOf(false) }
+    val localResources: Resources = LocalResources.current
+    var mode: PhotoWidgetCycleMode by rememberSaveable { mutableStateOf(cycleMode) }
+    var showExactAlarmsDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
     DefaultSheetContent(
         title = stringResource(id = R.string.photo_widget_configure_select_cycling_mode),
         modifier = modifier,
     ) {
-        Row(
+        val modes: List<PhotoWidgetCycleMode> = remember {
+            listOf(
+                PhotoWidgetCycleMode.Interval(loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY),
+                PhotoWidgetCycleMode.Schedule(triggers = emptySet()),
+                PhotoWidgetCycleMode.AdvancedSchedule(),
+                PhotoWidgetCycleMode.Disabled,
+            )
+        }
+
+        RadioGroup(
+            items = modes,
+            itemSelected = { item -> item::class == mode::class },
+            onItemClick = { item -> mode = if (cycleMode::class == item::class) cycleMode else item },
+            itemTitle = { item ->
+                val resId: Int = when (item) {
+                    is PhotoWidgetCycleMode.Interval -> {
+                        R.string.photo_widget_configure_cycling_mode_interval
+                    }
+
+                    is PhotoWidgetCycleMode.Schedule -> {
+                        R.string.photo_widget_configure_cycling_mode_schedule
+                    }
+
+                    is PhotoWidgetCycleMode.AdvancedSchedule -> {
+                        R.string.photo_widget_configure_cycle_mode_advanced_schedule
+                    }
+
+                    is PhotoWidgetCycleMode.Disabled -> {
+                        R.string.photo_widget_configure_cycling_mode_disabled
+                    }
+                }
+
+                localResources.getString(resId)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
-        ) {
-            val items = remember {
-                mapOf(
-                    PhotoWidgetCycleMode.Interval::class to R.string.photo_widget_configure_cycling_mode_interval,
-                    PhotoWidgetCycleMode.Schedule::class to R.string.photo_widget_configure_cycling_mode_schedule,
-                    PhotoWidgetCycleMode.Disabled::class to R.string.photo_widget_configure_cycling_mode_disabled,
-                )
-            }
+            itemDescription = itemDescription@{ item ->
+                if (item::class != mode::class) return@itemDescription null
 
-            items.onEachIndexed { index, (modeClass, label) ->
-                val weight by animateFloatAsState(
-                    targetValue = if (mode::class == modeClass) 1.2f else 1f,
-                )
+                when (item) {
+                    is PhotoWidgetCycleMode.Interval -> {
+                        localResources.getString(
+                            R.string.photo_widget_configure_cycling_mode_interval_description,
+                        )
+                    }
 
-                ConnectedButtonRowItem(
-                    checked = mode::class == modeClass,
-                    onCheckedChange = {
-                        mode = when (modeClass) {
-                            PhotoWidgetCycleMode.Interval::class -> {
-                                PhotoWidgetCycleMode.Interval(
-                                    loopingInterval = (cycleMode as? PhotoWidgetCycleMode.Interval)?.loopingInterval
-                                        ?: PhotoWidgetLoopingInterval.ONE_DAY,
-                                )
-                            }
+                    is PhotoWidgetCycleMode.Schedule -> {
+                        localResources.getString(
+                            R.string.photo_widget_configure_cycling_mode_schedule_description,
+                            PhotoWidgetCycleMode.MAX_SCHEDULE_AMOUNT,
+                        )
+                    }
 
-                            PhotoWidgetCycleMode.Schedule::class -> {
-                                PhotoWidgetCycleMode.Schedule(
-                                    triggers = (cycleMode as? PhotoWidgetCycleMode.Schedule)?.triggers.orEmpty(),
-                                )
-                            }
+                    is PhotoWidgetCycleMode.AdvancedSchedule -> {
+                        localResources.getString(
+                            R.string.photo_widget_configure_cycle_mode_advanced_schedule_description,
+                            PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS,
+                        )
+                    }
 
-                            PhotoWidgetCycleMode.Disabled::class -> PhotoWidgetCycleMode.Disabled
-
-                            else -> mode
-                        }
-                    },
-                    itemIndex = index,
-                    itemCount = items.size,
-                    label = stringResource(label),
-                    modifier = Modifier.weight(weight),
-                )
-            }
-        }
+                    is PhotoWidgetCycleMode.Disabled -> {
+                        localResources.getString(
+                            R.string.photo_widget_configure_cycling_mode_disabled_description,
+                        )
+                    }
+                }
+            },
+        )
 
         AnimatedContent(
             targetState = mode,
@@ -205,18 +233,29 @@ private fun PhotoCycleModePickerContent(
                     )
                 }
 
+                is PhotoWidgetCycleMode.AdvancedSchedule -> {
+                    PhotoCycleModeAdvancedScheduleContent(
+                        onApplyClick = {
+                            if (canScheduleExactAlarms) {
+                                onApplyClick(current)
+                            } else {
+                                showExactAlarmsDialog = true
+                            }
+                        },
+                    )
+                }
+
                 is PhotoWidgetCycleMode.Disabled -> {
                     PhotoCycleModeDisabledContent(
-                        onApplyClick = onApplyClick,
+                        onApplyClick = { onApplyClick(current) },
                     )
                 }
             }
         }
 
-        val showWarning = !canScheduleExactAlarms &&
-            (mode is PhotoWidgetCycleMode.Schedule || mode is PhotoWidgetCycleMode.Interval)
-
-        AnimatedVisibility(visible = showWarning) {
+        AnimatedVisibility(
+            visible = !canScheduleExactAlarms && mode !is PhotoWidgetCycleMode.Disabled,
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -238,7 +277,7 @@ private fun PhotoCycleModePickerContent(
                 )
 
                 OutlinedButton(
-                    onClick = { showExplainerDialog = true },
+                    onClick = { showExactAlarmsDialog = true },
                     shapes = ButtonDefaults.shapes(),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
@@ -251,12 +290,12 @@ private fun PhotoCycleModePickerContent(
             }
         }
 
-        if (showExplainerDialog) {
+        if (showExactAlarmsDialog) {
             ExactAlarmsDialog(
-                onDismiss = { showExplainerDialog = false },
+                onDismiss = { showExactAlarmsDialog = false },
                 onConfirm = {
                     onOpenPermission()
-                    showExplainerDialog = false
+                    showExactAlarmsDialog = false
                 },
             )
         }
@@ -275,13 +314,6 @@ private fun PhotoCycleModeIntervalContent(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Text(
-            text = stringResource(R.string.photo_widget_configure_cycling_mode_interval_description),
-            modifier = Modifier.padding(horizontal = 16.dp),
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodyMedium,
-        )
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -402,13 +434,6 @@ private fun PhotoCycleModeScheduleContent(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         if (triggers.isNotEmpty()) {
-            Text(
-                text = stringResource(R.string.photo_widget_configure_cycling_mode_schedule_description),
-                modifier = Modifier.padding(horizontal = 16.dp),
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-
             FlowRow(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -423,16 +448,6 @@ private fun PhotoCycleModeScheduleContent(
                     )
                 }
             }
-        } else {
-            Text(
-                text = stringResource(
-                    R.string.photo_widget_configure_schedule_placeholder,
-                    PhotoWidgetCycleMode.MAX_SCHEDULE_AMOUNT,
-                ),
-                modifier = Modifier.padding(horizontal = 16.dp),
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.bodyMedium,
-            )
         }
 
         if (triggers.size < PhotoWidgetCycleMode.MAX_SCHEDULE_AMOUNT) {
@@ -519,34 +534,38 @@ private fun SelectedTimeItem(
 }
 
 @Composable
-private fun PhotoCycleModeDisabledContent(
-    onApplyClick: (newMode: PhotoWidgetCycleMode) -> Unit,
+private fun PhotoCycleModeAdvancedScheduleContent(
+    onApplyClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
+    Button(
+        onClick = onApplyClick,
+        shapes = ButtonDefaults.shapes(),
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
-            text = stringResource(R.string.photo_widget_configure_cycling_mode_disabled_description),
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .align(Alignment.CenterHorizontally),
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodyMedium,
+            text = stringResource(R.string.photo_widget_action_apply),
+            modifier = Modifier.weight(1f),
+            textAlign = TextAlign.Center,
         )
+    }
+}
 
-        Button(
-            onClick = { onApplyClick(PhotoWidgetCycleMode.Disabled) },
-            shapes = ButtonDefaults.shapes(),
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(
-                text = stringResource(id = R.string.photo_widget_action_apply),
-                modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Center,
-            )
-        }
+@Composable
+private fun PhotoCycleModeDisabledContent(
+    onApplyClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Button(
+        onClick = onApplyClick,
+        shapes = ButtonDefaults.shapes(),
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Text(
+            text = stringResource(id = R.string.photo_widget_action_apply),
+            modifier = Modifier.weight(1f),
+            textAlign = TextAlign.Center,
+        )
     }
 }
 

@@ -11,6 +11,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.TapActionArea
+import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.WidgetOffset
 import com.fibelatti.photowidget.model.WidgetPhotos
 import com.fibelatti.photowidget.model.allWidgetPhotos
@@ -19,6 +20,7 @@ import java.io.File
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.reflect.KClass
 import kotlin.time.Duration.Companion.days
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -40,6 +42,7 @@ class PhotoWidgetStorage @Inject constructor(
     private val pendingDeletionPhotosDao: PendingDeletionWidgetPhotoDao,
     private val excludedPhotosDao: ExcludedWidgetPhotoDao,
     private val widgetDirectoryDao: WidgetDirectoryDao,
+    private val advancedScheduleTimeDao: AdvancedScheduleTimeDao,
     private val uriPermissionGrantor: UriPermissionGrantor,
 ) {
 
@@ -453,12 +456,50 @@ class PhotoWidgetStorage @Inject constructor(
         return sharedPreferences.getWidgetSorting(appWidgetId = appWidgetId)
     }
 
-    fun saveWidgetCycleMode(appWidgetId: Int, cycleMode: PhotoWidgetCycleMode) {
+    suspend fun saveWidgetCycleMode(appWidgetId: Int, cycleMode: PhotoWidgetCycleMode) {
         sharedPreferences.saveWidgetCycleMode(appWidgetId = appWidgetId, cycleMode = cycleMode)
+
+        if (cycleMode is PhotoWidgetCycleMode.AdvancedSchedule) {
+            saveAdvancedScheduleTimes(appWidgetId = appWidgetId, times = cycleMode.schedule)
+        } else {
+            deleteAdvancedScheduleTimes(appWidgetId = appWidgetId)
+        }
     }
 
-    fun getWidgetCycleMode(appWidgetId: Int): PhotoWidgetCycleMode {
-        return sharedPreferences.getWidgetCycleMode(appWidgetId = appWidgetId)
+    fun getWidgetCycleModeType(appWidgetId: Int): KClass<out PhotoWidgetCycleMode> {
+        return sharedPreferences.getWidgetCycleMode(appWidgetId = appWidgetId)::class
+    }
+
+    suspend fun getWidgetCycleMode(appWidgetId: Int): PhotoWidgetCycleMode {
+        val cycleMode: PhotoWidgetCycleMode = sharedPreferences.getWidgetCycleMode(appWidgetId = appWidgetId)
+        return if (cycleMode !is PhotoWidgetCycleMode.AdvancedSchedule) {
+            cycleMode
+        } else {
+            val times: Map<String, Time> = getAdvancedScheduleTimes(appWidgetId = appWidgetId)
+            cycleMode.copy(schedule = times.toMap())
+        }
+    }
+
+    private suspend fun getAdvancedScheduleTimes(appWidgetId: Int): Map<String, Time> {
+        return advancedScheduleTimeDao.getTimes(widgetId = appWidgetId)
+            .associate { it.photoId to Time.fromString(it.time) }
+    }
+
+    private suspend fun saveAdvancedScheduleTimes(appWidgetId: Int, times: Map<String, Time>) {
+        advancedScheduleTimeDao.replaceTimes(
+            widgetId = appWidgetId,
+            times = times.map { (photoId: String, time: Time) ->
+                AdvancedScheduleTimeDto(widgetId = appWidgetId, photoId = photoId, time = time.asString())
+            },
+        )
+    }
+
+    private suspend fun deleteAdvancedScheduleTimes(appWidgetId: Int) {
+        advancedScheduleTimeDao.deleteByWidgetId(widgetId = appWidgetId)
+    }
+
+    suspend fun copyAdvancedScheduleTimes(sourceWidgetId: Int, targetWidgetId: Int) {
+        advancedScheduleTimeDao.copyTimes(sourceWidgetId = sourceWidgetId, targetWidgetId = targetWidgetId)
     }
 
     fun saveWidgetNextCycleTime(appWidgetId: Int, nextCycleTime: Long?) {
@@ -637,6 +678,7 @@ class PhotoWidgetStorage @Inject constructor(
         orderDao.deletePhotosByWidgetId(widgetId = appWidgetId)
         pendingDeletionPhotosDao.deletePhotosByWidgetId(widgetId = appWidgetId)
         excludedPhotosDao.deletePhotosByWidgetId(widgetId = appWidgetId)
+        advancedScheduleTimeDao.deleteByWidgetId(widgetId = appWidgetId)
     }
 
     /**
@@ -710,6 +752,7 @@ class PhotoWidgetStorage @Inject constructor(
         orderDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
         pendingDeletionPhotosDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
         excludedPhotosDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+        advancedScheduleTimeDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
         sharedPreferences.migrateWidgetData(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
     }
 

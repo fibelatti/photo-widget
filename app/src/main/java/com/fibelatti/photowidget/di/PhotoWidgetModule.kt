@@ -11,6 +11,7 @@ import coil3.memory.MemoryCache
 import coil3.memoryCacheMaxSizePercentWhileInBackground
 import coil3.request.addLastModifiedToFileCacheKey
 import coil3.request.allowHardware
+import com.fibelatti.photowidget.widget.data.AdvancedScheduleTimeDao
 import com.fibelatti.photowidget.widget.data.DisplayedPhotoDao
 import com.fibelatti.photowidget.widget.data.ExcludedWidgetPhotoDao
 import com.fibelatti.photowidget.widget.data.LocalPhotoDao
@@ -77,6 +78,11 @@ object PhotoWidgetModule {
     fun widgetDirectoryDao(
         photoWidgetDatabase: PhotoWidgetDatabase,
     ): WidgetDirectoryDao = photoWidgetDatabase.widgetDirectoryDao()
+
+    @Provides
+    fun advancedScheduleTimeDao(
+        photoWidgetDatabase: PhotoWidgetDatabase,
+    ): AdvancedScheduleTimeDao = photoWidgetDatabase.advancedScheduleTimeDao()
 
     @Provides
     @Singleton

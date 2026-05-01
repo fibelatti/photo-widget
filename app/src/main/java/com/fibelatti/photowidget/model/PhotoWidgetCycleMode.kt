@@ -12,6 +12,9 @@ sealed interface PhotoWidgetCycleMode : Parcelable {
     data class Schedule(val triggers: Set<Time>) : PhotoWidgetCycleMode
 
     @Parcelize
+    data class AdvancedSchedule(val schedule: Map<String, Time> = mapOf()) : PhotoWidgetCycleMode
+
+    @Parcelize
     data object Disabled : PhotoWidgetCycleMode
 
     companion object {
@@ -19,6 +22,8 @@ sealed interface PhotoWidgetCycleMode : Parcelable {
         val DEFAULT = Interval(loopingInterval = PhotoWidgetLoopingInterval.ONE_DAY)
 
         const val MAX_SCHEDULE_AMOUNT: Int = 12
+
+        const val MAX_ADVANCED_SCHEDULE_PHOTOS: Int = 96
     }
 }
 

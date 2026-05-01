@@ -21,6 +21,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.KeepAliveService
 import com.fibelatti.photowidget.platform.RememberedEffect
@@ -141,7 +142,11 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         when (message) {
             is PhotoWidgetConfigureState.Message.UserPrompt -> {
                 showMaterialAlertDialog {
-                    setMessage(message.textRes)
+                    if (message.textFormatArgs.isEmpty()) {
+                        setMessage(message.textRes)
+                    } else {
+                        setMessage(getString(message.textRes, *message.textFormatArgs))
+                    }
                     setPositiveButton(message.buttonRes) { _, _ -> }
                     setOnDismissListener { viewModel.messageHandled(message = message) }
                 }
@@ -180,6 +185,19 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                         KeepAliveService.tryStart(this@PhotoWidgetConfigureActivity)
                     }
                     setNegativeButton(R.string.photo_widget_action_cancel) { _, _ -> }
+                    setOnDismissListener { viewModel.messageHandled(message = message) }
+                }
+            }
+
+            is PhotoWidgetConfigureState.Message.AdvancedScheduleCoerced -> {
+                showMaterialAlertDialog {
+                    setMessage(
+                        getString(
+                            R.string.photo_widget_configure_cycle_mode_advanced_schedule_coerced,
+                            PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS,
+                        ),
+                    )
+                    setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
                     setOnDismissListener { viewModel.messageHandled(message = message) }
                 }
             }

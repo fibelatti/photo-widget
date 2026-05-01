@@ -44,6 +44,11 @@ class DuplicatePhotoWidgetUseCase @Inject constructor(
             targetWidgetId = newAppWidgetId,
         )
 
+        photoWidgetStorage.copyAdvancedScheduleTimes(
+            sourceWidgetId = originalAppWidgetId,
+            targetWidgetId = newAppWidgetId,
+        )
+
         photoWidgetStorage.deletePhotos(
             appWidgetId = newAppWidgetId,
             photoIds = photoWidgetStorage.getExcludedPhotoIds(appWidgetId = originalAppWidgetId),

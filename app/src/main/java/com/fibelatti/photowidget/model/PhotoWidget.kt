@@ -80,10 +80,15 @@ val PhotoWidget.photoCycleEnabled: Boolean
     get() = photos.size > 1 && cycleMode !is PhotoWidgetCycleMode.Disabled
 
 val PhotoWidget.canSort: Boolean
-    get() = source == PhotoWidgetSource.PHOTOS && photos.size > 1 && !shuffle
+    get() = source == PhotoWidgetSource.PHOTOS &&
+        photos.size > 1 &&
+        !shuffle &&
+        cycleMode !is PhotoWidgetCycleMode.AdvancedSchedule
 
 val PhotoWidget.canShuffle: Boolean
-    get() = photos.size > 1 && source != PhotoWidgetSource.GIF
+    get() = source != PhotoWidgetSource.GIF &&
+        photos.size > 1 &&
+        cycleMode !is PhotoWidgetCycleMode.AdvancedSchedule
 
 val PhotoWidget.canSync: Boolean
     get() = source == PhotoWidgetSource.DIRECTORY
@@ -105,5 +110,16 @@ val PhotoWidget.tapActionKeepCurrentPhoto: Boolean
 
 val PhotoWidget.tapActionDisableTap: Boolean
     get() = tapActions.disableTap
+
+fun PhotoWidget.orderedPhotosForDisplay(): List<LocalPhoto> {
+    if (cycleMode !is PhotoWidgetCycleMode.AdvancedSchedule) return photos
+
+    val schedule: Map<String, Time> = cycleMode.schedule
+    val timed: List<LocalPhoto> = photos
+        .filter { it.photoId in schedule }
+        .sortedWith(compareBy({ schedule.getValue(it.photoId).hour }, { schedule.getValue(it.photoId).minute }))
+    val untimed: List<LocalPhoto> = photos.filter { it.photoId !in schedule }
+    return timed + untimed
+}
 
 // endregion ktx

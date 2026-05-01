@@ -112,6 +112,7 @@
     <string name="photo_widget_configure_import_dialog_description">すべての写真と設定が新しいウィジェットにコピーされます</string>
     <string name="photo_widget_configure_import_error">選択した写真をすべてインポートできませんでした</string>
     <string name="photo_widget_configure_too_many_photos_error">同期フォルダーには最大3000枚の写真を含めることができます。複数選択でき、各サブフォルダーは個別にカウントされます。\n\nカメラロールは選択できません。写真は1枚ずつ処理され、数千枚の写真を含むフォルダーは、ウィジェットエディターやホーム画面での写真切り替え時に深刻なパフォーマンスの問題を引き起こします。</string>
+    <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">詳細スケジュールを使用するウィジェットの写真は最大96枚です。</string>
     <string name="photo_widget_configure_missing_photos_error">ウィジェットには少なくとも1枚の写真が必要です。ウィジェットはホーム画面からのみ直接削除できます。</string>
     <string name="photo_widget_configure_menu_source">ソース</string>
     <string name="photo_widget_configure_source_selection_directory_empty">このウィジェットはまだどのフォルダーとも同期されていません。</string>
@@ -132,9 +133,16 @@
     <string name="photo_widget_configure_cycling_mode_interval">間隔</string>
     <string name="photo_widget_configure_cycling_mode_schedule">スケジュール</string>
     <string name="photo_widget_configure_cycling_mode_disabled">無効</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">ウィジェットは以下の間隔で自動的に次の写真に切り替わります：</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description">ウィジェットは毎日、以下のスケジュールされた時間に自動的に次の写真に切り替わります：</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">ウィジェットは自動的に写真を切り替えません。</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule">詳細スケジュール</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_no_time_warning">スケジュールされた時間のない写真は表示されません。また、時間は重複できません。</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_even_split">1日を均等に分割</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">時間を設定</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">このウィジェットには%d枚を超える写真があったため、スケジュールが15分タイマーに変更されました。</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">この時間は別の写真にすでに割り当てられています。</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">一定間隔で次の写真に切り替える</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">スケジュールされた時間に次の写真に切り替える（最大%d回）</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">コンテンツタブから各写真に時間を設定（最大%d枚）</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">写真を自動的に切り替えない</string>
     <string name="photo_widget_configure_interval_current_label">毎%s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="other">%d秒</item>
@@ -152,7 +160,6 @@
     <string name="photo_widget_configure_interval_minutes_label">分</string>
     <string name="photo_widget_configure_interval_hours_label">時間</string>
     <string name="photo_widget_configure_interval_days_label">日</string>
-    <string name="photo_widget_configure_schedule_placeholder" tools:ignore="PluralsCandidate">写真を自動的に切り替える時間を最大%dつまでスケジュールします。</string>
     <string name="photo_widget_configure_schedule_add_new">新規追加</string>
     <string name="photo_widget_configure_schedule_limit_reached" tools:ignore="PluralsCandidate">最大%dつの時間に達しました</string>
     <plurals name="photo_widget_configure_schedule_times">

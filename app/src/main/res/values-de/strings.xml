@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Widget Host -->
     <string name="photo_widget_host_description">Füge Lieblingsfotos hinzu oder synchronisiere Ordner. Lege Aktionen fest. Wähle das Format beim Anpassen und die Größe nach dem Platzieren.</string>
     <string name="photo_widget_host_loading">Widget wird geladen…</string>
@@ -113,6 +113,7 @@
     <string name="photo_widget_configure_import_dialog_description">Alle Fotos und Konfigurationen werden in das neue Widget kopiert</string>
     <string name="photo_widget_configure_import_error">Alle ausgewählten Fotos konnten nicht importiert werden</string>
     <string name="photo_widget_configure_too_many_photos_error">Jeder synchronisierte Ordner kann maximal 3000 Fotos enthalten. Sie können mehr als einen auswählen, und jeder Unterordner wird separat gezählt.\n\nSie können Ihre Kamerarolle nicht auswählen. Fotos werden einzeln verarbeitet, und Ordner mit vielen Tausend Fotos führen zu erheblichen Leistungsproblemen im Widget-Editor sowie auf dem Startbildschirm beim Wechseln der Fotos.</string>
+    <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">Widgets mit erweitertem Zeitplan können maximal 96 Fotos enthalten.</string>
     <string name="photo_widget_configure_missing_photos_error">Das Widget muss mindestens ein Foto enthalten. Widgets können nur direkt vom Startbildschirm gelöscht werden.</string>
     <string name="photo_widget_configure_menu_source">Quelle</string>
     <string name="photo_widget_configure_source_selection_directory_empty">Dieses Widget ist noch nicht mit einem Ordner synchronisiert.</string>
@@ -133,9 +134,16 @@
     <string name="photo_widget_configure_cycling_mode_interval">Intervall</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Zeitplan</string>
     <string name="photo_widget_configure_cycling_mode_disabled">Deaktiviert</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">Das Widget wechselt automatisch zum nächsten Foto im folgenden Intervall:</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description">Das Widget wechselt automatisch jeden Tag zu den folgenden geplanten Zeiten zum nächsten Foto:</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Das Widget wechselt die Fotos nicht automatisch.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule">Erweiterter Zeitplan</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_no_time_warning">Fotos ohne geplante Zeit werden nie angezeigt, und Zeiten müssen eindeutig sein.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_even_split">Tag gleichmäßig aufteilen</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">Zeit festlegen</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">Dieses Widget hatte mehr als %d Fotos, daher wurde sein Zeitplan auf einen 15-Minuten-Timer zurückgesetzt.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Diese Zeit ist bereits einem anderen Foto zugewiesen.</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">Zum nächsten Foto in regelmäßigen Abständen wechseln</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Zum nächsten Foto zu geplanten Zeiten wechseln (max. %d Zeiten)</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Eine Zeit für jedes Foto über den Inhalt-Tab festlegen (max. %d Fotos)</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Fotos nicht automatisch wechseln</string>
     <string name="photo_widget_configure_interval_current_label">Alle %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d Sekunde</item>
@@ -157,7 +165,6 @@
     <string name="photo_widget_configure_interval_minutes_label">Minuten</string>
     <string name="photo_widget_configure_interval_hours_label">Stunden</string>
     <string name="photo_widget_configure_interval_days_label">Tage</string>
-    <string name="photo_widget_configure_schedule_placeholder">Planen Sie bis zu %d Zeiten ein, um Ihre Fotos automatisch zu wechseln.</string>
     <string name="photo_widget_configure_schedule_add_new">Neu hinzufügen</string>
     <string name="photo_widget_configure_schedule_limit_reached">Maximum von %d Zeiten erreicht</string>
     <plurals name="photo_widget_configure_schedule_times">

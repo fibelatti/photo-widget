@@ -25,7 +25,29 @@ data class PhotoWidgetConfigureState(
         data class UserPrompt(
             @StringRes val textRes: Int,
             @StringRes val buttonRes: Int = R.string.photo_widget_action_got_it,
-        ) : Message()
+            val textFormatArgs: Array<out Any> = emptyArray(),
+        ) : Message() {
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (javaClass != other?.javaClass) return false
+
+                other as UserPrompt
+
+                if (textRes != other.textRes) return false
+                if (buttonRes != other.buttonRes) return false
+                if (!textFormatArgs.contentEquals(other.textFormatArgs)) return false
+
+                return true
+            }
+
+            override fun hashCode(): Int {
+                var result = textRes
+                result = 31 * result + buttonRes
+                result = 31 * result + textFormatArgs.contentHashCode()
+                return result
+            }
+        }
 
         data class LaunchCrop(
             val source: Uri,
@@ -42,6 +64,8 @@ data class PhotoWidgetConfigureState(
         data object DraftSaved : Message()
 
         data object KeepAliveRequired : Message()
+
+        data object AdvancedScheduleCoerced : Message()
     }
 }
 

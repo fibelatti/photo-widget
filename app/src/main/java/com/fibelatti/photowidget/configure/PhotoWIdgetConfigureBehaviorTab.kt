@@ -163,6 +163,10 @@ fun PhotoWidgetConfigureBehaviorTab(
                         )
                     }
 
+                    is PhotoWidgetCycleMode.AdvancedSchedule -> {
+                        stringResource(id = R.string.photo_widget_configure_cycle_mode_advanced_schedule)
+                    }
+
                     is PhotoWidgetCycleMode.Disabled -> {
                         stringResource(id = R.string.photo_widget_configure_cycling_mode_disabled)
                     }

@@ -143,7 +143,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
 
     var defaultCycleMode: PhotoWidgetCycleMode
         get() {
-            val containsInterval = sharedPreferences.contains(Preference.LEGACY_DEFAULT_INTERVAL.value) ||
+            val containsInterval: Boolean = sharedPreferences.contains(Preference.LEGACY_DEFAULT_INTERVAL.value) ||
                 sharedPreferences.contains(Preference.DEFAULT_INTERVAL.value)
 
             return when {
@@ -173,6 +173,10 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                     )
                 }
 
+                sharedPreferences.getBoolean(Preference.DEFAULT_ADVANCED_SCHEDULE.value, false) -> {
+                    PhotoWidgetCycleMode.AdvancedSchedule()
+                }
+
                 else -> PhotoWidgetCycleMode.DEFAULT
             }
         }
@@ -184,6 +188,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                     is PhotoWidgetCycleMode.Interval -> {
                         remove(Preference.DEFAULT_SCHEDULE.value)
                         remove(Preference.DEFAULT_INTERVAL_ENABLED.value)
+                        remove(Preference.DEFAULT_ADVANCED_SCHEDULE.value)
 
                         putLong(Preference.DEFAULT_INTERVAL.value, value.loopingInterval.repeatIntervalAsSeconds())
                     }
@@ -191,6 +196,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                     is PhotoWidgetCycleMode.Schedule -> {
                         remove(Preference.DEFAULT_INTERVAL.value)
                         remove(Preference.DEFAULT_INTERVAL_ENABLED.value)
+                        remove(Preference.DEFAULT_ADVANCED_SCHEDULE.value)
 
                         putStringSet(
                             Preference.DEFAULT_SCHEDULE.value,
@@ -198,9 +204,18 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                         )
                     }
 
+                    is PhotoWidgetCycleMode.AdvancedSchedule -> {
+                        remove(Preference.DEFAULT_INTERVAL.value)
+                        remove(Preference.DEFAULT_SCHEDULE.value)
+                        remove(Preference.DEFAULT_INTERVAL_ENABLED.value)
+
+                        putBoolean(Preference.DEFAULT_ADVANCED_SCHEDULE.value, true)
+                    }
+
                     is PhotoWidgetCycleMode.Disabled -> {
                         remove(Preference.DEFAULT_INTERVAL.value)
                         remove(Preference.DEFAULT_SCHEDULE.value)
+                        remove(Preference.DEFAULT_ADVANCED_SCHEDULE.value)
 
                         putBoolean(Preference.DEFAULT_INTERVAL_ENABLED.value, true)
                     }
@@ -332,6 +347,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
          */
         DEFAULT_INTERVAL("default_interval_seconds"),
         DEFAULT_SCHEDULE("default_schedule"),
+        DEFAULT_ADVANCED_SCHEDULE("default_advanced_schedule"),
         DEFAULT_SHAPE(value = "default_shape"),
 
         /**
