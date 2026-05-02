@@ -132,7 +132,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
     private fun sanitizeCycleMode(): PhotoWidget {
         val current: PhotoWidget = state.value.photoWidget
-        val needsChecking = current.cycleMode is PhotoWidgetCycleMode.AdvancedSchedule &&
+        val needsChecking: Boolean = current.cycleMode is PhotoWidgetCycleMode.AdvancedSchedule &&
             current.photos.size > PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS
 
         return if (needsChecking) {
@@ -290,10 +290,12 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             if (currentState.photoWidget.cycleMode is PhotoWidgetCycleMode.AdvancedSchedule) {
                 val totalSize: Int = currentState.photoWidget.photos.size + source.size
                 if (totalSize > PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS) {
-                    _state += PhotoWidgetConfigureState.Message.UserPrompt(
-                        textRes = R.string.photo_widget_configure_too_many_photos_for_advanced_schedule_error,
-                        textFormatArgs = arrayOf(PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS),
-                    )
+                    _state.update { current ->
+                        current.copy(isProcessing = true) + PhotoWidgetConfigureState.Message.UserPrompt(
+                            textRes = R.string.photo_widget_configure_too_many_photos_for_advanced_schedule_error,
+                            textFormatArgs = arrayOf(PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS),
+                        )
+                    }
                     return@launch
                 }
             }
@@ -376,7 +378,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { current -> current.copy(isProcessing = true) }
 
-            val newDirPhotos = photoWidgetStorage.getNewDirPhotos(
+            val newDirPhotos: List<LocalPhoto>? = photoWidgetStorage.getNewDirPhotos(
                 dirUri = source,
                 sorting = _state.value.photoWidget.directorySorting,
             )
@@ -394,15 +396,18 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             if (currentState.photoWidget.cycleMode is PhotoWidgetCycleMode.AdvancedSchedule) {
                 val totalSize: Int = currentState.photoWidget.photos.size + newDirPhotos.size
                 if (totalSize > PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS) {
-                    _state += PhotoWidgetConfigureState.Message.UserPrompt(
-                        textRes = R.string.photo_widget_configure_too_many_photos_for_advanced_schedule_error,
-                        textFormatArgs = arrayOf(PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS),
-                    )
+                    _state.update { current ->
+                        current.copy(isProcessing = false) + PhotoWidgetConfigureState.Message.UserPrompt(
+                            textRes = R.string.photo_widget_configure_too_many_photos_for_advanced_schedule_error,
+                            textFormatArgs = arrayOf(PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS),
+                        )
+
+                    }
                     return@launch
                 }
             }
 
-            val updatedState = _state.getAndUpdate { current ->
+            val updatedState: PhotoWidgetConfigureState = _state.getAndUpdate { current ->
                 current.copy(isProcessing = false, cropQueue = emptyList()) + source + newDirPhotos
             }
             photoWidgetStorage.saveWidgetSyncedDir(
