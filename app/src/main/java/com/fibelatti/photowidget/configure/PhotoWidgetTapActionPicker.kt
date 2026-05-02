@@ -130,6 +130,9 @@ fun PhotoWidgetTapActionPicker(
     var tapActions: PhotoWidgetTapActions by rememberSaveable { mutableStateOf(currentTapActions) }
     var selectedArea: TapActionArea by rememberSaveable { mutableStateOf(TapActionArea.CENTER) }
 
+    val context: Context = LocalContext.current
+
+    // region Activity launchers
     val appShortcutPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
     ) { result ->
@@ -148,7 +151,6 @@ fun PhotoWidgetTapActionPicker(
         tapActions = onGalleryAppPickerResult(result = result, tapActions = tapActions)
     }
 
-    val context = LocalContext.current
     val filePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
     ) { uri ->
@@ -159,6 +161,7 @@ fun PhotoWidgetTapActionPicker(
             selectedArea = selectedArea,
         )
     }
+    // endregion Activity launchers
 
     TapActionPickerContent(
         onNavClick = onNavClick,
@@ -170,11 +173,17 @@ fun PhotoWidgetTapActionPicker(
             TapActionArea.RIGHT -> tapActions.right
         },
         onTapActionChange = { newAction ->
-            tapActions = onTapActionChange(tapActions = tapActions, newAction = newAction, selectedArea = selectedArea)
+            tapActions = onTapActionChange(
+                originalActions = currentTapActions,
+                tapActions = tapActions,
+                newAction = newAction,
+                selectedArea = selectedArea,
+            )
         },
         source = source,
         onCopyFromClick = { sourceArea ->
             tapActions = onTapActionChange(
+                originalActions = currentTapActions,
                 tapActions = tapActions,
                 newAction = when (sourceArea) {
                     TapActionArea.LEFT -> tapActions.left
@@ -215,6 +224,7 @@ fun PhotoWidgetTapActionPicker(
     )
 }
 
+// region Activity Result handlers
 private fun onAppShortcutPickerResult(
     result: ActivityResult,
     tapActions: PhotoWidgetTapActions,
@@ -305,57 +315,73 @@ private fun onGalleryAppPickerResult(
         },
     )
 }
+// endregion Activity Result handlers
 
+// region Change handler
 private fun onTapActionChange(
+    originalActions: PhotoWidgetTapActions,
     tapActions: PhotoWidgetTapActions,
     newAction: PhotoWidgetTapAction,
     selectedArea: TapActionArea,
 ): PhotoWidgetTapActions {
-    val isChangingTypes: Boolean = when (selectedArea) {
-        TapActionArea.LEFT -> tapActions.left.javaClass != newAction.javaClass
-        TapActionArea.CENTER -> tapActions.center.javaClass != newAction.javaClass
-        TapActionArea.RIGHT -> tapActions.right.javaClass != newAction.javaClass
+    val currentAction: PhotoWidgetTapAction = when (selectedArea) {
+        TapActionArea.LEFT -> tapActions.left
+        TapActionArea.CENTER -> tapActions.center
+        TapActionArea.RIGHT -> tapActions.right
     }
 
-    val action: PhotoWidgetTapAction = when {
-        !isChangingTypes -> newAction
+    val resultingAction: PhotoWidgetTapAction = when {
+        currentAction::class == newAction::class -> newAction
 
-        newAction is PhotoWidgetTapAction.ViewFullScreen -> {
-            when {
-                tapActions.left is PhotoWidgetTapAction.ViewFullScreen -> tapActions.left
-                tapActions.center is PhotoWidgetTapAction.ViewFullScreen -> tapActions.center
-                tapActions.right is PhotoWidgetTapAction.ViewFullScreen -> tapActions.right
-                else -> newAction
-            }
+        newAction.sharesPreferences -> when {
+            tapActions.left::class == newAction::class -> tapActions.left
+            tapActions.center::class == newAction::class -> tapActions.center
+            tapActions.right::class == newAction::class -> tapActions.right
+            else -> restoreOrNew(originalActions = originalActions, newAction = newAction, selectedArea = selectedArea)
         }
 
-        newAction is PhotoWidgetTapAction.ViewInGallery -> {
-            when {
-                tapActions.left is PhotoWidgetTapAction.ViewInGallery -> tapActions.left
-                tapActions.center is PhotoWidgetTapAction.ViewInGallery -> tapActions.center
-                tapActions.right is PhotoWidgetTapAction.ViewInGallery -> tapActions.right
-                else -> newAction
-            }
-        }
+        else -> restoreOrNew(originalActions = originalActions, newAction = newAction, selectedArea = selectedArea)
+    }
 
-        newAction is PhotoWidgetTapAction.ToggleCycling -> {
-            when {
-                tapActions.left is PhotoWidgetTapAction.ToggleCycling -> tapActions.left
-                tapActions.center is PhotoWidgetTapAction.ToggleCycling -> tapActions.center
-                tapActions.right is PhotoWidgetTapAction.ToggleCycling -> tapActions.right
-                else -> newAction
-            }
-        }
+    return tapActions.copy(
+        left = if (selectedArea == TapActionArea.LEFT) {
+            resultingAction
+        } else {
+            keepActionsSynced(newAction = resultingAction, otherAction = tapActions.left)
+        },
+        center = if (selectedArea == TapActionArea.CENTER) {
+            resultingAction
+        } else {
+            keepActionsSynced(newAction = resultingAction, otherAction = tapActions.center)
+        },
+        right = if (selectedArea == TapActionArea.RIGHT) {
+            resultingAction
+        } else {
+            keepActionsSynced(newAction = resultingAction, otherAction = tapActions.right)
+        },
+    )
+}
 
+private fun restoreOrNew(
+    originalActions: PhotoWidgetTapActions,
+    newAction: PhotoWidgetTapAction,
+    selectedArea: TapActionArea,
+): PhotoWidgetTapAction {
+    return when (selectedArea) {
+        TapActionArea.LEFT if newAction::class == originalActions.left::class -> originalActions.left
+        TapActionArea.CENTER if newAction::class == originalActions.center::class -> originalActions.center
+        TapActionArea.RIGHT if newAction::class == originalActions.right::class -> originalActions.right
         else -> newAction
     }
-
-    return when (selectedArea) {
-        TapActionArea.LEFT -> tapActions.copy(left = action)
-        TapActionArea.CENTER -> tapActions.copy(center = action)
-        TapActionArea.RIGHT -> tapActions.copy(right = action)
-    }
 }
+
+private fun keepActionsSynced(
+    newAction: PhotoWidgetTapAction,
+    otherAction: PhotoWidgetTapAction,
+): PhotoWidgetTapAction {
+    return if (newAction::class == otherAction::class && newAction.sharesPreferences) newAction else otherAction
+}
+// endregion Change handler
 
 @Composable
 private fun TapActionPickerContent(
@@ -473,6 +499,7 @@ private fun TapActionPickerContent(
     }
 }
 
+// region Components
 @Composable
 private fun TapAreaSelector(
     selectedArea: TapActionArea,
@@ -617,13 +644,7 @@ private fun TapOptionsPicker(
                 items = PhotoWidgetTapAction.entriesForSource(source = source),
                 itemSelected = { action -> action::class == currentTapAction::class },
                 onItemClick = { selection ->
-                    onTapActionClick(
-                        if (selection.javaClass == currentTapAction.javaClass) {
-                            currentTapAction
-                        } else {
-                            selection
-                        },
-                    )
+                    onTapActionClick(selection)
                     tapActionSheetState.hideBottomSheet()
                 },
                 itemTitle = { action -> localResources.getString(action.label) },
@@ -657,6 +678,7 @@ private fun TapOptionsPicker(
         onOptionSelect = onCopyFromClick,
     )
 }
+// endregion Components
 
 // region Customization Content
 @Composable
@@ -810,7 +832,9 @@ private fun ViewFullScreenCustomizationContent(
 
         InformationalPanel(
             text = stringResource(id = R.string.photo_widget_configure_tap_action_shared_preferences),
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
         )
     }
 }
@@ -847,7 +871,8 @@ private fun ViewInGalleryCustomizationContent(
         )
 
         InformationalPanel(
-            text = stringResource(id = R.string.photo_widget_configure_tap_action_shared_selected_app),
+            text = stringResource(id = R.string.photo_widget_configure_tap_action_shared_preferences),
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
@@ -876,6 +901,7 @@ private fun ToggleCyclingCustomizationContent(
 
         InformationalPanel(
             text = stringResource(id = R.string.photo_widget_configure_tap_action_shared_preferences),
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

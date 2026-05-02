@@ -234,7 +234,6 @@
     <string name="photo_widget_configure_tap_action_choose_app">Uygulama seç</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Zamanlayıcı duraklatıldığında diğer dokunma alanlarını devre dışı bırak</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Bu tercihler, bu dokunma eylemini kullanan tüm alanlar tarafından kullanılır.</string>
-    <string name="photo_widget_configure_tap_action_shared_selected_app">Seçilen uygulama, bu dokunma eylemini kullanan tüm alanlar tarafından kullanılır.</string>
     <string name="photo_widget_configure_gif_frame_interval">Kare aralığı</string>
     <string name="photo_widget_configure_gif_frame_interval_description">Animasyonlu GIF\'in oynatma hızını kontrol edin. Değer ne kadar küçükse GIF o kadar hızlı oynar.</string>
     <string name="photo_widget_configure_gif_frame_interval_presets">Ön ayarlar</string>

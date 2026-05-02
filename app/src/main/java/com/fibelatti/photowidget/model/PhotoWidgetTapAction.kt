@@ -18,6 +18,8 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
     val disallowedSources: List<PhotoWidgetSource> get() = emptyList()
 
+    val sharesPreferences: Boolean get() = false
+
     @Parcelize
     data object None : PhotoWidgetTapAction {
 
@@ -44,6 +46,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
         @IgnoredOnParcel
         override val disallowedSources: List<PhotoWidgetSource> = listOf(PhotoWidgetSource.GIF)
+
+        @IgnoredOnParcel
+        override val sharesPreferences: Boolean = true
     }
 
     @Parcelize
@@ -62,6 +67,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
             PhotoWidgetSource.PHOTOS,
             PhotoWidgetSource.GIF,
         )
+
+        @IgnoredOnParcel
+        override val sharesPreferences: Boolean = true
     }
 
     @Parcelize
@@ -176,6 +184,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
         @IgnoredOnParcel
         override val disallowedSources: List<PhotoWidgetSource> = listOf(PhotoWidgetSource.GIF)
+
+        @IgnoredOnParcel
+        override val sharesPreferences: Boolean = true
     }
 
     @Parcelize

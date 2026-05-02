@@ -246,7 +246,6 @@
     <string name="photo_widget_configure_tap_action_choose_app">Выбрать приложение</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Отключить другие области касания во время паузы таймера</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Эти настройки используются всеми зонами, применяющими это действие нажатия.</string>
-    <string name="photo_widget_configure_tap_action_shared_selected_app">Выбранное приложение используется всеми зонами, применяющими это действие нажатия.</string>
     <string name="photo_widget_configure_gif_frame_interval">Интервал кадров</string>
     <string name="photo_widget_configure_gif_frame_interval_description">Управляйте скоростью воспроизведения анимированного GIF. Чем меньше значение, тем быстрее GIF.</string>
     <string name="photo_widget_configure_gif_frame_interval_presets">Пресеты</string>

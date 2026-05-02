@@ -246,7 +246,6 @@
     <string name="photo_widget_configure_tap_action_choose_app">בחר אפליקציה</string>
     <string name="photo_widget_configure_tap_action_disable_tap">השבת אזורי הקשה אחרים כאשר הטיימר מושהה</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">העדפות אלה משמשות את כל האזורים המשתמשים בפעולת הקשה זו.</string>
-    <string name="photo_widget_configure_tap_action_shared_selected_app">האפליקציה שנבחרה נמצאת בשימוש על ידי כל האזורים המשתמשים בפעולת הקשה זו.</string>
     <string name="photo_widget_configure_gif_frame_interval">מרווח פריימים</string>
     <string name="photo_widget_configure_gif_frame_interval_description">שלוט במהירות הצגת ה-GIF המונפש. ככל שהערך קטן יותר, כך ה-GIF מהיר יותר.</string>
     <string name="photo_widget_configure_gif_frame_interval_presets">הגדרות מוגדרות מראש</string>

@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Advanced schedule: set a time for each widget photo
 
+### Fixed
+
+* Fix tap action picker not keeping required actions in sync
+
 ## [v1.41.2] - 2026-04-27
 [v1.41.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.41.2
 

@@ -276,7 +276,6 @@
     <string name="photo_widget_configure_tap_action_choose_app">Choose app</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Disable other tapping areas while the timer is paused</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">These preferences are used by all areas that use this tap action.</string>
-    <string name="photo_widget_configure_tap_action_shared_selected_app">The selected app is used by all areas that use this tap action.</string>
 
     <string name="photo_widget_configure_gif_frame_interval">Frame interval</string>
     <string name="photo_widget_configure_gif_frame_interval_description">Control the playing speed of the animated GIF. The smaller the value, the quicker the GIF.</string>
