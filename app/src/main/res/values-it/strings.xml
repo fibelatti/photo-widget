@@ -226,7 +226,7 @@
     <string name="photo_widget_configure_tap_action_share_photo">Condividi foto</string>
     <string name="photo_widget_configure_tap_action_set_wallpaper">Imposta come sfondo</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Rimuovi foto</string>
-    <string name="photo_widget_configure_tap_action_remove_photo_description">Escludila dal widget. La foto originale non viene rimossa dal tuo telefono.</string>
+    <string name="photo_widget_configure_tap_action_remove_photo_description">La esclude dal widget. La foto originale non viene rimossa dal tuo telefono.</string>
 
     <string name="photo_widget_remove_action_feedback_positive">Foto rimossa!</string>
     <string name="photo_widget_remove_action_feedback_negative">È rimasta solo una foto, impossibile rimuoverla.</string>

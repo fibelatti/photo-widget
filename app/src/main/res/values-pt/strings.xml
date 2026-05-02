@@ -58,7 +58,7 @@
     <string name="photo_widget_home_my_widget_syncing_feedback">Obtendo as últimas fotos da pasta…</string>
     <!-- Preferences -->
     <string name="preferences_data_saver">Reduzir o uso de armazenamento</string>
-    <string name="preferences_data_saver_description">Quando habilitado, as fotos adicionadas aos widgets são comprimidas para economizar espaço de armazenamento. Isso geralmente não afeta a qualidade, mas se suas fotos contiverem texto pequeno, é recomendável manter desativado.\n\nEsta configuração afeta apenas as fotos adicionadas alterar a configuração.\n\nEla não se aplica a pastas sincronizadas, pois essas fotos são lidas diretamente do armazenamento do seu dispositivo.</string>
+    <string name="preferences_data_saver_description">Quando habilitado, as fotos adicionadas aos widgets são comprimidas para economizar espaço de armazenamento. Isso geralmente não afeta a qualidade, mas se suas fotos contiverem texto pequeno, é recomendável manter desativado.\n\nEsta configuração afeta apenas as fotos adicionadas após alterar a configuração.\n\nEla não se aplica a pastas sincronizadas, pois essas fotos são lidas diretamente do armazenamento do seu dispositivo.</string>
     <string name="preferences_appearance_follow_system">Igual ao sistema</string>
     <string name="preferences_appearance_light">Claro</string>
     <string name="preferences_appearance_dark">Escuro</string>
@@ -70,7 +70,7 @@
     <string name="widget_defaults_explanation">Esses valores são usados ao criar um widget. Eles são úteis para configurar vários widgets com as mesmas configurações, eliminando a necessidade de ajustar as configurações a cada vez. Quaisquer alterações nesses valores não afetarão os widgets existentes.</string>
     <string name="widget_defaults_source">Origem</string>
     <string name="widget_defaults_shuffle">Embaralhar</string>
-    <string name="widget_defaults_cycling">Foto timer</string>
+    <string name="widget_defaults_cycling">Temporizador de fotos</string>
     <string name="widget_defaults_shape">Forma</string>
     <string name="widget_defaults_corner_radius">Arredondamento</string>
     <string name="widget_defaults_opacity">Opacidade</string>
@@ -134,9 +134,9 @@
         <item quantity="one">%d foto</item>
         <item quantity="other">%d fotos</item>
     </plurals>
-    <string name="photo_widget_configure_select_cycling_mode">Foto timer</string>
+    <string name="photo_widget_configure_select_cycling_mode">Temporizador de fotos</string>
     <string name="photo_widget_configure_cycling_mode_interval">Intervalo</string>
-    <string name="photo_widget_configure_cycling_mode_schedule">Agendado</string>
+    <string name="photo_widget_configure_cycling_mode_schedule">Agendamento</string>
     <string name="photo_widget_configure_cycling_mode_disabled">Desativado</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule">Agendamento avançado</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_no_time_warning">Fotos sem horário agendado nunca serão exibidas e os horários devem ser únicos.</string>
@@ -226,7 +226,7 @@
     <string name="photo_widget_configure_tap_action_share_photo">Compartilhar foto</string>
     <string name="photo_widget_configure_tap_action_set_wallpaper">Definir como papel de parede</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Remover foto</string>
-    <string name="photo_widget_configure_tap_action_remove_photo_description">Excluí-la do widget. A foto original não é removida do seu telefone.</string>
+    <string name="photo_widget_configure_tap_action_remove_photo_description">Exclui-a do widget. A foto original não é removida do seu telefone.</string>
 
     <string name="photo_widget_remove_action_feedback_positive">Foto removida!</string>
     <string name="photo_widget_remove_action_feedback_negative">Resta apenas uma foto, não é possível remover.</string>
@@ -261,7 +261,7 @@
     <string name="photo_widget_configure_text_vertical_offset">Deslocamento vertical</string>
     <string name="photo_widget_configure_text_apply_shadow">Aplicar sombra</string>
     <string name="photo_widget_configure_text_sample">Texto de exemplo</string>
-    <string name="photo_widget_configure_text_caveat">A foto e o texto compartilham a mesma área do widget. O texto usa a aparência padrão do sistema. É possível ajustar a posição usando as configurações acima, junto com o deslocamento e o espaçamento da foto.</string>
+    <string name="photo_widget_configure_text_caveat">A foto e o texto compartilham a mesma área do widget. O texto usa a aparência padrão do sistema. Você pode ajustar a posição usando as configurações acima, junto com o deslocamento e o espaçamento da foto.</string>
     <!-- Help -->
     <string name="help_article_title_1">Adicionar um widget à tela inicial não está funcionando</string>
     <string name="help_article_body_1">Se você configurou um widget e nada acontece ao tentar adicioná-lo à tela inicial, ou se ele foi adicionado, mas não exibe as fotos selecionadas, você pode tentar adicioná-lo diretamente da sua tela inicial.\n\nAs instruções podem variar dependendo da versão do Android, do fabricante do dispositivo e do launcher da tela inicial, mas geralmente o processo é o seguinte:\n\n1. Pressione e segure um espaço vazio na sua tela inicial até que um menu pop-up apareça.\n2. Localize a opção \"Widgets\".\n3. Procure por \"Material Photo Widget\" dentro dos widgets disponíveis.\n4. Arraste-o para sua tela inicial e configure-o como de costume.</string>

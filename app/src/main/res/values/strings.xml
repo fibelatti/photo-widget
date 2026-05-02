@@ -267,7 +267,7 @@
     <string name="photo_widget_configure_tap_action_share_photo">Share photo</string>
     <string name="photo_widget_configure_tap_action_set_wallpaper">Set as wallpaper</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Remove photo</string>
-    <string name="photo_widget_configure_tap_action_remove_photo_description">Exclude it from the widget. The original photo is not removed from your phone.</string>
+    <string name="photo_widget_configure_tap_action_remove_photo_description">Excludes it from the widget. The original photo is not removed from your phone.</string>
 
     <string name="photo_widget_remove_action_feedback_positive">Photo removed!</string>
     <string name="photo_widget_remove_action_feedback_negative">Only one photo left, cannot remove.</string>

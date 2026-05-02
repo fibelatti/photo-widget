@@ -233,7 +233,7 @@
     <string name="photo_widget_configure_tap_action_share_photo">Distribuie fotografia</string>
     <string name="photo_widget_configure_tap_action_set_wallpaper">Setează ca fundal</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Elimină fotografia</string>
-    <string name="photo_widget_configure_tap_action_remove_photo_description">Exclude-o din widget. Fotografia originală nu este eliminată de pe telefon.</string>
+    <string name="photo_widget_configure_tap_action_remove_photo_description">O exclude din widget. Fotografia originală nu este eliminată de pe telefon.</string>
 
     <string name="photo_widget_remove_action_feedback_positive">Fotografie eliminată!</string>
     <string name="photo_widget_remove_action_feedback_negative">A rămas doar o fotografie, nu se poate elimina.</string>

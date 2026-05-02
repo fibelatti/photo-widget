@@ -226,7 +226,7 @@
     <string name="photo_widget_configure_tap_action_share_photo">Foto teilen</string>
     <string name="photo_widget_configure_tap_action_set_wallpaper">Als Hintergrundbild festlegen</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Foto entfernen</string>
-    <string name="photo_widget_configure_tap_action_remove_photo_description">Vom Widget ausschließen. Das Originalfoto wird nicht von deinem Telefon entfernt.</string>
+    <string name="photo_widget_configure_tap_action_remove_photo_description">Schließt es vom Widget aus. Das Originalfoto wird nicht von deinem Telefon entfernt.</string>
 
     <string name="photo_widget_remove_action_feedback_positive">Foto entfernt!</string>
     <string name="photo_widget_remove_action_feedback_negative">Nur noch ein Foto übrig, kann nicht entfernt werden.</string>

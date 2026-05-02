@@ -240,7 +240,7 @@
     <string name="photo_widget_configure_tap_action_share_photo">Поделиться фото</string>
     <string name="photo_widget_configure_tap_action_set_wallpaper">Установить как обои</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Удалить фото</string>
-    <string name="photo_widget_configure_tap_action_remove_photo_description">Исключить из виджета. Оригинальное фото не удаляется с вашего телефона.</string>
+    <string name="photo_widget_configure_tap_action_remove_photo_description">Исключает из виджета. Оригинальное фото не удаляется с вашего телефона.</string>
     <string name="photo_widget_remove_action_feedback_positive">Фото удалено!</string>
     <string name="photo_widget_remove_action_feedback_negative">Осталось только одно фото, удалить невозможно.</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Автоматически увеличить яркость</string>

@@ -26,8 +26,8 @@
     <string name="photo_widget_home_version">Versión: %s</string>
     <string name="photo_widget_home_view_licenses">Licencias de OSS</string>
     <plurals name="photo_widget_home_share_received">
-        <item quantity="one">1 foto recibida. Cree un nuevo widget o elija uno existente para agregarla.</item>
-        <item quantity="other">%d fotos recibidas. Cree un nuevo widget o elija uno existente para agregarlas.</item>
+        <item quantity="one">1 foto recibida. Crea un nuevo widget o elige uno existente para agregarla.</item>
+        <item quantity="other">%d fotos recibidas. Crea un nuevo widget o elige uno existente para agregarlas.</item>
     </plurals>
     <string name="photo_widget_home_pinning_not_supported_title">Agrega un widget directamente desde tu pantalla de inicio</string>
     <string name="photo_widget_home_pinning_not_supported_message">1. Mantén presionado un espacio vacío\n\n2. Elige el menú de widgets\n\n3. Busca Material Photo Widget\n\n4. ¡Configura y guarda!</string>
@@ -58,7 +58,7 @@
     <string name="photo_widget_home_my_widget_syncing_feedback">Obteniendo las últimas fotos de la carpeta…</string>
     <!-- Preferences -->
     <string name="preferences_data_saver">Reducir el uso del almacenamiento</string>
-    <string name="preferences_data_saver_description">Cuando está habilitada, las fotos agregadas a los widgets se comprimen para ahorrar espacio de almacenamiento. Por lo general, esto no afectará la calidad, pero si las fotos contienen texto pequeño, se recomienda desactivarla.\n\nEsta configuración solo afecta las fotos agregadas después de que se modifique.\n\nNo se aplica a las carpetas sincronizadas, ya que esas fotos se leen directamente desde el almacenamiento de su dispositivo.</string>
+    <string name="preferences_data_saver_description">Cuando está habilitada, las fotos agregadas a los widgets se comprimen para ahorrar espacio de almacenamiento. Por lo general, esto no afectará la calidad, pero si las fotos contienen texto pequeño, se recomienda desactivarla.\n\nEsta configuración solo afecta las fotos agregadas después de que se modifique.\n\nNo se aplica a las carpetas sincronizadas, ya que esas fotos se leen directamente desde el almacenamiento de tu dispositivo.</string>
     <string name="preferences_appearance_follow_system">Seguir el sistema</string>
     <string name="preferences_appearance_light">Claro</string>
     <string name="preferences_appearance_dark">Oscuro</string>
@@ -67,7 +67,7 @@
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Valores predeterminados</string>
     <string name="widget_defaults_description">Ajustes comunes para todos los widgets nuevos</string>
-    <string name="widget_defaults_explanation">Estos valores se precargan al crear un nuevo widget. Son útiles para configurar varios widgets con la misma configuración, eliminando la necesidad de ajustar la configuración cada vez. Tenga en cuenta que cualquier cambio en estos valores no afectará a los widgets existentes.</string>
+    <string name="widget_defaults_explanation">Estos valores se precargan al crear un nuevo widget. Son útiles para configurar varios widgets con la misma configuración, eliminando la necesidad de ajustar la configuración cada vez. Ten en cuenta que cualquier cambio en estos valores no afectará a los widgets existentes.</string>
     <string name="widget_defaults_source">Fuente</string>
     <string name="widget_defaults_shuffle">Barajar</string>
     <string name="widget_defaults_cycling">Temporizador de fotos</string>
@@ -124,7 +124,7 @@
     <string name="photo_widget_configure_menu_move_left">Mover a la izquierda</string>
     <string name="photo_widget_configure_menu_move_right">Mover a la derecha</string>
     <string name="photo_widget_configure_photos_pending_deletion">Fotos eliminadas recientemente</string>
-    <string name="photo_widget_configure_photos_excluded">Excluido del widget</string>
+    <string name="photo_widget_configure_photos_excluded">Excluidas del widget</string>
     <string name="photo_widget_configure_pick_photo">Seleccionar fotos</string>
     <string name="photo_widget_configure_pick_folder">Seleccionar carpeta</string>
     <string name="photo_widget_configure_pick_gif">Seleccionar GIF</string>
@@ -179,7 +179,7 @@
     <string name="photo_widget_configure_interval_grant_permission">Conceder permiso de alarma exacta</string>
     <string name="photo_widget_configure_interval_grant_permission_description">Asegura que los widgets con intervalos cortos se actualicen según lo previsto</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">Acerca de este permiso</string>
-    <string name="photo_widget_configure_interval_permission_dialog_description">Android puede restringir el trabajo en segundo plano para optimizar la duración de la batería, lo que resulta en intervalos más largos entre cada foto.\n\nPara actualizar los widgets con precisión en el intervalo seleccionado, abra la configuración y permita configurar alarmas y recordatorios.</string>
+    <string name="photo_widget_configure_interval_permission_dialog_description">Android puede restringir el trabajo en segundo plano para optimizar la duración de la batería, lo que resulta en intervalos más largos entre cada foto.\n\nPara actualizar los widgets con precisión en el intervalo seleccionado, abre la configuración y permite configurar alarmas y recordatorios.</string>
     <string name="photo_widget_configure_interval_open_settings">Abrir configuración</string>
     <string name="photo_widget_configure_battery_optimization">Desactivar optimización de batería</string>
     <string name="photo_widget_configure_battery_optimization_description">Asegura que la aplicación se ejecute sin interrupciones y tus widgets se mantengan actualizados</string>
@@ -226,7 +226,7 @@
     <string name="photo_widget_configure_tap_action_share_photo">Compartir foto</string>
     <string name="photo_widget_configure_tap_action_set_wallpaper">Establecer como fondo de pantalla</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Eliminar foto</string>
-    <string name="photo_widget_configure_tap_action_remove_photo_description">Excluirla del widget. La foto original no se elimina de tu teléfono.</string>
+    <string name="photo_widget_configure_tap_action_remove_photo_description">La excluye del widget. La foto original no se elimina de tu teléfono.</string>
 
     <string name="photo_widget_remove_action_feedback_positive">¡Foto eliminada!</string>
     <string name="photo_widget_remove_action_feedback_negative">Solo queda una foto, no se puede eliminar.</string>
@@ -246,7 +246,7 @@
     <string name="photo_widget_configure_add_to_home">Agregar a la pantalla principal</string>
     <string name="photo_widget_configure_save_changes">Guardar cambios</string>
     <string name="photo_widget_configure_widget_pinned">¡Widget añadido! Revisa tu pantalla de inicio…</string>
-    <string name="photo_widget_time_picker_title">Seleccione la hora</string>
+    <string name="photo_widget_time_picker_title">Selecciona la hora</string>
     <string name="photo_widget_directory_sort_title">Ordenar fotos</string>
     <string name="photo_widget_directory_sort_newest_first">Más recientes primero</string>
     <string name="photo_widget_directory_sort_oldest_first">Más antiguas primero</string>
@@ -266,13 +266,13 @@
     <string name="help_article_title_1">Agregar un widget a la pantalla de inicio no está funcionando</string>
     <string name="help_article_body_1">Si has configurado un widget y no sucede nada cuando intentas agregarlo a la pantalla de inicio, o si se agregó pero no muestra las fotos seleccionadas, puedes intentar agregarlo directamente desde tu pantalla de inicio.\n\nLas instrucciones pueden variar según la versión de Android, el fabricante del dispositivo y el lanzador de la pantalla de inicio, pero generalmente el proceso es el siguiente:\n\n1. Mantén presionado un espacio vacío en tu pantalla de inicio hasta que aparezca un menú emergente.\n2. Busca la opción \"Widgets\".\n3. Busca \"Material Photo Widget\" dentro de los widgets disponibles.\n4. Arrástralo a tu pantalla de inicio y configúralo como de costumbre.</string>
     <string name="help_article_title_2">Las fotos no cambian automáticamente</string>
-    <string name="help_article_body_2">El intervalo seleccionado o los horarios programados son una aproximación de cuándo se mostrará la siguiente foto. Android considera varios factores al determinar el tiempo exacto, y cada fabricante de dispositivos puede imponer restricciones a los procesos en segundo plano.\n\nPara asegurarte de que las fotos cambien exactamente cuando lo desees, otorga al aplicativo el permiso de \"Alarmas Exactas\" y verifica que no haya restricciones de batería aplicadas a él en la configuración de tu teléfono.</string>
+    <string name="help_article_body_2">El intervalo seleccionado o los horarios programados son una aproximación de cuándo se mostrará la siguiente foto. Android considera varios factores al determinar el tiempo exacto, y cada fabricante de dispositivos puede imponer restricciones a los procesos en segundo plano.\n\nPara asegurarte de que las fotos cambien exactamente cuando lo desees, otorga a la aplicación el permiso de \"Alarmas Exactas\" y verifica que no haya restricciones de batería aplicadas a él en la configuración de tu teléfono.</string>
     <string name="help_article_title_3">El widget no funciona después de reiniciar el teléfono</string>
     <string name="help_article_body_3">Cuando tu teléfono se reinicia, Android envía una señal a las aplicaciones para notificarlas, permitiéndoles reiniciarse solas. Desafortunadamente, algunos fabricantes de dispositivos (como Xiaomi, Redmi, Huawei y otros) bloquean esta señal.\n\nPara activar esta funcionalidad, cambia el permiso de \"Inicio Automático\" en tu aplicación de seguridad.</string>
     <string name="help_article_title_4">El widget es demasiado pequeño</string>
     <string name="help_article_body_4">Después de agregar el widget a tu pantalla de inicio, puedes mantenerlo presionado por algunos segundos para revelar la opción de cambiar el tamaño. Luego, arrastra los bordes para ajustarlo al tamaño deseado.</string>
     <string name="help_article_title_5">El widget a veces se convierte en un icono de error</string>
-    <string name="help_article_body_5">La aplicación en sí no se usa con frecuencia, solo cuando necesita editar un widget. Los widgets se ejecutan de forma independiente dentro de su lanzador de aplicaciones. Esto puede hacer que Android piense que la aplicación no es importante y el sistema la detendrá para recuperar recursos. Cuando se detiene la aplicación, sus widgets también lo hacen. Para evitar esto, actualice la política de uso de batería para la aplicación, configurándola como \"Sin restricciones\".</string>
+    <string name="help_article_body_5">La aplicación en sí no se usa con frecuencia, solo cuando necesitas editar un widget. Los widgets se ejecutan de forma independiente dentro de tu lanzador de aplicaciones. Esto puede hacer que Android piense que la aplicación no es importante y el sistema la detendrá para recuperar recursos. Cuando se detiene la aplicación, tus widgets también lo hacen. Para evitar esto, actualiza la política de uso de batería para la aplicación, configurándola como \"Sin restricciones\".</string>
     <string name="restriction_warning_hint">La actividad en segundo plano está restringida. Es posible que los widgets no funcionen correctamente. Toca para obtener más información.</string>
     <string name="restriction_warning_dialog_title">Restricciones de actividad en segundo plano y optimización de batería</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget necesita ejecutarse en segundo plano para actualizar tus widgets. Si el uso de batería está en \"Optimizado\", Android podría detener la aplicación, lo que impide que los widgets se actualicen correctamente.</string>
@@ -286,16 +286,16 @@
     <string name="translations_dialog_positive_action">Abrir Crowdin</string>
     <string name="translations_dialog_negative_action">Ahora no</string>
     <!-- Backup -->
-    <string name="backup_explanation_1">Exporte el &lt;i&gt;contenido&lt;/i&gt; y la &lt;i&gt;apariencia&lt;/i&gt; de sus widgets de fotos</string>
-    <string name="backup_explanation_2">Restaure sus widgets anteriores importando un archivo de copia de seguridad</string>
-    <string name="backup_explanation_3">&lt;b&gt;Los widgets sincronizados con carpetas no se pueden exportar.&lt;/b&gt; El permiso para acceder a las carpetas seleccionadas del dispositivo se almacena en su dispositivo y no se puede migrar. Esos widgets deben crearse desde cero</string>
+    <string name="backup_explanation_1">Exporta el &lt;i&gt;contenido&lt;/i&gt; y la &lt;i&gt;apariencia&lt;/i&gt; de tus widgets de fotos</string>
+    <string name="backup_explanation_2">Restaura tus widgets anteriores importando un archivo de copia de seguridad</string>
+    <string name="backup_explanation_3">&lt;b&gt;Los widgets sincronizados con carpetas no se pueden exportar.&lt;/b&gt; El permiso para acceder a las carpetas seleccionadas del dispositivo se almacena en tu dispositivo y no se puede migrar. Esos widgets deben crearse desde cero</string>
     <string name="backup_create">Crear copia de seguridad</string>
     <string name="backup_restore">Restaurar desde copia de seguridad</string>
     <string name="backup_items_title">Widgets del archivo de copia de seguridad</string>
     <string name="backup_item_restore">Restaurar</string>
     <string name="backup_feedback_success">¡Copia de seguridad exportada con éxito!</string>
-    <string name="backup_feedback_error">No se pudo crear un archivo de copia de seguridad. Asegúrese de tener widgets para exportar y vuelva a intentarlo.</string>
-    <string name="backup_feedback_restore_error">No se pudo restaurar la copia de seguridad. Asegúrese de elegir un archivo de copia de seguridad válido.</string>
+    <string name="backup_feedback_error">No se pudo crear un archivo de copia de seguridad. Asegúrate de tener widgets para exportar y vuelve a intentarlo.</string>
+    <string name="backup_feedback_restore_error">No se pudo restaurar la copia de seguridad. Asegúrate de elegir un archivo de copia de seguridad válido.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Todas las fotos</string>
     <!-- Cycling feedback -->
