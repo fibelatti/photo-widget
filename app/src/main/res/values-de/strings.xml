@@ -130,6 +130,10 @@
     <string name="photo_widget_configure_pick_gif">GIF auswählen</string>
     <string name="photo_widget_configure_pick_gif_replace">Ein anderes GIF auszuwählen ersetzt das vorhandene. Fortfahren?</string>
     <string name="photo_widget_configure_change_source">Quelle ändern</string>
+    <plurals name="photo_widget_configure_photo_quantity">
+        <item quantity="one">%d Foto</item>
+        <item quantity="other">%d Fotos</item>
+    </plurals>
     <string name="photo_widget_configure_select_cycling_mode">Foto-Timer</string>
     <string name="photo_widget_configure_cycling_mode_interval">Intervall</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Zeitplan</string>

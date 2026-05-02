@@ -132,6 +132,12 @@
     <string name="photo_widget_configure_pick_gif">Выбрать GIF</string>
     <string name="photo_widget_configure_pick_gif_replace">Выбор другого GIF заменит текущий. Продолжить?</string>
     <string name="photo_widget_configure_change_source">Изменить источник</string>
+    <plurals name="photo_widget_configure_photo_quantity">
+        <item quantity="one">%d фотография</item>
+        <item quantity="few">%d фотографии</item>
+        <item quantity="many">%d фотографий</item>
+        <item quantity="other">%d фотографий</item>
+    </plurals>
     <string name="photo_widget_configure_select_cycling_mode">Фототаймер</string>
     <string name="photo_widget_configure_cycling_mode_interval">Интервал</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Расписание</string>

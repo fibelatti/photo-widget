@@ -129,6 +129,10 @@
     <string name="photo_widget_configure_pick_gif">Pumili ng GIF</string>
     <string name="photo_widget_configure_pick_gif_replace">Ang pagpili ng ibang GIF ay papalitan ang kasalukuyan, magpatuloy?</string>
     <string name="photo_widget_configure_change_source">Palitan ang pinagmulan</string>
+    <plurals name="photo_widget_configure_photo_quantity">
+        <item quantity="one">%d larawan</item>
+        <item quantity="other">%d larawan</item>
+    </plurals>
     <string name="photo_widget_configure_select_cycling_mode">Timer sa paglipat ng larawan</string>
     <string name="photo_widget_configure_cycling_mode_interval">Agwat ng Oras</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Iskedyul</string>

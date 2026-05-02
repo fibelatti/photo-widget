@@ -131,6 +131,11 @@
     <string name="photo_widget_configure_pick_gif">Alege GIF</string>
     <string name="photo_widget_configure_pick_gif_replace">Alegerea altui GIF îl va înlocui pe cel existent, continui?</string>
     <string name="photo_widget_configure_change_source">Schimbă sursa</string>
+    <plurals name="photo_widget_configure_photo_quantity">
+        <item quantity="one">%d fotografie</item>
+        <item quantity="few">%d fotografii</item>
+        <item quantity="other">%d de fotografii</item>
+    </plurals>
     <string name="photo_widget_configure_select_cycling_mode">Temporizator poză</string>
     <string name="photo_widget_configure_cycling_mode_interval">Interval</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Programare</string>

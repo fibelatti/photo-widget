@@ -130,6 +130,10 @@
     <string name="photo_widget_configure_pick_gif">GIF seç</string>
     <string name="photo_widget_configure_pick_gif_replace">Başka bir GIF seçmek mevcut olanı değiştirecek, devam edilsin mi?</string>
     <string name="photo_widget_configure_change_source">Kaynağı değiştir</string>
+    <plurals name="photo_widget_configure_photo_quantity">
+        <item quantity="one">%d fotoğraf</item>
+        <item quantity="other">%d fotoğraf</item>
+    </plurals>
     <string name="photo_widget_configure_select_cycling_mode">Fotoğraf Zamanlayıcı</string>
     <string name="photo_widget_configure_cycling_mode_interval">Aralık</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Zamanlama</string>
