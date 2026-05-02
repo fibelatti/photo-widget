@@ -401,7 +401,6 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                             textRes = R.string.photo_widget_configure_too_many_photos_for_advanced_schedule_error,
                             textFormatArgs = arrayOf(PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS),
                         )
-
                     }
                     return@launch
                 }
