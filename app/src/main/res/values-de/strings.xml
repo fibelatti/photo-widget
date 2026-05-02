@@ -5,8 +5,8 @@
     <string name="photo_widget_host_loading">Widget wird geladen…</string>
     <string name="photo_widget_host_failed">Laden fehlgeschlagen\nErneut versuchen?</string>
     <!-- Home -->
-    <string name="photo_widget_home_title">Dekorieren Sie Ihren Startbildschirm mit Ihren Lieblingsfotos</string>
-    <string name="photo_widget_home_instruction">Erstellen Sie ein neues Widget, indem Sie eine der Optionen antippen. Keine Sorge, Sie können dies jederzeit ändern!</string>
+    <string name="photo_widget_home_title">Dekorier deinen Startbildschirm mit deinen Lieblingsfotos</string>
+    <string name="photo_widget_home_instruction">Erstelle ein neues Widget, indem du eine der Optionen antippst. Keine Sorge, du kannst dies jederzeit ändern!</string>
     <string name="photo_widget_home_new">Neues Widget</string>
     <string name="photo_widget_home_current">Meine Widgets</string>
     <string name="photo_widget_home_settings">Einstellungen</string>
@@ -26,26 +26,26 @@
     <string name="photo_widget_home_version">App-Version: %s</string>
     <string name="photo_widget_home_view_licenses">OSS-Lizenzen</string>
     <plurals name="photo_widget_home_share_received">
-        <item quantity="one">1 Foto empfangen. Erstellen Sie ein neues Widget oder wählen Sie ein vorhandenes aus, um es hinzuzufügen.</item>
-        <item quantity="other">%d Fotos empfangen. Erstellen Sie ein neues Widget oder wählen Sie ein vorhandenes aus, um sie hinzuzufügen.</item>
+        <item quantity="one">1 Foto empfangen. Erstelle ein neues Widget oder wähle ein vorhandenes aus, um es hinzuzufügen.</item>
+        <item quantity="other">%d Fotos empfangen. Erstelle ein neues Widget oder wähle ein vorhandenes aus, um sie hinzuzufügen.</item>
     </plurals>
     <string name="photo_widget_home_pinning_not_supported_title">Ein Widget direkt vom Startbildschirm hinzufügen</string>
     <string name="photo_widget_home_pinning_not_supported_message">1. Leeren Bereich gedrückt halten\n\n2. Widget-Menü auswählen\n\n3. Nach Material Photo Widget suchen\n\n4. Konfigurieren und speichern!</string>
-    <string name="photo_widget_home_crash_report_title">Ihre Hilfe kann die App verbessern</string>
-    <string name="photo_widget_home_crash_report_body">Es scheint, dass die App oder das Widget unerwartet abgestürzt ist. Sie können die Details per E-Mail mit mir teilen und so helfen, die App für alle zu verbessern.</string>
+    <string name="photo_widget_home_crash_report_title">Deine Hilfe kann die App verbessern</string>
+    <string name="photo_widget_home_crash_report_body">Es scheint, dass die App oder das Widget unerwartet abgestürzt ist. Du kannst die Details per E-Mail mit mir teilen und so helfen, die App für alle zu verbessern.</string>
     <string name="photo_widget_home_crash_report_action_confirm">Bericht teilen</string>
     <string name="photo_widget_home_crash_report_action_cancel">Nicht teilen</string>
     <string name="photo_widget_home_crash_report_choose_title">E-Mail senden</string>
     <!-- My Widgets -->
-    <string name="photo_widget_home_empty_widgets">Sie haben noch keine Widgets hinzugefügt.\nHier erscheinen Widgets, die Ihrem Startbildschirm hinzugefügt wurden.</string>
+    <string name="photo_widget_home_empty_widgets">Du hast noch keine Widgets hinzugefügt.\nHier erscheinen Widgets, die deinem Startbildschirm hinzugefügt wurden.</string>
     <string name="photo_widget_home_filter_all">Alle</string>
     <string name="photo_widget_home_draft_label">Entwurf</string>
     <string name="photo_widget_home_draft_action_discard">Entwurf verwerfen</string>
     <string name="photo_widget_home_locked_label">Gesperrt</string>
     <string name="photo_widget_home_removed_label">Entfernt</string>
-    <string name="photo_widget_home_removed_widgets_hint">Entfernte Widgets befinden sich nicht mehr auf Ihrem Startbildschirm. Sie werden nach 7 Tagen endgültig aus der App gelöscht. Sie können sie \"Behalten\".</string>
+    <string name="photo_widget_home_removed_widgets_hint">Entfernte Widgets befinden sich nicht mehr auf deinem Startbildschirm. Sie werden nach 7 Tagen endgültig aus der App gelöscht. Du kannst sie \"Behalten\".</string>
     <string name="photo_widget_home_invalid_label">Handlung erforderlich</string>
-    <string name="photo_widget_home_invalid_widgets_hint">Dieses Widget wird möglicherweise nicht richtig angezeigt oder funktioniert nicht korrekt. Versuchen Sie, die Einstellungen in der App zu bearbeiten oder zu löschen. Wenn das nicht hilft, entfernen Sie das Widget von Ihrem Startbildschirm und fügen Sie ein neues hinzu.</string>
+    <string name="photo_widget_home_invalid_widgets_hint">Dieses Widget wird möglicherweise nicht richtig angezeigt oder funktioniert nicht korrekt. Versuche, die Einstellungen in der App zu bearbeiten oder zu löschen. Wenn das nicht hilft, entferne das Widget von deinem Startbildschirm und füge ein neues hinzu.</string>
     <string name="photo_widget_home_my_widget_action_sync">Mit Ordnerfotos synchronisieren</string>
     <string name="photo_widget_home_my_widget_action_edit">Anzeigen / Bearbeiten</string>
     <string name="photo_widget_home_my_widget_action_duplicate">Duplizieren</string>
@@ -58,7 +58,7 @@
     <string name="photo_widget_home_my_widget_syncing_feedback">Neueste Fotos aus dem Ordner abrufen…</string>
     <!-- Preferences -->
     <string name="preferences_data_saver">Speichernutzung reduzieren</string>
-    <string name="preferences_data_saver_description">Wenn aktiviert, werden zu Widgets hinzugefügte Fotos komprimiert, um Speicherplatz zu sparen. Dies beeinträchtigt normalerweise nicht die Qualität, aber wenn Ihre Fotos kleine Texte enthalten, wird empfohlen, dies zu deaktivieren.\n\nDiese Einstellung betrifft nur Fotos, die nach der Änderung hinzugefügt wurden.\n\nSie gilt nicht für synchronisierte Ordner, da diese Fotos direkt aus Ihrem Gerätespeicher gelesen werden.</string>
+    <string name="preferences_data_saver_description">Wenn aktiviert, werden zu Widgets hinzugefügte Fotos komprimiert, um Speicherplatz zu sparen. Dies beeinträchtigt normalerweise nicht die Qualität, aber wenn deine Fotos kleine Texte enthalten, wird empfohlen, dies zu deaktivieren.\n\nDiese Einstellung betrifft nur Fotos, die nach der Änderung hinzugefügt wurden.\n\nSie gilt nicht für synchronisierte Ordner, da diese Fotos direkt aus deinem Gerätespeicher gelesen werden.</string>
     <string name="preferences_appearance_follow_system">System folgen</string>
     <string name="preferences_appearance_light">Hell</string>
     <string name="preferences_appearance_dark">Dunkel</string>
@@ -67,7 +67,7 @@
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Widget-Standardeinstellungen</string>
     <string name="widget_defaults_description">Allgemeine Einstellungen für alle neuen Widgets</string>
-    <string name="widget_defaults_explanation">Diese Werte werden beim Erstellen eines neuen Widgets vorgeladen. Sie sind nützlich, um mehrere Widgets mit derselben Konfiguration einzurichten, wodurch Sie die Einstellungen nicht jedes Mal anpassen müssen. Beachten Sie, dass Änderungen an diesen Werten keine Auswirkungen auf bestehende Widgets haben.</string>
+    <string name="widget_defaults_explanation">Diese Werte werden beim Erstellen eines neuen Widgets vorgeladen. Sie sind nützlich, um mehrere Widgets mit derselben Konfiguration einzurichten, wodurch du die Einstellungen nicht jedes Mal anpassen musst. Beachte, dass Änderungen an diesen Werten keine Auswirkungen auf bestehende Widgets haben.</string>
     <string name="widget_defaults_source">Quelle</string>
     <string name="widget_defaults_shuffle">Zufällig</string>
     <string name="widget_defaults_cycling">Foto-Timer</string>
@@ -79,8 +79,8 @@
     <string name="widget_defaults_tap_action">Tipp-Aktion</string>
     <string name="widget_defaults_reset">Werte zurücksetzen</string>
     <!-- Share -->
-    <string name="share_title">Verbreiten Sie die Nachricht</string>
-    <string name="share_text">Fügen Sie Ihre Lieblingsfotos mit dem Material Photo Widget zu Ihrem Startbildschirm hinzu. Kostenlos herunterladen unter %s</string>
+    <string name="share_title">Verbreite die Nachricht</string>
+    <string name="share_text">Füge deine Lieblingsfotos mit dem Material Photo Widget zu deinem Startbildschirm hinzu. Kostenlos herunterladen unter %s</string>
     <!-- Source -->
     <string name="photo_widget_source_photos">Fotos</string>
     <string name="photo_widget_source_directory">Ordner</string>
@@ -112,7 +112,7 @@
     <string name="photo_widget_configure_import_dialog_title">Widget auswählen</string>
     <string name="photo_widget_configure_import_dialog_description">Alle Fotos und Konfigurationen werden in das neue Widget kopiert</string>
     <string name="photo_widget_configure_import_error">Alle ausgewählten Fotos konnten nicht importiert werden</string>
-    <string name="photo_widget_configure_too_many_photos_error">Jeder synchronisierte Ordner kann maximal 3000 Fotos enthalten. Sie können mehr als einen auswählen, und jeder Unterordner wird separat gezählt.\n\nSie können Ihre Kamerarolle nicht auswählen. Fotos werden einzeln verarbeitet, und Ordner mit vielen Tausend Fotos führen zu erheblichen Leistungsproblemen im Widget-Editor sowie auf dem Startbildschirm beim Wechseln der Fotos.</string>
+    <string name="photo_widget_configure_too_many_photos_error">Jeder synchronisierte Ordner kann maximal 3000 Fotos enthalten. Du kannst mehr als einen auswählen, und jeder Unterordner wird separat gezählt.\n\nDu kannst deine Kamerarolle nicht auswählen. Fotos werden einzeln verarbeitet, und Ordner mit vielen Tausend Fotos führen zu erheblichen Leistungsproblemen im Widget-Editor sowie auf dem Startbildschirm beim Wechseln der Fotos.</string>
     <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">Widgets mit erweitertem Zeitplan können maximal 96 Fotos enthalten.</string>
     <string name="photo_widget_configure_missing_photos_error">Das Widget muss mindestens ein Foto enthalten. Widgets können nur direkt vom Startbildschirm gelöscht werden.</string>
     <string name="photo_widget_configure_menu_source">Quelle</string>
@@ -175,11 +175,11 @@
         <item quantity="one">1 Zeit ausgewählt</item>
         <item quantity="other">%d Zeiten ausgewählt</item>
     </plurals>
-    <string name="photo_widget_configure_interval_warning">Das tatsächliche Intervall oder die geplante Zeit kann aufgrund von Einschränkungen, die Android zur Optimierung der Akkulaufzeit auferlegt, variieren. Um sicherzustellen, dass es wie gewünscht funktioniert, erteilen Sie die unten stehende Berechtigung</string>
+    <string name="photo_widget_configure_interval_warning">Das tatsächliche Intervall oder die geplante Zeit kann aufgrund von Einschränkungen, die Android zur Optimierung der Akkulaufzeit auferlegt, variieren. Um sicherzustellen, dass es wie gewünscht funktioniert, erteile die unten stehende Berechtigung</string>
     <string name="photo_widget_configure_interval_grant_permission">Berechtigung für genaue Alarme erteilen</string>
     <string name="photo_widget_configure_interval_grant_permission_description">Sicherstellen, dass Widgets mit kurzen Intervallen planmäßig aktualisiert werden</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">Über diese Berechtigung</string>
-    <string name="photo_widget_configure_interval_permission_dialog_description">Android kann Hintergrundarbeiten einschränken, um die Akkulaufzeit zu optimieren, was zu längeren Intervallen zwischen den einzelnen Fotos führen kann.\n\nUm Widgets genau im ausgewählten Intervall zu aktualisieren, öffnen Sie die Einstellungen und erlauben Sie das Festlegen von Alarmen und Erinnerungen.</string>
+    <string name="photo_widget_configure_interval_permission_dialog_description">Android kann Hintergrundarbeiten einschränken, um die Akkulaufzeit zu optimieren, was zu längeren Intervallen zwischen den einzelnen Fotos führen kann.\n\nUm Widgets genau im ausgewählten Intervall zu aktualisieren, öffne die Einstellungen und erlaube das Festlegen von Alarmen und Erinnerungen.</string>
     <string name="photo_widget_configure_interval_open_settings">Einstellungen öffnen</string>
     <string name="photo_widget_configure_battery_optimization">Akku-Optimierung deaktivieren</string>
     <string name="photo_widget_configure_battery_optimization_description">Sicherstellen, dass die App unterbrechungsfrei läuft und Ihre Widgets auf dem neuesten Stand bleiben</string>
@@ -196,14 +196,14 @@
     <string name="photo_widget_configure_border_color_palette_dominant">Dominante Farbe</string>
     <string name="photo_widget_configure_border_color_palette_vibrant">Lebendige Farbe</string>
     <string name="photo_widget_configure_border_color_palette_muted">Gedämpfte Farbe</string>
-    <string name="photo_widget_configure_border_explanation">Änderungen treten während des nächsten Widget-Updates in Kraft, nachdem Sie die Theme-Farbe Ihres Telefons geändert haben. Um alle Widgets sofort zu aktualisieren, öffnen Sie einfach die App.</string>
+    <string name="photo_widget_configure_border_explanation">Änderungen treten während des nächsten Widget-Updates in Kraft, nachdem du die Theme-Farbe deines Telefons geändert hast. Um alle Widgets sofort zu aktualisieren, öffne einfach die App.</string>
     <string name="photo_widget_configure_offset">Versatz</string>
     <string name="photo_widget_configure_offset_current_values">Horizontal: %1$d, Vertikal: %2$d</string>
     <string name="photo_widget_configure_offset_current_horizontal">Horizontal</string>
     <string name="photo_widget_configure_offset_current_vertical">Vertikal</string>
     <string name="photo_widget_configure_padding">Polsterung</string>
     <string name="photo_widget_configure_tap_action">Tipp-Aktion</string>
-    <string name="photo_widget_configure_tap_action_description">Passen Sie die Tipp-Aktion jedes Bereichs an.</string>
+    <string name="photo_widget_configure_tap_action_description">Passe die Tipp-Aktion jedes Bereichs an.</string>
     <string name="photo_widget_configure_tap_action_copy_from">Kopieren von…</string>
     <string name="photo_widget_configure_tap_action_area_left">Links</string>
     <string name="photo_widget_configure_tap_action_area_center">Mitte</string>
@@ -226,7 +226,7 @@
     <string name="photo_widget_configure_tap_action_share_photo">Foto teilen</string>
     <string name="photo_widget_configure_tap_action_set_wallpaper">Als Hintergrundbild festlegen</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Foto entfernen</string>
-    <string name="photo_widget_configure_tap_action_remove_photo_description">Vom Widget ausschließen. Das Originalfoto wird nicht von Ihrem Telefon entfernt.</string>
+    <string name="photo_widget_configure_tap_action_remove_photo_description">Vom Widget ausschließen. Das Originalfoto wird nicht von deinem Telefon entfernt.</string>
 
     <string name="photo_widget_remove_action_feedback_positive">Foto entfernt!</string>
     <string name="photo_widget_remove_action_feedback_negative">Nur noch ein Foto übrig, kann nicht entfernt werden.</string>
@@ -236,7 +236,7 @@
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Fotos im Viewer beim Wechseln nicht mischen</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">Beim Wechseln im Viewer das aktuelle Foto nicht ändern</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Diese Aktion öffnet das aktuelle Foto mit der Galerie-App. Es ist nicht möglich, andere Fotos anzuzeigen oder zu ihnen zu navigieren.</string>
-    <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Sie können auch auswählen, welche Galerie-App verwendet werden soll.</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Du kannst auch auswählen, welche Galerie-App verwendet werden soll.</string>
     <string name="photo_widget_configure_tap_action_choose_app">App auswählen</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Andere Tippbereiche deaktivieren, während der Timer pausiert ist</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Diese Einstellungen werden von allen Bereichen verwendet, die diese Tipp-Aktion nutzen.</string>
@@ -245,7 +245,7 @@
     <string name="photo_widget_configure_gif_frame_interval_presets">Voreinstellungen</string>
     <string name="photo_widget_configure_add_to_home">Zum Startbildschirm hinzufügen</string>
     <string name="photo_widget_configure_save_changes">Änderungen speichern</string>
-    <string name="photo_widget_configure_widget_pinned">Widget hinzugefügt! Überprüfen Sie Ihren Startbildschirm…</string>
+    <string name="photo_widget_configure_widget_pinned">Widget hinzugefügt! Überprüfe deinen Startbildschirm…</string>
     <string name="photo_widget_time_picker_title">Zeit auswählen</string>
     <string name="photo_widget_directory_sort_title">Fotos sortieren</string>
     <string name="photo_widget_directory_sort_newest_first">Neueste zuerst</string>
@@ -264,45 +264,45 @@
     <string name="photo_widget_configure_text_caveat">Foto und Text teilen sich denselben Widget-Bereich. Der Text verwendet das systemweite Standarderscheinungsbild. Die Position kann mit den obigen Einstellungen sowie mit Foto-Versatz und Innenabstand feinjustiert werden.</string>
     <!-- Help -->
     <string name="help_article_title_1">Das Hinzufügen eines Widgets zum Startbildschirm funktioniert nicht</string>
-    <string name="help_article_body_1">Wenn Sie ein Widget konfiguriert haben und nichts passiert, wenn Sie versuchen, es zum Startbildschirm hinzuzufügen, oder wenn es hinzugefügt wird, aber die ausgewählten Fotos nicht anzeigt, können Sie versuchen, es direkt von Ihrem Startbildschirm hinzuzufügen.\n\nDie Anweisungen können je nach Android-Version, Gerätehersteller und Startbildschirm-Launcher variieren, aber im Allgemeinen ist der Vorgang wie folgt:\n\n1. Halten Sie einen leeren Bereich auf Ihrem Startbildschirm gedrückt, bis ein Pop-up-Menü erscheint.\n2. Suchen Sie die Option „Widgets“.\n3. Suchen Sie in den verfügbaren Widgets nach „Material Photo Widget“.\n4. Ziehen Sie es auf Ihren Startbildschirm und konfigurieren Sie es wie gewohnt.</string>
+    <string name="help_article_body_1">Wenn du ein Widget konfiguriert hast und nichts passiert, wenn du versuchst, es zum Startbildschirm hinzuzufügen, oder wenn es hinzugefügt wird, aber die ausgewählten Fotos nicht anzeigt, kannst du versuchen, es direkt von deinem Startbildschirm hinzuzufügen.\n\nDie Anweisungen können je nach Android-Version, Gerätehersteller und Startbildschirm-Launcher variieren, aber im Allgemeinen ist der Vorgang wie folgt:\n\n1. Halte einen leeren Bereich auf deinem Startbildschirm gedrückt, bis ein Pop-up-Menü erscheint.\n2. Suche die Option „Widgets".\n3. Suche in den verfügbaren Widgets nach „Material Photo Widget".\n4. Ziehe es auf deinen Startbildschirm und konfiguriere es wie gewohnt.</string>
     <string name="help_article_title_2">Fotos ändern sich nicht automatisch</string>
-    <string name="help_article_body_2">Das ausgewählte Intervall oder die geplanten Zeiten sind eine Annäherung daran, wann das nächste Foto angezeigt wird. Android berücksichtigt mehrere Faktoren bei der Bestimmung der tatsächlichen Zeit, und jeder Gerätehersteller kann Einschränkungen für Hintergrundprozesse auferlegen.\n\nUm sicherzustellen, dass die Fotos genau dann wechseln, wenn Sie es wünschen, erteilen Sie der App die Berechtigung „Genaue Alarme“ und stellen Sie sicher, dass in den Telefoneinstellungen keine Batteriebeschränkungen angewendet werden.</string>
+    <string name="help_article_body_2">Das ausgewählte Intervall oder die geplanten Zeiten sind eine Annäherung daran, wann das nächste Foto angezeigt wird. Android berücksichtigt mehrere Faktoren bei der Bestimmung der tatsächlichen Zeit, und jeder Gerätehersteller kann Einschränkungen für Hintergrundprozesse auferlegen.\n\nUm sicherzustellen, dass die Fotos genau dann wechseln, wenn du es wünschst, erteile der App die Berechtigung „Genaue Alarme" und stelle sicher, dass in den Telefoneinstellungen keine Batteriebeschränkungen angewendet werden.</string>
     <string name="help_article_title_3">Das Widget funktioniert nach dem Neustart des Telefons nicht</string>
-    <string name="help_article_body_3">Wenn Ihr Telefon neu startet, sendet Android ein Signal an Apps, um sie zu benachrichtigen, damit sie sich selbst neu starten können. Leider blockieren einige Gerätehersteller (wie Xiaomi, Redmi, Huawei und andere) dieses Signal.\n\nUm diese Funktionalität zu aktivieren, ändern Sie die Berechtigung „Auto Start“ in Ihrer Sicherheits-App.</string>
+    <string name="help_article_body_3">Wenn dein Telefon neu startet, sendet Android ein Signal an Apps, um sie zu benachrichtigen, damit sie sich selbst neu starten können. Leider blockieren einige Gerätehersteller (wie Xiaomi, Redmi, Huawei und andere) dieses Signal.\n\nUm diese Funktionalität zu aktivieren, ändere die Berechtigung „Auto Start" in deiner Sicherheits-App.</string>
     <string name="help_article_title_4">Die Widget-Größe ist zu klein</string>
-    <string name="help_article_body_4">Nachdem Sie das Widget zu Ihrem Startbildschirm hinzugefügt haben, können Sie es lange gedrückt halten, um die Größenänderungsoption anzuzeigen. Ziehen Sie dann die Ränder, um es auf die gewünschte Größe anzupassen.</string>
+    <string name="help_article_body_4">Nachdem du das Widget zu deinem Startbildschirm hinzugefügt hast, kannst du es lange gedrückt halten, um die Größenänderungsoption anzuzeigen. Ziehe dann die Ränder, um es auf die gewünschte Größe anzupassen.</string>
     <string name="help_article_title_5">Das Widget wird manchmal zu einem Fehlersymbol</string>
-    <string name="help_article_body_5">Die App selbst wird nicht häufig verwendet – nur, wenn Sie ein Widget bearbeiten müssen. Widgets laufen unabhängig in Ihrem App-Launcher. Dies kann Android dazu verleiten zu denken, dass die App nicht wichtig ist, und das System stoppt sie, um Ressourcen zurückzugewinnen. Wenn die App gestoppt wird, sind es auch ihre Widgets. Um dies zu verhindern, aktualisieren Sie die Akkunutzungsrichtlinie für die App und setzen Sie sie auf \"Uneingeschränkt\".</string>
+    <string name="help_article_body_5">Die App selbst wird nicht häufig verwendet – nur, wenn du ein Widget bearbeiten musst. Widgets laufen unabhängig in deinem App-Launcher. Dies kann Android dazu verleiten zu denken, dass die App nicht wichtig ist, und das System stoppt sie, um Ressourcen zurückzugewinnen. Wenn die App gestoppt wird, sind es auch ihre Widgets. Um dies zu verhindern, aktualisiere die Akkunutzungsrichtlinie für die App und setze sie auf \"Uneingeschränkt\".</string>
     <string name="restriction_warning_hint">Hintergrundaktivität ist eingeschränkt. Widgets funktionieren möglicherweise nicht korrekt. Tippen Sie hier, um mehr zu erfahren.</string>
     <string name="restriction_warning_dialog_title">Hintergrundarbeitsbeschränkungen und Akkuoptimierung</string>
-    <string name="restriction_warning_dialog_body_1">Material Photo Widget muss im Hintergrund ausgeführt werden, um Ihre Widgets zu aktualisieren. Wenn die Akkunutzung auf \"Optimiert\" eingestellt ist, beendet Android die App möglicherweise, was eine korrekte Aktualisierung der Widgets verhindert.</string>
-    <string name="restriction_warning_dialog_body_2">Sie können die Berechtigung über die Schaltfläche unten erteilen oder zu den App-Einstellungen gehen und \"App-Akkunutzung\" öffnen. Tippen Sie auf \"Hintergrundnutzung zulassen\" und wählen Sie \"Nicht eingeschränkt\", um zuverlässige Updates zu gewährleisten.</string>
-    <string name="restriction_warning_dialog_body_3">Einige Geräte blockieren möglicherweise auch den automatischen Start der App nach einem Neustart. Suchen Sie in Ihren Einstellungen nach \"Autostart\" oder besuchen Sie https://dontkillmyapp.com für gerätespezifische Anweisungen.</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widget muss im Hintergrund ausgeführt werden, um deine Widgets zu aktualisieren. Wenn die Akkunutzung auf \"Optimiert\" eingestellt ist, beendet Android die App möglicherweise, was eine korrekte Aktualisierung der Widgets verhindert.</string>
+    <string name="restriction_warning_dialog_body_2">Du kannst die Berechtigung über die Schaltfläche unten erteilen oder zu den App-Einstellungen gehen und \"App-Akkunutzung\" öffnen. Tippe auf \"Hintergrundnutzung zulassen\" und wähle \"Nicht eingeschränkt\", um zuverlässige Updates zu gewährleisten.</string>
+    <string name="restriction_warning_dialog_body_3">Einige Geräte blockieren möglicherweise auch den automatischen Start der App nach einem Neustart. Suche in deinen Einstellungen nach \"Autostart\" oder besuche https://dontkillmyapp.com für gerätespezifische Anweisungen.</string>
     <string name="restriction_warning_grant_battery_permission">Berechtigung erteilen</string>
     <string name="restriction_warning_open_app_settings">App-Einstellungen öffnen</string>
     <!-- Translations -->
-    <string name="translations_dialog_title">Helfen Sie beim Übersetzen in Ihre Sprache!</string>
-    <string name="translations_dialog_body">Diese App verwendet einen Community-basierten Ansatz für Übersetzungen, und Ihre Hilfe kann sie verbessern. Sie können dazu beitragen, wenn Sie eine neue Sprache verfügbar sehen möchten oder etwas entdeckt haben, das nicht richtig aussieht.</string>
+    <string name="translations_dialog_title">Hilf beim Übersetzen in deine Sprache!</string>
+    <string name="translations_dialog_body">Diese App verwendet einen Community-basierten Ansatz für Übersetzungen, und deine Hilfe kann sie verbessern. Du kannst dazu beitragen, wenn du eine neue Sprache verfügbar sehen möchtest oder etwas entdeckt hast, das nicht richtig aussieht.</string>
     <string name="translations_dialog_positive_action">Crowdin öffnen</string>
     <string name="translations_dialog_negative_action">Nicht jetzt</string>
     <!-- Backup -->
-    <string name="backup_explanation_1">Exportieren Sie den &lt;i&gt;Inhalt&lt;/i&gt; und das &lt;i&gt;Aussehen&lt;/i&gt; Ihrer Foto-Widgets</string>
-    <string name="backup_explanation_2">Stellen Sie Ihre vorherigen Widgets durch den Import einer Sicherungsdatei wieder her</string>
-    <string name="backup_explanation_3">&lt;b&gt;Mit Ordnern synchronisierte Widgets können nicht exportiert werden.&lt;/b&gt; Die Berechtigung zum Zugriff auf die ausgewählten Geräteordner wird auf Ihrem Gerät gespeichert und kann nicht migriert werden. Diese Widgets müssen von Grund auf neu erstellt werden</string>
+    <string name="backup_explanation_1">Exportiere den &lt;i&gt;Inhalt&lt;/i&gt; und das &lt;i&gt;Aussehen&lt;/i&gt; deiner Foto-Widgets</string>
+    <string name="backup_explanation_2">Stelle deine vorherigen Widgets durch den Import einer Sicherungsdatei wieder her</string>
+    <string name="backup_explanation_3">&lt;b&gt;Mit Ordnern synchronisierte Widgets können nicht exportiert werden.&lt;/b&gt; Die Berechtigung zum Zugriff auf die ausgewählten Geräteordner wird auf deinem Gerät gespeichert und kann nicht migriert werden. Diese Widgets müssen von Grund auf neu erstellt werden</string>
     <string name="backup_create">Sicherung erstellen</string>
     <string name="backup_restore">Aus Sicherung wiederherstellen</string>
     <string name="backup_items_title">Widgets aus der Sicherungsdatei</string>
     <string name="backup_item_restore">Wiederherstellen</string>
     <string name="backup_feedback_success">Sicherung erfolgreich exportiert!</string>
-    <string name="backup_feedback_error">Fehler beim Erstellen der Sicherungsdatei. Bitte stellen Sie sicher, dass Sie Widgets zum Exportieren haben, und versuchen Sie es erneut.</string>
-    <string name="backup_feedback_restore_error">Fehler beim Wiederherstellen der Sicherung. Bitte stellen Sie sicher, dass Sie eine gültige Sicherungsdatei auswählen.</string>
+    <string name="backup_feedback_error">Fehler beim Erstellen der Sicherungsdatei. Bitte stelle sicher, dass du Widgets zum Exportieren hast, und versuche es erneut.</string>
+    <string name="backup_feedback_restore_error">Fehler beim Wiederherstellen der Sicherung. Bitte stelle sicher, dass du eine gültige Sicherungsdatei auswählst.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Alle Fotos</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Widget pausiert</string>
     <string name="photo_widget_cycling_feedback_resumed">Widget fortgesetzt</string>
     <!-- Folder -->
-    <string name="photo_widget_app_folder_empty">Du hast diesem Ordner noch keine Apps hinzugefügt. Tippe auf „Weiter“, um den Widget-Editor zu öffnen.</string>
+    <string name="photo_widget_app_folder_empty">Du hast diesem Ordner noch keine Apps hinzugefügt. Tippe auf „Weiter", um den Widget-Editor zu öffnen.</string>
     <string name="photo_widget_app_folder_add_app">App hinzufügen</string>
     <!-- Keep-alive service -->
     <string name="photo_widget_keep_alive_service_dialog_title">Hintergrunddienst</string>

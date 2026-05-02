@@ -110,7 +110,7 @@
     <string name="photo_widget_configure_tab_text">Текст</string>
     <string name="photo_widget_configure_tab_behavior">Поведение</string>
     <string name="photo_widget_configure_import_prompt">Импортировать из другого виджета?</string>
-    <string name="photo_widget_configure_import_prompt_action">Чтобы выбрать</string>
+    <string name="photo_widget_configure_import_prompt_action">Выбрать</string>
     <string name="photo_widget_configure_import_dialog_title">Выберите виджет</string>
     <string name="photo_widget_configure_import_dialog_description">Все фотографии и конфигурации будут скопированы в новый виджет</string>
     <string name="photo_widget_configure_import_error">Не удалось импортировать все выбранные фотографии</string>

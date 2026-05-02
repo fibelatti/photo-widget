@@ -101,7 +101,7 @@
     <!-- Configure -->
     <string name="photo_widget_configure_save_draft_prompt">I-save ang mga pagbabago bilang draft?</string>
     <string name="photo_widget_configure_navigate_back_warning">Bumalik? Mawawala ang mga pagbabago.</string>
-    <string name="photo_widget_configure_navigate_back_warning_restore">To finish restoring the widget you must add it to home screen. Exit without restoring?</string>
+    <string name="photo_widget_configure_navigate_back_warning_restore">Para matapos ang pagbabalik ng widget, kailangan mo itong idagdag sa home screen. Lumabas nang hindi ibinabalik?</string>
     <string name="photo_widget_configure_tab_content">Laman</string>
     <string name="photo_widget_configure_tab_appearance">Itsura</string>
     <string name="photo_widget_configure_tab_text">Teksto</string>

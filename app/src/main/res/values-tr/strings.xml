@@ -52,8 +52,8 @@
     <string name="photo_widget_home_my_widget_action_lock">Geçerli fotoğrafla kilitle</string>
     <string name="photo_widget_home_my_widget_action_unlock">Widget\'ın kilidini aç</string>
     <string name="photo_widget_home_my_widget_lock_explainer">Widget kilitliyken fotoğraflar otomatik olarak veya dokunulduğunda değişmez</string>
-    <string name="photo_widget_home_removed_widget_action_restore">Eski haline getirmek</string>
-    <string name="photo_widget_home_removed_widget_action_keep">Kale</string>
+    <string name="photo_widget_home_removed_widget_action_restore">Eski haline getir</string>
+    <string name="photo_widget_home_removed_widget_action_keep">Tut</string>
     <string name="photo_widget_home_removed_widget_action_delete">Kalıcı olarak sil</string>
     <string name="photo_widget_home_my_widget_syncing_feedback">Klasörden son fotoğraflar getiriliyor…</string>
     <!-- Preferences -->
@@ -317,9 +317,9 @@
     <string name="photo_widget_action_continue">Devam et</string>
     <string name="photo_widget_action_cancel">İptal</string>
     <string name="photo_widget_action_apply">Uygula</string>
-    <string name="photo_widget_action_confirm">Onaylamak</string>
+    <string name="photo_widget_action_confirm">Onayla</string>
     <string name="photo_widget_action_got_it">Anladım</string>
-    <string name="photo_widget_action_dismiss">Kapatmak için</string>
+    <string name="photo_widget_action_dismiss">Kapat</string>
     <string name="photo_widget_action_learn_more">Daha fazla bilgi</string>
     <string name="photo_widget_action_ignore">Yoksay</string>
     <string name="photo_widget_action_share">Paylaş</string>
