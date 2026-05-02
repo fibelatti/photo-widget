@@ -185,6 +185,7 @@ fun WidgetDefaultsScreen(
     PhotoWidgetCycleModeBottomSheet(
         sheetState = cycleModePickerSheetState,
         cycleMode = preferences.defaultCycleMode,
+        canUseAdvancedSchedule = true,
         onApplyClick = preferencesViewModel::saveDefaultCycleMode,
     )
 

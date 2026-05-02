@@ -87,6 +87,7 @@ fun PhotoWidgetConfigureBehaviorTab(
     PhotoWidgetCycleModeBottomSheet(
         sheetState = cycleModePickerSheetState,
         cycleMode = state.photoWidget.cycleMode,
+        canUseAdvancedSchedule = state.photoWidget.photos.size <= PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS,
         onApplyClick = viewModel::cycleModeSelected,
     )
 

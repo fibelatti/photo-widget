@@ -33,6 +33,7 @@ fun <T : Any> RadioGroup(
     onItemClick: (T) -> Unit,
     itemTitle: (T) -> String,
     modifier: Modifier = Modifier,
+    itemEnabled: (T) -> Boolean = { true },
     itemDescription: (T) -> String? = { null },
     itemFlag: @Composable RowScope.(T) -> Unit = {},
 ) {
@@ -46,6 +47,7 @@ fun <T : Any> RadioGroup(
                 onClick = { onItemClick(item) },
                 title = itemTitle(item),
                 description = itemDescription(item),
+                enabled = itemEnabled(item),
                 shape = when (index) {
                     0 -> Shapes.TopShape
                     items.lastIndex -> Shapes.BottomShape
@@ -64,6 +66,7 @@ private fun RadioGroupItem(
     title: String,
     description: String?,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     shape: Shape = MaterialTheme.shapes.small,
     flag: @Composable RowScope.() -> Unit = {},
 ) {
@@ -83,6 +86,7 @@ private fun RadioGroupItem(
             .clip(shape)
             .selectable(
                 selected = selected,
+                enabled = enabled,
                 role = Role.RadioButton,
                 onClick = onClick,
             )
@@ -93,6 +97,7 @@ private fun RadioGroupItem(
         RadioButton(
             selected = selected,
             onClick = null,
+            enabled = enabled,
         )
 
         Column(

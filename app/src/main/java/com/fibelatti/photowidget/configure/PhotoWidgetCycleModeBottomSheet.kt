@@ -91,6 +91,7 @@ import java.util.concurrent.TimeUnit
 fun PhotoWidgetCycleModeBottomSheet(
     sheetState: AppSheetState,
     cycleMode: PhotoWidgetCycleMode,
+    canUseAdvancedSchedule: Boolean,
     onApplyClick: (newMode: PhotoWidgetCycleMode) -> Unit,
 ) {
     AppBottomSheet(
@@ -116,6 +117,7 @@ fun PhotoWidgetCycleModeBottomSheet(
 
         PhotoCycleModePickerContent(
             cycleMode = cycleMode,
+            canUseAdvancedSchedule = canUseAdvancedSchedule,
             canScheduleExactAlarms = canScheduleExactAlarms,
             onOpenPermission = { launcher.launch(requestScheduleExactAlarmIntent(localContext)) },
             onApplyClick = { newMode ->
@@ -129,6 +131,7 @@ fun PhotoWidgetCycleModeBottomSheet(
 @Composable
 private fun PhotoCycleModePickerContent(
     cycleMode: PhotoWidgetCycleMode,
+    canUseAdvancedSchedule: Boolean,
     canScheduleExactAlarms: Boolean,
     onOpenPermission: () -> Unit,
     onApplyClick: (newMode: PhotoWidgetCycleMode) -> Unit,
@@ -179,9 +182,10 @@ private fun PhotoCycleModePickerContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
+            itemEnabled = { item ->
+                item !is PhotoWidgetCycleMode.AdvancedSchedule || canUseAdvancedSchedule
+            },
             itemDescription = itemDescription@{ item ->
-                if (item::class != mode::class) return@itemDescription null
-
                 when (item) {
                     is PhotoWidgetCycleMode.Interval -> {
                         localResources.getString(
@@ -657,6 +661,7 @@ private fun IntervalPreview() {
                     timeUnit = TimeUnit.SECONDS,
                 ),
             ),
+            canUseAdvancedSchedule = true,
             canScheduleExactAlarms = false,
             onOpenPermission = {},
             onApplyClick = {},
@@ -672,6 +677,7 @@ private fun ScheduleEmptyPreview() {
             cycleMode = PhotoWidgetCycleMode.Schedule(
                 triggers = emptySet(),
             ),
+            canUseAdvancedSchedule = true,
             canScheduleExactAlarms = false,
             onOpenPermission = {},
             onApplyClick = {},
@@ -694,6 +700,7 @@ private fun SchedulePreview() {
                     Time(hour = 22, minute = 0),
                 ),
             ),
+            canUseAdvancedSchedule = true,
             canScheduleExactAlarms = false,
             onOpenPermission = {},
             onApplyClick = {},
@@ -707,6 +714,7 @@ private fun DisabledPreview() {
     ExtendedTheme {
         PhotoCycleModePickerContent(
             cycleMode = PhotoWidgetCycleMode.Disabled,
+            canUseAdvancedSchedule = false,
             canScheduleExactAlarms = false,
             onOpenPermission = {},
             onApplyClick = {},
