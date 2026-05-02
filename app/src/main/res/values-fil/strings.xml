@@ -143,10 +143,10 @@
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">Itakda ang oras</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">Ang widget na ito ay may higit sa %d na larawan, kaya ang iskedyul nito ay nabalik sa 15-minutong timer.</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Ang oras na ito ay nakatakda na sa ibang larawan.</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">Lumipat sa susunod na larawan sa regular na agwat</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Lumipat sa susunod na larawan sa mga nakatakdang oras (max. %d beses)</string>
-    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Magtakda ng oras para sa bawat larawan sa content tab (max. %d larawan)</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Huwag baguhin ang mga larawan nang awtomatiko</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">Lumalipat sa susunod na larawan sa regular na agwat</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Lumalipat sa susunod na larawan sa mga nakatakdang oras (max. %d beses)</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Pumili ng oras para sa bawat larawan sa content tab (max. %d larawan)</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Hindi magbabago ang mga larawan nang awtomatiko</string>
     <string name="photo_widget_configure_interval_current_label">Kada %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d segundo</item>

@@ -148,8 +148,8 @@
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Această oră este deja atribuită unei alte fotografii.</string>
     <string name="photo_widget_configure_cycling_mode_interval_description">Trece la următoarea fotografie la intervale regulate</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Trece la următoarea fotografie la orele programate (max. %d ore)</string>
-    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Setează o oră pentru fiecare fotografie din fila de conținut (max. %d fotografii)</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Nu schimba fotografiile automat</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Alege o oră pentru fiecare fotografie din fila de conținut (max. %d fotografii)</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Fotografiile nu se vor schimba automat</string>
     <string name="photo_widget_configure_interval_current_label">La fiecare %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d secundă</item>

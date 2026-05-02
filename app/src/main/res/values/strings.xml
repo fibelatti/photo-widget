@@ -175,10 +175,10 @@
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced" tools:ignore="PluralsCandidate">This widget had more than %d photos, so its schedule fell back to a 15-minute timer.</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Time is already assigned to a different photo.</string>
 
-    <string name="photo_widget_configure_cycling_mode_interval_description">Switch to the next photo at a regular interval</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Switch to the next photo at scheduled times (max. %d times)</string>
-    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Set a time for each photo via the content tab (max. %d photos)</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Don\'t switch photos automatically</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">Switches to the next photo at a regular interval</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Switches to the next photo at scheduled times (max. %d times)</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Choose a time for each photo via the content tab (max. %d photos)</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Photos won\'t switch automatically</string>
 
     <string name="photo_widget_configure_interval_current_label">Every %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">

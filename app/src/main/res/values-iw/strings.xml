@@ -148,10 +148,10 @@
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">קבע זמן</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">ווידג\'ט זה היה עם יותר מ-%d תמונות, לכן תזמונו שונה לטיימר של 15 דקות.</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">זמן זה כבר מוקצה לתמונה אחרת.</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">עבור לתמונה הבאה במרווחי זמן קבועים</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">עבור לתמונה הבאה בזמנים מתוזמנים (מקס. %d זמנים)</string>
-    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">קבע זמן לכל תמונה דרך לשונית התוכן (מקס. %d תמונות)</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">אל תחליף תמונות אוטומטית</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">עובר לתמונה הבאה במרווחי זמן קבועים</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">עובר לתמונה הבאה בזמנים מתוזמנים (מקס. %d זמנים)</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">בחר זמן לכל תמונה דרך לשונית התוכן (מקס. %d תמונות)</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">תמונות לא יוחלפו אוטומטית</string>
     <string name="photo_widget_configure_interval_current_label">כל %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">שנייה %d</item>

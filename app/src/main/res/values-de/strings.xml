@@ -144,10 +144,10 @@
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">Zeit festlegen</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">Dieses Widget hatte mehr als %d Fotos, daher wurde sein Zeitplan auf einen 15-Minuten-Timer zurückgesetzt.</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Diese Zeit ist bereits einem anderen Foto zugewiesen.</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">Zum nächsten Foto in regelmäßigen Abständen wechseln</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Zum nächsten Foto zu geplanten Zeiten wechseln (max. %d Zeiten)</string>
-    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Eine Zeit für jedes Foto über den Inhalt-Tab festlegen (max. %d Fotos)</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Fotos nicht automatisch wechseln</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">Wechselt in regelmäßigen Abständen zum nächsten Foto</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Wechselt zu geplanten Zeiten zum nächsten Foto (max. %d Zeiten)</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Wähle eine Zeit für jedes Foto über den Inhalt-Tab aus (max. %d Fotos)</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Fotos wechseln nicht automatisch</string>
     <string name="photo_widget_configure_interval_current_label">Alle %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d Sekunde</item>

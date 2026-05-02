@@ -144,10 +144,10 @@
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">Establecer hora</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">Este widget tenía más de %d fotos, por lo que su agenda cambió a un temporizador de 15 minutos.</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Esta hora ya está asignada a otra foto.</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">Cambiar a la siguiente foto a intervalos regulares</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Cambiar a la siguiente foto en horarios programados (máx. %d veces)</string>
-    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Asignar una hora a cada foto desde la pestaña de contenido (máx. %d fotos)</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">No cambiar las fotos automáticamente</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">Cambia a la siguiente foto a intervalos regulares</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Cambia a la siguiente foto en horarios programados (máx. %d veces)</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Elige una hora para cada foto desde la pestaña de contenido (máx. %d fotos)</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Las fotos no cambiarán automáticamente</string>
     <string name="photo_widget_configure_interval_current_label">Cada %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d segundo</item>

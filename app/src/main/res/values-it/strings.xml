@@ -146,8 +146,8 @@
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Questo orario è già assegnato a un\'altra foto.</string>
     <string name="photo_widget_configure_cycling_mode_interval_description">Passa alla foto successiva a intervalli regolari</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Passa alla foto successiva agli orari programmati (max. %d orari)</string>
-    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Imposta un orario per ogni foto dalla scheda contenuto (max. %d foto)</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Non cambiare le foto automaticamente</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Scegli un orario per ogni foto dalla scheda contenuto (max. %d foto)</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Le foto non cambieranno automaticamente</string>
     <string name="photo_widget_configure_interval_current_label">Ogni %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d secondo</item>

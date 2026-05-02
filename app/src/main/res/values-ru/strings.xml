@@ -148,10 +148,10 @@
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">Установить время</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">Этот виджет содержал более %d фотографий, поэтому его расписание переключилось на 15-минутный таймер.</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Это время уже назначено другой фотографии.</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">Переключать на следующее фото через регулярные интервалы</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Переключать на следующее фото по расписанию (макс. %d раз)</string>
-    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Назначить время каждой фотографии во вкладке содержимого (макс. %d фото)</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Не менять фотографии автоматически</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">Переключается на следующее фото через регулярные интервалы</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Переключается на следующее фото по расписанию (макс. %d раз)</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Выберите время для каждой фотографии во вкладке содержимого (макс. %d фото)</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Фотографии не будут меняться автоматически</string>
     <string name="photo_widget_configure_interval_current_label">Каждые %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d секунда</item>

@@ -142,10 +142,10 @@
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">時間を設定</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">このウィジェットには%d枚を超える写真があったため、スケジュールが15分タイマーに変更されました。</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">この時間は別の写真にすでに割り当てられています。</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">一定間隔で次の写真に切り替える</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">スケジュールされた時間に次の写真に切り替える（最大%d回）</string>
-    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">コンテンツタブから各写真に時間を設定（最大%d枚）</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">写真を自動的に切り替えない</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">一定間隔で次の写真に切り替わる</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">スケジュールされた時間に次の写真に切り替わる（最大%d回）</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">コンテンツタブから各写真の時間を選択（最大%d枚）</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">写真は自動的に切り替わらない</string>
     <string name="photo_widget_configure_interval_current_label">毎%s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="other">%d秒</item>

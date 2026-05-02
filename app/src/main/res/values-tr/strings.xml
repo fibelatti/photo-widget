@@ -144,10 +144,10 @@
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">Saat ayarla</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">Bu widget\'ta %d\'den fazla fotoğraf vardı, bu nedenle zamanlaması 15 dakikalık zamanlayıcıya geri döndürüldü.</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Bu saat zaten başka bir fotoğrafa atanmış.</string>
-    <string name="photo_widget_configure_cycling_mode_interval_description">Düzenli aralıklarla bir sonraki fotoğrafa geç</string>
-    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Planlanan saatlerde bir sonraki fotoğrafa geç (maks. %d saat)</string>
-    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">İçerik sekmesinden her fotoğrafa saat ata (maks. %d fotoğraf)</string>
-    <string name="photo_widget_configure_cycling_mode_disabled_description">Fotoğrafları otomatik olarak değiştirme</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">Düzenli aralıklarla bir sonraki fotoğrafa geçer</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Planlanan saatlerde bir sonraki fotoğrafa geçer (maks. %d saat)</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">İçerik sekmesinden her fotoğraf için saat seçin (maks. %d fotoğraf)</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Fotoğraflar otomatik olarak değişmez</string>
     <string name="photo_widget_configure_interval_current_label">Her %s</string>
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">%d saniye</item>
