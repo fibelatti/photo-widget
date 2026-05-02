@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Advanced schedule: set a time for each widget photo
 
+### Changed
+
+* Small UI optimization
+* Review supported languages to ensure consistency
+
 ### Fixed
 
 * Fix tap action picker not keeping required actions in sync
