@@ -185,7 +185,6 @@ fun PhotoWidgetViewerScreen(
         if (photo != null) {
             AsyncPhotoViewer(
                 data = photo.getPhotoPath(viewOriginalPhoto = viewOriginalPhoto),
-                dataKey = arrayOf(photo, aspectRatio),
                 isLoading = isLoading,
                 contentScale = ContentScale.Inside,
                 modifier = Modifier

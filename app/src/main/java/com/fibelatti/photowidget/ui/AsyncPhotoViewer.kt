@@ -2,7 +2,6 @@ package com.fibelatti.photowidget.ui
 
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExitTransition
@@ -13,121 +12,116 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.max
+import androidx.compose.ui.unit.IntSize
+import coil3.transform.Transformation
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.getMaxBitmapWidgetDimension
-import com.fibelatti.ui.foundation.dpToPx
-import kotlin.math.roundToInt
+import kotlin.math.max
 import kotlinx.coroutines.delay
 
 @Composable
 fun AsyncPhotoViewer(
     data: Any?,
-    dataKey: Array<Any?>,
     isLoading: Boolean,
     contentScale: ContentScale,
     modifier: Modifier = Modifier,
     constraintMode: AsyncPhotoViewer.BitmapSizeConstraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.DISPLAY,
-    transformer: (Bitmap) -> Bitmap = { it },
+    transformations: List<Transformation> = emptyList(),
 ) {
-    BoxWithConstraints(
-        modifier = modifier,
-        contentAlignment = Alignment.Center,
-    ) {
-        val localInspectionMode: Boolean = LocalInspectionMode.current
-        val localContext: Context = LocalContext.current
-        val localResources: Resources = LocalResources.current
+    val localInspectionMode: Boolean = LocalInspectionMode.current
+    val localContext: Context = LocalContext.current
+    val localResources: Resources = LocalResources.current
 
-        var photoBitmap: Bitmap? by remember {
-            mutableStateOf(
-                if (localInspectionMode) {
-                    BitmapFactory.decodeResource(localResources, R.drawable.widget_preview)
-                } else {
-                    null
-                },
-            )
-        }
-        val bitmapTransformer: (Bitmap) -> Bitmap by rememberUpdatedState(transformer)
-        val transformedBitmap: ImageBitmap? by remember(*dataKey) {
-            derivedStateOf { photoBitmap?.let(bitmapTransformer)?.asImageBitmap() }
-        }
-
-        var showLoading: Boolean by remember { mutableStateOf(false) }
-        var showError: Boolean by remember { mutableStateOf(false) }
-
-        val decoder: PhotoDecoder by remember {
-            lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
-        }
-
-        val maxViewportDimension: Int = max(maxWidth, maxHeight).dpToPx().roundToInt()
-        val maxWidgetDimension: Int = localContext.getMaxBitmapWidgetDimension(
-            coerceMaxMemory = constraintMode == AsyncPhotoViewer.BitmapSizeConstraintMode.MEMORY,
-        ).coerceAtMost(maxViewportDimension)
-        val maxDimension: Int = when (constraintMode) {
-            AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED -> maxViewportDimension
-            else -> maxWidgetDimension
-        }
-
-        val viewerState: AsyncPhotoViewerState? by remember {
-            derivedStateOf {
-                when {
-                    showLoading -> AsyncPhotoViewerState.Loading
-                    showError -> AsyncPhotoViewerState.Error
-                    else -> transformedBitmap?.let(AsyncPhotoViewerState::Success)
-                }
-            }
-        }
-
-        LaunchedEffect(data, maxDimension, isLoading) {
-            when {
-                localInspectionMode -> return@LaunchedEffect
-
-                data != null -> {
-                    photoBitmap = decoder.decode(data = data, maxDimension = maxDimension)
-                    showLoading = false
-                    showError = false
-                }
-
-                !isLoading -> {
-                    showLoading = false
-                    showError = true
-                }
-            }
-
-            // Avoid flickering the indicator, only show if the photos takes a while to load
-            delay(timeMillis = 500)
-            showLoading = isLoading || (data != null && photoBitmap == null && !showError)
-        }
-
-        AsyncPhotoViewer(
-            viewerState = viewerState,
-            contentScale = contentScale,
+    var viewerState: AsyncPhotoViewerState? by remember {
+        mutableStateOf(
+            if (localInspectionMode) {
+                BitmapFactory.decodeResource(localResources, R.drawable.widget_preview)
+                    ?.asImageBitmap()
+                    ?.let(AsyncPhotoViewerState::Success)
+            } else {
+                null
+            },
         )
     }
+
+    var viewportSize: IntSize by remember { mutableStateOf(IntSize.Zero) }
+
+    val decoder: PhotoDecoder by remember {
+        lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
+    }
+
+    val maxViewportDimension: Int = max(viewportSize.width, viewportSize.height)
+    val maxWidgetDimension: Int = localContext.getMaxBitmapWidgetDimension(
+        coerceMaxMemory = constraintMode == AsyncPhotoViewer.BitmapSizeConstraintMode.MEMORY,
+    ).coerceAtMost(maxViewportDimension)
+    val maxDimension: Int = when (constraintMode) {
+        AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED -> maxViewportDimension
+        else -> maxWidgetDimension
+    }
+    // Snap to a coarser bucket so layout-pass jitter doesn't restart the decode effect.
+    val maxDimensionBucketed: Int = remember(maxDimension) {
+        if (maxDimension <= 0) maxDimension else ((maxDimension + 63) / 64) * 64
+    }
+
+    LaunchedEffect(data, maxDimensionBucketed, isLoading, transformations.joinToString { it.cacheKey }) {
+        if (localInspectionMode || maxDimensionBucketed <= 0) return@LaunchedEffect
+
+        when {
+            data != null -> {
+                decoder.decode(
+                    data = data,
+                    maxDimension = maxDimensionBucketed,
+                    transformations = transformations,
+                )?.asImageBitmap()?.let {
+                    viewerState = AsyncPhotoViewerState.Success(it)
+                }
+            }
+
+            !isLoading -> {
+                viewerState = AsyncPhotoViewerState.Error
+                return@LaunchedEffect
+            }
+        }
+
+        // Avoid flickering the indicator, only show if the photo takes a while to load
+        val isLoaded: () -> Boolean = {
+            viewerState is AsyncPhotoViewerState.Success || viewerState is AsyncPhotoViewerState.Error
+        }
+        if (isLoading || !isLoaded()) {
+            delay(timeMillis = 500)
+            if (isLoading || !isLoaded()) {
+                viewerState = AsyncPhotoViewerState.Loading
+            }
+        }
+    }
+
+    AsyncPhotoViewer(
+        viewerState = viewerState,
+        contentScale = contentScale,
+        modifier = modifier.onSizeChanged { viewportSize = it },
+    )
 }
 
 @Composable
@@ -145,7 +139,7 @@ private fun AsyncPhotoViewer(
                 .togetherWith(ExitTransition.None)
         },
         contentAlignment = Alignment.Center,
-        contentKey = { state -> state?.let { state::class.java } },
+        contentKey = { state -> state?.let { state::class } },
     ) { state: AsyncPhotoViewerState? ->
         when (state) {
             is AsyncPhotoViewerState.Loading -> {

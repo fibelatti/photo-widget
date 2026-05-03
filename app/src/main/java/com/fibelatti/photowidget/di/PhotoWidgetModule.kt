@@ -97,7 +97,7 @@ object PhotoWidgetModule {
         .diskCache {
             DiskCache.Builder()
                 .directory(context.cacheDir.resolve(relative = "image_cache"))
-                .maxSizePercent(0.02)
+                .maxSizePercent(0.04)
                 .build()
         }
         .interceptorCoroutineContext(Dispatchers.IO)

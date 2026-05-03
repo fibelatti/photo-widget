@@ -384,7 +384,6 @@ private fun RestoredWidgetItem(
             items(items, key = { it.photoId }) { localPhoto ->
                 AsyncPhotoViewer(
                     data = localPhoto.getPhotoPath(),
-                    dataKey = arrayOf(localPhoto.photoId),
                     isLoading = false,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier

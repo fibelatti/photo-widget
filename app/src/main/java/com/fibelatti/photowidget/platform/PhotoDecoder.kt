@@ -6,12 +6,12 @@ import coil3.ImageLoader
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
+import coil3.request.transformations
 import coil3.toBitmap
+import coil3.transform.Transformation
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class PhotoDecoder @Inject constructor(
@@ -22,22 +22,44 @@ class PhotoDecoder @Inject constructor(
     suspend fun decode(
         data: Any?,
         maxDimension: Int? = null,
-    ): Bitmap? = withContext(Dispatchers.IO) {
-        Timber.d("Decoding $data into a bitmap (maxDimension=$maxDimension)")
+        transformations: List<Transformation> = emptyList(),
+    ): Bitmap? {
+        Timber.d(
+            "Decoding %s into a bitmap (maxDimension=%s, transformations=%d)",
+            data,
+            maxDimension,
+            transformations.size,
+        )
 
-        val request = ImageRequest.Builder(context)
+        val cacheKey: String = buildCacheKey(data, maxDimension, transformations)
+        val request: ImageRequest = ImageRequest.Builder(context)
             .data(if (data.toString().contains(context.packageName)) File(data.toString()) else data)
-            .apply { if (maxDimension != null && maxDimension > 0) size(maxDimension) }
+            .apply {
+                if (maxDimension != null && maxDimension > 0) size(maxDimension)
+                if (transformations.isNotEmpty()) transformations(transformations)
+            }
+            .memoryCacheKey(cacheKey)
+            .diskCacheKey(cacheKey)
             .build()
 
-        imageLoader.execute(request)
+        return imageLoader.execute(request)
             .also { result ->
                 when (result) {
-                    is ErrorResult -> Timber.e(result.throwable, "Decoding error (data=$data)")
-                    is SuccessResult -> Timber.d("Decoding success (data=$data)")
+                    is ErrorResult -> Timber.e(result.throwable, "Decoding error (data=%s)", data)
+                    is SuccessResult -> Timber.d("Decoding success (data=%s)", data)
                 }
             }
             .image
             ?.toBitmap()
+    }
+
+    private fun buildCacheKey(
+        data: Any?,
+        maxDimension: Int?,
+        transformations: List<Transformation>,
+    ): String = buildString {
+        append(data)
+        if (maxDimension != null && maxDimension > 0) append("|size=$maxDimension")
+        transformations.forEach { append("|t=${it.cacheKey}") }
     }
 }

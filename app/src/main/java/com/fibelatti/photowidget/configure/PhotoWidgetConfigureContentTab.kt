@@ -460,7 +460,7 @@ private fun PhotoGrid(
 
         items(currentPhotos, key = { photo -> photo }) { photo ->
             ReorderableItem(reorderableLazyGridState, key = photo) {
-                Box(modifier = Modifier.animateItem()) {
+                Box {
                     ShapedPhoto(
                         photo = photo,
                         aspectRatio = PhotoWidgetAspectRatio.SQUARE,
