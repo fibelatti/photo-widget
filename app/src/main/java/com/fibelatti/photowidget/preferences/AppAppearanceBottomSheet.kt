@@ -45,15 +45,13 @@ fun AppAppearanceBottomSheet(
         onOptionSelect = { newAppearance ->
             userPreferencesStorage.appearance = newAppearance
 
-            sheetState.hideBottomSheet()
-
             val mode = when (newAppearance) {
                 Appearance.DARK -> AppCompatDelegate.MODE_NIGHT_YES
                 Appearance.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
                 else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
             }
 
-            AppCompatDelegate.setDefaultNightMode(mode)
+            sheetState.hideBottomSheet(onHidden = { AppCompatDelegate.setDefaultNightMode(mode) })
         },
         modifier = modifier,
         footer = {

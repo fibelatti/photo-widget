@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 /**
@@ -116,6 +117,8 @@ private data class AppSheetStateImpl(
     var isVisible: Boolean by mutableStateOf(false)
 
     var data: Any? by mutableStateOf(null)
+
+    var hideJob: Job? = null
 }
 
 /**
@@ -145,6 +148,9 @@ private fun AppSheetState.checkTypeRequirement() {
  */
 fun AppSheetState.showBottomSheet(data: Any? = null) {
     checkTypeRequirement()
+    // A new show invalidates any previous hide; cancel it so its completion callbacks don't fire.
+    this.hideJob?.cancel()
+    this.hideJob = null
     // Simply mark it to be displayed and let the state change do its thing in `AppBottomSheet`
     this.isVisible = true
     this.data = data
@@ -152,16 +158,36 @@ fun AppSheetState.showBottomSheet(data: Any? = null) {
 
 /**
  * Hides the bottom sheet associated with the received [AppSheetState].
+ *
+ * If a hide is already in flight (e.g. multiple call sites each request a hide on selection), the existing animation
+ * is reused — [onHidden] is chained onto its completion instead of starting a new one. This avoids racing
+ * `state.hide()` calls that can leave the underlying [SheetState] saved in an expanded state across configuration
+ * changes.
+ *
+ * @param onHidden optional callback invoked after the hide animation completes. Use this when the caller needs to
+ * trigger work that would otherwise interrupt the animation (e.g. a configuration change), to avoid leaving the
+ * underlying [SheetState] saved as expanded.
  */
-fun AppSheetState.hideBottomSheet() {
+fun AppSheetState.hideBottomSheet(onHidden: () -> Unit = {}) {
     checkTypeRequirement()
-    scope.launch { state.hide() }
-        .invokeOnCompletion {
-            // Clean up the state on completion to remove the sheet from the composition
-            if (!state.isVisible) {
-                isVisible = false
-            }
+
+    val inFlight = hideJob
+    if (inFlight != null && inFlight.isActive) {
+        // A hide is already animating; just chain the completion callback onto it.
+        inFlight.invokeOnCompletion { cause -> if (cause == null) onHidden() }
+        return
+    }
+
+    val job = scope.launch { state.hide() }
+    hideJob = job
+    job.invokeOnCompletion { cause ->
+        if (cause != null) return@invokeOnCompletion
+        // Clean up the state on completion to remove the sheet from the composition
+        if (!state.isVisible) {
+            isVisible = false
         }
+        onHidden()
+    }
 }
 
 /**

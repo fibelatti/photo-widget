@@ -44,9 +44,9 @@ fun AppColorsBottomSheet(
         onOptionSelect = { newValue ->
             userPreferencesStorage.dynamicColors = newValue
 
-            sheetState.hideBottomSheet()
-
-            localActivity?.let(ActivityCompat::recreate)
+            sheetState.hideBottomSheet(
+                onHidden = { localActivity?.let(ActivityCompat::recreate) },
+            )
         },
         modifier = modifier,
     )
