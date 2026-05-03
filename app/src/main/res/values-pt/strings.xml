@@ -26,8 +26,8 @@
     <string name="photo_widget_home_version">Versão: %s</string>
     <string name="photo_widget_home_view_licenses">Licenças de Software</string>
     <plurals name="photo_widget_home_share_received">
-        <item quantity="one">%d foto recebida. Crie um novo widget ou escolha um existente para adicioná-la.</item>
-        <item quantity="other">%d fotos recebidas. Crie um novo widget ou escolha um existente para adicioná-las.</item>
+        <item quantity="one">%d foto recebida. Crie um widget ou escolha um existente para adicioná-la.</item>
+        <item quantity="other">%d fotos recebidas. Crie um widget ou escolha um existente para adicioná-las.</item>
     </plurals>
     <string name="photo_widget_home_pinning_not_supported_title">Adicione um widget diretamente da tela inicial</string>
     <string name="photo_widget_home_pinning_not_supported_message">1. Toque e segure um espaço vazio\n\n2. Escolha o menu de widgets\n\n3. Procure por Material Photo Widget\n\n4. Configure e salve!</string>
@@ -58,7 +58,7 @@
     <string name="photo_widget_home_my_widget_syncing_feedback">Obtendo as últimas fotos da pasta…</string>
     <!-- Preferences -->
     <string name="preferences_data_saver">Reduzir o uso de armazenamento</string>
-    <string name="preferences_data_saver_description">Quando habilitado, as fotos adicionadas aos widgets são comprimidas para economizar espaço de armazenamento. Isso geralmente não afeta a qualidade, mas se suas fotos contiverem texto pequeno, é recomendável manter desativado.\n\nEsta configuração afeta apenas as fotos adicionadas após alterar a configuração.\n\nEla não se aplica a pastas sincronizadas, pois essas fotos são lidas diretamente do armazenamento do seu dispositivo.</string>
+    <string name="preferences_data_saver_description">Quando habilitado, as fotos adicionadas aos widgets são comprimidas para economizar espaço de armazenamento. Isso geralmente não afeta a qualidade, mas se as suas fotos contiverem texto pequeno, é recomendável manter desativado.\n\nEsta configuração afeta apenas as fotos adicionadas após alterar a configuração.\n\nEla não se aplica a pastas sincronizadas, pois essas fotos são lidas diretamente do armazenamento do seu dispositivo.</string>
     <string name="preferences_appearance_follow_system">Igual ao sistema</string>
     <string name="preferences_appearance_light">Claro</string>
     <string name="preferences_appearance_dark">Escuro</string>
@@ -67,10 +67,10 @@
     <!-- Widget Defaults -->
     <string name="widget_defaults_title">Valores padrão</string>
     <string name="widget_defaults_description">Configurações comuns a todos os novos widgets</string>
-    <string name="widget_defaults_explanation">Esses valores são usados ao criar um widget. Eles são úteis para configurar vários widgets com as mesmas configurações, eliminando a necessidade de ajustar as configurações a cada vez. Quaisquer alterações nesses valores não afetarão os widgets existentes.</string>
+    <string name="widget_defaults_explanation">Esses valores são usados ao criar um widget. Eles servem para configurar vários widgets com as mesmas configurações, eliminando a necessidade de ajustar as configurações a cada vez. Quaisquer alterações nesses valores não afetarão os widgets existentes.</string>
     <string name="widget_defaults_source">Origem</string>
     <string name="widget_defaults_shuffle">Embaralhar</string>
-    <string name="widget_defaults_cycling">Temporizador de fotos</string>
+    <string name="widget_defaults_cycling">Alternância de fotos</string>
     <string name="widget_defaults_shape">Forma</string>
     <string name="widget_defaults_corner_radius">Arredondamento</string>
     <string name="widget_defaults_opacity">Opacidade</string>
@@ -80,7 +80,7 @@
     <string name="widget_defaults_reset">Redefinir valores</string>
     <!-- Share -->
     <string name="share_title">Compartilhe</string>
-    <string name="share_text">Enfeite a sua tela inicial com suas fotos favoritas usando o Material Photo Widget. Baixe de graça em %s</string>
+    <string name="share_text">Enfeite a sua tela inicial com as suas fotos favoritas usando o Material Photo Widget. Baixe de graça em %s</string>
     <!-- Source -->
     <string name="photo_widget_source_photos">Fotos</string>
     <string name="photo_widget_source_directory">Pasta</string>
@@ -134,7 +134,7 @@
         <item quantity="one">%d foto</item>
         <item quantity="other">%d fotos</item>
     </plurals>
-    <string name="photo_widget_configure_select_cycling_mode">Temporizador de fotos</string>
+    <string name="photo_widget_configure_select_cycling_mode">Alternância de fotos</string>
     <string name="photo_widget_configure_cycling_mode_interval">Intervalo</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Agendamento</string>
     <string name="photo_widget_configure_cycling_mode_disabled">Desativado</string>
@@ -142,7 +142,7 @@
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_no_time_warning">Fotos sem horário agendado nunca serão exibidas e os horários devem ser únicos.</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_even_split">Dividir o dia uniformemente</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">Definir horário</string>
-    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">Este widget tinha mais de %d fotos, então o agendamento foi alterado para um timer de 15 minutos.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">Este widget tinha mais de %d fotos, então o agendamento foi alterado para um intervalo de 15 minutos.</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Este horário já está atribuído a outra foto.</string>
     <string name="photo_widget_configure_cycling_mode_interval_description">Muda para a próxima foto em intervalos regulares</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Muda para a próxima foto em horários agendados (máx. %d horários)</string>
@@ -182,7 +182,7 @@
     <string name="photo_widget_configure_interval_permission_dialog_description">O Android pode restringir tarefas em segundo plano para otimizar a duração da bateria, resultando em intervalos maiores entre cada foto.\n\nPara atualizar os widgets precisamente no intervalo selecionado, abra as configurações e permita a configuração de alarmes e lembretes.</string>
     <string name="photo_widget_configure_interval_open_settings">Abrir configurações</string>
     <string name="photo_widget_configure_battery_optimization">Desativar otimização de bateria</string>
-    <string name="photo_widget_configure_battery_optimization_description">Garante que o aplicativo funcione sem interrupções e seus widgets permaneçam atualizados</string>
+    <string name="photo_widget_configure_battery_optimization_description">Garante que o aplicativo funcione sem interrupções e os seus widgets permaneçam atualizados</string>
     <string name="photo_widget_configure_border">Borda</string>
     <string name="photo_widget_configure_border_none">Nenhuma</string>
     <string name="photo_widget_configure_border_dynamic">Dinâmica</string>
@@ -220,8 +220,8 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">Abrir um link</string>
     <string name="photo_widget_configure_tap_action_file_shortcut">Abrir um arquivo</string>
     <string name="photo_widget_configure_tap_action_choose_file">Escolher arquivo</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling">Ativar/desativar timer</string>
-    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Toque para pausar o timer de fotos. Toque novamente para retomar. Esta ação será desativada enquanto o widget estiver bloqueado.</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">Ativar/desativar alternância</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Toque para pausar a alternância de fotos. Toque novamente para retomar. Esta ação será desativada enquanto o widget estiver travado.</string>
     <string name="photo_widget_configure_tap_action_toggle_gif_playback">Ativar/desativar reprodução de GIF</string>
     <string name="photo_widget_configure_tap_action_share_photo">Compartilhar foto</string>
     <string name="photo_widget_configure_tap_action_set_wallpaper">Definir como papel de parede</string>
@@ -238,7 +238,7 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Esta ação abre a foto atual usando o app de galeria. Não será possível visualizar ou navegar para outras fotos.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Você também pode escolher qual app de galeria usar.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Escolher o app</string>
-    <string name="photo_widget_configure_tap_action_disable_tap">Desativar outras áreas de toque enquanto o timer estiver pausado</string>
+    <string name="photo_widget_configure_tap_action_disable_tap">Desativar outras áreas de toque enquanto a alternância estiver pausada</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Essas preferências são usadas por todas as áreas que utilizam essa ação de toque.</string>
     <string name="photo_widget_configure_gif_frame_interval">Intervalo de quadros</string>
     <string name="photo_widget_configure_gif_frame_interval_description">Controle a velocidade de reprodução do GIF animado. Quanto menor o valor, mais rápido o GIF.</string>
@@ -271,18 +271,18 @@
     <string name="help_article_body_3">Quando seu telefone reinicia, o Android envia um sinal para os aplicativos para notificá-los, permitindo que eles reiniciem sozinhos. Infelizmente, alguns fabricantes de dispositivos (como Xiaomi, Redmi, Huawei e outros) bloqueiam esse sinal.\n\nPara ativar essa funcionalidade, altere a permissão \"Início Automático\" no seu aplicativo de segurança.</string>
     <string name="help_article_title_4">O widget está muito pequeno</string>
     <string name="help_article_body_4">Após adicionar o widget à sua tela inicial, você pode pressioná-lo por alguns segundos para revelar a opção de tamanho. Em seguida, arraste as bordas para ajustá-lo ao tamanho desejado.</string>
-    <string name="help_article_title_5">O widget às vezes se transforma em um ícone de erro</string>
-    <string name="help_article_body_5">O aplicativo em si não é usado com frequência — apenas quando você precisa editar um widget. Os widgets são executados de forma independente dentro do seu launcher de aplicativos. Isso pode fazer com que o Android pense que o aplicativo não é importante, e o sistema o interromperá para recuperar recursos. Quando o aplicativo é interrompido, seus widgets também são. Para evitar isso, atualize a política de uso de bateria para o aplicativo, definindo-a como "Sem restrições".</string>
+    <string name="help_article_title_5">O widget às vezes se transforma num ícone de erro</string>
+    <string name="help_article_body_5">O aplicativo em si não é usado com frequência — apenas quando você precisa editar um widget. Os widgets são executados de forma independente dentro do seu launcher de aplicativos. Isso pode fazer com que o Android pense que o aplicativo não é importante, e o sistema o interromperá para recuperar recursos. Quando o aplicativo é interrompido, seus widgets também são. Para evitar isso, atualize a política de uso de bateria para o aplicativo, definindo-a como \"Sem restrições\".</string>
     <string name="restriction_warning_hint">A atividade em segundo plano está restrita. Os widgets podem não funcionar corretamente. Toque para saber mais.</string>
     <string name="restriction_warning_dialog_title">Restrições de execução em segundo plano e otimização de bateria</string>
-    <string name="restriction_warning_dialog_body_1">O Material Photo Widget precisa ser executado em segundo plano para atualizar seus widgets. Se o uso da bateria estiver definido como \"Otimizado\", o Android poderá interromper o aplicativo, o que impede que os widgets sejam atualizados corretamente.</string>
+    <string name="restriction_warning_dialog_body_1">O Material Photo Widget precisa ser executado em segundo plano para atualizar os seus widgets. Se o uso da bateria estiver definido como \"Otimizado\", o Android poderá interromper o aplicativo, o que impede que os widgets sejam atualizados corretamente.</string>
     <string name="restriction_warning_dialog_body_2">Você pode conceder a permissão usando o botão abaixo, ou abrir as configurações do aplicativo e ir em \"Uso da bateria do aplicativo\". Toque em \"Permitir uso em segundo plano\" e selecione \"Sem restrições\" para garantir atualizações confiáveis.</string>
     <string name="restriction_warning_dialog_body_3">Alguns dispositivos também podem bloquear a inicialização do aplicativo após uma reinicialização. Pesquise por \"início automático\" nas configurações ou visite https://dontkillmyapp.com para obter instruções específicas para a marca do seu telefone.</string>
     <string name="restriction_warning_grant_battery_permission">Conceder permissão</string>
     <string name="restriction_warning_open_app_settings">Abrir configurações do aplicativo</string>
     <!-- Translations -->
     <string name="translations_dialog_title">Ajude a traduzir para o seu idioma!</string>
-    <string name="translations_dialog_body">Este aplicativo utiliza uma abordagem de tradução orientada pela comunidade, e sua ajuda pode melhorá-lo. Você pode contribuir se quiser ver um novo idioma disponível ou se notar algo que não parece certo.</string>
+    <string name="translations_dialog_body">Este aplicativo utiliza uma abordagem de tradução orientada pela comunidade, e a sua ajuda pode melhorá-lo. Você pode contribuir se quiser ver um novo idioma disponível ou se notar algo que não parece certo.</string>
     <string name="translations_dialog_positive_action">Abrir Crowdin</string>
     <string name="translations_dialog_negative_action">Agora não</string>
     <!-- Backup -->
@@ -307,7 +307,7 @@
     <!-- Keep-alive service -->
     <string name="photo_widget_keep_alive_service_dialog_title">Serviço em segundo plano</string>
     <string name="photo_widget_keep_alive_service_dialog_toggle">Ativar serviço em segundo plano</string>
-    <string name="photo_widget_keep_alive_service_dialog_body">Você pode ativar o serviço em segundo plano para informar ao Android que o app é importante e que não deve ser encerrado. Não se preocupe, o app faz apenas o necessário para manter seus widgets exibindo fotos no horário programado, sem consumo extra de bateria.&lt;br/>&lt;br/>Os widgets na sua tela inicial são gerenciados pelo seu launcher, não diretamente pelo app. Como o app raramente fica em primeiro plano, &lt;b>o sistema pode presumir que não é importante e encerrá-lo&lt;/b>. Quando isso acontece, &lt;b>os widgets também são encerrados, fazendo com que as fotos não apareçam&lt;/b>. Isso é especialmente comum em &lt;b>dispositivos Samsung&lt;/b>.</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">Você pode ativar o serviço em segundo plano para informar ao Android que o app é importante e que não deve ser encerrado. Não se preocupe, o app faz apenas o necessário para manter os seus widgets exibindo fotos no horário programado, sem consumo extra de bateria.&lt;br/>&lt;br/>Os widgets na sua tela inicial são gerenciados pelo seu launcher, não diretamente pelo app. Como o app raramente fica em primeiro plano, &lt;b>o sistema pode presumir que não é importante e encerrá-lo&lt;/b>. Quando isso acontece, &lt;b>os widgets também são encerrados, fazendo com que as fotos não apareçam&lt;/b>. Isso é especialmente comum em &lt;b>dispositivos Samsung&lt;/b>.</string>
     <string name="photo_widget_keep_alive_service_required_for_gif">Widgets GIF requerem o serviço em segundo plano para reproduzir animações. Você pode encontrar mais informações na aba de configurações. Deseja ativá-lo?</string>
     <string name="photo_widget_keep_alive_service_gif_widgets_warning">Existem widgets GIF ativos que dependem do serviço em segundo plano. Desativá-lo pode fazer com que parem de reproduzir animações.</string>
     <!-- Notifications -->
@@ -331,7 +331,7 @@
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Role para ver mais</string>
     <string name="warning_experimental">Experimental</string>
-    <string name="warning_gif_widget_battery_usage">Widgets GIF podem consumir mais bateria! O app precisa fazer um trabalho constante para reproduzir a animação. O trabalho é pausado quando a tela está desligada para economizar recursos, mas o app não consegue detectar quando sua tela inicial não está visível enquanto você usa outros apps.</string>
+    <string name="warning_gif_widget_battery_usage">Widgets GIF podem consumir mais bateria! O app precisa fazer um trabalho constante para reproduzir a animação. O trabalho é pausado quando a tela está desligada para economizar recursos, mas o app não consegue detectar quando a sua tela inicial não está visível enquanto você usa outros apps.</string>
     <!-- Content Description -->
     <string name="photo_widget_cd_host">Widget de fotos da tela inicial</string>
 </resources>
