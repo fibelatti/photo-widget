@@ -148,12 +148,14 @@ private fun AppSheetState.checkTypeRequirement() {
  */
 fun AppSheetState.showBottomSheet(data: Any? = null) {
     checkTypeRequirement()
-    // A new show invalidates any previous hide; cancel it so its completion callbacks don't fire.
-    this.hideJob?.cancel()
-    this.hideJob = null
-    // Simply mark it to be displayed and let the state change do its thing in `AppBottomSheet`
-    this.isVisible = true
-    this.data = data
+    scope.launch {
+        // Finish the previously requested hide job if one exists to deliver the callbacks before showing again
+        this@showBottomSheet.hideJob?.join()
+        this@showBottomSheet.hideJob = null
+        // Simply mark it to be displayed and let the state change do its thing in `AppBottomSheet`
+        this@showBottomSheet.isVisible = true
+        this@showBottomSheet.data = data
+    }
 }
 
 /**
