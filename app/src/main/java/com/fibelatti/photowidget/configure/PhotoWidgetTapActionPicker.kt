@@ -624,6 +624,7 @@ private fun TapOptionsPicker(
             currentValue = stringResource(currentTapAction.label),
             onClick = tapActionSheetState::showBottomSheet,
             modifier = Modifier.fillMaxWidth(),
+            shape = Shapes.StandaloneShape,
         )
 
         TextButton(
