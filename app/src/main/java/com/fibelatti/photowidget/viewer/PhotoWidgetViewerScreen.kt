@@ -52,7 +52,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
-import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.getPhotoPath
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.ui.foundation.DragState
@@ -87,7 +86,6 @@ fun PhotoWidgetViewerScreen(
     photo: LocalPhoto?,
     isLoading: Boolean,
     viewOriginalPhoto: Boolean,
-    aspectRatio: PhotoWidgetAspectRatio,
     onDismissClick: () -> Unit,
     modifier: Modifier = Modifier,
     showNextButton: Boolean = false,
@@ -365,7 +363,6 @@ private fun ScreenContentPreview() {
             photo = LocalPhoto(photoId = "photo-1"),
             isLoading = false,
             viewOriginalPhoto = false,
-            aspectRatio = PhotoWidgetAspectRatio.SQUARE,
             onDismissClick = {},
             showNextButton = true,
             showPreviousButton = true,

@@ -18,7 +18,6 @@ import com.fibelatti.photowidget.chooser.PhotoWidgetChooserActivity
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
-import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.tapActionIncreaseBrightness
 import com.fibelatti.photowidget.model.tapActionViewOriginalPhoto
 import com.fibelatti.photowidget.platform.AppTheme
@@ -78,11 +77,6 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
                     photo = photoWidget.currentPhoto,
                     isLoading = photoWidget.isLoading,
                     viewOriginalPhoto = photoWidget.tapActionViewOriginalPhoto,
-                    aspectRatio = if (photoWidget.tapActionViewOriginalPhoto) {
-                        PhotoWidgetAspectRatio.ORIGINAL
-                    } else {
-                        photoWidget.aspectRatio
-                    },
                     onDismissClick = ::finishAndRemoveTask,
                     showNextButton = state.showNextButton,
                     showPreviousButton = state.showPreviousButton,
