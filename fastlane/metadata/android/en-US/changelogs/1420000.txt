@@ -1,0 +1,6 @@
+This version brings the following updates:
+
+* Advanced schedule: set a time for each widget photo
+* Fix tap action picker not keeping required actions in sync
+
+Thanks for using the app!

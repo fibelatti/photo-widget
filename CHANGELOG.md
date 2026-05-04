@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.42.0] - 2026-05-04
+[v1.42.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.42.0
+
 ### Added
 
 * Advanced schedule: set a time for each widget photo
+* Show current number of photos when configuring a widget
 
 ### Changed
 
