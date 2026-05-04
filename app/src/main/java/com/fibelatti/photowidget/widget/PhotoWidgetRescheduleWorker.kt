@@ -20,6 +20,9 @@ import dagger.assisted.AssistedInject
 import java.time.Duration
 import kotlin.reflect.KClass
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 
 /**
@@ -46,35 +49,41 @@ class PhotoWidgetRescheduleWorker @AssistedInject constructor(
             KeepAliveService.tryStart(context = applicationContext)
         }
 
-        var shouldRetry = false
-
         val ids: List<Int> = PhotoWidgetProvider.ids(applicationContext)
-        for (id in ids) {
-            try {
-                val cycleMode: KClass<out PhotoWidgetCycleMode> = photoWidgetStorage.getWidgetCycleModeType(
-                    appWidgetId = id,
-                )
-                val isLocked: Boolean = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = id)
-                val isPaused: Boolean = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = id)
 
-                Timber.d("Processing widget (id=$id,cycleMode=$cycleMode,isLocked=$isLocked,isPaused=$isPaused)")
+        val success: Boolean = coroutineScope {
+            ids.map { id ->
+                async {
+                    try {
+                        val cycleMode: KClass<out PhotoWidgetCycleMode> = photoWidgetStorage.getWidgetCycleModeType(
+                            appWidgetId = id,
+                        )
+                        val isLocked: Boolean = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = id)
+                        val isPaused: Boolean = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = id)
 
-                if (cycleMode != PhotoWidgetCycleMode.Disabled::class && !isLocked && !isPaused) {
-                    photoWidgetAlarmManager.setup(appWidgetId = id)
-                } else {
-                    Timber.d("Skipping alarm setup (cycleMode=$cycleMode)")
+                        Timber.d(
+                            "Processing widget (id=$id,cycleMode=$cycleMode,isLocked=$isLocked,isPaused=$isPaused)",
+                        )
+
+                        if (cycleMode != PhotoWidgetCycleMode.Disabled::class && !isLocked && !isPaused) {
+                            photoWidgetAlarmManager.setup(appWidgetId = id)
+                        } else {
+                            Timber.d("Skipping alarm setup (cycleMode=$cycleMode)")
+                        }
+
+                        PhotoWidgetProvider.update(context = applicationContext, appWidgetId = id)
+                        true
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        Timber.e(e, "Error processing widget (id=$id). Will retry.")
+                        false
+                    }
                 }
-
-                PhotoWidgetProvider.update(context = applicationContext, appWidgetId = id)
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                Timber.e(e, "Error processing widget (id=$id). Will retry.")
-                shouldRetry = true
-            }
+            }.awaitAll().all { it }
         }
 
-        if (shouldRetry) {
+        if (!success) {
             return Result.retry()
         }
 

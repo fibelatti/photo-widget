@@ -16,6 +16,7 @@ import java.time.Duration
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -36,30 +37,24 @@ class PhotoWidgetSyncWorker @AssistedInject constructor(
             return Result.success()
         }
 
-        var shouldRetry = false
-
-        for (id in ids) {
-            try {
-                Timber.d("Processing widget (id=$id)")
-
-                val source = photoWidgetStorage.getWidgetSource(appWidgetId = id)
-
-                if (source == PhotoWidgetSource.DIRECTORY) {
-                    coroutineScope.launch {
-                        withContext(NonCancellable) {
+        ids.map { id ->
+            coroutineScope.launch {
+                withContext(NonCancellable) {
+                    try {
+                        Timber.d("Processing widget (id=$id)")
+                        if (photoWidgetStorage.getWidgetSource(appWidgetId = id) == PhotoWidgetSource.DIRECTORY) {
                             photoWidgetStorage.syncWidgetPhotos(appWidgetId = id)
                         }
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        Timber.e(e, "Error processing widget (id=$id).")
                     }
                 }
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                Timber.e(e, "Error processing widget (id=$id). Will retry.")
-                shouldRetry = true
             }
-        }
+        }.joinAll()
 
-        return if (shouldRetry) Result.retry() else Result.success()
+        return Result.success()
     }
 
     companion object {
