@@ -427,8 +427,8 @@ private fun PhotoGrid(
         lazyGridState = lazyGridState,
     ) { from: LazyGridItemInfo, to: LazyGridItemInfo ->
         currentPhotos.apply {
-            this[to.index] = this[from.index].also {
-                this[from.index] = this[to.index]
+            this[to.index - 1] = this[from.index - 1].also {
+                this[from.index - 1] = this[to.index - 1]
             }
         }
         localHaptics.performHapticFeedback(HapticFeedbackType.SegmentTick)

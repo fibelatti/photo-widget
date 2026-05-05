@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Ability to customize the background color of the full screen viewer
 
+### Fixed
+
+* Fix drag to reorder photos crash
+
 ## [v1.42.0] - 2026-05-04
 [v1.42.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.42.0
 
