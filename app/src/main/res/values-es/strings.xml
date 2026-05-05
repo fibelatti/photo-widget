@@ -240,6 +240,8 @@
     <string name="photo_widget_configure_tap_action_choose_app">Elige la aplicación</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Desactivar otras zonas táctiles mientras el temporizador esté en pausa</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Estas preferencias se usan en todas las áreas que utilizan esta acción de toque.</string>
+    <string name="photo_widget_configure_tap_action_viewer_background_color">Color de fondo</string>
+    <string name="photo_widget_configure_tap_action_viewer_background_color_default">Predeterminado del tema</string>
     <string name="photo_widget_configure_gif_frame_interval">Intervalo de fotogramas</string>
     <string name="photo_widget_configure_gif_frame_interval_description">Controla la velocidad de reproducción del GIF animado. Cuanto menor sea el valor, más rápido será el GIF.</string>
     <string name="photo_widget_configure_gif_frame_interval_presets">Preajustes</string>

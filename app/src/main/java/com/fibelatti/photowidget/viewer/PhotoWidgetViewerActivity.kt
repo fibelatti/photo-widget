@@ -7,9 +7,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.core.graphics.drawable.toDrawable
+import androidx.core.graphics.toColorInt
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -20,6 +25,7 @@ import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.tapActionIncreaseBrightness
 import com.fibelatti.photowidget.model.tapActionViewOriginalPhoto
+import com.fibelatti.photowidget.model.tapActionViewerBackgroundColorHex
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.sharePhotoChooserIntent
@@ -73,11 +79,18 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
                     }
                 }
 
+                val backgroundColor: Color = photoWidget.tapActionViewerBackgroundColorHex
+                    ?.let { Color("#$it".toColorInt()) }
+                    ?: MaterialTheme.colorScheme.background
+
+                window.setBackgroundDrawable(backgroundColor.toArgb().toDrawable())
+
                 PhotoWidgetViewerScreen(
                     photo = photoWidget.currentPhoto,
                     isLoading = photoWidget.isLoading,
                     viewOriginalPhoto = photoWidget.tapActionViewOriginalPhoto,
                     onDismissClick = ::finishAndRemoveTask,
+                    backgroundColor = backgroundColor,
                     showNextButton = state.showNextButton,
                     showPreviousButton = state.showPreviousButton,
                     onNextClick = viewModel::viewNextPhoto,

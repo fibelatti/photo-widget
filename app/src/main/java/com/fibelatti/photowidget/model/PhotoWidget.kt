@@ -111,6 +111,9 @@ val PhotoWidget.tapActionKeepCurrentPhoto: Boolean
 val PhotoWidget.tapActionDisableTap: Boolean
     get() = tapActions.disableTap
 
+val PhotoWidget.tapActionViewerBackgroundColorHex: String?
+    get() = tapActions.viewerBackgroundColorHex
+
 fun PhotoWidget.orderedPhotosForDisplay(): List<LocalPhoto> {
     if (cycleMode !is PhotoWidgetCycleMode.AdvancedSchedule) return photos
 

@@ -240,6 +240,8 @@
     <string name="photo_widget_configure_tap_action_choose_app">Scegli app</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Disattiva altre aree di tocco mentre il timer è in pausa</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Queste preferenze sono utilizzate da tutte le aree che usano questa azione al tocco.</string>
+    <string name="photo_widget_configure_tap_action_viewer_background_color">Colore di sfondo</string>
+    <string name="photo_widget_configure_tap_action_viewer_background_color_default">Predefinito del tema</string>
     <string name="photo_widget_configure_gif_frame_interval">Intervallo fotogramma</string>
     <string name="photo_widget_configure_gif_frame_interval_description">Controlla la velocità di riproduzione della GIF animata. Minore è il valore, più veloce è la GIF.</string>
     <string name="photo_widget_configure_gif_frame_interval_presets">Predefiniti</string>

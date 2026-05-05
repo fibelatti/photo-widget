@@ -40,6 +40,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
@@ -88,6 +89,7 @@ fun PhotoWidgetViewerScreen(
     viewOriginalPhoto: Boolean,
     onDismissClick: () -> Unit,
     modifier: Modifier = Modifier,
+    backgroundColor: Color = MaterialTheme.colorScheme.background,
     showNextButton: Boolean = false,
     showPreviousButton: Boolean = false,
     onNextClick: () -> Unit = {},
@@ -133,7 +135,7 @@ fun PhotoWidgetViewerScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background),
+            .background(color = backgroundColor),
         contentAlignment = Alignment.Center,
     ) {
         AnimatedVisibility(

@@ -803,6 +803,8 @@ private fun ViewFullScreenCustomizationContent(
     onValueChange: (PhotoWidgetTapAction.ViewFullScreen) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val backgroundColorSheetState: AppSheetState = rememberAppSheetState()
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -831,6 +833,15 @@ private fun ViewFullScreenCustomizationContent(
             onCheckedChange = { onValueChange(value.copy(keepCurrentPhoto = it)) },
         )
 
+        PickerDefault(
+            title = stringResource(R.string.photo_widget_configure_tap_action_viewer_background_color),
+            currentValue = value.backgroundColorHex?.let { "#$it" }
+                ?: stringResource(R.string.photo_widget_configure_tap_action_viewer_background_color_default),
+            onClick = backgroundColorSheetState::showBottomSheet,
+            modifier = Modifier.fillMaxWidth(),
+            shape = Shapes.StandaloneShape,
+        )
+
         InformationalPanel(
             text = stringResource(id = R.string.photo_widget_configure_tap_action_shared_preferences),
             modifier = Modifier
@@ -838,6 +849,13 @@ private fun ViewFullScreenCustomizationContent(
                 .padding(top = 8.dp),
         )
     }
+
+    PhotoWidgetViewerBackgroundColorBottomSheet(
+        sheetState = backgroundColorSheetState,
+        currentColorHex = value.backgroundColorHex,
+        onApplyClick = { hex -> onValueChange(value.copy(backgroundColorHex = hex)) },
+        onResetClick = { onValueChange(value.copy(backgroundColorHex = null)) },
+    )
 }
 
 @Composable

@@ -277,7 +277,6 @@ private fun ColorBorderContent(
                     imeAction = ImeAction.Done,
                 ),
                 singleLine = true,
-                maxLines = 1,
             )
         }
 

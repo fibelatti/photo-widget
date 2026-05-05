@@ -439,6 +439,15 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     putBoolean("${PreferencePrefix.VIEW_ORIGINAL_PHOTO}$appWidgetId", tapAction.viewOriginalPhoto)
                     putBoolean("${PreferencePrefix.NO_SHUFFLE}$appWidgetId", tapAction.noShuffle)
                     putBoolean("${PreferencePrefix.KEEP_CURRENT_PHOTO}$appWidgetId", tapAction.keepCurrentPhoto)
+
+                    if (tapAction.backgroundColorHex != null) {
+                        putString(
+                            "${PreferencePrefix.VIEWER_BACKGROUND_COLOR}$appWidgetId",
+                            tapAction.backgroundColorHex,
+                        )
+                    } else {
+                        remove("${PreferencePrefix.VIEWER_BACKGROUND_COLOR}$appWidgetId")
+                    }
                 }
 
                 is PhotoWidgetTapAction.ViewInGallery -> {
@@ -489,6 +498,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     viewOriginalPhoto = getBoolean("${PreferencePrefix.VIEW_ORIGINAL_PHOTO}$appWidgetId", false),
                     noShuffle = getBoolean("${PreferencePrefix.NO_SHUFFLE}$appWidgetId", false),
                     keepCurrentPhoto = getBoolean("${PreferencePrefix.KEEP_CURRENT_PHOTO}$appWidgetId", false),
+                    backgroundColorHex = getString(
+                        "${PreferencePrefix.VIEWER_BACKGROUND_COLOR}$appWidgetId",
+                        null,
+                    ),
                 )
 
                 is PhotoWidgetTapAction.ViewInGallery -> tapAction.copy(
@@ -757,6 +770,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         FILE_SHORTCUT_URI_RIGHT(value = "appwidget_file_shortcut_uri_right_"),
         PREFERRED_GALLERY_APP(value = "appwidget_preferred_gallery_app_"),
         DISABLE_TAP(value = "appwidget_disable_tap_"),
+        VIEWER_BACKGROUND_COLOR(value = "appwidget_viewer_background_color_"),
 
         TEXT_TYPE(value = "appwidget_text_type_"),
         TEXT_VALUE(value = "appwidget_text_value_"),

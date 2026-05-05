@@ -36,6 +36,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
         val viewOriginalPhoto: Boolean = false,
         val noShuffle: Boolean = false,
         val keepCurrentPhoto: Boolean = false,
+        val backgroundColorHex: String? = null,
     ) : PhotoWidgetTapAction {
 
         @IgnoredOnParcel

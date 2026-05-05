@@ -247,6 +247,8 @@
     <string name="photo_widget_configure_tap_action_choose_app">Alege aplicația</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Dezactivează alte zone de atingere în timp ce cronometrul este întrerupt</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Aceste preferințe sunt folosite de toate zonele care folosesc această acțiune la atingere.</string>
+    <string name="photo_widget_configure_tap_action_viewer_background_color">Culoarea fundalului</string>
+    <string name="photo_widget_configure_tap_action_viewer_background_color_default">Implicit al temei</string>
     <string name="photo_widget_configure_gif_frame_interval">Intervalul cadrelor</string>
     <string name="photo_widget_configure_gif_frame_interval_description">Controlați viteza de redare a GIF-ului animat. Cu cât valoarea este mai mică, cu atât GIF-ul este mai rapid.</string>
     <string name="photo_widget_configure_gif_frame_interval_presets">Presetări</string>

@@ -44,3 +44,8 @@ val PhotoWidgetTapActions.disableTap: Boolean
             (center as? PhotoWidgetTapAction.ToggleCycling)?.disableTap == true ||
             (right as? PhotoWidgetTapAction.ToggleCycling)?.disableTap == true
     }
+
+val PhotoWidgetTapActions.viewerBackgroundColorHex: String?
+    get() = (left as? PhotoWidgetTapAction.ViewFullScreen)?.backgroundColorHex
+        ?: (center as? PhotoWidgetTapAction.ViewFullScreen)?.backgroundColorHex
+        ?: (right as? PhotoWidgetTapAction.ViewFullScreen)?.backgroundColorHex
