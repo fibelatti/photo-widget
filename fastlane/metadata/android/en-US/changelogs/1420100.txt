@@ -1,0 +1,6 @@
+This version brings the following updates:
+
+* Customize the background color of the full screen viewer
+* Fix drag to reorder photos crash (introduced in 1.42.0)
+
+Thanks for using the app!
