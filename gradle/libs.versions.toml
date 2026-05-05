@@ -1,5 +1,5 @@
 [versions]
-agp = "9.2.0"
+agp = "9.2.1"
 coil = "3.4.0"
 coroutines = "1.10.2"
 hilt = "2.59.2"
