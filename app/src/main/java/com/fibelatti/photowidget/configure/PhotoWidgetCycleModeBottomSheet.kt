@@ -43,6 +43,7 @@ import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -71,7 +72,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.intervalRange
-import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.RadioGroup
@@ -326,7 +326,7 @@ private fun PhotoCycleModeIntervalContent(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
-            RememberedEffect(interval.repeatInterval) {
+            SideEffect(interval.repeatInterval) {
                 localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
             }
 

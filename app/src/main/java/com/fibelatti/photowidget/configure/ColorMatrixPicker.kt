@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +31,6 @@ import androidx.compose.ui.util.fastRoundToInt
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetColors
-import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.DefaultSheetContent
@@ -130,7 +130,7 @@ private fun ColorMatrixPicker(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
-            RememberedEffect(value.fastRoundToInt()) {
+            SideEffect(value.fastRoundToInt()) {
                 localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
             }
 

@@ -25,6 +25,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -51,7 +52,6 @@ import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
-import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.colorForType
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.getColorPalette
@@ -426,7 +426,7 @@ private fun BorderWidthPicker(
     ) {
         val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
         var value by remember { mutableIntStateOf(currentWidth) }
-        RememberedEffect(value) {
+        SideEffect(value) {
             localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
         }
 

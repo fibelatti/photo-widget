@@ -52,6 +52,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -71,7 +72,6 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.getPhotoPath
-import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.photowidget.ui.LoadingIndicator
@@ -116,7 +116,7 @@ fun PhotoWidgetBackupScreen(
         onRestoreClick = onRestoreClick,
     )
 
-    RememberedEffect(state.preparedBackupFile) {
+    SideEffect(state.preparedBackupFile) {
         state.preparedBackupFile?.let { file ->
             val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
@@ -127,7 +127,7 @@ fun PhotoWidgetBackupScreen(
         }
     }
 
-    RememberedEffect(state.messages) {
+    SideEffect(state.messages) {
         state.messages.firstOrNull()?.let { message ->
             when (message) {
                 is PhotoWidgetBackupViewModel.State.Message.BackupExportedSuccessfully -> {

@@ -56,6 +56,7 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -94,7 +95,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.canSort
-import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.popNavKey
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.LocalSamplePhoto
@@ -136,7 +136,7 @@ fun PhotoWidgetConfigureScreen(
         onResult = viewModel::gifPicked,
     )
 
-    RememberedEffect(state.messages) {
+    SideEffect(state.messages) {
         val currentMessage: PhotoWidgetConfigureState.Message? = state.messages.firstOrNull()
         if (currentMessage is PhotoWidgetConfigureState.Message.LaunchCrop) {
             val key = PhotoWidgetConfigureNav.PhotoCrop(

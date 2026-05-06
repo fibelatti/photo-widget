@@ -14,6 +14,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -24,7 +25,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.KeepAliveService
-import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
@@ -71,7 +71,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
                     onBack = ::handleBackPress,
                 )
 
-                RememberedEffect(state.messages) {
+                SideEffect(state.messages) {
                     state.messages.firstOrNull()?.let(::handleMessage)
                 }
             }

@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -27,7 +28,6 @@ import com.fibelatti.photowidget.model.tapActionIncreaseBrightness
 import com.fibelatti.photowidget.model.tapActionViewOriginalPhoto
 import com.fibelatti.photowidget.model.tapActionViewerBackgroundColorHex
 import com.fibelatti.photowidget.platform.AppTheme
-import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.platform.sharePhotoChooserIntent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -73,7 +73,7 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
                 val state: PhotoWidgetViewerViewModel.State by viewModel.state.collectAsStateWithLifecycle()
                 val photoWidget: PhotoWidget by remember { derivedStateOf { state.photoWidget } }
 
-                RememberedEffect(photoWidget.tapActionIncreaseBrightness) {
+                SideEffect(photoWidget.tapActionIncreaseBrightness) {
                     if (photoWidget.tapActionIncreaseBrightness) {
                         setScreenBrightness(value = 0.9f)
                     }

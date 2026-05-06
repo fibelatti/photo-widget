@@ -42,6 +42,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -74,7 +75,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.canSort
 import com.fibelatti.photowidget.model.orderedPhotosForDisplay
-import com.fibelatti.photowidget.platform.RememberedEffect
 import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.ui.foundation.AppSheetState
@@ -415,7 +415,7 @@ private fun PhotoGrid(
     val localHaptics: HapticFeedback = LocalHapticFeedback.current
 
     val currentPhotos: SnapshotStateList<LocalPhoto> = remember { photos.toMutableStateList() }
-    RememberedEffect(photos) {
+    SideEffect(photos) {
         if (currentPhotos != photos) {
             currentPhotos.clear()
             currentPhotos.addAll(photos)
