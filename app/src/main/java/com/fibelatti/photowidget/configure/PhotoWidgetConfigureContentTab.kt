@@ -562,13 +562,8 @@ private fun PhotoPickerFooter(
         ) {
             RemovedPhotosPicker(
                 title = when (source) {
-                    PhotoWidgetSource.PHOTOS -> stringResource(
-                        R.string.photo_widget_configure_photos_pending_deletion,
-                    )
-
                     PhotoWidgetSource.DIRECTORY -> stringResource(R.string.photo_widget_configure_photos_excluded)
-
-                    PhotoWidgetSource.GIF -> error("GIF source does not support removing photos.")
+                    else -> stringResource(R.string.photo_widget_configure_photos_pending_deletion)
                 },
                 photos = removedPhotos,
                 onPhotoClick = onRemovedPhotoClick,
