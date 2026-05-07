@@ -18,13 +18,13 @@ val AppIcons.MyWidgets: ImageVector
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
             viewportWidth = 24f,
-            viewportHeight = 24f
+            viewportHeight = 24f,
         ).apply {
             path(
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 2f,
                 strokeLineCap = StrokeCap.Round,
-                strokeLineJoin = StrokeJoin.Round
+                strokeLineJoin = StrokeJoin.Round,
             ) {
                 moveTo(14f, 5.6f)
                 curveTo(14f, 5.04f, 14f, 4.76f, 14.109f, 4.546f)
@@ -49,7 +49,7 @@ val AppIcons.MyWidgets: ImageVector
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 2f,
                 strokeLineCap = StrokeCap.Round,
-                strokeLineJoin = StrokeJoin.Round
+                strokeLineJoin = StrokeJoin.Round,
             ) {
                 moveTo(4f, 5.6f)
                 curveTo(4f, 5.04f, 4f, 4.76f, 4.109f, 4.546f)
@@ -74,7 +74,7 @@ val AppIcons.MyWidgets: ImageVector
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 2f,
                 strokeLineCap = StrokeCap.Round,
-                strokeLineJoin = StrokeJoin.Round
+                strokeLineJoin = StrokeJoin.Round,
             ) {
                 moveTo(4f, 15.6f)
                 curveTo(4f, 15.04f, 4f, 14.76f, 4.109f, 14.546f)
@@ -99,7 +99,7 @@ val AppIcons.MyWidgets: ImageVector
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 2f,
                 strokeLineCap = StrokeCap.Round,
-                strokeLineJoin = StrokeJoin.Round
+                strokeLineJoin = StrokeJoin.Round,
             ) {
                 moveTo(14f, 15.6f)
                 curveTo(14f, 15.04f, 14f, 14.76f, 14.109f, 14.546f)

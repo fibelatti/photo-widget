@@ -16,7 +16,7 @@ val AppIcons.FileNotFound: ImageVector
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
             viewportWidth = 24f,
-            viewportHeight = 24f
+            viewportHeight = 24f,
         ).apply {
             path(fill = SolidColor(Color(0xFFF44336))) {
                 moveTo(13f, 3f)

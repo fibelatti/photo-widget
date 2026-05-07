@@ -17,12 +17,12 @@ val AppIcons.Default: ImageVector
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
             viewportWidth = 24f,
-            viewportHeight = 24f
+            viewportHeight = 24f,
         ).apply {
             path(
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 2f,
-                strokeLineJoin = StrokeJoin.Round
+                strokeLineJoin = StrokeJoin.Round,
             ) {
                 moveTo(5f, 6.2f)
                 curveTo(5f, 5.08f, 5f, 4.52f, 5.218f, 4.092f)

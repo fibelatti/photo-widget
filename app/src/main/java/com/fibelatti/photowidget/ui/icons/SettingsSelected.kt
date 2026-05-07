@@ -18,14 +18,14 @@ val AppIcons.SettingsSelected: ImageVector
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
             viewportWidth = 24f,
-            viewportHeight = 24f
+            viewportHeight = 24f,
         ).apply {
             path(
                 fill = SolidColor(Color.Black),
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 2f,
                 strokeLineCap = StrokeCap.Round,
-                strokeLineJoin = StrokeJoin.Round
+                strokeLineJoin = StrokeJoin.Round,
             ) {
                 moveTo(12.905f, 3.06f)
                 curveTo(12.699f, 3f, 12.466f, 3f, 12f, 3f)
@@ -99,7 +99,7 @@ val AppIcons.SettingsSelected: ImageVector
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 2f,
                 strokeLineCap = StrokeCap.Round,
-                strokeLineJoin = StrokeJoin.Round
+                strokeLineJoin = StrokeJoin.Round,
             ) {
                 moveTo(15f, 12f)
                 curveTo(15f, 13.657f, 13.657f, 15f, 12f, 15f)
