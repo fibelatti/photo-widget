@@ -41,7 +41,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
@@ -56,6 +55,9 @@ import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.ShapesBanner
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.ChevronRight
+import com.fibelatti.photowidget.ui.icons.Expand
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.PreviewAll
@@ -204,7 +206,7 @@ fun AspectRatioPicker(
             )
 
             Icon(
-                painter = painterResource(R.drawable.ic_chevron_right),
+                imageVector = AppIcons.ChevronRight,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurface,
             )
@@ -342,7 +344,7 @@ private fun FillAspectRatioRepresentation(
             .padding(8.dp),
     ) {
         Icon(
-            painter = painterResource(R.drawable.ic_expand),
+            imageVector = AppIcons.Expand,
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
             tint = MaterialTheme.colorScheme.primaryContainer,

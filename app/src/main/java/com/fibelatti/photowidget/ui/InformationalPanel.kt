@@ -15,18 +15,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.Warning
 
 @Composable
 fun InformationalPanel(
     text: String,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.bodySmall,
-    icon: Painter = painterResource(R.drawable.ic_warning),
+    icon: Painter = rememberVectorPainter(AppIcons.Warning),
     backgroundShape: Shape = MaterialTheme.shapes.medium,
     backgroundColor: Color = Color(0xFFFFE57F),
     contentColor: Color = Color.Black,

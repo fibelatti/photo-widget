@@ -28,7 +28,6 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -38,6 +37,8 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.appSettingsIntent
 import com.fibelatti.photowidget.platform.disableBatteryOptimizationIntent
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.Warning
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.TextWithLinks
@@ -70,7 +71,7 @@ fun BackgroundRestrictionWarningDialog(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_warning),
+                imageVector = AppIcons.Warning,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurface,

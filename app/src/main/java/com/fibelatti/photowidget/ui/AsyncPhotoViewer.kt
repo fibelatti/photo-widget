@@ -30,7 +30,6 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntSize
 import coil3.transform.Transformation
 import com.fibelatti.photowidget.R
@@ -38,6 +37,8 @@ import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.getMaxBitmapWidgetDimension
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.FileNotFound
 import kotlin.math.max
 import kotlinx.coroutines.delay
 
@@ -161,7 +162,7 @@ private fun AsyncPhotoViewer(
                     contentAlignment = Alignment.Center,
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_file_not_found),
+                        imageVector = AppIcons.FileNotFound,
                         contentDescription = null,
                         modifier = Modifier.fillMaxSize(fraction = 0.8f),
                         contentScale = contentScale,

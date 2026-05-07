@@ -63,6 +63,9 @@ import com.canhub.cropper.CropImageView
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.LocalAppCompatActivity
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.Back
+import com.fibelatti.photowidget.ui.icons.Check
 import com.fibelatti.ui.foundation.ConnectedButtonRowItem
 import com.fibelatti.ui.preview.PreviewAccessibility
 import com.fibelatti.ui.preview.PreviewAll
@@ -145,7 +148,7 @@ private fun PhotoCropContent(
                 shapes = IconButtonDefaults.shapes(),
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_back),
+                    imageVector = AppIcons.Back,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onBackground,
                 )
@@ -175,7 +178,7 @@ private fun PhotoCropContent(
                         shapes = IconButtonDefaults.shapes(),
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.ic_check),
+                            imageVector = AppIcons.Check,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onBackground,
                         )

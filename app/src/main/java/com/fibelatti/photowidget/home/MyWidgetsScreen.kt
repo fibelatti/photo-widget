@@ -40,7 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
@@ -63,6 +63,8 @@ import com.fibelatti.photowidget.platform.letIf
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.TrashClock
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
@@ -259,7 +261,7 @@ private fun WidgetGridItem(
                     backgroundColor = MaterialTheme.colorScheme.errorContainer,
                     contentColor = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier.padding(bottom = 8.dp),
-                    icon = painterResource(R.drawable.ic_trash_clock)
+                    icon = rememberVectorPainter(AppIcons.TrashClock)
                         .takeIf { widget.status == PhotoWidgetStatus.REMOVED },
                 )
             }

@@ -4,7 +4,6 @@ import android.app.AlarmManager
 import android.os.PowerManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -40,11 +39,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
@@ -57,6 +57,20 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.BackgroundRestrictionBottomSheet
 import com.fibelatti.photowidget.configure.ExactAlarmsDialog
 import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
+import com.fibelatti.photowidget.ui.icons.Alarm
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.Appearance
+import com.fibelatti.photowidget.ui.icons.Backup
+import com.fibelatti.photowidget.ui.icons.Battery
+import com.fibelatti.photowidget.ui.icons.Default
+import com.fibelatti.photowidget.ui.icons.DynamicColor
+import com.fibelatti.photowidget.ui.icons.HardDrive
+import com.fibelatti.photowidget.ui.icons.KeepAlive
+import com.fibelatti.photowidget.ui.icons.PrivacyPolicy
+import com.fibelatti.photowidget.ui.icons.Question
+import com.fibelatti.photowidget.ui.icons.Rate
+import com.fibelatti.photowidget.ui.icons.Send
+import com.fibelatti.photowidget.ui.icons.Translation
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.rememberAppSheetState
@@ -184,7 +198,7 @@ private fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(1.dp),
         ) {
             SettingsAction(
-                icon = R.drawable.ic_default,
+                icon = rememberVectorPainter(AppIcons.Default),
                 label = R.string.widget_defaults_title,
                 onClick = onDefaultsClick,
                 description = R.string.widget_defaults_description,
@@ -192,7 +206,7 @@ private fun SettingsScreen(
             )
 
             SettingsAction(
-                icon = R.drawable.ic_hard_drive,
+                icon = rememberVectorPainter(AppIcons.HardDrive),
                 label = R.string.photo_widget_home_data_saver,
                 onClick = onDataSaverClick,
                 description = R.string.photo_widget_home_data_saver_description,
@@ -200,7 +214,7 @@ private fun SettingsScreen(
 
             AnimatedVisibility(visible = !canScheduleExactAlarms) {
                 SettingsAction(
-                    icon = R.drawable.ic_alarm,
+                    icon = rememberVectorPainter(AppIcons.Alarm),
                     label = R.string.photo_widget_configure_interval_grant_permission,
                     onClick = onScheduleExactAlarmsClick,
                     description = R.string.photo_widget_configure_interval_grant_permission_description,
@@ -209,7 +223,7 @@ private fun SettingsScreen(
 
             AnimatedVisibility(visible = isBatteryUsageRestricted) {
                 SettingsAction(
-                    icon = R.drawable.ic_battery,
+                    icon = rememberVectorPainter(AppIcons.Battery),
                     label = R.string.photo_widget_configure_battery_optimization,
                     onClick = onBatteryOptimizationClick,
                     description = R.string.photo_widget_configure_battery_optimization_description,
@@ -217,7 +231,7 @@ private fun SettingsScreen(
             }
 
             SettingsAction(
-                icon = R.drawable.ic_keep_alive,
+                icon = rememberVectorPainter(AppIcons.KeepAlive),
                 label = R.string.photo_widget_keep_alive_service_dialog_title,
                 onClick = onKeepAliveClick,
                 shape = Shapes.BottomShape,
@@ -226,7 +240,7 @@ private fun SettingsScreen(
             Spacer(modifier = Modifier.height(30.dp))
 
             SettingsAction(
-                icon = R.drawable.ic_backup,
+                icon = rememberVectorPainter(AppIcons.Backup),
                 label = R.string.photo_widget_home_backup,
                 onClick = onBackupClick,
                 shape = MaterialTheme.shapes.medium,
@@ -235,7 +249,7 @@ private fun SettingsScreen(
             Spacer(modifier = Modifier.height(30.dp))
 
             SettingsAction(
-                icon = R.drawable.ic_privacy_policy,
+                icon = rememberVectorPainter(AppIcons.PrivacyPolicy),
                 label = R.string.photo_widget_home_privacy_policy,
                 onClick = onPrivacyPolicyClick,
                 shape = MaterialTheme.shapes.medium,
@@ -244,7 +258,7 @@ private fun SettingsScreen(
             Spacer(modifier = Modifier.height(30.dp))
 
             SettingsAction(
-                icon = R.drawable.ic_appearance,
+                icon = rememberVectorPainter(AppIcons.Appearance),
                 label = R.string.photo_widget_home_appearance,
                 onClick = onAppearanceClick,
                 shape = Shapes.TopShape,
@@ -252,14 +266,14 @@ private fun SettingsScreen(
 
             if (DynamicColors.isDynamicColorAvailable() || LocalInspectionMode.current) {
                 SettingsAction(
-                    icon = R.drawable.ic_dynamic_color,
+                    icon = rememberVectorPainter(AppIcons.DynamicColor),
                     label = R.string.photo_widget_home_dynamic_colors,
                     onClick = onColorsClick,
                 )
             }
 
             SettingsAction(
-                icon = R.drawable.ic_translation,
+                icon = rememberVectorPainter(AppIcons.Translation),
                 label = R.string.photo_widget_home_translations,
                 onClick = onAppLanguageClick,
                 shape = Shapes.BottomShape,
@@ -268,20 +282,20 @@ private fun SettingsScreen(
             Spacer(modifier = Modifier.height(30.dp))
 
             SettingsAction(
-                icon = R.drawable.ic_question,
+                icon = rememberVectorPainter(AppIcons.Question),
                 label = R.string.photo_widget_home_help,
                 onClick = onSendFeedbackClick,
                 shape = Shapes.TopShape,
             )
 
             SettingsAction(
-                icon = R.drawable.ic_rate,
+                icon = rememberVectorPainter(AppIcons.Rate),
                 label = R.string.photo_widget_home_rate,
                 onClick = onRateClick,
             )
 
             SettingsAction(
-                icon = R.drawable.ic_send,
+                icon = rememberVectorPainter(AppIcons.Send),
                 label = R.string.photo_widget_home_share,
                 onClick = onShareClick,
                 shape = Shapes.BottomShape,
@@ -369,7 +383,7 @@ private fun SettingsFooter(
 
 @Composable
 private fun SettingsAction(
-    @DrawableRes icon: Int,
+    icon: Painter,
     @StringRes label: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -389,7 +403,7 @@ private fun SettingsAction(
         contentPadding = PaddingValues(all = 12.dp),
     ) {
         Icon(
-            painter = painterResource(id = icon),
+            painter = icon,
             contentDescription = null,
             modifier = Modifier.size(24.dp),
             tint = MaterialTheme.colorScheme.onSurface,

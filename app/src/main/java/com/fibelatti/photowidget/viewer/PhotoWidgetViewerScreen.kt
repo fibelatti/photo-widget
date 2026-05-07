@@ -46,7 +46,6 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -55,6 +54,11 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.getPhotoPath
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
+import com.fibelatti.photowidget.ui.icons.Album
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.ChevronLeft
+import com.fibelatti.photowidget.ui.icons.ChevronRight
+import com.fibelatti.photowidget.ui.icons.Share
 import com.fibelatti.ui.foundation.DragState
 import com.fibelatti.ui.foundation.onHorizontalDrag
 import com.fibelatti.ui.foundation.onVerticalDrag
@@ -148,7 +152,7 @@ fun PhotoWidgetViewerScreen(
             exit = fadeOut(),
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_chevron_left),
+                imageVector = AppIcons.ChevronLeft,
                 contentDescription = null,
                 modifier = Modifier
                     .background(
@@ -170,7 +174,7 @@ fun PhotoWidgetViewerScreen(
             exit = fadeOut(),
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_chevron_right),
+                imageVector = AppIcons.ChevronRight,
                 contentDescription = null,
                 modifier = Modifier
                     .background(
@@ -262,7 +266,7 @@ fun PhotoWidgetViewerScreen(
                         Spacer(modifier = Modifier.size(8.dp))
 
                         Icon(
-                            painter = painterResource(R.drawable.ic_album),
+                            imageVector = AppIcons.Album,
                             contentDescription = null,
                             modifier = Modifier.size(20.dp),
                         )
@@ -279,7 +283,7 @@ fun PhotoWidgetViewerScreen(
                         Spacer(modifier = Modifier.size(8.dp))
 
                         Icon(
-                            painter = painterResource(R.drawable.ic_share),
+                            imageVector = AppIcons.Share,
                             contentDescription = null,
                             modifier = Modifier.size(20.dp),
                         )
@@ -335,7 +339,7 @@ private fun Controls(
                 .visible(showPreviousButton)
                 .size(smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Wide)),
         ) {
-            Icon(painterResource(id = R.drawable.ic_chevron_left), contentDescription = null)
+            Icon(imageVector = AppIcons.ChevronLeft, contentDescription = null)
         }
 
         Button(
@@ -352,7 +356,7 @@ private fun Controls(
                 .visible(showNextButton)
                 .size(smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Wide)),
         ) {
-            Icon(painterResource(id = R.drawable.ic_chevron_right), contentDescription = null)
+            Icon(imageVector = AppIcons.ChevronRight, contentDescription = null)
         }
     }
 }

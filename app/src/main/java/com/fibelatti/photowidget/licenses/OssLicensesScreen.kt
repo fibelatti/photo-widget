@@ -21,9 +21,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.Back
 import com.fibelatti.ui.foundation.copy
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
@@ -74,7 +75,7 @@ fun OssLicensesScreen(
                         shapes = IconButtonDefaults.shapes(),
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_back),
+                            imageVector = AppIcons.Back,
                             contentDescription = "",
                             tint = MaterialTheme.colorScheme.primary,
                         )

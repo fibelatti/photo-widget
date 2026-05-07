@@ -45,8 +45,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -74,6 +74,10 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.ui.ColoredShape
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.Back
+import com.fibelatti.photowidget.ui.icons.Check
+import com.fibelatti.photowidget.ui.icons.Xmark
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
 import com.fibelatti.ui.foundation.Shapes
@@ -226,7 +230,7 @@ private fun WidgetDefaultsScreen(
                         shapes = IconButtonDefaults.shapes(),
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_back),
+                            imageVector = AppIcons.Back,
                             contentDescription = null,
                         )
                     }
@@ -431,14 +435,14 @@ fun BooleanDefault(
                 checked = currentValue,
                 onCheckedChange = onCheckedChange,
                 thumbContent = {
-                    val icon = painterResource(if (currentValue) R.drawable.ic_check else R.drawable.ic_xmark)
+                    val icon: ImageVector = if (currentValue) AppIcons.Check else AppIcons.Xmark
 
                     AnimatedContent(
                         targetState = icon,
                         transitionSpec = { fadeIn() + scaleIn() togetherWith fadeOut() + scaleOut() },
-                    ) { painter ->
+                    ) { vector ->
                         Icon(
-                            painter = painter,
+                            imageVector = vector,
                             contentDescription = null,
                             modifier = Modifier.size(SwitchDefaults.IconSize),
                         )

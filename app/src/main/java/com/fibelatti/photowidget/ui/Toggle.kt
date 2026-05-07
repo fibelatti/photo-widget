@@ -18,9 +18,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.Check
+import com.fibelatti.photowidget.ui.icons.Xmark
 
 @Composable
 fun Toggle(
@@ -38,14 +40,14 @@ fun Toggle(
             checked = checked,
             onCheckedChange = onCheckedChange,
             thumbContent = {
-                val icon = painterResource(if (checked) R.drawable.ic_check else R.drawable.ic_xmark)
+                val icon: ImageVector = if (checked) AppIcons.Check else AppIcons.Xmark
 
                 AnimatedContent(
                     targetState = icon,
                     transitionSpec = { fadeIn() + scaleIn() togetherWith fadeOut() + scaleOut() },
-                ) { painter ->
+                ) { vector ->
                     Icon(
-                        painter = painter,
+                        imageVector = vector,
                         contentDescription = null,
                         modifier = Modifier.size(SwitchDefaults.IconSize),
                     )

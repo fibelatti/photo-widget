@@ -76,7 +76,6 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -104,6 +103,9 @@ import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.RadioGroup
 import com.fibelatti.photowidget.ui.Toggle
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.Back
+import com.fibelatti.photowidget.ui.icons.Trash
 import com.fibelatti.photowidget.ui.rememberSampleBitmap
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
@@ -415,7 +417,7 @@ private fun TapActionPickerContent(
                 modifier = Modifier.align(Alignment.TopStart),
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_back),
+                    imageVector = AppIcons.Back,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurface,
                 )
@@ -1025,7 +1027,7 @@ private fun AppFolderCustomizationContent(
                             },
                         ) {
                             Icon(
-                                painter = painterResource(R.drawable.ic_trash),
+                                imageVector = AppIcons.Trash,
                                 contentDescription = null,
                             )
                         }

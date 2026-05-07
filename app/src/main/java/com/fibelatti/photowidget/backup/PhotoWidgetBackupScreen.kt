@@ -60,9 +60,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.fromHtml
@@ -75,6 +75,11 @@ import com.fibelatti.photowidget.model.getPhotoPath
 import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.photowidget.ui.LoadingIndicator
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.Back
+import com.fibelatti.photowidget.ui.icons.Export
+import com.fibelatti.photowidget.ui.icons.Import
+import com.fibelatti.photowidget.ui.icons.Warning
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -187,7 +192,7 @@ fun PhotoWidgetBackupScreen(
                             shapes = IconButtonDefaults.shapes(),
                         ) {
                             Icon(
-                                painter = painterResource(id = R.drawable.ic_back),
+                                imageVector = AppIcons.Back,
                                 contentDescription = null,
                             )
                         }
@@ -243,7 +248,7 @@ private fun PhotoWidgetBackupContent(
         Spacer(modifier = Modifier.height(24.dp))
 
         BackupInstruction(
-            icon = painterResource(R.drawable.ic_export),
+            icon = rememberVectorPainter(AppIcons.Export),
             text = stringResource(R.string.backup_explanation_1),
             modifier = Modifier.padding(horizontal = 16.dp),
         )
@@ -251,7 +256,7 @@ private fun PhotoWidgetBackupContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         BackupInstruction(
-            icon = painterResource(R.drawable.ic_import),
+            icon = rememberVectorPainter(AppIcons.Import),
             text = stringResource(R.string.backup_explanation_2),
             modifier = Modifier.padding(horizontal = 16.dp),
         )
@@ -259,7 +264,7 @@ private fun PhotoWidgetBackupContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         BackupInstruction(
-            icon = painterResource(R.drawable.ic_warning),
+            icon = rememberVectorPainter(AppIcons.Warning),
             text = stringResource(R.string.backup_explanation_3),
             modifier = Modifier.padding(horizontal = 16.dp),
         )

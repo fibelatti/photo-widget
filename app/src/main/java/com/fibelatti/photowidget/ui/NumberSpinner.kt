@@ -17,9 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.Minus
+import com.fibelatti.photowidget.ui.icons.Plus
 import com.fibelatti.ui.text.AutoSizeText
 
 @Composable
@@ -46,7 +47,7 @@ fun NumberSpinner(
             enabled = lowerBound == null || value > lowerBound,
             shape = MaterialTheme.shapes.medium.copy(topEnd = zeroCorner, bottomEnd = zeroCorner),
         ) {
-            Icon(painter = painterResource(R.drawable.ic_minus), contentDescription = null)
+            Icon(imageVector = AppIcons.Minus, contentDescription = null)
         }
 
         Box(
@@ -73,7 +74,7 @@ fun NumberSpinner(
             enabled = upperBound == null || value < upperBound,
             shape = MaterialTheme.shapes.medium.copy(topStart = zeroCorner, bottomStart = zeroCorner),
         ) {
-            Icon(painter = painterResource(R.drawable.ic_plus), contentDescription = null)
+            Icon(imageVector = AppIcons.Plus, contentDescription = null)
         }
     }
 }

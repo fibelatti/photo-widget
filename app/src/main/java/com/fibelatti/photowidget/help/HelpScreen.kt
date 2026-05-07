@@ -31,13 +31,14 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.ui.InformationalPanel
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.ChevronDown
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.preview.PreviewAll
@@ -143,7 +144,7 @@ private fun HelpCard(
                 label = "HelpCard_ExpandChevron",
             )
             Icon(
-                painter = painterResource(id = R.drawable.ic_chevron_down),
+                imageVector = AppIcons.ChevronDown,
                 contentDescription = "",
                 modifier = Modifier
                     .rotate(rotation)

@@ -1,7 +1,6 @@
 package com.fibelatti.photowidget.home
 
 import android.content.Intent
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.EnterTransition
@@ -35,9 +34,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -63,6 +63,13 @@ import com.fibelatti.photowidget.preferences.AppColorsBottomSheet
 import com.fibelatti.photowidget.preferences.DataSaverBottomSheet
 import com.fibelatti.photowidget.preferences.KeepAliveServiceBottomSheet
 import com.fibelatti.photowidget.preferences.WidgetDefaultsScreen
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.MyWidgets
+import com.fibelatti.photowidget.ui.icons.MyWidgetsSelected
+import com.fibelatti.photowidget.ui.icons.NewWidget
+import com.fibelatti.photowidget.ui.icons.NewWidgetSelected
+import com.fibelatti.photowidget.ui.icons.Settings
+import com.fibelatti.photowidget.ui.icons.SettingsSelected
 import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.foundation.rememberAppSheetState
 import com.fibelatti.ui.foundation.showBottomSheet
@@ -398,9 +405,9 @@ private fun HomeNavigation(
                         targetState = if (selected) destination.iconSelected else destination.icon,
                         transitionSpec = { fadeIn() togetherWith fadeOut() },
                         label = "NavIcon",
-                    ) { iconRes ->
+                    ) { vector ->
                         Icon(
-                            painter = painterResource(id = iconRes),
+                            painter = rememberVectorPainter(vector),
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
                         )
@@ -420,24 +427,24 @@ private fun HomeNavigation(
 
 private enum class HomeNavigationDestination(
     @StringRes val label: Int,
-    @DrawableRes val icon: Int,
-    @DrawableRes val iconSelected: Int,
+    val icon: ImageVector,
+    val iconSelected: ImageVector,
 ) {
 
     NEW_WIDGET(
         label = R.string.photo_widget_home_new,
-        icon = R.drawable.ic_new_widget,
-        iconSelected = R.drawable.ic_new_widget_selected,
+        icon = AppIcons.NewWidget,
+        iconSelected = AppIcons.NewWidgetSelected,
     ),
     MY_WIDGETS(
         label = R.string.photo_widget_home_current,
-        icon = R.drawable.ic_my_widgets,
-        iconSelected = R.drawable.ic_my_widgets_selected,
+        icon = AppIcons.MyWidgets,
+        iconSelected = AppIcons.MyWidgetsSelected,
     ),
     SETTINGS(
         label = R.string.photo_widget_home_settings,
-        icon = R.drawable.ic_settings,
-        iconSelected = R.drawable.ic_settings_selected,
+        icon = AppIcons.Settings,
+        iconSelected = AppIcons.SettingsSelected,
     ),
 }
 

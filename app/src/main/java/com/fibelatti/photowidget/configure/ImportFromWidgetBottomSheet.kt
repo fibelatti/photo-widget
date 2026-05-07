@@ -22,9 +22,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -39,6 +39,8 @@ import com.fibelatti.photowidget.model.isWidgetRemoved
 import com.fibelatti.photowidget.platform.letIf
 import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.TrashClock
 import com.fibelatti.ui.foundation.AppBottomSheet
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.hideBottomSheet
@@ -135,7 +137,7 @@ private fun ImportFromWidgetContent(
                             backgroundColor = MaterialTheme.colorScheme.errorContainer,
                             contentColor = MaterialTheme.colorScheme.onErrorContainer,
                             modifier = Modifier.padding(bottom = 8.dp),
-                            icon = painterResource(R.drawable.ic_trash_clock)
+                            icon = rememberVectorPainter(AppIcons.TrashClock)
                                 .takeIf { widget.status == PhotoWidgetStatus.REMOVED },
                         )
                     }

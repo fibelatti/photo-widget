@@ -72,7 +72,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -99,6 +98,12 @@ import com.fibelatti.photowidget.platform.popNavKey
 import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.LocalSamplePhoto
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
+import com.fibelatti.photowidget.ui.icons.AppIcons
+import com.fibelatti.photowidget.ui.icons.Back
+import com.fibelatti.photowidget.ui.icons.ChevronLeft
+import com.fibelatti.photowidget.ui.icons.ChevronRight
+import com.fibelatti.photowidget.ui.icons.Crop
+import com.fibelatti.photowidget.ui.icons.Trash
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
@@ -527,7 +532,7 @@ private fun PhotoWidgetViewer(
             ),
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_back),
+                imageVector = AppIcons.Back,
                 contentDescription = null,
             )
         }
@@ -561,7 +566,7 @@ private fun EditingControls(
                 enabled = moveLeftEnabled,
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_chevron_left),
+                    imageVector = AppIcons.ChevronLeft,
                     contentDescription = stringResource(id = R.string.photo_widget_configure_menu_move_left),
                 )
             }
@@ -573,7 +578,7 @@ private fun EditingControls(
             interactionSource = interactionSources[1],
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_crop),
+                imageVector = AppIcons.Crop,
                 contentDescription = stringResource(id = R.string.photo_widget_configure_menu_crop),
             )
         }
@@ -584,7 +589,7 @@ private fun EditingControls(
             interactionSource = interactionSources[2],
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_trash),
+                imageVector = AppIcons.Trash,
                 contentDescription = stringResource(id = R.string.photo_widget_configure_menu_remove),
             )
         }
@@ -597,7 +602,7 @@ private fun EditingControls(
                 interactionSource = interactionSources[3],
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_chevron_right),
+                    imageVector = AppIcons.ChevronRight,
                     contentDescription = stringResource(id = R.string.photo_widget_configure_menu_move_right),
                 )
             }
