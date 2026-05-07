@@ -11,6 +11,8 @@ import coil3.memory.MemoryCache
 import coil3.memoryCacheMaxSizePercentWhileInBackground
 import coil3.request.addLastModifiedToFileCacheKey
 import coil3.request.allowHardware
+import coil3.util.DebugLogger
+import com.fibelatti.photowidget.BuildConfig
 import com.fibelatti.photowidget.widget.data.AdvancedScheduleTimeDao
 import com.fibelatti.photowidget.widget.data.DisplayedPhotoDao
 import com.fibelatti.photowidget.widget.data.ExcludedWidgetPhotoDao
@@ -90,7 +92,7 @@ object PhotoWidgetModule {
     fun imageLoader(@ApplicationContext context: Context): ImageLoader = ImageLoader.Builder(context)
         .memoryCache {
             MemoryCache.Builder()
-                .maxSizePercent(context = context, percent = 0.25)
+                .maxSizePercent(context = context, percent = 0.4)
                 .build()
         }
         .memoryCacheMaxSizePercentWhileInBackground(percent = 0.25)
@@ -103,6 +105,7 @@ object PhotoWidgetModule {
         .interceptorCoroutineContext(Dispatchers.IO)
         .addLastModifiedToFileCacheKey(enable = true)
         .allowHardware(enable = false)
+        .apply { if (BuildConfig.DEBUG) logger(DebugLogger()) }
         .build()
 
     @Provides

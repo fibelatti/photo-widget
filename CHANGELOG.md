@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Fix a crash that could happen when selecting GIF as the source
+* Fix image not refreshing after cropping
 
 ## [v1.42.1] - 2026-05-05
 [v1.42.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.42.1

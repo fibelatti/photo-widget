@@ -38,7 +38,6 @@ class PhotoDecoder @Inject constructor(
                 if (maxDimension != null && maxDimension > 0) size(maxDimension)
                 if (transformations.isNotEmpty()) transformations(transformations)
             }
-            .memoryCacheKey(cacheKey)
             .diskCacheKey(cacheKey)
             .build()
 
