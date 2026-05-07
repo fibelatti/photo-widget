@@ -1,0 +1,7 @@
+This version brings the following updates:
+
+* Fix a crash that could happen when selecting GIF as the source
+* Fix image not refreshing after cropping
+* Fix crop queue not being emptied when navigating back
+
+Thanks for using the app!

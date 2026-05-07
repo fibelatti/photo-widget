@@ -7,10 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.42.2] - 2026-05-07
+[v1.42.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.42.2
+
 ### Fixed
 
 * Fix a crash that could happen when selecting GIF as the source
 * Fix image not refreshing after cropping
+* Fix crop queue not being emptied when navigating back
 
 ## [v1.42.1] - 2026-05-05
 [v1.42.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.42.1
