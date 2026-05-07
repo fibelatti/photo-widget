@@ -209,7 +209,10 @@ fun PhotoWidgetConfigureScreen(
                         aspectRatioX = key.aspectRatio.x.roundToInt(),
                         aspectRatioY = key.aspectRatio.y.roundToInt(),
                     ),
-                    onBackClick = configureBackStack::popNavKey,
+                    onBackClick = {
+                        viewModel.cropCancelled()
+                        configureBackStack.popNavKey()
+                    },
                     onCropComplete = { cropResult ->
                         val destinationPath: String? = key.destinationUri.toUri().path
                         if (cropResult.isSuccessful && cropResult.uriContent != null && destinationPath != null) {
