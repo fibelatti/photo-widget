@@ -1,5 +1,11 @@
 package com.fibelatti.photowidget.ui
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -17,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Minus
@@ -57,12 +64,26 @@ fun NumberSpinner(
                 .background(color = MaterialTheme.colorScheme.surfaceContainerHigh),
             contentAlignment = Alignment.Center,
         ) {
-            AutoSizeText(
-                text = value.toString(),
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.titleLarge,
-                maxLines = 1,
-            )
+            AnimatedContent(
+                targetState = value,
+                transitionSpec = {
+                    if (targetState > initialState) {
+                        slideInVertically(initialOffsetY = { -200 }) + scaleIn() togetherWith
+                            slideOutVertically(targetOffsetY = { 200 }) + scaleOut()
+                    } else {
+                        slideInVertically(initialOffsetY = { 200 }) + scaleIn() togetherWith
+                            slideOutVertically(targetOffsetY = { -200 }) + scaleOut()
+                    }
+                },
+            ) { num: Int ->
+                AutoSizeText(
+                    text = num.toString(),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontFamily = FontFamily.Monospace,
+                    style = MaterialTheme.typography.titleLarge,
+                    maxLines = 1,
+                )
+            }
         }
 
         FilledTonalIconButton(
