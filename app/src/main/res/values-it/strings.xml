@@ -134,6 +134,10 @@
         <item quantity="one">%d foto</item>
         <item quantity="other">%d foto</item>
     </plurals>
+    <plurals name="photo_widget_configure_photo_quantity_gif">
+        <item quantity="one">%d fotogramma</item>
+        <item quantity="other">%d fotogrammi</item>
+    </plurals>
     <string name="photo_widget_configure_select_cycling_mode">Timer foto</string>
     <string name="photo_widget_configure_cycling_mode_interval">Intervallo</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Programma</string>

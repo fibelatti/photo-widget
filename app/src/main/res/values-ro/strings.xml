@@ -136,6 +136,11 @@
         <item quantity="few">%d fotografii</item>
         <item quantity="other">%d de fotografii</item>
     </plurals>
+    <plurals name="photo_widget_configure_photo_quantity_gif">
+        <item quantity="one">%d cadru</item>
+        <item quantity="few">%d cadre</item>
+        <item quantity="other">%d de cadre</item>
+    </plurals>
     <string name="photo_widget_configure_select_cycling_mode">Temporizator poză</string>
     <string name="photo_widget_configure_cycling_mode_interval">Interval</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Programare</string>

@@ -138,6 +138,12 @@
         <item quantity="many">%d фотографий</item>
         <item quantity="other">%d фотографий</item>
     </plurals>
+    <plurals name="photo_widget_configure_photo_quantity_gif">
+        <item quantity="one">%d кадр</item>
+        <item quantity="few">%d кадра</item>
+        <item quantity="many">%d кадров</item>
+        <item quantity="other">%d кадров</item>
+    </plurals>
     <string name="photo_widget_configure_select_cycling_mode">Фототаймер</string>
     <string name="photo_widget_configure_cycling_mode_interval">Интервал</string>
     <string name="photo_widget_configure_cycling_mode_schedule">Расписание</string>

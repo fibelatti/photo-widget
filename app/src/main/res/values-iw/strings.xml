@@ -138,6 +138,12 @@
         <item quantity="many">%d תמונות</item>
         <item quantity="other">%d תמונות</item>
     </plurals>
+    <plurals name="photo_widget_configure_photo_quantity_gif">
+        <item quantity="one">%d פריים</item>
+        <item quantity="two">%d פריימים</item>
+        <item quantity="many">%d פריימים</item>
+        <item quantity="other">%d פריימים</item>
+    </plurals>
     <string name="photo_widget_configure_select_cycling_mode">טיימר צילום</string>
     <string name="photo_widget_configure_cycling_mode_interval">מרווח זמן</string>
     <string name="photo_widget_configure_cycling_mode_schedule">תזמון</string>

@@ -244,6 +244,7 @@ private fun PhotoPicker(
     ) {
         PhotoGrid(
             photos = photos,
+            source = source,
             aspectRatio = aspectRatio,
             shapeId = shapeId,
             canReorder = canSort,
@@ -400,6 +401,7 @@ private fun PhotoPickerHeader(
 @Composable
 private fun PhotoGrid(
     photos: List<LocalPhoto>,
+    source: PhotoWidgetSource,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
     canReorder: Boolean,
@@ -447,7 +449,11 @@ private fun PhotoGrid(
         item(key = "photo-quantity", span = { GridItemSpan(4) }) {
             Text(
                 text = pluralStringResource(
-                    R.plurals.photo_widget_configure_photo_quantity,
+                    if (source == PhotoWidgetSource.GIF) {
+                        R.plurals.photo_widget_configure_photo_quantity_gif
+                    } else {
+                        R.plurals.photo_widget_configure_photo_quantity
+                    },
                     currentPhotos.size,
                     currentPhotos.size,
                 ),

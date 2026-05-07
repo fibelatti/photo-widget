@@ -132,6 +132,9 @@
     <plurals name="photo_widget_configure_photo_quantity">
         <item quantity="other">%d枚の写真</item>
     </plurals>
+    <plurals name="photo_widget_configure_photo_quantity_gif">
+        <item quantity="other">%dフレーム</item>
+    </plurals>
     <string name="photo_widget_configure_select_cycling_mode">写真タイマー</string>
     <string name="photo_widget_configure_cycling_mode_interval">間隔</string>
     <string name="photo_widget_configure_cycling_mode_schedule">スケジュール</string>
