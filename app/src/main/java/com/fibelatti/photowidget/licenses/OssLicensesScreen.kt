@@ -27,10 +27,7 @@ import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Back
 import com.fibelatti.ui.foundation.copy
 import com.mikepenz.aboutlibraries.Libs
-import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
-import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
-import com.mikepenz.aboutlibraries.ui.compose.chipColors
-import com.mikepenz.aboutlibraries.ui.compose.libraryColors
+import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.produceLibraries
 
 @Composable
@@ -52,17 +49,6 @@ fun OssLicensesScreen(
             .padding(top = paddingValues.calculateTopPadding()),
         contentPadding = paddingValues.copy(top = 0.dp),
         showLicenseBadges = false,
-        colors = LibraryDefaults.libraryColors(
-            libraryBackgroundColor = MaterialTheme.colorScheme.background,
-            libraryContentColor = MaterialTheme.colorScheme.onBackground,
-            versionChipColors = LibraryDefaults.chipColors(
-                containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                contentColor = MaterialTheme.colorScheme.onSurface,
-            ),
-            dialogBackgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-            dialogContentColor = MaterialTheme.colorScheme.onSurface,
-            dialogConfirmButtonColor = MaterialTheme.colorScheme.primary,
-        ),
         header = {
             stickyHeader {
                 Row(
