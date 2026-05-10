@@ -9,9 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.graphics.drawable.toDrawable
@@ -71,19 +69,19 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
                 darkTheme = true,
             ) {
                 val state: PhotoWidgetViewerViewModel.State by viewModel.state.collectAsStateWithLifecycle()
-                val photoWidget: PhotoWidget by remember { derivedStateOf { state.photoWidget } }
-
-                SideEffect(photoWidget.tapActionIncreaseBrightness) {
-                    if (photoWidget.tapActionIncreaseBrightness) {
-                        setScreenBrightness(value = 0.9f)
-                    }
-                }
+                val photoWidget: PhotoWidget = state.photoWidget
 
                 val backgroundColor: Color = photoWidget.tapActionViewerBackgroundColorHex
                     ?.let { Color("#$it".toColorInt()) }
                     ?: MaterialTheme.colorScheme.background
 
                 window.setBackgroundDrawable(backgroundColor.toArgb().toDrawable())
+
+                SideEffect(photoWidget.tapActionIncreaseBrightness) {
+                    if (photoWidget.tapActionIncreaseBrightness) {
+                        setScreenBrightness(value = 0.9f)
+                    }
+                }
 
                 PhotoWidgetViewerScreen(
                     photo = photoWidget.currentPhoto,

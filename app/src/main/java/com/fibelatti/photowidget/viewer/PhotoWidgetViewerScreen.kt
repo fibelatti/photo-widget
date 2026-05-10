@@ -2,6 +2,9 @@
 
 package com.fibelatti.photowidget.viewer
 
+import android.content.ClipData
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -9,6 +12,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -20,6 +24,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.visible
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -45,8 +51,14 @@ import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.Clipboard
+import androidx.compose.ui.platform.LocalClipboard
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.toClipEntry
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -129,6 +141,9 @@ fun PhotoWidgetViewerScreen(
     }
 
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
+
+    val localContext: Context = LocalContext.current
+    val localClipboard: Clipboard = LocalClipboard.current
 
     LaunchedEffect(Unit) {
         showControls = true
@@ -242,6 +257,7 @@ fun PhotoWidgetViewerScreen(
             visible = showControls,
             modifier = Modifier
                 .align(Alignment.TopEnd)
+                .fillMaxWidth()
                 .safeDrawingPadding()
                 .padding(all = 16.dp),
             enter = fadeIn(animationSpec = tween(ANIM_DURATION, delayMillis = 200)) + slideInVertically(
@@ -254,8 +270,44 @@ fun PhotoWidgetViewerScreen(
             ),
         ) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
+                val path: String? = remember(photo?.externalUri) {
+                    photo?.externalPhotoPathString()
+                }
+
+                if (path != null) {
+                    Text(
+                        text = path,
+                        modifier = Modifier
+                            .background(
+                                color = MaterialTheme.colorScheme.secondaryContainer,
+                                shape = MaterialTheme.shapes.large,
+                            )
+                            .combinedClickable(
+                                role = Role.Button,
+                                onClick = {
+                                    Toast.makeText(localContext, path, Toast.LENGTH_SHORT).show()
+                                },
+                                onLongClick = {
+                                    coroutineScope.launch {
+                                        localClipboard.setClipEntry(
+                                            ClipData.newPlainText("", path).toClipEntry(),
+                                        )
+                                    }
+                                },
+                            )
+                            .padding(all = 8.dp)
+                            .widthIn(max = 80.dp),
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        overflow = TextOverflow.StartEllipsis,
+                        maxLines = 1,
+                        style = MaterialTheme.typography.labelSmall,
+                    )
+                }
+
+                Spacer(modifier = Modifier.weight(1f))
+
                 if (showNextButton) {
                     FilledTonalButton(
                         onClick = onAllPhotosClick,
@@ -272,6 +324,8 @@ fun PhotoWidgetViewerScreen(
                         )
                     }
                 }
+
+                Spacer(modifier = Modifier.width(8.dp))
 
                 if (photo?.getPhotoPath(viewOriginalPhoto = true) != null) {
                     FilledTonalButton(
@@ -316,6 +370,16 @@ fun PhotoWidgetViewerScreen(
             )
         }
     }
+}
+
+private fun LocalPhoto.externalPhotoPathString(): String? {
+    externalUri ?: return null
+
+    return externalUri.toString()
+        .substringAfterLast("/")
+        .replace("%3A", ":")
+        .replace("%2F", "/")
+        .substringAfter(":")
 }
 
 @Composable
@@ -364,7 +428,7 @@ private fun Controls(
 @Composable
 @PreviewAll
 private fun ScreenContentPreview() {
-    ExtendedTheme {
+    ExtendedTheme(darkTheme = true) {
         PhotoWidgetViewerScreen(
             photo = LocalPhoto(photoId = "photo-1"),
             isLoading = false,

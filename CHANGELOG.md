@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+* Show the photo path in the full screen viewer (folder widgets only)
+
 ## [v1.42.2] - 2026-05-07
 [v1.42.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.42.2
 
