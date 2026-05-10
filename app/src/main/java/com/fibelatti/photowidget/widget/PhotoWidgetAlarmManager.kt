@@ -72,10 +72,10 @@ class PhotoWidgetAlarmManager @Inject constructor(
     }
 
     private fun setupIntervalAlarm(cycleMode: PhotoWidgetCycleMode.Interval, appWidgetId: Int) {
-        val intervalMillis = cycleMode.loopingInterval.run { timeUnit.toMillis(repeatInterval) }
-        val nextCycleTime = photoWidgetStorage.getWidgetNextCycleTime(appWidgetId = appWidgetId)
-        val currentTimeMillis = System.currentTimeMillis()
-        val triggerAtMillis = if (nextCycleTime > currentTimeMillis) {
+        val intervalMillis: Long = cycleMode.loopingInterval.run { timeUnit.toMillis(repeatInterval) }
+        val nextCycleTime: Long = photoWidgetStorage.getWidgetNextCycleTime(appWidgetId = appWidgetId)
+        val currentTimeMillis: Long = System.currentTimeMillis()
+        val triggerAtMillis: Long = if (nextCycleTime > currentTimeMillis) {
             nextCycleTime
         } else {
             currentTimeMillis + intervalMillis
@@ -85,7 +85,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
 
         if (canScheduleExactAlarms) {
             try {
-                alarmManager.setExact(
+                alarmManager.setExactAndAllowWhileIdle(
                     /* type = */ AlarmManager.RTC_WAKEUP,
                     /* triggerAtMillis = */ triggerAtMillis,
                     /* operation = */
@@ -263,7 +263,7 @@ class ExactRepeatingAlarmReceiver : EntryPointBroadcastReceiver() {
                 PhotoWidgetProvider.update(context = context, appWidgetId = intent.appWidgetId)
             } else {
                 cyclePhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
-                photoWidgetStorage().saveWidgetNextCycleTime(appWidgetId = intent.appWidgetId, nextCycleTime = -1)
+                photoWidgetStorage().saveWidgetNextCycleTime(appWidgetId = intent.appWidgetId, nextCycleTime = null)
             }
             photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
         }
