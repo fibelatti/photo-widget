@@ -1,0 +1,6 @@
+This version brings the following updates:
+
+* Fix widgets sometimes getting stuck on a photo when using the interval option
+* Display the photo path in the full screen viewer (folder widgets only)
+
+Thanks for using the app!
