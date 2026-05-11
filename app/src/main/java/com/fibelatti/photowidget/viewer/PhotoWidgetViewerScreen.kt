@@ -117,31 +117,6 @@ fun PhotoWidgetViewerScreen(
 ) {
     var showControls: Boolean by remember { mutableStateOf(false) }
 
-    val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
-    val zoomState: ZoomState = rememberZoomState()
-    val verticalDragState: DragState = rememberDragState(
-        mode = DragState.Mode.UNIDIRECTIONAL,
-        onConfirm = { onDismissClick() },
-        onThreshold = { localHapticFeedback.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate) },
-    )
-    val horizontalDragState: DragState = rememberDragState(
-        mode = DragState.Mode.BIDIRECTIONAL,
-        onConfirm = { direction ->
-            when (direction) {
-                DragState.Direction.START if showNextButton -> onNextClick()
-                DragState.Direction.END if showPreviousButton -> onPreviousClick()
-                else -> Unit
-            }
-        },
-        onThreshold = { localHapticFeedback.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate) },
-    )
-
-    val horizontalIndicatorSize: Dp by remember {
-        derivedStateOf {
-            (48 * horizontalDragState.currentOffsetFraction).dp
-        }
-    }
-
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
     val localContext: Context = LocalContext.current
@@ -159,8 +134,99 @@ fun PhotoWidgetViewerScreen(
             .background(color = backgroundColor),
         contentAlignment = Alignment.Center,
     ) {
+        FullScreenPhotoViewer(
+            photo = photo,
+            isLoading = isLoading,
+            viewOriginalPhoto = viewOriginalPhoto,
+            onPhotoClick = { showControls = !showControls },
+            canDragToNext = showNextButton,
+            canDragToPrevious = showPreviousButton,
+            onDragToNext = onNextClick,
+            onDragToPrevious = onPreviousClick,
+            onDragToDismiss = onDismissClick,
+        )
+
+        ViewerHeaderControls(
+            photo = photo,
+            showControls = showControls,
+            showPhotoPicker = showNextButton,
+            onAllPhotosClick = onAllPhotosClick,
+            onShareClick = onShareClick,
+            onPhotoPathClick = { path: String ->
+                Toast.makeText(localContext, path, Toast.LENGTH_SHORT).show()
+            },
+            onPhotoPathLongClick = { path: String ->
+                coroutineScope.launch {
+                    localClipboard.setClipEntry(ClipData.newPlainText("", path).toClipEntry())
+                }
+            },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .safeDrawingPadding()
+                .padding(all = 16.dp),
+        )
+
+        ViewerFooterControls(
+            showControls = showControls,
+            showNextButton = showNextButton,
+            showPreviousButton = showPreviousButton,
+            onNextClick = onNextClick,
+            onPreviousClick = onPreviousClick,
+            onDismiss = onDismissClick,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .safeDrawingPadding()
+                .padding(start = 32.dp, end = 32.dp, bottom = 16.dp),
+        )
+    }
+}
+
+@Composable
+private fun FullScreenPhotoViewer(
+    photo: LocalPhoto?,
+    isLoading: Boolean,
+    viewOriginalPhoto: Boolean,
+    onPhotoClick: () -> Unit,
+    canDragToNext: Boolean,
+    canDragToPrevious: Boolean,
+    onDragToNext: () -> Unit,
+    onDragToPrevious: () -> Unit,
+    onDragToDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
+
+    val zoomState: ZoomState = rememberZoomState()
+    val verticalDragState: DragState = rememberDragState(
+        mode = DragState.Mode.UNIDIRECTIONAL,
+        onConfirm = { onDragToDismiss() },
+        onThreshold = { localHapticFeedback.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate) },
+    )
+    val horizontalDragState: DragState = rememberDragState(
+        mode = DragState.Mode.BIDIRECTIONAL,
+        onConfirm = { direction ->
+            when (direction) {
+                DragState.Direction.START if canDragToNext -> onDragToNext()
+                DragState.Direction.END if canDragToPrevious -> onDragToPrevious()
+                else -> Unit
+            }
+        },
+        onThreshold = { localHapticFeedback.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate) },
+    )
+
+    val horizontalIndicatorSize: Dp by remember {
+        derivedStateOf {
+            (48 * horizontalDragState.currentOffsetFraction).dp
+        }
+    }
+
+    val coroutineScope: CoroutineScope = rememberCoroutineScope()
+
+    Box(
+        modifier = modifier.fillMaxSize(),
+    ) {
         AnimatedVisibility(
-            visible = showPreviousButton && horizontalDragState.currentOffsetPixel > MIN_OFFSET,
+            visible = canDragToPrevious && horizontalDragState.currentOffsetPixel > MIN_OFFSET,
             modifier = Modifier
                 .safeDrawingPadding()
                 .padding(all = 32.dp)
@@ -182,7 +248,7 @@ fun PhotoWidgetViewerScreen(
         }
 
         AnimatedVisibility(
-            visible = showNextButton && horizontalDragState.currentOffsetPixel < MIN_OFFSET * -1,
+            visible = canDragToNext && horizontalDragState.currentOffsetPixel < MIN_OFFSET * -1,
             modifier = Modifier
                 .safeDrawingPadding()
                 .padding(all = 32.dp)
@@ -223,7 +289,7 @@ fun PhotoWidgetViewerScreen(
                     }
                     .zoomable(
                         zoomState = zoomState,
-                        onTap = { showControls = !showControls },
+                        onTap = { onPhotoClick() },
                     )
                     .onVerticalDrag(
                         onDrag = verticalDragState::onDrag,
@@ -243,7 +309,7 @@ fun PhotoWidgetViewerScreen(
                                 horizontalDragState.onDragStopped(resetOnConfirm = true)
                             }
                         },
-                        enabled = showNextButton && zoomState.scale == 1f,
+                        enabled = canDragToNext && zoomState.scale == 1f,
                     )
                     .offset {
                         IntOffset(
@@ -254,123 +320,100 @@ fun PhotoWidgetViewerScreen(
                 constraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED,
             )
         }
+    }
+}
 
-        AnimatedVisibility(
-            visible = showControls,
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .safeDrawingPadding()
-                .padding(all = 16.dp),
-            enter = fadeIn(animationSpec = tween(ANIM_DURATION, delayMillis = 200)) + slideInVertically(
-                animationSpec = tween(ANIM_DURATION),
-                initialOffsetY = { -it },
-            ),
-            exit = fadeOut(animationSpec = tween(ANIM_DURATION)) + slideOutVertically(
-                animationSpec = tween(ANIM_DURATION),
-                targetOffsetY = { -it },
-            ),
+@Composable
+private fun ViewerHeaderControls(
+    photo: LocalPhoto?,
+    showControls: Boolean,
+    showPhotoPicker: Boolean,
+    onAllPhotosClick: () -> Unit,
+    onShareClick: (LocalPhoto) -> Unit,
+    onPhotoPathClick: (String) -> Unit,
+    onPhotoPathLongClick: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    AnimatedVisibility(
+        visible = showControls,
+        modifier = modifier,
+        enter = fadeIn(animationSpec = tween(ANIM_DURATION, delayMillis = 200)) + slideInVertically(
+            animationSpec = tween(ANIM_DURATION),
+            initialOffsetY = { -it },
+        ),
+        exit = fadeOut(animationSpec = tween(ANIM_DURATION)) + slideOutVertically(
+            animationSpec = tween(ANIM_DURATION),
+            targetOffsetY = { -it },
+        ),
+    ) {
+        Column(
+            modifier = Modifier.width(IntrinsicSize.Min),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalAlignment = Alignment.End,
         ) {
-            Column(
-                modifier = Modifier.width(IntrinsicSize.Min),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                horizontalAlignment = Alignment.End,
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    if (showNextButton) {
-                        FilledTonalButton(
-                            onClick = onAllPhotosClick,
-                            shapes = ButtonDefaults.shapes(),
-                        ) {
-                            Text(text = stringResource(R.string.photo_widget_viewer_all_photos))
+                if (showPhotoPicker) {
+                    FilledTonalButton(
+                        onClick = onAllPhotosClick,
+                        shapes = ButtonDefaults.shapes(),
+                    ) {
+                        Text(text = stringResource(R.string.photo_widget_viewer_all_photos))
 
-                            Spacer(modifier = Modifier.size(8.dp))
+                        Spacer(modifier = Modifier.size(8.dp))
 
-                            Icon(
-                                imageVector = AppIcons.Album,
-                                contentDescription = null,
-                                modifier = Modifier.size(20.dp),
-                            )
-                        }
-                    }
-
-                    if (photo?.getPhotoPath(viewOriginalPhoto = true) != null) {
-                        FilledTonalButton(
-                            onClick = { onShareClick(photo) },
-                            shapes = ButtonDefaults.shapes(),
-                        ) {
-                            Text(text = stringResource(R.string.photo_widget_action_share))
-
-                            Spacer(modifier = Modifier.size(8.dp))
-
-                            Icon(
-                                imageVector = AppIcons.Share,
-                                contentDescription = null,
-                                modifier = Modifier.size(20.dp),
-                            )
-                        }
+                        Icon(
+                            imageVector = AppIcons.Album,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp),
+                        )
                     }
                 }
 
-                val path: String? = remember(photo?.externalUri) {
-                    photo?.externalPhotoPathString()
-                }
+                if (photo?.getPhotoPath(viewOriginalPhoto = true) != null) {
+                    FilledTonalButton(
+                        onClick = { onShareClick(photo) },
+                        shapes = ButtonDefaults.shapes(),
+                    ) {
+                        Text(text = stringResource(R.string.photo_widget_action_share))
 
-                if (path != null) {
-                    Text(
-                        text = path,
-                        modifier = Modifier
-                            .fillMaxWidth(fraction = .75f)
-                            .background(
-                                color = MaterialTheme.colorScheme.secondaryContainer,
-                                shape = MaterialTheme.shapes.large,
-                            )
-                            .combinedClickable(
-                                role = Role.Button,
-                                onClick = {
-                                    Toast.makeText(localContext, path, Toast.LENGTH_SHORT).show()
-                                },
-                                onLongClick = {
-                                    coroutineScope.launch {
-                                        localClipboard.setClipEntry(
-                                            ClipData.newPlainText("", path).toClipEntry(),
-                                        )
-                                    }
-                                },
-                            )
-                            .padding(all = 8.dp),
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        overflow = TextOverflow.MiddleEllipsis,
-                        maxLines = 1,
-                        style = MaterialTheme.typography.labelSmall,
-                    )
+                        Spacer(modifier = Modifier.size(8.dp))
+
+                        Icon(
+                            imageVector = AppIcons.Share,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp),
+                        )
+                    }
                 }
             }
-        }
 
-        AnimatedVisibility(
-            visible = showControls,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .safeDrawingPadding()
-                .padding(start = 32.dp, end = 32.dp, bottom = 16.dp),
-            enter = fadeIn(animationSpec = tween(ANIM_DURATION, delayMillis = 200)) + slideInVertically(
-                animationSpec = tween(ANIM_DURATION),
-                initialOffsetY = { it },
-            ),
-            exit = fadeOut(animationSpec = tween(ANIM_DURATION)) + slideOutVertically(
-                animationSpec = tween(ANIM_DURATION),
-                targetOffsetY = { it },
-            ),
-        ) {
-            Controls(
-                showNextButton = showNextButton,
-                showPreviousButton = showPreviousButton,
-                onNextClick = onNextClick,
-                onPreviousClick = onPreviousClick,
-                onDismiss = onDismissClick,
-            )
+            val path: String? = remember(photo?.externalUri) {
+                photo?.externalPhotoPathString()
+            }
+
+            if (path != null) {
+                Text(
+                    text = path,
+                    modifier = Modifier
+                        .fillMaxWidth(fraction = .75f)
+                        .background(
+                            color = MaterialTheme.colorScheme.secondaryContainer,
+                            shape = MaterialTheme.shapes.large,
+                        )
+                        .combinedClickable(
+                            role = Role.Button,
+                            onClick = { onPhotoPathClick(path) },
+                            onLongClick = { onPhotoPathLongClick(path) },
+                        )
+                        .padding(all = 8.dp),
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    overflow = TextOverflow.MiddleEllipsis,
+                    maxLines = 1,
+                    style = MaterialTheme.typography.labelSmall,
+                )
+            }
         }
     }
 }
@@ -386,7 +429,8 @@ private fun LocalPhoto.externalPhotoPathString(): String? {
 }
 
 @Composable
-private fun Controls(
+private fun ViewerFooterControls(
+    showControls: Boolean,
     showNextButton: Boolean,
     showPreviousButton: Boolean,
     onNextClick: () -> Unit,
@@ -394,36 +438,49 @@ private fun Controls(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically,
+    AnimatedVisibility(
+        visible = showControls,
+        modifier = modifier,
+        enter = fadeIn(animationSpec = tween(ANIM_DURATION, delayMillis = 200)) + slideInVertically(
+            animationSpec = tween(ANIM_DURATION),
+            initialOffsetY = { it },
+        ),
+        exit = fadeOut(animationSpec = tween(ANIM_DURATION)) + slideOutVertically(
+            animationSpec = tween(ANIM_DURATION),
+            targetOffsetY = { it },
+        ),
     ) {
-        FilledTonalIconButton(
-            onClick = onPreviousClick,
-            shapes = IconButtonDefaults.shapes(),
-            modifier = Modifier
-                .visible(showPreviousButton)
-                .size(smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Wide)),
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(imageVector = AppIcons.ChevronLeft, contentDescription = null)
-        }
+            FilledTonalIconButton(
+                onClick = onPreviousClick,
+                shapes = IconButtonDefaults.shapes(),
+                modifier = Modifier
+                    .visible(showPreviousButton)
+                    .size(smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Wide)),
+            ) {
+                Icon(imageVector = AppIcons.ChevronLeft, contentDescription = null)
+            }
 
-        Button(
-            onClick = onDismiss,
-            shapes = ButtonDefaults.shapes(),
-        ) {
-            Text(text = stringResource(R.string.photo_widget_action_dismiss))
-        }
+            Button(
+                onClick = onDismiss,
+                shapes = ButtonDefaults.shapes(),
+            ) {
+                Text(text = stringResource(R.string.photo_widget_action_dismiss))
+            }
 
-        FilledTonalIconButton(
-            onClick = onNextClick,
-            shapes = IconButtonDefaults.shapes(),
-            modifier = Modifier
-                .visible(showNextButton)
-                .size(smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Wide)),
-        ) {
-            Icon(imageVector = AppIcons.ChevronRight, contentDescription = null)
+            FilledTonalIconButton(
+                onClick = onNextClick,
+                shapes = IconButtonDefaults.shapes(),
+                modifier = Modifier
+                    .visible(showNextButton)
+                    .size(smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Wide)),
+            ) {
+                Icon(imageVector = AppIcons.ChevronRight, contentDescription = null)
+            }
         }
     }
 }
