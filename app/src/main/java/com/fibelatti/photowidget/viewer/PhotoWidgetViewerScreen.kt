@@ -15,6 +15,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,7 +27,6 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.visible
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -62,6 +63,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.getPhotoPath
@@ -257,7 +259,6 @@ fun PhotoWidgetViewerScreen(
             visible = showControls,
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .fillMaxWidth()
                 .safeDrawingPadding()
                 .padding(all = 16.dp),
             enter = fadeIn(animationSpec = tween(ANIM_DURATION, delayMillis = 200)) + slideInVertically(
@@ -269,9 +270,49 @@ fun PhotoWidgetViewerScreen(
                 targetOffsetY = { -it },
             ),
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            Column(
+                modifier = Modifier.width(IntrinsicSize.Min),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalAlignment = Alignment.End,
             ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    if (showNextButton) {
+                        FilledTonalButton(
+                            onClick = onAllPhotosClick,
+                            shapes = ButtonDefaults.shapes(),
+                        ) {
+                            Text(text = stringResource(R.string.photo_widget_viewer_all_photos))
+
+                            Spacer(modifier = Modifier.size(8.dp))
+
+                            Icon(
+                                imageVector = AppIcons.Album,
+                                contentDescription = null,
+                                modifier = Modifier.size(20.dp),
+                            )
+                        }
+                    }
+
+                    if (photo?.getPhotoPath(viewOriginalPhoto = true) != null) {
+                        FilledTonalButton(
+                            onClick = { onShareClick(photo) },
+                            shapes = ButtonDefaults.shapes(),
+                        ) {
+                            Text(text = stringResource(R.string.photo_widget_action_share))
+
+                            Spacer(modifier = Modifier.size(8.dp))
+
+                            Icon(
+                                imageVector = AppIcons.Share,
+                                contentDescription = null,
+                                modifier = Modifier.size(20.dp),
+                            )
+                        }
+                    }
+                }
+
                 val path: String? = remember(photo?.externalUri) {
                     photo?.externalPhotoPathString()
                 }
@@ -280,6 +321,7 @@ fun PhotoWidgetViewerScreen(
                     Text(
                         text = path,
                         modifier = Modifier
+                            .fillMaxWidth(fraction = .75f)
                             .background(
                                 color = MaterialTheme.colorScheme.secondaryContainer,
                                 shape = MaterialTheme.shapes.large,
@@ -297,51 +339,12 @@ fun PhotoWidgetViewerScreen(
                                     }
                                 },
                             )
-                            .padding(all = 8.dp)
-                            .widthIn(max = 80.dp),
+                            .padding(all = 8.dp),
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        overflow = TextOverflow.StartEllipsis,
+                        overflow = TextOverflow.MiddleEllipsis,
                         maxLines = 1,
                         style = MaterialTheme.typography.labelSmall,
                     )
-                }
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                if (showNextButton) {
-                    FilledTonalButton(
-                        onClick = onAllPhotosClick,
-                        shapes = ButtonDefaults.shapes(),
-                    ) {
-                        Text(text = stringResource(R.string.photo_widget_viewer_all_photos))
-
-                        Spacer(modifier = Modifier.size(8.dp))
-
-                        Icon(
-                            imageVector = AppIcons.Album,
-                            contentDescription = null,
-                            modifier = Modifier.size(20.dp),
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                if (photo?.getPhotoPath(viewOriginalPhoto = true) != null) {
-                    FilledTonalButton(
-                        onClick = { onShareClick(photo) },
-                        shapes = ButtonDefaults.shapes(),
-                    ) {
-                        Text(text = stringResource(R.string.photo_widget_action_share))
-
-                        Spacer(modifier = Modifier.size(8.dp))
-
-                        Icon(
-                            imageVector = AppIcons.Share,
-                            contentDescription = null,
-                            modifier = Modifier.size(20.dp),
-                        )
-                    }
                 }
             }
         }
@@ -430,7 +433,10 @@ private fun Controls(
 private fun ScreenContentPreview() {
     ExtendedTheme(darkTheme = true) {
         PhotoWidgetViewerScreen(
-            photo = LocalPhoto(photoId = "photo-1"),
+            photo = LocalPhoto(
+                photoId = "photo-1",
+                externalUri = "content://primary%3AImages%2FWidgets%2Fphoto-1".toUri(),
+            ),
             isLoading = false,
             viewOriginalPhoto = false,
             onDismissClick = {},
