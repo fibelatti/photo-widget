@@ -58,6 +58,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -374,68 +375,80 @@ private fun PhotoWidgetConfigureContent(
     onAddToHomeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val currentPhotoWidget by rememberUpdatedState(photoWidget)
+    val currentSelectedPhoto by rememberUpdatedState(selectedPhoto)
+    val currentIsProcessing by rememberUpdatedState(isProcessing)
+    val currentOnNavClick by rememberUpdatedState(onNavClick)
+    val currentOnCropClick by rememberUpdatedState(onCropClick)
+    val currentOnRemoveClick by rememberUpdatedState(onRemoveClick)
+    val currentOnMoveLeftClick by rememberUpdatedState(onMoveLeftClick)
+    val currentOnMoveRightClick by rememberUpdatedState(onMoveRightClick)
+    val currentContentTab by rememberUpdatedState(contentTab)
+    val currentAppearanceTab by rememberUpdatedState(appearanceTab)
+    val currentTextTab by rememberUpdatedState(textTab)
+    val currentBehaviorTab by rememberUpdatedState(behaviorTab)
+    val currentIsUpdating by rememberUpdatedState(isUpdating)
+    val currentOnAddToHomeClick by rememberUpdatedState(onAddToHomeClick)
+
+    val viewer: @Composable (Modifier, WindowInsets) -> Unit = remember {
+        movableContentOf { viewerModifier, insets ->
+            PhotoWidgetViewer(
+                photoWidget = currentPhotoWidget,
+                selectedPhoto = currentSelectedPhoto,
+                isProcessing = currentIsProcessing,
+                onNavClick = currentOnNavClick,
+                onCropClick = currentOnCropClick,
+                onRemoveClick = currentOnRemoveClick,
+                onMoveLeftClick = currentOnMoveLeftClick,
+                onMoveRightClick = currentOnMoveRightClick,
+                modifier = viewerModifier,
+                editingControlsInsets = insets,
+            )
+        }
+    }
+
+    val editor: @Composable (WindowInsets) -> Unit = remember {
+        movableContentOf { insets ->
+            PhotoWidgetEditor(
+                contentTab = currentContentTab,
+                appearanceTab = currentAppearanceTab,
+                textTab = currentTextTab,
+                behaviorTab = currentBehaviorTab,
+                isUpdating = currentIsUpdating,
+                onAddToHomeClick = currentOnAddToHomeClick,
+                contentWindowInsets = insets,
+            )
+        }
+    }
+
     val isAtLeastMediumWidth: Boolean = currentWindowAdaptiveInfoV2().windowSizeClass
         .isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
 
     if (!isAtLeastMediumWidth) {
-        Column(
-            modifier = modifier,
-        ) {
-            PhotoWidgetViewer(
-                photoWidget = photoWidget,
-                selectedPhoto = selectedPhoto,
-                isProcessing = isProcessing,
-                onNavClick = onNavClick,
-                onCropClick = onCropClick,
-                onRemoveClick = onRemoveClick,
-                onMoveLeftClick = onMoveLeftClick,
-                onMoveRightClick = onMoveRightClick,
-                modifier = Modifier
+        Column(modifier = modifier) {
+            viewer(
+                Modifier
                     .fillMaxWidth()
                     .height(360.dp),
-                editingControlsInsets = WindowInsets.safeDrawing
+                WindowInsets.safeDrawing
                     .only(sides = WindowInsetsSides.Start + WindowInsetsSides.Top)
                     .add(WindowInsets(bottom = 8.dp)),
             )
 
-            PhotoWidgetEditor(
-                contentTab = contentTab,
-                appearanceTab = appearanceTab,
-                textTab = textTab,
-                behaviorTab = behaviorTab,
-                isUpdating = isUpdating,
-                onAddToHomeClick = onAddToHomeClick,
-                contentWindowInsets = WindowInsets.navigationBars,
-            )
+            editor(WindowInsets.navigationBars)
         }
     } else {
-        Row(
-            modifier = modifier,
-        ) {
-            PhotoWidgetViewer(
-                photoWidget = photoWidget,
-                selectedPhoto = selectedPhoto,
-                isProcessing = isProcessing,
-                onNavClick = onNavClick,
-                onCropClick = onCropClick,
-                onRemoveClick = onRemoveClick,
-                onMoveLeftClick = onMoveLeftClick,
-                onMoveRightClick = onMoveRightClick,
-                modifier = Modifier
+        Row(modifier = modifier) {
+            viewer(
+                Modifier
                     .fillMaxHeight()
                     .fillMaxWidth(fraction = 0.4f),
-                editingControlsInsets = WindowInsets.safeDrawing
+                WindowInsets.safeDrawing
                     .only(sides = WindowInsetsSides.Start + WindowInsetsSides.Vertical),
             )
 
-            PhotoWidgetEditor(
-                contentTab = contentTab,
-                appearanceTab = appearanceTab,
-                textTab = textTab,
-                behaviorTab = behaviorTab,
-                isUpdating = isUpdating,
-                onAddToHomeClick = onAddToHomeClick,
-                contentWindowInsets = WindowInsets.systemBars
+            editor(
+                WindowInsets.systemBars
                     .union(WindowInsets.displayCutout.only(WindowInsetsSides.End)),
             )
         }
