@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.Material3Expressive.DayNight.NoActionBar">
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowBackground">@color/color_background</item>
 
         <item name="enableEdgeToEdge">true</item>
     </style>
 
-    <style name="AppTheme.Overlay" parent="ThemeOverlay.Material3.DynamicColors.DayNight">
+    <style name="AppTheme.Overlay" parent="ThemeOverlay.Material3Expressive.DynamicColors.DayNight">
         <item name="android:colorBackground">@color/color_background</item>
     </style>
 
@@ -20,12 +20,12 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
-    <style name="AppTheme.MaterialDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+    <style name="AppTheme.MaterialDialog" parent="ThemeOverlay.Material3Expressive.MaterialAlertDialog">
         <item name="android:windowBlurBehindEnabled" tools:targetApi="s">true</item>
         <item name="android:windowBlurBehindRadius" tools:targetApi="s">10dp</item>
     </style>
 
-    <style name="AppTheme.MaterialDialog.DefaultColors" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+    <style name="AppTheme.MaterialDialog.DefaultColors" parent="ThemeOverlay.Material3Expressive.MaterialAlertDialog">
         <item name="android:windowBlurBehindEnabled" tools:targetApi="s">true</item>
         <item name="android:windowBlurBehindRadius" tools:targetApi="s">10dp</item>
 
