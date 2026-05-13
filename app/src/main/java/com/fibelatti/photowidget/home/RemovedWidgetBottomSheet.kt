@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.home
 
 import android.content.Context
 import android.content.res.Resources
+import android.os.Parcelable
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,7 @@ import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
 import com.fibelatti.ui.foundation.data
+import kotlinx.parcelize.Parcelize
 
 @Composable
 fun RemovedWidgetBottomSheet(
@@ -72,10 +74,11 @@ fun RemovedWidgetBottomSheet(
     )
 }
 
+@Parcelize
 class RemovedWidgetBottomSheetData(
     val appWidgetId: Int,
     val status: PhotoWidgetStatus,
-)
+) : Parcelable
 
 private enum class RemovedWidgetOptions(
     @StringRes val label: Int,

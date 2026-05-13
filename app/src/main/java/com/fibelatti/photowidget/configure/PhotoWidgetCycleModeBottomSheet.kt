@@ -47,8 +47,10 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -313,7 +315,7 @@ private fun PhotoCycleModeIntervalContent(
     onApplyClick: (newMode: PhotoWidgetCycleMode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var interval by remember { mutableStateOf(photoWidgetCycleMode.loopingInterval) }
+    var interval by rememberSaveable { mutableStateOf(photoWidgetCycleMode.loopingInterval) }
 
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -431,8 +433,12 @@ private fun PhotoCycleModeScheduleContent(
     onApplyClick: (newMode: PhotoWidgetCycleMode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val triggers = remember { photoWidgetCycleMode.triggers.toMutableStateList() }
-    var showTimePickerDialog by remember { mutableStateOf(false) }
+    val triggers: SnapshotStateList<Time> = rememberSaveable(
+        saver = listSaver(save = { it.toList() }, restore = { it.toMutableStateList() }),
+    ) {
+        photoWidgetCycleMode.triggers.toMutableStateList()
+    }
+    var showTimePickerDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = modifier.fillMaxWidth(),

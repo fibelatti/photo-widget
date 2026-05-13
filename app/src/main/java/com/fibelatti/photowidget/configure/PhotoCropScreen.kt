@@ -46,6 +46,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -368,7 +369,7 @@ private fun RatioShortcuts(
             "10:16" to onWideClick,
         ),
     )
-    var selectionIndex by remember { mutableIntStateOf(0) }
+    var selectionIndex by rememberSaveable { mutableIntStateOf(0) }
 
     Row(
         modifier = modifier.fillMaxWidth(),

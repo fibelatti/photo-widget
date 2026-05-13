@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -42,7 +43,7 @@ fun PhotoWidgetConfigureBehaviorTab(
 ) {
     val state: PhotoWidgetConfigureState by viewModel.state.collectAsStateWithLifecycle()
 
-    var showBackgroundRestrictionDialog: Boolean by remember { mutableStateOf(false) }
+    var showBackgroundRestrictionDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
     val backgroundRestrictionSheetState: AppSheetState = rememberAppSheetState()
     val cycleModePickerSheetState: AppSheetState = rememberAppSheetState()

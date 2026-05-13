@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,7 +47,7 @@ fun OpacityPicker(
         title = stringResource(id = R.string.widget_defaults_opacity),
         modifier = modifier,
     ) {
-        var value by remember(currentValue) { mutableFloatStateOf(currentValue) }
+        var value by rememberSaveable(currentValue) { mutableFloatStateOf(currentValue) }
 
         Image(
             bitmap = rememberSampleBitmap()

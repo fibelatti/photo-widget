@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.home
 
 import android.content.Context
+import android.os.Parcelable
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,7 @@ import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
 import com.fibelatti.ui.foundation.data
+import kotlinx.parcelize.Parcelize
 
 @Composable
 fun ExistingWidgetMenuBottomSheet(
@@ -89,12 +91,13 @@ fun ExistingWidgetMenuBottomSheet(
     )
 }
 
+@Parcelize
 class ExistingWidgetMenuBottomSheetData(
     val appWidgetId: Int,
     val canSync: Boolean,
     val canLock: Boolean,
     val isLocked: Boolean,
-)
+) : Parcelable
 
 private enum class MyWidgetOptions(
     @StringRes val label: Int,

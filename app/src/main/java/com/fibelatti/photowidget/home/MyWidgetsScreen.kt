@@ -34,6 +34,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -84,7 +85,7 @@ fun MyWidgetsScreen(
         contentAlignment = Alignment.TopCenter,
     ) {
         val options: List<PhotoWidgetSource?> = listOf(null) + PhotoWidgetSource.entries
-        var selectedSource: PhotoWidgetSource? by remember { mutableStateOf(null) }
+        var selectedSource: PhotoWidgetSource? by rememberSaveable { mutableStateOf(null) }
         val filteredWidgets: List<Pair<Int, PhotoWidget>> by remember(widgets) {
             derivedStateOf {
                 widgets.filter { selectedSource == null || it.second.source == selectedSource }

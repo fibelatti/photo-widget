@@ -11,11 +11,13 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import kotlin.contracts.ExperimentalContracts
@@ -97,8 +99,12 @@ fun rememberAppSheetState(
 ): AppSheetState {
     val sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
     val scope: CoroutineScope = rememberCoroutineScope()
+    val isVisibleState: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
+    // `data` is stored as `Any?` — callers must pass values supported by Bundle (primitives, Parcelable, Serializable)
+    // for restoration to succeed across configuration changes and process death.
+    val dataState: MutableState<Any?> = rememberSaveable { mutableStateOf(null) }
 
-    return remember(skipPartiallyExpanded) { AppSheetStateImpl(sheetState, scope) }
+    return remember(skipPartiallyExpanded) { AppSheetStateImpl(sheetState, scope, isVisibleState, dataState) }
 }
 
 /**
@@ -109,14 +115,16 @@ fun rememberAppSheetState(
 @Stable
 sealed interface AppSheetState
 
-private data class AppSheetStateImpl(
+private class AppSheetStateImpl(
     val state: SheetState,
     val scope: CoroutineScope,
+    isVisibleState: MutableState<Boolean>,
+    dataState: MutableState<Any?>,
 ) : AppSheetState {
 
-    var isVisible: Boolean by mutableStateOf(false)
+    var isVisible: Boolean by isVisibleState
 
-    var data: Any? by mutableStateOf(null)
+    var data: Any? by dataState
 
     var hideJob: Job? = null
 }

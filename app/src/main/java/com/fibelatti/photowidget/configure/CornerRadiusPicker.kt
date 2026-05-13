@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,7 +47,7 @@ fun CornerRadiusPicker(
         title = stringResource(id = R.string.widget_defaults_corner_radius),
         modifier = modifier,
     ) {
-        var value by remember(currentValue) { mutableIntStateOf(currentValue) }
+        var value by rememberSaveable(currentValue) { mutableIntStateOf(currentValue) }
 
         Image(
             bitmap = rememberSampleBitmap()

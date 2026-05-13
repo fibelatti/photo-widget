@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -93,7 +94,7 @@ private fun ViewerBackgroundColorContent(
 ) {
     val initialColorHex: String = currentColorHex ?: FALLBACK_COLOR_HEX
     val colorPickerController: ColorPickerController = rememberColorPickerController()
-    var colorHex: String by remember { mutableStateOf(initialColorHex) }
+    var colorHex: String by rememberSaveable { mutableStateOf(initialColorHex) }
     val hexChars: CharArray = remember {
         charArrayOf(
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',

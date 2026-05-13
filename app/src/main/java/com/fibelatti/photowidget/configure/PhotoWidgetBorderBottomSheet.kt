@@ -30,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -95,7 +96,7 @@ private fun BorderPickerContent(
     currentBorder: PhotoWidgetBorder,
     onApplyClick: (PhotoWidgetBorder) -> Unit,
 ) {
-    var border: PhotoWidgetBorder by remember { mutableStateOf(currentBorder) }
+    var border: PhotoWidgetBorder by rememberSaveable { mutableStateOf(currentBorder) }
     val sampleBitmap = rememberSampleBitmap()
     val localResources = LocalResources.current
 
@@ -182,7 +183,7 @@ private fun ColorBorderContent(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         val colorPickerController = rememberColorPickerController()
-        var colorHex by remember { mutableStateOf(currentColorHex) }
+        var colorHex by rememberSaveable { mutableStateOf(currentColorHex) }
         val hexChars = remember {
             charArrayOf(
                 '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
@@ -310,7 +311,7 @@ private fun DynamicBorderContent(
             val localContext = LocalContext.current
             val localResources = LocalResources.current
             val radioTypes = PhotoWidgetBorder.Dynamic.Type.entries
-            val (selectedType, onTypeSelected) = remember { mutableStateOf(currentType) }
+            val (selectedType, onTypeSelected) = rememberSaveable { mutableStateOf(currentType) }
 
             Image(
                 bitmap = sampleBitmap
@@ -376,7 +377,7 @@ private fun MatchPhotoBorderContent(
         ) {
             val colorPalette = remember(sampleBitmap) { getColorPalette(sampleBitmap) }
             val radioTypes = PhotoWidgetBorder.MatchPhoto.Type.entries
-            val (selectedType, onTypeSelected) = remember { mutableStateOf(currentType) }
+            val (selectedType, onTypeSelected) = rememberSaveable { mutableStateOf(currentType) }
             val localResources = LocalResources.current
 
             Image(
@@ -425,7 +426,7 @@ private fun BorderWidthPicker(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
-        var value by remember { mutableIntStateOf(currentWidth) }
+        var value by rememberSaveable { mutableIntStateOf(currentWidth) }
         SideEffect(value) {
             localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
         }

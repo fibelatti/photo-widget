@@ -236,7 +236,7 @@ private fun PhotoPicker(
 ) {
     val isAdvancedSchedule: Boolean = cycleMode is PhotoWidgetCycleMode.AdvancedSchedule
     val scheduleMap: Map<String, Time> = (cycleMode as? PhotoWidgetCycleMode.AdvancedSchedule)?.schedule.orEmpty()
-    var timePickerPhoto: LocalPhoto? by remember { mutableStateOf(null) }
+    var timePickerPhoto: LocalPhoto? by rememberSaveable { mutableStateOf(null) }
 
     Box(
         modifier = modifier.fillMaxSize(),
