@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
@@ -38,16 +38,20 @@ fun WidgetPositionViewer(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .drawWithContent {
-                drawRoundRect(
-                    color = areaColor,
-                    cornerRadius = CornerRadius(areaRadius),
-                    style = Stroke(
-                        width = 1.5.dp.toPx(),
-                        pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f),
-                    ),
+            .drawWithCache {
+                val cornerRadius = CornerRadius(areaRadius)
+                val stroke = Stroke(
+                    width = 1.5.dp.toPx(),
+                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f),
                 )
-                drawContent()
+                onDrawWithContent {
+                    drawRoundRect(
+                        color = areaColor,
+                        cornerRadius = cornerRadius,
+                        style = stroke,
+                    )
+                    drawContent()
+                }
             }
             .clip(shape = RoundedCornerShape(size = areaRadius)),
         contentAlignment = Alignment.Center,
