@@ -30,7 +30,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -86,10 +85,8 @@ fun MyWidgetsScreen(
     ) {
         val options: List<PhotoWidgetSource?> = listOf(null) + PhotoWidgetSource.entries
         var selectedSource: PhotoWidgetSource? by rememberSaveable { mutableStateOf(null) }
-        val filteredWidgets: List<Pair<Int, PhotoWidget>> by remember(widgets) {
-            derivedStateOf {
-                widgets.filter { selectedSource == null || it.second.source == selectedSource }
-            }
+        val filteredWidgets: List<Pair<Int, PhotoWidget>> = remember(widgets, selectedSource) {
+            widgets.filter { (_, widget) -> selectedSource == null || widget.source == selectedSource }
         }
 
         val enforcedShape: Shape = RoundedCornerShape(28.dp)
@@ -98,7 +95,7 @@ fun MyWidgetsScreen(
             .isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
 
         AnimatedContent(
-            targetState = filteredWidgets,
+            targetState = filteredWidgets.isNotEmpty(),
             transitionSpec = {
                 fadeIn(animationSpec = tween(300, delayMillis = 90))
                     .plus(scaleIn(initialScale = 0.92f, animationSpec = tween(300, delayMillis = 90)))
@@ -108,8 +105,8 @@ fun MyWidgetsScreen(
                     )
             },
             label = "MyWidgetsScreen_content",
-        ) { items: List<Pair<Int, PhotoWidget>> ->
-            if (items.isNotEmpty()) {
+        ) { hasContent: Boolean ->
+            if (hasContent) {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(count = if (isAtLeastMediumWidth) 4 else 2),
                     modifier = Modifier.fillMaxSize(),
@@ -117,7 +114,7 @@ fun MyWidgetsScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    items(items, key = { (id, _) -> id }) { (id, widget) ->
+                    items(filteredWidgets, key = { (id, _) -> id }) { (id, widget) ->
                         WidgetGridItem(
                             widget = widget,
                             appWidgetId = id,
