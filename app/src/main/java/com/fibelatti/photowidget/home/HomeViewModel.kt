@@ -31,7 +31,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.flow.withIndex
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -76,17 +75,16 @@ class HomeViewModel @Inject constructor(
                     allIds.withIndex().associate { (index, id) -> id to widgets[index] }
                 }
             }
-            .withIndex()
-            .map { (emissionIndex: Int, widgets: Map<Int, PhotoWidget>) ->
+            .map { widgets: Map<Int, PhotoWidget> ->
                 val providerIds: List<Int> = PhotoWidgetProvider.ids(context)
 
                 widgets.mapValues { (widgetId: Int, widget: PhotoWidget) ->
                     val isLocked: Boolean = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = widgetId)
                     val status: PhotoWidgetStatus = when {
                         PhotoWidget.isDraftWidgetId(widgetId) -> PhotoWidgetStatus.DRAFT
-                        (emissionIndex > 0 && widget.photos.isEmpty()) -> PhotoWidgetStatus.INVALID
+                        widget.photos.isEmpty() && !widget.isLoading -> PhotoWidgetStatus.INVALID
                         widget.deletionTimestamp > 0L -> PhotoWidgetStatus.REMOVED
-                        widgetId in providerIds && isLocked -> PhotoWidgetStatus.LOCKED
+                        isLocked && widgetId in providerIds -> PhotoWidgetStatus.LOCKED
                         widgetId in providerIds -> PhotoWidgetStatus.ACTIVE
                         else -> PhotoWidgetStatus.KEPT
                     }
