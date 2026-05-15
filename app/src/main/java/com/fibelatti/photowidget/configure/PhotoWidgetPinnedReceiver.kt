@@ -30,14 +30,21 @@ class PhotoWidgetPinnedReceiver : EntryPointBroadcastReceiver() {
         val pinningCache: PhotoWidgetPinningCache = entryPoint.photoWidgetPinningCache()
 
         // The widget data is missing, it's impossible to continue
-        val (photoWidget: PhotoWidget, draftWidgetId: Int) = pinningCache.consume() ?: return
+        val (photoWidget: PhotoWidget, draftWidgetId: Int) = pinningCache.peek() ?: return
 
         Timber.d("New widget (widgetId=$widgetId,draftWidgetId=$draftWidgetId)")
 
         val saveUseCase: SavePhotoWidgetUseCase = entryPoint.savePhotoWidgetUseCase()
 
-        // Persist the widget data since it was placed on the home screen
-        saveUseCase(draftWidgetId = draftWidgetId, appWidgetId = widgetId, photoWidget = photoWidget)
+        // Persist the widget data since it was placed on the home screen. The pinning cache stays
+        // populated throughout, so any racy `PhotoWidgetProvider#update` during the save keeps
+        // rendering from the in-memory data instead of triggering a `loadWidgetPhotos` that would
+        // insert rows under the new widget ID and collide with the migration.
+        try {
+            saveUseCase(draftWidgetId = draftWidgetId, appWidgetId = widgetId, photoWidget = photoWidget)
+        } finally {
+            pinningCache.clear()
+        }
 
         // Update the widget UI using the updated storage data
         PhotoWidgetProvider.update(context = context, appWidgetId = widgetId)

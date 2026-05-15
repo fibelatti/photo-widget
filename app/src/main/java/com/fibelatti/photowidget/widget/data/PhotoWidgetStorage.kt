@@ -746,13 +746,20 @@ class PhotoWidgetStorage @Inject constructor(
     suspend fun migrateDraftToWidget(draftWidgetId: Int, appWidgetId: Int) {
         Timber.i("Migrating draft to widget (draftWidgetId=$draftWidgetId, appWidgetId=$appWidgetId)")
 
-        widgetDirectoryDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
-        localPhotoDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
-        displayedPhotoDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
-        orderDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
-        pendingDeletionPhotosDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
-        excludedPhotosDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
-        advancedScheduleTimeDao.updateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+        localPhotoDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+        displayedPhotoDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+        orderDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+        pendingDeletionPhotosDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+        excludedPhotosDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+        advancedScheduleTimeDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+
+        // `widget_directories` is migrated last because `getKnownWidgetIds` reads from it. The
+        // `PhotoWidgetProvider.update` flow only falls back to `loadPhotoWidgetUseCase` (which can
+        // write to `local_widget_photos` via `syncWidgetPhotos`) once the new ID is "known", so
+        // keeping this row absent until everything else is in place forces concurrent updates to
+        // keep rendering from the pinning cache.
+        widgetDirectoryDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+
         sharedPreferences.migrateWidgetData(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
     }
 

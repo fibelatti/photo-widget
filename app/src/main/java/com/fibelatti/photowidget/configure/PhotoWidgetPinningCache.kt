@@ -42,15 +42,22 @@ class PhotoWidgetPinningCache @Inject constructor() {
     }
 
     /**
-     * Gets the data for the widget being pinned and clears the cache.
-     *
-     * @return A pair of the [PhotoWidget] and the draft widget ID, or null if no data is cached.
+     * Returns the cached data without clearing it. The cache must remain populated until the data
+     * has been persisted under the real widget ID, otherwise a racy `AppWidgetProvider#onUpdate`
+     * may trigger `LoadPhotoWidgetUseCase` and write rows keyed by the new ID, which then collide
+     * with the migration performed by [PhotoWidgetPinnedReceiver].
      */
-    fun consume(): Pair<PhotoWidget, Int>? {
+    fun peek(): Pair<PhotoWidget, Int>? {
         val widget = pendingWidget ?: return null
         val draftId = pendingDraftId ?: return null
+        return widget to draftId
+    }
+
+    /**
+     * Clears the cache. Call this only after the pinned widget data has been migrated.
+     */
+    fun clear() {
         pendingWidget = null
         pendingDraftId = null
-        return widget to draftId
     }
 }

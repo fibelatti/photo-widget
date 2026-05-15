@@ -100,6 +100,12 @@ interface LocalPhotoDao {
     suspend fun updateWidgetId(oldWidgetId: Int, newWidgetId: Int)
 
     @Transaction
+    suspend fun migrateWidgetId(oldWidgetId: Int, newWidgetId: Int) {
+        deletePhotosByWidgetId(widgetId = newWidgetId)
+        updateWidgetId(oldWidgetId = oldWidgetId, newWidgetId = newWidgetId)
+    }
+
+    @Transaction
     suspend fun replacePhotos(
         widgetId: Int,
         photos: Collection<LocalPhotoDto>,
@@ -143,6 +149,12 @@ interface DisplayedPhotoDao {
     @Query("update displayed_widget_photos set widgetId = :newWidgetId where widgetId = :oldWidgetId")
     suspend fun updateWidgetId(oldWidgetId: Int, newWidgetId: Int)
 
+    @Transaction
+    suspend fun migrateWidgetId(oldWidgetId: Int, newWidgetId: Int) {
+        deletePhotosByWidgetId(widgetId = newWidgetId)
+        updateWidgetId(oldWidgetId = oldWidgetId, newWidgetId = newWidgetId)
+    }
+
     @Query(
         "delete from displayed_widget_photos " +
             "where widgetId = :widgetId " +
@@ -182,6 +194,12 @@ interface PhotoWidgetOrderDao {
 
     @Query("update photo_widget_order set widgetId = :newWidgetId where widgetId = :oldWidgetId")
     suspend fun updateWidgetId(oldWidgetId: Int, newWidgetId: Int)
+
+    @Transaction
+    suspend fun migrateWidgetId(oldWidgetId: Int, newWidgetId: Int) {
+        deletePhotosByWidgetId(widgetId = newWidgetId)
+        updateWidgetId(oldWidgetId = oldWidgetId, newWidgetId = newWidgetId)
+    }
 
     @Transaction
     suspend fun replaceWidgetOrder(
@@ -227,6 +245,12 @@ interface PendingDeletionWidgetPhotoDao {
     @Query("update pending_deletion_widget_photos set widgetId = :newWidgetId where widgetId = :oldWidgetId")
     suspend fun updateWidgetId(oldWidgetId: Int, newWidgetId: Int)
 
+    @Transaction
+    suspend fun migrateWidgetId(oldWidgetId: Int, newWidgetId: Int) {
+        deletePhotosByWidgetId(widgetId = newWidgetId)
+        updateWidgetId(oldWidgetId = oldWidgetId, newWidgetId = newWidgetId)
+    }
+
     @Query("select * from pending_deletion_widget_photos where deletionTimestamp <= :timestamp")
     suspend fun getPhotosToDelete(timestamp: Long): List<PendingDeletionWidgetPhotoDto>
 
@@ -257,6 +281,12 @@ interface ExcludedWidgetPhotoDao {
 
     @Query("update excluded_widget_photos set widgetId = :newWidgetId where widgetId = :oldWidgetId")
     suspend fun updateWidgetId(oldWidgetId: Int, newWidgetId: Int)
+
+    @Transaction
+    suspend fun migrateWidgetId(oldWidgetId: Int, newWidgetId: Int) {
+        deletePhotosByWidgetId(widgetId = newWidgetId)
+        updateWidgetId(oldWidgetId = oldWidgetId, newWidgetId = newWidgetId)
+    }
 }
 
 @Entity(tableName = "widget_directories")
@@ -282,6 +312,12 @@ interface WidgetDirectoryDao {
 
     @Query("update widget_directories set widgetId = :newWidgetId where widgetId = :oldWidgetId")
     suspend fun updateWidgetId(oldWidgetId: Int, newWidgetId: Int)
+
+    @Transaction
+    suspend fun migrateWidgetId(oldWidgetId: Int, newWidgetId: Int) {
+        deleteByWidgetId(widgetId = newWidgetId)
+        updateWidgetId(oldWidgetId = oldWidgetId, newWidgetId = newWidgetId)
+    }
 
     @Upsert
     suspend fun insert(directory: WidgetDirectoryDto)
@@ -317,6 +353,12 @@ interface AdvancedScheduleTimeDao {
 
     @Query("update advanced_schedule_times set widgetId = :newWidgetId where widgetId = :oldWidgetId")
     suspend fun updateWidgetId(oldWidgetId: Int, newWidgetId: Int)
+
+    @Transaction
+    suspend fun migrateWidgetId(oldWidgetId: Int, newWidgetId: Int) {
+        deleteByWidgetId(widgetId = newWidgetId)
+        updateWidgetId(oldWidgetId = oldWidgetId, newWidgetId = newWidgetId)
+    }
 
     @Transaction
     suspend fun replaceTimes(widgetId: Int, times: Collection<AdvancedScheduleTimeDto>) {
