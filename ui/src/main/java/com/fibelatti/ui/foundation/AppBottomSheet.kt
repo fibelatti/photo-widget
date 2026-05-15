@@ -48,7 +48,7 @@ import kotlinx.coroutines.launch
  *
  * @param sheetState [AppSheetState] obtained with [rememberAppSheetState].
  * @param modifier Optional [Modifier] for the bottom sheet.
- * @param onDismissRequest Executes when the user clicks outside of the bottom sheet, after sheet animates to Hidden.
+ * @param onDismissRequest Executes when the user clicks outside the bottom sheet, after sheet animates to Hidden.
  * @param content The content to be displayed inside the bottom sheet.
  */
 @Composable
@@ -68,7 +68,7 @@ fun AppBottomSheet(
         }
     }
 
-    // The sheet is neither visible or requested to be visible: remove it from the composition
+    // The sheet is neither visible nor requested to be visible: remove it from the composition
     if (!sheetState.isBottomSheetShowing) {
         return
     }
@@ -152,7 +152,7 @@ private fun AppSheetState.checkTypeRequirement() {
 /**
  * Shows the bottom sheet associated with the received [AppSheetState].
  *
- * @param data optional data to be passed to the bottom sheet. See [AppSheetState.data].
+ * @param data optional data to be passed to the bottom sheet. See [AppSheetState.bottomSheetData].
  */
 fun AppSheetState.showBottomSheet(data: Any? = null) {
     checkTypeRequirement()
@@ -208,7 +208,7 @@ fun AppSheetState.hideBottomSheet(onHidden: () -> Unit = {}) {
  * composition yet.
  */
 @Suppress("UNCHECKED_CAST")
-fun <T> AppSheetState.data(): T? {
+fun <T> AppSheetState.bottomSheetData(): T? {
     checkTypeRequirement()
     return data as? T
 }

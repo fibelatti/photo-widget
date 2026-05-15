@@ -17,7 +17,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
-import com.fibelatti.ui.foundation.data
+import com.fibelatti.ui.foundation.bottomSheetData
 
 @Composable
 fun RecentlyDeletedPhotoBottomSheet(
@@ -27,7 +27,7 @@ fun RecentlyDeletedPhotoBottomSheet(
     modifier: Modifier = Modifier,
 ) {
     val localResources: Resources = LocalResources.current
-    val photo: LocalPhoto = sheetState.data() ?: return
+    val photo: LocalPhoto = sheetState.bottomSheetData() ?: return
 
     SelectionDialogBottomSheet(
         sheetState = sheetState,

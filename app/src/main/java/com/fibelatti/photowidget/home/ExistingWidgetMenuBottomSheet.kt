@@ -18,7 +18,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
-import com.fibelatti.ui.foundation.data
+import com.fibelatti.ui.foundation.bottomSheetData
 import kotlinx.parcelize.Parcelize
 
 @Composable
@@ -31,7 +31,7 @@ fun ExistingWidgetMenuBottomSheet(
 ) {
     val localContext: Context = LocalContext.current
     val localResources = LocalResources.current
-    val data: ExistingWidgetMenuBottomSheetData = sheetState.data() ?: return
+    val data: ExistingWidgetMenuBottomSheetData = sheetState.bottomSheetData() ?: return
 
     SelectionDialogBottomSheet(
         sheetState = sheetState,

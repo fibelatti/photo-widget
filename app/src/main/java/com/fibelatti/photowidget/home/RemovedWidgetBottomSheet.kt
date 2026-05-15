@@ -18,7 +18,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.ui.foundation.AppSheetState
 import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
-import com.fibelatti.ui.foundation.data
+import com.fibelatti.ui.foundation.bottomSheetData
 import kotlinx.parcelize.Parcelize
 
 @Composable
@@ -30,7 +30,7 @@ fun RemovedWidgetBottomSheet(
 ) {
     val localContext: Context = LocalContext.current
     val localResources: Resources = LocalResources.current
-    val data: RemovedWidgetBottomSheetData = sheetState.data() ?: return
+    val data: RemovedWidgetBottomSheetData = sheetState.bottomSheetData() ?: return
 
     SelectionDialogBottomSheet(
         sheetState = sheetState,
