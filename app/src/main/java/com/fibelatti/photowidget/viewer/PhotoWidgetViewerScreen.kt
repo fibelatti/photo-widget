@@ -425,6 +425,7 @@ private fun LocalPhoto.externalPhotoPathString(): String? {
         .substringAfterLast("/")
         .replace("%3A", ":")
         .replace("%2F", "/")
+        .replace("%20", " ")
         .substringAfter(":")
 }
 
