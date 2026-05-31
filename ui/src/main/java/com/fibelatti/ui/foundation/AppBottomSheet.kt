@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.SheetValue
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -97,7 +98,14 @@ fun AppBottomSheet(
 fun rememberAppSheetState(
     skipPartiallyExpanded: Boolean = true,
 ): AppSheetState {
-    val sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
+    val sheetState: SheetState = rememberBottomSheetState(
+        initialValue = SheetValue.Hidden,
+        enabledValues = setOfNotNull(
+            SheetValue.Hidden,
+            SheetValue.PartiallyExpanded.takeUnless { skipPartiallyExpanded },
+            SheetValue.Expanded,
+        ),
+    )
     val scope: CoroutineScope = rememberCoroutineScope()
     val isVisibleState: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
     // `data` is stored as `Any?` — callers must pass values supported by Bundle (primitives, Parcelable, Serializable)
