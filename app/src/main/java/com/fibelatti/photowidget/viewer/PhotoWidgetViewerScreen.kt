@@ -56,6 +56,7 @@ import androidx.compose.ui.platform.Clipboard
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.toClipEntry
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -115,7 +116,8 @@ fun PhotoWidgetViewerScreen(
     onAllPhotosClick: () -> Unit = {},
     onShareClick: (LocalPhoto) -> Unit = {},
 ) {
-    var showControls: Boolean by remember { mutableStateOf(false) }
+    val localInspectionMode: Boolean = LocalInspectionMode.current
+    var showControls: Boolean by remember { mutableStateOf(localInspectionMode) }
 
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
@@ -347,7 +349,7 @@ private fun ViewerHeaderControls(
         ),
     ) {
         Column(
-            modifier = Modifier.width(IntrinsicSize.Min),
+            modifier = Modifier.width(IntrinsicSize.Max),
             verticalArrangement = Arrangement.spacedBy(4.dp),
             horizontalAlignment = Alignment.End,
         ) {
@@ -394,25 +396,29 @@ private fun ViewerHeaderControls(
             }
 
             if (path != null) {
-                Text(
-                    text = path,
-                    modifier = Modifier
-                        .fillMaxWidth(fraction = .75f)
-                        .background(
-                            color = MaterialTheme.colorScheme.secondaryContainer,
-                            shape = MaterialTheme.shapes.large,
-                        )
-                        .combinedClickable(
-                            role = Role.Button,
-                            onClick = { onPhotoPathClick(path) },
-                            onLongClick = { onPhotoPathLongClick(path) },
-                        )
-                        .padding(all = 8.dp),
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    overflow = TextOverflow.MiddleEllipsis,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.labelSmall,
-                )
+                Box(
+                    modifier = Modifier.fillMaxWidth(fraction = .75f),
+                    contentAlignment = Alignment.CenterEnd,
+                ) {
+                    Text(
+                        text = path,
+                        modifier = Modifier
+                            .background(
+                                color = MaterialTheme.colorScheme.secondaryContainer,
+                                shape = MaterialTheme.shapes.large,
+                            )
+                            .combinedClickable(
+                                role = Role.Button,
+                                onClick = { onPhotoPathClick(path) },
+                                onLongClick = { onPhotoPathLongClick(path) },
+                            )
+                            .padding(all = 8.dp),
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        overflow = TextOverflow.MiddleEllipsis,
+                        maxLines = 1,
+                        style = MaterialTheme.typography.labelSmall,
+                    )
+                }
             }
         }
     }
