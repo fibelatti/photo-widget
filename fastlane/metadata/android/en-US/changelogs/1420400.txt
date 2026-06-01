@@ -1,0 +1,8 @@
+This version brings the following updates:
+
+* Improve how the photo path is displayed in the full screen viewer
+* Fix an issue that could occur when adding widgets from the within the app
+* Fix configuration options being reset when rotating the screen
+* Fix how the widget status is determined on the home screen
+
+Thanks for using the app!

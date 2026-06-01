@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.42.4] - 2026-06-01
+[v1.42.4]: https://github.com/fibelatti/photo-widget/releases/tag/v1.42.4
+
+### Changed
+
+* Improve how the photo path is displayed in the full screen viewer
+
+### Fixed
+
+* Fix a race condition that could occur when pinning a widget
+* Fix configuration options being reset when rotating the screen
+* Fix how the widget status is determined on the home screen
+
 ## [v1.42.3] - 2026-05-10
 [v1.42.3]: https://github.com/fibelatti/photo-widget/releases/tag/v1.42.3
 
