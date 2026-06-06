@@ -291,7 +291,7 @@ fun PhotoWidgetTapActions.coerceTapActions(source: PhotoWidgetSource): PhotoWidg
 }
 
 private fun PhotoWidgetTapAction.coerceTapAction(source: PhotoWidgetSource): PhotoWidgetTapAction {
-    Timber.tag("PhotoWidgetTapAction").d("Check action validity (tapAction=$this,source=$source)")
+    Timber.tag("PhotoWidgetTapAction").d("Check action validity %s", mapOf("tapAction" to this, "source" to source))
 
     return when (source) {
         // Backwards compatibility behavior; Users can no longer select `ViewInGallery` when source is `PHOTOS`

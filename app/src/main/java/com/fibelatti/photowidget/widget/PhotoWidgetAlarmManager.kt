@@ -33,7 +33,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
             .also { Timber.d("Schedule exact alarms permission granted: $it") }
 
     suspend fun setup(appWidgetId: Int) {
-        Timber.i("Setting alarm for widget (appWidgetId=$appWidgetId)")
+        Timber.i("Setting alarm for widget %s", mapOf("appWidgetId" to appWidgetId))
 
         if (photoWidgetStorage.getWidgetLockedInApp(appWidgetId = appWidgetId)) {
             Timber.d("Widget locked in-app. Skipping alarm setup.")
@@ -61,7 +61,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
     }
 
     fun cancel(appWidgetId: Int) {
-        Timber.i("Cancelling existing alarms for widget (appWidgetId=$appWidgetId)")
+        Timber.i("Cancelling existing alarms for widget %s", mapOf("appWidgetId" to appWidgetId))
 
         alarmManager.cancel(
             TapActionPendingIntentFactory.getChangePhotoPendingIntent(context = context, appWidgetId = appWidgetId),
@@ -121,7 +121,10 @@ class PhotoWidgetAlarmManager @Inject constructor(
 
     private fun setupScheduleAlarm(cycleMode: PhotoWidgetCycleMode.Schedule, appWidgetId: Int) {
         if (cycleMode.triggers.isEmpty()) {
-            Timber.w("No triggers defined for widget (appWidgetId=$appWidgetId). Skipping schedule alarm setup.")
+            Timber.w(
+                "No triggers defined for widget %s. Skipping schedule alarm setup.",
+                mapOf("appWidgetId" to appWidgetId),
+            )
             return
         }
 
@@ -181,7 +184,10 @@ class PhotoWidgetAlarmManager @Inject constructor(
 
     private fun setupAdvancedScheduleAlarm(cycleMode: PhotoWidgetCycleMode.AdvancedSchedule, appWidgetId: Int) {
         if (cycleMode.schedule.isEmpty()) {
-            Timber.w("No schedule defined for widget (appWidgetId=$appWidgetId). Skipping advanced schedule alarm.")
+            Timber.w(
+                "No schedule defined for widget %s. Skipping advanced schedule alarm.",
+                mapOf("appWidgetId" to appWidgetId),
+            )
             return
         }
 
@@ -253,7 +259,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
 class ExactRepeatingAlarmReceiver : EntryPointBroadcastReceiver() {
 
     override suspend fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
-        Timber.i("Working... (appWidgetId=${intent.appWidgetId})")
+        Timber.i("Working... %s", mapOf("appWidgetId" to intent.appWidgetId))
 
         val nextPhotoId: String? = intent.nextPhotoId
 

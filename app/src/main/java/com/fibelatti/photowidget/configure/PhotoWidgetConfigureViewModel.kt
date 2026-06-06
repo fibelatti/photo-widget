@@ -85,7 +85,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     val state: StateFlow<PhotoWidgetConfigureState> = _state.asStateFlow()
 
     init {
-        Timber.i("Configuring widget (appWidgetId=$appWidgetId)")
+        Timber.i("Configuring widget %s", mapOf("appWidgetId" to appWidgetId))
 
         viewModelScope.launch {
             if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
@@ -159,17 +159,17 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
         return when {
             duplicateFromId != null -> {
-                Timber.d("Duplicating widget (duplicateFromId=$duplicateFromId)")
+                Timber.d("Duplicating widget %s", mapOf("duplicateFromId" to duplicateFromId))
                 duplicatePhotoWidgetUseCase(originalAppWidgetId = duplicateFromId, newAppWidgetId = effectiveWidgetId)
             }
 
             restoreFromId != null -> {
-                Timber.d("Restoring widget (restoreFromId=$restoreFromId)")
+                Timber.d("Restoring widget %s", mapOf("restoreFromId" to restoreFromId))
                 duplicatePhotoWidgetUseCase(originalAppWidgetId = restoreFromId, newAppWidgetId = effectiveWidgetId)
             }
 
             backupWidget != null -> {
-                Timber.d("Restoring widget from backup (backupWidget=$backupWidget)")
+                Timber.d("Restoring widget from backup %s", mapOf("backupWidget" to backupWidget))
                 runCatching { restoreWidgetUseCase(originalWidget = backupWidget, newAppWidgetId = effectiveWidgetId) }
                     .onFailure {
                         Timber.e(it, "Failed to restore widget from backup.")

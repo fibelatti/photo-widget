@@ -18,7 +18,7 @@ import timber.log.Timber
 class PhotoWidgetPinnedReceiver : EntryPointBroadcastReceiver() {
 
     override suspend fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
-        Timber.i("Working... (appWidgetId=${intent.appWidgetId})")
+        Timber.i("Working... %s", mapOf("appWidgetId" to intent.appWidgetId))
 
         val widgetId: Int = intent.appWidgetId
             .takeUnless { it == AppWidgetManager.INVALID_APPWIDGET_ID }
@@ -32,7 +32,7 @@ class PhotoWidgetPinnedReceiver : EntryPointBroadcastReceiver() {
         // The widget data is missing, it's impossible to continue
         val (photoWidget: PhotoWidget, draftWidgetId: Int) = pinningCache.peek() ?: return
 
-        Timber.d("New widget (widgetId=$widgetId,draftWidgetId=$draftWidgetId)")
+        Timber.d("New widget %s", mapOf("widgetId" to widgetId, "draftWidgetId" to draftWidgetId))
 
         val saveUseCase: SavePhotoWidgetUseCase = entryPoint.savePhotoWidgetUseCase()
 

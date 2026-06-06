@@ -62,13 +62,19 @@ class PhotoWidgetRescheduleWorker @AssistedInject constructor(
                         val isPaused: Boolean = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = id)
 
                         Timber.d(
-                            "Processing widget (id=$id,cycleMode=$cycleMode,isLocked=$isLocked,isPaused=$isPaused)",
+                            "Processing widget %s",
+                            mapOf(
+                                "id" to id,
+                                "cycleMode" to cycleMode,
+                                "isLocked" to isLocked,
+                                "isPaused" to isPaused,
+                            ),
                         )
 
                         if (cycleMode != PhotoWidgetCycleMode.Disabled::class && !isLocked && !isPaused) {
                             photoWidgetAlarmManager.setup(appWidgetId = id)
                         } else {
-                            Timber.d("Skipping alarm setup (cycleMode=$cycleMode)")
+                            Timber.d("Skipping alarm setup %s", mapOf("cycleMode" to cycleMode))
                         }
 
                         PhotoWidgetProvider.update(context = applicationContext, appWidgetId = id)
@@ -76,7 +82,7 @@ class PhotoWidgetRescheduleWorker @AssistedInject constructor(
                     } catch (e: CancellationException) {
                         throw e
                     } catch (e: Exception) {
-                        Timber.e(e, "Error processing widget (id=$id). Will retry.")
+                        Timber.e(e, "Error processing widget %s. Will retry.", mapOf("id" to id))
                         false
                     }
                 }

@@ -106,7 +106,7 @@ fun widgetPinningNotAvailable(): Boolean {
 }
 
 fun Context.getMaxBitmapWidgetDimension(coerceMaxMemory: Boolean = false): Int {
-    Timber.d("Calculating max dimension (coerceMaxMemory=$coerceMaxMemory)")
+    Timber.d("Calculating max dimension %s", mapOf("coerceMaxMemory" to coerceMaxMemory))
 
     val displayMetrics: DisplayMetrics = resources.displayMetrics
     val maxMemoryAllowed: Int = if (coerceMaxMemory) {
@@ -116,7 +116,7 @@ fun Context.getMaxBitmapWidgetDimension(coerceMaxMemory: Boolean = false): Int {
     }
     val maxDimension: Int = sqrt(maxMemoryAllowed / 4 / displayMetrics.density).roundToInt()
 
-    Timber.d("Max dimension allowed: $maxDimension (maxMemoryAllowed=$maxMemoryAllowed)")
+    Timber.d("Max dimension allowed: $maxDimension %s", mapOf("maxMemoryAllowed" to maxMemoryAllowed))
 
     return maxDimension
 }

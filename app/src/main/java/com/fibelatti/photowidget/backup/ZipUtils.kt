@@ -148,7 +148,10 @@ class ZipUtils @Inject constructor() {
         }
 
         if (entry.size >= 0 && totalBytesRead != entry.size) {
-            Timber.w("Size mismatch for ${entry.name} (declared=${entry.size}, actual=$totalBytesRead)")
+            Timber.w(
+                "Size mismatch for ${entry.name} %s",
+                mapOf("declared" to entry.size, "actual" to totalBytesRead),
+            )
         }
 
         return totalBytesRead
@@ -184,7 +187,7 @@ class ZipUtils @Inject constructor() {
             try {
                 File(path).delete()
             } catch (e: Exception) {
-                Timber.w(e, "Failed to cleanup file (path=$path)")
+                Timber.w(e, "Failed to cleanup file %s", mapOf("path" to path))
             }
         }
     }

@@ -143,11 +143,8 @@ private inline fun Bitmap.withTransformation(
 
 private fun Bitmap.sourceRect(aspectRatio: PhotoWidgetAspectRatio): Rect {
     Timber.d(
-        "Calculating source rect for bitmap (" +
-            "width=$width," +
-            "height=$height," +
-            "aspectRatio=$aspectRatio" +
-            ")",
+        "Calculating source rect for bitmap %s",
+        mapOf("width" to width, "height" to height, "aspectRatio" to aspectRatio),
     )
 
     return createCenteredRectWithAspectRatio(

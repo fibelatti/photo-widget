@@ -45,7 +45,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
     suspend fun newWidgetPhoto(directoryName: String, source: Uri): LocalPhoto? {
         return withContext(Dispatchers.IO) {
             runCatching {
-                Timber.d("New widget photo: $source (directoryName=$directoryName)")
+                Timber.d("New widget photo %s", mapOf("source" to source, "directoryName" to directoryName))
 
                 val widgetDir: File = getWidgetDir(directoryName = directoryName)
                 val originalPhotosDir: File = File("$widgetDir/original").apply { mkdirs() }
@@ -103,7 +103,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
     suspend fun newWidgetPhotosFromGif(directoryName: String, source: Uri): GifFrames {
         return withContext(Dispatchers.IO) {
             runCatching {
-                Timber.d("New widget photos from GIF: $source (directoryName=$directoryName)")
+                Timber.d("New widget photos from GIF %s", mapOf("source" to source, "directoryName" to directoryName))
 
                 val widgetDir = getWidgetDir(directoryName = directoryName)
                 val originalPhotosDir: File = File("$widgetDir/original").apply { mkdirs() }

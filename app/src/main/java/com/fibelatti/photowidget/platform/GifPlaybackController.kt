@@ -39,7 +39,7 @@ class GifPlaybackController @Inject constructor(
     private val gifPlaybackJobs: ConcurrentHashMap<Int, Job> = ConcurrentHashMap()
 
     fun setupWidgetGif(appWidgetId: Int) {
-        logger.i("Setting up gif playback (appWidgetId=$appWidgetId)")
+        logger.i("Setting up gif playback %s", mapOf("appWidgetId" to appWidgetId))
 
         coroutineScope.launch {
             val source: PhotoWidgetSource = photoWidgetStorage.getWidgetSource(appWidgetId = appWidgetId)
@@ -61,7 +61,7 @@ class GifPlaybackController @Inject constructor(
     }
 
     fun tearDownWidgetGif(appWidgetId: Int) {
-        logger.i("Tearing down gif (appWidgetId=$appWidgetId)")
+        logger.i("Tearing down gif %s", mapOf("appWidgetId" to appWidgetId))
         gifPlaybackJobs.remove(appWidgetId)?.cancel()
     }
 
@@ -73,7 +73,7 @@ class GifPlaybackController @Inject constructor(
     }
 
     fun setPlaybackAllowed(value: Boolean, appWidgetId: Int? = null) {
-        logger.d("Updating playback allowed (value=$value,appWidgetId=$appWidgetId)")
+        logger.d("Updating playback allowed %s", mapOf("value" to value, "appWidgetId" to appWidgetId))
         if (appWidgetId == null) {
             coroutineScope.launch {
                 playbackAllowed.update { currentMap ->

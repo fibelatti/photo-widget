@@ -29,13 +29,14 @@ class CyclePhotoUseCase @Inject constructor(
         currentPhoto: String? = null,
     ): String {
         Timber.i(
-            "Cycling photo (" +
-                "appWidgetId=$appWidgetId," +
-                "direction=$direction," +
-                "noShuffle=$noShuffle," +
-                "skipSaving=$skipSaving," +
-                "currentPhoto=$currentPhoto" +
-                ")",
+            "Cycling photo %s",
+            mapOf(
+                "appWidgetId" to appWidgetId,
+                "direction" to direction,
+                "noShuffle" to noShuffle,
+                "skipSaving" to skipSaving,
+                "currentPhoto" to currentPhoto,
+            ),
         )
 
         val widgetPhotoIds: List<String> = photoWidgetStorage.getSyncedWidgetPhotoIds(appWidgetId = appWidgetId)

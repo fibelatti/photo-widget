@@ -36,17 +36,18 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
         val currentPhotoPath: String = photoWidget.currentPhoto?.getPhotoPath() ?: return null
 
         Timber.i(
-            "Preparing current photo (" +
-                "appWidgetId=$appWidgetId," +
-                "recoveryMode=$recoveryMode," +
-                "currentPhotoPath=$currentPhotoPath" +
-                ")",
+            "Preparing current photo %s",
+            mapOf(
+                "appWidgetId" to appWidgetId,
+                "recoveryMode" to recoveryMode,
+                "currentPhotoPath" to currentPhotoPath,
+            ),
         )
 
         val bitmap: Bitmap = try {
             val maxDimension = context.getMaxBitmapWidgetDimension(coerceMaxMemory = recoveryMode)
 
-            Timber.d("Creating widget bitmap (maxDimension=$maxDimension, recoveryMode=$recoveryMode)")
+            Timber.d("Creating widget bitmap %s", mapOf("maxDimension" to maxDimension, "recoveryMode" to recoveryMode))
 
             requireNotNull(decoder.decode(data = currentPhotoPath, maxDimension = maxDimension))
         } catch (_: Exception) {

@@ -41,14 +41,14 @@ class PhotoWidgetSyncWorker @AssistedInject constructor(
             coroutineScope.launch {
                 withContext(NonCancellable) {
                     try {
-                        Timber.d("Processing widget (id=$id)")
+                        Timber.d("Processing widget %s", mapOf("id" to id))
                         if (photoWidgetStorage.getWidgetSource(appWidgetId = id) == PhotoWidgetSource.DIRECTORY) {
                             photoWidgetStorage.syncWidgetPhotos(appWidgetId = id)
                         }
                     } catch (e: CancellationException) {
                         throw e
                     } catch (e: Exception) {
-                        Timber.e(e, "Error processing widget (id=$id).")
+                        Timber.e(e, "Error processing widget %s.", mapOf("id" to id))
                     }
                 }
             }

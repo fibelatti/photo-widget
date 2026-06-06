@@ -13,7 +13,7 @@ import timber.log.Timber
 abstract class EntryPointBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        Timber.i("Broadcast received (action=${intent.action})")
+        Timber.i("Broadcast received %s", mapOf("action" to intent.action))
 
         Handler(Looper.getMainLooper()).post {
             val entryPoint: PhotoWidgetEntryPoint = entryPoint(context)

@@ -30,10 +30,8 @@ class KeepAliveService : Service() {
 
         override fun onReceive(context: Context, intent: Intent) {
             logger.i(
-                "SetupGifBroadcastReceiver: Broadcast received (" +
-                    "action=${intent.action}," +
-                    "appWidgetId=${intent.appWidgetId}" +
-                    ")",
+                "SetupGifBroadcastReceiver: Broadcast received %s",
+                mapOf("action" to intent.action, "appWidgetId" to intent.appWidgetId),
             )
 
             when (intent.action) {
@@ -46,7 +44,7 @@ class KeepAliveService : Service() {
     private val toggleBroadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
-            logger.i("ToggleBroadcastReceiver: Broadcast received (action=${intent.action})")
+            logger.i("ToggleBroadcastReceiver: Broadcast received %s", mapOf("action" to intent.action))
 
             when (intent.action) {
                 ACTION_RESUME_GIF -> gifPlaybackController.setPlaybackAllowed(true, intent.appWidgetId)
@@ -58,7 +56,7 @@ class KeepAliveService : Service() {
     private val screenStateBroadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
-            logger.i("ScreenStateBroadcastReceiver: Broadcast received (action=${intent.action})")
+            logger.i("ScreenStateBroadcastReceiver: Broadcast received %s", mapOf("action" to intent.action))
 
             when (intent.action) {
                 Intent.ACTION_SCREEN_ON -> gifPlaybackController.setPlaybackAllowed(true)

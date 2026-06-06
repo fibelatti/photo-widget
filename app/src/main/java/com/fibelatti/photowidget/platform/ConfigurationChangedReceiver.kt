@@ -29,13 +29,13 @@ class ConfigurationChangedReceiver : EntryPointBroadcastReceiver() {
         for (id in ids) {
             currentCoroutineContext().ensureActive()
             try {
-                Timber.d("Processing widget (id=$id)")
+                Timber.d("Processing widget %s", mapOf("id" to id))
 
                 PhotoWidgetProvider.update(context = context, appWidgetId = id)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                Timber.e(e, "Error processing widget (id=$id)")
+                Timber.e(e, "Error processing widget %s", mapOf("id" to id))
             }
         }
     }

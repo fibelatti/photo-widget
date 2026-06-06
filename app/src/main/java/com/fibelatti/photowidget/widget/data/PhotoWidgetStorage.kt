@@ -85,7 +85,7 @@ class PhotoWidgetStorage @Inject constructor(
         val directoryName: String = widgetDirectoryDao.getDirectoryName(appWidgetId)
             ?: createDirectoryName(appWidgetId)
 
-        Timber.d("Directory name (appWidgetId=$appWidgetId): $directoryName.")
+        Timber.d("Directory name: $directoryName %s", mapOf("appWidgetId" to appWidgetId))
 
         return directoryName
     }
@@ -94,7 +94,7 @@ class PhotoWidgetStorage @Inject constructor(
         val directoryName: String = UUID.randomUUID().toString()
         widgetDirectoryDao.insert(WidgetDirectoryDto(directoryName = directoryName, widgetId = appWidgetId))
 
-        Timber.d("New directory (appWidgetId=$appWidgetId): $directoryName")
+        Timber.d("New directory: $directoryName %s", mapOf("appWidgetId" to appWidgetId))
 
         return directoryName
     }
@@ -165,7 +165,7 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     fun loadWidgetPhotos(appWidgetId: Int): Flow<WidgetPhotos> = flow {
-        Timber.i("Retrieving photos (appWidgetId=$appWidgetId)")
+        Timber.i("Retrieving photos %s", mapOf("appWidgetId" to appWidgetId))
 
         val excludedPhotos: Set<String> = getExcludedPhotoIds(appWidgetId = appWidgetId)
 
@@ -316,7 +316,7 @@ class PhotoWidgetStorage @Inject constructor(
         currentPhotos: List<LocalPhoto>? = null,
         removedPhotos: List<LocalPhoto>? = null,
     ) {
-        Timber.i("Syncing photos (appWidgetId=$appWidgetId, fromWidget=${currentPhotos != null})")
+        Timber.i("Syncing photos %s", mapOf("appWidgetId" to appWidgetId, "fromWidget" to (currentPhotos != null)))
 
         val excludedPhotos: Set<String> = removedPhotos?.map { it.photoId }?.toSet()
             ?: getExcludedPhotoIds(appWidgetId = appWidgetId)
@@ -646,7 +646,7 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     suspend fun deleteWidgetData(appWidgetId: Int) {
-        Timber.i("Deleting widget data (appWidgetId=$appWidgetId)")
+        Timber.i("Deleting widget data %s", mapOf("appWidgetId" to appWidgetId))
 
         val directoryName: String? = widgetDirectoryDao.getDirectoryName(widgetId = appWidgetId)
         if (directoryName != null) {
@@ -700,16 +700,19 @@ class PhotoWidgetStorage @Inject constructor(
         deleteLegacyDraftWidgetData()
 
         for (id in unplacedWidgetIds) {
-            Timber.d("Stale data found (appWidgetId=$id)")
+            Timber.d("Stale data found %s", mapOf("appWidgetId" to id))
             val deletionTimestamp: Long = getWidgetDeletionTimestamp(appWidgetId = id)
             if (deletionTimestamp == -1L) {
-                Timber.d("Widget was kept by the user (appWidgetId=$id)")
+                Timber.d("Widget was kept by the user %s", mapOf("appWidgetId" to id))
                 continue
             }
 
             val deletionInterval: Long = currentTimestamp - deletionTimestamp
             if (deletionInterval <= DELETION_THRESHOLD_MILLIS) {
-                Timber.d("Deletion threshold not reached (appWidgetId=$id, interval=$deletionInterval)")
+                Timber.d(
+                    "Deletion threshold not reached %s",
+                    mapOf("appWidgetId" to id, "interval" to deletionInterval),
+                )
                 continue
             }
 
@@ -744,7 +747,7 @@ class PhotoWidgetStorage @Inject constructor(
     }
 
     suspend fun migrateDraftToWidget(draftWidgetId: Int, appWidgetId: Int) {
-        Timber.i("Migrating draft to widget (draftWidgetId=$draftWidgetId, appWidgetId=$appWidgetId)")
+        Timber.i("Migrating draft to widget %s", mapOf("draftWidgetId" to draftWidgetId, "appWidgetId" to appWidgetId))
 
         localPhotoDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
         displayedPhotoDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)

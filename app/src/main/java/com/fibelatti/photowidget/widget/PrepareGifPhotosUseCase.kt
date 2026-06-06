@@ -34,7 +34,7 @@ class PrepareGifPhotosUseCase @Inject constructor(
         appWidgetId: Int,
         photoWidget: PhotoWidget,
     ) {
-        Timber.i("Preparing gif photos (appWidgetId=$appWidgetId)")
+        Timber.i("Preparing gif photos %s", mapOf("appWidgetId" to appWidgetId))
 
         val maxDimension: Int = context.getMaxBitmapWidgetDimension()
         val borderPercent: Float = photoWidget.border.borderPercent()

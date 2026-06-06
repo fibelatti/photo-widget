@@ -30,12 +30,12 @@ class UriPermissionGrantor @Inject constructor(
         val file = File(path)
 
         if (!file.exists()) {
-            Timber.w("File (path=$path) does not exist, unable to generate URI.")
+            Timber.w("File does not exist, unable to generate URI. %s", mapOf("path" to path))
             return@withContext null
         }
 
         val uri: Uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
-        Timber.d("New URI (path=$path): $uri")
+        Timber.d("New URI: $uri. %s", mapOf("path" to path))
 
         for (pkg in launcherPackagesCache) {
             context.grantUriPermission(pkg, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)

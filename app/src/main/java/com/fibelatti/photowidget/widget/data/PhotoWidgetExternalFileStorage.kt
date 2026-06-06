@@ -99,14 +99,15 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
                     }
 
                     Timber.d(
-                        "Cursor item (" +
-                            "documentId=$documentId, " +
-                            "mimeType=$mimeType, " +
-                            "documentName=$documentName, " +
-                            "documentLastModified=$documentLastModified, " +
-                            "fileUri=$fileUri, " +
-                            "photoId=$photoId" +
-                            ")",
+                        "Processing cursor item %s",
+                        mapOf(
+                            "documentId" to documentId,
+                            "mimeType" to mimeType,
+                            "documentName" to documentName,
+                            "documentLastModified" to documentLastModified,
+                            "fileUri" to fileUri,
+                            "photoId" to photoId,
+                        ),
                     )
 
                     when {

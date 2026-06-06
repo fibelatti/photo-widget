@@ -29,14 +29,15 @@ object TapActionPendingIntentFactory {
         externalUri: Uri?,
     ): PendingIntent? {
         Timber.i(
-            "Determining intent (" +
-                "appWidgetId=$appWidgetId," +
-                "tapAction=$tapAction," +
-                "isLocked=$isLocked," +
-                "shouldDisableTap=$shouldDisableTap," +
-                "originalPhotoPath=$originalPhotoPath," +
-                "externalUri=$externalUri" +
-                ")",
+            "Determining intent %s",
+            mapOf(
+                "appWidgetId" to appWidgetId,
+                "tapAction" to tapAction,
+                "isLocked" to isLocked,
+                "shouldDisableTap" to shouldDisableTap,
+                "originalPhotoPath" to originalPhotoPath,
+                "externalUri" to externalUri,
+            ),
         )
 
         val shouldIgnoreAction: Boolean = when {
@@ -46,7 +47,7 @@ object TapActionPendingIntentFactory {
         }
 
         if (shouldIgnoreAction) {
-            Timber.d("Ignoring action (isPhotoChangingAction=${tapAction.isPhotoChangingAction})")
+            Timber.d("Ignoring action %s", mapOf("isPhotoChangingAction" to tapAction.isPhotoChangingAction))
             return null
         }
 

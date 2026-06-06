@@ -45,7 +45,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
 
-        Timber.i("Broadcast received (action=${intent.action}, appWidgetId=${intent.appWidgetId})")
+        Timber.i("Broadcast received %s", mapOf("action" to intent.action, "appWidgetId" to intent.appWidgetId))
 
         val action: Action = Action.fromValue(intent.action) ?: return
 
@@ -72,7 +72,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
     }
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        Timber.i("Update requested by the system (appWidgetIds=${appWidgetIds.toList()})")
+        Timber.i("Update requested by the system %s", mapOf("appWidgetIds" to appWidgetIds.toList()))
 
         handler.post {
             for (appWidgetId in appWidgetIds) {
@@ -87,7 +87,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         appWidgetId: Int,
         newOptions: Bundle?,
     ) {
-        Timber.i("Options changed by the system (appWidgetId=$appWidgetId)")
+        Timber.i("Options changed by the system %s", mapOf("appWidgetId" to appWidgetId))
 
         handler.post {
             update(context = context, appWidgetId = appWidgetId)
@@ -95,7 +95,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
     }
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
-        Timber.i("Delete requested by the system (appWidgetIds=${appWidgetIds.toList()})")
+        Timber.i("Delete requested by the system %s", mapOf("appWidgetIds" to appWidgetIds.toList()))
 
         handler.post {
             val entryPoint: PhotoWidgetEntryPoint = entryPoint(context)
@@ -137,7 +137,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             appWidgetId: Int,
             recoveryMode: Boolean = false,
         ) {
-            Timber.i("Updating widget (appWidgetId=$appWidgetId)")
+            Timber.i("Updating widget %s", mapOf("appWidgetId" to appWidgetId))
 
             val appWidgetManager: AppWidgetManager = AppWidgetManager.getInstance(context)
             val entryPoint: PhotoWidgetEntryPoint = entryPoint(context)
@@ -148,7 +148,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val exceptionReporter: ExceptionReporter = entryPoint.exceptionReporter()
 
             val currentJob: Job? = updateJobMap[appWidgetId]
-            Timber.d("Current update job (isActive=${currentJob?.isActive})")
+            Timber.d("Current update job %s", mapOf("isActive" to currentJob?.isActive))
 
             val newJob: Job = coroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
                 // Timeout to avoid hanging waiting more than what's acceptable
