@@ -285,6 +285,8 @@
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">You may also choose which gallery app to use.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Choose app</string>
     <string name="photo_widget_configure_tap_action_search_apps">Search apps</string>
+    <string name="photo_widget_configure_tap_action_choose_shortcut">Choose shortcut</string>
+    <string name="photo_widget_configure_tap_action_launch_app">Launch app</string>
     <string name="photo_widget_configure_tap_action_search_no_apps">No apps found</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Disable other tapping areas while the timer is paused</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">These preferences are used by all areas that use this tap action.</string>

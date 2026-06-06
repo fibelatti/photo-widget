@@ -5,9 +5,11 @@ package com.fibelatti.photowidget.configure
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateDpAsState
@@ -28,6 +30,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
@@ -41,6 +44,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -54,9 +58,9 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -90,13 +94,16 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.model.AppShortcutInfo
 import com.fibelatti.photowidget.model.InstalledApp
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.TapActionArea
+import com.fibelatti.photowidget.model.contains
 import com.fibelatti.photowidget.platform.getAllInstalledApps
+import com.fibelatti.photowidget.platform.getAppShortcuts
 import com.fibelatti.photowidget.platform.getInstalledApp
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.PickerDefault
@@ -132,24 +139,14 @@ fun PhotoWidgetTapActionPicker(
     source: PhotoWidgetSource,
     onApplyClick: (newTapActions: PhotoWidgetTapActions) -> Unit,
 ) {
-    var tapActions: PhotoWidgetTapActions by rememberSaveable { mutableStateOf(currentTapActions) }
-    var selectedArea: TapActionArea by rememberSaveable { mutableStateOf(TapActionArea.CENTER) }
-
     val context: Context = LocalContext.current
 
-    var launcherApps: List<InstalledApp> by remember { mutableStateOf(emptyList()) }
-    var galleryApps: List<InstalledApp> by remember { mutableStateOf(emptyList()) }
-
-    LaunchedEffect(Unit) {
-        launcherApps = withContext(Dispatchers.IO) {
-            context.getAllInstalledApps(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER))
-        }
-        galleryApps = withContext(Dispatchers.IO) {
-            context.getAllInstalledApps(Intent(Intent.ACTION_VIEW).setDataAndType("content://sample".toUri(), "image/*"))
-        }
-    }
+    var tapActions: PhotoWidgetTapActions by rememberSaveable { mutableStateOf(currentTapActions) }
+    var selectedArea: TapActionArea by rememberSaveable { mutableStateOf(TapActionArea.CENTER) }
+    var pendingShortcutPackage: String? by rememberSaveable { mutableStateOf(null) }
 
     val appShortcutPickerSheetState = rememberAppSheetState()
+    val appShortcutSheetState = rememberAppSheetState()
     val addToFolderPickerSheetState = rememberAppSheetState()
     val galleryAppPickerSheetState = rememberAppSheetState()
 
@@ -162,6 +159,38 @@ fun PhotoWidgetTapActionPicker(
             tapActions = tapActions,
             selectedArea = selectedArea,
         )
+    }
+
+    val launcherApps: List<InstalledApp> by produceState(initialValue = emptyList(), key1 = tapActions) {
+        val shouldLoad: Boolean = PhotoWidgetTapAction.AppShortcut::class in tapActions ||
+            PhotoWidgetTapAction.AppFolder::class in tapActions
+        if (shouldLoad && value.isEmpty()) {
+            value = withContext(Dispatchers.IO) {
+                context.getAllInstalledApps(
+                    Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
+                )
+            }
+        }
+    }
+    val galleryApps: List<InstalledApp> by produceState(initialValue = emptyList(), key1 = tapActions) {
+        val shouldLoad: Boolean = PhotoWidgetTapAction.ViewInGallery::class in tapActions
+        if (shouldLoad && value.isEmpty()) {
+            value = withContext(Dispatchers.IO) {
+                context.getAllInstalledApps(
+                    Intent(Intent.ACTION_VIEW).setDataAndType("content://sample".toUri(), "image/*"),
+                )
+            }
+        }
+    }
+    val shortcuts: List<AppShortcutInfo> by produceState(initialValue = emptyList(), key1 = pendingShortcutPackage) {
+        val packageName: String = pendingShortcutPackage ?: return@produceState
+        value = withContext(Dispatchers.IO) { context.getAppShortcuts(packageName) }
+
+        if (value.isNotEmpty()) {
+            appShortcutSheetState.showBottomSheet()
+        } else {
+            pendingShortcutPackage = null
+        }
     }
 
     TapActionPickerContent(
@@ -204,12 +233,40 @@ fun PhotoWidgetTapActionPicker(
     AppPickerBottomSheet(
         sheetState = appShortcutPickerSheetState,
         apps = launcherApps,
-        onAppClick = { packageName ->
+        onAppClick = { packageName: String ->
+            pendingShortcutPackage = packageName
             tapActions = onAppShortcutPickerResult(
                 packageName = packageName,
+                shortcutId = null,
                 tapActions = tapActions,
                 selectedArea = selectedArea,
             )
+        },
+    )
+
+    AppShortcutPickerBottomSheet(
+        sheetState = appShortcutSheetState,
+        shortcuts = shortcuts,
+        onLaunchAppClick = {
+            tapActions = onAppShortcutPickerResult(
+                packageName = pendingShortcutPackage ?: return@AppShortcutPickerBottomSheet,
+                shortcutId = null,
+                tapActions = tapActions,
+                selectedArea = selectedArea,
+            )
+            pendingShortcutPackage = null
+        },
+        onShortcutClick = { shortcutId ->
+            tapActions = onAppShortcutPickerResult(
+                packageName = pendingShortcutPackage ?: return@AppShortcutPickerBottomSheet,
+                shortcutId = shortcutId,
+                tapActions = tapActions,
+                selectedArea = selectedArea,
+            )
+            pendingShortcutPackage = null
+        },
+        onDismiss = {
+            pendingShortcutPackage = null
         },
     )
 
@@ -240,10 +297,14 @@ fun PhotoWidgetTapActionPicker(
 // region Activity Result handlers
 private fun onAppShortcutPickerResult(
     packageName: String,
+    shortcutId: String?,
     tapActions: PhotoWidgetTapActions,
     selectedArea: TapActionArea,
 ): PhotoWidgetTapActions {
-    val newTapAction = PhotoWidgetTapAction.AppShortcut(packageName)
+    val newTapAction = PhotoWidgetTapAction.AppShortcut(
+        appShortcut = packageName,
+        shortcutId = shortcutId,
+    )
 
     return when (selectedArea) {
         TapActionArea.LEFT -> tapActions.copy(left = newTapAction)
@@ -735,7 +796,8 @@ private fun TapActionCustomizationContent(
 
         is PhotoWidgetTapAction.AppShortcut -> {
             AppPicker(
-                value = tapAction.appShortcut,
+                packageName = tapAction.appShortcut,
+                shortcutId = tapAction.shortcutId,
                 onChooseAppClick = onChooseAppShortcutClick,
                 modifier = modifier,
             )
@@ -776,39 +838,76 @@ private fun TapActionCustomizationContent(
 
 @Composable
 private fun AppPicker(
-    value: String?,
+    packageName: String?,
+    shortcutId: String?,
     onChooseAppClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Max),
+        horizontalArrangement = Arrangement.spacedBy(2.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        OutlinedButton(
+        FilledTonalButton(
             onClick = onChooseAppClick,
-            shapes = ButtonDefaults.shapes(),
+            modifier = Modifier
+                .fillMaxHeight()
+                .heightIn(min = 48.dp),
+            shapes = ButtonDefaults.shapes(shape = packageName?.let { Shapes.StartShape }),
         ) {
             Text(text = stringResource(id = R.string.photo_widget_configure_tap_action_choose_app))
         }
 
-        val installedApp: InstalledApp? = LocalContext.current.getInstalledApp(packageName = value)
+        val localContext: Context = LocalContext.current
+        val installedApp: InstalledApp = remember(packageName) { localContext.getInstalledApp(packageName) }
+            ?: return
 
-        if (installedApp != null) {
-            Image(
-                bitmap = installedApp.appIcon.toBitmap().asImageBitmap(),
-                contentDescription = null,
-                modifier = Modifier.size(40.dp),
-            )
+        val shortcut: AppShortcutInfo? by produceState(initialValue = null, key1 = packageName, key2 = shortcutId) {
+            if (packageName != null) {
+                value = localContext.getAppShortcuts(packageName).find { it.id == shortcutId }
+            }
+        }
 
-            AutoSizeText(
-                text = installedApp.appLabel,
+        val icon: Drawable = shortcut?.icon ?: installedApp.appIcon
+        val label: String = if (shortcutId != null) {
+            "${installedApp.appLabel} › ${shortcut?.label ?: shortcutId}"
+        } else {
+            installedApp.appLabel
+        }
+
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .background(color = MaterialTheme.colorScheme.secondaryContainer, shape = Shapes.EndShape)
+                .padding(horizontal = 8.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Crossfade(
+                targetState = remember(icon) { icon.toBitmap().asImageBitmap() },
+            ) { bitmap ->
+                Image(
+                    bitmap = bitmap,
+                    contentDescription = null,
+                    modifier = Modifier.size(40.dp),
+                )
+            }
+
+            Crossfade(
+                targetState = label,
                 modifier = Modifier.weight(1f),
-                color = MaterialTheme.colorScheme.onSurface,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                style = MaterialTheme.typography.labelLarge,
-            )
+            ) {
+                AutoSizeText(
+                    text = it,
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    style = MaterialTheme.typography.labelLarge,
+                )
+            }
         }
     }
 }
@@ -901,7 +1000,8 @@ private fun ViewInGalleryCustomizationContent(
         )
 
         AppPicker(
-            value = value.galleryApp,
+            packageName = value.galleryApp,
+            shortcutId = null,
             onChooseAppClick = onChooseGalleryAppClick,
         )
 

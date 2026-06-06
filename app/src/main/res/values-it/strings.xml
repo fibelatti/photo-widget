@@ -243,6 +243,8 @@
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Puoi anche scegliere quale app galleria utilizzare.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Scegli app</string>
     <string name="photo_widget_configure_tap_action_search_apps">Cerca app</string>
+    <string name="photo_widget_configure_tap_action_choose_shortcut">Scegli collegamento</string>
+    <string name="photo_widget_configure_tap_action_launch_app">Avvia app</string>
     <string name="photo_widget_configure_tap_action_search_no_apps">Nessuna app trovata</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Disattiva altre aree di tocco mentre il timer è in pausa</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Queste preferenze sono utilizzate da tutte le aree che usano questa azione al tocco.</string>

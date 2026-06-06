@@ -429,6 +429,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
             putString(keys.mainKey, tapAction.serializedName)
 
             remove(keys.appShortcutKey)
+            remove(keys.appShortcutIdKey)
             remove(keys.appFolderKey)
             remove(keys.urlShortcutKey)
             remove(keys.fileShortcutUriKey)
@@ -456,6 +457,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
 
                 is PhotoWidgetTapAction.AppShortcut -> {
                     putString(keys.appShortcutKey, tapAction.appShortcut)
+                    putString(keys.appShortcutIdKey, tapAction.shortcutId)
                 }
 
                 is PhotoWidgetTapAction.AppFolder -> {
@@ -510,6 +512,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
 
                 is PhotoWidgetTapAction.AppShortcut -> tapAction.copy(
                     appShortcut = getString(keys.appShortcutKey, null),
+                    shortcutId = getString(keys.appShortcutIdKey, null),
                 )
 
                 is PhotoWidgetTapAction.AppFolder -> {
@@ -546,6 +549,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
             TapActionArea.LEFT -> TapActionKeys(
                 mainKey = "${PreferencePrefix.TAP_ACTION_LEFT}$appWidgetId",
                 appShortcutKey = "${PreferencePrefix.APP_SHORTCUT_LEFT}$appWidgetId",
+                appShortcutIdKey = "${PreferencePrefix.APP_SHORTCUT_ID_LEFT}$appWidgetId",
                 appFolderKey = "${PreferencePrefix.APP_FOLDER_LEFT}$appWidgetId",
                 urlShortcutKey = "${PreferencePrefix.URL_SHORTCUT_LEFT}$appWidgetId",
                 fileShortcutUriKey = "${PreferencePrefix.FILE_SHORTCUT_URI_LEFT}$appWidgetId",
@@ -554,6 +558,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
             TapActionArea.CENTER -> TapActionKeys(
                 mainKey = "${PreferencePrefix.TAP_ACTION_CENTER}$appWidgetId",
                 appShortcutKey = "${PreferencePrefix.APP_SHORTCUT_CENTER}$appWidgetId",
+                appShortcutIdKey = "${PreferencePrefix.APP_SHORTCUT_ID_CENTER}$appWidgetId",
                 appFolderKey = "${PreferencePrefix.APP_FOLDER_CENTER}$appWidgetId",
                 urlShortcutKey = "${PreferencePrefix.URL_SHORTCUT_CENTER}$appWidgetId",
                 fileShortcutUriKey = "${PreferencePrefix.FILE_SHORTCUT_URI_CENTER}$appWidgetId",
@@ -562,6 +567,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
             TapActionArea.RIGHT -> TapActionKeys(
                 mainKey = "${PreferencePrefix.TAP_ACTION_RIGHT}$appWidgetId",
                 appShortcutKey = "${PreferencePrefix.APP_SHORTCUT_RIGHT}$appWidgetId",
+                appShortcutIdKey = "${PreferencePrefix.APP_SHORTCUT_ID_RIGHT}$appWidgetId",
                 appFolderKey = "${PreferencePrefix.APP_FOLDER_RIGHT}$appWidgetId",
                 urlShortcutKey = "${PreferencePrefix.URL_SHORTCUT_RIGHT}$appWidgetId",
                 fileShortcutUriKey = "${PreferencePrefix.FILE_SHORTCUT_URI_RIGHT}$appWidgetId",
@@ -681,6 +687,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
     private data class TapActionKeys(
         val mainKey: String,
         val appShortcutKey: String,
+        val appShortcutIdKey: String,
         val appFolderKey: String,
         val urlShortcutKey: String,
         val fileShortcutUriKey: String,
@@ -759,6 +766,9 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         APP_SHORTCUT_LEFT(value = "appwidget_app_shortcut_left_"),
         APP_SHORTCUT_CENTER(value = "appwidget_app_shortcut_"),
         APP_SHORTCUT_RIGHT(value = "appwidget_app_shortcut_right_"),
+        APP_SHORTCUT_ID_LEFT(value = "appwidget_app_shortcut_id_left_"),
+        APP_SHORTCUT_ID_CENTER(value = "appwidget_app_shortcut_id_"),
+        APP_SHORTCUT_ID_RIGHT(value = "appwidget_app_shortcut_id_right_"),
         APP_FOLDER_LEFT(value = "appwidget_app_folder_left_"),
         APP_FOLDER_CENTER(value = "appwidget_app_folder_"),
         APP_FOLDER_RIGHT(value = "appwidget_app_folder_right_"),

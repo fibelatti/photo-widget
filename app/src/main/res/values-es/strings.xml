@@ -243,6 +243,8 @@
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">También puedes elegir qué aplicación de galería usar.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Elige la aplicación</string>
     <string name="photo_widget_configure_tap_action_search_apps">Buscar aplicaciones</string>
+    <string name="photo_widget_configure_tap_action_choose_shortcut">Elegir acceso directo</string>
+    <string name="photo_widget_configure_tap_action_launch_app">Abrir app</string>
     <string name="photo_widget_configure_tap_action_search_no_apps">No se encontraron aplicaciones</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Desactivar otras zonas táctiles mientras el temporizador esté en pausa</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Estas preferencias se usan en todas las áreas que utilizan esta acción de toque.</string>

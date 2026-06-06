@@ -241,6 +241,8 @@
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Maaari mo ring piliin ang gallery app na gagamitin.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Piliin ang app</string>
     <string name="photo_widget_configure_tap_action_search_apps">Maghanap ng mga app</string>
+    <string name="photo_widget_configure_tap_action_choose_shortcut">Pumili ng shortcut</string>
+    <string name="photo_widget_configure_tap_action_launch_app">Ilunsad ang app</string>
     <string name="photo_widget_configure_tap_action_search_no_apps">Walang nahanap na apps</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Huwag gamitin ang ibang lugar na puwedeng pindutin habang nakahinto ang timer</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Ginagamit ng lahat ng lugar para sa aksyon sa pagpindot ang mga setting na ito.</string>

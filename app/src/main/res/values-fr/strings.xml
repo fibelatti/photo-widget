@@ -243,6 +243,8 @@
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Vous pouvez également choisir quelle application galerie utiliser.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Choisir une application</string>
     <string name="photo_widget_configure_tap_action_search_apps">Rechercher des applications</string>
+    <string name="photo_widget_configure_tap_action_choose_shortcut">Choisir un raccourci</string>
+    <string name="photo_widget_configure_tap_action_launch_app">Lancer l\'app</string>
     <string name="photo_widget_configure_tap_action_search_no_apps">Aucune application trouvée</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Désactiver les autres zones tactiles pendant la pause du minuteur</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Ces préférences sont utilisées par toutes les zones utilisant cette action de toucher.</string>

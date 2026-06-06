@@ -241,6 +241,8 @@
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Hangi galeri uygulamasını kullanacağınızı da seçebilirsiniz.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Uygulama seç</string>
     <string name="photo_widget_configure_tap_action_search_apps">Uygulama ara</string>
+    <string name="photo_widget_configure_tap_action_choose_shortcut">Kısayol seç</string>
+    <string name="photo_widget_configure_tap_action_launch_app">Uygulamayı başlat</string>
     <string name="photo_widget_configure_tap_action_search_no_apps">Uygulama bulunamadı</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Zamanlayıcı duraklatıldığında diğer dokunma alanlarını devre dışı bırak</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Bu tercihler, bu dokunma eylemini kullanan tüm alanlar tarafından kullanılır.</string>

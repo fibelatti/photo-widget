@@ -124,6 +124,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     @Parcelize
     data class AppShortcut(
         val appShortcut: String? = null,
+        val shortcutId: String? = null,
     ) : PhotoWidgetTapAction {
 
         @IgnoredOnParcel

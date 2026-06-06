@@ -243,6 +243,8 @@
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Du kannst auch auswählen, welche Galerie-App verwendet werden soll.</string>
     <string name="photo_widget_configure_tap_action_choose_app">App auswählen</string>
     <string name="photo_widget_configure_tap_action_search_apps">Apps suchen</string>
+    <string name="photo_widget_configure_tap_action_choose_shortcut">Verknüpfung auswählen</string>
+    <string name="photo_widget_configure_tap_action_launch_app">App starten</string>
     <string name="photo_widget_configure_tap_action_search_no_apps">Keine Apps gefunden</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Andere Tippbereiche deaktivieren, während der Timer pausiert ist</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Diese Einstellungen werden von allen Bereichen verwendet, die diese Tipp-Aktion nutzen.</string>

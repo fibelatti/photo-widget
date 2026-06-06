@@ -47,7 +47,7 @@ class SanitizeTapActionsUseCase @Inject constructor(
             }
 
             is PhotoWidgetTapAction.AppShortcut if context.getInstalledApp(tapAction.appShortcut) == null -> {
-                tapAction.copy(appShortcut = null)
+                tapAction.copy(appShortcut = null, shortcutId = null)
             }
 
             is PhotoWidgetTapAction.AppFolder if tapAction.shortcuts.isNotEmpty() -> {

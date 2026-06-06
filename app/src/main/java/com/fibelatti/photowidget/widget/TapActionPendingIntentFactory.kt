@@ -133,6 +133,20 @@ object TapActionPendingIntentFactory {
             is PhotoWidgetTapAction.AppShortcut -> {
                 if (tapAction.appShortcut == null) return null
 
+                if (tapAction.shortcutId != null) {
+                    val intent = AppShortcutLauncherActivity.newIntent(
+                        context = context,
+                        packageName = tapAction.appShortcut,
+                        shortcutId = tapAction.shortcutId,
+                    ).setIdentifierCompat("$appWidgetId")
+                    return PendingIntent.getActivity(
+                        /* context = */ context,
+                        /* requestCode = */ appWidgetId,
+                        /* intent = */ intent,
+                        /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                    )
+                }
+
                 val launchIntent: Intent = context.getLaunchIntent(packageName = tapAction.appShortcut)
                     ?: return null
 

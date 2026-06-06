@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.model
 
 import android.os.Parcelable
+import kotlin.reflect.KClass
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -49,3 +50,7 @@ val PhotoWidgetTapActions.viewerBackgroundColorHex: String?
     get() = (left as? PhotoWidgetTapAction.ViewFullScreen)?.backgroundColorHex
         ?: (center as? PhotoWidgetTapAction.ViewFullScreen)?.backgroundColorHex
         ?: (right as? PhotoWidgetTapAction.ViewFullScreen)?.backgroundColorHex
+
+operator fun PhotoWidgetTapActions.contains(value: KClass<out PhotoWidgetTapAction>): Boolean {
+    return left::class == value || center::class == value || right::class == value
+}
