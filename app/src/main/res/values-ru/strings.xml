@@ -256,6 +256,8 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Это действие откроет текущую фотографию через приложение галереи. Невозможно будет просматривать или переходить к другим фотографиям.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Вы также можете выбрать, какое приложение галереи использовать.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Выбрать приложение</string>
+    <string name="photo_widget_configure_tap_action_search_apps">Поиск приложений</string>
+    <string name="photo_widget_configure_tap_action_search_no_apps">Приложения не найдены</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Отключить другие области касания во время паузы таймера</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Эти настройки используются всеми зонами, применяющими это действие нажатия.</string>
     <string name="photo_widget_configure_tap_action_viewer_background_color">Цвет фона</string>

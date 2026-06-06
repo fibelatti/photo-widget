@@ -242,6 +242,8 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Esta ação abre a foto atual usando o app de galeria. Não será possível visualizar ou navegar para outras fotos.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Você também pode escolher qual app de galeria usar.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Escolher o app</string>
+    <string name="photo_widget_configure_tap_action_search_apps">Pesquisar aplicativos</string>
+    <string name="photo_widget_configure_tap_action_search_no_apps">Nenhum aplicativo encontrado</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Desativar outras áreas de toque enquanto a alternância estiver pausada</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Essas preferências são usadas por todas as áreas que utilizam essa ação de toque.</string>
     <string name="photo_widget_configure_tap_action_viewer_background_color">Cor de fundo</string>

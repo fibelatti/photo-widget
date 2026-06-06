@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
@@ -55,6 +54,7 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -96,6 +96,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.TapActionArea
+import com.fibelatti.photowidget.platform.getAllInstalledApps
 import com.fibelatti.photowidget.platform.getInstalledApp
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.PickerDefault
@@ -120,6 +121,8 @@ import com.fibelatti.ui.foundation.showBottomSheet
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import sh.calvin.reorderable.ReorderableColumn
 
 @Composable
@@ -134,24 +137,21 @@ fun PhotoWidgetTapActionPicker(
 
     val context: Context = LocalContext.current
 
-    // region Activity launchers
-    val appShortcutPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-    ) { result ->
-        tapActions = onAppShortcutPickerResult(result = result, tapActions = tapActions, selectedArea = selectedArea)
+    var launcherApps: List<InstalledApp> by remember { mutableStateOf(emptyList()) }
+    var galleryApps: List<InstalledApp> by remember { mutableStateOf(emptyList()) }
+
+    LaunchedEffect(Unit) {
+        launcherApps = withContext(Dispatchers.IO) {
+            context.getAllInstalledApps(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER))
+        }
+        galleryApps = withContext(Dispatchers.IO) {
+            context.getAllInstalledApps(Intent(Intent.ACTION_VIEW).setDataAndType("content://sample".toUri(), "image/*"))
+        }
     }
 
-    val appFolderPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-    ) { result ->
-        tapActions = onAppFolderPickerResult(result = result, tapActions = tapActions, selectedArea = selectedArea)
-    }
-
-    val galleryAppPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-    ) { result ->
-        tapActions = onGalleryAppPickerResult(result = result, tapActions = tapActions)
-    }
+    val appShortcutPickerSheetState = rememberAppSheetState()
+    val addToFolderPickerSheetState = rememberAppSheetState()
+    val galleryAppPickerSheetState = rememberAppSheetState()
 
     val filePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
@@ -163,7 +163,6 @@ fun PhotoWidgetTapActionPicker(
             selectedArea = selectedArea,
         )
     }
-    // endregion Activity launchers
 
     TapActionPickerContent(
         onNavClick = onNavClick,
@@ -195,44 +194,56 @@ fun PhotoWidgetTapActionPicker(
                 selectedArea = selectedArea,
             )
         },
-        onChooseAppShortcutClick = {
-            appShortcutPickerLauncher.launch(
-                Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
-                    Intent.EXTRA_INTENT,
-                    Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
-                ),
-            )
-        },
-        onAddAppToFolderClick = {
-            appFolderPickerLauncher.launch(
-                Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
-                    Intent.EXTRA_INTENT,
-                    Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
-                ),
-            )
-        },
-        onChooseGalleryAppClick = {
-            galleryAppPickerLauncher.launch(
-                Intent(Intent.ACTION_PICK_ACTIVITY).putExtra(
-                    Intent.EXTRA_INTENT,
-                    Intent(Intent.ACTION_VIEW).setDataAndType("content://sample".toUri(), "image/*"),
-                ),
-            )
-        },
-        onChooseFileClick = {
-            filePickerLauncher.launch(arrayOf("*/*"))
-        },
+        onChooseAppShortcutClick = { appShortcutPickerSheetState.showBottomSheet() },
+        onAddAppToFolderClick = { addToFolderPickerSheetState.showBottomSheet() },
+        onChooseGalleryAppClick = { galleryAppPickerSheetState.showBottomSheet() },
+        onChooseFileClick = { filePickerLauncher.launch(arrayOf("*/*")) },
         onApplyClick = { onApplyClick(tapActions) },
+    )
+
+    AppPickerBottomSheet(
+        sheetState = appShortcutPickerSheetState,
+        apps = launcherApps,
+        onAppClick = { packageName ->
+            tapActions = onAppShortcutPickerResult(
+                packageName = packageName,
+                tapActions = tapActions,
+                selectedArea = selectedArea,
+            )
+        },
+    )
+
+    AppPickerBottomSheet(
+        sheetState = addToFolderPickerSheetState,
+        apps = launcherApps,
+        onAppClick = { packageName ->
+            tapActions = onAppFolderPickerResult(
+                packageName = packageName,
+                tapActions = tapActions,
+                selectedArea = selectedArea,
+            )
+        },
+    )
+
+    AppPickerBottomSheet(
+        sheetState = galleryAppPickerSheetState,
+        apps = galleryApps,
+        onAppClick = { packageName ->
+            tapActions = onGalleryAppPickerResult(
+                packageName = packageName,
+                tapActions = tapActions,
+            )
+        },
     )
 }
 
 // region Activity Result handlers
 private fun onAppShortcutPickerResult(
-    result: ActivityResult,
+    packageName: String,
     tapActions: PhotoWidgetTapActions,
     selectedArea: TapActionArea,
 ): PhotoWidgetTapActions {
-    val newTapAction = PhotoWidgetTapAction.AppShortcut(result.data?.component?.packageName)
+    val newTapAction = PhotoWidgetTapAction.AppShortcut(packageName)
 
     return when (selectedArea) {
         TapActionArea.LEFT -> tapActions.copy(left = newTapAction)
@@ -242,26 +253,25 @@ private fun onAppShortcutPickerResult(
 }
 
 private fun onAppFolderPickerResult(
-    result: ActivityResult,
+    packageName: String,
     tapActions: PhotoWidgetTapActions,
     selectedArea: TapActionArea,
 ): PhotoWidgetTapActions {
-    val newAppShortcut: String = result.data?.component?.packageName ?: return tapActions
     val leftAction = tapActions.left as? PhotoWidgetTapAction.AppFolder
     val centerAction = tapActions.center as? PhotoWidgetTapAction.AppFolder
     val rightAction = tapActions.right as? PhotoWidgetTapAction.AppFolder
 
     val updatedAction: PhotoWidgetTapAction = when (selectedArea) {
         TapActionArea.LEFT if leftAction != null -> {
-            leftAction.copy(shortcuts = (leftAction.shortcuts + newAppShortcut).distinct())
+            leftAction.copy(shortcuts = (leftAction.shortcuts + packageName).distinct())
         }
 
         TapActionArea.CENTER if centerAction != null -> {
-            centerAction.copy(shortcuts = (centerAction.shortcuts + newAppShortcut).distinct())
+            centerAction.copy(shortcuts = (centerAction.shortcuts + packageName).distinct())
         }
 
         TapActionArea.RIGHT if rightAction != null -> {
-            rightAction.copy(shortcuts = (rightAction.shortcuts + newAppShortcut).distinct())
+            rightAction.copy(shortcuts = (rightAction.shortcuts + packageName).distinct())
         }
 
         else -> return tapActions
@@ -294,10 +304,10 @@ private fun onFilePickerResult(
 }
 
 private fun onGalleryAppPickerResult(
-    result: ActivityResult,
+    packageName: String,
     tapActions: PhotoWidgetTapActions,
 ): PhotoWidgetTapActions {
-    val newTapAction = PhotoWidgetTapAction.ViewInGallery(result.data?.component?.packageName)
+    val newTapAction = PhotoWidgetTapAction.ViewInGallery(packageName)
 
     return tapActions.copy(
         left = if (tapActions.left is PhotoWidgetTapAction.ViewInGallery) {

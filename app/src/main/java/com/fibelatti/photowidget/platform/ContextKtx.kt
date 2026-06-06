@@ -121,6 +121,21 @@ fun Context.getMaxBitmapWidgetDimension(coerceMaxMemory: Boolean = false): Int {
     return maxDimension
 }
 
+fun Context.getAllInstalledApps(queryIntent: Intent): List<InstalledApp> {
+    return packageManager.queryIntentActivities(queryIntent, 0)
+        .distinctBy { it.activityInfo.packageName }
+        .mapNotNull { resolveInfo ->
+            runCatching {
+                InstalledApp(
+                    appPackage = resolveInfo.activityInfo.packageName,
+                    appIcon = resolveInfo.loadIcon(packageManager),
+                    appLabel = resolveInfo.loadLabel(packageManager).toString(),
+                )
+            }.getOrNull()
+        }
+        .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.appLabel })
+}
+
 fun Context.getInstalledApp(packageName: String?): InstalledApp? {
     if (packageName == null) return null
 

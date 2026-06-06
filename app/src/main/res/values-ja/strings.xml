@@ -232,6 +232,8 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">このアクションは、ギャラリーアプリを使用して現在の写真を開きます。他の写真を表示したり移動したりすることはできません。</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">使用するギャラリーアプリを選択することもできます。</string>
     <string name="photo_widget_configure_tap_action_choose_app">アプリを選択</string>
+    <string name="photo_widget_configure_tap_action_search_apps">アプリを検索</string>
+    <string name="photo_widget_configure_tap_action_search_no_apps">アプリが見つかりません</string>
     <string name="photo_widget_configure_tap_action_disable_tap">タイマーが一時停止中は他のタップエリアを無効にする</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">これらの設定は、このタップアクションを使用するすべてのエリアで使用されます。</string>
     <string name="photo_widget_configure_tap_action_viewer_background_color">背景色</string>

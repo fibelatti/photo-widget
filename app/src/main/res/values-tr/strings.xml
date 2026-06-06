@@ -240,6 +240,8 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Bu eylem, mevcut fotoğrafı galeri uygulamasıyla açar. Diğer fotoğrafları görüntülemek veya onlara geçmek mümkün olmayacaktır.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Hangi galeri uygulamasını kullanacağınızı da seçebilirsiniz.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Uygulama seç</string>
+    <string name="photo_widget_configure_tap_action_search_apps">Uygulama ara</string>
+    <string name="photo_widget_configure_tap_action_search_no_apps">Uygulama bulunamadı</string>
     <string name="photo_widget_configure_tap_action_disable_tap">Zamanlayıcı duraklatıldığında diğer dokunma alanlarını devre dışı bırak</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">Bu tercihler, bu dokunma eylemini kullanan tüm alanlar tarafından kullanılır.</string>
     <string name="photo_widget_configure_tap_action_viewer_background_color">Arka plan rengi</string>

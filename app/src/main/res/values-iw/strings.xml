@@ -256,6 +256,8 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">פעולה זו פותחת את התמונה הנוכחית באמצעות אפליקציית הגלריה. לא ניתן יהיה לצפות בתמונות אחרות או לנווט אליהן.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">באפשרותך גם לבחור באיזו אפליקציית גלריה להשתמש.</string>
     <string name="photo_widget_configure_tap_action_choose_app">בחר אפליקציה</string>
+    <string name="photo_widget_configure_tap_action_search_apps">חפש אפליקציות</string>
+    <string name="photo_widget_configure_tap_action_search_no_apps">לא נמצאו אפליקציות</string>
     <string name="photo_widget_configure_tap_action_disable_tap">השבת אזורי הקשה אחרים כאשר הטיימר מושהה</string>
     <string name="photo_widget_configure_tap_action_shared_preferences">העדפות אלה משמשות את כל האזורים המשתמשים בפעולת הקשה זו.</string>
     <string name="photo_widget_configure_tap_action_viewer_background_color">צבע רקע</string>
