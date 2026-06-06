@@ -54,7 +54,6 @@ class AndroidCommonPlugin : Plugin<Project> {
                     buildList {
                         addAll(freeCompilerArgs.get())
                         add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
-                        add("-Xannotation-default-target=param-property")
                     },
                 )
             }
