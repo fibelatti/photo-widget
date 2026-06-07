@@ -94,6 +94,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.model.AppFolderResolvedEntry
+import com.fibelatti.photowidget.model.AppFolderShortcut
 import com.fibelatti.photowidget.model.AppShortcutInfo
 import com.fibelatti.photowidget.model.InstalledApp
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -105,6 +107,7 @@ import com.fibelatti.photowidget.model.contains
 import com.fibelatti.photowidget.platform.getAllInstalledApps
 import com.fibelatti.photowidget.platform.getAppShortcuts
 import com.fibelatti.photowidget.platform.getInstalledApp
+import com.fibelatti.photowidget.platform.resolveAppFolderEntries
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.photowidget.ui.DefaultSheetContent
@@ -144,11 +147,13 @@ fun PhotoWidgetTapActionPicker(
     var tapActions: PhotoWidgetTapActions by rememberSaveable { mutableStateOf(currentTapActions) }
     var selectedArea: TapActionArea by rememberSaveable { mutableStateOf(TapActionArea.CENTER) }
     var pendingShortcutPackage: String? by rememberSaveable { mutableStateOf(null) }
+    var pendingFolderShortcutPackage: String? by rememberSaveable { mutableStateOf(null) }
 
-    val appShortcutPickerSheetState = rememberAppSheetState()
-    val appShortcutSheetState = rememberAppSheetState()
-    val addToFolderPickerSheetState = rememberAppSheetState()
-    val galleryAppPickerSheetState = rememberAppSheetState()
+    val appPickerSheetState: AppSheetState = rememberAppSheetState()
+    val appShortcutPickerSheetState: AppSheetState = rememberAppSheetState()
+    val addToFolderPickerSheetState: AppSheetState = rememberAppSheetState()
+    val folderShortcutPickerSheetState: AppSheetState = rememberAppSheetState()
+    val galleryAppPickerSheetState: AppSheetState = rememberAppSheetState()
 
     val filePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
@@ -187,9 +192,33 @@ fun PhotoWidgetTapActionPicker(
         value = withContext(Dispatchers.IO) { context.getAppShortcuts(packageName) }
 
         if (value.isNotEmpty()) {
-            appShortcutSheetState.showBottomSheet()
+            appShortcutPickerSheetState.showBottomSheet()
         } else {
             pendingShortcutPackage = null
+        }
+    }
+    val folderShortcuts: List<AppShortcutInfo> by produceState(
+        initialValue = emptyList(),
+        key1 = pendingFolderShortcutPackage,
+    ) {
+        val packageName: String = pendingFolderShortcutPackage ?: return@produceState
+        value = withContext(Dispatchers.IO) { context.getAppShortcuts(packageName) }
+
+        if (value.isNotEmpty()) {
+            folderShortcutPickerSheetState.showBottomSheet()
+        } else {
+            // Unlike the sibling `shortcuts` producer above (which only clears the pending state
+            // and lets the caller add the app once it observes an empty shortcut list), this one
+            // commits the app to the folder directly: adding to a folder is the action itself,
+            // there's no separate "confirm" step waiting on `pendingFolderShortcutPackage` to
+            // clear, so this is the only place left to add the app when it has no shortcuts.
+            tapActions = onAppFolderPickerResult(
+                packageName = packageName,
+                shortcutId = null,
+                tapActions = tapActions,
+                selectedArea = selectedArea,
+            )
+            pendingFolderShortcutPackage = null
         }
     }
 
@@ -223,7 +252,7 @@ fun PhotoWidgetTapActionPicker(
                 selectedArea = selectedArea,
             )
         },
-        onChooseAppShortcutClick = { appShortcutPickerSheetState.showBottomSheet() },
+        onChooseAppShortcutClick = { appPickerSheetState.showBottomSheet() },
         onAddAppToFolderClick = { addToFolderPickerSheetState.showBottomSheet() },
         onChooseGalleryAppClick = { galleryAppPickerSheetState.showBottomSheet() },
         onChooseFileClick = { filePickerLauncher.launch(arrayOf("*/*")) },
@@ -231,7 +260,7 @@ fun PhotoWidgetTapActionPicker(
     )
 
     AppPickerBottomSheet(
-        sheetState = appShortcutPickerSheetState,
+        sheetState = appPickerSheetState,
         apps = launcherApps,
         onAppClick = { packageName: String ->
             pendingShortcutPackage = packageName
@@ -245,7 +274,7 @@ fun PhotoWidgetTapActionPicker(
     )
 
     AppShortcutPickerBottomSheet(
-        sheetState = appShortcutSheetState,
+        sheetState = appShortcutPickerSheetState,
         shortcuts = shortcuts,
         onLaunchAppClick = {
             tapActions = onAppShortcutPickerResult(
@@ -274,11 +303,33 @@ fun PhotoWidgetTapActionPicker(
         sheetState = addToFolderPickerSheetState,
         apps = launcherApps,
         onAppClick = { packageName ->
+            pendingFolderShortcutPackage = packageName
+        },
+    )
+
+    AppShortcutPickerBottomSheet(
+        sheetState = folderShortcutPickerSheetState,
+        shortcuts = folderShortcuts,
+        onLaunchAppClick = {
             tapActions = onAppFolderPickerResult(
-                packageName = packageName,
+                packageName = pendingFolderShortcutPackage ?: return@AppShortcutPickerBottomSheet,
+                shortcutId = null,
                 tapActions = tapActions,
                 selectedArea = selectedArea,
             )
+            pendingFolderShortcutPackage = null
+        },
+        onShortcutClick = { shortcutId ->
+            tapActions = onAppFolderPickerResult(
+                packageName = pendingFolderShortcutPackage ?: return@AppShortcutPickerBottomSheet,
+                shortcutId = shortcutId,
+                tapActions = tapActions,
+                selectedArea = selectedArea,
+            )
+            pendingFolderShortcutPackage = null
+        },
+        onDismiss = {
+            pendingFolderShortcutPackage = null
         },
     )
 
@@ -315,24 +366,27 @@ private fun onAppShortcutPickerResult(
 
 private fun onAppFolderPickerResult(
     packageName: String,
+    shortcutId: String?,
     tapActions: PhotoWidgetTapActions,
     selectedArea: TapActionArea,
 ): PhotoWidgetTapActions {
+    val entry: String = AppFolderShortcut(packageName = packageName, shortcutId = shortcutId).encoded()
+
     val leftAction = tapActions.left as? PhotoWidgetTapAction.AppFolder
     val centerAction = tapActions.center as? PhotoWidgetTapAction.AppFolder
     val rightAction = tapActions.right as? PhotoWidgetTapAction.AppFolder
 
     val updatedAction: PhotoWidgetTapAction = when (selectedArea) {
         TapActionArea.LEFT if leftAction != null -> {
-            leftAction.copy(shortcuts = (leftAction.shortcuts + packageName).distinct())
+            leftAction.copy(shortcuts = (leftAction.shortcuts + entry).distinct())
         }
 
         TapActionArea.CENTER if centerAction != null -> {
-            centerAction.copy(shortcuts = (centerAction.shortcuts + packageName).distinct())
+            centerAction.copy(shortcuts = (centerAction.shortcuts + entry).distinct())
         }
 
         TapActionArea.RIGHT if rightAction != null -> {
-            rightAction.copy(shortcuts = (rightAction.shortcuts + packageName).distinct())
+            rightAction.copy(shortcuts = (rightAction.shortcuts + entry).distinct())
         }
 
         else -> return tapActions
@@ -865,7 +919,7 @@ private fun AppPicker(
             ?: return
 
         val shortcut: AppShortcutInfo? by produceState(initialValue = null, key1 = packageName, key2 = shortcutId) {
-            if (packageName != null) {
+            if (packageName != null && shortcutId != null) {
                 value = localContext.getAppShortcuts(packageName).find { it.id == shortcutId }
             }
         }
@@ -1083,26 +1137,40 @@ private fun AppFolderCustomizationContent(
     val localContext: Context = LocalContext.current
     val localHaptics: HapticFeedback = LocalHapticFeedback.current
 
+    val items: List<AppFolderResolvedEntry> by produceState(initialValue = emptyList(), key1 = value.shortcuts) {
+        this.value = withContext(Dispatchers.IO) { localContext.resolveAppFolderEntries(value.shortcuts) }
+    }
+
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(1.dp),
     ) {
         ReorderableColumn(
-            list = remember(value, localContext) {
-                value.shortcuts.mapNotNull(localContext::getInstalledApp)
-            },
+            list = items,
             onSettle = { fromIndex: Int, toIndex: Int ->
-                onValueChange(
-                    value.copy(
-                        shortcuts = value.shortcuts.toMutableList().apply {
-                            add(index = toIndex, element = removeAt(fromIndex))
-                        },
-                    ),
-                )
+                // Resolved entries can be a subset of value.shortcuts (e.g. an uninstalled app's
+                // entry is dropped during resolution), so fromIndex/toIndex from the displayed
+                // list don't necessarily match positions in the persisted list. Reorder by entry
+                // identity instead of by index to keep both lists consistent.
+                val movedEntry: String = items[fromIndex].encoded
+                val targetEntry: String = items[toIndex].encoded
+                val mutableShortcuts: MutableList<String> = value.shortcuts.toMutableList()
+                val actualFromIndex: Int = mutableShortcuts.indexOf(movedEntry)
+                val actualToIndex: Int = mutableShortcuts.indexOf(targetEntry)
+
+                if (actualFromIndex != -1 && actualToIndex != -1) {
+                    onValueChange(
+                        value.copy(
+                            shortcuts = mutableShortcuts.apply {
+                                add(index = actualToIndex, element = removeAt(actualFromIndex))
+                            },
+                        ),
+                    )
+                }
             },
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(1.dp),
-        ) ReorderableColumnItem@{ index: Int, item: InstalledApp, isDragging: Boolean ->
+        ) ReorderableColumnItem@{ index: Int, item: AppFolderResolvedEntry, isDragging: Boolean ->
             ReorderableItem {
                 val topCorner: Dp by animateDpAsState(
                     targetValue = when {
@@ -1112,13 +1180,16 @@ private fun AppFolderCustomizationContent(
                 )
                 val bottomCorner: Dp by animateDpAsState(
                     targetValue = when {
-                        (index == value.shortcuts.lastIndex && value.shortcuts.size == 12) || isDragging -> 12.dp
+                        (index == items.lastIndex && value.shortcuts.size == 12) || isDragging -> 12.dp
                         else -> 2.dp
                     },
                 )
 
+                val icon: Drawable = item.shortcut?.icon ?: item.app.appIcon
+
                 AppFolderCustomizationItem(
-                    label = item.appLabel,
+                    label = item.shortcut?.label ?: item.app.appLabel,
+                    subtitle = item.shortcut?.let { item.app.appLabel },
                     modifier = Modifier.longPressDraggableHandle(
                         onDragStarted = {
                             localHaptics.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate)
@@ -1129,7 +1200,7 @@ private fun AppFolderCustomizationContent(
                     ),
                     leadingIcon = {
                         Image(
-                            bitmap = item.appIcon.toBitmap().asImageBitmap(),
+                            bitmap = remember(icon) { icon.toBitmap().asImageBitmap() },
                             contentDescription = null,
                             modifier = Modifier.size(40.dp),
                         )
@@ -1137,7 +1208,7 @@ private fun AppFolderCustomizationContent(
                     trailingIcon = {
                         IconButton(
                             onClick = {
-                                onValueChange(value.copy(shortcuts = value.shortcuts - value.shortcuts[index]))
+                                onValueChange(value.copy(shortcuts = value.shortcuts - item.encoded))
                             },
                         ) {
                             Icon(
@@ -1172,6 +1243,7 @@ private fun AppFolderCustomizationContent(
 private fun AppFolderCustomizationItem(
     label: String,
     modifier: Modifier = Modifier,
+    subtitle: String? = null,
     leadingIcon: @Composable (RowScope.() -> Unit)? = null,
     trailingIcon: @Composable (RowScope.() -> Unit)? = null,
     backgroundColor: Color = MaterialTheme.colorScheme.secondaryContainer,
@@ -1192,14 +1264,25 @@ private fun AppFolderCustomizationItem(
                 leadingIcon()
             }
 
-            AutoSizeText(
-                text = label,
-                modifier = Modifier.weight(1f),
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                textAlign = labelTextAlign,
-                style = labelTextStyle,
-            )
+            Column(modifier = Modifier.weight(1f)) {
+                AutoSizeText(
+                    text = label,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    textAlign = labelTextAlign,
+                    style = labelTextStyle,
+                )
+
+                if (subtitle != null) {
+                    AutoSizeText(
+                        text = subtitle,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        textAlign = labelTextAlign,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+            }
 
             if (trailingIcon != null) {
                 trailingIcon()

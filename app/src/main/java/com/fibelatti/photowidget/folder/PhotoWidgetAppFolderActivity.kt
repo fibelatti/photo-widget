@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.folder
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,18 +43,21 @@ import androidx.core.graphics.drawable.toBitmap
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.configure.appWidgetId
-import com.fibelatti.photowidget.model.InstalledApp
+import com.fibelatti.photowidget.model.AppFolderResolvedEntry
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.disableWindowNavigationBarContrastEnforced
 import com.fibelatti.photowidget.platform.enableEdgeToEdgeTransparent
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
-import com.fibelatti.photowidget.platform.getInstalledApp
 import com.fibelatti.photowidget.platform.getLaunchIntent
 import com.fibelatti.photowidget.platform.intentExtras
+import com.fibelatti.photowidget.platform.resolveAppFolderEntries
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.ui.InformationalPanel
+import com.fibelatti.photowidget.widget.AppShortcutLauncherActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class PhotoWidgetAppFolderActivity : AppCompatActivity() {
@@ -64,7 +70,7 @@ class PhotoWidgetAppFolderActivity : AppCompatActivity() {
         setContent {
             AppTheme {
                 ScreenContent(
-                    apps = intent.appFolderTapAction.shortcuts.mapNotNull(::getInstalledApp),
+                    shortcuts = intent.appFolderTapAction.shortcuts,
                     onEditWidgetClick = {
                         startActivity(
                             PhotoWidgetConfigureActivity.editWidgetIntent(
@@ -81,8 +87,16 @@ class PhotoWidgetAppFolderActivity : AppCompatActivity() {
         }
     }
 
-    private fun launchApp(app: InstalledApp) {
-        val launchIntent: Intent? = getLaunchIntent(packageName = app.appPackage)
+    private fun launchApp(entry: AppFolderResolvedEntry) {
+        val launchIntent: Intent? = if (entry.shortcut != null) {
+            AppShortcutLauncherActivity.newIntent(
+                context = this,
+                packageName = entry.app.appPackage,
+                shortcutId = entry.shortcut.id,
+            )
+        } else {
+            getLaunchIntent(packageName = entry.app.appPackage)
+        }
 
         if (launchIntent != null) {
             startActivity(launchIntent)
@@ -111,13 +125,20 @@ class PhotoWidgetAppFolderActivity : AppCompatActivity() {
 
 @Composable
 private fun ScreenContent(
-    apps: List<InstalledApp>,
+    shortcuts: List<String>,
     onEditWidgetClick: () -> Unit,
-    onAppClick: (InstalledApp) -> Unit,
+    onAppClick: (AppFolderResolvedEntry) -> Unit,
     onBackgroundClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val localContext = LocalContext.current
+
+    val entries: List<AppFolderResolvedEntry> by produceState(
+        initialValue = emptyList(),
+        key1 = shortcuts,
+    ) {
+        value = withContext(Dispatchers.IO) { localContext.resolveAppFolderEntries(shortcuts) }
+    }
 
     Box(
         modifier = modifier
@@ -130,7 +151,7 @@ private fun ScreenContent(
             .safeContentPadding(),
         contentAlignment = Alignment.Center,
     ) {
-        if (apps.isEmpty()) {
+        if (entries.isEmpty()) {
             InformationalPanel(
                 text = stringResource(R.string.photo_widget_app_folder_empty),
                 textStyle = MaterialTheme.typography.bodyLarge,
@@ -157,11 +178,11 @@ private fun ScreenContent(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                val rows: List<List<InstalledApp>> = remember(apps) {
-                    apps.chunked(
+                val rows: List<List<AppFolderResolvedEntry>> = remember(entries) {
+                    entries.chunked(
                         size = when {
-                            apps.size <= 4 -> 2
-                            apps.size <= 6 || apps.size == 9 -> 3
+                            entries.size <= 4 -> 2
+                            entries.size <= 6 || entries.size == 9 -> 3
                             else -> 4
                         },
                     )
@@ -172,12 +193,12 @@ private fun ScreenContent(
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                         verticalAlignment = Alignment.Top,
                     ) {
-                        for (app in row) {
+                        for (entry in row) {
                             AppItem(
-                                app = app,
+                                entry = entry,
                                 modifier = Modifier
                                     .clip(shape = MaterialTheme.shapes.small)
-                                    .clickable(onClick = { onAppClick(app) }),
+                                    .clickable(onClick = { onAppClick(entry) }),
                                 labelColor = labelColor,
                             )
                         }
@@ -190,10 +211,13 @@ private fun ScreenContent(
 
 @Composable
 private fun AppItem(
-    app: InstalledApp,
+    entry: AppFolderResolvedEntry,
     modifier: Modifier = Modifier,
     labelColor: Color = MaterialTheme.colorScheme.onSurface,
 ) {
+    val icon: Drawable = entry.shortcut?.icon ?: entry.app.appIcon
+    val label: String = entry.shortcut?.label ?: entry.app.appLabel
+
     Column(
         modifier = modifier
             .width(72.dp)
@@ -202,13 +226,13 @@ private fun AppItem(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            bitmap = app.appIcon.toBitmap().asImageBitmap(),
+            bitmap = icon.toBitmap().asImageBitmap(),
             contentDescription = null,
             modifier = Modifier.size(48.dp),
         )
 
         Text(
-            text = app.appLabel,
+            text = label,
             modifier = Modifier.fillMaxWidth(),
             color = labelColor,
             fontSize = 12.sp,

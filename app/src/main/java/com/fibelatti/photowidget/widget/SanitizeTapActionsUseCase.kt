@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.widget
 
 import android.content.Context
+import com.fibelatti.photowidget.model.AppFolderShortcut
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.TapActionArea
@@ -51,7 +52,11 @@ class SanitizeTapActionsUseCase @Inject constructor(
             }
 
             is PhotoWidgetTapAction.AppFolder if tapAction.shortcuts.isNotEmpty() -> {
-                tapAction.copy(shortcuts = tapAction.shortcuts.filter { context.getInstalledApp(it) != null })
+                tapAction.copy(
+                    shortcuts = tapAction.shortcuts.filter { entry ->
+                        context.getInstalledApp(AppFolderShortcut.from(entry).packageName) != null
+                    },
+                )
             }
 
             else -> tapAction

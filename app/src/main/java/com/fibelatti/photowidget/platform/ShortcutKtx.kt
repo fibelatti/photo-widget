@@ -31,6 +31,12 @@ private object IntentAttributes {
     const val TARGET_CLASS = "targetClass"
 }
 
+/**
+ * Parses [packageName]'s manifest-declared shortcuts (`android.app.shortcuts` metadata) into
+ * [AppShortcutInfo], resolving each shortcut's label and icon against the target app's resources.
+ *
+ * Returns an empty list if the package has no shortcuts metadata or parsing fails.
+ */
 fun Context.getAppShortcuts(packageName: String): List<AppShortcutInfo> {
     return runCatching {
         val appResources = packageManager.getResourcesForApplication(packageName)
@@ -59,6 +65,21 @@ fun Context.getAppShortcuts(packageName: String): List<AppShortcutInfo> {
     }
 }
 
+/**
+ * Loads shortcuts for several packages at once, parsing each package's manifest metadata only
+ * once regardless of how many shortcuts from it end up being referenced.
+ */
+fun Context.getAppShortcutsByPackage(packageNames: Set<String>): Map<String, List<AppShortcutInfo>> {
+    return packageNames.associateWith(::getAppShortcuts)
+}
+
+/**
+ * Parses [packageName]'s manifest-declared shortcuts metadata for the `<shortcut>` matching
+ * [shortcutId] and builds the [Intent] declared by its first `<intent>` entry.
+ *
+ * Returns `null` if the package has no shortcuts metadata, the shortcut isn't found, it declares
+ * no intent, or parsing fails.
+ */
 fun Context.getAppShortcutIntent(packageName: String, shortcutId: String): Intent? {
     return runCatching {
         var inTargetShortcut = false
