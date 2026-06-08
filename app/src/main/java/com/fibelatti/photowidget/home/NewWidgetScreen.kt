@@ -2,6 +2,12 @@
 
 package com.fibelatti.photowidget.home
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
@@ -34,6 +41,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +54,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -63,6 +72,7 @@ import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
+import kotlin.math.roundToInt
 
 @Composable
 fun NewWidgetScreen(
@@ -93,11 +103,11 @@ fun NewWidgetScreen(
                 .padding(top = 72.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             AutoSizeText(
                 text = stringResource(id = R.string.photo_widget_home_title),
-                modifier = Modifier.padding(horizontal = 32.dp),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 fontFamily = FontFamily.Cursive,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
@@ -160,7 +170,7 @@ fun AspectRatioPicker(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         LazyRow(
             state = state,
@@ -193,8 +203,10 @@ fun AspectRatioPicker(
 
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .align(Alignment.End)
+                .padding(horizontal = 24.dp)
+                .background(color = MaterialTheme.colorScheme.surfaceContainer, shape = Shapes.BottomShape)
+                .padding(horizontal = 8.dp, vertical = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(space = 4.dp, alignment = Alignment.End),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -205,9 +217,21 @@ fun AspectRatioPicker(
                 maxLines = 1,
             )
 
+            val infiniteTransition = rememberInfiniteTransition(label = "ChevronRight_InfiniteTransition")
+            val offsetX: Float by infiniteTransition.animateFloat(
+                initialValue = 0f,
+                targetValue = 4f,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(durationMillis = 500, easing = LinearEasing),
+                    repeatMode = RepeatMode.Reverse,
+                ),
+                label = "ChevronRight_OffsetX",
+            )
+
             Icon(
                 imageVector = AppIcons.ChevronRight,
                 contentDescription = null,
+                modifier = Modifier.offset { IntOffset(x = offsetX.dp.toPx().roundToInt(), 0) },
                 tint = MaterialTheme.colorScheme.onSurface,
             )
         }
