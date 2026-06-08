@@ -129,12 +129,7 @@ fun NewWidgetScreen(
                 onAspectRatioSelect = onCreateNewWidgetClick,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fadingEdges(
-                        scrollState = state,
-                        startEdgeSize = 24.dp,
-                        endEdgeSize = 24.dp,
-                        isHorizontal = true,
-                    ),
+                    .fadingEdges(scrollState = state, isHorizontal = true),
                 state = state,
             )
 

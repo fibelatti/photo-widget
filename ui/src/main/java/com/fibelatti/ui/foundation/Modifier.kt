@@ -23,8 +23,8 @@ inline fun Modifier.conditional(
 
 fun Modifier.fadingEdges(
     scrollState: ScrollState,
-    topEdgeHeight: Dp = 72.dp,
-    bottomEdgeHeight: Dp = 72.dp,
+    topEdgeHeight: Dp = 40.dp,
+    bottomEdgeHeight: Dp = 40.dp,
 ): Modifier {
     return this then Modifier
         .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
@@ -64,8 +64,8 @@ fun Modifier.fadingEdges(
 
 fun Modifier.fadingEdges(
     scrollState: ScrollableState,
-    startEdgeSize: Dp = 64.dp,
-    endEdgeSize: Dp = 64.dp,
+    startEdgeSize: Dp = 40.dp,
+    endEdgeSize: Dp = 40.dp,
     isHorizontal: Boolean = false,
 ): Modifier {
     return this then Modifier

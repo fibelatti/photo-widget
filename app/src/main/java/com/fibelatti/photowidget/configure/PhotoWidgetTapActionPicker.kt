@@ -575,11 +575,7 @@ private fun TapActionPickerContent(
             modifier = Modifier
                 .weight(1f)
                 .verticalScroll(scrollState)
-                .fadingEdges(
-                    scrollState = scrollState,
-                    topEdgeHeight = 36.dp,
-                    bottomEdgeHeight = 36.dp,
-                )
+                .fadingEdges(scrollState = scrollState)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
