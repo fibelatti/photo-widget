@@ -4,9 +4,12 @@ package com.fibelatti.photowidget.home
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -47,6 +50,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
@@ -54,8 +58,10 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
@@ -196,9 +202,23 @@ fun AspectRatioPicker(
             }
         }
 
+        val verticalOffset: Dp by animateDpAsState(
+            targetValue = if (state.canScrollForward) 0.dp else (-40).dp,
+            animationSpec = spring(),
+        )
+        val alpha: Float by animateFloatAsState(
+            targetValue = if (state.canScrollForward) 1f else 0f,
+            animationSpec = spring(),
+        )
+
         Row(
             modifier = Modifier
                 .align(Alignment.End)
+                .graphicsLayer {
+                    this.alpha = alpha
+                    this.translationY = verticalOffset.toPx()
+                }
+                .zIndex(-1f)
                 .padding(horizontal = 24.dp)
                 .background(color = MaterialTheme.colorScheme.surfaceContainer, shape = Shapes.BottomShape)
                 .padding(horizontal = 8.dp, vertical = 4.dp),
