@@ -56,8 +56,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
-import com.fibelatti.photowidget.model.canLock
-import com.fibelatti.photowidget.model.canSync
 import com.fibelatti.photowidget.model.isWidgetRemoved
 import com.fibelatti.photowidget.platform.letIf
 import com.fibelatti.photowidget.ui.ColoredShape
@@ -73,10 +71,7 @@ import com.fibelatti.ui.theme.ExtendedTheme
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 fun MyWidgetsScreen(
     widgets: List<Pair<Int, PhotoWidget>>,
-    onCurrentWidgetClick: (appWidgetId: Int, canSync: Boolean, canLock: Boolean, isLocked: Boolean) -> Unit,
-    onRemovedWidgetClick: (appWidgetId: Int, PhotoWidgetStatus) -> Unit,
-    onInvalidWidgetClick: (appWidgetId: Int) -> Unit,
-    onDraftWidgetClick: (appWidgetId: Int) -> Unit,
+    onWidgetClick: (id: Int, PhotoWidget) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -117,11 +112,7 @@ fun MyWidgetsScreen(
                     items(filteredWidgets, key = { (id, _) -> id }) { (id, widget) ->
                         WidgetGridItem(
                             widget = widget,
-                            appWidgetId = id,
-                            onCurrentWidgetClick = onCurrentWidgetClick,
-                            onRemovedWidgetClick = onRemovedWidgetClick,
-                            onInvalidWidgetClick = onInvalidWidgetClick,
-                            onDraftWidgetClick = onDraftWidgetClick,
+                            onClick = { onWidgetClick(id, widget) },
                             enforcedShape = enforcedShape,
                             modifier = Modifier.animateItem(),
                         )
@@ -187,36 +178,14 @@ fun MyWidgetsScreen(
 @Composable
 private fun WidgetGridItem(
     widget: PhotoWidget,
-    appWidgetId: Int,
-    onCurrentWidgetClick: (appWidgetId: Int, canSync: Boolean, canLock: Boolean, isLocked: Boolean) -> Unit,
-    onRemovedWidgetClick: (appWidgetId: Int, PhotoWidgetStatus) -> Unit,
-    onInvalidWidgetClick: (appWidgetId: Int) -> Unit,
-    onDraftWidgetClick: (appWidgetId: Int) -> Unit,
+    onClick: () -> Unit,
     enforcedShape: Shape,
     modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(1f)
-            .clickable {
-                when {
-                    widget.status == PhotoWidgetStatus.DRAFT -> onDraftWidgetClick(appWidgetId)
-
-                    widget.status.isWidgetRemoved -> onRemovedWidgetClick(appWidgetId, widget.status)
-
-                    widget.status == PhotoWidgetStatus.INVALID -> onInvalidWidgetClick(appWidgetId)
-
-                    else -> {
-                        onCurrentWidgetClick(
-                            /* appWidgetId = */ appWidgetId,
-                            /* canSync = */ widget.canSync,
-                            /* canLock = */ widget.canLock,
-                            /* isLocked = */ widget.status == PhotoWidgetStatus.LOCKED,
-                        )
-                    }
-                }
-            },
+            .aspectRatio(1f),
         contentAlignment = Alignment.BottomCenter,
     ) {
         ShapedPhoto(
@@ -228,7 +197,8 @@ private fun WidgetGridItem(
                 .fillMaxSize()
                 .letIf(widget.aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET) {
                     it.clip(enforcedShape)
-                },
+                }
+                .clickable(onClick = onClick),
             colors = widget.colors,
             border = widget.border,
             isLoading = widget.isLoading,
@@ -306,10 +276,7 @@ private fun MyWidgetsScreenPreview() {
                     deletionTimestamp = if (status == PhotoWidgetStatus.REMOVED) 1 else -1,
                 )
             },
-            onCurrentWidgetClick = { _, _, _, _ -> },
-            onRemovedWidgetClick = { _, _ -> },
-            onInvalidWidgetClick = {},
-            onDraftWidgetClick = {},
+            onWidgetClick = { _, _ -> },
         )
     }
 }
@@ -320,10 +287,7 @@ private fun MyWidgetsScreenEmptyPreview() {
     ExtendedTheme {
         MyWidgetsScreen(
             widgets = emptyList(),
-            onCurrentWidgetClick = { _, _, _, _ -> },
-            onRemovedWidgetClick = { _, _ -> },
-            onInvalidWidgetClick = {},
-            onDraftWidgetClick = {},
+            onWidgetClick = { _, _ -> },
         )
     }
 }

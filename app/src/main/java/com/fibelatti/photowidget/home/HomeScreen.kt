@@ -57,6 +57,9 @@ import com.fibelatti.photowidget.licenses.OssLicensesScreen
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
+import com.fibelatti.photowidget.model.canLock
+import com.fibelatti.photowidget.model.canSync
+import com.fibelatti.photowidget.model.isWidgetRemoved
 import com.fibelatti.photowidget.platform.popNavKey
 import com.fibelatti.photowidget.preferences.AppAppearanceBottomSheet
 import com.fibelatti.photowidget.preferences.AppColorsBottomSheet
@@ -171,43 +174,39 @@ private fun HomeScreen(
     HomeScreen(
         onCreateNewWidgetClick = onCreateNewWidgetClick,
         currentWidgets = currentWidgets,
-        onCurrentWidgetClick = click@{ appWidgetId: Int, canSync: Boolean, canLock: Boolean, isLocked: Boolean ->
-            preparedIntent?.let { intent ->
-                intent.appWidgetId = appWidgetId
+        onWidgetClick = { appWidgetId: Int, widget: PhotoWidget ->
+            when {
+                widget.status == PhotoWidgetStatus.DRAFT -> {
+                    draftWidgetSheetState.showBottomSheet(data = appWidgetId)
+                }
 
-                onIntentConsume()
+                widget.status.isWidgetRemoved -> {
+                    removedWidgetSheetState.showBottomSheet(
+                        data = RemovedWidgetBottomSheetData(appWidgetId = appWidgetId, status = widget.status),
+                    )
+                }
 
-                localContext.startActivity(intent)
+                widget.status == PhotoWidgetStatus.INVALID -> {
+                    invalidWidgetSheetState.showBottomSheet(data = appWidgetId)
+                }
 
-                return@click
+                preparedIntent != null -> {
+                    preparedIntent.appWidgetId = appWidgetId
+                    onIntentConsume()
+                    localContext.startActivity(preparedIntent)
+                }
+
+                else -> {
+                    existingWidgetMenuSheetState.showBottomSheet(
+                        data = ExistingWidgetMenuBottomSheetData(
+                            appWidgetId = appWidgetId,
+                            canSync = widget.canSync,
+                            canLock = widget.canLock,
+                            isLocked = widget.status == PhotoWidgetStatus.LOCKED,
+                        ),
+                    )
+                }
             }
-
-            existingWidgetMenuSheetState.showBottomSheet(
-                data = ExistingWidgetMenuBottomSheetData(
-                    appWidgetId = appWidgetId,
-                    canSync = canSync,
-                    canLock = canLock,
-                    isLocked = isLocked,
-                ),
-            )
-        },
-        onRemovedWidgetClick = { appWidgetId, photoWidgetStatus ->
-            removedWidgetSheetState.showBottomSheet(
-                data = RemovedWidgetBottomSheetData(
-                    appWidgetId = appWidgetId,
-                    status = photoWidgetStatus,
-                ),
-            )
-        },
-        onInvalidWidgetClick = { appWidgetId ->
-            invalidWidgetSheetState.showBottomSheet(
-                data = appWidgetId,
-            )
-        },
-        onDraftWidgetClick = { appWidgetId ->
-            draftWidgetSheetState.showBottomSheet(
-                data = appWidgetId,
-            )
         },
         onDefaultsClick = onDefaultsClick,
         onAppearanceClick = appAppearanceSheetState::showBottomSheet,
@@ -267,10 +266,7 @@ private fun HomeScreen(
 fun HomeScreen(
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
     currentWidgets: List<Pair<Int, PhotoWidget>>,
-    onCurrentWidgetClick: (appWidgetId: Int, canSync: Boolean, canLock: Boolean, isLocked: Boolean) -> Unit,
-    onRemovedWidgetClick: (appWidgetId: Int, PhotoWidgetStatus) -> Unit,
-    onInvalidWidgetClick: (appWidgetId: Int) -> Unit,
-    onDraftWidgetClick: (appWidgetId: Int) -> Unit,
+    onWidgetClick: (id: Int, PhotoWidget) -> Unit,
     onDefaultsClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
@@ -331,10 +327,7 @@ fun HomeScreen(
                 HomeNavigationDestination.MY_WIDGETS -> {
                     MyWidgetsScreen(
                         widgets = currentWidgets,
-                        onCurrentWidgetClick = onCurrentWidgetClick,
-                        onRemovedWidgetClick = onRemovedWidgetClick,
-                        onInvalidWidgetClick = onInvalidWidgetClick,
-                        onDraftWidgetClick = onDraftWidgetClick,
+                        onWidgetClick = onWidgetClick,
                     )
                 }
 
@@ -456,10 +449,7 @@ private fun HomeScreenPreview() {
         HomeScreen(
             onCreateNewWidgetClick = {},
             currentWidgets = emptyList(),
-            onCurrentWidgetClick = { _, _, _, _ -> },
-            onRemovedWidgetClick = { _, _ -> },
-            onInvalidWidgetClick = {},
-            onDraftWidgetClick = {},
+            onWidgetClick = { _, _ -> },
             onDefaultsClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
