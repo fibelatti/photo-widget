@@ -915,8 +915,11 @@ private fun AppPicker(
             ?: return
 
         val shortcut: AppShortcutInfo? by produceState(initialValue = null, key1 = packageName, key2 = shortcutId) {
-            if (packageName != null && shortcutId != null) {
-                value = localContext.getAppShortcuts(packageName).find { it.id == shortcutId }
+            value = if (packageName != null && shortcutId != null) {
+                withContext(Dispatchers.IO) { localContext.getAppShortcuts(packageName) }
+                    .find { it.id == shortcutId }
+            } else {
+                null
             }
         }
 
