@@ -8,7 +8,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -182,10 +185,17 @@ private fun WidgetGridItem(
     enforcedShape: Shape,
     modifier: Modifier = Modifier,
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(1f),
+            .aspectRatio(1f)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClick,
+            ),
         contentAlignment = Alignment.BottomCenter,
     ) {
         ShapedPhoto(
@@ -197,8 +207,7 @@ private fun WidgetGridItem(
                 .fillMaxSize()
                 .letIf(widget.aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET) {
                     it.clip(enforcedShape)
-                }
-                .clickable(onClick = onClick),
+                },
             colors = widget.colors,
             border = widget.border,
             isLoading = widget.isLoading,
@@ -243,6 +252,13 @@ private fun WidgetGridItem(
                 )
             }
         }
+
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .clip(enforcedShape)
+                .indication(interactionSource, LocalIndication.current),
+        )
     }
 }
 
