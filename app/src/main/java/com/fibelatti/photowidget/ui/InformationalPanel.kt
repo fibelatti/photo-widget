@@ -40,7 +40,6 @@ fun InformationalPanel(
         modifier = modifier
             .background(color = backgroundColor, shape = backgroundShape)
             .padding(all = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
