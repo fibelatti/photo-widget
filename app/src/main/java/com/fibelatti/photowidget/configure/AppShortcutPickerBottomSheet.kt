@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
@@ -93,7 +92,7 @@ fun AppShortcutPickerBottomSheet(
                             contentDescription = null,
                             modifier = Modifier
                                 .size(40.dp)
-                                .background(color = Color.White, shape = CircleShape)
+                                .background(color = MaterialTheme.colorScheme.surfaceContainerHigh, shape = CircleShape)
                                 .padding(all = 8.dp),
                             tint = MaterialTheme.colorScheme.onSurface,
                         )
