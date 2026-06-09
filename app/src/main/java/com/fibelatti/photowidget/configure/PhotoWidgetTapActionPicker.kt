@@ -81,6 +81,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -252,7 +253,8 @@ fun PhotoWidgetTapActionPicker(
                 selectedArea = selectedArea,
             )
         },
-        onChooseAppShortcutClick = { appPickerSheetState.showBottomSheet() },
+        onChooseAppClick = { appPickerSheetState.showBottomSheet() },
+        onChooseShortcutClick = { packageName -> pendingShortcutPackage = packageName },
         onAddAppToFolderClick = { addToFolderPickerSheetState.showBottomSheet() },
         onChooseGalleryAppClick = { galleryAppPickerSheetState.showBottomSheet() },
         onChooseFileClick = { filePickerLauncher.launch(arrayOf("*/*")) },
@@ -519,7 +521,8 @@ private fun TapActionPickerContent(
     onTapActionChange: (PhotoWidgetTapAction) -> Unit,
     source: PhotoWidgetSource,
     onCopyFromClick: (TapActionArea) -> Unit,
-    onChooseAppShortcutClick: () -> Unit,
+    onChooseAppClick: () -> Unit,
+    onChooseShortcutClick: (packageName: String) -> Unit,
     onAddAppToFolderClick: () -> Unit,
     onChooseGalleryAppClick: () -> Unit,
     onChooseFileClick: () -> Unit,
@@ -602,7 +605,8 @@ private fun TapActionPickerContent(
             TapActionCustomizationContent(
                 tapAction = currentTapAction,
                 onTapActionChange = onTapActionChange,
-                onChooseAppShortcutClick = onChooseAppShortcutClick,
+                onChooseAppClick = onChooseAppClick,
+                onChooseShortcutClick = onChooseShortcutClick,
                 onAddAppToFolderClick = onAddAppToFolderClick,
                 onChooseGalleryAppClick = onChooseGalleryAppClick,
                 onChooseFileClick = onChooseFileClick,
@@ -813,7 +817,8 @@ private fun TapOptionsPicker(
 private fun TapActionCustomizationContent(
     tapAction: PhotoWidgetTapAction,
     onTapActionChange: (PhotoWidgetTapAction) -> Unit,
-    onChooseAppShortcutClick: () -> Unit,
+    onChooseAppClick: () -> Unit,
+    onChooseShortcutClick: (packageName: String) -> Unit,
     onAddAppToFolderClick: () -> Unit,
     onChooseGalleryAppClick: () -> Unit,
     onChooseFileClick: () -> Unit,
@@ -848,7 +853,8 @@ private fun TapActionCustomizationContent(
             AppPicker(
                 packageName = tapAction.appShortcut,
                 shortcutId = tapAction.shortcutId,
-                onChooseAppClick = onChooseAppShortcutClick,
+                onChooseAppClick = onChooseAppClick,
+                onChooseShortcutClick = onChooseShortcutClick,
                 modifier = modifier,
             )
         }
@@ -889,9 +895,10 @@ private fun TapActionCustomizationContent(
 @Composable
 private fun AppPicker(
     packageName: String?,
-    shortcutId: String?,
     onChooseAppClick: () -> Unit,
     modifier: Modifier = Modifier,
+    shortcutId: String? = null,
+    onChooseShortcutClick: ((packageName: String) -> Unit)? = null,
 ) {
     Row(
         modifier = modifier
@@ -907,7 +914,10 @@ private fun AppPicker(
                 .heightIn(min = 48.dp),
             shapes = ButtonDefaults.shapes(shape = packageName?.let { Shapes.StartShape }),
         ) {
-            Text(text = stringResource(id = R.string.photo_widget_configure_tap_action_choose_app))
+            Text(
+                text = stringResource(id = R.string.photo_widget_configure_tap_action_choose_app),
+                fontWeight = FontWeight.Bold,
+            )
         }
 
         val localContext: Context = LocalContext.current
@@ -933,7 +943,16 @@ private fun AppPicker(
         Row(
             modifier = Modifier
                 .weight(1f)
-                .background(color = MaterialTheme.colorScheme.secondaryContainer, shape = Shapes.EndShape)
+                .clip(Shapes.EndShape)
+                .background(color = MaterialTheme.colorScheme.secondaryContainer)
+                .clickable(
+                    enabled = packageName != null && onChooseShortcutClick != null,
+                    role = Role.Button,
+                ) {
+                    if (packageName != null && onChooseShortcutClick != null) {
+                        onChooseShortcutClick(packageName)
+                    }
+                }
                 .padding(horizontal = 8.dp, vertical = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -1054,7 +1073,6 @@ private fun ViewInGalleryCustomizationContent(
 
         AppPicker(
             packageName = value.galleryApp,
-            shortcutId = null,
             onChooseAppClick = onChooseGalleryAppClick,
         )
 
@@ -1304,7 +1322,8 @@ private fun PhotoWidgetTapActionPickerPreview() {
             onTapActionChange = {},
             source = PhotoWidgetSource.PHOTOS,
             onCopyFromClick = {},
-            onChooseAppShortcutClick = {},
+            onChooseAppClick = {},
+            onChooseShortcutClick = {},
             onAddAppToFolderClick = {},
             onChooseGalleryAppClick = {},
             onChooseFileClick = {},
