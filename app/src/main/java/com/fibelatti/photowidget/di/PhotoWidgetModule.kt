@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import coil3.ImageLoader
-import coil3.annotation.ExperimentalCoilApi
 import coil3.disk.DiskCache
 import coil3.disk.directory
 import coil3.memory.MemoryCache
@@ -88,7 +87,6 @@ object PhotoWidgetModule {
 
     @Provides
     @Singleton
-    @OptIn(ExperimentalCoilApi::class)
     fun imageLoader(@ApplicationContext context: Context): ImageLoader = ImageLoader.Builder(context)
         .memoryCache {
             MemoryCache.Builder()
