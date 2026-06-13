@@ -31,7 +31,7 @@ class SpotlessPlugin : Plugin<Project> {
             ktlint("1.8.0")
                 .setEditorConfigPath("${target.rootProject.projectDir}/.editorconfig")
                 .editorConfigOverride(allRules)
-                .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.5.7"))
+                .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.6.0"))
 
             trimTrailingWhitespace()
             leadingTabsToSpaces()
