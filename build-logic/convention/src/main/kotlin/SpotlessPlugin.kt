@@ -4,7 +4,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.getByType
 
 @Suppress("Unused")
 class SpotlessPlugin : Plugin<Project> {
@@ -14,7 +13,6 @@ class SpotlessPlugin : Plugin<Project> {
             apply(plugin = "com.diffplug.spotless")
 
             if (target === rootProject) {
-                extensions.getByType<SpotlessExtension>().predeclareDeps()
                 extensions.configure<SpotlessExtensionPredeclare> { configureSpotless() }
             } else {
                 extensions.configure<SpotlessExtension> { configureSpotless() }
