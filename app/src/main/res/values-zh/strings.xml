@@ -91,7 +91,7 @@
     <string name="photo_widget_aspect_ratio_title">布局</string>
     <string name="photo_widget_aspect_ratio_shape">形状</string>
     <string name="photo_widget_aspect_ratio_shape_description">Material You 形状</string>
-    <string name="photo_widget_aspect_ratio_square">矩形</string>
+    <string name="photo_widget_aspect_ratio_square">正方形</string>
     <string name="photo_widget_aspect_ratio_tall">高</string>
     <string name="photo_widget_aspect_ratio_wide">宽</string>
     <string name="photo_widget_aspect_ratio_original">原始比例</string>
@@ -111,7 +111,7 @@
     <string name="photo_widget_configure_import_dialog_title">选择小组件</string>
     <string name="photo_widget_configure_import_dialog_description">所有照片和配置将被复制到新小组件</string>
     <string name="photo_widget_configure_import_error">无法导入所有选中的照片</string>
-    <string name="photo_widget_configure_too_many_photos_error">每个同步文件夹最多可以包含3000张照片。您可以选择多个，每个子文件夹都单独计算。\n\n您不能选择您的摄像头。 照片由一个单独处理，在小组件编辑器中导致数以千计的文件夹严重性能问题。 切换照片时，以及在桌面上。</string>
+    <string name="photo_widget_configure_too_many_photos_error">每个同步文件夹最多可以包含 3000 张照片。您可以选择多个文件夹，每个子文件夹都单独计算。\n\n您无法选择相机胶卷。照片会逐张处理，包含成千上万张照片的文件夹会在小组件编辑器中，以及在桌面上切换照片时，导致严重的性能问题。</string>
     <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">使用高级调度的小组件最多可包含 96 张图片。</string>
     <string name="photo_widget_configure_missing_photos_error">小组件必须至少有一张照片。小组件只能从桌面上直接删除。</string>
     <string name="photo_widget_configure_menu_source">来源</string>
@@ -175,7 +175,7 @@
     <string name="photo_widget_configure_interval_grant_permission">授予闹钟权限</string>
     <string name="photo_widget_configure_interval_grant_permission_description">确保在时间表上有短间隔更新的组件</string>
     <string name="photo_widget_configure_interval_permission_dialog_title">关于权限</string>
-    <string name="photo_widget_configure_interval_permission_dialog_description">Android 可以限制背景工作以优化电池寿命，导致每张照片之间间隔更长。\n\n要在选定的时间间隔内准确更新小组件, 请打开设置并允许设置提醒和提醒。</string>
+    <string name="photo_widget_configure_interval_permission_dialog_description">Android 可以限制背景工作以优化电池寿命，导致每张照片之间间隔更长。\n\n要在选定的时间间隔内准确更新小组件, 请打开设置并允许设置闹钟和提醒。</string>
     <string name="photo_widget_configure_interval_open_settings">打开设置</string>
     <string name="photo_widget_configure_battery_optimization">关闭电池优化</string>
     <string name="photo_widget_configure_battery_optimization_description">确保应用程序不间断运行，您的小组件保持更新</string>
@@ -277,7 +277,7 @@
     <string name="restriction_warning_dialog_title">后台工作限制和电池优化</string>
     <string name="restriction_warning_dialog_body_1">Material Photo Widget 需要在后台运行才能更新您的小组件。如果电池使用设置为“优化”，Android 可能会停止该应用，从而导致小组件无法正确更新。</string>
     <string name="restriction_warning_dialog_body_2">您可以使用下方的按钮授予权限，或者打开应用设置，进入“应用耗电管理”，点按“允许后台运行”并选择“无限制”，以确保小组件可靠更新。</string>
-    <string name="restriction_warning_dialog_body_3">某些设备也可能会阻止应用程序在重启后启动。 搜索您的设置“自动启动”或访问 https://dontkilmyapp.com 获取您的手机品牌特有的说明。</string>
+    <string name="restriction_warning_dialog_body_3">某些设备也可能会阻止应用程序在重启后启动。 搜索您的设置“自动启动”或访问 https://dontkillmyapp.com 获取您的手机品牌特有的说明。</string>
     <string name="restriction_warning_grant_battery_permission">授予权限</string>
     <string name="restriction_warning_open_app_settings">打开软件设置</string>
     <!-- Translations -->
@@ -307,7 +307,7 @@
     <!-- Keep-alive service -->
     <string name="photo_widget_keep_alive_service_dialog_title">后台服务</string>
     <string name="photo_widget_keep_alive_service_dialog_toggle">启动后台服务</string>
-    <string name="photo_widget_keep_alive_service_dialog_body">你可以启用后台服务，让 Android 系统知道该应用很重要，不应被系统停止。请放心，该应用只会执行保持小组件按时显示照片所需的最小工作，不会额外耗电。&lt;br/&gt;&lt;br/&gt;主屏幕上的小组件由你的启动器管理，而非直接由该应用管理。由于该应用很少在前台运行， &lt;b&gt;系统可能会认为它不重要而将其停止&lt;/b&gt;。一旦发生这种情况，&lt;/b&gt;小组件也会被停止，导致照片无法显示&lt;/b&gt;。这种情况在 &lt;/b&gt;三星设备&lt;/b&gt; 上尤其常见。</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">你可以启用后台服务，让 Android 系统知道该应用很重要，不应被系统停止。请放心，该应用只会执行保持小组件按时显示照片所需的最小工作，不会额外耗电。&lt;br/&gt;&lt;br/&gt;主屏幕上的小组件由你的启动器管理，而非直接由该应用管理。由于该应用很少在前台运行， &lt;b&gt;系统可能会认为它不重要而将其停止&lt;/b&gt;。一旦发生这种情况，&lt;b&gt;小组件也会被停止，导致照片无法显示&lt;/b&gt;。这种情况在 &lt;b&gt;三星设备&lt;/b&gt; 上尤其常见。</string>
     <string name="photo_widget_keep_alive_service_required_for_gif">GIF 小组件需要后台服务才能播放动画。您可以在设置页中了解更多信息。是否要启用该服务？</string>
     <string name="photo_widget_keep_alive_service_gif_widgets_warning">存在依赖后台服务的活跃 GIF 小组件。禁用该服务可能导致它们停止播放动画。</string>
     <!-- Notifications -->

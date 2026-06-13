@@ -22,11 +22,11 @@
     <string name="photo_widget_home_help">Нешто не функционише?</string>
     <string name="photo_widget_home_common_issues">Уобичајени проблеми</string>
     <string name="photo_widget_home_privacy_policy">Политика приватности</string>
-    <string name="photo_widget_home_developer">Развијено од ❤ од стране Филипеа Белатија</string>
+    <string name="photo_widget_home_developer">Развијено са ❤ од стране Филипеа Белатија</string>
     <string name="photo_widget_home_version">Верзија апликације: %s</string>
     <string name="photo_widget_home_view_licenses">ОСС лиценце</string>
     <plurals name="photo_widget_home_share_received">
-        <item quantity="one">Примљена је 1 фотографија. Направите нови виџет или изаберите постојећи да бисте га додали.</item>
+        <item quantity="one">Примљена је %d фотографија. Направите нови виџет или изаберите постојећи да бисте га додали.</item>
         <item quantity="few">%d примљене фотографије. Направите нови виџет или изаберите постојећи да бисте их додали.</item>
         <item quantity="other">%d примљене фотографије. Направите нови виџет или изаберите постојећи да бисте их додали.</item>
     </plurals>
@@ -183,7 +183,7 @@
     <string name="photo_widget_configure_schedule_add_new">Додај ново</string>
     <string name="photo_widget_configure_schedule_limit_reached" tools:ignore="PluralsCandidate">Максимум од %d достигнутог времена</string>
     <plurals name="photo_widget_configure_schedule_times">
-        <item quantity="one">Изабран је 1 пут</item>
+        <item quantity="one">Изабран је %d пут</item>
         <item quantity="few">%d пута изабрано</item>
         <item quantity="other">%d пута изабрано</item>
     </plurals>
@@ -323,7 +323,7 @@
     <!-- Keep-alive service -->
     <string name="photo_widget_keep_alive_service_dialog_title">Позадински сервиси</string>
     <string name="photo_widget_keep_alive_service_dialog_toggle">Омогућите сервисе у позадини</string>
-    <string name="photo_widget_keep_alive_service_dialog_body">Можете омогућити позадинску услугу да бисте обавестили Андроид да је апликација важна и да је не треба заустављати. Не брините, апликација ради само оно што је потребно да би ваши виџети приказивали фотографије по распореду, без додатног пражњења батерије.&lt;br/&gt;&lt;br/&gt;Виџетима на почетном екрану управља покретач апликација, а не директно апликација. Пошто апликација ретко ради у првом плану, &lt;b&gt;систем може претпоставити да није важно и зауставити га&lt;/b&gt;. К&lt;br/&gt; Када се то деси, &lt;b&gt;виџети су такође заустављени, што доводи до тога да се фотографије не приказују&lt;/b&gt;. Ово је посебно уобичајено код &lt;b&gt; Самсунг уређаја&lt;/b&gt;.</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">Можете омогућити позадинску услугу да бисте обавестили Андроид да је апликација важна и да је не треба заустављати. Не брините, апликација ради само оно што је потребно да би ваши виџети приказивали фотографије по распореду, без додатног пражњења батерије.&lt;br/&gt;&lt;br/&gt;Виџетима на почетном екрану управља покретач апликација, а не директно апликација. Пошто апликација ретко ради у првом плану, &lt;b&gt;систем може претпоставити да није важно и зауставити га&lt;/b&gt;. Када се то деси, &lt;b&gt;виџети су такође заустављени, што доводи до тога да се фотографије не приказују&lt;/b&gt;. Ово је посебно уобичајено код &lt;b&gt; Самсунг уређаја&lt;/b&gt;.</string>
     <string name="photo_widget_keep_alive_service_required_for_gif">GIF виџети захтевају позадинску услугу за репродукцију анимација. Више о томе можете пронаћи на картици подешавања. Да ли желите да је омогућите?</string>
     <string name="photo_widget_keep_alive_service_gif_widgets_warning">Постоје активни GIF виџети који зависе од услуге у позадини. Њено онемогућавање може довести до тога да престану да репродукују анимације.</string>
     <!-- Notifications -->
