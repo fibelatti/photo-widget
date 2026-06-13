@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Widget Host -->
+    <string name="photo_widget_host_description">Додајте своје омиљене фотографије или синхронизујте фасцикле. Подесите радње. Изаберите формат приликом прилагођавања и величину након постављања.</string>
+    <string name="photo_widget_host_loading">Учитавање виџета…</string>
+    <string name="photo_widget_host_failed">Учитавање није успело\n Покушајте поново?</string>
+    <!-- Home -->
+    <string name="photo_widget_home_title">Украсите свој почетни екран омиљеним фотографијама</string>
+    <string name="photo_widget_home_instruction">Направите нови виџет додиром на једну од опција. Не брините, ово можете променити у било ком тренутку!</string>
+    <string name="photo_widget_home_new">Нови виџет</string>
+    <string name="photo_widget_home_current">Моји виџети</string>
+    <string name="photo_widget_home_settings">Подешавања</string>
+    <string name="photo_widget_home_data_saver">Оптимизовано складиштење</string>
+    <string name="photo_widget_home_data_saver_description">Контролишите квалитет слике увезених фотографија</string>
+    <string name="photo_widget_home_appearance">Тема апликације</string>
+    <string name="photo_widget_home_true_black_background">Права црна позадина</string>
+    <string name="photo_widget_home_dynamic_colors">Боје апликације</string>
+    <string name="photo_widget_home_translations">Језик апликације</string>
+    <string name="photo_widget_home_backup">Резервна копија</string>
+    <string name="photo_widget_home_share">Поделите ову апликацију</string>
+    <string name="photo_widget_home_rate">Напишите рецензију</string>
+    <string name="photo_widget_home_help">Нешто не функционише?</string>
+    <string name="photo_widget_home_common_issues">Уобичајени проблеми</string>
+    <string name="photo_widget_home_privacy_policy">Политика приватности</string>
+    <string name="photo_widget_home_developer">Развијено од ❤ од стране Филипеа Белатија</string>
+    <string name="photo_widget_home_version">Верзија апликације: %s</string>
+    <string name="photo_widget_home_view_licenses">ОСС лиценце</string>
+    <plurals name="photo_widget_home_share_received">
+        <item quantity="one">Примљена је 1 фотографија. Направите нови виџет или изаберите постојећи да бисте га додали.</item>
+        <item quantity="few">%d примљене фотографије. Направите нови виџет или изаберите постојећи да бисте их додали.</item>
+        <item quantity="other">%d примљене фотографије. Направите нови виџет или изаберите постојећи да бисте их додали.</item>
+    </plurals>
+    <string name="photo_widget_home_pinning_not_supported_title">Додајте виџет директно са почетног екрана</string>
+    <string name="photo_widget_home_pinning_not_supported_message">1. Додирните и држите празан простор\n\n2. Изаберите мени виџета\n\n3. Потражите виџет за материјалну фотографију\n\n4. Конфигуришите и сачувајте!</string>
+    <string name="photo_widget_home_crash_report_title">Ваша помоћ може побољшати апликацију</string>
+    <string name="photo_widget_home_crash_report_body">Изгледа да је апликација или виџет неочекивано пао. Можете да поделите детаље са мном путем имејла, што ће нам помоћи да побољшамо апликацију за све.</string>
+    <string name="photo_widget_home_crash_report_action_confirm">Поделите извештај</string>
+    <string name="photo_widget_home_crash_report_action_cancel">Не делите</string>
+    <string name="photo_widget_home_crash_report_choose_title">Пошаљи е-пошту</string>
+    <!-- My Widgets -->
+    <string name="photo_widget_home_empty_widgets">Још нисте додали ниједан виџет.\n Виџети додати на почетни екран ће се појавити овде.</string>
+    <string name="photo_widget_home_filter_all">Све</string>
+    <string name="photo_widget_home_draft_label">Нацрт</string>
+    <string name="photo_widget_home_draft_action_discard">Одбаци нацрт</string>
+    <string name="photo_widget_home_locked_label">Закључано</string>
+    <string name="photo_widget_home_removed_label">Уклоњено</string>
+    <string name="photo_widget_home_removed_widgets_hint">Уклоњени виџети више нису на почетном екрану. Трајно се бришу из апликације након 7 дана. Можете да их „задржите“.</string>
+    <string name="photo_widget_home_invalid_label">Потребна је пажња</string>
+    <string name="photo_widget_home_invalid_widgets_hint">Овај виџет се можда не приказује или не ради исправно. Покушајте да измените или обришете његова подешавања у апликацији. Ако то не помогне, покушајте да уклоните виџет са почетног екрана и додате нови.</string>
+    <string name="photo_widget_home_my_widget_action_sync">Синхронизујте са фолдером фотографија</string>
+    <string name="photo_widget_home_my_widget_action_edit">Прикажи / Уреди</string>
+    <string name="photo_widget_home_my_widget_action_duplicate">Дупликат</string>
+    <string name="photo_widget_home_my_widget_action_lock">Закључај са тренутном фотографијом</string>
+    <string name="photo_widget_home_my_widget_action_unlock">Откључај виџет</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">Фотографије се неће мењати аутоматски нити додиром када је виџет закључан</string>
+    <string name="photo_widget_home_removed_widget_action_restore">Поврати</string>
+    <string name="photo_widget_home_removed_widget_action_keep">Задржи</string>
+    <string name="photo_widget_home_removed_widget_action_delete">Избриши трајно</string>
+    <string name="photo_widget_home_my_widget_syncing_feedback">Преузимање најновијих фотографија из фасцикле…</string>
+    <!-- Preferences -->
+    <string name="preferences_data_saver">Смањите употребу складишта</string>
+    <string name="preferences_data_saver_description">Када је омогућено, фотографије додате виџетима се компресују ради уштеде простора у меморији. Ово обично неће утицати на квалитет, али ако ваше фотографије садрже ситан текст, препоручује се да ово искључите.\n\n Ово подешавање утиче само на фотографије додате након што је оно промењено.\n\n Не односи се на синхронизоване фасцикле, јер се те фотографије читају директно из меморије вашег уређаја.</string>
+    <string name="preferences_appearance_follow_system">Прати систем</string>
+    <string name="preferences_appearance_light">Светла</string>
+    <string name="preferences_appearance_dark">Тамна</string>
+    <string name="preferences_dynamic_colors_enabled">Динамичне боје</string>
+    <string name="preferences_dynamic_colors_disabled">Подразумеване боје</string>
+    <!-- Widget Defaults -->
+    <string name="widget_defaults_title">Подразумеване поставке виџета</string>
+    <string name="widget_defaults_description">Заједничка подешавања за све нове виџете</string>
+    <string name="widget_defaults_explanation">Ове вредности се унапред учитавају када креирате нови виџет. Корисне су за подешавање више виџета са истом конфигурацијом, елиминишући потребу за подешавањем сваки пут. Имајте на уму да било какве промене ових вредности неће утицати на постојеће виџете.</string>
+    <string name="widget_defaults_source">Извор</string>
+    <string name="widget_defaults_shuffle">Насумично</string>
+    <string name="widget_defaults_cycling">Тајмер за фотографије</string>
+    <string name="widget_defaults_shape">Облик</string>
+    <string name="widget_defaults_corner_radius">Округли</string>
+    <string name="widget_defaults_opacity">Провидност</string>
+    <string name="widget_defaults_saturation">Засићеност</string>
+    <string name="widget_defaults_brightness">Осветљеност</string>
+    <string name="widget_defaults_tap_action">Радња додиром</string>
+    <string name="widget_defaults_reset">Ресетујте вредности</string>
+    <!-- Share -->
+    <string name="share_title">Проширите вест</string>
+    <string name="share_text">Додајте своје омиљене фотографије на почетни екран помоћу Material Photo Widget-а. Преузмите бесплатно на %s</string>
+    <!-- Source -->
+    <string name="photo_widget_source_photos">Фотографије</string>
+    <string name="photo_widget_source_directory">Фолдер</string>
+    <string name="photo_widget_source_gif">ГИФ</string>
+    <string name="photo_widget_source_photos_description">Изаберите једну или више фотографија користећи подразумевани бирач галерије.</string>
+    <string name="photo_widget_source_directory_description">Изаберите једну или више фасцикли за синхронизацију. Фотографије се аутоматски додају и освежавају у редовним интервалима.</string>
+    <string name="photo_widget_source_gif_description">Изаберите анимирани GIF за репродукцију на почетном екрану. Препоручују се краћи, једноставнији GIF-ови.</string>
+    <!-- Aspect Ratio -->
+    <string name="photo_widget_aspect_ratio_title">Формат</string>
+    <string name="photo_widget_aspect_ratio_shape">Облици</string>
+    <string name="photo_widget_aspect_ratio_shape_description">Material You облици</string>
+    <string name="photo_widget_aspect_ratio_square">Квадрат</string>
+    <string name="photo_widget_aspect_ratio_tall">Високо</string>
+    <string name="photo_widget_aspect_ratio_wide">Широко</string>
+    <string name="photo_widget_aspect_ratio_original">Оригинално</string>
+    <string name="photo_widget_aspect_ratio_original_description">Ускладите сваку фотографију</string>
+    <string name="photo_widget_aspect_ratio_fill_widget">Попуни</string>
+    <string name="photo_widget_aspect_ratio_fill_widget_description">Ускладите величину виџета</string>
+    <!-- Configure -->
+    <string name="photo_widget_configure_save_draft_prompt">Сачувај измене као нацрт?</string>
+    <string name="photo_widget_configure_navigate_back_warning">Све измене ће бити изгубљене, желите ли се ипак вратити?</string>
+    <string name="photo_widget_configure_navigate_back_warning_restore">Да бисте завршили враћање виџета, морате га додати на почетни екран. Желите ли да изађете без враћања?</string>
+    <string name="photo_widget_configure_tab_content">Садржај</string>
+    <string name="photo_widget_configure_tab_appearance">Изглед</string>
+    <string name="photo_widget_configure_tab_text">Текст</string>
+    <string name="photo_widget_configure_tab_behavior">Понашање</string>
+    <string name="photo_widget_configure_import_prompt">Увези из другог виџета?</string>
+    <string name="photo_widget_configure_import_prompt_action">Изабери</string>
+    <string name="photo_widget_configure_import_dialog_title">Изабери виџет</string>
+    <string name="photo_widget_configure_import_dialog_description">Све фотографије и конфигурације ће бити копиране у нови виџет</string>
+    <string name="photo_widget_configure_import_error">Није могуће увести све изабране фотографије</string>
+    <string name="photo_widget_configure_too_many_photos_error">Свака синхронизована фасцикла може да садржи највише 3000 фотографија. Можете да изаберете више од једне, а свака подфасцикла се броји засебно.\n\n Не можете да изаберете своју камеру. Фотографије се обрађују једна по једна, а фасцикле са више хиљада доводе до озбиљних проблема са перформансама у уређивачу виџета, као и на почетном екрану приликом пребацивања фотографија.</string>
+    <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">Виџети који користе напредни распоред могу имати највише 96 фотографија.</string>
+    <string name="photo_widget_configure_missing_photos_error">Виџет мора да има бар једну фотографију. Виџети се могу обрисати само директно са почетног екрана.</string>
+    <string name="photo_widget_configure_menu_source">Извор</string>
+    <string name="photo_widget_configure_source_selection_directory_empty">Овај виџет још увек није синхронизован ни са једном фасциклом.</string>
+    <string name="photo_widget_configure_source_selection_directory_non_empty">Овај виџет је синхронизован са овим фасциклама:</string>
+    <string name="photo_widget_configure_source_warning">Промена извора ће обрисати све податке садржаја са овог виџета након што га потврдите. Ова промена се не може поништити и мораћете поново да изаберете фотографије или фасцикле.</string>
+    <string name="photo_widget_configure_menu_crop">Опсеци</string>
+    <string name="photo_widget_configure_menu_remove">Уклони</string>
+    <string name="photo_widget_configure_menu_move_left">Помери лево</string>
+    <string name="photo_widget_configure_menu_move_right">Помери десно</string>
+    <string name="photo_widget_configure_photos_pending_deletion">Недавно обрисане фотографије</string>
+    <string name="photo_widget_configure_photos_excluded">Искључено из виџета</string>
+    <string name="photo_widget_configure_pick_photo">Изаберите фотографије</string>
+    <string name="photo_widget_configure_pick_folder">Изаберите фасциклу</string>
+    <string name="photo_widget_configure_pick_gif">Изаберите ГИФ</string>
+    <string name="photo_widget_configure_pick_gif_replace">Избор другог ГИФ-а ће заменити постојећи, желите да наставите?</string>
+    <string name="photo_widget_configure_change_source">Промени извор</string>
+    <plurals name="photo_widget_configure_photo_quantity">
+        <item quantity="one">%d фотографија</item>
+        <item quantity="few">%d фотографија</item>
+        <item quantity="other">%d фотографија</item>
+    </plurals>
+    <plurals name="photo_widget_configure_photo_quantity_gif">
+        <item quantity="one">%d оквир</item>
+        <item quantity="few">%d оквира</item>
+        <item quantity="other">%d оквира</item>
+    </plurals>
+    <string name="photo_widget_configure_select_cycling_mode">Тајмер за фотографије</string>
+    <string name="photo_widget_configure_cycling_mode_interval">Интервал</string>
+    <string name="photo_widget_configure_cycling_mode_schedule">Распоред</string>
+    <string name="photo_widget_configure_cycling_mode_disabled">Онемогућено</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule">Напредни распоред</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_no_time_warning">Фотографије без заказаног времена никада неће бити приказане, а времена морају бити јединствена.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_even_split">Равномерно подељен дан</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">Подесите време</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced" tools:ignore="PluralsCandidate">Овај виџет је имао више од %d фотографије, па се његов распоред вратио на тајмер од 15 минута.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Време је већ додељено другој фотографији.</string>
+    <string name="photo_widget_configure_cycling_mode_interval_description">Прелази на следећу фотографију у редовним интервалима</string>
+    <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Пребацује на следећу фотографију у заказано време (максимално %d пута)</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_description" tools:ignore="PluralsCandidate">Изаберите време за сваку фотографију преко картице садржаја (максимално %d фотографија)</string>
+    <string name="photo_widget_configure_cycling_mode_disabled_description">Фотографије се неће аутоматски мењати</string>
+    <string name="photo_widget_configure_interval_current_label">Сваки %s</string>
+    <plurals name="photo_widget_configure_interval_current_seconds">
+        <item quantity="one">%d секунда</item>
+        <item quantity="few">%d секунди</item>
+        <item quantity="other">%d секунди</item>
+    </plurals>
+    <plurals name="photo_widget_configure_interval_current_minutes">
+        <item quantity="one">%d минут</item>
+        <item quantity="few">%d минута</item>
+        <item quantity="other">%d минута</item>
+    </plurals>
+    <plurals name="photo_widget_configure_interval_current_hours">
+        <item quantity="one">%d сат</item>
+        <item quantity="few">%d сати</item>
+        <item quantity="other">%d сати</item>
+    </plurals>
+    <plurals name="photo_widget_configure_interval_current_days">
+        <item quantity="one">%d дан</item>
+        <item quantity="few">%d дана</item>
+        <item quantity="other">%d дана</item>
+    </plurals>
+    <string name="photo_widget_configure_interval_seconds_label">Секунде</string>
+    <string name="photo_widget_configure_interval_minutes_label">Минути</string>
+    <string name="photo_widget_configure_interval_hours_label">Сати</string>
+    <string name="photo_widget_configure_interval_days_label">Дани</string>
+    <string name="photo_widget_configure_schedule_add_new">Додај ново</string>
+    <string name="photo_widget_configure_schedule_limit_reached" tools:ignore="PluralsCandidate">Максимум од %d достигнутог времена</string>
+    <plurals name="photo_widget_configure_schedule_times">
+        <item quantity="one">Изабран је 1 пут</item>
+        <item quantity="few">%d пута изабрано</item>
+        <item quantity="other">%d пута изабрано</item>
+    </plurals>
+    <string name="photo_widget_configure_interval_warning">Стварни интервал или заказано време може да варира због ограничења која је наметнуо Андроид ради оптимизације трајања батерије. Да бисте осигурали да функционише како треба, дајте дозволу испод</string>
+    <string name="photo_widget_configure_interval_grant_permission">Дајте тачну дозволу за аларм</string>
+    <string name="photo_widget_configure_interval_grant_permission_description">Обезбедите да се виџети са кратким интервалима ажурирају на време</string>
+    <string name="photo_widget_configure_interval_permission_dialog_title">О овој дозволи</string>
+    <string name="photo_widget_configure_interval_permission_dialog_description">Андроид може ограничити рад у позадини како би оптимизовао трајање батерије, што резултира дужим интервалима између сваке фотографије.\n\n Да бисте ажурирали виџете прецизно у изабраном интервалу, отворите подешавања и дозволите подешавање аларма и подсетника.</string>
+    <string name="photo_widget_configure_interval_open_settings">Отворите подешавања</string>
+    <string name="photo_widget_configure_battery_optimization">Онемогућите оптимизацију батерије</string>
+    <string name="photo_widget_configure_battery_optimization_description">Осигурајте да апликација ради без прекида и да ваши виџети остану ажурирани</string>
+    <string name="photo_widget_configure_border">Ивица</string>
+    <string name="photo_widget_configure_border_none">Ниједан</string>
+    <string name="photo_widget_configure_border_dynamic">Динамично</string>
+    <string name="photo_widget_configure_border_dynamic_inverse">Боја 1</string>
+    <string name="photo_widget_configure_border_dynamic_primary">Боја 2</string>
+    <string name="photo_widget_configure_border_dynamic_primary_fixed">Боја 3</string>
+    <string name="photo_widget_configure_border_dynamic_secondary">Боја 4</string>
+    <string name="photo_widget_configure_border_dynamic_secondary_fixed">Боја 5</string>
+    <string name="photo_widget_configure_border_color">Обојене</string>
+    <string name="photo_widget_configure_border_color_palette">Палета</string>
+    <string name="photo_widget_configure_border_color_palette_dominant">Доминантна боја</string>
+    <string name="photo_widget_configure_border_color_palette_vibrant">Жива боја</string>
+    <string name="photo_widget_configure_border_color_palette_muted">Пригушена боја</string>
+    <string name="photo_widget_configure_border_explanation">Промене ће се десити током следећег ажурирања виџета након што промените боју теме телефона. Да бисте одмах ажурирали све виџете, једноставно отворите апликацију.</string>
+    <string name="photo_widget_configure_offset">Одмак</string>
+    <string name="photo_widget_configure_offset_current_values">Хоризонтално: %1$d, Вертикално: %2$d</string>
+    <string name="photo_widget_configure_offset_current_horizontal">Хоризонтално</string>
+    <string name="photo_widget_configure_offset_current_vertical">Вертикално</string>
+    <string name="photo_widget_configure_padding">Испуна</string>
+    <string name="photo_widget_configure_tap_action">Радња додиром</string>
+    <string name="photo_widget_configure_tap_action_description">Прилагодите радњу додира за сваку област.</string>
+    <string name="photo_widget_configure_tap_action_copy_from">Копирај из…</string>
+    <string name="photo_widget_configure_tap_action_area_left">Лево</string>
+    <string name="photo_widget_configure_tap_action_area_center">Центар</string>
+    <string name="photo_widget_configure_tap_action_area_right">Десно</string>
+    <string name="photo_widget_configure_tap_action_none">Ниједно</string>
+    <string name="photo_widget_configure_tap_action_view_full_screen">Погледајте фотографију преко целог екрана</string>
+    <string name="photo_widget_configure_tap_action_view_in_gallery">Погледајте помоћу апликације за фотографије</string>
+    <string name="photo_widget_configure_tap_action_view_next_photo">Погледајте следећу фотографију</string>
+    <string name="photo_widget_configure_tap_action_view_previous_photo">Прикажи претходну фотографију</string>
+    <string name="photo_widget_configure_tap_action_choose_next_photo">Изаберите следећу фотографију</string>
+    <string name="photo_widget_configure_tap_action_app_shortcut">Отворите у апликацији</string>
+    <string name="photo_widget_configure_tap_action_app_folder">Фасцикла апликације</string>
+    <string name="photo_widget_configure_tap_action_app_folder_description">Изаберите до 12 апликација</string>
+    <string name="photo_widget_configure_tap_action_url_shortcut">Отворите везу</string>
+    <string name="photo_widget_configure_tap_action_file_shortcut">Отворите фајл</string>
+    <string name="photo_widget_configure_tap_action_choose_file">Изаберите фајл</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling">Омогући/онемогући тајмер</string>
+    <string name="photo_widget_configure_tap_action_toggle_cycling_description">Додирните да паузирате тајмер за фотографисање. Додирните поново да бисте га наставили. Ова радња ће бити онемогућена док је виџет закључан.</string>
+    <string name="photo_widget_configure_tap_action_toggle_gif_playback">Омогући/онемогући репродукцију GIF-ова</string>
+    <string name="photo_widget_configure_tap_action_share_photo">Поделите фотографију</string>
+    <string name="photo_widget_configure_tap_action_set_wallpaper">Постави као позадину</string>
+    <string name="photo_widget_configure_tap_action_remove_photo">Уклоните фотографију</string>
+    <string name="photo_widget_configure_tap_action_remove_photo_description">Искључује је из виџета. Оригинална фотографија се не уклања са телефона.</string>
+    <string name="photo_widget_remove_action_feedback_positive">Слика је уклоњена!</string>
+    <string name="photo_widget_remove_action_feedback_negative">Остала је само једна фотографија, не може се уклонити.</string>
+    <string name="photo_widget_configure_tap_action_increase_brightness">Аутоматски повећајте осветљеност</string>
+    <string name="photo_widget_configure_tap_action_view_original_photo">Погледајте оригиналну фотографију (без резања или ротације)</string>
+    <string name="photo_widget_configure_tap_action_do_not_shuffle">Не мењај фотографије у прегледачу</string>
+    <string name="photo_widget_configure_tap_action_keep_current_photo">Не мењај тренутну фотографију приликом прегледа фотографија у прегледачу</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_warning">Ова радња отвара тренутну фотографију помоћу апликације галерија. Неће бити могуће прегледати или прећи на друге фотографије.</string>
+    <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Такође можете одабрати коју апликацију за галерију ћете користити.</string>
+    <string name="photo_widget_configure_tap_action_choose_app">Изаберите апликацију</string>
+    <string name="photo_widget_configure_tap_action_search_apps">Претражи апликације</string>
+    <string name="photo_widget_configure_tap_action_choose_shortcut">Изаберите пречицу</string>
+    <string name="photo_widget_configure_tap_action_launch_app">Покрените апликацију</string>
+    <string name="photo_widget_configure_tap_action_search_no_apps">Није пронађена ниједна апликација</string>
+    <string name="photo_widget_configure_tap_action_disable_tap">Онемогућите друге области додиривања док је тајмер паузиран</string>
+    <string name="photo_widget_configure_tap_action_shared_preferences">Ова подешавања користе сва подручја која користе ову радњу додира.</string>
+    <string name="photo_widget_configure_tap_action_viewer_background_color">Боја позадине</string>
+    <string name="photo_widget_configure_tap_action_viewer_background_color_default">Подразумевана тема</string>
+    <string name="photo_widget_configure_gif_frame_interval">Интервал кадрова</string>
+    <string name="photo_widget_configure_gif_frame_interval_description">Контролишите брзину репродукције анимираног GIF-а. Што је вредност мања, GIF ће бити бржи.</string>
+    <string name="photo_widget_configure_gif_frame_interval_presets">Пресети</string>
+    <string name="photo_widget_configure_add_to_home">Додај на почетни екран</string>
+    <string name="photo_widget_configure_save_changes">Сачувај промене</string>
+    <string name="photo_widget_configure_widget_pinned">Виџет је додат! Проверите почетни екран…</string>
+    <string name="photo_widget_time_picker_title">Изаберите време</string>
+    <string name="photo_widget_directory_sort_title">Сортирај фотографије</string>
+    <string name="photo_widget_directory_sort_newest_first">Најновије прво</string>
+    <string name="photo_widget_directory_sort_oldest_first">Најстарије прво</string>
+    <string name="photo_widget_directory_sort_explanation">Сортирање користи датум последње измене оригиналне датотеке слике и примењује се само на виџете синхронизоване са фасциклама.</string>
+    <string name="photo_widget_crop_free_form">Слободна форма</string>
+    <string name="photo_widget_configure_text_type">Тип</string>
+    <string name="photo_widget_configure_text_type_none">Ниједно</string>
+    <string name="photo_widget_configure_text_type_label">Ознака</string>
+    <string name="photo_widget_configure_text_type_label_description">Имитира име апликације како би се уклопило са естетским изгледом вашег почетног екрана</string>
+    <string name="photo_widget_configure_text_value">Текст</string>
+    <string name="photo_widget_configure_text_size">Величина</string>
+    <string name="photo_widget_configure_text_vertical_offset">Вертикални помак</string>
+    <string name="photo_widget_configure_text_apply_shadow">Нанесите сенку</string>
+    <string name="photo_widget_configure_text_sample">Пример текста</string>
+    <string name="photo_widget_configure_text_caveat">Фотографија и текст деле исту област виџета. Текст користи подразумевани изглед система. Можете фино подесити позиционирање помоћу горе наведених подешавања, заједно са помаком и размаком између фотографија.</string>
+    <!-- Help -->
+    <string name="help_article_title_1">Додавање виџета на почетни екран не функционише</string>
+    <string name="help_article_body_1">Ако сте конфигурисали виџет и ништа се не дешава када покушате да га додате на почетни екран или ако је додат, али не приказује изабране фотографије, можете покушати да га додате директно са почетног екрана.\n\nУпутства се могу разликовати у зависности од верзије Андроида, произвођача уређаја и покретача почетног екрана, али генерално, поступак је следећи:\n\n1. Дуго притисните празан простор на почетном екрану док се не појави искачући мени.\n2. Пронађите опцију „Виџети“.\n3. Потражите „Виџет за материјалне фотографије“ међу доступним виџетима.\n4. Превуците га на почетни екран и конфигуришите га као и обично.</string>
+    <string name="help_article_title_2">Фотографије се не мењају аутоматски</string>
+    <string name="help_article_body_2">Изабрани интервал или заказано време су приближна вредност када ће се следећа фотографија приказати. Андроид узима у обзир неколико фактора приликом одређивања стварног времена, а сваки произвођач уређаја може да наметне ограничења позадинским процесима.\n\nДа бисте осигурали да се фотографије мењају тачно када желите, дајте апликацији дозволу „Тачни аларми“ и уверите се да на њу нису примењена ограничења батерије у подешавањима телефона.</string>
+    <string name="help_article_title_3">Виџет не ради након поновног покретања телефона</string>
+    <string name="help_article_body_3">Када се телефон поново покрене, Андроид шаље сигнал апликацијама да их обавести, како би се могле саме поново покренути. Нажалост, неки произвођачи уређаја (као што су Xiaomi, Redmi, Huawei и други) блокирају овај сигнал.\n\nДа бисте омогућили ову функционалност, промените дозволу „Аутоматско покретање“ у вашој безбедносној апликацији.</string>
+    <string name="help_article_title_4">Величина виџета је премала</string>
+    <string name="help_article_body_4">Након што додате виџет на почетни екран, можете га дуго притиснути да бисте открили опцију за промену величине. Затим, превуците његове ивице да бисте га прилагодили жељеној величини.</string>
+    <string name="help_article_title_5">Виџет се понекад претвара у икону грешке</string>
+    <string name="help_article_body_5">Сама апликација се не користи често — само када треба да измените виџет. Виџети се покрећу независно унутар покретача апликација. Због тога Андроид може помислити да апликација није важна и систем ће је зауставити да би повратио ресурсе. Када се апликација заустави, заустављају се и њени виџети. Да бисте то спречили, ажурирајте политику коришћења батерије за апликацију, подешавајући је на „Неограничено“.</string>
+    <string name="restriction_warning_hint">Активност у позадини је ограничена. Виџети можда неће исправно радити. Додирните да бисте сазнали више.</string>
+    <string name="restriction_warning_dialog_title">Ограничења рада у позадини и оптимизација батерије</string>
+    <string name="restriction_warning_dialog_body_1">Material Photo Widget мора да ради у позадини да би ажурирао ваше виџете. Ако је потрошња батерије подешена на „Оптимизовано“, Андроид може зауставити апликацију, спречавајући виџете да се правилно ажурирају.</string>
+    <string name="restriction_warning_dialog_body_2">Дозволу можете дати помоћу дугмета испод или отворити подешавања апликације и отићи на „Потрошња батерије апликације“. Додирните „Дозволи коришћење у позадини“ и изаберите „Неограничено“ да бисте осигурали поуздана ажурирања.</string>
+    <string name="restriction_warning_dialog_body_3">Неки уређаји могу такође блокирати покретање апликације након поновног покретања. Потражите „аутоматско покретање“ у подешавањима или посетите https://dontkillmyapp.com за упутства специфична за ваш бренд телефона.</string>
+    <string name="restriction_warning_grant_battery_permission">Дајте дозволу</string>
+    <string name="restriction_warning_open_app_settings">Отворите подешавања апликације</string>
+    <!-- Translations -->
+    <string name="translations_dialog_title">Помогни при преводу на ваш језик!</string>
+    <string name="translations_dialog_body">Ова апликација користи приступ преводима вођен заједницом, а ваша помоћ може да је побољша. Можете допринети ако желите да видите нови језик који је доступан или сте приметили нешто што не изгледа како треба.</string>
+    <string name="translations_dialog_positive_action">Отвори Crowdin</string>
+    <string name="translations_dialog_negative_action">Не сада</string>
+    <!-- Backup -->
+    <string name="backup_explanation_1">Извези &lt;i&gt;садржај&lt;/i&gt; и &lt;i&gt;изглед&lt;/i&gt; ваших фото виџета</string>
+    <string name="backup_explanation_2">Вратите претходне виџете увозом резервне копије датотеке</string>
+    <string name="backup_explanation_3">&lt;b&gt;Виџети синхронизовани са фасциклама не могу се извести.&lt;/b&gt; Дозвола за приступ изабраним фасциклама уређаја је сачувана на вашем уређају и не може се мигрирати. Ти виџети морају бити креирани од нуле</string>
+    <string name="backup_create">Направите резервну копију</string>
+    <string name="backup_restore">Вратите из резервне копије</string>
+    <string name="backup_items_title">Виџети из резервног фајла</string>
+    <string name="backup_item_restore">Поврати</string>
+    <string name="backup_feedback_success">Резервна копија је успешно извезена!</string>
+    <string name="backup_feedback_error">Није успело креирање резервне копије датотеке. Молимо вас да се уверите да имате виџете за извоз и покушајте поново.</string>
+    <string name="backup_feedback_restore_error">Враћање резервне копије није успело. Уверите се да бирате важећу датотеку резервне копије.</string>
+    <!-- Viewer -->
+    <string name="photo_widget_viewer_all_photos">Све фотографије</string>
+    <!-- Cycling feedback -->
+    <string name="photo_widget_cycling_feedback_paused">Виџет је паузиран</string>
+    <string name="photo_widget_cycling_feedback_resumed">Виџет је настављен</string>
+    <!-- Folder -->
+    <string name="photo_widget_app_folder_empty">Још увек нисте додали апликације у ову фасциклу. Додирните „Настави“ да бисте отворили уређивач виџета.</string>
+    <string name="photo_widget_app_folder_add_app">Додај апликацију</string>
+    <!-- Keep-alive service -->
+    <string name="photo_widget_keep_alive_service_dialog_title">Позадински сервиси</string>
+    <string name="photo_widget_keep_alive_service_dialog_toggle">Омогућите сервисе у позадини</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">Можете омогућити позадинску услугу да бисте обавестили Андроид да је апликација важна и да је не треба заустављати. Не брините, апликација ради само оно што је потребно да би ваши виџети приказивали фотографије по распореду, без додатног пражњења батерије.&lt;br/&gt;&lt;br/&gt;Виџетима на почетном екрану управља покретач апликација, а не директно апликација. Пошто апликација ретко ради у првом плану, &lt;b&gt;систем може претпоставити да није важно и зауставити га&lt;/b&gt;. К&lt;br/&gt; Када се то деси, &lt;b&gt;виџети су такође заустављени, што доводи до тога да се фотографије не приказују&lt;/b&gt;. Ово је посебно уобичајено код &lt;b&gt; Самсунг уређаја&lt;/b&gt;.</string>
+    <string name="photo_widget_keep_alive_service_required_for_gif">GIF виџети захтевају позадинску услугу за репродукцију анимација. Више о томе можете пронаћи на картици подешавања. Да ли желите да је омогућите?</string>
+    <string name="photo_widget_keep_alive_service_gif_widgets_warning">Постоје активни GIF виџети који зависе од услуге у позадини. Њено онемогућавање може довести до тога да престану да репродукују анимације.</string>
+    <!-- Notifications -->
+    <string name="notification_channel_name_keep_alive">Позадински сервиси</string>
+    <string name="notification_channel_description_keep_alive">Одржава апликацију активном, чак и ако је дуго у позадини. Обезбеђује да се виџети могу ажурирати како је очекивано.</string>
+    <!-- Common Actions -->
+    <string name="photo_widget_action_yes">Да</string>
+    <string name="photo_widget_action_no">Не</string>
+    <string name="photo_widget_action_continue">Наставите</string>
+    <string name="photo_widget_action_cancel">Откажите</string>
+    <string name="photo_widget_action_apply">Примени</string>
+    <string name="photo_widget_action_confirm">Потврди</string>
+    <string name="photo_widget_action_got_it">Разумем</string>
+    <string name="photo_widget_action_dismiss">Одбаци</string>
+    <string name="photo_widget_action_learn_more">Сазнај више</string>
+    <string name="photo_widget_action_ignore">Игнориши</string>
+    <string name="photo_widget_action_share">Подели</string>
+    <string name="photo_widget_action_restore">Поврати</string>
+    <string name="photo_widget_action_delete_permanently">Избриши трајно</string>
+    <string name="photo_widget_action_reset">Ресетуј</string>
+    <!-- Hints -->
+    <string name="hint_scroll_to_view_more">Померите да видите више</string>
+    <string name="warning_experimental">Експериментално</string>
+    <string name="warning_gif_widget_battery_usage">GIF виџети могу трошити више батерије! Апликација мора константно да ради да би репродуковала анимацију. Рад се паузира када је екран искључен ради уштеде ресурса, али апликација не може да детектује када ваш почетни екран није видљив док користите друге апликације.</string>
+    <!-- Content Description -->
+    <string name="photo_widget_cd_host">Material Photo виџет за почетни екран</string>
+</resources>
