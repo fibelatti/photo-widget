@@ -137,7 +137,7 @@ androidComponents {
         )
 
         variant.androidResources.localeFilters
-            .addAll("en", "de", "es", "fr", "it", "iw", "ja", "pt", "ro", "ru", "fil", "tr")
+            .addAll("en", "de", "es", "fil", "fr", "it", "iw", "ja", "pt", "ro", "ru", "sr", "tr", "zh")
     }
 }
 
