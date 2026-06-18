@@ -1,7 +1,6 @@
 package com.fibelatti.ui.foundation
 
 import androidx.compose.material3.ButtonGroupDefaults
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
@@ -15,7 +14,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.fibelatti.ui.text.AutoSizeText
 
 @Composable
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 fun ConnectedButtonRowItem(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,

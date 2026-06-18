@@ -27,7 +27,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonGroupDefaults
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
@@ -71,7 +70,6 @@ import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 fun MyWidgetsScreen(
     widgets: List<Pair<Int, PhotoWidget>>,
     onWidgetClick: (id: Int, PhotoWidget) -> Unit,
