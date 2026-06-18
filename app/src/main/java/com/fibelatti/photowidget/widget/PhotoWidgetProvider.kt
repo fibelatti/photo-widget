@@ -21,9 +21,7 @@ import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetText
-import com.fibelatti.photowidget.model.tapActionDisableTap
 import com.fibelatti.photowidget.model.textToBitmap
 import com.fibelatti.photowidget.platform.ExceptionReporter
 import com.fibelatti.photowidget.platform.KeepAliveService
@@ -152,7 +150,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
             val newJob: Job = coroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
                 // Timeout to avoid hanging waiting more than what's acceptable
-                currentJob?.let { job -> withTimeoutOrNull(5_000L) { job.join() } }
+                currentJob?.let { job -> withTimeoutOrNull(timeMillis = 5_000L) { job.join() } }
 
                 val photoWidget: PhotoWidget = pinningCache.pendingWidget
                     ?.takeIf { appWidgetId !in photoWidgetStorage.getKnownWidgetIds().first() }
@@ -166,8 +164,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     recoveryMode = recoveryMode,
                 )
 
-                setTapActions(
-                    remoteViews = views,
+                views.setWidgetTapActions(
                     context = context,
                     appWidgetId = appWidgetId,
                     photoWidget = photoWidget,
@@ -338,52 +335,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             )
         }
         // endregion Appearance
-
-        // region Tap Actions
-        private fun setTapActions(
-            remoteViews: RemoteViews,
-            context: Context,
-            appWidgetId: Int,
-            photoWidget: PhotoWidget,
-            isLocked: Boolean,
-            isCyclePaused: Boolean,
-        ) {
-            remoteViews.setViewVisibility(R.id.tap_actions_layout, View.VISIBLE)
-
-            val shouldDisableTap: Boolean = photoWidget.tapActionDisableTap && isCyclePaused
-
-            val pendingIntentArgs: (PhotoWidgetTapAction) -> PendingIntent? = { tapAction ->
-                TapActionPendingIntentFactory.create(
-                    context = context,
-                    appWidgetId = appWidgetId,
-                    tapAction = tapAction,
-                    isLocked = isLocked,
-                    shouldDisableTap = shouldDisableTap,
-                    originalPhotoPath = photoWidget.currentPhoto?.originalPhotoPath,
-                    externalUri = photoWidget.currentPhoto?.externalUri,
-                )
-            }
-
-            remoteViews.setOnClickPendingIntent(R.id.view_tap_center, pendingIntentArgs(photoWidget.tapActions.center))
-
-            val tapLeftPendingIntent: PendingIntent? = pendingIntentArgs(photoWidget.tapActions.left)
-            if (tapLeftPendingIntent != null) {
-                remoteViews.setViewVisibility(R.id.view_tap_left, View.VISIBLE)
-                remoteViews.setOnClickPendingIntent(R.id.view_tap_left, tapLeftPendingIntent)
-            } else {
-                remoteViews.setViewVisibility(R.id.view_tap_left, View.INVISIBLE)
-            }
-
-            val tapRightPendingIntent: PendingIntent? = pendingIntentArgs(photoWidget.tapActions.right)
-            if (tapRightPendingIntent != null) {
-                remoteViews.setViewVisibility(R.id.view_tap_right, View.VISIBLE)
-                remoteViews.setOnClickPendingIntent(R.id.view_tap_right, tapRightPendingIntent)
-            } else {
-                remoteViews.setViewVisibility(R.id.view_tap_right, View.INVISIBLE)
-            }
-        }
-
-        // endregion Tap Actions
 
         private fun setErrorState(
             remoteViews: RemoteViews,

@@ -86,6 +86,7 @@ fun HomeScreenNavDisplay(
     preparedIntent: Intent?,
     onIntentConsume: () -> Unit,
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
+    onCreateTransparentWidgetClick: () -> Unit,
     onRestoreWidgetClick: (PhotoWidget) -> Unit,
     onAppLanguageClick: () -> Unit,
     onShareClick: () -> Unit,
@@ -110,6 +111,7 @@ fun HomeScreenNavDisplay(
                     preparedIntent = preparedIntent,
                     onIntentConsume = onIntentConsume,
                     onCreateNewWidgetClick = onCreateNewWidgetClick,
+                    onCreateTransparentWidgetClick = onCreateTransparentWidgetClick,
                     onDefaultsClick = { navBackStack.add(HomeNav.WidgetDefaults) },
                     onBackupClick = { navBackStack.add(HomeNav.WidgetBackup) },
                     onAppLanguageClick = onAppLanguageClick,
@@ -146,6 +148,7 @@ private fun HomeScreen(
     preparedIntent: Intent?,
     onIntentConsume: () -> Unit,
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
+    onCreateTransparentWidgetClick: () -> Unit,
     onDefaultsClick: () -> Unit,
     onBackupClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
@@ -153,6 +156,7 @@ private fun HomeScreen(
     onViewLicensesClick: () -> Unit,
 ) {
     val currentWidgets by homeViewModel.currentWidgets.collectAsStateWithLifecycle()
+    val highlightTransparentWidgets by homeViewModel.highlightTransparentWidgets.collectAsStateWithLifecycle()
 
     val existingWidgetMenuSheetState = rememberAppSheetState()
     val removedWidgetSheetState = rememberAppSheetState()
@@ -173,7 +177,10 @@ private fun HomeScreen(
 
     HomeScreen(
         onCreateNewWidgetClick = onCreateNewWidgetClick,
+        onCreateTransparentWidgetClick = onCreateTransparentWidgetClick,
         currentWidgets = currentWidgets,
+        highlightTransparentWidgets = highlightTransparentWidgets,
+        onHighlightTransparentWidgetsChange = homeViewModel::setHighlightTransparentWidgets,
         onWidgetClick = { appWidgetId: Int, widget: PhotoWidget ->
             when {
                 widget.status == PhotoWidgetStatus.DRAFT -> {
@@ -265,7 +272,10 @@ private fun HomeScreen(
 @Composable
 fun HomeScreen(
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
+    onCreateTransparentWidgetClick: () -> Unit,
     currentWidgets: List<Pair<Int, PhotoWidget>>,
+    highlightTransparentWidgets: Boolean,
+    onHighlightTransparentWidgetsChange: (Boolean) -> Unit,
     onWidgetClick: (id: Int, PhotoWidget) -> Unit,
     onDefaultsClick: () -> Unit,
     onAppearanceClick: () -> Unit,
@@ -317,6 +327,7 @@ fun HomeScreen(
                 HomeNavigationDestination.NEW_WIDGET -> {
                     NewWidgetScreen(
                         onCreateNewWidgetClick = onCreateNewWidgetClick,
+                        onCreateTransparentWidgetClick = onCreateTransparentWidgetClick,
                         onHelpClick = helpSheetState::showBottomSheet,
                         showBackgroundRestrictionHint = showBackgroundRestrictionHint,
                         onBackgroundRestrictionClick = backgroundRestrictionSheetState::showBottomSheet,
@@ -328,6 +339,8 @@ fun HomeScreen(
                     MyWidgetsScreen(
                         widgets = currentWidgets,
                         onWidgetClick = onWidgetClick,
+                        highlightTransparentWidgets = highlightTransparentWidgets,
+                        onHighlightTransparentWidgetsChange = onHighlightTransparentWidgetsChange,
                     )
                 }
 
@@ -448,7 +461,10 @@ private fun HomeScreenPreview() {
     ExtendedTheme {
         HomeScreen(
             onCreateNewWidgetClick = {},
+            onCreateTransparentWidgetClick = {},
             currentWidgets = emptyList(),
+            highlightTransparentWidgets = false,
+            onHighlightTransparentWidgetsChange = {},
             onWidgetClick = { _, _ -> },
             onDefaultsClick = {},
             onAppearanceClick = {},

@@ -4,6 +4,8 @@
     <string name="photo_widget_host_description">添加您喜欢的照片或同步文件夹。设置操作。选择自定义的格式和放置后的大小。</string>
     <string name="photo_widget_host_loading">加载小组件中…</string>
     <string name="photo_widget_host_failed">加载失败\n再试一次？</string>
+    <string name="transparent_widget_label">透明小组件</string>
+    <string name="transparent_widget_host_description">没有图片的隐形小组件。设置点击动作即可从桌面启动应用、文件夹或链接。</string>
     <!-- Home -->
     <string name="photo_widget_home_title">使用你最爱的图片来装扮桌面</string>
     <string name="photo_widget_home_instruction">通过点击其中一个选项来新建一个小组件。不必担心，你可以随时更改形状设置！</string>
@@ -20,6 +22,7 @@
     <string name="photo_widget_home_share">分享此应用</string>
     <string name="photo_widget_home_rate">撰写评价</string>
     <string name="photo_widget_home_help">出错了？</string>
+    <string name="photo_widget_home_create_transparent">创建透明小组件</string>
     <string name="photo_widget_home_common_issues">常见问题</string>
     <string name="photo_widget_home_privacy_policy">隐私条款</string>
     <string name="photo_widget_home_developer">由 Filipe Belatti 用❤开发</string>
@@ -38,6 +41,9 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">您尚未添加任何小组件。\n这里会展示已添加到桌面的小组件。</string>
     <string name="photo_widget_home_filter_all">全部</string>
+    <string name="photo_widget_home_transparent_label">透明</string>
+    <string name="photo_widget_home_highlight_transparent_title">显示透明小组件</string>
+    <string name="photo_widget_home_highlight_transparent_subtitle">暂时为透明小组件添加背景，方便您在桌面上找到并重新排列它们。</string>
     <string name="photo_widget_home_draft_label">草稿</string>
     <string name="photo_widget_home_draft_action_discard">放弃草稿</string>
     <string name="photo_widget_home_locked_label">锁定</string>
@@ -200,6 +206,7 @@
     <string name="photo_widget_configure_padding">填充</string>
     <string name="photo_widget_configure_tap_action">点击动作</string>
     <string name="photo_widget_configure_tap_action_description">自定义每个区域的点击动作。</string>
+    <string name="photo_widget_configure_tap_action_description_transparent">在桌面上创建隐形快捷方式。自定义每个区域的点击动作。</string>
     <string name="photo_widget_configure_tap_action_copy_from">复制自…</string>
     <string name="photo_widget_configure_tap_action_area_left">左侧</string>
     <string name="photo_widget_configure_tap_action_area_center">中间</string>

@@ -21,4 +21,5 @@ data class UserPreferences(
     val defaultOpacity: Float,
     val defaultSaturation: Float,
     val defaultBrightness: Float,
+    val highlightTransparentWidgets: Boolean,
 )

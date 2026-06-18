@@ -79,6 +79,15 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
+    /**
+     * Ensures the widget has a directory row so it is tracked by [getKnownWidgetIds]. Photo widgets
+     * get one when their first photo is imported; transparent widgets have no photos, so this is
+     * called explicitly when they are saved.
+     */
+    suspend fun ensureWidgetDirectory(appWidgetId: Int) {
+        getOrCreateDirectoryName(appWidgetId = appWidgetId)
+    }
+
     private suspend fun getOrCreateDirectoryName(appWidgetId: Int): String {
         ensureDirectoryMigration()
 
@@ -114,6 +123,14 @@ class PhotoWidgetStorage @Inject constructor(
 
     fun getWidgetSource(appWidgetId: Int): PhotoWidgetSource {
         return sharedPreferences.getWidgetSource(appWidgetId = appWidgetId)
+    }
+
+    fun saveWidgetTransparent(appWidgetId: Int, value: Boolean) {
+        sharedPreferences.saveWidgetTransparent(appWidgetId = appWidgetId, value = value)
+    }
+
+    fun getWidgetTransparent(appWidgetId: Int): Boolean {
+        return sharedPreferences.getWidgetTransparent(appWidgetId = appWidgetId)
     }
 
     suspend fun hasActiveGifWidgets(): Boolean {

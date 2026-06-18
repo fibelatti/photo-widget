@@ -7,9 +7,11 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.platform.ExceptionReporter
+import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
+import com.fibelatti.photowidget.widget.TransparentWidgetProvider
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -40,6 +42,7 @@ class HomeViewModel @Inject constructor(
     private val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
     private val photoWidgetStorage: PhotoWidgetStorage,
     private val photoWidgetAlarmManager: PhotoWidgetAlarmManager,
+    private val userPreferencesStorage: UserPreferencesStorage,
     private val exceptionReporter: ExceptionReporter,
     private val scope: CoroutineScope,
 ) : ViewModel() {
@@ -51,6 +54,14 @@ class HomeViewModel @Inject constructor(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = emptyList(),
+        )
+
+    val highlightTransparentWidgets: StateFlow<Boolean> = userPreferencesStorage.userPreferences
+        .map { it.highlightTransparentWidgets }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = userPreferencesStorage.highlightTransparentWidgets,
         )
 
     private val _pendingReport: MutableStateFlow<String?> = MutableStateFlow(null)
@@ -76,13 +87,13 @@ class HomeViewModel @Inject constructor(
                 }
             }
             .map { widgets: Map<Int, PhotoWidget> ->
-                val providerIds: List<Int> = PhotoWidgetProvider.ids(context)
+                val providerIds: List<Int> = PhotoWidgetProvider.ids(context) + TransparentWidgetProvider.ids(context)
 
                 widgets.mapValues { (widgetId: Int, widget: PhotoWidget) ->
                     val isLocked: Boolean = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = widgetId)
                     val status: PhotoWidgetStatus = when {
                         PhotoWidget.isDraftWidgetId(widgetId) -> PhotoWidgetStatus.DRAFT
-                        widget.photos.isEmpty() && !widget.isLoading -> PhotoWidgetStatus.INVALID
+                        !widget.transparent && widget.photos.isEmpty() && !widget.isLoading -> PhotoWidgetStatus.INVALID
                         widget.deletionTimestamp > 0L -> PhotoWidgetStatus.REMOVED
                         isLocked && widgetId in providerIds -> PhotoWidgetStatus.LOCKED
                         widgetId in providerIds -> PhotoWidgetStatus.ACTIVE
@@ -122,6 +133,15 @@ class HomeViewModel @Inject constructor(
             PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
 
             updateSignal.send(Unit)
+        }
+    }
+
+    fun setHighlightTransparentWidgets(value: Boolean) {
+        viewModelScope.launch {
+            userPreferencesStorage.highlightTransparentWidgets = value
+            TransparentWidgetProvider.ids(context).forEach { id ->
+                TransparentWidgetProvider.update(context = context, appWidgetId = id)
+            }
         }
     }
 

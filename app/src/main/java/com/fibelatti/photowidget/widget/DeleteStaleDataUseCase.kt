@@ -11,6 +11,8 @@ class DeleteStaleDataUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke() {
-        photoWidgetStorage.deleteUnusedWidgetData(existingWidgetIds = PhotoWidgetProvider.ids(context = context))
+        val existingWidgetIds: List<Int> = PhotoWidgetProvider.ids(context = context) +
+            TransparentWidgetProvider.ids(context = context)
+        photoWidgetStorage.deleteUnusedWidgetData(existingWidgetIds = existingWidgetIds)
     }
 }

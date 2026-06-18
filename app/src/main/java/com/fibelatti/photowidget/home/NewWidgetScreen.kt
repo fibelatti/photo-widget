@@ -37,6 +37,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -79,6 +80,7 @@ import kotlin.math.roundToInt
 @Composable
 fun NewWidgetScreen(
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
+    onCreateTransparentWidgetClick: () -> Unit,
     onHelpClick: () -> Unit,
     showBackgroundRestrictionHint: Boolean,
     onBackgroundRestrictionClick: () -> Unit,
@@ -134,6 +136,13 @@ fun NewWidgetScreen(
                     .fadingEdges(scrollState = state, isHorizontal = true),
                 state = state,
             )
+
+            OutlinedButton(
+                onClick = onCreateTransparentWidgetClick,
+                shapes = ButtonDefaults.shapes(),
+            ) {
+                Text(text = stringResource(R.string.photo_widget_home_create_transparent))
+            }
 
             TextButton(
                 onClick = onHelpClick,
@@ -394,6 +403,7 @@ private fun NewWidgetScreenPreview() {
     ExtendedTheme {
         NewWidgetScreen(
             onCreateNewWidgetClick = {},
+            onCreateTransparentWidgetClick = {},
             onHelpClick = {},
             showBackgroundRestrictionHint = true,
             onBackgroundRestrictionClick = {},

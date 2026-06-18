@@ -138,6 +138,7 @@ fun PhotoWidgetTapActionPicker(
     onNavClick: () -> Unit,
     currentTapActions: PhotoWidgetTapActions,
     source: PhotoWidgetSource,
+    transparent: Boolean,
     onApplyClick: (newTapActions: PhotoWidgetTapActions) -> Unit,
 ) {
     val context: Context = LocalContext.current
@@ -238,6 +239,7 @@ fun PhotoWidgetTapActionPicker(
             )
         },
         source = source,
+        transparent = transparent,
         onCopyFromClick = { sourceArea ->
             tapActions = onTapActionChange(
                 originalActions = currentTapActions,
@@ -524,6 +526,7 @@ private fun TapActionPickerContent(
     onChooseGalleryAppClick: () -> Unit,
     onChooseFileClick: () -> Unit,
     onApplyClick: () -> Unit,
+    transparent: Boolean = false,
 ) {
     Column(
         modifier = Modifier
@@ -554,14 +557,22 @@ private fun TapActionPickerContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = stringResource(id = R.string.photo_widget_configure_tap_action),
+                    text = if (!transparent) {
+                        stringResource(id = R.string.photo_widget_configure_tap_action)
+                    } else {
+                        stringResource(id = R.string.transparent_widget_label)
+                    },
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleLarge,
                 )
 
                 Text(
-                    text = stringResource(id = R.string.photo_widget_configure_tap_action_description),
+                    text = if (!transparent) {
+                        stringResource(id = R.string.photo_widget_configure_tap_action_description)
+                    } else {
+                        stringResource(id = R.string.photo_widget_configure_tap_action_description_transparent)
+                    },
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium,
@@ -595,6 +606,7 @@ private fun TapActionPickerContent(
                 onTapActionClick = onTapActionChange,
                 selectedArea = selectedArea,
                 source = source,
+                transparent = transparent,
                 onCopyFromClick = onCopyFromClick,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -739,6 +751,7 @@ private fun TapOptionsPicker(
     source: PhotoWidgetSource,
     onCopyFromClick: (TapActionArea) -> Unit,
     modifier: Modifier = Modifier,
+    transparent: Boolean = false,
 ) {
     val tapActionSheetState: AppSheetState = rememberAppSheetState()
     val copyFromSheetState: AppSheetState = rememberAppSheetState()
@@ -770,7 +783,11 @@ private fun TapOptionsPicker(
             title = stringResource(R.string.photo_widget_configure_tap_action),
         ) {
             RadioGroup(
-                items = PhotoWidgetTapAction.entriesForSource(source = source),
+                items = if (transparent) {
+                    PhotoWidgetTapAction.entriesForTransparent()
+                } else {
+                    PhotoWidgetTapAction.entriesForSource(source = source)
+                },
                 itemSelected = { action -> action::class == currentTapAction::class },
                 onItemClick = { selection ->
                     onTapActionClick(selection)

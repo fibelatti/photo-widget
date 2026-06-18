@@ -48,6 +48,7 @@ class HomeActivity : AppCompatActivity() {
                     preparedIntent = preparedIntent,
                     onIntentConsume = { preparedIntent = null },
                     onCreateNewWidgetClick = ::createNewWidget,
+                    onCreateTransparentWidgetClick = ::createTransparentWidget,
                     onRestoreWidgetClick = ::restoreWidget,
                     onAppLanguageClick = ::showTranslationsDialog,
                     onShareClick = ::shareApp,
@@ -117,6 +118,20 @@ class HomeActivity : AppCompatActivity() {
         preparedIntent = null
 
         startActivity(intent)
+    }
+
+    private fun createTransparentWidget() {
+        if (widgetPinningNotAvailable()) {
+            showMaterialAlertDialog {
+                setTitle(R.string.photo_widget_home_pinning_not_supported_title)
+                setMessage(R.string.photo_widget_home_pinning_not_supported_message)
+                setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+            }
+
+            return
+        }
+
+        startActivity(PhotoWidgetConfigureActivity.newTransparentWidgetIntent(context = this))
     }
 
     private fun restoreWidget(photoWidget: PhotoWidget) {

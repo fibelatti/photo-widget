@@ -59,6 +59,7 @@ import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSerializable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -80,7 +81,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
-import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.serialization.NavBackStackSerializer
+import androidx.navigation3.runtime.serialization.NavKeySerializer
 import androidx.navigation3.ui.NavDisplay
 import androidx.window.core.layout.WindowSizeClass
 import com.canhub.cropper.CropImageOptions
@@ -117,7 +119,16 @@ fun PhotoWidgetConfigureScreen(
     onBack: () -> Unit,
 ) {
     val state: PhotoWidgetConfigureState by viewModel.state.collectAsStateWithLifecycle()
-    val configureBackStack: NavBackStack<NavKey> = rememberNavBackStack(PhotoWidgetConfigureNav.Home)
+    val isTransparent: Boolean = state.photoWidget.transparent
+
+    val configureBackStack: NavBackStack<NavKey> = rememberSerializable(
+        isTransparent,
+        serializer = NavBackStackSerializer(elementSerializer = NavKeySerializer()),
+    ) {
+        NavBackStack(
+            if (isTransparent) PhotoWidgetConfigureNav.TapActionPicker else PhotoWidgetConfigureNav.Home,
+        )
+    }
 
     val localLifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
     val isLifecycleStateValid: () -> Boolean by rememberUpdatedState {
@@ -185,12 +196,17 @@ fun PhotoWidgetConfigureScreen(
 
             entry<PhotoWidgetConfigureNav.TapActionPicker> {
                 PhotoWidgetTapActionPicker(
-                    onNavClick = configureBackStack::popNavKey,
+                    onNavClick = { if (isTransparent) onBack() else configureBackStack.popNavKey() },
                     currentTapActions = state.photoWidget.tapActions,
                     source = state.photoWidget.source,
+                    transparent = isTransparent,
                     onApplyClick = { actions ->
                         viewModel.tapActionSelected(actions)
-                        configureBackStack.popNavKey()
+                        if (isTransparent) {
+                            viewModel.addNewWidget()
+                        } else {
+                            configureBackStack.popNavKey()
+                        }
                     },
                 )
             }

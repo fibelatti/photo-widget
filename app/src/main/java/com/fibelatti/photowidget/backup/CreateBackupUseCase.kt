@@ -33,9 +33,7 @@ class CreateBackupUseCase @Inject constructor(
         val widgetsToExport: Map<Int, PhotoWidget> = photoWidgetStorage.getKnownWidgetIds()
             .first()
             .associateWith { id: Int -> loadPhotoWidgetUseCase(appWidgetId = id).first() }
-            .filterValues { widget: PhotoWidget ->
-                widget.source == PhotoWidgetSource.PHOTOS || widget.source == PhotoWidgetSource.GIF
-            }
+            .filterValues(PhotoWidget::supportsBackup)
 
         val backupDir: File = createBackupFiles()
             .apply {
@@ -89,3 +87,7 @@ class CreateBackupUseCase @Inject constructor(
         }
     }
 }
+
+private val PhotoWidget.supportsBackup: Boolean
+    get() = (source == PhotoWidgetSource.PHOTOS || source == PhotoWidgetSource.GIF) &&
+        !transparent

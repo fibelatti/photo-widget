@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tap_actions_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    tools:layout_height="400dp"
+    tools:layout_width="400dp"
+    tools:targetApi="s">
+
+    <FrameLayout
+        android:id="@+id/view_tap_left"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3" />
+
+    <FrameLayout
+        android:id="@+id/view_tap_center"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4" />
+
+    <FrameLayout
+        android:id="@+id/view_tap_right"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3" />
+</LinearLayout>

@@ -55,6 +55,14 @@ class SavePhotoWidgetUseCase @Inject constructor(
         }
 
         photoWidgetStorage.saveWidgetSource(appWidgetId = appWidgetId, source = photoWidget.source)
+        photoWidgetStorage.saveWidgetTransparent(appWidgetId = appWidgetId, value = photoWidget.transparent)
+
+        // Transparent widgets have no photos, so there is no content to sync or track. A directory
+        // row is still created so the widget is tracked by `getKnownWidgetIds` (e.g. My Widgets).
+        if (photoWidget.transparent) {
+            photoWidgetStorage.ensureWidgetDirectory(appWidgetId = appWidgetId)
+            return
+        }
 
         if (photoWidget.source == PhotoWidgetSource.DIRECTORY) {
             photoWidgetStorage.saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = photoWidget.syncedDir)

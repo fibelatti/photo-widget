@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Ability to select app shortcuts when using the "Open an app" tap action
 * Ability to add app shortcuts when using the "App folder" tap action
+* New transparent widget option, to enable invisible shortcuts
 
 ## [v1.42.4] - 2026-06-01
 [v1.42.4]: https://github.com/fibelatti/photo-widget/releases/tag/v1.42.4

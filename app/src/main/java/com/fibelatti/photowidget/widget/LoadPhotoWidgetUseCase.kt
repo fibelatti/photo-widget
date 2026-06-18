@@ -75,6 +75,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
 
         return PhotoWidget(
             source = getWidgetSource(appWidgetId = appWidgetId),
+            transparent = getWidgetTransparent(appWidgetId = appWidgetId),
             syncedDir = getWidgetSyncDir(appWidgetId = appWidgetId),
             shuffle = getWidgetShuffle(appWidgetId = appWidgetId),
             directorySorting = getWidgetSorting(appWidgetId = appWidgetId),

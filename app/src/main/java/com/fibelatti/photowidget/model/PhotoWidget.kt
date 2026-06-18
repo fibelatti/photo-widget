@@ -30,6 +30,7 @@ data class PhotoWidget(
     val deletionTimestamp: Long = -1,
     val removedPhotos: List<LocalPhoto> = emptyList(),
     val isLoading: Boolean = false,
+    val transparent: Boolean = false,
 ) : Parcelable {
 
     companion object {

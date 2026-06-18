@@ -44,6 +44,16 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         return enumValueOfOrNull<PhotoWidgetSource>(name) ?: userPreferencesStorage.defaultSource
     }
 
+    fun saveWidgetTransparent(appWidgetId: Int, value: Boolean) {
+        sharedPreferences.edit {
+            putBoolean("${PreferencePrefix.TRANSPARENT}$appWidgetId", value)
+        }
+    }
+
+    fun getWidgetTransparent(appWidgetId: Int): Boolean {
+        return sharedPreferences.getBoolean("${PreferencePrefix.TRANSPARENT}$appWidgetId", false)
+    }
+
     fun saveWidgetSyncedDir(appWidgetId: Int, dirUri: Set<Uri>) {
         sharedPreferences.edit {
             putStringSet("${PreferencePrefix.SYNCED_DIR}$appWidgetId", dirUri.map { it.toString() }.toSet())
@@ -695,6 +705,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
 
     private enum class PreferencePrefix(val value: String) {
         SOURCE(value = "appwidget_source_"),
+        TRANSPARENT(value = "appwidget_transparent_"),
 
         /**
          * Key from when initial support for directory based widgets was introduced.

@@ -49,6 +49,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             defaultOpacity = defaultOpacity,
             defaultSaturation = defaultSaturation,
             defaultBrightness = defaultBrightness,
+            highlightTransparentWidgets = highlightTransparentWidgets,
         ),
     )
     val userPreferences: StateFlow<UserPreferences> = _userPreferences.asStateFlow()
@@ -98,6 +99,15 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         set(value) {
             sharedPreferences.edit { putBoolean(Preference.APP_DYNAMIC_COLORS.value, value) }
             _userPreferences.update { current -> current.copy(dynamicColors = value) }
+        }
+
+    var highlightTransparentWidgets: Boolean
+        get() {
+            return sharedPreferences.getBoolean(Preference.HIGHLIGHT_TRANSPARENT_WIDGETS.value, false)
+        }
+        set(value) {
+            sharedPreferences.edit { putBoolean(Preference.HIGHLIGHT_TRANSPARENT_WIDGETS.value, value) }
+            _userPreferences.update { current -> current.copy(highlightTransparentWidgets = value) }
         }
     // endregion App
 
@@ -301,7 +311,13 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
     fun clearDefaults() {
         sharedPreferences.edit {
             Preference.entries
-                .minus(listOf(Preference.APP_APPEARANCE, Preference.APP_DYNAMIC_COLORS))
+                .minus(
+                    listOf(
+                        Preference.APP_APPEARANCE,
+                        Preference.APP_DYNAMIC_COLORS,
+                        Preference.HIGHLIGHT_TRANSPARENT_WIDGETS,
+                    ),
+                )
                 .forEach { preference -> remove(preference.value) }
         }
         _userPreferences.update {
@@ -321,6 +337,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                 defaultOpacity = defaultOpacity,
                 defaultSaturation = defaultSaturation,
                 defaultBrightness = defaultBrightness,
+                highlightTransparentWidgets = highlightTransparentWidgets,
             )
         }
     }
@@ -331,6 +348,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         APP_APPEARANCE(value = "user_preferences_appearance"),
         USE_TRUE_BLACK(value = "user_preferences_use_true_black"),
         APP_DYNAMIC_COLORS(value = "user_preferences_dynamic_colors"),
+        HIGHLIGHT_TRANSPARENT_WIDGETS(value = "user_preferences_highlight_transparent_widgets"),
         DEFAULT_ASPECT_RATIO(value = "default_aspect_ratio"),
         DEFAULT_SOURCE(value = "default_source"),
         DEFAULT_SHUFFLE(value = "default_shuffle"),

@@ -10,6 +10,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.platform.EntryPointBroadcastReceiver
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.fibelatti.photowidget.widget.SavePhotoWidgetUseCase
+import com.fibelatti.photowidget.widget.TransparentWidgetProvider
 import timber.log.Timber
 
 /**
@@ -20,17 +21,25 @@ class PhotoWidgetPinnedReceiver : EntryPointBroadcastReceiver() {
     override suspend fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
         Timber.i("Working... %s", mapOf("appWidgetId" to intent.appWidgetId))
 
-        val widgetId: Int = intent.appWidgetId
-            .takeUnless { it == AppWidgetManager.INVALID_APPWIDGET_ID }
-            // Workaround Samsung devices that fail to update the intent with the actual ID
-            ?: PhotoWidgetProvider.ids(context = context).lastOrNull()
-            // Exit early if the widget was not placed
-            ?: return
-
         val pinningCache: PhotoWidgetPinningCache = entryPoint.photoWidgetPinningCache()
 
         // The widget data is missing, it's impossible to continue
         val (photoWidget: PhotoWidget, draftWidgetId: Int) = pinningCache.peek() ?: return
+
+        // A transparent widget is bound to its own provider, so the Samsung id-recovery workaround
+        // and the final update below must target the matching provider.
+        val providerIds: List<Int> = if (photoWidget.transparent) {
+            TransparentWidgetProvider.ids(context = context)
+        } else {
+            PhotoWidgetProvider.ids(context = context)
+        }
+
+        val widgetId: Int = intent.appWidgetId
+            .takeUnless { it == AppWidgetManager.INVALID_APPWIDGET_ID }
+            // Workaround Samsung devices that fail to update the intent with the actual ID
+            ?: providerIds.lastOrNull()
+            // Exit early if the widget was not placed
+            ?: return
 
         Timber.d("New widget %s", mapOf("widgetId" to widgetId, "draftWidgetId" to draftWidgetId))
 
@@ -47,7 +56,11 @@ class PhotoWidgetPinnedReceiver : EntryPointBroadcastReceiver() {
         }
 
         // Update the widget UI using the updated storage data
-        PhotoWidgetProvider.update(context = context, appWidgetId = widgetId)
+        if (photoWidget.transparent) {
+            TransparentWidgetProvider.update(context = context, appWidgetId = widgetId)
+        } else {
+            PhotoWidgetProvider.update(context = context, appWidgetId = widgetId)
+        }
 
         // Finally finish the configure activity since it's no longer needed
         val finishIntent = Intent(PhotoWidgetConfigureActivity.ACTION_FINISH).apply {

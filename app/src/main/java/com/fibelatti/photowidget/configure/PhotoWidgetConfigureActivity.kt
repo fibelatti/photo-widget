@@ -28,6 +28,7 @@ import com.fibelatti.photowidget.platform.KeepAliveService
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
+import com.fibelatti.photowidget.widget.TransparentWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -60,6 +61,17 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         // Set the result to "CANCELED". This will cause the widget host to cancel
         // out of the widget placement if the user presses the back button.
         setResult(RESULT_CANCELED)
+
+        // When launched by the system widget picker there is no `transparent` extra, only the bound
+        // provider tells us the widget type. Detect it here, before the ViewModel reads the intent.
+        // Other cases (e.g. restoring a deleted widget) are resolved by the ViewModel itself.
+        if (!intent.transparent && intent.appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+            val boundProvider: String? = AppWidgetManager.getInstance(this)
+                .getAppWidgetInfo(intent.appWidgetId)?.provider?.className
+            if (boundProvider == TransparentWidgetProvider::class.java.name) {
+                intent.transparent = true
+            }
+        }
 
         setContent {
             AppTheme {
@@ -157,12 +169,12 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             }
 
             is PhotoWidgetConfigureState.Message.RequestPin -> {
-                requestPin()
+                requestPin(transparent = message.transparent)
                 viewModel.messageHandled(message = message)
             }
 
             is PhotoWidgetConfigureState.Message.AddWidget -> {
-                addNewWidget(appWidgetId = message.appWidgetId)
+                addNewWidget(appWidgetId = message.appWidgetId, transparent = message.transparent)
                 viewModel.messageHandled(message = message)
             }
 
@@ -204,12 +216,13 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         }
     }
 
-    private fun addNewWidget(appWidgetId: Int) {
+    private fun addNewWidget(appWidgetId: Int, transparent: Boolean) {
         widgetAdded(appWidgetId = appWidgetId)
-        PhotoWidgetProvider.update(
-            context = this,
-            appWidgetId = appWidgetId,
-        )
+        if (transparent) {
+            TransparentWidgetProvider.update(context = this, appWidgetId = appWidgetId)
+        } else {
+            PhotoWidgetProvider.update(context = this, appWidgetId = appWidgetId)
+        }
     }
 
     private fun widgetAdded(appWidgetId: Int) {
@@ -224,7 +237,7 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun requestPin() {
+    private fun requestPin(transparent: Boolean) {
         if (lifecycle.currentState != Lifecycle.State.RESUMED) {
             return
         }
@@ -239,9 +252,15 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
 
+        val provider: Class<*> = if (transparent) {
+            TransparentWidgetProvider::class.java
+        } else {
+            PhotoWidgetProvider::class.java
+        }
+
         Timber.d("Invoking AppWidgetManager#requestPinAppWidget")
         AppWidgetManager.getInstance(this).requestPinAppWidget(
-            /* provider = */ ComponentName(this, PhotoWidgetProvider::class.java),
+            /* provider = */ ComponentName(this, provider),
             /* extras = */ null,
             /* successCallback = */ successCallback,
         )
@@ -260,6 +279,12 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             return Intent(context, PhotoWidgetConfigureActivity::class.java).apply {
                 if (aspectRatio != null) this.aspectRatio = aspectRatio
                 if (sharedPhotos != null) this.sharedPhotos = sharedPhotos
+            }
+        }
+
+        fun newTransparentWidgetIntent(context: Context): Intent {
+            return Intent(context, PhotoWidgetConfigureActivity::class.java).apply {
+                this.transparent = true
             }
         }
 

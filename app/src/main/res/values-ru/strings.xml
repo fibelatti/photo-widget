@@ -4,6 +4,8 @@
     <string name="photo_widget_host_description">Добавьте любимые фото или синхронизируйте папки. Настройте действия. Выберите формат при настройке и размере после размещения.</string>
     <string name="photo_widget_host_loading">Загрузка виджета…</string>
     <string name="photo_widget_host_failed">Не удалось загрузить\nПопробовать снова?</string>
+    <string name="transparent_widget_label">Прозрачный виджет</string>
+    <string name="transparent_widget_host_description">Невидимый виджет без фотографий. Настройте действие по нажатию, чтобы открывать приложения, папки или ссылки с главного экрана.</string>
     <!-- Home -->
     <string name="photo_widget_home_title">Украсьте главный экран любимыми фотографиями</string>
     <string name="photo_widget_home_instruction">Создайте новый виджет, нажав на одну из опций. Не волнуйтесь, вы можете изменить это в любое время!</string>
@@ -20,6 +22,7 @@
     <string name="photo_widget_home_share">Поделиться приложением</string>
     <string name="photo_widget_home_rate">Оставить отзыв</string>
     <string name="photo_widget_home_help">Что-то не работает?</string>
+    <string name="photo_widget_home_create_transparent">Создать прозрачный виджет</string>
     <string name="photo_widget_home_common_issues">Распространённые проблемы</string>
     <string name="photo_widget_home_privacy_policy">Политика конфиденциальности</string>
     <string name="photo_widget_home_developer">Разработано с ❤ Филипом Белатти</string>
@@ -41,6 +44,9 @@
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Вы ещё не добавили ни одного виджета.\nДобавленные на главный экран виджеты появятся здесь.</string>
     <string name="photo_widget_home_filter_all">Все</string>
+    <string name="photo_widget_home_transparent_label">Прозрачный</string>
+    <string name="photo_widget_home_highlight_transparent_title">Показывать прозрачные виджеты</string>
+    <string name="photo_widget_home_highlight_transparent_subtitle">Временно добавляет фон прозрачным виджетам, чтобы их было проще найти и переместить на главном экране.</string>
     <string name="photo_widget_home_draft_label">Черновик</string>
     <string name="photo_widget_home_draft_action_discard">Удалить черновик</string>
     <string name="photo_widget_home_locked_label">Заблокировано</string>
@@ -224,6 +230,7 @@
     <string name="photo_widget_configure_padding">Отступ</string>
     <string name="photo_widget_configure_tap_action">Действие по нажатию</string>
     <string name="photo_widget_configure_tap_action_description">Настройте действие при нажатии для каждой области.</string>
+    <string name="photo_widget_configure_tap_action_description_transparent">Создавайте невидимые ярлыки на главном экране. Настройте действие при нажатии для каждой области.</string>
     <string name="photo_widget_configure_tap_action_copy_from">Копировать из…</string>
     <string name="photo_widget_configure_tap_action_area_left">Слева</string>
     <string name="photo_widget_configure_tap_action_area_center">Центр</string>

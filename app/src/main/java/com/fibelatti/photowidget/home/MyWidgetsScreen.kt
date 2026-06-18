@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.home
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -22,12 +23,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
@@ -60,9 +63,11 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.model.isWidgetRemoved
 import com.fibelatti.photowidget.platform.letIf
+import com.fibelatti.photowidget.ui.CheckeredPattern
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
+import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.TrashClock
 import com.fibelatti.ui.preview.PreviewAll
@@ -73,6 +78,8 @@ import com.fibelatti.ui.theme.ExtendedTheme
 fun MyWidgetsScreen(
     widgets: List<Pair<Int, PhotoWidget>>,
     onWidgetClick: (id: Int, PhotoWidget) -> Unit,
+    highlightTransparentWidgets: Boolean,
+    onHighlightTransparentWidgetsChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -82,7 +89,12 @@ fun MyWidgetsScreen(
         val options: List<PhotoWidgetSource?> = listOf(null) + PhotoWidgetSource.entries
         var selectedSource: PhotoWidgetSource? by rememberSaveable { mutableStateOf(null) }
         val filteredWidgets: List<Pair<Int, PhotoWidget>> = remember(widgets, selectedSource) {
-            widgets.filter { (_, widget) -> selectedSource == null || widget.source == selectedSource }
+            widgets.filter { (_, widget) ->
+                selectedSource == null || (widget.source == selectedSource && !widget.transparent)
+            }
+        }
+        val hasTransparentWidgets: Boolean = remember(widgets) {
+            widgets.any { (_, widget) -> widget.transparent && widget.status == PhotoWidgetStatus.ACTIVE }
         }
 
         val enforcedShape: Shape = RoundedCornerShape(28.dp)
@@ -106,7 +118,12 @@ fun MyWidgetsScreen(
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(count = if (isAtLeastMediumWidth) 4 else 2),
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(start = 16.dp, top = 80.dp, end = 16.dp, bottom = 120.dp),
+                    contentPadding = PaddingValues(
+                        start = 16.dp,
+                        top = 80.dp,
+                        end = 16.dp,
+                        bottom = 220.dp,
+                    ),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
@@ -173,6 +190,31 @@ fun MyWidgetsScreen(
                 }
             }
         }
+
+        AnimatedVisibility(
+            visible = hasTransparentWidgets && selectedSource == null,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .widthIn(max = 600.dp),
+            enter = fadeIn() + scaleIn(initialScale = 0.92f),
+            exit = fadeOut() + scaleOut(targetScale = 0.92f),
+        ) {
+            Surface(
+                modifier = Modifier.padding(all = 16.dp),
+                shape = MaterialTheme.shapes.large,
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                tonalElevation = 3.dp,
+                shadowElevation = 3.dp,
+            ) {
+                Toggle(
+                    title = stringResource(R.string.photo_widget_home_highlight_transparent_title),
+                    checked = highlightTransparentWidgets,
+                    onCheckedChange = onHighlightTransparentWidgetsChange,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    subtitle = stringResource(R.string.photo_widget_home_highlight_transparent_subtitle),
+                )
+            }
+        }
     }
 }
 
@@ -196,20 +238,29 @@ private fun WidgetGridItem(
             ),
         contentAlignment = Alignment.BottomCenter,
     ) {
-        ShapedPhoto(
-            photo = widget.currentPhoto,
-            aspectRatio = widget.aspectRatio,
-            shapeId = widget.shapeId,
-            cornerRadius = widget.cornerRadius,
-            modifier = Modifier
-                .fillMaxSize()
-                .letIf(widget.aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET) {
-                    it.clip(enforcedShape)
-                },
-            colors = widget.colors,
-            border = widget.border,
-            isLoading = widget.isLoading,
-        )
+        if (widget.transparent) {
+            CheckeredPattern(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .aspectRatio(1f)
+                    .clip(enforcedShape),
+            )
+        } else {
+            ShapedPhoto(
+                photo = widget.currentPhoto,
+                aspectRatio = widget.aspectRatio,
+                shapeId = widget.shapeId,
+                cornerRadius = widget.cornerRadius,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .letIf(widget.aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET) {
+                        it.clip(enforcedShape)
+                    },
+                colors = widget.colors,
+                border = widget.border,
+                isLoading = widget.isLoading,
+            )
+        }
 
         when {
             widget.status == PhotoWidgetStatus.DRAFT -> {
@@ -246,6 +297,15 @@ private fun WidgetGridItem(
                     text = stringResource(R.string.photo_widget_home_invalid_label),
                     backgroundColor = Color(0xFFFF8A65),
                     contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
+            }
+
+            widget.transparent -> {
+                MyWidgetBadge(
+                    text = stringResource(R.string.photo_widget_home_transparent_label),
+                    backgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(bottom = 8.dp),
                 )
             }
@@ -288,9 +348,12 @@ private fun MyWidgetsScreenPreview() {
                     colors = PhotoWidgetColors(opacity = opacities.random()),
                     status = status,
                     deletionTimestamp = if (status == PhotoWidgetStatus.REMOVED) 1 else -1,
+                    transparent = index == 1,
                 )
             },
             onWidgetClick = { _, _ -> },
+            highlightTransparentWidgets = false,
+            onHighlightTransparentWidgetsChange = {},
         )
     }
 }
@@ -302,6 +365,8 @@ private fun MyWidgetsScreenEmptyPreview() {
         MyWidgetsScreen(
             widgets = emptyList(),
             onWidgetClick = { _, _ -> },
+            highlightTransparentWidgets = false,
+            onHighlightTransparentWidgetsChange = {},
         )
     }
 }

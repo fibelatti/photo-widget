@@ -74,6 +74,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     private val restoreFromId: Int? by savedStateHandle.savedState()
     private val backupWidget: PhotoWidget? by savedStateHandle.savedState()
     private val aspectRatio: PhotoWidgetAspectRatio? by savedStateHandle.savedState()
+    private val transparent: Boolean by savedStateHandle.savedState(default = false)
 
     /**
      * The actual widget ID used for all storage operations. For new widgets, this is a unique
@@ -81,7 +82,12 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
      */
     private var effectiveWidgetId: Int = appWidgetId
 
-    private val _state: MutableStateFlow<PhotoWidgetConfigureState> = MutableStateFlow(PhotoWidgetConfigureState())
+    // Seed the initial state with `transparent` (known synchronously from the intent) so the
+    // configure screen resolves the correct start destination on first composition instead of
+    // rebuilding the back stack once the widget data loads asynchronously.
+    private val _state: MutableStateFlow<PhotoWidgetConfigureState> = MutableStateFlow(
+        PhotoWidgetConfigureState(photoWidget = PhotoWidget(transparent = transparent)),
+    )
     val state: StateFlow<PhotoWidgetConfigureState> = _state.asStateFlow()
 
     init {
@@ -191,6 +197,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 photoWidget = photoWidget.copy(
                     aspectRatio = resolvedAspectRatio,
                     cornerRadius = photoWidget.cornerRadius,
+                    transparent = transparent || photoWidget.transparent,
                 ),
                 selectedPhoto = photoWidget.currentPhoto ?: photoWidget.photos.firstOrNull(),
                 isProcessing = photoWidget.isLoading,
@@ -790,13 +797,16 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     fun addNewWidget() {
         val currentState = _state.value
 
+        // Transparent widgets have no photos by design, so the empty-photo checks don't apply.
+        val requiresPhotos: Boolean = !currentState.photoWidget.transparent
+
         when {
             // Without photos there's no widget
-            currentState.photoWidget.photos.isEmpty() && currentState.isDraft -> {
+            requiresPhotos && currentState.photoWidget.photos.isEmpty() && currentState.isDraft -> {
                 _state += PhotoWidgetConfigureState.Message.CancelWidget
             }
 
-            currentState.photoWidget.photos.isEmpty() -> {
+            requiresPhotos && currentState.photoWidget.photos.isEmpty() -> {
                 _state += PhotoWidgetConfigureState.Message.UserPrompt(
                     textRes = R.string.photo_widget_configure_missing_photos_error,
                 )
@@ -814,7 +824,8 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     pinningCache.populate(pendingWidget = currentState.photoWidget, draftWidgetId = effectiveWidgetId)
 
                     _state.getAndUpdate { current ->
-                        current.copy(isProcessing = false) + PhotoWidgetConfigureState.Message.RequestPin
+                        current.copy(isProcessing = false) +
+                            PhotoWidgetConfigureState.Message.RequestPin(transparent = current.photoWidget.transparent)
                     }
                 }
             }
@@ -838,7 +849,10 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
                     _state.getAndUpdate { current ->
                         current.copy(isProcessing = false) +
-                            PhotoWidgetConfigureState.Message.AddWidget(appWidgetId = appWidgetId)
+                            PhotoWidgetConfigureState.Message.AddWidget(
+                                appWidgetId = appWidgetId,
+                                transparent = current.photoWidget.transparent,
+                            )
                     }
                 }
             }

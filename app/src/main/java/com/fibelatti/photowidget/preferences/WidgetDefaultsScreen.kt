@@ -576,6 +576,7 @@ private fun WidgetDefaultsScreenPreview() {
                 defaultOpacity = PhotoWidget.DEFAULT_OPACITY,
                 defaultSaturation = PhotoWidget.DEFAULT_SATURATION,
                 defaultBrightness = PhotoWidget.DEFAULT_BRIGHTNESS,
+                highlightTransparentWidgets = false,
             ),
             onNavClick = {},
             onAspectRatioClick = {},

@@ -55,9 +55,9 @@ data class PhotoWidgetConfigureState(
             val aspectRatio: PhotoWidgetAspectRatio,
         ) : Message()
 
-        data object RequestPin : Message()
+        data class RequestPin(val transparent: Boolean) : Message()
 
-        data class AddWidget(val appWidgetId: Int) : Message()
+        data class AddWidget(val appWidgetId: Int, val transparent: Boolean) : Message()
 
         data object CancelWidget : Message()
 

@@ -18,6 +18,12 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
     val disallowedSources: List<PhotoWidgetSource> get() = emptyList()
 
+    /**
+     * Whether the action is meaningful on a transparent widget, which has no photos. Only the
+     * actions that don't depend on a photo (launching apps, folders, links, files) qualify.
+     */
+    val availableWithoutPhotos: Boolean get() = false
+
     val sharesPreferences: Boolean get() = false
 
     @Parcelize
@@ -28,6 +34,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
         @IgnoredOnParcel
         override val serializedName: String = "NONE"
+
+        @IgnoredOnParcel
+        override val availableWithoutPhotos: Boolean = true
     }
 
     @Parcelize
@@ -132,6 +141,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
         @IgnoredOnParcel
         override val serializedName: String = "APP_SHORTCUT"
+
+        @IgnoredOnParcel
+        override val availableWithoutPhotos: Boolean = true
     }
 
     @Parcelize
@@ -144,6 +156,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
         @IgnoredOnParcel
         override val serializedName: String = "APP_FOLDER"
+
+        @IgnoredOnParcel
+        override val availableWithoutPhotos: Boolean = true
     }
 
     @Parcelize
@@ -156,6 +171,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
         @IgnoredOnParcel
         override val serializedName: String = "URL_SHORTCUT"
+
+        @IgnoredOnParcel
+        override val availableWithoutPhotos: Boolean = true
     }
 
     @Parcelize
@@ -168,6 +186,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
         @IgnoredOnParcel
         override val serializedName: String = "FILE_SHORTCUT"
+
+        @IgnoredOnParcel
+        override val availableWithoutPhotos: Boolean = true
     }
 
     @Parcelize
@@ -275,6 +296,10 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
         fun entriesForSource(source: PhotoWidgetSource): List<PhotoWidgetTapAction> {
             return entries.filter { tapAction -> source !in tapAction.disallowedSources }
+        }
+
+        fun entriesForTransparent(): List<PhotoWidgetTapAction> {
+            return entries.filter { tapAction -> tapAction.availableWithoutPhotos }
         }
 
         fun fromSerializedName(serializedName: String): PhotoWidgetTapAction {

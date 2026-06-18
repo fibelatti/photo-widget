@@ -12,6 +12,8 @@ var Intent.appWidgetId: Int by intentExtras(
     default = AppWidgetManager.INVALID_APPWIDGET_ID,
 )
 
+var Intent.transparent: Boolean by intentExtras(default = false)
+
 var Intent.duplicateFromId: Int? by intentExtras()
 
 var Intent.restoreFromId: Int? by intentExtras()
