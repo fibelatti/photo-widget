@@ -7,7 +7,6 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -201,11 +200,11 @@ fun AspectRatioPicker(
 
         val verticalOffset: Dp by animateDpAsState(
             targetValue = if (state.canScrollForward) 0.dp else (-40).dp,
-            animationSpec = spring(),
+            animationSpec = tween(durationMillis = 300),
         )
         val alpha: Float by animateFloatAsState(
             targetValue = if (state.canScrollForward) 1f else 0f,
-            animationSpec = spring(),
+            animationSpec = tween(durationMillis = 300),
         )
 
         Row(
