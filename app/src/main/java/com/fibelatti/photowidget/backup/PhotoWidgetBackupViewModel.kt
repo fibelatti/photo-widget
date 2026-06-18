@@ -98,7 +98,6 @@ class PhotoWidgetBackupViewModel @Inject constructor(
 
     override fun onCleared() {
         state.restoredBackupFile?.deleteRecursively()
-        super.onCleared()
     }
 
     data class State(
