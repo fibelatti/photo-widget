@@ -5,6 +5,7 @@ import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.DependencyHandlerScope
+import org.gradle.kotlin.dsl.extra
 import org.gradle.kotlin.dsl.getByType
 
 internal val javaVersion = JavaVersion.VERSION_21
@@ -28,4 +29,11 @@ internal fun DependencyHandlerScope.debugImplementation(alias: String) {
 
 internal fun DependencyHandlerScope.implementation(provider: Provider<MinimalExternalModuleDependency>) {
     "implementation"(provider)
+}
+
+@Suppress("UNCHECKED_CAST")
+tailrec fun <T> Project.findExtraInHierarchy(name: String): T {
+    if (extra.has(name)) return extra[name] as T
+    val ancestor: Project = parent ?: error("Extra named $name not found in project hierarchy.")
+    return ancestor.findExtraInHierarchy(name)
 }

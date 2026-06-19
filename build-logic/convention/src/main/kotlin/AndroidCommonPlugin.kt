@@ -4,7 +4,6 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
-import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -29,8 +28,8 @@ class AndroidCommonPlugin : Plugin<Project> {
     }
 
     private fun Project.configureSdkCompatibility() {
-        val compileSdkVersion: Int by this
-        val minSdkVersion: Int by this
+        val compileSdkVersion: Int = findExtraInHierarchy("compileSdkVersion")
+        val minSdkVersion: Int = findExtraInHierarchy("minSdkVersion")
 
         extensions.getByType<CommonExtension>().apply {
             compileSdk = compileSdkVersion
