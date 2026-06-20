@@ -1,0 +1,6 @@
+This version brings the following updates:
+
+* Add app shortcut support to the "Open an app" and "App folder" tap actions
+* Add a transparent widget option, for invisible shortcuts
+
+Thanks for using the app!

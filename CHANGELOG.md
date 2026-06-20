@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.43.0] - 2026-06-20
+[v1.43.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.43.0
+
 ### Added
 
 * Ability to select app shortcuts when using the "Open an app" tap action
