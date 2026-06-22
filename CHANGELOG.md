@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+* Show the wallpaper behind the preview when configuring a widget
+
 ## [v1.43.0] - 2026-06-20
 [v1.43.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.43.0
 

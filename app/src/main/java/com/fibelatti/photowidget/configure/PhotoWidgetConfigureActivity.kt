@@ -7,8 +7,10 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,6 +18,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -61,6 +64,13 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         // Set the result to "CANCELED". This will cause the widget host to cancel
         // out of the widget placement if the user presses the back button.
         setResult(RESULT_CANCELED)
+
+        // Let the system composite the real wallpaper (including live wallpapers) behind the
+        // window so the widget preview can be shown directly on top of it. A transparent window
+        // background is required, otherwise the opaque windowBackground paints over the wallpaper.
+        // Only the preview area is left transparent; every other screen keeps an opaque background.
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER)
+        window.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
 
         // When launched by the system widget picker there is no `transparent` extra, only the bound
         // provider tells us the widget type. Detect it here, before the ViewModel reads the intent.

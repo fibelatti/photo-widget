@@ -43,9 +43,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -64,13 +64,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.geometry.center
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RadialGradientShader
-import androidx.compose.ui.graphics.Shader
-import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -486,26 +479,6 @@ private fun PhotoWidgetViewer(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        val gradientColors: List<Color> = listOf(
-            Color.White,
-            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f),
-        )
-        val largeRadialGradient: Brush = object : ShaderBrush() {
-            override fun createShader(size: Size): Shader = RadialGradientShader(
-                colors = gradientColors,
-                center = size.center,
-                radius = maxOf(size.height, size.width),
-                colorStops = listOf(0f, 0.9f),
-            )
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(largeRadialGradient)
-                .blur(10.dp),
-        )
-
         var current: LocalPhoto? by remember(selectedPhoto) { mutableStateOf(selectedPhoto) }
         if (photoWidget.source == PhotoWidgetSource.GIF) {
             LaunchedEffect(photoWidget.photos, photoWidget.gifInterval, selectedPhoto, isProcessing) {
@@ -550,15 +523,12 @@ private fun PhotoWidgetViewer(
             }
         }
 
-        IconButton(
+        FilledIconButton(
             onClick = onNavClick,
             shapes = IconButtonDefaults.shapes(),
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .safeDrawingPadding(),
-            colors = IconButtonDefaults.iconButtonColors().copy(
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            ),
         ) {
             Icon(
                 imageVector = AppIcons.Back,
