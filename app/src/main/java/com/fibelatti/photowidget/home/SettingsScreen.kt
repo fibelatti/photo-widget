@@ -11,20 +11,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +33,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -50,7 +47,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.getSystemService
 import com.fibelatti.photowidget.BuildConfig
@@ -73,7 +69,7 @@ import com.fibelatti.photowidget.ui.icons.Rate
 import com.fibelatti.photowidget.ui.icons.Send
 import com.fibelatti.photowidget.ui.icons.Translation
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
-import com.fibelatti.ui.component.AutoSizeText
+import com.fibelatti.ui.component.ListItem
 import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.preview.PreviewAll
@@ -195,9 +191,9 @@ private fun SettingsScreen(
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
                 .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = footerHeight + 16.dp),
-            verticalArrangement = Arrangement.spacedBy(1.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
-            SettingsAction(
+            SettingsListItem(
                 icon = rememberVectorPainter(AppIcons.Default),
                 label = R.string.widget_defaults_title,
                 onClick = onDefaultsClick,
@@ -205,7 +201,7 @@ private fun SettingsScreen(
                 shape = Shapes.TopShape,
             )
 
-            SettingsAction(
+            SettingsListItem(
                 icon = rememberVectorPainter(AppIcons.HardDrive),
                 label = R.string.photo_widget_home_data_saver,
                 onClick = onDataSaverClick,
@@ -213,7 +209,7 @@ private fun SettingsScreen(
             )
 
             AnimatedVisibility(visible = !canScheduleExactAlarms) {
-                SettingsAction(
+                SettingsListItem(
                     icon = rememberVectorPainter(AppIcons.Alarm),
                     label = R.string.photo_widget_configure_interval_grant_permission,
                     onClick = onScheduleExactAlarmsClick,
@@ -222,7 +218,7 @@ private fun SettingsScreen(
             }
 
             AnimatedVisibility(visible = isBatteryUsageRestricted) {
-                SettingsAction(
+                SettingsListItem(
                     icon = rememberVectorPainter(AppIcons.Battery),
                     label = R.string.photo_widget_configure_battery_optimization,
                     onClick = onBatteryOptimizationClick,
@@ -230,7 +226,7 @@ private fun SettingsScreen(
                 )
             }
 
-            SettingsAction(
+            SettingsListItem(
                 icon = rememberVectorPainter(AppIcons.KeepAlive),
                 label = R.string.photo_widget_keep_alive_service_dialog_title,
                 onClick = onKeepAliveClick,
@@ -239,7 +235,7 @@ private fun SettingsScreen(
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            SettingsAction(
+            SettingsListItem(
                 icon = rememberVectorPainter(AppIcons.Backup),
                 label = R.string.photo_widget_home_backup,
                 onClick = onBackupClick,
@@ -248,7 +244,7 @@ private fun SettingsScreen(
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            SettingsAction(
+            SettingsListItem(
                 icon = rememberVectorPainter(AppIcons.PrivacyPolicy),
                 label = R.string.photo_widget_home_privacy_policy,
                 onClick = onPrivacyPolicyClick,
@@ -257,7 +253,7 @@ private fun SettingsScreen(
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            SettingsAction(
+            SettingsListItem(
                 icon = rememberVectorPainter(AppIcons.Appearance),
                 label = R.string.photo_widget_home_appearance,
                 onClick = onAppearanceClick,
@@ -265,14 +261,14 @@ private fun SettingsScreen(
             )
 
             if (DynamicColors.isDynamicColorAvailable() || LocalInspectionMode.current) {
-                SettingsAction(
+                SettingsListItem(
                     icon = rememberVectorPainter(AppIcons.DynamicColor),
                     label = R.string.photo_widget_home_dynamic_colors,
                     onClick = onColorsClick,
                 )
             }
 
-            SettingsAction(
+            SettingsListItem(
                 icon = rememberVectorPainter(AppIcons.Translation),
                 label = R.string.photo_widget_home_translations,
                 onClick = onAppLanguageClick,
@@ -281,20 +277,20 @@ private fun SettingsScreen(
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            SettingsAction(
+            SettingsListItem(
                 icon = rememberVectorPainter(AppIcons.Question),
                 label = R.string.photo_widget_home_help,
                 onClick = onSendFeedbackClick,
                 shape = Shapes.TopShape,
             )
 
-            SettingsAction(
+            SettingsListItem(
                 icon = rememberVectorPainter(AppIcons.Rate),
                 label = R.string.photo_widget_home_rate,
                 onClick = onRateClick,
             )
 
-            SettingsAction(
+            SettingsListItem(
                 icon = rememberVectorPainter(AppIcons.Send),
                 label = R.string.photo_widget_home_share,
                 onClick = onShareClick,
@@ -382,7 +378,7 @@ private fun SettingsFooter(
 }
 
 @Composable
-private fun SettingsAction(
+private fun SettingsListItem(
     icon: Painter,
     @StringRes label: Int,
     onClick: () -> Unit,
@@ -390,49 +386,22 @@ private fun SettingsAction(
     shape: Shape = RoundedCornerShape(2.dp),
     @StringRes description: Int? = null,
 ) {
-    Button(
-        onClick = onClick,
+    ListItem(
+        headlineText = stringResource(id = label),
         modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = 60.dp),
-        shape = shape,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-        ),
-        contentPadding = PaddingValues(all = 12.dp),
-    ) {
-        Icon(
-            painter = icon,
-            contentDescription = null,
-            modifier = Modifier.size(24.dp),
-            tint = MaterialTheme.colorScheme.onSurface,
-        )
-
-        Spacer(modifier = Modifier.size(16.dp))
-
-        Column(
-            modifier = Modifier.weight(1f),
-        ) {
-            AutoSizeText(
-                text = stringResource(id = label),
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                minFontSize = 8.sp,
-                style = MaterialTheme.typography.titleMedium,
+            .clip(shape)
+            .clickable(onClick = onClick),
+        supportingText = description?.let { stringResource(id = description) },
+        leadingContent = {
+            Icon(
+                painter = icon,
+                contentDescription = null,
+                modifier = Modifier.size(24.dp),
+                tint = MaterialTheme.colorScheme.onSurface,
             )
-
-            if (description != null) {
-                AutoSizeText(
-                    text = stringResource(id = description),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
-                    minFontSize = 8.sp,
-                    style = MaterialTheme.typography.labelMedium,
-                )
-            }
-        }
-    }
+        },
+        shape = shape,
+    )
 }
 
 // region Previews

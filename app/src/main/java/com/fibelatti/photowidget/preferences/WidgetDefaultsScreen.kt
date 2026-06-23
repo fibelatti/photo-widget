@@ -1,29 +1,14 @@
 package com.fibelatti.photowidget.preferences
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,25 +16,15 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -70,18 +45,16 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
-import com.fibelatti.photowidget.ui.ColoredShape
+import com.fibelatti.photowidget.ui.BooleanListItem
+import com.fibelatti.photowidget.ui.PickerListItem
+import com.fibelatti.photowidget.ui.ShapeListItem
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Back
-import com.fibelatti.photowidget.ui.icons.Check
-import com.fibelatti.photowidget.ui.icons.Xmark
 import com.fibelatti.ui.component.AppBottomSheet
-import com.fibelatti.ui.component.AutoSizeText
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
 import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.preview.PreviewAll
-import com.fibelatti.ui.preview.PreviewThemesAndColors
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit
 
@@ -280,52 +253,58 @@ private fun WidgetDefaultsContent(
             .padding(start = 16.dp, end = 16.dp, bottom = 32.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        PickerDefault(
+        PickerListItem(
             title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
             currentValue = stringResource(id = userPreferences.defaultAspectRatio.label),
             onClick = onAspectRatioClick,
             shape = Shapes.TopShape,
         )
 
-        PickerDefault(
+        PickerListItem(
             title = stringResource(id = R.string.widget_defaults_source),
             currentValue = stringResource(id = userPreferences.defaultSource.label),
             onClick = onSourceClick,
+            shape = Shapes.MiddleShape,
         )
 
-        ShapeDefault(
+        ShapeListItem(
             title = stringResource(id = R.string.widget_defaults_shape),
             currentValue = userPreferences.defaultShape,
             onClick = onShapeClick,
+            shape = Shapes.MiddleShape,
         )
 
-        PickerDefault(
+        PickerListItem(
             title = stringResource(id = R.string.widget_defaults_corner_radius),
             currentValue = userPreferences.defaultCornerRadius.toString(),
             onClick = onCornerRadiusClick,
+            shape = Shapes.MiddleShape,
         )
 
-        PickerDefault(
+        PickerListItem(
             title = stringResource(id = R.string.widget_defaults_opacity),
             currentValue = formatPercent(value = userPreferences.defaultOpacity, fractionDigits = 0),
             onClick = onOpacityClick,
+            shape = Shapes.MiddleShape,
         )
 
-        PickerDefault(
+        PickerListItem(
             title = stringResource(R.string.widget_defaults_saturation),
             currentValue = formatRangeValue(
                 value = PhotoWidgetColors.pickerSaturation(userPreferences.defaultSaturation),
             ),
             onClick = onSaturationClick,
+            shape = Shapes.MiddleShape,
         )
 
-        PickerDefault(
+        PickerListItem(
             title = stringResource(R.string.widget_defaults_brightness),
             currentValue = formatRangeValue(value = userPreferences.defaultBrightness),
             onClick = onBrightnessClick,
+            shape = Shapes.MiddleShape,
         )
 
-        PickerDefault(
+        PickerListItem(
             title = stringResource(id = R.string.widget_defaults_cycling),
             currentValue = when (userPreferences.defaultCycleMode) {
                 is PhotoWidgetCycleMode.Interval -> {
@@ -359,15 +338,17 @@ private fun WidgetDefaultsContent(
                 }
             },
             onClick = onIntervalClick,
+            shape = Shapes.MiddleShape,
         )
 
-        BooleanDefault(
+        BooleanListItem(
             title = stringResource(id = R.string.widget_defaults_shuffle),
             currentValue = userPreferences.defaultShuffle,
             onCheckedChange = onShuffleChange,
+            shape = Shapes.MiddleShape,
         )
 
-        PickerDefault(
+        PickerListItem(
             title = stringResource(R.string.photo_widget_directory_sort_title),
             currentValue = stringResource(id = userPreferences.defaultDirectorySorting.label),
             onClick = onSortClick,
@@ -391,166 +372,6 @@ private fun WidgetDefaultsContent(
         )
     }
 }
-
-// region Items
-@Composable
-fun BooleanDefault(
-    title: String,
-    currentValue: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
-    shape: Shape = Shapes.MiddleShape,
-) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(shape),
-        shape = shape,
-        colors = CardDefaults.cardColors().run {
-            copy(containerColor = containerColor.copy(alpha = 0.6f))
-        },
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 60.dp)
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            AutoSizeText(
-                text = title,
-                modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.titleMedium,
-                maxLines = 2,
-            )
-
-            Spacer(modifier = Modifier.width(24.dp))
-
-            Switch(
-                checked = currentValue,
-                onCheckedChange = onCheckedChange,
-                thumbContent = {
-                    val icon: ImageVector = if (currentValue) AppIcons.Check else AppIcons.Xmark
-
-                    AnimatedContent(
-                        targetState = icon,
-                        transitionSpec = { fadeIn() + scaleIn() togetherWith fadeOut() + scaleOut() },
-                    ) { vector ->
-                        Icon(
-                            imageVector = vector,
-                            contentDescription = null,
-                            modifier = Modifier.size(SwitchDefaults.IconSize),
-                        )
-                    }
-                },
-            )
-        }
-    }
-}
-
-@Composable
-fun PickerDefault(
-    title: String,
-    currentValue: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    shape: Shape = Shapes.MiddleShape,
-    warning: String? = null,
-) {
-    Card(
-        onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(shape),
-        shape = shape,
-        colors = CardDefaults.cardColors().run {
-            copy(containerColor = containerColor.copy(alpha = 0.6f))
-        },
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 60.dp)
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(24.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                AutoSizeText(
-                    text = title,
-                    modifier = Modifier.widthIn(max = 140.dp),
-                    maxLines = 2,
-                    style = MaterialTheme.typography.titleMedium,
-                )
-
-                AutoSizeText(
-                    text = currentValue,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.End,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 3,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
-
-            if (warning != null) {
-                Text(
-                    text = warning,
-                    fontStyle = FontStyle.Italic,
-                    fontWeight = FontWeight.Light,
-                    style = MaterialTheme.typography.labelMedium,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun ShapeDefault(
-    title: String,
-    currentValue: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    shape: Shape = Shapes.MiddleShape,
-) {
-    Card(
-        onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(shape),
-        shape = shape,
-        colors = CardDefaults.cardColors().run {
-            copy(containerColor = containerColor.copy(alpha = 0.6f))
-        },
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 60.dp)
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            AutoSizeText(
-                text = title,
-                modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.titleMedium,
-                maxLines = 2,
-            )
-
-            Spacer(modifier = Modifier.width(24.dp))
-
-            ColoredShape(
-                shapeId = currentValue,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(40.dp),
-            )
-        }
-    }
-}
-// endregion Items
 
 // region Previews
 @Composable
@@ -588,30 +409,6 @@ private fun WidgetDefaultsScreenPreview() {
             onShuffleChange = {},
             onSortClick = {},
             onClearDefaultsClick = {},
-        )
-    }
-}
-
-@Composable
-@PreviewThemesAndColors
-private fun PickerDefaultPreview() {
-    ExtendedTheme {
-        PickerDefault(
-            title = "Some default",
-            currentValue = "Some value",
-            onClick = {},
-        )
-    }
-}
-
-@Composable
-@PreviewThemesAndColors
-private fun BooleanDefaultPreview() {
-    ExtendedTheme {
-        BooleanDefault(
-            title = "Some default",
-            currentValue = true,
-            onCheckedChange = {},
         )
     }
 }

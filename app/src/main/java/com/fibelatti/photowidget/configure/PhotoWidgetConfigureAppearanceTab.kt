@@ -21,8 +21,8 @@ import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
-import com.fibelatti.photowidget.preferences.PickerDefault
-import com.fibelatti.photowidget.preferences.ShapeDefault
+import com.fibelatti.photowidget.ui.PickerListItem
+import com.fibelatti.photowidget.ui.ShapeListItem
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.rememberAppSheetState
@@ -166,7 +166,7 @@ fun PhotoWidgetConfigureAppearanceTab(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        PickerDefault(
+        PickerListItem(
             title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
             currentValue = stringResource(id = photoWidget.aspectRatio.label),
             onClick = onAspectRatioClick,
@@ -175,18 +175,20 @@ fun PhotoWidgetConfigureAppearanceTab(
         )
 
         if (photoWidget.aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
-            ShapeDefault(
+            ShapeListItem(
                 title = stringResource(id = R.string.widget_defaults_shape),
                 currentValue = photoWidget.shapeId,
                 onClick = onShapeClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
+                shape = Shapes.MiddleShape,
             )
         } else if (photoWidget.aspectRatio != PhotoWidgetAspectRatio.FILL_WIDGET) {
-            PickerDefault(
+            PickerListItem(
                 title = stringResource(id = R.string.widget_defaults_corner_radius),
                 currentValue = photoWidget.cornerRadius.toString(),
                 onClick = onCornerRadiusClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
+                shape = Shapes.MiddleShape,
             )
         }
 
@@ -211,29 +213,32 @@ fun PhotoWidgetConfigureAppearanceTab(
                 }
             }
 
-            PickerDefault(
+            PickerListItem(
                 title = stringResource(R.string.photo_widget_configure_border),
                 currentValue = currentValue,
                 onClick = onBorderClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
+                shape = Shapes.MiddleShape,
             )
         }
 
-        PickerDefault(
+        PickerListItem(
             title = stringResource(id = R.string.widget_defaults_opacity),
             currentValue = formatPercent(value = photoWidget.colors.opacity, fractionDigits = 0),
             onClick = onOpacityClick,
             modifier = Modifier.padding(horizontal = 16.dp),
+            shape = Shapes.MiddleShape,
         )
 
-        PickerDefault(
+        PickerListItem(
             title = stringResource(R.string.widget_defaults_saturation),
             currentValue = formatRangeValue(value = PhotoWidgetColors.pickerSaturation(photoWidget.colors.saturation)),
             onClick = onSaturationClick,
             modifier = Modifier.padding(horizontal = 16.dp),
+            shape = Shapes.MiddleShape,
         )
 
-        PickerDefault(
+        PickerListItem(
             title = stringResource(R.string.widget_defaults_brightness),
             currentValue = formatRangeValue(value = photoWidget.colors.brightness),
             onClick = onBrightnessClick,
@@ -246,7 +251,7 @@ fun PhotoWidgetConfigureAppearanceTab(
         )
 
         if (photoWidget.aspectRatio != PhotoWidgetAspectRatio.FILL_WIDGET) {
-            PickerDefault(
+            PickerListItem(
                 title = stringResource(id = R.string.photo_widget_configure_offset),
                 currentValue = stringResource(
                     id = R.string.photo_widget_configure_offset_current_values,
@@ -255,9 +260,10 @@ fun PhotoWidgetConfigureAppearanceTab(
                 ),
                 onClick = onOffsetClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
+                shape = Shapes.MiddleShape,
             )
 
-            PickerDefault(
+            PickerListItem(
                 title = stringResource(id = R.string.photo_widget_configure_padding),
                 currentValue = photoWidget.padding.toString(),
                 onClick = onPaddingClick,

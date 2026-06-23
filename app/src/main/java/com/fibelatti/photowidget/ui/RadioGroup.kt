@@ -1,7 +1,6 @@
 package com.fibelatti.photowidget.ui
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +10,8 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.material3.ListItem as MaterialListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -24,6 +25,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.fibelatti.ui.component.AutoSizeText
+import com.fibelatti.ui.component.ListItem
 import com.fibelatti.ui.foundation.Shapes
 
 @Composable
@@ -78,32 +82,8 @@ private fun RadioGroupItem(
         },
     )
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = 60.dp)
-            .background(color = backgroundColor, shape = shape)
-            .clip(shape)
-            .selectable(
-                selected = selected,
-                enabled = enabled,
-                role = Role.RadioButton,
-                onClick = onClick,
-            )
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        RadioButton(
-            selected = selected,
-            onClick = null,
-            enabled = enabled,
-        )
-
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(1.dp),
-        ) {
+    MaterialListItem(
+        headlineContent = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -116,14 +96,36 @@ private fun RadioGroupItem(
 
                 flag()
             }
-
+        },
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = ListItem.MinHeight)
+            .clip(shape)
+            .selectable(
+                selected = selected,
+                enabled = enabled,
+                role = Role.RadioButton,
+                onClick = onClick,
+            ),
+        supportingContent = {
             if (description != null) {
-                Text(
+                AutoSizeText(
                     text = description,
                     color = contentColorFor(backgroundColor),
+                    minFontSize = 8.sp,
+                    maxLines = 2,
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
-        }
-    }
+        },
+        leadingContent = {
+            RadioButton(
+                selected = selected,
+                onClick = null,
+                modifier = Modifier.padding(vertical = 8.dp),
+                enabled = enabled,
+            )
+        },
+        colors = ListItemDefaults.colors(containerColor = backgroundColor),
+    )
 }

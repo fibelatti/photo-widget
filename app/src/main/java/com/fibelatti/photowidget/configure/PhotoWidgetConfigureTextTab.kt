@@ -40,13 +40,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetText
-import com.fibelatti.photowidget.preferences.BooleanDefault
-import com.fibelatti.photowidget.preferences.PickerDefault
+import com.fibelatti.photowidget.ui.BooleanListItem
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.DefaultSheetFooterButtons
 import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.LocalSamplePhoto
 import com.fibelatti.photowidget.ui.NumberSpinner
+import com.fibelatti.photowidget.ui.PickerListItem
 import com.fibelatti.photowidget.ui.RadioGroup
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
 import com.fibelatti.photowidget.ui.icons.AppIcons
@@ -89,7 +89,7 @@ fun PhotoWidgetConfigureTextTab(
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        PickerDefault(
+        PickerListItem(
             title = stringResource(R.string.photo_widget_configure_text_type),
             currentValue = stringResource(
                 when (photoWidgetText) {
@@ -105,25 +105,28 @@ fun PhotoWidgetConfigureTextTab(
             is PhotoWidgetText.None -> Unit
 
             is PhotoWidgetText.Label -> {
-                PickerDefault(
+                PickerListItem(
                     title = stringResource(R.string.photo_widget_configure_text_value),
                     currentValue = photoWidgetText.value,
                     onClick = textValueSheetState::showBottomSheet,
+                    shape = Shapes.MiddleShape,
                 )
 
-                PickerDefault(
+                PickerListItem(
                     title = stringResource(R.string.photo_widget_configure_text_size),
                     currentValue = photoWidgetText.size.toString(),
                     onClick = textSizeSheetState::showBottomSheet,
+                    shape = Shapes.MiddleShape,
                 )
 
-                PickerDefault(
+                PickerListItem(
                     title = stringResource(R.string.photo_widget_configure_text_vertical_offset),
                     currentValue = photoWidgetText.verticalOffset.toString(),
                     onClick = verticalOffsetSheetState::showBottomSheet,
+                    shape = Shapes.MiddleShape,
                 )
 
-                BooleanDefault(
+                BooleanListItem(
                     title = stringResource(R.string.photo_widget_configure_text_apply_shadow),
                     currentValue = photoWidgetText.hasShadow,
                     onCheckedChange = { newValue ->

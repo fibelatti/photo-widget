@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -45,6 +44,8 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -52,7 +53,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.contentColorFor
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -80,7 +80,6 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -107,9 +106,9 @@ import com.fibelatti.photowidget.platform.getAppShortcuts
 import com.fibelatti.photowidget.platform.getInstalledApp
 import com.fibelatti.photowidget.platform.resolveAppFolderEntries
 import com.fibelatti.photowidget.platform.withRoundedCorners
-import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.InformationalPanel
+import com.fibelatti.photowidget.ui.PickerListItem
 import com.fibelatti.photowidget.ui.RadioGroup
 import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.photowidget.ui.icons.AppIcons
@@ -120,6 +119,7 @@ import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.AutoSizeText
 import com.fibelatti.ui.component.ConnectedButtonRowItem
+import com.fibelatti.ui.component.ListItem
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
 import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.Shapes
@@ -758,7 +758,7 @@ private fun TapOptionsPicker(
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
-        PickerDefault(
+        PickerListItem(
             title = stringResource(R.string.photo_widget_configure_tap_action),
             currentValue = stringResource(currentTapAction.label),
             onClick = tapActionSheetState::showBottomSheet,
@@ -1032,7 +1032,7 @@ private fun ViewFullScreenCustomizationContent(
             onCheckedChange = { onValueChange(value.copy(keepCurrentPhoto = it)) },
         )
 
-        PickerDefault(
+        PickerListItem(
             title = stringResource(R.string.photo_widget_configure_tap_action_viewer_background_color),
             currentValue = value.backgroundColorHex?.let { "#$it" }
                 ?: stringResource(R.string.photo_widget_configure_tap_action_viewer_background_color_default),
@@ -1172,7 +1172,7 @@ private fun AppFolderCustomizationContent(
 
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(1.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         ReorderableColumn(
             list = items,
@@ -1198,7 +1198,7 @@ private fun AppFolderCustomizationContent(
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(1.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
         ) ReorderableColumnItem@{ index: Int, item: AppFolderResolvedEntry, isDragging: Boolean ->
             ReorderableItem {
                 val topCorner: Dp by animateDpAsState(
@@ -1217,7 +1217,7 @@ private fun AppFolderCustomizationContent(
                 val icon: Drawable = item.shortcut?.icon ?: item.app.appIcon
 
                 AppFolderCustomizationItem(
-                    label = item.shortcut?.label ?: item.app.appLabel,
+                    title = item.shortcut?.label ?: item.app.appLabel,
                     subtitle = item.shortcut?.let { item.app.appLabel },
                     modifier = Modifier.longPressDraggableHandle(
                         onDragStarted = {
@@ -1258,11 +1258,10 @@ private fun AppFolderCustomizationContent(
 
         if (value.shortcuts.size < 12) {
             AppFolderCustomizationItem(
-                label = stringResource(R.string.photo_widget_app_folder_add_app),
+                title = stringResource(R.string.photo_widget_app_folder_add_app),
                 modifier = Modifier.clickable(onClick = onAddAppClick),
                 backgroundShape = if (value.shortcuts.isEmpty()) Shapes.StandaloneShape else Shapes.BottomShape,
-                labelTextAlign = TextAlign.Center,
-                labelTextStyle = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center,
             )
         }
     }
@@ -1270,53 +1269,44 @@ private fun AppFolderCustomizationContent(
 
 @Composable
 private fun AppFolderCustomizationItem(
-    label: String,
+    title: String,
     modifier: Modifier = Modifier,
     subtitle: String? = null,
-    leadingIcon: @Composable (RowScope.() -> Unit)? = null,
-    trailingIcon: @Composable (RowScope.() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
     backgroundColor: Color = MaterialTheme.colorScheme.secondaryContainer,
     backgroundShape: Shape = MaterialTheme.shapes.medium,
-    labelTextAlign: TextAlign = TextAlign.Left,
-    labelTextStyle: TextStyle = MaterialTheme.typography.bodyMedium,
+    textAlign: TextAlign = TextAlign.Left,
 ) {
-    Row(
-        modifier = modifier
-            .background(color = backgroundColor, shape = backgroundShape)
-            .minimumInteractiveComponentSize()
-            .padding(vertical = 8.dp, horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        CompositionLocalProvider(LocalContentColor provides contentColorFor(backgroundColor)) {
-            if (leadingIcon != null) {
-                leadingIcon()
-            }
-
-            Column(modifier = Modifier.weight(1f)) {
+    CompositionLocalProvider(LocalContentColor provides contentColorFor(backgroundColor)) {
+        ListItem(
+            headlineContent = {
                 AutoSizeText(
-                    text = label,
+                    text = title,
+                    modifier = Modifier.fillMaxWidth(),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    textAlign = labelTextAlign,
-                    style = labelTextStyle,
+                    textAlign = textAlign,
+                    style = MaterialTheme.typography.titleMedium,
                 )
-
+            },
+            modifier = modifier
+                .clip(backgroundShape)
+                .heightIn(min = ListItem.MIN_HEIGHT),
+            supportingContent = {
                 if (subtitle != null) {
                     AutoSizeText(
                         text = subtitle,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
-                        textAlign = labelTextAlign,
-                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = textAlign,
                     )
                 }
-            }
-
-            if (trailingIcon != null) {
-                trailingIcon()
-            }
-        }
+            },
+            leadingContent = leadingIcon,
+            trailingContent = trailingIcon,
+            colors = ListItemDefaults.colors(containerColor = backgroundColor),
+        )
     }
 }
 // endregion Customization Content

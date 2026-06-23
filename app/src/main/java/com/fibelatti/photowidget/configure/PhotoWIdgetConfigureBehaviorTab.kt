@@ -24,8 +24,8 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.canShuffle
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
-import com.fibelatti.photowidget.preferences.BooleanDefault
-import com.fibelatti.photowidget.preferences.PickerDefault
+import com.fibelatti.photowidget.ui.BooleanListItem
+import com.fibelatti.photowidget.ui.PickerListItem
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.Shapes
@@ -122,7 +122,7 @@ fun PhotoWidgetConfigureBehaviorTab(
         val showShufflePicker: Boolean = photoWidget.canShuffle
         val showSortPicker: Boolean = photoWidget.source == PhotoWidgetSource.DIRECTORY && !photoWidget.shuffle
 
-        PickerDefault(
+        PickerListItem(
             title = stringResource(id = R.string.widget_defaults_tap_action),
             currentValue = buildString {
                 appendLine(stringResource(id = photoWidget.tapActions.left.label))
@@ -138,7 +138,7 @@ fun PhotoWidgetConfigureBehaviorTab(
         )
 
         if (showTimerPicker) {
-            PickerDefault(
+            PickerListItem(
                 title = stringResource(id = R.string.widget_defaults_cycling),
                 currentValue = when (photoWidget.cycleMode) {
                     is PhotoWidgetCycleMode.Interval -> {
@@ -178,7 +178,7 @@ fun PhotoWidgetConfigureBehaviorTab(
         }
 
         if (showGifIntervalPicker) {
-            PickerDefault(
+            PickerListItem(
                 title = stringResource(R.string.photo_widget_configure_gif_frame_interval),
                 currentValue = "${photoWidget.gifInterval} ms",
                 onClick = onGifIntervalPickerClick,
@@ -188,7 +188,7 @@ fun PhotoWidgetConfigureBehaviorTab(
         }
 
         if (showShufflePicker) {
-            BooleanDefault(
+            BooleanListItem(
                 title = stringResource(R.string.widget_defaults_shuffle),
                 currentValue = photoWidget.shuffle,
                 onCheckedChange = onShuffleChange,
@@ -198,7 +198,7 @@ fun PhotoWidgetConfigureBehaviorTab(
         }
 
         AnimatedVisibility(visible = showSortPicker) {
-            PickerDefault(
+            PickerListItem(
                 title = stringResource(R.string.photo_widget_directory_sort_title),
                 currentValue = stringResource(id = photoWidget.directorySorting.label),
                 onClick = onSortClick,

@@ -146,7 +146,7 @@ private fun SourcePickerContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 32.dp),
-                verticalArrangement = Arrangement.spacedBy(1.dp),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
                 dirList.forEachIndexed { index, dir ->
                     DirListItem(

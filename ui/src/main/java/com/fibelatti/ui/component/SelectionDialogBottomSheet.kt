@@ -1,23 +1,32 @@
 package com.fibelatti.ui.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.fibelatti.ui.foundation.Shapes
 
 @Composable
 fun <T> SelectionDialogBottomSheet(
@@ -97,41 +106,61 @@ private fun <T> SelectionDialogContent(
     header: @Composable () -> Unit,
     footer: @Composable () -> Unit,
 ) {
+    val keyProvider: ((Int, T) -> Any)? by rememberUpdatedState(
+        if (optionKey != null) {
+            { _: Int, option: T -> optionKey(option) }
+        } else {
+            null
+        },
+    )
+
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
             .nestedScroll(rememberNestedScrollInteropConnection()),
         contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         stickyHeader {
-            header()
-        }
-
-        items(options, key = optionKey) { option ->
-            FilledTonalButton(
-                onClick = { onOptionSelect(option) },
-                shapes = ButtonDefaults.shapes(),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text(
-                    text = optionName(option),
-                    modifier = Modifier.weight(1F),
-                    textAlign = TextAlign.Center,
-                )
-
-                optionIcon(option)?.let {
-                    Icon(
-                        painter = painterResource(id = it),
-                        contentDescription = "",
-                        modifier = Modifier.size(16.dp),
-                    )
-                }
+            Column {
+                header()
+                Spacer(modifier = Modifier.height(6.dp))
             }
         }
 
+        itemsIndexed(items = options, key = keyProvider) { index: Int, option: T ->
+            val shape: Shape = when {
+                options.size == 1 -> Shapes.MiddleShape
+                index == 0 -> Shapes.TopShape
+                index == options.lastIndex -> Shapes.BottomShape
+                else -> Shapes.MiddleShape
+            }
+
+            ListItem(
+                headlineText = optionName(option),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(shape)
+                    .clickable(onClick = { onOptionSelect(option) }, role = Role.Button),
+                trailingContent = {
+                    optionIcon(option)?.let {
+                        Icon(
+                            painter = painterResource(id = it),
+                            contentDescription = "",
+                            modifier = Modifier.size(16.dp),
+                        )
+                    }
+                },
+                shape = shape,
+                colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+            )
+        }
+
         item {
-            footer()
+            Column {
+                Spacer(modifier = Modifier.height(6.dp))
+                footer()
+            }
         }
     }
 }

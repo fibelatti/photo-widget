@@ -444,8 +444,8 @@ private fun PhotoCycleModeScheduleContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(1.dp, alignment = Alignment.CenterHorizontally),
-                verticalArrangement = Arrangement.spacedBy(1.dp),
+                horizontalArrangement = Arrangement.spacedBy(2.dp, alignment = Alignment.CenterHorizontally),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
                 triggers.forEach { time ->
                     SelectedTimeItem(
