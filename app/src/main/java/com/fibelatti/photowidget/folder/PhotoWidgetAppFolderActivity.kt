@@ -133,12 +133,12 @@ private fun ScreenContent(
 ) {
     val localContext = LocalContext.current
 
-    val entries: List<AppFolderResolvedEntry> by produceState(
-        initialValue = emptyList(),
-        key1 = shortcuts,
-    ) {
+    val entries: List<AppFolderResolvedEntry>? by produceState(initialValue = null, key1 = shortcuts) {
         value = withContext(Dispatchers.IO) { localContext.resolveAppFolderEntries(shortcuts) }
     }
+
+    // Avoid flickering the empty state while the list is still loading
+    val currentEntries: List<AppFolderResolvedEntry> = entries ?: return
 
     Box(
         modifier = modifier
@@ -151,7 +151,7 @@ private fun ScreenContent(
             .safeContentPadding(),
         contentAlignment = Alignment.Center,
     ) {
-        if (entries.isEmpty()) {
+        if (currentEntries.isEmpty()) {
             InformationalPanel(
                 text = stringResource(R.string.photo_widget_app_folder_empty),
                 textStyle = MaterialTheme.typography.bodyLarge,
@@ -179,10 +179,10 @@ private fun ScreenContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 val rows: List<List<AppFolderResolvedEntry>> = remember(entries) {
-                    entries.chunked(
+                    currentEntries.chunked(
                         size = when {
-                            entries.size <= 4 -> 2
-                            entries.size <= 6 || entries.size == 9 -> 3
+                            currentEntries.size <= 4 -> 2
+                            currentEntries.size <= 6 || currentEntries.size == 9 -> 3
                             else -> 4
                         },
                     )
