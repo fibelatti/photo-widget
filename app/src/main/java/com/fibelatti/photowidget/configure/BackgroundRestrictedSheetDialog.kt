@@ -38,10 +38,10 @@ import com.fibelatti.photowidget.platform.appSettingsIntent
 import com.fibelatti.photowidget.platform.disableBatteryOptimizationIntent
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Warning
-import com.fibelatti.ui.foundation.AppBottomSheet
-import com.fibelatti.ui.foundation.AppSheetState
-import com.fibelatti.ui.foundation.TextWithLinks
-import com.fibelatti.ui.foundation.hideBottomSheet
+import com.fibelatti.ui.component.AppBottomSheet
+import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.TextWithLinks
+import com.fibelatti.ui.component.hideBottomSheet
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 

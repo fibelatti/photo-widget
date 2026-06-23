@@ -44,10 +44,10 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.InstalledApp
-import com.fibelatti.ui.foundation.AppBottomSheet
-import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.component.AppBottomSheet
+import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.hideBottomSheet
 import com.fibelatti.ui.foundation.fadingEdges
-import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.foundation.pxToDp
 
 @Composable

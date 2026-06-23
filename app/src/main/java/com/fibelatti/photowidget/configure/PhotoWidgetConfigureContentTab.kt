@@ -73,12 +73,12 @@ import com.fibelatti.photowidget.model.canSort
 import com.fibelatti.photowidget.model.orderedPhotosForDisplay
 import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.ShapedPhoto
-import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.AutoSizeText
+import com.fibelatti.ui.component.rememberAppSheetState
+import com.fibelatti.ui.component.showBottomSheet
 import com.fibelatti.ui.foundation.fadingEdges
-import com.fibelatti.ui.foundation.rememberAppSheetState
-import com.fibelatti.ui.foundation.showBottomSheet
 import com.fibelatti.ui.preview.PreviewAll
-import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.ReorderableLazyGridState

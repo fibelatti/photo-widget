@@ -75,15 +75,15 @@ import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Back
 import com.fibelatti.photowidget.ui.icons.Check
 import com.fibelatti.photowidget.ui.icons.Xmark
-import com.fibelatti.ui.foundation.AppBottomSheet
-import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
+import com.fibelatti.ui.component.AppBottomSheet
+import com.fibelatti.ui.component.AutoSizeText
+import com.fibelatti.ui.component.SelectionDialogBottomSheet
+import com.fibelatti.ui.component.hideBottomSheet
+import com.fibelatti.ui.component.rememberAppSheetState
+import com.fibelatti.ui.component.showBottomSheet
 import com.fibelatti.ui.foundation.Shapes
-import com.fibelatti.ui.foundation.hideBottomSheet
-import com.fibelatti.ui.foundation.rememberAppSheetState
-import com.fibelatti.ui.foundation.showBottomSheet
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.preview.PreviewThemesAndColors
-import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit
 

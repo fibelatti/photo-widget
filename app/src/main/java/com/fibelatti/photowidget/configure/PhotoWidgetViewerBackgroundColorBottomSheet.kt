@@ -44,12 +44,12 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.rememberSampleBitmap
-import com.fibelatti.ui.foundation.AppBottomSheet
-import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.component.AppBottomSheet
+import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.AutoSizeText
+import com.fibelatti.ui.component.hideBottomSheet
 import com.fibelatti.ui.foundation.dpToPx
-import com.fibelatti.ui.foundation.hideBottomSheet
 import com.fibelatti.ui.preview.PreviewAll
-import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import com.github.skydoves.colorpicker.compose.BrightnessSlider
 import com.github.skydoves.colorpicker.compose.ColorPickerController

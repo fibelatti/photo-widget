@@ -1,4 +1,4 @@
-package com.fibelatti.ui.foundation
+package com.fibelatti.ui.component
 
 import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.MaterialTheme
@@ -11,7 +11,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import com.fibelatti.ui.text.AutoSizeText
 
 @Composable
 fun ConnectedButtonRowItem(

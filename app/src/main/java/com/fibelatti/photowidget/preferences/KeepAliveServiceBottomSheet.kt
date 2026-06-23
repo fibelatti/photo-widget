@@ -30,8 +30,8 @@ import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.platform.KeepAliveService
 import com.fibelatti.photowidget.ui.Toggle
-import com.fibelatti.ui.foundation.AppBottomSheet
-import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.component.AppBottomSheet
+import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.preview.PreviewLocales
 import com.fibelatti.ui.preview.PreviewThemesAndColors
 import com.fibelatti.ui.theme.ExtendedTheme

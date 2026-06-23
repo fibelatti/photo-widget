@@ -73,11 +73,11 @@ import com.fibelatti.photowidget.ui.icons.Rate
 import com.fibelatti.photowidget.ui.icons.Send
 import com.fibelatti.photowidget.ui.icons.Translation
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
+import com.fibelatti.ui.component.AutoSizeText
+import com.fibelatti.ui.component.rememberAppSheetState
+import com.fibelatti.ui.component.showBottomSheet
 import com.fibelatti.ui.foundation.Shapes
-import com.fibelatti.ui.foundation.rememberAppSheetState
-import com.fibelatti.ui.foundation.showBottomSheet
 import com.fibelatti.ui.preview.PreviewAll
-import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import com.google.android.material.color.DynamicColors
 

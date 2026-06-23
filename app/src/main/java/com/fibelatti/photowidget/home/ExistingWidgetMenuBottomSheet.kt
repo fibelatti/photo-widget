@@ -16,9 +16,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
-import com.fibelatti.ui.foundation.AppSheetState
-import com.fibelatti.ui.foundation.SelectionDialogBottomSheet
-import com.fibelatti.ui.foundation.bottomSheetData
+import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.SelectionDialogBottomSheet
+import com.fibelatti.ui.component.bottomSheetData
 import kotlinx.parcelize.Parcelize
 
 @Composable

@@ -76,12 +76,12 @@ import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Trash
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
-import com.fibelatti.ui.foundation.AppBottomSheet
-import com.fibelatti.ui.foundation.AppSheetState
-import com.fibelatti.ui.foundation.ConnectedButtonRowItem
-import com.fibelatti.ui.foundation.hideBottomSheet
+import com.fibelatti.ui.component.AppBottomSheet
+import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.AutoSizeText
+import com.fibelatti.ui.component.ConnectedButtonRowItem
+import com.fibelatti.ui.component.hideBottomSheet
 import com.fibelatti.ui.preview.PreviewAll
-import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.Calendar
 import java.util.concurrent.TimeUnit

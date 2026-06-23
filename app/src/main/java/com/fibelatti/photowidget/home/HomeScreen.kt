@@ -73,9 +73,9 @@ import com.fibelatti.photowidget.ui.icons.NewWidget
 import com.fibelatti.photowidget.ui.icons.NewWidgetSelected
 import com.fibelatti.photowidget.ui.icons.Settings
 import com.fibelatti.photowidget.ui.icons.SettingsSelected
-import com.fibelatti.ui.foundation.hideBottomSheet
-import com.fibelatti.ui.foundation.rememberAppSheetState
-import com.fibelatti.ui.foundation.showBottomSheet
+import com.fibelatti.ui.component.hideBottomSheet
+import com.fibelatti.ui.component.rememberAppSheetState
+import com.fibelatti.ui.component.showBottomSheet
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 

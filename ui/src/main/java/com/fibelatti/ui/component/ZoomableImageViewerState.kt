@@ -1,4 +1,4 @@
-package com.fibelatti.ui.imageviewer
+package com.fibelatti.ui.component
 
 import androidx.compose.animation.core.AnimationScope
 import androidx.compose.animation.core.AnimationState

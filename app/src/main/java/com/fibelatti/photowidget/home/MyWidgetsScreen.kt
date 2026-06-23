@@ -70,8 +70,8 @@ import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.TrashClock
+import com.fibelatti.ui.component.AutoSizeText
 import com.fibelatti.ui.preview.PreviewAll
-import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 
 @Composable

@@ -37,10 +37,10 @@ import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.DefaultSheetFooterButtons
 import com.fibelatti.photowidget.ui.SliderSmallThumb
 import com.fibelatti.photowidget.ui.rememberSampleBitmap
-import com.fibelatti.ui.foundation.AppBottomSheet
-import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.component.AppBottomSheet
+import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.hideBottomSheet
 import com.fibelatti.ui.foundation.dpToPx
-import com.fibelatti.ui.foundation.hideBottomSheet
 
 @Composable
 fun PhotoWidgetSaturationBottomSheet(

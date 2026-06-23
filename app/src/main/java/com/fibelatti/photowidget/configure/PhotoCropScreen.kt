@@ -64,7 +64,7 @@ import com.fibelatti.photowidget.platform.LocalAppCompatActivity
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Back
 import com.fibelatti.photowidget.ui.icons.Check
-import com.fibelatti.ui.foundation.ConnectedButtonRowItem
+import com.fibelatti.ui.component.ConnectedButtonRowItem
 import com.fibelatti.ui.preview.PreviewAccessibility
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.preview.PreviewThemesAndColors

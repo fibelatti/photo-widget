@@ -1,4 +1,4 @@
-package com.fibelatti.ui.foundation
+package com.fibelatti.ui.component
 
 import android.text.SpannableString
 import android.text.Spanned
@@ -21,7 +21,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
-import com.fibelatti.ui.foundation.TextWithLinks.findLinks
 import java.util.regex.Pattern
 
 @Composable
@@ -70,7 +69,7 @@ fun TextWithLinks(
         buildAnnotatedString {
             append(text)
 
-            val explicitLinks = findLinks(text.toString(), pattern)
+            val explicitLinks = TextWithLinks.findLinks(text.toString(), pattern)
             val aTagLinks = text.getSpans(0, text.length, URLSpan::class.java)
 
             explicitLinks.forEach { linkInfo ->

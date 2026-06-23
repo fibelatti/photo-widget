@@ -26,9 +26,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
+import com.fibelatti.ui.component.AutoSizeText
 import com.fibelatti.ui.preview.PreviewLocales
 import com.fibelatti.ui.preview.PreviewThemesAndColors
-import com.fibelatti.ui.text.AutoSizeText
 import com.fibelatti.ui.theme.ExtendedTheme
 
 enum class ConfigureTab(

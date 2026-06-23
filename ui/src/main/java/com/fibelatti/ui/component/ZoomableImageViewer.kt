@@ -1,4 +1,4 @@
-package com.fibelatti.ui.imageviewer
+package com.fibelatti.ui.component
 
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures

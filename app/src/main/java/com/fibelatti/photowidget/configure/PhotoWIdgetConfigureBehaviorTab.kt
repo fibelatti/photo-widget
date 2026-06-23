@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -27,10 +26,10 @@ import com.fibelatti.photowidget.model.canShuffle
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.PickerDefault
-import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.rememberAppSheetState
+import com.fibelatti.ui.component.showBottomSheet
 import com.fibelatti.ui.foundation.Shapes
-import com.fibelatti.ui.foundation.rememberAppSheetState
-import com.fibelatti.ui.foundation.showBottomSheet
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit

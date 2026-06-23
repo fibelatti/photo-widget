@@ -23,12 +23,12 @@ import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.photowidget.preferences.ShapeDefault
-import com.fibelatti.ui.foundation.AppBottomSheet
-import com.fibelatti.ui.foundation.AppSheetState
+import com.fibelatti.ui.component.AppBottomSheet
+import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.hideBottomSheet
+import com.fibelatti.ui.component.rememberAppSheetState
+import com.fibelatti.ui.component.showBottomSheet
 import com.fibelatti.ui.foundation.Shapes
-import com.fibelatti.ui.foundation.hideBottomSheet
-import com.fibelatti.ui.foundation.rememberAppSheetState
-import com.fibelatti.ui.foundation.showBottomSheet
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 

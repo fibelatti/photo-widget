@@ -1,4 +1,4 @@
-package com.fibelatti.ui.foundation
+package com.fibelatti.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues

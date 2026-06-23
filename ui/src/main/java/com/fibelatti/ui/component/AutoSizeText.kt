@@ -1,4 +1,4 @@
-package com.fibelatti.ui.text
+package com.fibelatti.ui.component
 
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.fibelatti.ui.foundation
+package com.fibelatti.ui.component
 
 import androidx.compose.foundation.LocalOverscrollFactory
 import androidx.compose.foundation.layout.ColumnScope
@@ -160,7 +160,7 @@ private fun AppSheetState.checkTypeRequirement() {
 /**
  * Shows the bottom sheet associated with the received [AppSheetState].
  *
- * @param data optional data to be passed to the bottom sheet. See [AppSheetState.bottomSheetData].
+ * @param data optional data to be passed to the bottom sheet. See [bottomSheetData].
  */
 fun AppSheetState.showBottomSheet(data: Any? = null) {
     checkTypeRequirement()

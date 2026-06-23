@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Minus
 import com.fibelatti.photowidget.ui.icons.Plus
-import com.fibelatti.ui.text.AutoSizeText
+import com.fibelatti.ui.component.AutoSizeText
 
 @Composable
 fun NumberSpinner(
