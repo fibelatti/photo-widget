@@ -121,9 +121,7 @@ import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.AutoSizeText
 import com.fibelatti.ui.component.ConnectedButtonRowItem
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
-import com.fibelatti.ui.component.hideBottomSheet
 import com.fibelatti.ui.component.rememberAppSheetState
-import com.fibelatti.ui.component.showBottomSheet
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.foundation.fadingEdges

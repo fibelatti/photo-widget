@@ -28,7 +28,6 @@ import com.fibelatti.photowidget.preferences.BooleanDefault
 import com.fibelatti.photowidget.preferences.PickerDefault
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.rememberAppSheetState
-import com.fibelatti.ui.component.showBottomSheet
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme

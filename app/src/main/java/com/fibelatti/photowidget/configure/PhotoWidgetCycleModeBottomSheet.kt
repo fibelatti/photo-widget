@@ -80,7 +80,6 @@ import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.AutoSizeText
 import com.fibelatti.ui.component.ConnectedButtonRowItem
-import com.fibelatti.ui.component.hideBottomSheet
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.Calendar

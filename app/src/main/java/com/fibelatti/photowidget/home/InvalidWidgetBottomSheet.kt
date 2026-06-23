@@ -16,7 +16,6 @@ import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
-import com.fibelatti.ui.component.bottomSheetData
 
 @Composable
 fun InvalidWidgetBottomSheet(

@@ -78,9 +78,7 @@ import com.fibelatti.photowidget.ui.icons.Xmark
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AutoSizeText
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
-import com.fibelatti.ui.component.hideBottomSheet
 import com.fibelatti.ui.component.rememberAppSheetState
-import com.fibelatti.ui.component.showBottomSheet
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.preview.PreviewThemesAndColors

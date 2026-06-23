@@ -15,7 +15,6 @@ import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
-import com.fibelatti.ui.component.hideBottomSheet
 
 @Composable
 fun AppAppearanceBottomSheet(

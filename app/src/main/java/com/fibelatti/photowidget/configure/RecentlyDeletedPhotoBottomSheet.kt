@@ -17,7 +17,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
-import com.fibelatti.ui.component.bottomSheetData
 
 @Composable
 fun RecentlyDeletedPhotoBottomSheet(

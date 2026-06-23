@@ -121,7 +121,72 @@ fun rememberAppSheetState(
  * @see rememberAppSheetState
  */
 @Stable
-sealed interface AppSheetState
+sealed interface AppSheetState {
+
+    /**
+     * Shows the bottom sheet associated with the received [AppSheetState].
+     *
+     * @param data optional data to be passed to the bottom sheet. See [bottomSheetData].
+     */
+    fun showBottomSheet(data: Any? = null) {
+        checkTypeRequirement()
+        scope.launch {
+            // Finish the previously requested hide job if one exists to deliver the callbacks before showing again
+            this@AppSheetState.hideJob?.join()
+            this@AppSheetState.hideJob = null
+            // Simply mark it to be displayed and let the state change do its thing in `AppBottomSheet`
+            this@AppSheetState.isVisible = true
+            this@AppSheetState.data = data
+        }
+    }
+
+    /**
+     * Hides the bottom sheet associated with the received [AppSheetState].
+     *
+     * If a hide is already in flight (e.g. multiple call sites each request a hide on selection), the existing animation
+     * is reused — [onHidden] is chained onto its completion instead of starting a new one. This avoids racing
+     * `state.hide()` calls that can leave the underlying [SheetState] saved in an expanded state across configuration
+     * changes.
+     *
+     * @param onHidden optional callback invoked after the hide animation completes. Use this when the caller needs to
+     * trigger work that would otherwise interrupt the animation (e.g. a configuration change), to avoid leaving the
+     * underlying [SheetState] saved as expanded.
+     */
+    fun hideBottomSheet(onHidden: () -> Unit = {}) {
+        checkTypeRequirement()
+
+        val inFlight = hideJob
+        if (inFlight != null && inFlight.isActive) {
+            // A hide is already animating; just chain the completion callback onto it.
+            inFlight.invokeOnCompletion { cause -> if (cause == null) onHidden() }
+            return
+        }
+
+        val job = scope.launch { state.hide() }
+        hideJob = job
+        job.invokeOnCompletion { cause ->
+            if (cause != null) return@invokeOnCompletion
+            // Clean up the state on completion to remove the sheet from the composition
+            if (!state.isVisible) {
+                isVisible = false
+            }
+            onHidden()
+        }
+    }
+
+    /**
+     * Retrieves the data associated with the bottom sheet, if any was provided when calling [showBottomSheet].
+     *
+     * This **always returns null** before [showBottomSheet] is called, so take this into account when relying on this value
+     * for your composition. It's likely that whenever the data is missing, downstream items should not be in the
+     * composition yet.
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun <T> bottomSheetData(): T? {
+        checkTypeRequirement()
+        return data as? T
+    }
+}
 
 private class AppSheetStateImpl(
     val state: SheetState,
@@ -155,68 +220,4 @@ private val AppSheetState.isBottomSheetShowing: Boolean
 private fun AppSheetState.checkTypeRequirement() {
     contract { returns() implies (this@checkTypeRequirement is AppSheetStateImpl) }
     require(this is AppSheetStateImpl) { "AppBottomSheet must be used with rememberAppSheetState." }
-}
-
-/**
- * Shows the bottom sheet associated with the received [AppSheetState].
- *
- * @param data optional data to be passed to the bottom sheet. See [bottomSheetData].
- */
-fun AppSheetState.showBottomSheet(data: Any? = null) {
-    checkTypeRequirement()
-    scope.launch {
-        // Finish the previously requested hide job if one exists to deliver the callbacks before showing again
-        this@showBottomSheet.hideJob?.join()
-        this@showBottomSheet.hideJob = null
-        // Simply mark it to be displayed and let the state change do its thing in `AppBottomSheet`
-        this@showBottomSheet.isVisible = true
-        this@showBottomSheet.data = data
-    }
-}
-
-/**
- * Hides the bottom sheet associated with the received [AppSheetState].
- *
- * If a hide is already in flight (e.g. multiple call sites each request a hide on selection), the existing animation
- * is reused — [onHidden] is chained onto its completion instead of starting a new one. This avoids racing
- * `state.hide()` calls that can leave the underlying [SheetState] saved in an expanded state across configuration
- * changes.
- *
- * @param onHidden optional callback invoked after the hide animation completes. Use this when the caller needs to
- * trigger work that would otherwise interrupt the animation (e.g. a configuration change), to avoid leaving the
- * underlying [SheetState] saved as expanded.
- */
-fun AppSheetState.hideBottomSheet(onHidden: () -> Unit = {}) {
-    checkTypeRequirement()
-
-    val inFlight = hideJob
-    if (inFlight != null && inFlight.isActive) {
-        // A hide is already animating; just chain the completion callback onto it.
-        inFlight.invokeOnCompletion { cause -> if (cause == null) onHidden() }
-        return
-    }
-
-    val job = scope.launch { state.hide() }
-    hideJob = job
-    job.invokeOnCompletion { cause ->
-        if (cause != null) return@invokeOnCompletion
-        // Clean up the state on completion to remove the sheet from the composition
-        if (!state.isVisible) {
-            isVisible = false
-        }
-        onHidden()
-    }
-}
-
-/**
- * Retrieves the data associated with the bottom sheet, if any was provided when calling [showBottomSheet].
- *
- * This **always returns null** before [showBottomSheet] is called, so take this into account when relying on this value
- * for your composition. It's likely that whenever the data is missing, downstream items should not be in the
- * composition yet.
- */
-@Suppress("UNCHECKED_CAST")
-fun <T> AppSheetState.bottomSheetData(): T? {
-    checkTypeRequirement()
-    return data as? T
 }

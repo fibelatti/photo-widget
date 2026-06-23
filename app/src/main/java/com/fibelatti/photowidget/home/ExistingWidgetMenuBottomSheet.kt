@@ -18,7 +18,6 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
-import com.fibelatti.ui.component.bottomSheetData
 import kotlinx.parcelize.Parcelize
 
 @Composable

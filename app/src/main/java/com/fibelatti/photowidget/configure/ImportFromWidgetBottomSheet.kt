@@ -43,7 +43,6 @@ import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.TrashClock
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
-import com.fibelatti.ui.component.hideBottomSheet
 
 @Suppress("ktlint:compose:vm-forwarding-check")
 @Composable

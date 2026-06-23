@@ -76,7 +76,6 @@ import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.AutoSizeText
 import com.fibelatti.ui.component.rememberAppSheetState
-import com.fibelatti.ui.component.showBottomSheet
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme

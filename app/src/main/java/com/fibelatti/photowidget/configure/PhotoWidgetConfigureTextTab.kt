@@ -53,9 +53,7 @@ import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Trash
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
-import com.fibelatti.ui.component.hideBottomSheet
 import com.fibelatti.ui.component.rememberAppSheetState
-import com.fibelatti.ui.component.showBottomSheet
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme

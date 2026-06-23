@@ -41,7 +41,6 @@ import com.fibelatti.photowidget.ui.icons.Warning
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.TextWithLinks
-import com.fibelatti.ui.component.hideBottomSheet
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 

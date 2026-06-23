@@ -35,7 +35,6 @@ import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Export
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
-import com.fibelatti.ui.component.hideBottomSheet
 import com.fibelatti.ui.foundation.fadingEdges
 
 @Composable

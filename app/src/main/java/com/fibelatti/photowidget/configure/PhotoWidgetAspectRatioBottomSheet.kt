@@ -10,7 +10,6 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
-import com.fibelatti.ui.component.hideBottomSheet
 
 @Composable
 fun PhotoWidgetAspectRatioBottomSheet(
