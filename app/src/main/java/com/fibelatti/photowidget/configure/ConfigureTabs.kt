@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -72,7 +73,7 @@ inline fun ConfigureTabs(
                 Tab(
                     selected = selectedTab == tab,
                     onClick = { selectedTab = tab },
-                    modifier = Modifier.height(tabHeight),
+                    modifier = Modifier.height(tabHeight).clip(MaterialTheme.shapes.small),
                 ) {
                     AutoSizeText(
                         text = stringResource(tab.title),
