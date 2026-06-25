@@ -182,6 +182,11 @@ private fun ColorBorderContent(
             )
         }
 
+        BorderWidthPicker(
+            currentWidth = currentWidth,
+            onWidthChange = onWidthChange,
+        )
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterHorizontally),
@@ -270,11 +275,6 @@ private fun ColorBorderContent(
                 singleLine = true,
             )
         }
-
-        BorderWidthPicker(
-            currentWidth = currentWidth,
-            onWidthChange = onWidthChange,
-        )
     }
 }
 
@@ -292,6 +292,11 @@ private fun DynamicBorderContent(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        BorderWidthPicker(
+            currentWidth = currentWidth,
+            onWidthChange = onWidthChange,
+        )
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterHorizontally),
@@ -328,11 +333,6 @@ private fun DynamicBorderContent(
             )
         }
 
-        BorderWidthPicker(
-            currentWidth = currentWidth,
-            onWidthChange = onWidthChange,
-        )
-
         Text(
             text = stringResource(R.string.photo_widget_configure_border_explanation),
             color = MaterialTheme.colorScheme.onSurface,
@@ -358,6 +358,11 @@ private fun MatchPhotoBorderContent(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        BorderWidthPicker(
+            currentWidth = currentWidth,
+            onWidthChange = onWidthChange,
+        )
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterHorizontally),
@@ -393,11 +398,6 @@ private fun MatchPhotoBorderContent(
                 modifier = Modifier.weight(1f),
             )
         }
-
-        BorderWidthPicker(
-            currentWidth = currentWidth,
-            onWidthChange = onWidthChange,
-        )
     }
 }
 
