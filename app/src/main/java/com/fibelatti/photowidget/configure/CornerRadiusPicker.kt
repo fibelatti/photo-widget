@@ -1,37 +1,26 @@
 package com.fibelatti.photowidget.configure
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.hapticfeedback.HapticFeedback
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastRoundToInt
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.DefaultSheetContent
-import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.photowidget.ui.SliderItem
 import com.fibelatti.photowidget.ui.rememberSampleBitmap
 import com.fibelatti.ui.foundation.dpToPx
 
@@ -55,34 +44,15 @@ fun CornerRadiusPicker(
             modifier = Modifier.size(200.dp),
         )
 
-        Row(
+        SliderItem(
+            value = value.toFloat(),
+            valueText = "$value",
+            onValueChange = { value = it.fastRoundToInt() },
+            valueRange = 0f..128f,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 32.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
-            SideEffect(value) {
-                localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
-            }
-
-            Slider(
-                value = value.toFloat(),
-                onValueChange = { value = it.fastRoundToInt() },
-                modifier = Modifier.weight(1f),
-                valueRange = 0f..128f,
-                thumb = { SliderSmallThumb() },
-            )
-
-            Text(
-                text = "$value",
-                modifier = Modifier.width(40.dp),
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.End,
-                style = MaterialTheme.typography.labelLarge,
-            )
-        }
+                .padding(horizontal = 16.dp),
+        )
 
         Button(
             onClick = { onApplyClick(value) },

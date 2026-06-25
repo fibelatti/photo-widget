@@ -3,27 +3,20 @@ package com.fibelatti.photowidget.configure
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedback
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -31,7 +24,7 @@ import androidx.compose.ui.util.fastRoundToInt
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.GifFrames
 import com.fibelatti.photowidget.ui.DefaultSheetContent
-import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.photowidget.ui.SliderItem
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.preview.PreviewAll
@@ -80,34 +73,15 @@ fun PhotoWidgetGifIntervalContent(
             style = MaterialTheme.typography.bodyMedium,
         )
 
-        Row(
+        SliderItem(
+            value = value.toFloat(),
+            valueText = "$value ms",
+            onValueChange = { value = it.fastRoundToInt().toLong() },
+            valueRange = GifFrames.MIN_INTERVAL_MS.toFloat()..GifFrames.MAX_INTERVAL_MS.toFloat(),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 32.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
-            SideEffect(value) {
-                localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
-            }
-
-            Slider(
-                value = value.toFloat(),
-                onValueChange = { value = it.fastRoundToInt().toLong() },
-                modifier = Modifier.weight(1f),
-                valueRange = GifFrames.MIN_INTERVAL_MS.toFloat()..GifFrames.MAX_INTERVAL_MS.toFloat(),
-                thumb = { SliderSmallThumb() },
-            )
-
-            Text(
-                text = "$value ms",
-                modifier = Modifier.width(48.dp),
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.End,
-                style = MaterialTheme.typography.labelLarge,
-            )
-        }
+                .padding(horizontal = 16.dp),
+        )
 
         FlowRow(
             modifier = Modifier

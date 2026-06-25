@@ -20,13 +20,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -35,16 +32,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.hapticfeedback.HapticFeedback
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.util.fastRoundToInt
@@ -59,7 +52,7 @@ import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.RadioGroup
-import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.photowidget.ui.SliderItem
 import com.fibelatti.photowidget.ui.rememberSampleBitmap
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
@@ -281,7 +274,6 @@ private fun ColorBorderContent(
         BorderWidthPicker(
             currentWidth = currentWidth,
             onWidthChange = onWidthChange,
-            modifier = Modifier.padding(horizontal = 16.dp),
         )
     }
 }
@@ -339,7 +331,6 @@ private fun DynamicBorderContent(
         BorderWidthPicker(
             currentWidth = currentWidth,
             onWidthChange = onWidthChange,
-            modifier = Modifier.padding(horizontal = 16.dp),
         )
 
         Text(
@@ -406,7 +397,6 @@ private fun MatchPhotoBorderContent(
         BorderWidthPicker(
             currentWidth = currentWidth,
             onWidthChange = onWidthChange,
-            modifier = Modifier.padding(horizontal = 16.dp),
         )
     }
 }
@@ -417,36 +407,13 @@ private fun BorderWidthPicker(
     onWidthChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    SliderItem(
+        value = currentWidth.toFloat(),
+        valueText = formatPercent(value = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR * 100),
+        onValueChange = { onWidthChange(it.fastRoundToInt()) },
+        valueRange = PhotoWidgetBorder.VALUE_RANGE,
         modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
-        var value by rememberSaveable { mutableIntStateOf(currentWidth) }
-        SideEffect(value) {
-            localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
-        }
-
-        Slider(
-            value = currentWidth.toFloat(),
-            onValueChange = {
-                value = it.fastRoundToInt()
-                onWidthChange(value)
-            },
-            modifier = Modifier.weight(1f),
-            valueRange = PhotoWidgetBorder.VALUE_RANGE,
-            thumb = { SliderSmallThumb() },
-        )
-
-        Text(
-            text = formatPercent(value = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR * 100),
-            modifier = Modifier.width(60.dp),
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.End,
-            style = MaterialTheme.typography.bodyMedium,
-        )
-    }
+    )
 }
 
 // region Previews

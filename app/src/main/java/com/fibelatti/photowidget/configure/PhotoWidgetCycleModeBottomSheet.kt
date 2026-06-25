@@ -30,7 +30,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -39,7 +38,6 @@ import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,10 +50,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.hapticfeedback.HapticFeedback
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -72,7 +67,7 @@ import com.fibelatti.photowidget.model.intervalRange
 import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.RadioGroup
-import com.fibelatti.photowidget.ui.SliderSmallThumb
+import com.fibelatti.photowidget.ui.SliderItem
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Trash
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
@@ -316,34 +311,13 @@ private fun PhotoCycleModeIntervalContent(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
-            SideEffect(interval.repeatInterval) {
-                localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
-            }
-
-            Slider(
-                value = interval.repeatInterval.toFloat(),
-                onValueChange = { newValue -> interval = interval.copy(repeatInterval = newValue.toLong()) },
-                modifier = Modifier.weight(1f),
-                valueRange = interval.intervalRange(),
-                thumb = { SliderSmallThumb() },
-            )
-
-            Text(
-                text = "${interval.repeatInterval}",
-                modifier = Modifier.width(40.dp),
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.End,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        }
+        SliderItem(
+            value = interval.repeatInterval.toFloat(),
+            valueText = "${interval.repeatInterval}",
+            onValueChange = { newValue -> interval = interval.copy(repeatInterval = newValue.toLong()) },
+            valueRange = interval.intervalRange(),
+            modifier = Modifier.fillMaxWidth(),
+        )
 
         Row(
             modifier = Modifier
