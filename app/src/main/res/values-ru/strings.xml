@@ -263,6 +263,7 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Это действие откроет текущую фотографию через приложение галереи. Невозможно будет просматривать или переходить к другим фотографиям.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Вы также можете выбрать, какое приложение галереи использовать.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Выбрать приложение</string>
+    <string name="photo_widget_configure_tap_action_open_with">Открыть с помощью…</string>
     <string name="photo_widget_configure_tap_action_search_apps">Поиск приложений</string>
     <string name="photo_widget_configure_tap_action_choose_shortcut">Выбрать ярлык</string>
     <string name="photo_widget_configure_tap_action_launch_app">Запустить приложение</string>

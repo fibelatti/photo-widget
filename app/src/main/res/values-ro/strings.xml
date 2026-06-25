@@ -257,6 +257,7 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Această acțiune deschide fotografia curentă folosind aplicația galerie. Nu va fi posibil să vezi sau să navighezi la alte fotografii.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">De asemenea, puteți alege ce aplicație galerie să o utilizați.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Alege aplicația</string>
+    <string name="photo_widget_configure_tap_action_open_with">Deschide cu…</string>
     <string name="photo_widget_configure_tap_action_search_apps">Caută aplicații</string>
     <string name="photo_widget_configure_tap_action_choose_shortcut">Alege scurtătură</string>
     <string name="photo_widget_configure_tap_action_launch_app">Deschide aplicația</string>

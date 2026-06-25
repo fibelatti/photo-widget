@@ -239,6 +239,7 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">このアクションは、ギャラリーアプリを使用して現在の写真を開きます。他の写真を表示したり移動したりすることはできません。</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">使用するギャラリーアプリを選択することもできます。</string>
     <string name="photo_widget_configure_tap_action_choose_app">アプリを選択</string>
+    <string name="photo_widget_configure_tap_action_open_with">アプリで開く…</string>
     <string name="photo_widget_configure_tap_action_search_apps">アプリを検索</string>
     <string name="photo_widget_configure_tap_action_choose_shortcut">ショートカットを選択</string>
     <string name="photo_widget_configure_tap_action_launch_app">アプリを起動</string>

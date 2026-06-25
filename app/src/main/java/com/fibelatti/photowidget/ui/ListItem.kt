@@ -65,6 +65,7 @@ fun PickerListItem(
     currentValue: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    trailingContent: @Composable (() -> Unit)? = null,
     shape: Shape = Shapes.StandaloneShape,
 ) {
     ListItem(
@@ -73,6 +74,7 @@ fun PickerListItem(
             .clip(shape)
             .clickable(onClick = onClick),
         supportingText = currentValue,
+        trailingContent = trailingContent,
         shape = shape,
     )
 }

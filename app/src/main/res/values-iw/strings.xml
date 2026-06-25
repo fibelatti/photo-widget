@@ -263,6 +263,7 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">פעולה זו פותחת את התמונה הנוכחית באמצעות אפליקציית הגלריה. לא ניתן יהיה לצפות בתמונות אחרות או לנווט אליהן.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">באפשרותך גם לבחור באיזו אפליקציית גלריה להשתמש.</string>
     <string name="photo_widget_configure_tap_action_choose_app">בחר אפליקציה</string>
+    <string name="photo_widget_configure_tap_action_open_with">פתח באמצעות…</string>
     <string name="photo_widget_configure_tap_action_search_apps">חפש אפליקציות</string>
     <string name="photo_widget_configure_tap_action_choose_shortcut">בחר קיצור דרך</string>
     <string name="photo_widget_configure_tap_action_launch_app">הפעל אפליקציה</string>

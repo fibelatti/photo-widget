@@ -255,6 +255,7 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Ова радња отвара тренутну фотографију помоћу апликације галерија. Неће бити могуће прегледати или прећи на друге фотографије.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Такође можете одабрати коју апликацију за галерију ћете користити.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Изаберите апликацију</string>
+    <string name="photo_widget_configure_tap_action_open_with">Отвори помоћу…</string>
     <string name="photo_widget_configure_tap_action_search_apps">Претражи апликације</string>
     <string name="photo_widget_configure_tap_action_choose_shortcut">Изаберите пречицу</string>
     <string name="photo_widget_configure_tap_action_launch_app">Покрените апликацију</string>

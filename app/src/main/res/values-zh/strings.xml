@@ -239,6 +239,7 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">此操作使用图库应用打开当前照片。它将无法查看或导航到其他照片。</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">你也可以选择使用哪个相册程序。</string>
     <string name="photo_widget_configure_tap_action_choose_app">选择软件</string>
+    <string name="photo_widget_configure_tap_action_open_with">打开方式…</string>
     <string name="photo_widget_configure_tap_action_search_apps">搜索应用</string>
     <string name="photo_widget_configure_tap_action_choose_shortcut">选择快捷方式</string>
     <string name="photo_widget_configure_tap_action_launch_app">启动应用</string>

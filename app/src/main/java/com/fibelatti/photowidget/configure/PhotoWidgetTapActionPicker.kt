@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateDpAsState
@@ -23,6 +22,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,25 +34,25 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonGroupDefaults
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemColors
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
-import androidx.compose.material3.contentColorFor
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -83,9 +83,12 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
@@ -106,11 +109,11 @@ import com.fibelatti.photowidget.platform.getAppShortcuts
 import com.fibelatti.photowidget.platform.getInstalledApp
 import com.fibelatti.photowidget.platform.resolveAppFolderEntries
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import com.fibelatti.photowidget.ui.BooleanListItem
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.PickerListItem
 import com.fibelatti.photowidget.ui.RadioGroup
-import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Back
 import com.fibelatti.photowidget.ui.icons.Trash
@@ -126,6 +129,7 @@ import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.PreviewAll
+import com.fibelatti.ui.preview.PreviewLocales
 import com.fibelatti.ui.theme.ExtendedTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -763,15 +767,26 @@ private fun TapOptionsPicker(
             currentValue = stringResource(currentTapAction.label),
             onClick = tapActionSheetState::showBottomSheet,
             modifier = Modifier.fillMaxWidth(),
+            trailingContent = {
+                Row(
+                    modifier = Modifier.height(IntrinsicSize.Min),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    VerticalDivider(modifier = Modifier.fillMaxHeight())
+
+                    TextButton(
+                        onClick = { copyFromSheetState.showBottomSheet() },
+                    ) {
+                        AutoSizeText(
+                            text = stringResource(R.string.photo_widget_configure_tap_action_copy_from),
+                            modifier = Modifier.heightIn(max = 80.dp),
+                            maxLines = 1,
+                        )
+                    }
+                }
+            },
             shape = Shapes.StandaloneShape,
         )
-
-        TextButton(
-            onClick = { copyFromSheetState.showBottomSheet() },
-            modifier = Modifier.align(Alignment.End),
-        ) {
-            Text(text = stringResource(R.string.photo_widget_configure_tap_action_copy_from))
-        }
     }
 
     AppBottomSheet(
@@ -884,11 +899,11 @@ private fun TapActionCustomizationContent(
             TextField(
                 value = tapAction.url.orEmpty(),
                 onValueChange = { newValue -> onTapActionChange(tapAction.copy(url = newValue)) },
-                modifier = modifier,
+                modifier = modifier.heightIn(min = ListItem.MinHeight),
                 placeholder = { Text(text = "https://...") },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Done),
                 singleLine = true,
-                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                shape = Shapes.StandaloneShape,
             )
         }
 
@@ -912,88 +927,46 @@ private fun AppPicker(
     shortcutId: String? = null,
     onChooseShortcutClick: ((packageName: String) -> Unit)? = null,
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Max),
-        horizontalArrangement = Arrangement.spacedBy(2.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        FilledTonalButton(
-            onClick = onChooseAppClick,
-            modifier = Modifier
-                .fillMaxHeight()
-                .heightIn(min = 48.dp),
-            shapes = ButtonDefaults.shapes(shape = packageName?.let { Shapes.StartShape }),
-        ) {
-            Text(
-                text = stringResource(id = R.string.photo_widget_configure_tap_action_choose_app),
-                fontWeight = FontWeight.Bold,
-            )
-        }
+    val localContext: Context = LocalContext.current
 
-        val localContext: Context = LocalContext.current
-        val installedApp: InstalledApp = remember(packageName) { localContext.getInstalledApp(packageName) }
-            ?: return
-
-        val shortcut: AppShortcutInfo? by produceState(initialValue = null, key1 = packageName, key2 = shortcutId) {
-            value = if (packageName != null && shortcutId != null) {
-                withContext(Dispatchers.IO) { localContext.getAppShortcuts(packageName) }
-                    .find { it.id == shortcutId }
-            } else {
-                null
-            }
-        }
-
-        val icon: Drawable = shortcut?.icon ?: installedApp.appIcon
-        val label: String = if (shortcutId != null) {
-            "${installedApp.appLabel} › ${shortcut?.label ?: shortcutId}"
+    val installedApp: InstalledApp? = remember(packageName) { localContext.getInstalledApp(packageName) }
+    val shortcut: AppShortcutInfo? by produceState(initialValue = null, key1 = packageName, key2 = shortcutId) {
+        value = if (packageName != null && shortcutId != null) {
+            withContext(Dispatchers.IO) { localContext.getAppShortcuts(packageName) }
+                .find { it.id == shortcutId }
         } else {
-            installedApp.appLabel
-        }
-
-        Row(
-            modifier = Modifier
-                .weight(1f)
-                .clip(Shapes.EndShape)
-                .background(color = MaterialTheme.colorScheme.secondaryContainer)
-                .clickable(
-                    enabled = packageName != null && onChooseShortcutClick != null,
-                    role = Role.Button,
-                ) {
-                    if (packageName != null && onChooseShortcutClick != null) {
-                        onChooseShortcutClick(packageName)
-                    }
-                }
-                .padding(horizontal = 8.dp, vertical = 4.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Crossfade(
-                targetState = remember(icon) { icon.toBitmap().asImageBitmap() },
-            ) { bitmap ->
-                Image(
-                    bitmap = bitmap,
-                    contentDescription = null,
-                    modifier = Modifier.size(40.dp),
-                )
-            }
-
-            Crossfade(
-                targetState = label,
-                modifier = Modifier.weight(1f),
-            ) {
-                AutoSizeText(
-                    text = it,
-                    modifier = Modifier.fillMaxWidth(),
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.labelLarge,
-                )
-            }
+            null
         }
     }
+
+    ListItem(
+        headlineText = installedApp?.appLabel
+            ?: stringResource(id = R.string.photo_widget_configure_tap_action_choose_app),
+        supportingText = shortcut?.label ?: shortcutId,
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(ListItem.DefaultShape)
+            .clickable(onClick = onChooseAppClick, role = Role.Button),
+        trailingContent = trailingContent@{
+            val icon: Drawable = shortcut?.icon ?: installedApp?.appIcon ?: return@trailingContent
+
+            Image(
+                bitmap = remember(icon) { icon.toBitmap().asImageBitmap() },
+                contentDescription = null,
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .clickable(
+                        enabled = packageName != null && onChooseShortcutClick != null,
+                        role = Role.Button,
+                    ) {
+                        if (packageName != null && onChooseShortcutClick != null) {
+                            onChooseShortcutClick(packageName)
+                        }
+                    },
+            )
+        },
+    )
 }
 
 @Composable
@@ -1006,30 +979,34 @@ private fun ViewFullScreenCustomizationContent(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        Toggle(
+        BooleanListItem(
             title = stringResource(id = R.string.photo_widget_configure_tap_action_increase_brightness),
-            checked = value.increaseBrightness,
+            currentValue = value.increaseBrightness,
             onCheckedChange = { onValueChange(value.copy(increaseBrightness = it)) },
+            shape = Shapes.TopShape,
         )
 
-        Toggle(
+        BooleanListItem(
             title = stringResource(R.string.photo_widget_configure_tap_action_view_original_photo),
-            checked = value.viewOriginalPhoto,
+            currentValue = value.viewOriginalPhoto,
             onCheckedChange = { onValueChange(value.copy(viewOriginalPhoto = it)) },
+            shape = Shapes.MiddleShape,
         )
 
-        Toggle(
+        BooleanListItem(
             title = stringResource(R.string.photo_widget_configure_tap_action_do_not_shuffle),
-            checked = value.noShuffle,
+            currentValue = value.noShuffle,
             onCheckedChange = { onValueChange(value.copy(noShuffle = it)) },
+            shape = Shapes.MiddleShape,
         )
 
-        Toggle(
+        BooleanListItem(
             title = stringResource(R.string.photo_widget_configure_tap_action_keep_current_photo),
-            checked = value.keepCurrentPhoto,
+            currentValue = value.keepCurrentPhoto,
             onCheckedChange = { onValueChange(value.copy(keepCurrentPhoto = it)) },
+            shape = Shapes.MiddleShape,
         )
 
         PickerListItem(
@@ -1038,14 +1015,16 @@ private fun ViewFullScreenCustomizationContent(
                 ?: stringResource(R.string.photo_widget_configure_tap_action_viewer_background_color_default),
             onClick = backgroundColorSheetState::showBottomSheet,
             modifier = Modifier.fillMaxWidth(),
-            shape = Shapes.StandaloneShape,
+            shape = Shapes.BottomShape,
         )
+
+        Spacer(modifier = Modifier.height(6.dp))
 
         InformationalPanel(
             text = stringResource(id = R.string.photo_widget_configure_tap_action_shared_preferences),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp),
+                .padding(horizontal = 8.dp),
         )
     }
 
@@ -1079,20 +1058,53 @@ private fun ViewInGalleryCustomizationContent(
                     stringResource(R.string.photo_widget_configure_tap_action_gallery_description_app_selection),
                 )
             },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.bodyMedium,
         )
 
-        AppPicker(
+        OpenWithPicker(
             packageName = value.galleryApp,
             onChooseAppClick = onChooseGalleryAppClick,
         )
 
         InformationalPanel(
             text = stringResource(id = R.string.photo_widget_configure_tap_action_shared_preferences),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
         )
     }
+}
+
+@Composable
+private fun OpenWithPicker(
+    packageName: String?,
+    onChooseAppClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val localContext: Context = LocalContext.current
+    val installedApp: InstalledApp? = remember(packageName) { localContext.getInstalledApp(packageName) }
+
+    ListItem(
+        headlineText = stringResource(R.string.photo_widget_configure_tap_action_open_with),
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(ListItem.DefaultShape)
+            .clickable(onClick = onChooseAppClick, role = Role.Button),
+        supportingText = installedApp?.appLabel,
+        trailingContent = trailingContent@{
+            val icon: Drawable = installedApp?.appIcon ?: return@trailingContent
+
+            Image(
+                bitmap = remember(icon) { icon.toBitmap().asImageBitmap() },
+                contentDescription = null,
+                modifier = Modifier.size(40.dp),
+            )
+        },
+    )
 }
 
 @Composable
@@ -1103,23 +1115,28 @@ private fun ToggleCyclingCustomizationContent(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
             text = stringResource(id = R.string.photo_widget_configure_tap_action_toggle_cycling_description),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.bodyMedium,
         )
 
-        Toggle(
+        BooleanListItem(
             title = stringResource(id = R.string.photo_widget_configure_tap_action_disable_tap),
-            checked = value.disableTap,
+            currentValue = value.disableTap,
             onCheckedChange = { onValueChange(value.copy(disableTap = it)) },
         )
 
         InformationalPanel(
             text = stringResource(id = R.string.photo_widget_configure_tap_action_shared_preferences),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
         )
     }
 }
@@ -1130,30 +1147,15 @@ private fun FileShortcutCustomizationContent(
     onChooseFileClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        OutlinedButton(
-            onClick = onChooseFileClick,
-            shapes = ButtonDefaults.shapes(),
-        ) {
-            Text(text = stringResource(id = R.string.photo_widget_configure_tap_action_choose_file))
-        }
-
-        if (value.fileUri != null) {
-            AutoSizeText(
-                // lastPathSegment only takes care of the URI structure, the file can be in a nested directory
-                text = value.fileUri.toUri().lastPathSegment.orEmpty().substringAfterLast("/"),
-                modifier = Modifier.weight(1f),
-                color = MaterialTheme.colorScheme.onSurface,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                style = MaterialTheme.typography.labelLarge,
-            )
-        }
-    }
+    ListItem(
+        headlineText = stringResource(id = R.string.photo_widget_configure_tap_action_choose_file),
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(ListItem.DefaultShape)
+            .clickable(onClick = onChooseFileClick, role = Role.Button),
+        // lastPathSegment only takes care of the URI structure, the file can be in a nested directory
+        supportingText = value.fileUri?.toUri()?.lastPathSegment.orEmpty().substringAfterLast("/"),
+    )
 }
 
 @Composable
@@ -1274,11 +1276,12 @@ private fun AppFolderCustomizationItem(
     subtitle: String? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
-    backgroundColor: Color = MaterialTheme.colorScheme.secondaryContainer,
     backgroundShape: Shape = MaterialTheme.shapes.medium,
     textAlign: TextAlign = TextAlign.Left,
 ) {
-    CompositionLocalProvider(LocalContentColor provides contentColorFor(backgroundColor)) {
+    val colors: ListItemColors = ListItemDefaults.colors()
+
+    CompositionLocalProvider(LocalContentColor provides colors.contentColor) {
         ListItem(
             headlineContent = {
                 AutoSizeText(
@@ -1292,7 +1295,7 @@ private fun AppFolderCustomizationItem(
             },
             modifier = modifier
                 .clip(backgroundShape)
-                .heightIn(min = ListItem.MIN_HEIGHT),
+                .heightIn(min = ListItem.MinHeight),
             supportingContent = {
                 if (subtitle != null) {
                     AutoSizeText(
@@ -1305,7 +1308,8 @@ private fun AppFolderCustomizationItem(
             },
             leadingContent = leadingIcon,
             trailingContent = trailingIcon,
-            colors = ListItemDefaults.colors(containerColor = backgroundColor),
+            colors = colors,
+            tonalElevation = 4.dp,
         )
     }
 }
@@ -1333,4 +1337,31 @@ private fun PhotoWidgetTapActionPickerPreview() {
         )
     }
 }
+
+@Composable
+@PreviewLocales
+private fun TapOptionsPickerPreview(
+    @PreviewParameter(TapActionPreviewParameterProvider::class) tapAction: PhotoWidgetTapAction,
+
+    ) {
+    ExtendedTheme {
+        TapOptionsPicker(
+            currentTapAction = tapAction,
+            onTapActionClick = {},
+            selectedArea = TapActionArea.CENTER,
+            source = PhotoWidgetSource.PHOTOS,
+            onCopyFromClick = {},
+        )
+    }
+}
+
+private class TapActionPreviewParameterProvider : PreviewParameterProvider<PhotoWidgetTapAction> {
+
+    override val values: Sequence<PhotoWidgetTapAction> = PhotoWidgetTapAction.entries.asSequence()
+
+    override fun getDisplayName(index: Int): String {
+        return PhotoWidgetTapAction.entries[index].serializedName
+    }
+}
+
 // endregion Previews

@@ -247,6 +247,7 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Bu eylem, mevcut fotoğrafı galeri uygulamasıyla açar. Diğer fotoğrafları görüntülemek veya onlara geçmek mümkün olmayacaktır.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Hangi galeri uygulamasını kullanacağınızı da seçebilirsiniz.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Uygulama seç</string>
+    <string name="photo_widget_configure_tap_action_open_with">Birlikte aç…</string>
     <string name="photo_widget_configure_tap_action_search_apps">Uygulama ara</string>
     <string name="photo_widget_configure_tap_action_choose_shortcut">Kısayol seç</string>
     <string name="photo_widget_configure_tap_action_launch_app">Uygulamayı başlat</string>

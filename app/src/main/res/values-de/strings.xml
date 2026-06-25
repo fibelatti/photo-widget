@@ -249,6 +249,7 @@
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Diese Aktion öffnet das aktuelle Foto mit der Galerie-App. Es ist nicht möglich, andere Fotos anzuzeigen oder zu ihnen zu navigieren.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Du kannst auch auswählen, welche Galerie-App verwendet werden soll.</string>
     <string name="photo_widget_configure_tap_action_choose_app">App auswählen</string>
+    <string name="photo_widget_configure_tap_action_open_with">Öffnen mit…</string>
     <string name="photo_widget_configure_tap_action_search_apps">Apps suchen</string>
     <string name="photo_widget_configure_tap_action_choose_shortcut">Verknüpfung auswählen</string>
     <string name="photo_widget_configure_tap_action_launch_app">App starten</string>
