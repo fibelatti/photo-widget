@@ -1343,7 +1343,7 @@ private fun PhotoWidgetTapActionPickerPreview() {
 private fun TapOptionsPickerPreview(
     @PreviewParameter(TapActionPreviewParameterProvider::class) tapAction: PhotoWidgetTapAction,
 
-    ) {
+) {
     ExtendedTheme {
         TapOptionsPicker(
             currentTapAction = tapAction,
