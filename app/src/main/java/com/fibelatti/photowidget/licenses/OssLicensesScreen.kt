@@ -26,6 +26,9 @@ import com.fibelatti.ui.foundation.copy
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.produceLibraries
+import com.mikepenz.aboutlibraries.ui.compose.style.LibraryActionBadges
+import com.mikepenz.aboutlibraries.ui.compose.variant.LibrariesVariant
+import com.mikepenz.aboutlibraries.ui.compose.variant.LibraryBadges
 
 @Composable
 fun OssLicensesScreen(
@@ -45,7 +48,9 @@ fun OssLicensesScreen(
             .background(color = MaterialTheme.colorScheme.background)
             .padding(top = paddingValues.calculateTopPadding()),
         contentPadding = paddingValues.copy(top = 0.dp),
-        showLicenseBadges = false,
+        badges = LibraryBadges(license = false),
+        actionLabels = LibraryActionBadges(sponsorEnabled = false),
+        variant = LibrariesVariant.Refined,
         header = {
             stickyHeader {
                 Row(
