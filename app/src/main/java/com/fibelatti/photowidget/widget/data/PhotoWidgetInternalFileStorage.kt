@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import com.fibelatti.photowidget.model.GifFrames
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetSource
@@ -256,15 +257,18 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
         // Using `currentTimeMillis` to generate unique files,
         // otherwise the widget won't update if the same file is overwritten every time
-        val file = File("$dir/${System.currentTimeMillis()}.png")
+        val file = File("$dir/${System.currentTimeMillis()}.webp")
 
+        // WebP-lossy encodes markedly faster than lossless PNG for this transformed, widget-sized
+        // bitmap, shortening the prepare step that gates a tap-to-swap crossfade. It retains the
+        // alpha channel needed by rounded corners and polygonal shapes.
         file.runWithFileOutputStream { fos ->
-            currentPhoto.compress(Bitmap.CompressFormat.PNG, 100, fos)
+            currentPhoto.compress(webpLossyFormat(), WIDGET_PHOTO_QUALITY, fos)
         }
 
         // Decode the previous photo off the main thread so the provider can render the crossfade from
         // in-memory bitmaps (see PhotoWidgetProvider.canCrossfade). The file is already a transformed,
-        // widget-sized PNG, so this is a cheap load.
+        // widget-sized image, so this is a cheap load.
         val previousBitmap: Bitmap? = previousFile?.let { existing ->
             decoder.decode(data = existing.path, maxDimension = context.getMaxBitmapWidgetDimension())
         }
@@ -308,5 +312,23 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         withContext(Dispatchers.IO) {
             sourceDir.copyRecursively(target = getWidgetDir(directoryName = directoryName))
         }
+    }
+
+    private fun webpLossyFormat(): Bitmap.CompressFormat {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Bitmap.CompressFormat.WEBP_LOSSY
+        } else {
+            // WEBP_LOSSY requires API 30; WEBP is the lossy WebP format on API 26-29.
+            @Suppress("DEPRECATION")
+            Bitmap.CompressFormat.WEBP
+        }
+    }
+
+    private companion object {
+
+        // Max-quality lossy: visually indistinguishable from the source yet still encodes markedly
+        // faster than lossless PNG (and faster than lossless WebP, which is slower than PNG here).
+        // The render cache is the only lossy step in the pipeline, so it stays at the top setting.
+        private const val WIDGET_PHOTO_QUALITY: Int = 100
     }
 }
