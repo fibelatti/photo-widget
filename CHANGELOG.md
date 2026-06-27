@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Show the wallpaper behind the preview when configuring a widget
+* Widgets will now crossfade when changing photos
 
 ### Fixed
 

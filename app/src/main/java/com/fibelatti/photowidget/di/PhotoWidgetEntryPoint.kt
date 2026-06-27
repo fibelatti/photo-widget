@@ -8,6 +8,7 @@ import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.CyclePhotoUseCase
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
+import com.fibelatti.photowidget.widget.PhotoWidgetCrossfadeAnimator
 import com.fibelatti.photowidget.widget.PhotoWidgetProviderActionHandler
 import com.fibelatti.photowidget.widget.PrepareCurrentPhotoUseCase
 import com.fibelatti.photowidget.widget.SavePhotoWidgetUseCase
@@ -32,6 +33,8 @@ interface PhotoWidgetEntryPoint {
     fun photoWidgetAlarmManager(): PhotoWidgetAlarmManager
 
     fun photoWidgetProviderActionHandler(): PhotoWidgetProviderActionHandler
+
+    fun photoWidgetCrossfadeAnimator(): PhotoWidgetCrossfadeAnimator
 
     fun loadPhotoWidgetUseCase(): LoadPhotoWidgetUseCase
 

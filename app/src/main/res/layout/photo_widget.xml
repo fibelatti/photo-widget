@@ -40,12 +40,28 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/iv_widget_prev"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        android:visibility="gone"
+        tools:scaleType="centerCrop" />
+
+    <ImageView
         android:id="@+id/iv_widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/photo_widget_cd_host"
         tools:scaleType="centerCrop"
         tools:src="@drawable/widget_preview" />
+
+    <ImageView
+        android:id="@+id/iv_widget_fill_prev"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/iv_widget_fill"

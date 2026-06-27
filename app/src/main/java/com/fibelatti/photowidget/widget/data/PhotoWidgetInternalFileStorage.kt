@@ -7,10 +7,12 @@ import android.net.Uri
 import com.fibelatti.photowidget.model.GifFrames
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetSource
+import com.fibelatti.photowidget.model.PreparedCurrentPhoto
 import com.fibelatti.photowidget.platform.ImageFormat
 import com.fibelatti.photowidget.platform.ImageFormatDetector
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.UriPermissionGrantor
+import com.fibelatti.photowidget.platform.getMaxBitmapWidgetDimension
 import com.fibelatti.photowidget.platform.runWithFileOutputStream
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -243,10 +245,15 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
     suspend fun prepareCurrentWidgetPhoto(
         directoryName: String,
         currentPhoto: Bitmap,
-    ): Uri? = withContext(Dispatchers.IO) {
-        val dir: File = getCurrentPhotoDir(directoryName = directoryName).apply {
-            listFiles()?.toList()?.sortedBy { it.name }?.dropLast(1)?.forEach { it.delete() }
-        }
+    ): PreparedCurrentPhoto = withContext(Dispatchers.IO) {
+        val dir: File = getCurrentPhotoDir(directoryName = directoryName)
+
+        // The newest existing file is the photo currently on screen; keep it so it can be used as
+        // the "previous" image for a crossfade transition, and drop anything older.
+        val previousFile: File? = dir.listFiles()?.toList()?.sortedBy { it.name }
+            ?.also { existing -> existing.dropLast(1).forEach { it.delete() } }
+            ?.lastOrNull()
+
         // Using `currentTimeMillis` to generate unique files,
         // otherwise the widget won't update if the same file is overwritten every time
         val file = File("$dir/${System.currentTimeMillis()}.png")
@@ -255,7 +262,18 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
             currentPhoto.compress(Bitmap.CompressFormat.PNG, 100, fos)
         }
 
-        return@withContext uriPermissionGrantor(path = file.path)
+        // Decode the previous photo off the main thread so the provider can render the crossfade from
+        // in-memory bitmaps (see PhotoWidgetProvider.canCrossfade). The file is already a transformed,
+        // widget-sized PNG, so this is a cheap load.
+        val previousBitmap: Bitmap? = previousFile?.let { existing ->
+            decoder.decode(data = existing.path, maxDimension = context.getMaxBitmapWidgetDimension())
+        }
+
+        return@withContext PreparedCurrentPhoto(
+            uri = uriPermissionGrantor(path = file.path),
+            fallback = currentPhoto,
+            previousBitmap = previousBitmap,
+        )
     }
 
     suspend fun duplicateWidgetDir(sourceDirectoryName: String, targetDirectoryName: String) {

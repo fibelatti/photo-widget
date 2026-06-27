@@ -2,11 +2,12 @@ package com.fibelatti.photowidget.widget
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.net.Uri
 import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
+import com.fibelatti.photowidget.model.PhotoWidgetSource
+import com.fibelatti.photowidget.model.PreparedCurrentPhoto
 import com.fibelatti.photowidget.model.borderPercent
 import com.fibelatti.photowidget.model.getPhotoPath
 import com.fibelatti.photowidget.platform.PhotoDecoder
@@ -32,7 +33,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
         appWidgetId: Int,
         photoWidget: PhotoWidget,
         recoveryMode: Boolean = false,
-    ): Result? {
+    ): PreparedCurrentPhoto? {
         val currentPhotoPath: String = photoWidget.currentPhoto?.getPhotoPath() ?: return null
 
         Timber.i(
@@ -86,26 +87,21 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
             )
         }
 
-        val uri: Uri? = if (recoveryMode) {
-            val directoryName: String? = widgetDirectoryDao.getDirectoryName(appWidgetId)
-            if (directoryName == null) {
-                Timber.w("Unable to find the directory of widget with ID = $appWidgetId.")
-                return null
-            }
+        // Persist the photo to a file (and keep the previous one) for every static-photo widget: the
+        // content URI lets the provider render large photos without hitting the RemoteViews Binder
+        // transaction size limit, and the retained previous file is decoded for the crossfade. GIF
+        // widgets keep their existing behavior and only persist in recovery mode.
+        val shouldPersist: Boolean = photoWidget.source != PhotoWidgetSource.GIF || recoveryMode
+        val directoryName: String? = widgetDirectoryDao.getDirectoryName(appWidgetId)
 
+        return if (shouldPersist && directoryName != null) {
             photoWidgetInternalFileStorage.prepareCurrentWidgetPhoto(
                 directoryName = directoryName,
                 currentPhoto = transformedBitmap,
             )
         } else {
-            null
+            if (shouldPersist) Timber.w("Unable to find the directory of widget with ID = $appWidgetId.")
+            PreparedCurrentPhoto(uri = null, fallback = transformedBitmap, previousBitmap = null)
         }
-
-        return Result(uri = uri, fallback = transformedBitmap)
     }
-
-    data class Result(
-        val uri: Uri?,
-        val fallback: Bitmap,
-    )
 }

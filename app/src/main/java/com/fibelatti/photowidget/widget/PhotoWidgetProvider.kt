@@ -10,8 +10,11 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.PowerManager
 import android.view.View
 import android.widget.RemoteViews
+import androidx.core.content.getSystemService
+import androidx.core.os.postDelayed
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.configure.PhotoWidgetPinningCache
@@ -22,17 +25,22 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetText
+import com.fibelatti.photowidget.model.PreparedCurrentPhoto
 import com.fibelatti.photowidget.model.textToBitmap
 import com.fibelatti.photowidget.platform.ExceptionReporter
 import com.fibelatti.photowidget.platform.KeepAliveService
+import com.fibelatti.photowidget.platform.getMaxRemoteViewsBitmapMemory
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import kotlin.math.abs
 import kotlin.math.roundToInt
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import timber.log.Timber
 
@@ -46,6 +54,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         Timber.i("Broadcast received %s", mapOf("action" to intent.action, "appWidgetId" to intent.appWidgetId))
 
         val action: Action = Action.fromValue(intent.action) ?: return
+
+        // Keep the process at elevated priority while the resulting update (and its crossfade
+        // animation) runs, then release it. The work is dispatched asynchronously, so finish the
+        // PendingResult after a fixed window covering the animation rather than blocking here.
+        val pendingResult: PendingResult = goAsync()
 
         handler.post {
             entryPoint<PhotoWidgetEntryPoint>(context).photoWidgetProviderActionHandler().invoke(
@@ -66,6 +79,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     )
                 },
             )
+        }
+
+        handler.postDelayed(delayInMillis = 3.seconds.inWholeMilliseconds) {
+            Timber.d("Finishing async receiver...")
+            runCatching { pendingResult.finish() }
         }
     }
 
@@ -144,9 +162,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val pinningCache: PhotoWidgetPinningCache = entryPoint.photoWidgetPinningCache()
             val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
             val exceptionReporter: ExceptionReporter = entryPoint.exceptionReporter()
+            val crossfadeAnimator: PhotoWidgetCrossfadeAnimator = entryPoint.photoWidgetCrossfadeAnimator()
 
             val currentJob: Job? = updateJobMap[appWidgetId]
-            Timber.d("Current update job %s", mapOf("isActive" to currentJob?.isActive))
+            Timber.d("Evaluating current update job %s", mapOf("isActive" to currentJob?.isActive))
 
             val newJob: Job = coroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
                 // Timeout to avoid hanging waiting more than what's acceptable
@@ -157,28 +176,99 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     ?.also { Timber.d("Updating using the pending widget data") }
                     ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId).first { !it.isLoading }
 
-                val views: RemoteViews = createRemoteViews(
+                val prepareCurrentPhotoUseCase: PrepareCurrentPhotoUseCase = entryPoint.prepareCurrentPhotoUseCase()
+                val preparedCurrentPhoto: PreparedCurrentPhoto? = prepareCurrentPhotoUseCase(
                     context = context,
                     appWidgetId = appWidgetId,
                     photoWidget = photoWidget,
                     recoveryMode = recoveryMode,
                 )
 
-                views.setWidgetTapActions(
+                if (preparedCurrentPhoto == null) {
+                    Timber.e("Failed to prepare current photo")
+                    val views: RemoteViews = setErrorState(
+                        remoteViews = RemoteViews(context.packageName, R.layout.photo_widget),
+                        context = context,
+                        appWidgetId = appWidgetId,
+                    )
+                    appWidgetManager.updateAppWidget(appWidgetId, views)
+                    return@launch
+                }
+
+                val isLocked: Boolean = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = appWidgetId)
+                val isCyclePaused: Boolean = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = appWidgetId)
+
+                val (currentImageViewId: Int, previousImageViewId: Int) = imageViewIdsFor(photoWidget.aspectRatio)
+
+                // Crossfade only for static photos when a previous photo exists and the screen is on.
+                // GIF playback, the first render and recovery mode fall back to a plain swap.
+                //
+                // The fade is rendered entirely from in-memory bitmaps (current + previous) so the host
+                // never decodes a content URI mid-animation — that decode otherwise races the fade and
+                // makes it jump. Both bitmaps share a single RemoteViews update, so only crossfade when
+                // their combined size fits the host's bitmap budget; larger photos fall back to a plain
+                // URI swap, which also keeps them under the transaction limit.
+                val previousBitmap: Bitmap? = preparedCurrentPhoto.previousBitmap
+                val combinedBitmapBytes: Long = preparedCurrentPhoto.fallback.allocationByteCount.toLong() +
+                    (previousBitmap?.allocationByteCount?.toLong() ?: 0L)
+                val canCrossfade: Boolean = preparedCurrentPhoto.uri != null &&
+                    previousBitmap != null &&
+                    combinedBitmapBytes <= context.getMaxRemoteViewsBitmapMemory() &&
+                    isScreenInteractive(context = context) &&
+                    !recoveryMode &&
+                    photoWidget.source != PhotoWidgetSource.GIF
+
+                val initialViews: RemoteViews = buildRemoteViews(
                     context = context,
                     appWidgetId = appWidgetId,
                     photoWidget = photoWidget,
-                    isLocked = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = appWidgetId),
-                    isCyclePaused = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = appWidgetId),
+                    preparedCurrentPhoto = preparedCurrentPhoto,
+                    currentImageViewId = currentImageViewId,
+                    previousImageViewId = previousImageViewId,
+                    isLocked = isLocked,
+                    isCyclePaused = isCyclePaused,
+                    setupCrossfade = canCrossfade,
+                    renderCurrentFromBitmap = canCrossfade,
                 )
 
                 Timber.d("Invoking AppWidgetManager#updateAppWidget")
 
-                try {
-                    appWidgetManager.updateAppWidget(appWidgetId, views)
+                // Cancel any in-flight crossfade so its trailing frames can't clobber this render.
+                withContext(Dispatchers.Main) { crossfadeAnimator.cancel(appWidgetId) }
 
-                    if (photoWidget.source == PhotoWidgetSource.GIF) {
-                        KeepAliveService.sendSetupGifBroadcast(context = context, appWidgetId = appWidgetId)
+                try {
+                    appWidgetManager.updateAppWidget(appWidgetId, initialViews)
+
+                    when {
+                        photoWidget.source == PhotoWidgetSource.GIF -> {
+                            KeepAliveService.sendSetupGifBroadcast(context = context, appWidgetId = appWidgetId)
+                        }
+
+                        canCrossfade -> {
+                            // Settle from the same in-memory bitmap the fade used; rebuilding from the
+                            // URI here would make the host re-decode and flash as the animation completes.
+                            val finalViews: RemoteViews = buildRemoteViews(
+                                context = context,
+                                appWidgetId = appWidgetId,
+                                photoWidget = photoWidget,
+                                preparedCurrentPhoto = preparedCurrentPhoto,
+                                currentImageViewId = currentImageViewId,
+                                previousImageViewId = previousImageViewId,
+                                isLocked = isLocked,
+                                isCyclePaused = isCyclePaused,
+                                setupCrossfade = false,
+                                renderCurrentFromBitmap = true,
+                            )
+                            withContext(Dispatchers.Main) {
+                                crossfadeAnimator.runCrossfade(
+                                    context = context,
+                                    appWidgetManager = appWidgetManager,
+                                    appWidgetId = appWidgetId,
+                                    animatedImageViewId = currentImageViewId,
+                                    finalViews = finalViews,
+                                )
+                            }
+                        }
                     }
                 } catch (ex: IllegalArgumentException) {
                     if (!recoveryMode) {
@@ -203,54 +293,85 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         }
 
         // region RemoteViews
-        // region Appearance
-        private suspend fun createRemoteViews(
+
+        /**
+         * Returns the (current, previous) image view IDs for the given aspect ratio. The two views
+         * share the same scaleType so they can crossfade; `setScaleType` is not a remotable method,
+         * hence the dedicated pair per aspect ratio.
+         */
+        private fun imageViewIdsFor(aspectRatio: PhotoWidgetAspectRatio): Pair<Int, Int> {
+            return if (aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET) {
+                R.id.iv_widget_fill to R.id.iv_widget_fill_prev
+            } else {
+                R.id.iv_widget to R.id.iv_widget_prev
+            }
+        }
+
+        private fun isScreenInteractive(context: Context): Boolean {
+            return context.getSystemService<PowerManager>()?.isInteractive == true
+        }
+
+        private fun buildRemoteViews(
             context: Context,
             appWidgetId: Int,
             photoWidget: PhotoWidget,
-            recoveryMode: Boolean = false,
+            preparedCurrentPhoto: PreparedCurrentPhoto,
+            currentImageViewId: Int,
+            previousImageViewId: Int,
+            isLocked: Boolean,
+            isCyclePaused: Boolean,
+            setupCrossfade: Boolean,
+            renderCurrentFromBitmap: Boolean,
         ): RemoteViews {
-            val entryPoint: PhotoWidgetEntryPoint = entryPoint(context)
-            val prepareCurrentPhotoUseCase: PrepareCurrentPhotoUseCase = entryPoint.prepareCurrentPhotoUseCase()
-            val result: PrepareCurrentPhotoUseCase.Result? = prepareCurrentPhotoUseCase(
-                context = context,
-                appWidgetId = appWidgetId,
-                photoWidget = photoWidget,
-                recoveryMode = recoveryMode,
-            )
+            Timber.d("Building remote views %s", mapOf("setupCrossfade" to setupCrossfade))
+            return RemoteViews(context.packageName, R.layout.photo_widget).apply {
+                setViewVisibility(R.id.placeholder_layout, View.GONE)
+                setViewVisibility(R.id.iv_widget, View.GONE)
+                setViewVisibility(R.id.iv_widget_fill, View.GONE)
+                setViewVisibility(R.id.iv_widget_prev, View.GONE)
+                setViewVisibility(R.id.iv_widget_fill_prev, View.GONE)
 
-            val remoteViews = RemoteViews(context.packageName, R.layout.photo_widget)
-
-            if (result == null) {
-                Timber.e("Failed to prepare current photo")
-                return setErrorState(
-                    remoteViews = remoteViews,
-                    context = context,
-                    appWidgetId = appWidgetId,
-                )
-            }
-
-            Timber.d("Current photo prepared successfully")
-            return remoteViews.apply {
-                val visibleImageViewId: Int
-                val hiddenImageViewId: Int
-
-                if (photoWidget.aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET) {
-                    visibleImageViewId = R.id.iv_widget_fill
-                    hiddenImageViewId = R.id.iv_widget
+                setViewVisibility(currentImageViewId, View.VISIBLE)
+                // The crossfade path forces the in-memory bitmap so the host has no URI to decode
+                // mid-animation; plain renders use the URI to stay under the transaction limit.
+                if (!renderCurrentFromBitmap && preparedCurrentPhoto.uri != null) {
+                    setImageViewUri(currentImageViewId, preparedCurrentPhoto.uri)
                 } else {
-                    visibleImageViewId = R.id.iv_widget
-                    hiddenImageViewId = R.id.iv_widget_fill
+                    setImageViewBitmap(currentImageViewId, preparedCurrentPhoto.fallback)
                 }
 
-                setViewVisibility(R.id.placeholder_layout, View.GONE)
-                setViewVisibility(visibleImageViewId, View.VISIBLE)
-                setViewVisibility(hiddenImageViewId, View.GONE)
+                setPadding(
+                    remoteViews = this,
+                    viewId = currentImageViewId,
+                    context = context,
+                    padding = photoWidget.padding,
+                    verticalOffset = photoWidget.verticalOffset,
+                    horizontalOffset = photoWidget.horizontalOffset,
+                )
 
-                if (result.uri != null) {
-                    setImageViewUri(visibleImageViewId, result.uri)
-                } else {
-                    setImageViewBitmap(visibleImageViewId, result.fallback)
+                if (setupCrossfade && preparedCurrentPhoto.previousBitmap != null) {
+                    // The new photo (top) starts transparent and fades in over the previous photo
+                    // (bottom); the animation drives the top view's alpha. See runCrossfade.
+                    setViewVisibility(previousImageViewId, View.VISIBLE)
+                    setImageViewBitmap(previousImageViewId, preparedCurrentPhoto.previousBitmap)
+                    setInt(
+                        previousImageViewId,
+                        PhotoWidgetCrossfadeAnimator.METHOD_SET_IMAGE_ALPHA,
+                        PhotoWidgetCrossfadeAnimator.OPAQUE,
+                    )
+                    setInt(
+                        currentImageViewId,
+                        PhotoWidgetCrossfadeAnimator.METHOD_SET_IMAGE_ALPHA,
+                        PhotoWidgetCrossfadeAnimator.TRANSPARENT,
+                    )
+                    setPadding(
+                        remoteViews = this,
+                        viewId = previousImageViewId,
+                        context = context,
+                        padding = photoWidget.padding,
+                        verticalOffset = photoWidget.verticalOffset,
+                        horizontalOffset = photoWidget.horizontalOffset,
+                    )
                 }
 
                 setText(
@@ -259,13 +380,12 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     photoWidgetText = photoWidget.text,
                 )
 
-                setPadding(
-                    remoteViews = this,
-                    viewId = visibleImageViewId,
+                setWidgetTapActions(
                     context = context,
-                    padding = photoWidget.padding,
-                    verticalOffset = photoWidget.verticalOffset,
-                    horizontalOffset = photoWidget.horizontalOffset,
+                    appWidgetId = appWidgetId,
+                    photoWidget = photoWidget,
+                    isLocked = isLocked,
+                    isCyclePaused = isCyclePaused,
                 )
             }
         }
@@ -334,7 +454,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 /* bottom = */ applyDimension(paddingBottom),
             )
         }
-        // endregion Appearance
 
         private fun setErrorState(
             remoteViews: RemoteViews,

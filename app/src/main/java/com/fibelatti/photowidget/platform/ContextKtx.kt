@@ -105,6 +105,15 @@ fun widgetPinningNotAvailable(): Boolean {
     return manufacturer in notAvailable
 }
 
+/**
+ * Approximate memory budget (in bytes) for the bitmaps carried by a single `RemoteViews` update.
+ * Mirrors the host's per-widget bitmap limit, derived from the display size.
+ */
+fun Context.getMaxRemoteViewsBitmapMemory(): Long {
+    val displayMetrics: DisplayMetrics = resources.displayMetrics
+    return (displayMetrics.heightPixels.toLong() * displayMetrics.widthPixels * 4 * 1.5).toLong()
+}
+
 fun Context.getMaxBitmapWidgetDimension(coerceMaxMemory: Boolean = false): Int {
     Timber.d("Calculating max dimension %s", mapOf("coerceMaxMemory" to coerceMaxMemory))
 
@@ -112,7 +121,7 @@ fun Context.getMaxBitmapWidgetDimension(coerceMaxMemory: Boolean = false): Int {
     val maxMemoryAllowed: Int = if (coerceMaxMemory) {
         6_912_000 // `RemoteViews` have a maximum allowed memory for bitmaps
     } else {
-        (displayMetrics.heightPixels * displayMetrics.widthPixels * 4 * 1.5).roundToInt()
+        getMaxRemoteViewsBitmapMemory().toInt()
     }
     val maxDimension: Int = sqrt(maxMemoryAllowed / 4 / displayMetrics.density).roundToInt()
 
