@@ -98,6 +98,7 @@ fun PhotoWidgetConfigureBehaviorTab(
 
     DirectorySortingBottomSheet(
         sheetState = directoryPickerSheetState,
+        currentValue = state.photoWidget.directorySorting,
         onItemClick = viewModel::saveSorting,
     )
 }

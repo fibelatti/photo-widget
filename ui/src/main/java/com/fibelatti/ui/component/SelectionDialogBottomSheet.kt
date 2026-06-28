@@ -7,10 +7,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,7 +21,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -36,9 +34,9 @@ fun <T> SelectionDialogBottomSheet(
     onOptionSelect: (T) -> Unit,
     modifier: Modifier = Modifier,
     optionKey: ((T) -> Any)? = null,
-    optionIcon: (T) -> Int? = { null },
     header: @Composable () -> Unit = {},
     footer: @Composable () -> Unit = {},
+    mode: SelectionDialogBottomSheetMode = SelectionDialogBottomSheetMode.Buttons,
 ) {
     AppBottomSheet(
         sheetState = sheetState,
@@ -48,18 +46,18 @@ fun <T> SelectionDialogBottomSheet(
             options = options,
             optionKey = optionKey,
             optionName = optionName,
-            optionIcon = optionIcon,
             onOptionSelect = { option ->
                 sheetState.hideBottomSheet(onHidden = { onOptionSelect(option) })
             },
             header = header,
             footer = footer,
+            mode = mode,
         )
     }
 }
 
 @Composable
-fun <T> SelectionDialogBottomSheet(
+fun <T : Any> SelectionDialogBottomSheet(
     sheetState: AppSheetState,
     title: String,
     options: List<T>,
@@ -67,8 +65,8 @@ fun <T> SelectionDialogBottomSheet(
     onOptionSelect: (T) -> Unit,
     modifier: Modifier = Modifier,
     optionKey: ((T) -> Any)? = null,
-    optionIcon: (T) -> Int? = { null },
     footer: @Composable () -> Unit = {},
+    mode: SelectionDialogBottomSheetMode = SelectionDialogBottomSheetMode.Buttons,
 ) {
     AppBottomSheet(
         sheetState = sheetState,
@@ -78,7 +76,6 @@ fun <T> SelectionDialogBottomSheet(
             options = options,
             optionKey = optionKey,
             optionName = optionName,
-            optionIcon = optionIcon,
             onOptionSelect = { option ->
                 sheetState.hideBottomSheet(onHidden = { onOptionSelect(option) })
             },
@@ -92,8 +89,14 @@ fun <T> SelectionDialogBottomSheet(
                 )
             },
             footer = footer,
+            mode = mode,
         )
     }
+}
+
+sealed class SelectionDialogBottomSheetMode {
+    data object Buttons : SelectionDialogBottomSheetMode()
+    data class Radio<T>(val currentSelection: T) : SelectionDialogBottomSheetMode()
 }
 
 @Composable
@@ -101,7 +104,51 @@ private fun <T> SelectionDialogContent(
     options: List<T>,
     optionKey: ((T) -> Any)?,
     optionName: (T) -> String,
-    optionIcon: (T) -> Int?,
+    onOptionSelect: (T) -> Unit,
+    header: @Composable () -> Unit,
+    footer: @Composable () -> Unit,
+    mode: SelectionDialogBottomSheetMode,
+) {
+    when (mode) {
+        is SelectionDialogBottomSheetMode.Buttons -> {
+            SelectionDialogLazyListContent(
+                options = options,
+                optionKey = optionKey,
+                optionName = optionName,
+                onOptionSelect = onOptionSelect,
+                header = header,
+                footer = footer,
+            )
+        }
+
+        is SelectionDialogBottomSheetMode.Radio<*> -> {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                header()
+
+                RadioGroup(
+                    items = options,
+                    itemSelected = { option -> option == mode.currentSelection },
+                    onItemClick = onOptionSelect,
+                    itemTitle = optionName,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+
+                footer()
+            }
+        }
+    }
+}
+
+@Composable
+private fun <T> SelectionDialogLazyListContent(
+    options: List<T>,
+    optionKey: ((T) -> Any)?,
+    optionName: (T) -> String,
     onOptionSelect: (T) -> Unit,
     header: @Composable () -> Unit,
     footer: @Composable () -> Unit,
@@ -142,15 +189,6 @@ private fun <T> SelectionDialogContent(
                     .fillMaxWidth()
                     .clip(shape)
                     .clickable(onClick = { onOptionSelect(option) }, role = Role.Button),
-                trailingContent = {
-                    optionIcon(option)?.let {
-                        Icon(
-                            painter = painterResource(id = it),
-                            contentDescription = "",
-                            modifier = Modifier.size(16.dp),
-                        )
-                    }
-                },
                 shape = shape,
                 colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             )

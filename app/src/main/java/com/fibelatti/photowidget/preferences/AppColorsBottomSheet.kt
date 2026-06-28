@@ -13,6 +13,7 @@ import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
+import com.fibelatti.ui.component.SelectionDialogBottomSheetMode
 
 @Composable
 fun AppColorsBottomSheet(
@@ -48,5 +49,6 @@ fun AppColorsBottomSheet(
             )
         },
         modifier = modifier,
+        mode = SelectionDialogBottomSheetMode.Radio(currentSelection = userPreferencesStorage.dynamicColors),
     )
 }

@@ -14,10 +14,12 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
+import com.fibelatti.ui.component.SelectionDialogBottomSheetMode
 
 @Composable
 fun DirectorySortingBottomSheet(
     sheetState: AppSheetState,
+    currentValue: DirectorySorting,
     onItemClick: (DirectorySorting) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -41,5 +43,6 @@ fun DirectorySortingBottomSheet(
                 style = MaterialTheme.typography.labelMedium,
             )
         },
+        mode = SelectionDialogBottomSheetMode.Radio(currentSelection = currentValue),
     )
 }

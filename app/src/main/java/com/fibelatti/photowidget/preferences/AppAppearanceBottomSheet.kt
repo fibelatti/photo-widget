@@ -1,20 +1,19 @@
 package com.fibelatti.photowidget.preferences
 
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.ui.BooleanListItem
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
+import com.fibelatti.ui.component.SelectionDialogBottomSheetMode
 
 @Composable
 fun AppAppearanceBottomSheet(
@@ -58,8 +57,8 @@ fun AppAppearanceBottomSheet(
                 headlineText = stringResource(R.string.photo_widget_home_true_black_background),
                 currentValue = userPreferencesStorage.useTrueBlack,
                 onValueChange = { newValue -> userPreferencesStorage.useTrueBlack = newValue },
-                modifier = Modifier.padding(all = 16.dp),
             )
         },
+        mode = SelectionDialogBottomSheetMode.Radio(currentSelection = userPreferencesStorage.appearance),
     )
 }

@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.fibelatti.ui.foundation.Shapes
 
 @Composable
-fun <T : Any> RadioGroup(
+fun <T> RadioGroup(
     items: List<T>,
     itemSelected: (T) -> Boolean,
     onItemClick: (T) -> Unit,

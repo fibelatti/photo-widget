@@ -52,6 +52,7 @@ import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Back
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
+import com.fibelatti.ui.component.SelectionDialogBottomSheetMode
 import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.preview.PreviewAll
@@ -105,6 +106,7 @@ fun WidgetDefaultsScreen(
         options = PhotoWidgetSource.entries,
         optionName = { option -> localResources.getString(option.label) },
         onOptionSelect = preferencesViewModel::saveDefaultSource,
+        mode = SelectionDialogBottomSheetMode.Radio(currentSelection = preferences.defaultSource),
     )
 
     AppBottomSheet(
@@ -163,6 +165,7 @@ fun WidgetDefaultsScreen(
 
     DirectorySortingBottomSheet(
         sheetState = directoryPickerSheetState,
+        currentValue = preferences.defaultDirectorySorting,
         onItemClick = preferencesViewModel::saveDefaultSorting,
     )
     // endregion Bottom Sheets
