@@ -47,12 +47,12 @@ import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.LocalSamplePhoto
 import com.fibelatti.photowidget.ui.NumberSpinner
 import com.fibelatti.photowidget.ui.PickerListItem
-import com.fibelatti.photowidget.ui.RadioGroup
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Trash
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.RadioGroup
 import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.preview.PreviewAll
