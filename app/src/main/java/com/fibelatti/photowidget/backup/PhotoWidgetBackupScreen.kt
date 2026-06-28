@@ -276,7 +276,7 @@ private fun PhotoWidgetBackupContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable(onClick = onCreateBackupClick, role = Role.Button)
-                .padding(horizontal = 48.dp),
+                .padding(horizontal = 16.dp),
             shape = Shapes.TopShape,
         )
 
@@ -287,7 +287,7 @@ private fun PhotoWidgetBackupContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable(onClick = onRestoreFromBackupClick, role = Role.Button)
-                .padding(horizontal = 48.dp),
+                .padding(horizontal = 16.dp),
             shape = Shapes.BottomShape,
         )
 
