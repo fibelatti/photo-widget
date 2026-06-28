@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.widget.data
 
 import android.net.Uri
+import androidx.core.net.toUri
 import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.GifFrames
 import com.fibelatti.photowidget.model.LocalPhoto
@@ -744,6 +745,52 @@ class PhotoWidgetStorage @Inject constructor(
             }
         }
         pendingDeletionPhotosDao.deletePhotosBeforeTimestamp(timestamp = currentTimestamp)
+    }
+
+    /**
+     * Releases persisted URI permissions that are no longer referenced by any widget.
+     *
+     * Permissions are taken eagerly when a sync directory, [PhotoWidgetTapAction.FileShortcut] or
+     * [PhotoWidgetTapAction.FolderShortcut] is configured, but they cannot be released eagerly: the
+     * same URI may be shared across multiple widgets, across the three tap areas of a single widget,
+     * or between a sync directory and a tap action. A grant is only orphaned once **no** surviving
+     * widget references it.
+     *
+     * This performs a mark-and-sweep: it collects every URI still referenced by the known widgets,
+     * drafts and OS-placed widgets, then releases any persisted grant absent from that set. It is
+     * meant to run right after [deleteUnusedWidgetData] so grace-expired widgets are already gone.
+     */
+    suspend fun releaseUnusedUriPermissions(existingWidgetIds: List<Int>) {
+        val referencedWidgetIds: Set<Int> = buildSet {
+            addAll(existingWidgetIds)
+            addAll(getKnownWidgetIds().first())
+            addAll(getDraftWidgetIds().first())
+        }
+
+        val referencedUris: Set<Uri> = buildSet {
+            for (id in referencedWidgetIds) {
+                addAll(getWidgetSyncDir(appWidgetId = id))
+                for (area in TapActionArea.entries) {
+                    when (val action = getWidgetTapAction(appWidgetId = id, tapActionArea = area)) {
+                        is PhotoWidgetTapAction.FileShortcut if action.fileUri != null -> {
+                            add(action.fileUri.toUri())
+                        }
+
+                        is PhotoWidgetTapAction.FolderShortcut if action.folderUri != null -> {
+                            add(action.folderUri.toUri())
+                        }
+
+                        else -> Unit
+                    }
+                }
+            }
+        }
+
+        for (uri in externalFileStorage.getPersistedUriPermissions()) {
+            if (uri !in referencedUris) {
+                externalFileStorage.releasePersistableUriPermission(uri)
+            }
+        }
     }
 
     fun getKnownWidgetIds(): Flow<List<Int>> {

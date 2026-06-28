@@ -14,5 +14,6 @@ class DeleteStaleDataUseCase @Inject constructor(
         val existingWidgetIds: List<Int> = PhotoWidgetProvider.ids(context = context) +
             TransparentWidgetProvider.ids(context = context)
         photoWidgetStorage.deleteUnusedWidgetData(existingWidgetIds = existingWidgetIds)
+        photoWidgetStorage.releaseUnusedUriPermissions(existingWidgetIds = existingWidgetIds)
     }
 }

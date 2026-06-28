@@ -31,6 +31,18 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
         }
     }
 
+    fun getPersistedUriPermissions(): List<Uri> = contentResolver.persistedUriPermissions.map { it.uri }
+
+    fun releasePersistableUriPermission(uri: Uri) {
+        try {
+            Timber.i("Releasing persistable uri permission for $uri")
+            contentResolver.releasePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        } catch (e: SecurityException) {
+            // Already released or never held — safe to ignore.
+            Timber.w(e, "Failed to release persistable uri permission for $uri")
+        }
+    }
+
     suspend fun getPhotos(
         dirUri: Set<Uri>,
         croppedPhotos: Map<String, LocalPhoto>,
