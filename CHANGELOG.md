@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.44.1] - 2026-06-28
+[v1.44.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.44.1
+
+### Fixed
+
+* Only run crossfade for scheduled and manual photo changes
+
 ## [v1.44.0] - 2026-06-28
 [v1.44.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.44.0
 

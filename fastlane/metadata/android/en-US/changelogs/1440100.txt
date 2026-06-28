@@ -1,0 +1,7 @@
+This version brings the following updates:
+
+* Add a new tap action: open a folder
+* Widgets now crossfade when changing photos
+* Fix "empty folder" being shown before items finished loading
+
+Thanks for using the app!
