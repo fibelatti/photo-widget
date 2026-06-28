@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -326,7 +327,9 @@ private fun SettingsFooter(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .pointerInput(Unit) {},
     ) {
         HorizontalDivider(
             modifier = Modifier.padding(vertical = 12.dp),
@@ -346,10 +349,9 @@ private fun SettingsFooter(
         Row(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .clickable(
-                    onClick = onViewLicensesClick,
-                    role = Role.Button,
-                ),
+                .clip(MaterialTheme.shapes.medium)
+                .clickable(onClick = onViewLicensesClick, role = Role.Button)
+                .padding(all = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
