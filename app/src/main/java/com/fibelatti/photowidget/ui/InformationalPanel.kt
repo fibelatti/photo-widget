@@ -27,7 +27,7 @@ import com.fibelatti.photowidget.ui.icons.Warning
 fun InformationalPanel(
     text: String,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.bodySmall,
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     icon: Painter = rememberVectorPainter(AppIcons.Warning),
     backgroundShape: Shape = MaterialTheme.shapes.medium,
     backgroundColor: Color = Color(0xFFFFE57F),
