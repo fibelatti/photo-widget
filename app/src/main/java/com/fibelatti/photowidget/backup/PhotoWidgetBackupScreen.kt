@@ -12,6 +12,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,7 +35,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -61,6 +61,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.unit.dp
@@ -77,6 +78,8 @@ import com.fibelatti.photowidget.ui.icons.Back
 import com.fibelatti.photowidget.ui.icons.Export
 import com.fibelatti.photowidget.ui.icons.Import
 import com.fibelatti.photowidget.ui.icons.Warning
+import com.fibelatti.ui.component.ListItem
+import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -268,27 +271,25 @@ private fun PhotoWidgetBackupContent(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Button(
-            onClick = onCreateBackupClick,
+        ListItem(
+            headlineText = stringResource(R.string.backup_create),
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable(onClick = onCreateBackupClick, role = Role.Button)
                 .padding(horizontal = 48.dp),
-            shapes = ButtonDefaults.shapes(),
-        ) {
-            Text(text = stringResource(R.string.backup_create))
-        }
+            shape = Shapes.TopShape,
+        )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(2.dp))
 
-        Button(
-            onClick = onRestoreFromBackupClick,
+        ListItem(
+            headlineText = stringResource(R.string.backup_restore),
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable(onClick = onRestoreFromBackupClick, role = Role.Button)
                 .padding(horizontal = 48.dp),
-            shapes = ButtonDefaults.shapes(),
-        ) {
-            Text(text = stringResource(R.string.backup_restore))
-        }
+            shape = Shapes.BottomShape,
+        )
 
         Spacer(modifier = Modifier.height(32.dp))
 
