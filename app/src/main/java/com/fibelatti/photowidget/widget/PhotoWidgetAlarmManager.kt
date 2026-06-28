@@ -266,7 +266,7 @@ class ExactRepeatingAlarmReceiver : EntryPointBroadcastReceiver() {
         entryPoint.run {
             if (nextPhotoId != null) {
                 photoWidgetStorage().saveDisplayedPhoto(appWidgetId = intent.appWidgetId, photoId = nextPhotoId)
-                PhotoWidgetProvider.update(context = context, appWidgetId = intent.appWidgetId)
+                PhotoWidgetProvider.update(context = context, appWidgetId = intent.appWidgetId, allowCrossfade = true)
             } else {
                 cyclePhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
                 photoWidgetStorage().saveWidgetNextCycleTime(appWidgetId = intent.appWidgetId, nextCycleTime = null)

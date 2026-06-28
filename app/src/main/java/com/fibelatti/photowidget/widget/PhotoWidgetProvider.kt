@@ -26,6 +26,7 @@ import com.fibelatti.photowidget.platform.KeepAliveService
 import com.fibelatti.photowidget.platform.getMaxRemoteViewsBitmapMemory
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
@@ -143,6 +144,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         fun update(
             context: Context,
             appWidgetId: Int,
+            allowCrossfade: Boolean = false,
             recoveryMode: Boolean = false,
         ) {
             Timber.i("Updating widget %s", mapOf("appWidgetId" to appWidgetId))
@@ -197,6 +199,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     context = context,
                     photoWidget = photoWidget,
                     preparedCurrentPhoto = preparedCurrentPhoto,
+                    allowCrossfade = allowCrossfade,
                     recoveryMode = recoveryMode,
                 )
 
@@ -224,36 +227,54 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 withContext(Dispatchers.Main) { crossfadeAnimator.cancel(appWidgetId) }
 
                 try {
-                    appWidgetManager.updateAppWidget(appWidgetId, initialViews)
-
                     when {
                         photoWidget.source == PhotoWidgetSource.GIF -> {
+                            appWidgetManager.updateAppWidget(appWidgetId, initialViews)
                             KeepAliveService.sendSetupGifBroadcast(context = context, appWidgetId = appWidgetId)
                         }
 
                         canCrossfade -> {
                             // Settle from the same in-memory bitmap the fade used; rebuilding from the
                             // URI here would make the host re-decode and flash as the animation completes.
+                            // Built up front so it can serve as the opaque fallback if starting the
+                            // animation fails — the widget must never be left on the transparent start frame.
                             val finalViews: RemoteViews = PhotoWidgetRemoteViewsBuilder.build(
                                 context = context,
                                 appWidgetId = appWidgetId,
                                 state = renderState,
                                 mode = PhotoWidgetRemoteViewsBuilder.RenderMode.CROSSFADE_SETTLE,
                             )
-                            withContext(Dispatchers.Main) {
-                                crossfadeAnimator.runCrossfade(
-                                    context = context,
-                                    appWidgetManager = appWidgetManager,
-                                    appWidgetId = appWidgetId,
-                                    animatedImageViewId = currentImageViewId,
-                                    finalViews = finalViews,
-                                )
+                            appWidgetManager.updateAppWidget(appWidgetId, initialViews)
+                            try {
+                                withContext(Dispatchers.Main) {
+                                    crossfadeAnimator.runCrossfade(
+                                        context = context,
+                                        appWidgetManager = appWidgetManager,
+                                        appWidgetId = appWidgetId,
+                                        animatedImageViewId = currentImageViewId,
+                                        finalViews = finalViews,
+                                    )
+                                }
+                            } catch (cancellation: CancellationException) {
+                                throw cancellation
+                            } catch (ex: Exception) {
+                                Timber.w(ex, "Crossfade failed to start; settling on the opaque frame")
+                                appWidgetManager.updateAppWidget(appWidgetId, finalViews)
                             }
+                        }
+
+                        else -> {
+                            appWidgetManager.updateAppWidget(appWidgetId, initialViews)
                         }
                     }
                 } catch (ex: IllegalArgumentException) {
                     if (!recoveryMode) {
-                        update(context = context, appWidgetId = appWidgetId, recoveryMode = true)
+                        update(
+                            context = context,
+                            appWidgetId = appWidgetId,
+                            allowCrossfade = allowCrossfade,
+                            recoveryMode = true,
+                        )
                     } else {
                         exceptionReporter.collectReport(ex)
                         val views: RemoteViews = PhotoWidgetRemoteViewsBuilder.buildErrorState(
@@ -273,8 +294,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         }
 
         /**
-         * Crossfade only for static photos when a previous photo exists and the screen is on. GIF
-         * playback, the first render and recovery mode fall back to a plain swap.
+         * Crossfade only when [allowCrossfade] (the caller deliberately switched photos via a tap
+         * action or a scheduled alarm) and only for static photos when a previous photo exists and the
+         * screen is on. System-driven refreshes, single-photo widgets, GIF playback, the first render
+         * and recovery mode all fall back to a plain swap.
          *
          * The fade is rendered entirely from in-memory bitmaps (current + previous) so the host never
          * decodes a content URI mid-animation — that decode otherwise races the fade and makes it
@@ -286,12 +309,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             context: Context,
             photoWidget: PhotoWidget,
             preparedCurrentPhoto: PreparedCurrentPhoto,
+            allowCrossfade: Boolean,
             recoveryMode: Boolean,
         ): Boolean {
             val previousBitmap: Bitmap? = preparedCurrentPhoto.previousBitmap
             val combinedBitmapBytes: Long = preparedCurrentPhoto.fallback.allocationByteCount.toLong() +
                 (previousBitmap?.allocationByteCount?.toLong() ?: 0L)
-            return preparedCurrentPhoto.uri != null &&
+            return allowCrossfade &&
+                preparedCurrentPhoto.uri != null &&
                 previousBitmap != null &&
                 combinedBitmapBytes <= context.getMaxRemoteViewsBitmapMemory() &&
                 isScreenInteractive(context = context) &&

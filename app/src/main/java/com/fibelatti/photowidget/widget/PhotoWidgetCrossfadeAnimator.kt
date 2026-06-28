@@ -81,6 +81,12 @@ class PhotoWidgetCrossfadeAnimator @Inject constructor() {
                         )
 
                         cancelled = true
+                        // An interrupted fade must never strand the widget on a translucent frame.
+                        // Settle on the opaque steady state; the render that cancelled this animation
+                        // pushes its own frame right after, showing the same photo, so this is
+                        // visually continuous.
+                        runCatching { appWidgetManager.updateAppWidget(appWidgetId, finalViews) }
+                            .onFailure { Timber.w(it, "Failed to settle cancelled crossfade") }
                     }
 
                     override fun onAnimationEnd(animation: Animator) {

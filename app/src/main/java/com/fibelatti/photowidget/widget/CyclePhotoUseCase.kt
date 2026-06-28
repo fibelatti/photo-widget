@@ -112,7 +112,7 @@ class CyclePhotoUseCase @Inject constructor(
             photoWidgetStorage.saveDisplayedPhoto(appWidgetId = appWidgetId, photoId = newPhotoId)
         }
 
-        PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+        PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId, allowCrossfade = true)
 
         return newPhotoId
     }
