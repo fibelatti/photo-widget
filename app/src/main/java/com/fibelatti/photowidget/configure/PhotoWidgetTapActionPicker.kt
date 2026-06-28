@@ -55,10 +55,12 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -158,7 +160,7 @@ fun PhotoWidgetTapActionPicker(
 
     val filePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
-    ) { uri ->
+    ) { uri: Uri? ->
         tapActions = onFilePickerResult(
             context = context,
             uri = uri,
@@ -167,27 +169,34 @@ fun PhotoWidgetTapActionPicker(
         )
     }
 
-    val launcherApps: List<InstalledApp> by produceState(initialValue = emptyList(), key1 = tapActions) {
-        val shouldLoad: Boolean = PhotoWidgetTapAction.AppShortcut::class in tapActions ||
-            PhotoWidgetTapAction.AppFolder::class in tapActions
-        if (shouldLoad && value.isEmpty()) {
-            value = withContext(Dispatchers.IO) {
-                context.getAllInstalledApps(
-                    Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
-                )
-            }
-        }
+    val folderPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocumentTree(),
+    ) { uri: Uri? ->
+        tapActions = onFolderPickerResult(
+            context = context,
+            uri = uri,
+            tapActions = tapActions,
+            selectedArea = selectedArea,
+        )
     }
-    val galleryApps: List<InstalledApp> by produceState(initialValue = emptyList(), key1 = tapActions) {
-        val shouldLoad: Boolean = PhotoWidgetTapAction.ViewInGallery::class in tapActions
-        if (shouldLoad && value.isEmpty()) {
-            value = withContext(Dispatchers.IO) {
-                context.getAllInstalledApps(
-                    Intent(Intent.ACTION_VIEW).setDataAndType("content://sample".toUri(), "image/*"),
-                )
-            }
-        }
-    }
+
+    val launcherApps: List<InstalledApp> by produceInstalledAppsState(
+        context = context,
+        queryIntent = Intent(Intent.ACTION_MAIN)
+            .addCategory(Intent.CATEGORY_LAUNCHER),
+        key1 = tapActions,
+        shouldLoad = {
+            PhotoWidgetTapAction.AppShortcut::class in tapActions || PhotoWidgetTapAction.AppFolder::class in tapActions
+        },
+    )
+    val galleryApps: List<InstalledApp> by produceInstalledAppsState(
+        context = context,
+        queryIntent = Intent(Intent.ACTION_VIEW)
+            .setDataAndType("content://sample".toUri(), "image/*"),
+        key1 = tapActions,
+        shouldLoad = { PhotoWidgetTapAction.ViewInGallery::class in tapActions },
+    )
+
     val shortcuts: List<AppShortcutInfo> by produceState(initialValue = emptyList(), key1 = pendingShortcutPackage) {
         val packageName: String = pendingShortcutPackage ?: return@produceState
         value = withContext(Dispatchers.IO) { context.getAppShortcuts(packageName) }
@@ -259,6 +268,7 @@ fun PhotoWidgetTapActionPicker(
         onAddAppToFolderClick = { addToFolderPickerSheetState.showBottomSheet() },
         onChooseGalleryAppClick = { galleryAppPickerSheetState.showBottomSheet() },
         onChooseFileClick = { filePickerLauncher.launch(arrayOf("*/*")) },
+        onChooseFolderClick = { folderPickerLauncher.launch(null) },
         onApplyClick = { onApplyClick(tapActions) },
     )
 
@@ -348,6 +358,22 @@ fun PhotoWidgetTapActionPicker(
     )
 }
 
+@Composable
+private fun produceInstalledAppsState(
+    context: Context,
+    queryIntent: Intent,
+    key1: Any?,
+    shouldLoad: () -> Boolean,
+): State<List<InstalledApp>> {
+    val shouldLoadState by rememberUpdatedState(shouldLoad)
+
+    return produceState(initialValue = emptyList(), key1 = key1) {
+        if (shouldLoadState() && value.isEmpty()) {
+            value = withContext(Dispatchers.IO) { context.getAllInstalledApps(queryIntent) }
+        }
+    }
+}
+
 // region Activity Result handlers
 private fun onAppShortcutPickerResult(
     packageName: String,
@@ -373,32 +399,19 @@ private fun onAppFolderPickerResult(
     tapActions: PhotoWidgetTapActions,
     selectedArea: TapActionArea,
 ): PhotoWidgetTapActions {
+    val current: PhotoWidgetTapAction.AppFolder = when (selectedArea) {
+        TapActionArea.LEFT -> tapActions.left
+        TapActionArea.CENTER -> tapActions.center
+        TapActionArea.RIGHT -> tapActions.right
+    } as? PhotoWidgetTapAction.AppFolder ?: return tapActions
+
     val entry: String = AppFolderShortcut(packageName = packageName, shortcutId = shortcutId).encoded()
-
-    val leftAction = tapActions.left as? PhotoWidgetTapAction.AppFolder
-    val centerAction = tapActions.center as? PhotoWidgetTapAction.AppFolder
-    val rightAction = tapActions.right as? PhotoWidgetTapAction.AppFolder
-
-    val updatedAction: PhotoWidgetTapAction = when (selectedArea) {
-        TapActionArea.LEFT if leftAction != null -> {
-            leftAction.copy(shortcuts = (leftAction.shortcuts + entry).distinct())
-        }
-
-        TapActionArea.CENTER if centerAction != null -> {
-            centerAction.copy(shortcuts = (centerAction.shortcuts + entry).distinct())
-        }
-
-        TapActionArea.RIGHT if rightAction != null -> {
-            rightAction.copy(shortcuts = (rightAction.shortcuts + entry).distinct())
-        }
-
-        else -> return tapActions
-    }
+    val newTapAction = current.copy(shortcuts = (current.shortcuts + entry).distinct())
 
     return when (selectedArea) {
-        TapActionArea.LEFT -> tapActions.copy(left = updatedAction)
-        TapActionArea.CENTER -> tapActions.copy(center = updatedAction)
-        TapActionArea.RIGHT -> tapActions.copy(right = updatedAction)
+        TapActionArea.LEFT -> tapActions.copy(left = newTapAction)
+        TapActionArea.CENTER -> tapActions.copy(center = newTapAction)
+        TapActionArea.RIGHT -> tapActions.copy(right = newTapAction)
     }
 }
 
@@ -427,23 +440,34 @@ private fun onGalleryAppPickerResult(
 ): PhotoWidgetTapActions {
     val newTapAction = PhotoWidgetTapAction.ViewInGallery(packageName)
 
+    val apply: (PhotoWidgetTapAction) -> PhotoWidgetTapAction = { action ->
+        if (action is PhotoWidgetTapAction.ViewInGallery) newTapAction else action
+    }
+
     return tapActions.copy(
-        left = if (tapActions.left is PhotoWidgetTapAction.ViewInGallery) {
-            newTapAction
-        } else {
-            tapActions.left
-        },
-        center = if (tapActions.center is PhotoWidgetTapAction.ViewInGallery) {
-            newTapAction
-        } else {
-            tapActions.center
-        },
-        right = if (tapActions.right is PhotoWidgetTapAction.ViewInGallery) {
-            newTapAction
-        } else {
-            tapActions.right
-        },
+        left = apply(tapActions.left),
+        center = apply(tapActions.center),
+        right = apply(tapActions.right),
     )
+}
+
+private fun onFolderPickerResult(
+    context: Context,
+    uri: Uri?,
+    tapActions: PhotoWidgetTapActions,
+    selectedArea: TapActionArea,
+): PhotoWidgetTapActions {
+    if (uri == null) return tapActions
+
+    context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+    val newTapAction = PhotoWidgetTapAction.FolderShortcut(folderUri = uri.toString())
+
+    return when (selectedArea) {
+        TapActionArea.LEFT -> tapActions.copy(left = newTapAction)
+        TapActionArea.CENTER -> tapActions.copy(center = newTapAction)
+        TapActionArea.RIGHT -> tapActions.copy(right = newTapAction)
+    }
 }
 // endregion Activity Result handlers
 
@@ -473,22 +497,18 @@ private fun onTapActionChange(
         else -> restoreOrNew(originalActions = originalActions, newAction = newAction, selectedArea = selectedArea)
     }
 
+    val apply: (TapActionArea, PhotoWidgetTapAction) -> PhotoWidgetTapAction = { expectedArea, tapAction ->
+        if (selectedArea == expectedArea) {
+            resultingAction
+        } else {
+            keepActionsSynced(newAction = resultingAction, otherAction = tapAction)
+        }
+    }
+
     return tapActions.copy(
-        left = if (selectedArea == TapActionArea.LEFT) {
-            resultingAction
-        } else {
-            keepActionsSynced(newAction = resultingAction, otherAction = tapActions.left)
-        },
-        center = if (selectedArea == TapActionArea.CENTER) {
-            resultingAction
-        } else {
-            keepActionsSynced(newAction = resultingAction, otherAction = tapActions.center)
-        },
-        right = if (selectedArea == TapActionArea.RIGHT) {
-            resultingAction
-        } else {
-            keepActionsSynced(newAction = resultingAction, otherAction = tapActions.right)
-        },
+        left = apply(TapActionArea.LEFT, tapActions.left),
+        center = apply(TapActionArea.CENTER, tapActions.center),
+        right = apply(TapActionArea.RIGHT, tapActions.right),
     )
 }
 
@@ -527,6 +547,7 @@ private fun TapActionPickerContent(
     onAddAppToFolderClick: () -> Unit,
     onChooseGalleryAppClick: () -> Unit,
     onChooseFileClick: () -> Unit,
+    onChooseFolderClick: () -> Unit,
     onApplyClick: () -> Unit,
     transparent: Boolean = false,
 ) {
@@ -621,6 +642,7 @@ private fun TapActionPickerContent(
                 onAddAppToFolderClick = onAddAppToFolderClick,
                 onChooseGalleryAppClick = onChooseGalleryAppClick,
                 onChooseFileClick = onChooseFileClick,
+                onChooseFolderClick = onChooseFolderClick,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -849,6 +871,7 @@ private fun TapActionCustomizationContent(
     onAddAppToFolderClick: () -> Unit,
     onChooseGalleryAppClick: () -> Unit,
     onChooseFileClick: () -> Unit,
+    onChooseFolderClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (tapAction) {
@@ -911,6 +934,14 @@ private fun TapActionCustomizationContent(
             FileShortcutCustomizationContent(
                 value = tapAction,
                 onChooseFileClick = onChooseFileClick,
+                modifier = modifier,
+            )
+        }
+
+        is PhotoWidgetTapAction.FolderShortcut -> {
+            FolderShortcutCustomizationContent(
+                value = tapAction,
+                onChooseFolderClick = onChooseFolderClick,
                 modifier = modifier,
             )
         }
@@ -1159,6 +1190,35 @@ private fun FileShortcutCustomizationContent(
 }
 
 @Composable
+private fun FolderShortcutCustomizationContent(
+    value: PhotoWidgetTapAction.FolderShortcut,
+    onChooseFolderClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        ListItem(
+            headlineText = stringResource(id = R.string.photo_widget_configure_tap_action_choose_folder),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(Shapes.TopShape)
+                .clickable(onClick = onChooseFolderClick, role = Role.Button),
+            // lastPathSegment of a tree URI holds the document id (e.g. "primary:Pictures").
+            supportingText = value.folderUri?.toUri()?.lastPathSegment.orEmpty(),
+        )
+
+        InformationalPanel(
+            text = stringResource(R.string.photo_widget_configure_tap_action_choose_folder_description),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+        )
+    }
+}
+
+@Composable
 private fun AppFolderCustomizationContent(
     value: PhotoWidgetTapAction.AppFolder,
     onValueChange: (PhotoWidgetTapAction.AppFolder) -> Unit,
@@ -1333,6 +1393,7 @@ private fun PhotoWidgetTapActionPickerPreview() {
             onAddAppToFolderClick = {},
             onChooseGalleryAppClick = {},
             onChooseFileClick = {},
+            onChooseFolderClick = {},
             onApplyClick = {},
         )
     }
@@ -1342,7 +1403,6 @@ private fun PhotoWidgetTapActionPickerPreview() {
 @PreviewLocales
 private fun TapOptionsPickerPreview(
     @PreviewParameter(TapActionPreviewParameterProvider::class) tapAction: PhotoWidgetTapAction,
-
 ) {
     ExtendedTheme {
         TapOptionsPicker(

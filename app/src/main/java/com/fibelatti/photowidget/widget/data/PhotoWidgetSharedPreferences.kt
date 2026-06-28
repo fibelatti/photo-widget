@@ -443,6 +443,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
             remove(keys.appFolderKey)
             remove(keys.urlShortcutKey)
             remove(keys.fileShortcutUriKey)
+            remove(keys.folderShortcutUriKey)
 
             when (tapAction) {
                 is PhotoWidgetTapAction.ViewFullScreen -> {
@@ -480,6 +481,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
 
                 is PhotoWidgetTapAction.FileShortcut -> {
                     putString(keys.fileShortcutUriKey, tapAction.fileUri)
+                }
+
+                is PhotoWidgetTapAction.FolderShortcut -> {
+                    putString(keys.folderShortcutUriKey, tapAction.folderUri)
                 }
 
                 is PhotoWidgetTapAction.ToggleCycling -> {
@@ -542,6 +547,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     fileUri = getString(keys.fileShortcutUriKey, null),
                 )
 
+                is PhotoWidgetTapAction.FolderShortcut -> tapAction.copy(
+                    folderUri = getString(keys.folderShortcutUriKey, null),
+                )
+
                 is PhotoWidgetTapAction.ToggleCycling -> tapAction.copy(
                     disableTap = getBoolean("${PreferencePrefix.DISABLE_TAP}$appWidgetId", false),
                 )
@@ -563,6 +572,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 appFolderKey = "${PreferencePrefix.APP_FOLDER_LEFT}$appWidgetId",
                 urlShortcutKey = "${PreferencePrefix.URL_SHORTCUT_LEFT}$appWidgetId",
                 fileShortcutUriKey = "${PreferencePrefix.FILE_SHORTCUT_URI_LEFT}$appWidgetId",
+                folderShortcutUriKey = "${PreferencePrefix.FOLDER_SHORTCUT_URI_LEFT}$appWidgetId",
             )
 
             TapActionArea.CENTER -> TapActionKeys(
@@ -572,6 +582,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 appFolderKey = "${PreferencePrefix.APP_FOLDER_CENTER}$appWidgetId",
                 urlShortcutKey = "${PreferencePrefix.URL_SHORTCUT_CENTER}$appWidgetId",
                 fileShortcutUriKey = "${PreferencePrefix.FILE_SHORTCUT_URI_CENTER}$appWidgetId",
+                folderShortcutUriKey = "${PreferencePrefix.FOLDER_SHORTCUT_URI_CENTER}$appWidgetId",
             )
 
             TapActionArea.RIGHT -> TapActionKeys(
@@ -581,6 +592,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 appFolderKey = "${PreferencePrefix.APP_FOLDER_RIGHT}$appWidgetId",
                 urlShortcutKey = "${PreferencePrefix.URL_SHORTCUT_RIGHT}$appWidgetId",
                 fileShortcutUriKey = "${PreferencePrefix.FILE_SHORTCUT_URI_RIGHT}$appWidgetId",
+                folderShortcutUriKey = "${PreferencePrefix.FOLDER_SHORTCUT_URI_RIGHT}$appWidgetId",
             )
         }
     }
@@ -701,6 +713,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         val appFolderKey: String,
         val urlShortcutKey: String,
         val fileShortcutUriKey: String,
+        val folderShortcutUriKey: String,
     )
 
     private enum class PreferencePrefix(val value: String) {
@@ -789,6 +802,9 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         FILE_SHORTCUT_URI_LEFT(value = "appwidget_file_shortcut_uri_left_"),
         FILE_SHORTCUT_URI_CENTER(value = "appwidget_file_shortcut_uri_"),
         FILE_SHORTCUT_URI_RIGHT(value = "appwidget_file_shortcut_uri_right_"),
+        FOLDER_SHORTCUT_URI_LEFT(value = "appwidget_folder_shortcut_uri_left_"),
+        FOLDER_SHORTCUT_URI_CENTER(value = "appwidget_folder_shortcut_uri_"),
+        FOLDER_SHORTCUT_URI_RIGHT(value = "appwidget_folder_shortcut_uri_right_"),
         PREFERRED_GALLERY_APP(value = "appwidget_preferred_gallery_app_"),
         DISABLE_TAP(value = "appwidget_disable_tap_"),
         VIEWER_BACKGROUND_COLOR(value = "appwidget_viewer_background_color_"),

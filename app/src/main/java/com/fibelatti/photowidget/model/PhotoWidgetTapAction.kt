@@ -192,6 +192,21 @@ sealed interface PhotoWidgetTapAction : Parcelable {
     }
 
     @Parcelize
+    data class FolderShortcut(
+        val folderUri: String? = null,
+    ) : PhotoWidgetTapAction {
+
+        @IgnoredOnParcel
+        override val label: Int = R.string.photo_widget_configure_tap_action_folder_shortcut
+
+        @IgnoredOnParcel
+        override val serializedName: String = "FOLDER_SHORTCUT"
+
+        @IgnoredOnParcel
+        override val availableWithoutPhotos: Boolean = true
+    }
+
+    @Parcelize
     data class ToggleCycling(
         val disableTap: Boolean = false,
     ) : PhotoWidgetTapAction {
@@ -288,6 +303,7 @@ sealed interface PhotoWidgetTapAction : Parcelable {
                 AppFolder(),
                 UrlShortcut(),
                 FileShortcut(),
+                FolderShortcut(),
                 SharePhoto,
                 SetWallpaper,
                 RemovePhoto,

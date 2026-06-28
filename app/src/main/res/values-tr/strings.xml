@@ -231,6 +231,9 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">Bir bağlantı aç</string>
     <string name="photo_widget_configure_tap_action_file_shortcut">Bir dosya aç</string>
     <string name="photo_widget_configure_tap_action_choose_file">Dosya seç</string>
+    <string name="photo_widget_configure_tap_action_folder_shortcut">Bir klasör aç</string>
+    <string name="photo_widget_configure_tap_action_choose_folder">Klasör seç</string>
+    <string name="photo_widget_configure_tap_action_choose_folder_description">Android\'in varsayılan Dosyalar uygulamasıyla açılır. Bu özelleştirilemez.</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">Zamanlayıcıyı etkinleştir/devre dışı bırak</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">Fotoğraf zamanlayıcısını duraklatmak için dokunun. Devam ettirmek için tekrar dokunun. Bu işlem, widget kilitliyken devre dışı olacaktır.</string>
     <string name="photo_widget_configure_tap_action_toggle_gif_playback">GIF oynatmayı etkinleştir/devre dışı bırak</string>

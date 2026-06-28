@@ -223,6 +223,9 @@
     <string name="photo_widget_configure_tap_action_url_shortcut">打开一个链接</string>
     <string name="photo_widget_configure_tap_action_file_shortcut">打开文件</string>
     <string name="photo_widget_configure_tap_action_choose_file">选择文件</string>
+    <string name="photo_widget_configure_tap_action_folder_shortcut">打开文件夹</string>
+    <string name="photo_widget_configure_tap_action_choose_folder">选择文件夹</string>
+    <string name="photo_widget_configure_tap_action_choose_folder_description">使用 Android 默认的文件应用打开。此操作无法自定义。</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling">启用/禁用定时器</string>
     <string name="photo_widget_configure_tap_action_toggle_cycling_description">点击暂停照片计时器。再次点击以恢复。在小组件被锁定时此操作将被禁用。</string>
     <string name="photo_widget_configure_tap_action_toggle_gif_playback">GIF 播放开关</string>

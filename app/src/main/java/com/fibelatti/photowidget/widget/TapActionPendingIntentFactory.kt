@@ -14,6 +14,7 @@ import com.fibelatti.photowidget.platform.getLaunchIntent
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.platform.setWallpaperIntent
 import com.fibelatti.photowidget.platform.sharePhotoChooserIntent
+import com.fibelatti.photowidget.platform.toFolderDocumentUri
 import com.fibelatti.photowidget.viewer.PhotoWidgetViewerActivity
 import timber.log.Timber
 
@@ -196,6 +197,25 @@ object TapActionPendingIntentFactory {
 
                 val intent = Intent(Intent.ACTION_VIEW)
                     .setDataAndType(fileUri, mimeType)
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .setIdentifierCompat("$appWidgetId")
+
+                return PendingIntent.getActivity(
+                    /* context = */ context,
+                    /* requestCode = */ appWidgetId,
+                    /* intent = */ intent,
+                    /* flags = */ PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                )
+            }
+
+            is PhotoWidgetTapAction.FolderShortcut -> {
+                if (tapAction.folderUri.isNullOrBlank()) return null
+
+                val treeUri: Uri = tapAction.folderUri.toUri()
+
+                val intent = Intent(Intent.ACTION_VIEW)
+                    .setDataAndType(treeUri.toFolderDocumentUri(), "vnd.android.document/directory")
                     .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     .setIdentifierCompat("$appWidgetId")
