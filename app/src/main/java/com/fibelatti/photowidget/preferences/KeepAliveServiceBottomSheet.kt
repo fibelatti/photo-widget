@@ -29,7 +29,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.platform.KeepAliveService
-import com.fibelatti.photowidget.ui.Toggle
+import com.fibelatti.photowidget.ui.BooleanListItem
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.preview.PreviewLocales
@@ -136,10 +136,10 @@ private fun KeepAliveServiceContent(
             style = MaterialTheme.typography.titleLarge,
         )
 
-        Toggle(
-            title = stringResource(R.string.photo_widget_keep_alive_service_dialog_toggle),
-            checked = keepAlive,
-            onCheckedChange = onKeepAliveChange,
+        BooleanListItem(
+            headlineText = stringResource(R.string.photo_widget_keep_alive_service_dialog_toggle),
+            currentValue = keepAlive,
+            onValueChange = onKeepAliveChange,
         )
 
         Text(

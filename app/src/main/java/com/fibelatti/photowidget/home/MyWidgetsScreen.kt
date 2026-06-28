@@ -30,7 +30,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
@@ -43,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -63,14 +63,15 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.model.isWidgetRemoved
 import com.fibelatti.photowidget.platform.letIf
+import com.fibelatti.photowidget.ui.BooleanListItem
 import com.fibelatti.photowidget.ui.CheckeredPattern
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
-import com.fibelatti.photowidget.ui.Toggle
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.TrashClock
 import com.fibelatti.ui.component.AutoSizeText
+import com.fibelatti.ui.component.ListItem
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -199,21 +200,15 @@ fun MyWidgetsScreen(
             enter = fadeIn() + scaleIn(initialScale = 0.92f),
             exit = fadeOut() + scaleOut(targetScale = 0.92f),
         ) {
-            Surface(
-                modifier = Modifier.padding(all = 16.dp),
-                shape = MaterialTheme.shapes.large,
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                tonalElevation = 3.dp,
-                shadowElevation = 3.dp,
-            ) {
-                Toggle(
-                    title = stringResource(R.string.photo_widget_home_highlight_transparent_title),
-                    checked = highlightTransparentWidgets,
-                    onCheckedChange = onHighlightTransparentWidgetsChange,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    subtitle = stringResource(R.string.photo_widget_home_highlight_transparent_subtitle),
-                )
-            }
+            BooleanListItem(
+                headlineText = stringResource(R.string.photo_widget_home_highlight_transparent_title),
+                currentValue = highlightTransparentWidgets,
+                onValueChange = onHighlightTransparentWidgetsChange,
+                modifier = Modifier
+                    .padding(all = 16.dp)
+                    .shadow(elevation = 2.dp, shape = ListItem.DefaultShape),
+                supportingText = stringResource(R.string.photo_widget_home_highlight_transparent_subtitle),
+            )
         }
     }
 }

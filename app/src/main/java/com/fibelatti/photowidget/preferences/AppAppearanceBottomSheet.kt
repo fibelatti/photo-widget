@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
-import com.fibelatti.photowidget.ui.Toggle
+import com.fibelatti.photowidget.ui.BooleanListItem
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
 
@@ -54,10 +54,10 @@ fun AppAppearanceBottomSheet(
         },
         modifier = modifier,
         footer = {
-            Toggle(
-                title = stringResource(R.string.photo_widget_home_true_black_background),
-                checked = userPreferencesStorage.useTrueBlack,
-                onCheckedChange = { newValue -> userPreferencesStorage.useTrueBlack = newValue },
+            BooleanListItem(
+                headlineText = stringResource(R.string.photo_widget_home_true_black_background),
+                currentValue = userPreferencesStorage.useTrueBlack,
+                onValueChange = { newValue -> userPreferencesStorage.useTrueBlack = newValue },
                 modifier = Modifier.padding(all = 16.dp),
             )
         },

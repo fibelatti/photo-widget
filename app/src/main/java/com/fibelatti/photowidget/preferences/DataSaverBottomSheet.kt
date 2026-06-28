@@ -18,7 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
-import com.fibelatti.photowidget.ui.Toggle
+import com.fibelatti.photowidget.ui.BooleanListItem
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.preview.PreviewLocales
@@ -65,10 +65,10 @@ private fun DataSaverPickerContent(
             style = MaterialTheme.typography.titleLarge,
         )
 
-        Toggle(
-            title = stringResource(R.string.preferences_data_saver),
-            checked = dataSaver,
-            onCheckedChange = onDataSaverChange,
+        BooleanListItem(
+            headlineText = stringResource(R.string.preferences_data_saver),
+            currentValue = dataSaver,
+            onValueChange = onDataSaverChange,
         )
 
         Text(
