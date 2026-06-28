@@ -254,42 +254,42 @@ private fun WidgetDefaultsContent(
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         PickerListItem(
-            title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
+            headlineText = stringResource(id = R.string.photo_widget_aspect_ratio_title),
             currentValue = stringResource(id = userPreferences.defaultAspectRatio.label),
             onClick = onAspectRatioClick,
             shape = Shapes.TopShape,
         )
 
         PickerListItem(
-            title = stringResource(id = R.string.widget_defaults_source),
+            headlineText = stringResource(id = R.string.widget_defaults_source),
             currentValue = stringResource(id = userPreferences.defaultSource.label),
             onClick = onSourceClick,
             shape = Shapes.MiddleShape,
         )
 
         ShapeListItem(
-            title = stringResource(id = R.string.widget_defaults_shape),
+            headlineText = stringResource(id = R.string.widget_defaults_shape),
             currentValue = userPreferences.defaultShape,
             onClick = onShapeClick,
             shape = Shapes.MiddleShape,
         )
 
         PickerListItem(
-            title = stringResource(id = R.string.widget_defaults_corner_radius),
+            headlineText = stringResource(id = R.string.widget_defaults_corner_radius),
             currentValue = userPreferences.defaultCornerRadius.toString(),
             onClick = onCornerRadiusClick,
             shape = Shapes.MiddleShape,
         )
 
         PickerListItem(
-            title = stringResource(id = R.string.widget_defaults_opacity),
+            headlineText = stringResource(id = R.string.widget_defaults_opacity),
             currentValue = formatPercent(value = userPreferences.defaultOpacity, fractionDigits = 0),
             onClick = onOpacityClick,
             shape = Shapes.MiddleShape,
         )
 
         PickerListItem(
-            title = stringResource(R.string.widget_defaults_saturation),
+            headlineText = stringResource(R.string.widget_defaults_saturation),
             currentValue = formatRangeValue(
                 value = PhotoWidgetColors.pickerSaturation(userPreferences.defaultSaturation),
             ),
@@ -298,14 +298,14 @@ private fun WidgetDefaultsContent(
         )
 
         PickerListItem(
-            title = stringResource(R.string.widget_defaults_brightness),
+            headlineText = stringResource(R.string.widget_defaults_brightness),
             currentValue = formatRangeValue(value = userPreferences.defaultBrightness),
             onClick = onBrightnessClick,
             shape = Shapes.MiddleShape,
         )
 
         PickerListItem(
-            title = stringResource(id = R.string.widget_defaults_cycling),
+            headlineText = stringResource(id = R.string.widget_defaults_cycling),
             currentValue = when (userPreferences.defaultCycleMode) {
                 is PhotoWidgetCycleMode.Interval -> {
                     val intervalString = pluralStringResource(
@@ -342,14 +342,14 @@ private fun WidgetDefaultsContent(
         )
 
         BooleanListItem(
-            title = stringResource(id = R.string.widget_defaults_shuffle),
+            headlineText = stringResource(id = R.string.widget_defaults_shuffle),
             currentValue = userPreferences.defaultShuffle,
-            onCheckedChange = onShuffleChange,
+            onValueChange = onShuffleChange,
             shape = Shapes.MiddleShape,
         )
 
         PickerListItem(
-            title = stringResource(R.string.photo_widget_directory_sort_title),
+            headlineText = stringResource(R.string.photo_widget_directory_sort_title),
             currentValue = stringResource(id = userPreferences.defaultDirectorySorting.label),
             onClick = onSortClick,
             shape = Shapes.BottomShape,

@@ -763,7 +763,7 @@ private fun TapOptionsPicker(
         modifier = modifier.fillMaxWidth(),
     ) {
         PickerListItem(
-            title = stringResource(R.string.photo_widget_configure_tap_action),
+            headlineText = stringResource(R.string.photo_widget_configure_tap_action),
             currentValue = stringResource(currentTapAction.label),
             onClick = tapActionSheetState::showBottomSheet,
             modifier = Modifier.fillMaxWidth(),
@@ -982,35 +982,35 @@ private fun ViewFullScreenCustomizationContent(
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         BooleanListItem(
-            title = stringResource(id = R.string.photo_widget_configure_tap_action_increase_brightness),
+            headlineText = stringResource(id = R.string.photo_widget_configure_tap_action_increase_brightness),
             currentValue = value.increaseBrightness,
-            onCheckedChange = { onValueChange(value.copy(increaseBrightness = it)) },
+            onValueChange = { onValueChange(value.copy(increaseBrightness = it)) },
             shape = Shapes.TopShape,
         )
 
         BooleanListItem(
-            title = stringResource(R.string.photo_widget_configure_tap_action_view_original_photo),
+            headlineText = stringResource(R.string.photo_widget_configure_tap_action_view_original_photo),
             currentValue = value.viewOriginalPhoto,
-            onCheckedChange = { onValueChange(value.copy(viewOriginalPhoto = it)) },
+            onValueChange = { onValueChange(value.copy(viewOriginalPhoto = it)) },
             shape = Shapes.MiddleShape,
         )
 
         BooleanListItem(
-            title = stringResource(R.string.photo_widget_configure_tap_action_do_not_shuffle),
+            headlineText = stringResource(R.string.photo_widget_configure_tap_action_do_not_shuffle),
             currentValue = value.noShuffle,
-            onCheckedChange = { onValueChange(value.copy(noShuffle = it)) },
+            onValueChange = { onValueChange(value.copy(noShuffle = it)) },
             shape = Shapes.MiddleShape,
         )
 
         BooleanListItem(
-            title = stringResource(R.string.photo_widget_configure_tap_action_keep_current_photo),
+            headlineText = stringResource(R.string.photo_widget_configure_tap_action_keep_current_photo),
             currentValue = value.keepCurrentPhoto,
-            onCheckedChange = { onValueChange(value.copy(keepCurrentPhoto = it)) },
+            onValueChange = { onValueChange(value.copy(keepCurrentPhoto = it)) },
             shape = Shapes.MiddleShape,
         )
 
         PickerListItem(
-            title = stringResource(R.string.photo_widget_configure_tap_action_viewer_background_color),
+            headlineText = stringResource(R.string.photo_widget_configure_tap_action_viewer_background_color),
             currentValue = value.backgroundColorHex?.let { "#$it" }
                 ?: stringResource(R.string.photo_widget_configure_tap_action_viewer_background_color_default),
             onClick = backgroundColorSheetState::showBottomSheet,
@@ -1127,9 +1127,9 @@ private fun ToggleCyclingCustomizationContent(
         )
 
         BooleanListItem(
-            title = stringResource(id = R.string.photo_widget_configure_tap_action_disable_tap),
+            headlineText = stringResource(id = R.string.photo_widget_configure_tap_action_disable_tap),
             currentValue = value.disableTap,
-            onCheckedChange = { onValueChange(value.copy(disableTap = it)) },
+            onValueChange = { onValueChange(value.copy(disableTap = it)) },
         )
 
         InformationalPanel(

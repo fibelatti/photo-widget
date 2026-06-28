@@ -26,18 +26,19 @@ import com.fibelatti.ui.foundation.Shapes
 
 @Composable
 fun BooleanListItem(
-    title: String,
+    headlineText: String,
     currentValue: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
+    onValueChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    supportingText: String? = null,
     shape: Shape = Shapes.StandaloneShape,
 ) {
     ListItem(
-        headlineText = title,
+        headlineText = headlineText,
         trailingContent = {
             Switch(
                 checked = currentValue,
-                onCheckedChange = onCheckedChange,
+                onCheckedChange = onValueChange,
                 thumbContent = {
                     val icon: ImageVector = if (currentValue) AppIcons.Check else AppIcons.Xmark
 
@@ -55,13 +56,14 @@ fun BooleanListItem(
             )
         },
         modifier = modifier,
+        supportingText = supportingText,
         shape = shape,
     )
 }
 
 @Composable
 fun PickerListItem(
-    title: String,
+    headlineText: String,
     currentValue: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -69,7 +71,7 @@ fun PickerListItem(
     shape: Shape = Shapes.StandaloneShape,
 ) {
     ListItem(
-        headlineText = title,
+        headlineText = headlineText,
         modifier = modifier
             .clip(shape)
             .clickable(onClick = onClick),
@@ -81,14 +83,14 @@ fun PickerListItem(
 
 @Composable
 fun ShapeListItem(
-    title: String,
+    headlineText: String,
     currentValue: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = Shapes.StandaloneShape,
 ) {
     ListItem(
-        headlineText = title,
+        headlineText = headlineText,
         trailingContent = {
             ColoredShape(
                 shapeId = currentValue,

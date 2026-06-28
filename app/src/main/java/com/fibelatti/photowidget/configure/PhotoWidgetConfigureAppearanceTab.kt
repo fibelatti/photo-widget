@@ -167,7 +167,7 @@ fun PhotoWidgetConfigureAppearanceTab(
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         PickerListItem(
-            title = stringResource(id = R.string.photo_widget_aspect_ratio_title),
+            headlineText = stringResource(id = R.string.photo_widget_aspect_ratio_title),
             currentValue = stringResource(id = photoWidget.aspectRatio.label),
             onClick = onAspectRatioClick,
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -176,7 +176,7 @@ fun PhotoWidgetConfigureAppearanceTab(
 
         if (photoWidget.aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
             ShapeListItem(
-                title = stringResource(id = R.string.widget_defaults_shape),
+                headlineText = stringResource(id = R.string.widget_defaults_shape),
                 currentValue = photoWidget.shapeId,
                 onClick = onShapeClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
@@ -184,7 +184,7 @@ fun PhotoWidgetConfigureAppearanceTab(
             )
         } else if (photoWidget.aspectRatio != PhotoWidgetAspectRatio.FILL_WIDGET) {
             PickerListItem(
-                title = stringResource(id = R.string.widget_defaults_corner_radius),
+                headlineText = stringResource(id = R.string.widget_defaults_corner_radius),
                 currentValue = photoWidget.cornerRadius.toString(),
                 onClick = onCornerRadiusClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
@@ -214,7 +214,7 @@ fun PhotoWidgetConfigureAppearanceTab(
             }
 
             PickerListItem(
-                title = stringResource(R.string.photo_widget_configure_border),
+                headlineText = stringResource(R.string.photo_widget_configure_border),
                 currentValue = currentValue,
                 onClick = onBorderClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
@@ -223,7 +223,7 @@ fun PhotoWidgetConfigureAppearanceTab(
         }
 
         PickerListItem(
-            title = stringResource(id = R.string.widget_defaults_opacity),
+            headlineText = stringResource(id = R.string.widget_defaults_opacity),
             currentValue = formatPercent(value = photoWidget.colors.opacity, fractionDigits = 0),
             onClick = onOpacityClick,
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -231,7 +231,7 @@ fun PhotoWidgetConfigureAppearanceTab(
         )
 
         PickerListItem(
-            title = stringResource(R.string.widget_defaults_saturation),
+            headlineText = stringResource(R.string.widget_defaults_saturation),
             currentValue = formatRangeValue(value = PhotoWidgetColors.pickerSaturation(photoWidget.colors.saturation)),
             onClick = onSaturationClick,
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -239,7 +239,7 @@ fun PhotoWidgetConfigureAppearanceTab(
         )
 
         PickerListItem(
-            title = stringResource(R.string.widget_defaults_brightness),
+            headlineText = stringResource(R.string.widget_defaults_brightness),
             currentValue = formatRangeValue(value = photoWidget.colors.brightness),
             onClick = onBrightnessClick,
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -252,7 +252,7 @@ fun PhotoWidgetConfigureAppearanceTab(
 
         if (photoWidget.aspectRatio != PhotoWidgetAspectRatio.FILL_WIDGET) {
             PickerListItem(
-                title = stringResource(id = R.string.photo_widget_configure_offset),
+                headlineText = stringResource(id = R.string.photo_widget_configure_offset),
                 currentValue = stringResource(
                     id = R.string.photo_widget_configure_offset_current_values,
                     photoWidget.horizontalOffset,
@@ -264,7 +264,7 @@ fun PhotoWidgetConfigureAppearanceTab(
             )
 
             PickerListItem(
-                title = stringResource(id = R.string.photo_widget_configure_padding),
+                headlineText = stringResource(id = R.string.photo_widget_configure_padding),
                 currentValue = photoWidget.padding.toString(),
                 onClick = onPaddingClick,
                 modifier = Modifier.padding(horizontal = 16.dp),

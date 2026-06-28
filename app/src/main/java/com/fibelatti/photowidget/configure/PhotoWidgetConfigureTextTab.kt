@@ -90,7 +90,7 @@ fun PhotoWidgetConfigureTextTab(
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         PickerListItem(
-            title = stringResource(R.string.photo_widget_configure_text_type),
+            headlineText = stringResource(R.string.photo_widget_configure_text_type),
             currentValue = stringResource(
                 when (photoWidgetText) {
                     is PhotoWidgetText.None -> R.string.photo_widget_configure_text_type_none
@@ -106,30 +106,30 @@ fun PhotoWidgetConfigureTextTab(
 
             is PhotoWidgetText.Label -> {
                 PickerListItem(
-                    title = stringResource(R.string.photo_widget_configure_text_value),
+                    headlineText = stringResource(R.string.photo_widget_configure_text_value),
                     currentValue = photoWidgetText.value,
                     onClick = textValueSheetState::showBottomSheet,
                     shape = Shapes.MiddleShape,
                 )
 
                 PickerListItem(
-                    title = stringResource(R.string.photo_widget_configure_text_size),
+                    headlineText = stringResource(R.string.photo_widget_configure_text_size),
                     currentValue = photoWidgetText.size.toString(),
                     onClick = textSizeSheetState::showBottomSheet,
                     shape = Shapes.MiddleShape,
                 )
 
                 PickerListItem(
-                    title = stringResource(R.string.photo_widget_configure_text_vertical_offset),
+                    headlineText = stringResource(R.string.photo_widget_configure_text_vertical_offset),
                     currentValue = photoWidgetText.verticalOffset.toString(),
                     onClick = verticalOffsetSheetState::showBottomSheet,
                     shape = Shapes.MiddleShape,
                 )
 
                 BooleanListItem(
-                    title = stringResource(R.string.photo_widget_configure_text_apply_shadow),
+                    headlineText = stringResource(R.string.photo_widget_configure_text_apply_shadow),
                     currentValue = photoWidgetText.hasShadow,
-                    onCheckedChange = { newValue ->
+                    onValueChange = { newValue ->
                         onPhotoWidgetTextChange(photoWidgetText.copy(hasShadow = newValue))
                     },
                     shape = Shapes.BottomShape,

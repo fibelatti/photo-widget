@@ -123,7 +123,7 @@ fun PhotoWidgetConfigureBehaviorTab(
         val showSortPicker: Boolean = photoWidget.source == PhotoWidgetSource.DIRECTORY && !photoWidget.shuffle
 
         PickerListItem(
-            title = stringResource(id = R.string.widget_defaults_tap_action),
+            headlineText = stringResource(id = R.string.widget_defaults_tap_action),
             currentValue = buildString {
                 appendLine(stringResource(id = photoWidget.tapActions.left.label))
                 appendLine(stringResource(id = photoWidget.tapActions.center.label))
@@ -139,7 +139,7 @@ fun PhotoWidgetConfigureBehaviorTab(
 
         if (showTimerPicker) {
             PickerListItem(
-                title = stringResource(id = R.string.widget_defaults_cycling),
+                headlineText = stringResource(id = R.string.widget_defaults_cycling),
                 currentValue = when (photoWidget.cycleMode) {
                     is PhotoWidgetCycleMode.Interval -> {
                         val intervalString = pluralStringResource(
@@ -179,7 +179,7 @@ fun PhotoWidgetConfigureBehaviorTab(
 
         if (showGifIntervalPicker) {
             PickerListItem(
-                title = stringResource(R.string.photo_widget_configure_gif_frame_interval),
+                headlineText = stringResource(R.string.photo_widget_configure_gif_frame_interval),
                 currentValue = "${photoWidget.gifInterval} ms",
                 onClick = onGifIntervalPickerClick,
                 modifier = Modifier.padding(top = 2.dp),
@@ -189,9 +189,9 @@ fun PhotoWidgetConfigureBehaviorTab(
 
         if (showShufflePicker) {
             BooleanListItem(
-                title = stringResource(R.string.widget_defaults_shuffle),
+                headlineText = stringResource(R.string.widget_defaults_shuffle),
                 currentValue = photoWidget.shuffle,
-                onCheckedChange = onShuffleChange,
+                onValueChange = onShuffleChange,
                 modifier = Modifier.padding(top = 2.dp),
                 shape = if (showSortPicker) Shapes.MiddleShape else Shapes.BottomShape,
             )
@@ -199,7 +199,7 @@ fun PhotoWidgetConfigureBehaviorTab(
 
         AnimatedVisibility(visible = showSortPicker) {
             PickerListItem(
-                title = stringResource(R.string.photo_widget_directory_sort_title),
+                headlineText = stringResource(R.string.photo_widget_directory_sort_title),
                 currentValue = stringResource(id = photoWidget.directorySorting.label),
                 onClick = onSortClick,
                 modifier = Modifier.padding(top = 2.dp),
