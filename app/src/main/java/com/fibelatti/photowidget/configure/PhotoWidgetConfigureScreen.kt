@@ -64,6 +64,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -479,6 +480,12 @@ private fun PhotoWidgetViewer(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White.copy(alpha = .3f)),
+        )
+
         var current: LocalPhoto? by remember(selectedPhoto) { mutableStateOf(selectedPhoto) }
         if (photoWidget.source == PhotoWidgetSource.GIF) {
             LaunchedEffect(photoWidget.photos, photoWidget.gifInterval, selectedPhoto, isProcessing) {
