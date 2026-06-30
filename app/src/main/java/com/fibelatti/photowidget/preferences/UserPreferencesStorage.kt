@@ -311,13 +311,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
     fun clearDefaults() {
         sharedPreferences.edit {
             Preference.entries
-                .minus(
-                    listOf(
-                        Preference.APP_APPEARANCE,
-                        Preference.APP_DYNAMIC_COLORS,
-                        Preference.HIGHLIGHT_TRANSPARENT_WIDGETS,
-                    ),
-                )
+                .filter { it.resettable }
                 .forEach { preference -> remove(preference.value) }
         }
         _userPreferences.update {
@@ -342,45 +336,45 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         }
     }
 
-    private enum class Preference(val value: String) {
+    private enum class Preference(val value: String, val resettable: Boolean = false) {
         DATA_SAVER(value = "user_preferences_data_saver"),
         KEEP_ALIVE(value = "user_preferences_keep_alive"),
         APP_APPEARANCE(value = "user_preferences_appearance"),
         USE_TRUE_BLACK(value = "user_preferences_use_true_black"),
         APP_DYNAMIC_COLORS(value = "user_preferences_dynamic_colors"),
         HIGHLIGHT_TRANSPARENT_WIDGETS(value = "user_preferences_highlight_transparent_widgets"),
-        DEFAULT_ASPECT_RATIO(value = "default_aspect_ratio"),
-        DEFAULT_SOURCE(value = "default_source"),
-        DEFAULT_SHUFFLE(value = "default_shuffle"),
-        DEFAULT_DIR_SORTING(value = "default_directory_sorting"),
-        DEFAULT_INTERVAL_ENABLED(value = "default_interval_enabled"),
+        DEFAULT_ASPECT_RATIO(value = "default_aspect_ratio", resettable = true),
+        DEFAULT_SOURCE(value = "default_source", resettable = true),
+        DEFAULT_SHUFFLE(value = "default_shuffle", resettable = true),
+        DEFAULT_DIR_SORTING(value = "default_directory_sorting", resettable = true),
+        DEFAULT_INTERVAL_ENABLED(value = "default_interval_enabled", resettable = true),
 
         /**
          * Key from when the interval was persisted in minutes.
          */
-        LEGACY_DEFAULT_INTERVAL("default_interval_minutes"),
+        LEGACY_DEFAULT_INTERVAL("default_interval_minutes", resettable = true),
 
         /**
          * Key from when the interval was migrated from minutes to seconds.
          */
-        DEFAULT_INTERVAL("default_interval_seconds"),
-        DEFAULT_SCHEDULE("default_schedule"),
-        DEFAULT_ADVANCED_SCHEDULE("default_advanced_schedule"),
-        DEFAULT_SHAPE(value = "default_shape"),
+        DEFAULT_INTERVAL("default_interval_seconds", resettable = true),
+        DEFAULT_SCHEDULE("default_schedule", resettable = true),
+        DEFAULT_ADVANCED_SCHEDULE("default_advanced_schedule", resettable = true),
+        DEFAULT_SHAPE(value = "default_shape", resettable = true),
 
         /**
          * Key from when the corner radius was persisted in px.
          */
-        LEGACY_DEFAULT_CORNER_RADIUS(value = "default_corner_radius"),
-        DEFAULT_CORNER_RADIUS(value = "default_corner_radius_dp"),
-        DEFAULT_OPACITY(value = "default_opacity"),
-        DEFAULT_SATURATION(value = "default_saturation"),
-        DEFAULT_BRIGHTNESS(value = "default_brightness"),
+        LEGACY_DEFAULT_CORNER_RADIUS(value = "default_corner_radius", resettable = true),
+        DEFAULT_CORNER_RADIUS(value = "default_corner_radius_dp", resettable = true),
+        DEFAULT_OPACITY(value = "default_opacity", resettable = true),
+        DEFAULT_SATURATION(value = "default_saturation", resettable = true),
+        DEFAULT_BRIGHTNESS(value = "default_brightness", resettable = true),
 
         /**
          * Key from when the black and white was persisted, before the saturation was introduced.
          */
-        LEGACY_DEFAULT_BLACK_AND_WHITE(value = "default_black_and_white"),
+        LEGACY_DEFAULT_BLACK_AND_WHITE(value = "default_black_and_white", resettable = true),
         ;
 
         override fun toString(): String = value

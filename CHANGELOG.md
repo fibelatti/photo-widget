@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+* Fix certain user settings being reset by mistake when resetting defaults
+
 ## [v1.44.1] - 2026-06-28
 [v1.44.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.44.1
 
