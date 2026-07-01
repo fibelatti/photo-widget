@@ -7,6 +7,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +33,7 @@ fun BooleanListItem(
     modifier: Modifier = Modifier,
     supportingText: String? = null,
     shape: Shape = Shapes.StandaloneShape,
+    headlineFlag: @Composable RowScope.() -> Unit = {},
 ) {
     ListItem(
         headlineText = headlineText,
@@ -58,6 +60,7 @@ fun BooleanListItem(
         modifier = modifier,
         supportingText = supportingText,
         shape = shape,
+        headlineFlag = headlineFlag,
     )
 }
 
