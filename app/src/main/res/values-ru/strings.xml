@@ -269,6 +269,14 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">Просмотреть оригинальную фотографию (без обрезки или поворота)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Не перемешивать фотографии при переключении в просмотрщике</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">Не менять текущую фотографию при переключении фотографий в просмотрщике</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls">Показывать элементы навигации</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls_description">Показывать кнопки «Назад», «Вперёд» и «Закрыть». Эти действия всегда доступны с помощью жестов перетаскивания.</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker">Показывать выбор фотографий</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker_description">Показывать кнопку, открывающую полный список фотографий</string>
+    <string name="photo_widget_configure_tap_action_show_share">Показывать кнопку «Поделиться»</string>
+    <string name="photo_widget_configure_tap_action_show_share_description">Показывать кнопку, которая делится текущей фотографией</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path">Показывать путь к фотографии</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path_description">Показывать путь к файлу текущей фотографии. Применяется только к виджетам, синхронизированным с папкой.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Это действие откроет текущую фотографию через приложение галереи. Невозможно будет просматривать или переходить к другим фотографиям.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Вы также можете выбрать, какое приложение галереи использовать.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Выбрать приложение</string>

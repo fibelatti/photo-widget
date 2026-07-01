@@ -263,6 +263,14 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">Vezi fotografia originală (fără tăiere sau rotație)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Nu amesteca fotografiile la schimbarea lor în vizualizator</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">Nu schimba fotografia curentă la schimbarea fotografiilor în vizualizator</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls">Afișează controalele de navigare</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls_description">Afișează butoanele înapoi, înainte și închide. Aceste acțiuni sunt întotdeauna disponibile prin gesturi de glisare.</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker">Afișează selectorul de fotografii</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker_description">Afișează butonul care deschide lista completă de fotografii</string>
+    <string name="photo_widget_configure_tap_action_show_share">Afișează butonul de partajare</string>
+    <string name="photo_widget_configure_tap_action_show_share_description">Afișează butonul care partajează fotografia curentă</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path">Afișează calea fotografiei</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path_description">Afișează calea fișierului fotografiei curente. Se aplică doar widgeturilor sincronizate cu un dosar.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Această acțiune deschide fotografia curentă folosind aplicația galerie. Nu va fi posibil să vezi sau să navighezi la alte fotografii.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">De asemenea, puteți alege ce aplicație galerie să o utilizați.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Alege aplicația</string>

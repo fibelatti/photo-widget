@@ -25,6 +25,10 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.tapActionIncreaseBrightness
 import com.fibelatti.photowidget.model.tapActionViewOriginalPhoto
 import com.fibelatti.photowidget.model.tapActionViewerBackgroundColorHex
+import com.fibelatti.photowidget.model.tapActionViewerShowNavigationControls
+import com.fibelatti.photowidget.model.tapActionViewerShowPhotoPath
+import com.fibelatti.photowidget.model.tapActionViewerShowPhotoPicker
+import com.fibelatti.photowidget.model.tapActionViewerShowShare
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.sharePhotoChooserIntent
 import dagger.hilt.android.AndroidEntryPoint
@@ -91,6 +95,10 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
                     backgroundColor = backgroundColor,
                     showNextButton = state.showNextButton,
                     showPreviousButton = state.showPreviousButton,
+                    showNavigationControls = photoWidget.tapActionViewerShowNavigationControls,
+                    showPhotoPicker = photoWidget.tapActionViewerShowPhotoPicker,
+                    showShare = photoWidget.tapActionViewerShowShare,
+                    showPhotoPath = photoWidget.tapActionViewerShowPhotoPath,
                     onNextClick = viewModel::viewNextPhoto,
                     onPreviousClick = viewModel::viewPreviousPhoto,
                     onAllPhotosClick = ::showPhotoChooser,

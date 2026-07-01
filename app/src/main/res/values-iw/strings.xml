@@ -269,6 +269,14 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">צפה בתמונה המקורית (ללא חיתוך או סיבוב)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">לא לערבב תמונות בעת החלפת תמונות בצופה</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">לא לשנות את התמונה הנוכחית בעת החלפת תמונות בצופה</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls">הצגת פקדי ניווט</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls_description">הצגת הלחצנים הקודם, הבא וסגירה. פעולות אלה תמיד זמינות באמצעות מחוות גרירה.</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker">הצגת בורר התמונות</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker_description">הצגת הלחצן שפותח את הרשימה המלאה של התמונות</string>
+    <string name="photo_widget_configure_tap_action_show_share">הצגת לחצן השיתוף</string>
+    <string name="photo_widget_configure_tap_action_show_share_description">הצגת הלחצן שמשתף את התמונה הנוכחית</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path">הצגת נתיב התמונה</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path_description">הצגת נתיב הקובץ של התמונה הנוכחית. חל רק על ווידג\'טים המסונכרנים עם תיקייה.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">פעולה זו פותחת את התמונה הנוכחית באמצעות אפליקציית הגלריה. לא ניתן יהיה לצפות בתמונות אחרות או לנווט אליהן.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">באפשרותך גם לבחור באיזו אפליקציית גלריה להשתמש.</string>
     <string name="photo_widget_configure_tap_action_choose_app">בחר אפליקציה</string>

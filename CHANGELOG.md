@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Widget settings screen to control common widget preferences
+* More viewer customization options: choose which buttons overlay the photo
 
 ### Changed
 

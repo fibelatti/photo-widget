@@ -245,6 +245,14 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">查看原始照片(没有裁剪和旋转)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">在查看器中切换照片时不会随机播放</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">在查看器中切换照片时不要更改当前照片</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls">显示导航控件</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls_description">显示上一张、下一张和关闭按钮。这些操作始终可通过拖动手势使用。</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker">显示照片选择器</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker_description">显示打开完整照片列表的按钮</string>
+    <string name="photo_widget_configure_tap_action_show_share">显示分享按钮</string>
+    <string name="photo_widget_configure_tap_action_show_share_description">显示分享当前照片的按钮</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path">显示照片路径</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path_description">显示当前照片的文件路径。仅适用于与文件夹同步的小组件。</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">此操作使用图库应用打开当前照片。它将无法查看或导航到其他照片。</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">你也可以选择使用哪个相册程序。</string>
     <string name="photo_widget_configure_tap_action_choose_app">选择软件</string>

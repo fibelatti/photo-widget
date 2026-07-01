@@ -253,6 +253,14 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">Orijinal fotoğrafı görüntüle (kırpma veya döndürme yok)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Görüntüleyicide fotoğraflar değiştirilirken karıştırma</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">Görüntüleyicide fotoğraflar değiştirilirken geçerli fotoğrafı değiştirme</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls">Gezinme denetimlerini göster</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls_description">Önceki, sonraki ve kapat düğmelerini gösterir. Bu eylemler sürükleme hareketleriyle her zaman kullanılabilir.</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker">Fotoğraf seçiciyi göster</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker_description">Fotoğrafların tam listesini açan düğmeyi gösterir</string>
+    <string name="photo_widget_configure_tap_action_show_share">Paylaş düğmesini göster</string>
+    <string name="photo_widget_configure_tap_action_show_share_description">Geçerli fotoğrafı paylaşan düğmeyi gösterir</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path">Fotoğraf yolunu göster</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path_description">Geçerli fotoğrafın dosya yolunu gösterir. Yalnızca bir klasörle senkronize edilen widget\'lara uygulanır.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Bu eylem, mevcut fotoğrafı galeri uygulamasıyla açar. Diğer fotoğrafları görüntülemek veya onlara geçmek mümkün olmayacaktır.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Hangi galeri uygulamasını kullanacağınızı da seçebilirsiniz.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Uygulama seç</string>

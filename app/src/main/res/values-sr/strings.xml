@@ -261,6 +261,14 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">Погледајте оригиналну фотографију (без резања или ротације)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Не мењај фотографије у прегледачу</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">Не мењај тренутну фотографију приликом прегледа фотографија у прегледачу</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls">Прикажи контроле навигације</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls_description">Приказује дугмад претходна, следећа и одбаци. Ове радње су увек доступне помоћу покрета превлачења.</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker">Прикажи бирач фотографија</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker_description">Приказује дугме које отвара комплетну листу фотографија</string>
+    <string name="photo_widget_configure_tap_action_show_share">Прикажи дугме за дељење</string>
+    <string name="photo_widget_configure_tap_action_show_share_description">Приказује дугме које дели тренутну фотографију</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path">Прикажи путању фотографије</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path_description">Приказује путању датотеке тренутне фотографије. Примењује се само на виџете синхронизоване са фасциклом.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Ова радња отвара тренутну фотографију помоћу апликације галерија. Неће бити могуће прегледати или прећи на друге фотографије.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Такође можете одабрати коју апликацију за галерију ћете користити.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Изаберите апликацију</string>

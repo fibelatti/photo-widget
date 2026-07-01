@@ -255,6 +255,14 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">Ver foto original (sin recorte ni rotación)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">No mezclar las fotos al cambiar de foto en el visor</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">No cambiar la foto actual al cambiar de foto en el visor</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls">Mostrar controles de navegación</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls_description">Muestra los botones de anterior, siguiente y cerrar. Estas acciones siempre están disponibles mediante gestos de deslizamiento.</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker">Mostrar selector de fotos</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker_description">Muestra el botón que abre la lista completa de fotos</string>
+    <string name="photo_widget_configure_tap_action_show_share">Mostrar botón de compartir</string>
+    <string name="photo_widget_configure_tap_action_show_share_description">Muestra el botón que comparte la foto actual</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path">Mostrar ruta de la foto</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path_description">Muestra la ruta del archivo de la foto actual. Solo se aplica a los widgets sincronizados con una carpeta.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Esta acción abre la foto actual usando la aplicación de galería. No será posible ver ni navegar a otras fotos.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">También puedes elegir qué aplicación de galería usar.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Elige la aplicación</string>

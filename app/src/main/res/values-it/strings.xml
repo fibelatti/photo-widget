@@ -255,6 +255,14 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">Visualizza foto originale (senza ritaglio o rotazione)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Non mescolare le foto quando si cambia foto nel visualizzatore</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">Non cambiare la foto corrente quando si cambia foto nel visualizzatore</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls">Mostra i controlli di navigazione</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls_description">Mostra i pulsanti precedente, successivo e chiudi. Queste azioni sono sempre disponibili tramite i gesti di trascinamento.</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker">Mostra il selettore di foto</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker_description">Mostra il pulsante che apre l\'elenco completo delle foto</string>
+    <string name="photo_widget_configure_tap_action_show_share">Mostra il pulsante di condivisione</string>
+    <string name="photo_widget_configure_tap_action_show_share_description">Mostra il pulsante che condivide la foto corrente</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path">Mostra il percorso della foto</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path_description">Mostra il percorso del file della foto corrente. Si applica solo ai widget sincronizzati con una cartella.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Questa azione apre la foto corrente usando l\'app galleria. Non sarà possibile visualizzare o navigare verso altre foto.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Puoi anche scegliere quale app galleria utilizzare.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Scegli app</string>

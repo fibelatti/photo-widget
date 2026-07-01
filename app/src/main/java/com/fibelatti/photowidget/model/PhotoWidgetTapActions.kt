@@ -51,6 +51,30 @@ val PhotoWidgetTapActions.viewerBackgroundColorHex: String?
         ?: (center as? PhotoWidgetTapAction.ViewFullScreen)?.backgroundColorHex
         ?: (right as? PhotoWidgetTapAction.ViewFullScreen)?.backgroundColorHex
 
+val PhotoWidgetTapActions.viewerShowNavigationControls: Boolean
+    get() = (left as? PhotoWidgetTapAction.ViewFullScreen)?.showNavigationControls
+        ?: (center as? PhotoWidgetTapAction.ViewFullScreen)?.showNavigationControls
+        ?: (right as? PhotoWidgetTapAction.ViewFullScreen)?.showNavigationControls
+        ?: true
+
+val PhotoWidgetTapActions.viewerShowPhotoPicker: Boolean
+    get() = (left as? PhotoWidgetTapAction.ViewFullScreen)?.showPhotoPicker
+        ?: (center as? PhotoWidgetTapAction.ViewFullScreen)?.showPhotoPicker
+        ?: (right as? PhotoWidgetTapAction.ViewFullScreen)?.showPhotoPicker
+        ?: true
+
+val PhotoWidgetTapActions.viewerShowShare: Boolean
+    get() = (left as? PhotoWidgetTapAction.ViewFullScreen)?.showShare
+        ?: (center as? PhotoWidgetTapAction.ViewFullScreen)?.showShare
+        ?: (right as? PhotoWidgetTapAction.ViewFullScreen)?.showShare
+        ?: true
+
+val PhotoWidgetTapActions.viewerShowPhotoPath: Boolean
+    get() = (left as? PhotoWidgetTapAction.ViewFullScreen)?.showPhotoPath
+        ?: (center as? PhotoWidgetTapAction.ViewFullScreen)?.showPhotoPath
+        ?: (right as? PhotoWidgetTapAction.ViewFullScreen)?.showPhotoPath
+        ?: true
+
 operator fun PhotoWidgetTapActions.contains(value: KClass<out PhotoWidgetTapAction>): Boolean {
     return left::class == value || center::class == value || right::class == value
 }

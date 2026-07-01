@@ -245,6 +245,14 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">元の写真を表示（切り抜きや回転なし）</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">ビューアで写真を切り替えるときにシャッフルしない</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">ビューアで写真を切り替えるときに現在の写真を変更しない</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls">ナビゲーションコントロールを表示</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls_description">前へ、次へ、閉じるのボタンを表示します。これらの操作はドラッグ操作でも常に利用できます。</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker">写真ピッカーを表示</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker_description">写真の全リストを開くボタンを表示します</string>
+    <string name="photo_widget_configure_tap_action_show_share">共有ボタンを表示</string>
+    <string name="photo_widget_configure_tap_action_show_share_description">現在の写真を共有するボタンを表示します</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path">写真のパスを表示</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path_description">現在の写真のファイルパスを表示します。フォルダと同期したウィジェットにのみ適用されます。</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">このアクションは、ギャラリーアプリを使用して現在の写真を開きます。他の写真を表示したり移動したりすることはできません。</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">使用するギャラリーアプリを選択することもできます。</string>
     <string name="photo_widget_configure_tap_action_choose_app">アプリを選択</string>

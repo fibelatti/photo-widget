@@ -253,6 +253,14 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">Tingnan ang orihinal na larawan (walang krop o pag-ikot)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Huwag i-shuffle ang mga larawan kapag nagpapalit sa viewer</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">Huwag palitan ang kasalukuyang larawan kapag nagpapalit sa viewer</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls">Ipakita ang mga kontrol sa navigation</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls_description">Ipinapakita ang mga button na nakaraan, susunod, at i-dismiss. Palaging available ang mga aksyong ito sa pamamagitan ng drag gestures.</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker">Ipakita ang photo picker</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker_description">Ipinapakita ang button na nagbubukas ng buong listahan ng mga larawan</string>
+    <string name="photo_widget_configure_tap_action_show_share">Ipakita ang share button</string>
+    <string name="photo_widget_configure_tap_action_show_share_description">Ipinapakita ang button na nagbabahagi ng kasalukuyang larawan</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path">Ipakita ang path ng larawan</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path_description">Ipinapakita ang file path ng kasalukuyang larawan. Nalalapat lang sa mga widget na naka-sync sa isang folder.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Binubuksan ng aksyong ito ang kasalukuyang larawan gamit ang gallery app. Hindi ka makakatingin o makakalipat sa ibang mga larawan.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Maaari mo ring piliin ang gallery app na gagamitin.</string>
     <string name="photo_widget_configure_tap_action_choose_app">Piliin ang app</string>

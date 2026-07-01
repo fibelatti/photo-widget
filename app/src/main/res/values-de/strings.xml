@@ -255,6 +255,14 @@
     <string name="photo_widget_configure_tap_action_view_original_photo">Originalfoto anzeigen (kein Zuschnitt oder Drehung)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Fotos im Viewer beim Wechseln nicht mischen</string>
     <string name="photo_widget_configure_tap_action_keep_current_photo">Beim Wechseln im Viewer das aktuelle Foto nicht ändern</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls">Navigationssteuerung anzeigen</string>
+    <string name="photo_widget_configure_tap_action_show_navigation_controls_description">Zeigt die Schaltflächen „Zurück", „Weiter" und „Schließen" an. Diese Aktionen sind immer über Wischgesten verfügbar.</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker">Fotoauswahl anzeigen</string>
+    <string name="photo_widget_configure_tap_action_show_photo_picker_description">Zeigt die Schaltfläche an, die die vollständige Fotoliste öffnet</string>
+    <string name="photo_widget_configure_tap_action_show_share">Teilen-Schaltfläche anzeigen</string>
+    <string name="photo_widget_configure_tap_action_show_share_description">Zeigt die Schaltfläche an, die das aktuelle Foto teilt</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path">Fotopfad anzeigen</string>
+    <string name="photo_widget_configure_tap_action_show_photo_path_description">Zeigt den Dateipfad des aktuellen Fotos an. Gilt nur für mit einem Ordner synchronisierte Widgets.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_warning">Diese Aktion öffnet das aktuelle Foto mit der Galerie-App. Es ist nicht möglich, andere Fotos anzuzeigen oder zu ihnen zu navigieren.</string>
     <string name="photo_widget_configure_tap_action_gallery_description_app_selection">Du kannst auch auswählen, welche Galerie-App verwendet werden soll.</string>
     <string name="photo_widget_configure_tap_action_choose_app">App auswählen</string>

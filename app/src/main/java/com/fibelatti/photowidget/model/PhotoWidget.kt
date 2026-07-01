@@ -115,6 +115,18 @@ val PhotoWidget.tapActionDisableTap: Boolean
 val PhotoWidget.tapActionViewerBackgroundColorHex: String?
     get() = tapActions.viewerBackgroundColorHex
 
+val PhotoWidget.tapActionViewerShowNavigationControls: Boolean
+    get() = tapActions.viewerShowNavigationControls
+
+val PhotoWidget.tapActionViewerShowPhotoPicker: Boolean
+    get() = tapActions.viewerShowPhotoPicker
+
+val PhotoWidget.tapActionViewerShowShare: Boolean
+    get() = tapActions.viewerShowShare
+
+val PhotoWidget.tapActionViewerShowPhotoPath: Boolean
+    get() = tapActions.viewerShowPhotoPath
+
 fun PhotoWidget.orderedPhotosForDisplay(): List<LocalPhoto> {
     if (cycleMode !is PhotoWidgetCycleMode.AdvancedSchedule) return photos
 

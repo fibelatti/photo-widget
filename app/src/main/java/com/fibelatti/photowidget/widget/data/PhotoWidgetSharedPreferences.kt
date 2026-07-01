@@ -451,6 +451,13 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     putBoolean("${PreferencePrefix.VIEW_ORIGINAL_PHOTO}$appWidgetId", tapAction.viewOriginalPhoto)
                     putBoolean("${PreferencePrefix.NO_SHUFFLE}$appWidgetId", tapAction.noShuffle)
                     putBoolean("${PreferencePrefix.KEEP_CURRENT_PHOTO}$appWidgetId", tapAction.keepCurrentPhoto)
+                    putBoolean(
+                        "${PreferencePrefix.VIEWER_SHOW_NAVIGATION_CONTROLS}$appWidgetId",
+                        tapAction.showNavigationControls,
+                    )
+                    putBoolean("${PreferencePrefix.VIEWER_SHOW_PHOTO_PICKER}$appWidgetId", tapAction.showPhotoPicker)
+                    putBoolean("${PreferencePrefix.VIEWER_SHOW_SHARE}$appWidgetId", tapAction.showShare)
+                    putBoolean("${PreferencePrefix.VIEWER_SHOW_PHOTO_PATH}$appWidgetId", tapAction.showPhotoPath)
 
                     if (tapAction.backgroundColorHex != null) {
                         putString(
@@ -519,6 +526,13 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                         "${PreferencePrefix.VIEWER_BACKGROUND_COLOR}$appWidgetId",
                         null,
                     ),
+                    showNavigationControls = getBoolean(
+                        "${PreferencePrefix.VIEWER_SHOW_NAVIGATION_CONTROLS}$appWidgetId",
+                        true,
+                    ),
+                    showPhotoPicker = getBoolean("${PreferencePrefix.VIEWER_SHOW_PHOTO_PICKER}$appWidgetId", true),
+                    showShare = getBoolean("${PreferencePrefix.VIEWER_SHOW_SHARE}$appWidgetId", true),
+                    showPhotoPath = getBoolean("${PreferencePrefix.VIEWER_SHOW_PHOTO_PATH}$appWidgetId", true),
                 )
 
                 is PhotoWidgetTapAction.ViewInGallery -> tapAction.copy(
@@ -808,6 +822,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         PREFERRED_GALLERY_APP(value = "appwidget_preferred_gallery_app_"),
         DISABLE_TAP(value = "appwidget_disable_tap_"),
         VIEWER_BACKGROUND_COLOR(value = "appwidget_viewer_background_color_"),
+        VIEWER_SHOW_NAVIGATION_CONTROLS(value = "appwidget_viewer_show_navigation_controls_"),
+        VIEWER_SHOW_PHOTO_PICKER(value = "appwidget_viewer_show_photo_picker_"),
+        VIEWER_SHOW_SHARE(value = "appwidget_viewer_show_share_"),
+        VIEWER_SHOW_PHOTO_PATH(value = "appwidget_viewer_show_photo_path_"),
 
         TEXT_TYPE(value = "appwidget_text_type_"),
         TEXT_VALUE(value = "appwidget_text_value_"),

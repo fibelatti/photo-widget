@@ -636,6 +636,7 @@ private fun TapActionPickerContent(
 
             TapActionCustomizationContent(
                 tapAction = currentTapAction,
+                source = source,
                 onTapActionChange = onTapActionChange,
                 onChooseAppClick = onChooseAppClick,
                 onChooseShortcutClick = onChooseShortcutClick,
@@ -865,6 +866,7 @@ private fun TapOptionsPicker(
 @Composable
 private fun TapActionCustomizationContent(
     tapAction: PhotoWidgetTapAction,
+    source: PhotoWidgetSource,
     onTapActionChange: (PhotoWidgetTapAction) -> Unit,
     onChooseAppClick: () -> Unit,
     onChooseShortcutClick: (packageName: String) -> Unit,
@@ -878,6 +880,7 @@ private fun TapActionCustomizationContent(
         is PhotoWidgetTapAction.ViewFullScreen -> {
             ViewFullScreenCustomizationContent(
                 value = tapAction,
+                source = source,
                 onValueChange = onTapActionChange,
                 modifier = modifier,
             )
@@ -1003,6 +1006,7 @@ private fun AppPicker(
 @Composable
 private fun ViewFullScreenCustomizationContent(
     value: PhotoWidgetTapAction.ViewFullScreen,
+    source: PhotoWidgetSource,
     onValueChange: (PhotoWidgetTapAction.ViewFullScreen) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -1023,7 +1027,19 @@ private fun ViewFullScreenCustomizationContent(
             headlineText = stringResource(R.string.photo_widget_configure_tap_action_view_original_photo),
             currentValue = value.viewOriginalPhoto,
             onValueChange = { onValueChange(value.copy(viewOriginalPhoto = it)) },
-            shape = Shapes.MiddleShape,
+            shape = Shapes.BottomShape,
+        )
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        BooleanListItem(
+            headlineText = stringResource(R.string.photo_widget_configure_tap_action_show_navigation_controls),
+            currentValue = value.showNavigationControls,
+            onValueChange = { onValueChange(value.copy(showNavigationControls = it)) },
+            supportingText = stringResource(
+                R.string.photo_widget_configure_tap_action_show_navigation_controls_description,
+            ),
+            shape = Shapes.TopShape,
         )
 
         BooleanListItem(
@@ -1037,8 +1053,42 @@ private fun ViewFullScreenCustomizationContent(
             headlineText = stringResource(R.string.photo_widget_configure_tap_action_keep_current_photo),
             currentValue = value.keepCurrentPhoto,
             onValueChange = { onValueChange(value.copy(keepCurrentPhoto = it)) },
-            shape = Shapes.MiddleShape,
+            shape = Shapes.BottomShape,
         )
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        BooleanListItem(
+            headlineText = stringResource(R.string.photo_widget_configure_tap_action_show_photo_picker),
+            currentValue = value.showPhotoPicker,
+            onValueChange = { onValueChange(value.copy(showPhotoPicker = it)) },
+            supportingText = stringResource(
+                R.string.photo_widget_configure_tap_action_show_photo_picker_description,
+            ),
+            shape = Shapes.TopShape,
+        )
+
+        if (source == PhotoWidgetSource.DIRECTORY) {
+            BooleanListItem(
+                headlineText = stringResource(R.string.photo_widget_configure_tap_action_show_photo_path),
+                currentValue = value.showPhotoPath,
+                onValueChange = { onValueChange(value.copy(showPhotoPath = it)) },
+                supportingText = stringResource(
+                    R.string.photo_widget_configure_tap_action_show_photo_path_description,
+                ),
+                shape = Shapes.MiddleShape,
+            )
+        }
+
+        BooleanListItem(
+            headlineText = stringResource(R.string.photo_widget_configure_tap_action_show_share),
+            currentValue = value.showShare,
+            onValueChange = { onValueChange(value.copy(showShare = it)) },
+            supportingText = stringResource(R.string.photo_widget_configure_tap_action_show_share_description),
+            shape = Shapes.BottomShape,
+        )
+
+        Spacer(modifier = Modifier.height(6.dp))
 
         PickerListItem(
             headlineText = stringResource(R.string.photo_widget_configure_tap_action_viewer_background_color),
@@ -1046,7 +1096,6 @@ private fun ViewFullScreenCustomizationContent(
                 ?: stringResource(R.string.photo_widget_configure_tap_action_viewer_background_color_default),
             onClick = backgroundColorSheetState::showBottomSheet,
             modifier = Modifier.fillMaxWidth(),
-            shape = Shapes.BottomShape,
         )
 
         Spacer(modifier = Modifier.height(6.dp))

@@ -108,6 +108,10 @@ fun PhotoWidgetViewerScreen(
     backgroundColor: Color = MaterialTheme.colorScheme.background,
     showNextButton: Boolean = false,
     showPreviousButton: Boolean = false,
+    showNavigationControls: Boolean = true,
+    showPhotoPicker: Boolean = true,
+    showShare: Boolean = true,
+    showPhotoPath: Boolean = true,
     onNextClick: () -> Unit = {},
     onPreviousClick: () -> Unit = {},
     onAllPhotosClick: () -> Unit = {},
@@ -148,7 +152,9 @@ fun PhotoWidgetViewerScreen(
         ViewerHeaderControls(
             photo = photo,
             showControls = showControls,
-            showPhotoPicker = showNextButton,
+            showPhotoPicker = showPhotoPicker && showNextButton,
+            showShare = showShare,
+            showPhotoPath = showPhotoPath,
             onAllPhotosClick = onAllPhotosClick,
             onShareClick = onShareClick,
             onPhotoPathClick = { path: String ->
@@ -166,7 +172,7 @@ fun PhotoWidgetViewerScreen(
         )
 
         ViewerFooterControls(
-            showControls = showControls,
+            showControls = showNavigationControls && showControls,
             showNextButton = showNextButton,
             showPreviousButton = showPreviousButton,
             onNextClick = onNextClick,
@@ -327,6 +333,8 @@ private fun ViewerHeaderControls(
     photo: LocalPhoto?,
     showControls: Boolean,
     showPhotoPicker: Boolean,
+    showShare: Boolean,
+    showPhotoPath: Boolean,
     onAllPhotosClick: () -> Unit,
     onShareClick: (LocalPhoto) -> Unit,
     onPhotoPathClick: (String) -> Unit,
@@ -370,7 +378,7 @@ private fun ViewerHeaderControls(
                     }
                 }
 
-                if (photo?.getPhotoPath(viewOriginalPhoto = true) != null) {
+                if (showShare && photo?.getPhotoPath(viewOriginalPhoto = true) != null) {
                     FilledTonalButton(
                         onClick = { onShareClick(photo) },
                         shapes = ButtonDefaults.shapes(),
@@ -392,7 +400,7 @@ private fun ViewerHeaderControls(
                 photo?.externalPhotoPathString()
             }
 
-            if (path != null) {
+            if (showPhotoPath && path != null) {
                 Box(
                     modifier = Modifier.fillMaxWidth(fraction = .75f),
                     contentAlignment = Alignment.CenterEnd,
