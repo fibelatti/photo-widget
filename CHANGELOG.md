@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Make crossfade optional, false by default
+* Disable the lock screen option. There's currently no way to support it
 
 ### Fixed
 
