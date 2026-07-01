@@ -128,7 +128,7 @@ private fun WidgetSettingsContent(
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.labelSmall,
                 )
-            }
+            },
         )
 
         HorizontalDivider(modifier = Modifier.padding(all = 8.dp))
