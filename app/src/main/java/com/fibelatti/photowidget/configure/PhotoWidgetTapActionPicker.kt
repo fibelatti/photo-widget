@@ -1339,23 +1339,17 @@ private fun AppFolderCustomizationItem(
     backgroundShape: Shape = MaterialTheme.shapes.medium,
     textAlign: TextAlign = TextAlign.Left,
 ) {
-    val colors: ListItemColors = ListItemDefaults.colors()
+    val colors: ListItemColors = ListItemDefaults.colors(
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    )
 
     CompositionLocalProvider(LocalContentColor provides colors.contentColor) {
         ListItem(
-            headlineContent = {
-                AutoSizeText(
-                    text = title,
-                    modifier = Modifier.fillMaxWidth(),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    textAlign = textAlign,
-                    style = MaterialTheme.typography.titleMedium,
-                )
-            },
             modifier = modifier
                 .clip(backgroundShape)
                 .heightIn(min = ListItem.MinHeight),
+            leadingContent = leadingIcon,
+            trailingContent = trailingIcon,
             supportingContent = {
                 if (subtitle != null) {
                     AutoSizeText(
@@ -1366,10 +1360,17 @@ private fun AppFolderCustomizationItem(
                     )
                 }
             },
-            leadingContent = leadingIcon,
-            trailingContent = trailingIcon,
             colors = colors,
-            tonalElevation = 4.dp,
+            content = {
+                AutoSizeText(
+                    text = title,
+                    modifier = Modifier.fillMaxWidth(),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    textAlign = textAlign,
+                    style = MaterialTheme.typography.titleMedium,
+                )
+            },
         )
     }
 }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
@@ -38,14 +39,6 @@ fun SliderItem(
     }
 
     ListItem(
-        headlineContent = {
-            Slider(
-                value = value,
-                onValueChange = onValueChange,
-                valueRange = valueRange,
-                thumb = { SliderSmallThumb() },
-            )
-        },
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = ListItem.MinHeight)
@@ -53,7 +46,17 @@ fun SliderItem(
         trailingContent = {
             SliderLabel(text = valueText)
         },
-        tonalElevation = 4.dp,
+        colors = ListItemDefaults.colors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        ),
+        content = {
+            Slider(
+                value = value,
+                onValueChange = onValueChange,
+                valueRange = valueRange,
+                thumb = { SliderSmallThumb() },
+            )
+        },
     )
 }
 

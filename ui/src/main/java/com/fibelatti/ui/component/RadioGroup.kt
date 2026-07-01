@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material3.ListItem as MaterialListItem
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -80,8 +80,38 @@ private fun RadioGroupItem(
         },
     )
 
-    MaterialListItem(
-        headlineContent = {
+    ListItem(
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = ListItem.MinHeight)
+            .clip(shape)
+            .selectable(
+                selected = selected,
+                enabled = enabled,
+                role = Role.RadioButton,
+                onClick = onClick,
+            ),
+        leadingContent = {
+            RadioButton(
+                selected = selected,
+                onClick = null,
+                modifier = Modifier.padding(vertical = 8.dp),
+                enabled = enabled,
+            )
+        },
+        supportingContent = {
+            if (description != null) {
+                AutoSizeText(
+                    text = description,
+                    color = contentColorFor(backgroundColor),
+                    minFontSize = 8.sp,
+                    maxLines = 2,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+        },
+        colors = ListItemDefaults.colors(containerColor = backgroundColor),
+        content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -95,35 +125,5 @@ private fun RadioGroupItem(
                 flag()
             }
         },
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = ListItem.MinHeight)
-            .clip(shape)
-            .selectable(
-                selected = selected,
-                enabled = enabled,
-                role = Role.RadioButton,
-                onClick = onClick,
-            ),
-        supportingContent = {
-            if (description != null) {
-                AutoSizeText(
-                    text = description,
-                    color = contentColorFor(backgroundColor),
-                    minFontSize = 8.sp,
-                    maxLines = 2,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
-        },
-        leadingContent = {
-            RadioButton(
-                selected = selected,
-                onClick = null,
-                modifier = Modifier.padding(vertical = 8.dp),
-                enabled = enabled,
-            )
-        },
-        colors = ListItemDefaults.colors(containerColor = backgroundColor),
     )
 }
