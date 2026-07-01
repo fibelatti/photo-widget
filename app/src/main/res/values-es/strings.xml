@@ -84,6 +84,12 @@
     <string name="widget_defaults_brightness">Brillo</string>
     <string name="widget_defaults_tap_action">Acción de toque</string>
     <string name="widget_defaults_reset">Restablecer valores</string>
+    <!-- Widget Settings -->
+    <string name="widget_settings_title">Ajustes de los widgets</string>
+    <string name="widget_settings_description">Ajustes que se aplican a todos los widgets</string>
+    <string name="widget_settings_explanation">A diferencia de los valores predeterminados de los widgets, estos ajustes se aplican a todos tus widgets en todo momento. Los cambios pueden aplicarse de inmediato o la próxima vez que se actualice un widget, ya sea por tu interacción o por su programación.</string>
+    <string name="widget_settings_crossfade">Transición entre fotos</string>
+    <string name="widget_settings_crossfade_description">Funde una foto con la siguiente cuando un widget cambia de imagen. No tiene efecto si las animaciones del dispositivo están desactivadas.</string>
     <!-- Share -->
     <string name="share_title">Corre la voz</string>
     <string name="share_text">Añade tus fotos favoritas a tu pantalla principal con Material Photo Widget. Descárgalo gratis en %s</string>

@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* Widget settings screen to control common widget preferences
+
+### Changed
+
+* Make crossfade optional, false by default
+
 ### Fixed
 
 * Fix certain user settings being reset by mistake when resetting defaults

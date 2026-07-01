@@ -388,6 +388,7 @@ private fun WidgetDefaultsScreenPreview() {
                 appearance = Appearance.FOLLOW_SYSTEM,
                 useTrueBlack = false,
                 dynamicColors = true,
+                widgetEnableCrossfade = false,
                 defaultAspectRatio = PhotoWidgetAspectRatio.SQUARE,
                 defaultSource = PhotoWidgetSource.PHOTOS,
                 defaultShuffle = false,

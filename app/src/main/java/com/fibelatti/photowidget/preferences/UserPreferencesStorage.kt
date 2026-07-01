@@ -39,6 +39,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             appearance = appearance,
             useTrueBlack = useTrueBlack,
             dynamicColors = dynamicColors,
+            widgetEnableCrossfade = widgetEnableCrossfade,
             defaultAspectRatio = defaultAspectRatio,
             defaultSource = defaultSource,
             defaultShuffle = defaultShuffle,
@@ -111,7 +112,18 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         }
     // endregion App
 
-    // region Defaults
+    // region Widget Settings
+    var widgetEnableCrossfade: Boolean
+        get() {
+            return sharedPreferences.getBoolean(Preference.WIDGET_ENABLE_CROSSFADE.value, false)
+        }
+        set(value) {
+            sharedPreferences.edit { putBoolean(Preference.WIDGET_ENABLE_CROSSFADE.value, value) }
+            _userPreferences.update { current -> current.copy(widgetEnableCrossfade = value) }
+        }
+    // endregion
+
+    // region Widget Defaults
     var defaultAspectRatio: PhotoWidgetAspectRatio
         get() {
             val name = sharedPreferences.getString(Preference.DEFAULT_ASPECT_RATIO.value, null)
@@ -306,7 +318,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             sharedPreferences.edit { putFloat(Preference.DEFAULT_BRIGHTNESS.value, value) }
             _userPreferences.update { current -> current.copy(defaultBrightness = value) }
         }
-    // endregion Defaults
+    // endregion Widget Defaults
 
     fun clearDefaults() {
         sharedPreferences.edit {
@@ -321,6 +333,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                 appearance = appearance,
                 useTrueBlack = useTrueBlack,
                 dynamicColors = dynamicColors,
+                widgetEnableCrossfade = widgetEnableCrossfade,
                 defaultAspectRatio = defaultAspectRatio,
                 defaultSource = defaultSource,
                 defaultShuffle = defaultShuffle,
@@ -343,6 +356,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         USE_TRUE_BLACK(value = "user_preferences_use_true_black"),
         APP_DYNAMIC_COLORS(value = "user_preferences_dynamic_colors"),
         HIGHLIGHT_TRANSPARENT_WIDGETS(value = "user_preferences_highlight_transparent_widgets"),
+        WIDGET_ENABLE_CROSSFADE(value = "widget_settings_enable_crossfade"),
         DEFAULT_ASPECT_RATIO(value = "default_aspect_ratio", resettable = true),
         DEFAULT_SOURCE(value = "default_source", resettable = true),
         DEFAULT_SHUFFLE(value = "default_shuffle", resettable = true),

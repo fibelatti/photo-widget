@@ -83,6 +83,12 @@
     <string name="widget_defaults_brightness">亮度</string>
     <string name="widget_defaults_tap_action">点按操作</string>
     <string name="widget_defaults_reset">重置值</string>
+    <!-- Widget Settings -->
+    <string name="widget_settings_title">微件设置</string>
+    <string name="widget_settings_description">适用于所有微件的设置</string>
+    <string name="widget_settings_explanation">与微件默认值不同，这些设置始终应用于你的所有微件。更改可能会立即生效，或在微件下次更新时生效，无论是通过你的操作还是其计划。</string>
+    <string name="widget_settings_crossfade">照片淡入淡出</string>
+    <string name="widget_settings_crossfade_description">微件切换到下一张照片时以淡入淡出方式过渡。设备动画关闭时此设置无效。</string>
     <!-- Share -->
     <string name="share_title">分享</string>
     <string name="share_text">将您最喜欢的照片添加到桌面上带有素材照片小组件。免费在 %s 下载</string>

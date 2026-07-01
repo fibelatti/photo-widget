@@ -68,6 +68,7 @@ import com.fibelatti.photowidget.ui.icons.PrivacyPolicy
 import com.fibelatti.photowidget.ui.icons.Question
 import com.fibelatti.photowidget.ui.icons.Rate
 import com.fibelatti.photowidget.ui.icons.Send
+import com.fibelatti.photowidget.ui.icons.Settings
 import com.fibelatti.photowidget.ui.icons.Translation
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
 import com.fibelatti.ui.component.ListItem
@@ -80,6 +81,7 @@ import com.google.android.material.color.DynamicColors
 @Composable
 fun SettingsScreen(
     onDefaultsClick: () -> Unit,
+    onWidgetSettingsClick: () -> Unit,
     onDataSaverClick: () -> Unit,
     onKeepAliveClick: () -> Unit,
     onAppearanceClick: () -> Unit,
@@ -123,6 +125,7 @@ fun SettingsScreen(
 
     SettingsScreen(
         onDefaultsClick = onDefaultsClick,
+        onWidgetSettingsClick = onWidgetSettingsClick,
         onDataSaverClick = onDataSaverClick,
         canScheduleExactAlarms = canScheduleExactAlarms,
         onScheduleExactAlarmsClick = { showExactAlarmsDialog = true },
@@ -165,6 +168,7 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreen(
     onDefaultsClick: () -> Unit,
+    onWidgetSettingsClick: () -> Unit,
     onDataSaverClick: () -> Unit,
     canScheduleExactAlarms: Boolean,
     onScheduleExactAlarmsClick: () -> Unit,
@@ -200,6 +204,13 @@ private fun SettingsScreen(
                 onClick = onDefaultsClick,
                 description = R.string.widget_defaults_description,
                 shape = Shapes.TopShape,
+            )
+
+            SettingsListItem(
+                icon = rememberVectorPainter(AppIcons.Settings),
+                label = R.string.widget_settings_title,
+                onClick = onWidgetSettingsClick,
+                description = R.string.widget_settings_description,
             )
 
             SettingsListItem(
@@ -413,6 +424,7 @@ private fun SettingsScreenPreview() {
     ExtendedTheme {
         SettingsScreen(
             onDefaultsClick = {},
+            onWidgetSettingsClick = {},
             onDataSaverClick = {},
             canScheduleExactAlarms = false,
             onScheduleExactAlarmsClick = {},

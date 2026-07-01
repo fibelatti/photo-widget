@@ -84,6 +84,12 @@
     <string name="widget_defaults_brightness">Luminosità</string>
     <string name="widget_defaults_tap_action">Azione al tocco</string>
     <string name="widget_defaults_reset">Ripristina valori</string>
+    <!-- Widget Settings -->
+    <string name="widget_settings_title">Impostazioni dei widget</string>
+    <string name="widget_settings_description">Impostazioni applicate a tutti i widget</string>
+    <string name="widget_settings_explanation">A differenza dei valori predefiniti dei widget, queste impostazioni si applicano a tutti i tuoi widget in ogni momento. Le modifiche possono avere effetto immediatamente o al successivo aggiornamento di un widget, tramite la tua interazione o la sua pianificazione.</string>
+    <string name="widget_settings_crossfade">Dissolvenza tra le foto</string>
+    <string name="widget_settings_crossfade_description">Sfuma da una foto alla successiva quando un widget cambia immagine. Non ha effetto se le animazioni del dispositivo sono disattivate.</string>
     <!-- Share -->
     <string name="share_title">Spargi la voce</string>
     <string name="share_text">Aggiungi le tue foto preferite alla schermata iniziale con Material Photo Widget. Scaricalo gratuitamente su %s</string>

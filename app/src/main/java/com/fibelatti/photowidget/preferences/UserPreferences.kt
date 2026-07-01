@@ -11,6 +11,7 @@ data class UserPreferences(
     val appearance: Appearance,
     val useTrueBlack: Boolean,
     val dynamicColors: Boolean,
+    val widgetEnableCrossfade: Boolean,
     val defaultAspectRatio: PhotoWidgetAspectRatio,
     val defaultSource: PhotoWidgetSource,
     val defaultShuffle: Boolean,

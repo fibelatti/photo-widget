@@ -84,6 +84,12 @@
     <string name="widget_defaults_brightness">Helligkeit</string>
     <string name="widget_defaults_tap_action">Tipp-Aktion</string>
     <string name="widget_defaults_reset">Werte zurücksetzen</string>
+    <!-- Widget Settings -->
+    <string name="widget_settings_title">Widget-Einstellungen</string>
+    <string name="widget_settings_description">Einstellungen, die für alle Widgets gelten</string>
+    <string name="widget_settings_explanation">Anders als die Widget-Standardwerte gelten diese Einstellungen jederzeit für alle deine Widgets. Änderungen werden möglicherweise sofort wirksam oder bei der nächsten Aktualisierung eines Widgets, entweder durch deine Interaktion oder seinen Zeitplan.</string>
+    <string name="widget_settings_crossfade">Fotos überblenden</string>
+    <string name="widget_settings_crossfade_description">Beim Wechsel zum nächsten Foto sanft überblenden. Hat keine Wirkung, wenn die Geräteanimationen deaktiviert sind.</string>
     <!-- Share -->
     <string name="share_title">Verbreite die Nachricht</string>
     <string name="share_text">Füge deine Lieblingsfotos mit dem Material Photo Widget zu deinem Startbildschirm hinzu. Kostenlos herunterladen unter %s</string>

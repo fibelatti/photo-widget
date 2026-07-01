@@ -83,6 +83,12 @@
     <string name="widget_defaults_brightness">明るさ</string>
     <string name="widget_defaults_tap_action">タップアクション</string>
     <string name="widget_defaults_reset">値をリセット</string>
+    <!-- Widget Settings -->
+    <string name="widget_settings_title">ウィジェット設定</string>
+    <string name="widget_settings_description">すべてのウィジェットに適用される設定</string>
+    <string name="widget_settings_explanation">ウィジェットの初期値とは異なり、これらの設定は常にすべてのウィジェットに適用されます。変更はすぐに反映される場合もあれば、操作またはスケジュールによってウィジェットが次に更新されたときに反映される場合もあります。</string>
+    <string name="widget_settings_crossfade">写真をクロスフェード</string>
+    <string name="widget_settings_crossfade_description">ウィジェットが次の写真に切り替わるときにフェードで切り替えます。デバイスのアニメーションがオフの場合は効果がありません。</string>
     <!-- Share -->
     <string name="share_title">情報を広める</string>
     <string name="share_text">Material Photo Widget でお気に入りの写真をホーム画面に追加しましょう。無料でダウンロード: %s</string>

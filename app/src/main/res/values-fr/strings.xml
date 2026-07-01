@@ -84,6 +84,12 @@
     <string name="widget_defaults_brightness">Luminosité</string>
     <string name="widget_defaults_tap_action">Action au toucher</string>
     <string name="widget_defaults_reset">Réinitialiser les valeurs</string>
+    <!-- Widget Settings -->
+    <string name="widget_settings_title">Paramètres des widgets</string>
+    <string name="widget_settings_description">Paramètres appliqués à tous les widgets</string>
+    <string name="widget_settings_explanation">Contrairement aux valeurs par défaut des widgets, ces paramètres s\'appliquent à tous vos widgets en permanence. Les modifications peuvent prendre effet immédiatement ou à la prochaine mise à jour d\'un widget, que ce soit par votre interaction ou selon sa planification.</string>
+    <string name="widget_settings_crossfade">Fondu enchaîné des photos</string>
+    <string name="widget_settings_crossfade_description">Effectuer un fondu d\'une photo à la suivante lorsqu\'un widget change d\'image. Sans effet si les animations de l\'appareil sont désactivées.</string>
     <!-- Share -->
     <string name="share_title">Faire connaître</string>
     <string name="share_text">Ajoutez vos photos préférées à votre écran d\'accueil avec Material Photo Widget. Téléchargez gratuitement à %s</string>

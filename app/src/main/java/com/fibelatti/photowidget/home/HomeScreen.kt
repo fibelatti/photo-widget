@@ -66,6 +66,7 @@ import com.fibelatti.photowidget.preferences.AppColorsBottomSheet
 import com.fibelatti.photowidget.preferences.DataSaverBottomSheet
 import com.fibelatti.photowidget.preferences.KeepAliveServiceBottomSheet
 import com.fibelatti.photowidget.preferences.WidgetDefaultsScreen
+import com.fibelatti.photowidget.preferences.WidgetSettingsScreen
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.MyWidgets
 import com.fibelatti.photowidget.ui.icons.MyWidgetsSelected
@@ -111,6 +112,7 @@ fun HomeScreenNavDisplay(
                     onCreateNewWidgetClick = onCreateNewWidgetClick,
                     onCreateTransparentWidgetClick = onCreateTransparentWidgetClick,
                     onDefaultsClick = { navBackStack.add(HomeNav.WidgetDefaults) },
+                    onWidgetSettingsClick = { navBackStack.add(HomeNav.WidgetSettings) },
                     onBackupClick = { navBackStack.add(HomeNav.WidgetBackup) },
                     onAppLanguageClick = onAppLanguageClick,
                     onShareClick = onShareClick,
@@ -120,6 +122,12 @@ fun HomeScreenNavDisplay(
 
             entry<HomeNav.WidgetDefaults> {
                 WidgetDefaultsScreen(
+                    onNavClick = navBackStack::popNavKey,
+                )
+            }
+
+            entry<HomeNav.WidgetSettings> {
+                WidgetSettingsScreen(
                     onNavClick = navBackStack::popNavKey,
                 )
             }
@@ -148,6 +156,7 @@ private fun HomeScreen(
     onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
     onCreateTransparentWidgetClick: () -> Unit,
     onDefaultsClick: () -> Unit,
+    onWidgetSettingsClick: () -> Unit,
     onBackupClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
     onShareClick: () -> Unit,
@@ -214,6 +223,7 @@ private fun HomeScreen(
             }
         },
         onDefaultsClick = onDefaultsClick,
+        onWidgetSettingsClick = onWidgetSettingsClick,
         onAppearanceClick = appAppearanceSheetState::showBottomSheet,
         onColorsClick = appColorsSheetState::showBottomSheet,
         onAppLanguageClick = onAppLanguageClick,
@@ -276,6 +286,7 @@ fun HomeScreen(
     onHighlightTransparentWidgetsChange: (Boolean) -> Unit,
     onWidgetClick: (id: Int, PhotoWidget) -> Unit,
     onDefaultsClick: () -> Unit,
+    onWidgetSettingsClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onColorsClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
@@ -345,6 +356,7 @@ fun HomeScreen(
                 HomeNavigationDestination.SETTINGS -> {
                     SettingsScreen(
                         onDefaultsClick = onDefaultsClick,
+                        onWidgetSettingsClick = onWidgetSettingsClick,
                         onDataSaverClick = dataSaverSheetState::showBottomSheet,
                         onKeepAliveClick = keepAliveSheetState::showBottomSheet,
                         onAppearanceClick = onAppearanceClick,
@@ -465,6 +477,7 @@ private fun HomeScreenPreview() {
             onHighlightTransparentWidgetsChange = {},
             onWidgetClick = { _, _ -> },
             onDefaultsClick = {},
+            onWidgetSettingsClick = {},
             onAppearanceClick = {},
             onColorsClick = {},
             onAppLanguageClick = {},

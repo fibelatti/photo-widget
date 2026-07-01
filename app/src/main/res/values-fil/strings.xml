@@ -83,6 +83,12 @@
     <string name="widget_defaults_brightness">Liwanag</string>
     <string name="widget_defaults_tap_action">Aksyon sa pagpindot</string>
     <string name="widget_defaults_reset">Ibalik ang mga orihinal na setting</string>
+    <!-- Widget Settings -->
+    <string name="widget_settings_title">Mga setting ng widget</string>
+    <string name="widget_settings_description">Mga setting na nalalapat sa lahat ng widget</string>
+    <string name="widget_settings_explanation">Hindi tulad ng mga default ng widget, ang mga setting na ito ay nalalapat sa lahat ng iyong widget sa lahat ng oras. Maaaring magkabisa kaagad ang mga pagbabago o sa susunod na pag-update ng isang widget, sa pamamagitan man ng iyong pakikipag-ugnayan o ng iskedyul nito.</string>
+    <string name="widget_settings_crossfade">I-crossfade ang mga larawan</string>
+    <string name="widget_settings_crossfade_description">I-fade ang isang larawan papunta sa susunod kapag lumipat ang widget. Walang epekto ito kapag naka-off ang mga animation ng device.</string>
     <!-- Share -->
     <string name="share_title">Ibahagi sa iba</string>
     <string name="share_text">Idagdag ang mga paborito mong larawan sa iyong home screen gamit ang Material Photo Widget. I-download nang libre sa %s</string>

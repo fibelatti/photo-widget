@@ -98,6 +98,13 @@
     <string name="widget_defaults_tap_action">Tap action</string>
     <string name="widget_defaults_reset">Reset values</string>
 
+    <!-- Widget Settings -->
+    <string name="widget_settings_title">Widget settings</string>
+    <string name="widget_settings_description">Preferences that apply to all widgets</string>
+    <string name="widget_settings_explanation">Unlike widget defaults, these settings apply to all of your widgets at all times. Changes might take effect immediately or the next time a widget updates, either through your interaction or its schedule.</string>
+    <string name="widget_settings_crossfade">Crossfade photos</string>
+    <string name="widget_settings_crossfade_description">Fade between photos when a widget switches to the next one. Has no effect when device animations are turned off.</string>
+
     <!-- Share -->
     <string name="share_title">Spread the word</string>
     <string name="share_text">Add your favorite photos to your home screen with Material Photo Widget. Download for free at %s</string>

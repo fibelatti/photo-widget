@@ -85,6 +85,12 @@
     <string name="widget_defaults_brightness">Осветљеност</string>
     <string name="widget_defaults_tap_action">Радња додиром</string>
     <string name="widget_defaults_reset">Ресетујте вредности</string>
+    <!-- Widget Settings -->
+    <string name="widget_settings_title">Подешавања виџета</string>
+    <string name="widget_settings_description">Подешавања која важе за све виџете</string>
+    <string name="widget_settings_explanation">За разлику од подразумеваних вредности виџета, ова подешавања важе за све ваше виџете у сваком тренутку. Промене могу ступити на снагу одмах или при следећем ажурирању виџета, било кроз вашу интеракцију или по његовом распореду.</string>
+    <string name="widget_settings_crossfade">Прелаз између фотографија</string>
+    <string name="widget_settings_crossfade_description">Постепено претапа једну фотографију у следећу када виџет промени слику. Нема ефекта када су анимације уређаја искључене.</string>
     <!-- Share -->
     <string name="share_title">Проширите вест</string>
     <string name="share_text">Додајте своје омиљене фотографије на почетни екран помоћу Material Photo Widget-а. Преузмите бесплатно на %s</string>

@@ -86,6 +86,12 @@
     <string name="widget_defaults_brightness">בהירות</string>
     <string name="widget_defaults_tap_action">פעולת הקשה</string>
     <string name="widget_defaults_reset">איפוס ערכים</string>
+    <!-- Widget Settings -->
+    <string name="widget_settings_title">הגדרות הווידג\'ט</string>
+    <string name="widget_settings_description">הגדרות שחלות על כל הווידג\'טים</string>
+    <string name="widget_settings_explanation">בניגוד לברירות המחדל של הווידג\'טים, הגדרות אלה חלות על כל הווידג\'טים שלך בכל עת. השינויים עשויים להיכנס לתוקף מיד או בפעם הבאה שווידג\'ט יתעדכן, בין אם בעקבות פעולה שלך ובין אם לפי לוח הזמנים שלו.</string>
+    <string name="widget_settings_crossfade">מעבר הדרגתי בין תמונות</string>
+    <string name="widget_settings_crossfade_description">מעבר הדרגתי מתמונה אחת לבאה כשווידג\'ט מחליף תמונה. אין לכך השפעה כשהאנימציות של המכשיר כבויות.</string>
     <!-- Share -->
     <string name="share_title">ספר לחברים</string>
     <string name="share_text">הוסף את התמונות האהובות עליך למסך הבית שלך בעזרת Material Photo Widget. הורד בחינם ב- %s</string>

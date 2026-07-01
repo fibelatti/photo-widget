@@ -86,6 +86,12 @@
     <string name="widget_defaults_brightness">Яркость</string>
     <string name="widget_defaults_tap_action">Действие при нажатии</string>
     <string name="widget_defaults_reset">Сбросить значения</string>
+    <!-- Widget Settings -->
+    <string name="widget_settings_title">Настройки виджетов</string>
+    <string name="widget_settings_description">Настройки, применяемые ко всем виджетам</string>
+    <string name="widget_settings_explanation">В отличие от значений по умолчанию для виджетов, эти настройки всегда применяются ко всем вашим виджетам. Изменения могут вступить в силу сразу или при следующем обновлении виджета — по вашему действию или по расписанию.</string>
+    <string name="widget_settings_crossfade">Плавный переход между фото</string>
+    <string name="widget_settings_crossfade_description">Плавно сменять одно фото другим, когда виджет переключается на следующее. Не действует, если анимации устройства отключены.</string>
     <!-- Share -->
     <string name="share_title">Расскажите другим</string>
     <string name="share_text">Добавляйте свои любимые фотографии на главный экран с помощью Material Photo Widget. Скачайте бесплатно по ссылке %s</string>

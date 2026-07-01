@@ -84,6 +84,12 @@
     <string name="widget_defaults_brightness">Parlaklık</string>
     <string name="widget_defaults_tap_action">Dokunma eylemi</string>
     <string name="widget_defaults_reset">Değerleri sıfırla</string>
+    <!-- Widget Settings -->
+    <string name="widget_settings_title">Widget ayarları</string>
+    <string name="widget_settings_description">Tüm widget\'lara uygulanan ayarlar</string>
+    <string name="widget_settings_explanation">Widget varsayılanlarının aksine, bu ayarlar her zaman tüm widget\'larınıza uygulanır. Değişiklikler hemen veya bir widget bir sonraki güncellendiğinde, ister sizin etkileşiminizle ister kendi zamanlamasıyla yürürlüğe girebilir.</string>
+    <string name="widget_settings_crossfade">Fotoğrafları çapraz geçişle değiştir</string>
+    <string name="widget_settings_crossfade_description">Bir widget sonraki fotoğrafa geçerken yumuşak geçiş uygular. Cihaz animasyonları kapalıyken etkisi yoktur.</string>
     <!-- Share -->
     <string name="share_title">Sözü yay</string>
     <string name="share_text">Favori fotoğraflarınızı Ana ekranınıza ekleyin. Material Photo Widget ile ücretsiz indir %s</string>

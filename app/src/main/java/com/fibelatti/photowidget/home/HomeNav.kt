@@ -12,6 +12,9 @@ sealed interface HomeNav : NavKey {
     data object WidgetDefaults : HomeNav
 
     @Serializable
+    data object WidgetSettings : HomeNav
+
+    @Serializable
     data object WidgetBackup : HomeNav
 
     @Serializable

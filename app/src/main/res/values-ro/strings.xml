@@ -85,6 +85,12 @@
     <string name="widget_defaults_brightness">Luminozitate</string>
     <string name="widget_defaults_tap_action">Acțiune la atingere</string>
     <string name="widget_defaults_reset">Resetează valorile</string>
+    <!-- Widget Settings -->
+    <string name="widget_settings_title">Setări widget</string>
+    <string name="widget_settings_description">Setări care se aplică tuturor widgeturilor</string>
+    <string name="widget_settings_explanation">Spre deosebire de valorile implicite ale widgeturilor, aceste setări se aplică tuturor widgeturilor tale în permanență. Modificările pot avea efect imediat sau la următoarea actualizare a unui widget, fie prin interacțiunea ta, fie conform programării sale.</string>
+    <string name="widget_settings_crossfade">Tranziție între fotografii</string>
+    <string name="widget_settings_crossfade_description">Estompează trecerea de la o fotografie la următoarea când un widget schimbă imaginea. Nu are efect când animațiile dispozitivului sunt dezactivate.</string>
     <!-- Share -->
     <string name="share_title">Răspândește lumii</string>
     <string name="share_text">Adaugă fotografiile tale preferate pe ecranul de pornire cu Material Photo Widget. Descarcă gratuit la %s</string>

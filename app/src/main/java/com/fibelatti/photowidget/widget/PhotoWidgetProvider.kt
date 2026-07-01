@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.widget
 
+import android.animation.ValueAnimator
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
@@ -24,6 +25,7 @@ import com.fibelatti.photowidget.model.PreparedCurrentPhoto
 import com.fibelatti.photowidget.platform.ExceptionReporter
 import com.fibelatti.photowidget.platform.KeepAliveService
 import com.fibelatti.photowidget.platform.getMaxRemoteViewsBitmapMemory
+import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.time.Duration.Companion.seconds
@@ -321,10 +323,19 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         }
 
         /**
-         * Crossfade only when [allowCrossfade] (the caller deliberately switched photos via a tap
-         * action or a scheduled alarm) and only for static photos when a previous photo exists and the
-         * screen is on. System-driven refreshes, single-photo widgets, GIF playback, the first render
-         * and recovery mode all fall back to a plain swap.
+         * Crossfade only when:
+         * - It is enabled (the user opted in via Widget settings), and
+         * - the device has animations enabled, and
+         * - the caller deliberately switched photos via a tap action or a scheduled alarm (only
+         * for static photos when a previous photo exists), and
+         * - the screen is on
+         *
+         * System-driven refreshes, single-photo widgets, GIF playback, the first render and
+         * recovery mode all fall back to a plain swap.
+         *
+         * Animations disabled at the OS level (developer options / battery-saver / accessibility) make
+         * [ValueAnimator.areAnimatorsEnabled] return false; the fade depends on the animator's update
+         * and end callbacks to settle the widget, so it would never run as expected.
          *
          * The fade is rendered entirely from in-memory bitmaps (current + previous) so the host never
          * decodes a content URI mid-animation — that decode otherwise races the fade and makes it
@@ -339,10 +350,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             allowCrossfade: Boolean,
             recoveryMode: Boolean,
         ): Boolean {
+            val userPreferencesStorage: UserPreferencesStorage = entryPoint<PhotoWidgetEntryPoint>(context)
+                .userPreferencesStorage()
             val previousBitmap: Bitmap? = preparedCurrentPhoto.previousBitmap
             val combinedBitmapBytes: Long = preparedCurrentPhoto.fallback.allocationByteCount.toLong() +
                 (previousBitmap?.allocationByteCount?.toLong() ?: 0L)
-            return allowCrossfade &&
+            return userPreferencesStorage.widgetEnableCrossfade &&
+                allowCrossfade &&
+                ValueAnimator.areAnimatorsEnabled() &&
                 preparedCurrentPhoto.uri != null &&
                 previousBitmap != null &&
                 combinedBitmapBytes <= context.getMaxRemoteViewsBitmapMemory() &&
