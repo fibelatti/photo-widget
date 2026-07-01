@@ -31,13 +31,30 @@ fun ListItem(
     supportingText: String? = null,
     leadingContent: @Composable (() -> Unit)? = null,
     trailingContent: @Composable (() -> Unit)? = null,
-    colors: ListItemColors = ListItemDefaults.colors(),
-    tonalElevation: Dp = 4.dp,
+    colors: ListItemColors = ListItemDefaults.colors(
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ),
     shape: Shape = ListItem.DefaultShape,
     headlineFlag: @Composable RowScope.() -> Unit = {},
 ) {
     androidx.compose.material3.ListItem(
-        headlineContent = {
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = ListItem.MinHeight)
+            .clip(shape),
+        leadingContent = leadingContent,
+        trailingContent = trailingContent,
+        supportingContent = {
+            if (!supportingText.isNullOrEmpty()) {
+                AutoSizeText(
+                    text = supportingText,
+                    maxLines = 3,
+                    minFontSize = 8.sp,
+                )
+            }
+        },
+        colors = colors,
+        content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -51,22 +68,5 @@ fun ListItem(
                 headlineFlag()
             }
         },
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = ListItem.MinHeight)
-            .clip(shape),
-        supportingContent = {
-            if (!supportingText.isNullOrEmpty()) {
-                AutoSizeText(
-                    text = supportingText,
-                    maxLines = 3,
-                    minFontSize = 8.sp,
-                )
-            }
-        },
-        leadingContent = leadingContent,
-        trailingContent = trailingContent,
-        colors = colors,
-        tonalElevation = tonalElevation,
     )
 }
