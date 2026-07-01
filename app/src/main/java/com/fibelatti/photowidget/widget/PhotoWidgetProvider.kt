@@ -25,6 +25,7 @@ import com.fibelatti.photowidget.platform.ExceptionReporter
 import com.fibelatti.photowidget.platform.KeepAliveService
 import com.fibelatti.photowidget.platform.getMaxRemoteViewsBitmapMemory
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -32,6 +33,7 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
@@ -47,17 +49,28 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         Timber.i("Broadcast received %s", mapOf("action" to intent.action, "appWidgetId" to intent.appWidgetId))
 
         val action: Action = Action.fromValue(intent.action) ?: return
+        val appWidgetId: Int = intent.appWidgetId
 
-        // Keep the process at elevated priority while the resulting update (and its crossfade
-        // animation) runs, then release it. The work is dispatched asynchronously, so finish the
-        // PendingResult after a fixed window covering the animation rather than blocking here.
+        // Keep the process at elevated priority while the resulting widget update (and its
+        // crossfade animation) runs, then release it. The PendingResult is finished once the work
+        // completes, and the broadcast queue is freed as soon as the fade settles in order to
+        // prevent blocking the serial queue, which would delay the next tap for the whole window.
         val pendingResult: PendingResult = goAsync()
+        val finished = AtomicBoolean(false)
+        val finishOnce: () -> Unit = {
+            if (finished.compareAndSet(false, true)) {
+                Timber.i("Finishing async receiver...")
+                runCatching { pendingResult.finish() }
+            }
+        }
 
-        handler.post {
-            entryPoint<PhotoWidgetEntryPoint>(context).photoWidgetProviderActionHandler().invoke(
+        val entryPoint: PhotoWidgetEntryPoint = entryPoint(context)
+        val work: Job = entryPoint.coroutineScope().launch {
+            entryPoint.photoWidgetProviderActionHandler().invoke(
                 action = action,
-                appWidgetId = intent.appWidgetId,
+                appWidgetId = appWidgetId,
                 onRemoveActionHandled = { didRemove: Boolean ->
+                    if (!coroutineContext.isActive) return@invoke
                     context.startActivity(
                         HeadlessFeedbackActivity.newIntent(
                             context = context,
@@ -72,11 +85,19 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     )
                 },
             )
+            // The action triggers PhotoWidgetProvider.update, whose job (now covering the crossfade)
+            // is tracked in updateJobMap. Wait it out so the process stays alive until the fade ends.
+            updateJobMap[appWidgetId]?.join()
         }
+        work.invokeOnCompletion { finishOnce() }
 
+        // Safety net: never hold the broadcast to avoid ANRs if the awaited chain hangs.
         handler.postDelayed(delayInMillis = 3.seconds.inWholeMilliseconds) {
-            Timber.d("Finishing async receiver...")
-            runCatching { pendingResult.finish() }
+            if (work.isActive) {
+                Timber.w("Async receiver timed out; finishing.")
+                work.cancel()
+            }
+            finishOnce()
         }
     }
 
@@ -162,6 +183,12 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             Timber.d("Evaluating current update job %s", mapOf("isActive" to currentJob?.isActive))
 
             val newJob: Job = coroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
+                // Cancel any in-flight crossfade from the previous render before joining it. Since
+                // runCrossfade suspends for the animation's duration, the previous job stays active
+                // until its fade settles; without this we'd block here waiting out a fade we're about
+                // to replace. Cancelling settles it on its opaque frame and lets its job complete.
+                withContext(Dispatchers.Main) { crossfadeAnimator.cancel(appWidgetId) }
+
                 // Timeout to avoid hanging waiting more than what's acceptable
                 currentJob?.let { job -> withTimeoutOrNull(timeMillis = 5_000L) { job.join() } }
 

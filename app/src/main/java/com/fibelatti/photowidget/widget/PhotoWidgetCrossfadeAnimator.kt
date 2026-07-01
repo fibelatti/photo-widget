@@ -5,12 +5,15 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.appwidget.AppWidgetManager
 import android.content.Context
+import android.os.Handler
 import android.os.Looper
 import android.widget.RemoteViews
 import androidx.annotation.MainThread
 import com.fibelatti.photowidget.R
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.coroutines.resume
+import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
 
 /**
@@ -25,8 +28,9 @@ import timber.log.Timber
 @Singleton
 class PhotoWidgetCrossfadeAnimator @Inject constructor() {
 
-    // Confined to the main thread; runCrossfade asserts this at the single create/cancel site.
     private val crossfadeAnimators: MutableMap<Int, ValueAnimator> = mutableMapOf()
+
+    private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
     /**
      * Cancels any in-flight crossfade for [appWidgetId] so its trailing frames can't clobber a newer
@@ -37,8 +41,11 @@ class PhotoWidgetCrossfadeAnimator @Inject constructor() {
         crossfadeAnimators.remove(appWidgetId)?.cancel()
     }
 
+    /**
+     * Runs the fade animation and suspends until it ends or is canceled.
+     */
     @MainThread
-    fun runCrossfade(
+    suspend fun runCrossfade(
         context: Context,
         appWidgetManager: AppWidgetManager,
         appWidgetId: Int,
@@ -55,61 +62,63 @@ class PhotoWidgetCrossfadeAnimator @Inject constructor() {
         // Cancel any in-flight animation for this widget so a rapid tap-next restarts cleanly.
         cancel(appWidgetId)
 
-        var cancelled = false
-        var lastAlpha: Int = -ALPHA_STEP
+        suspendCancellableCoroutine { continuation ->
+            var canceled = false
+            var lastAlpha: Int = -ALPHA_STEP
 
-        val animator: ValueAnimator = ValueAnimator.ofInt(TRANSPARENT, OPAQUE).apply {
-            duration = CROSSFADE_DURATION_MS
-            addUpdateListener { animation ->
-                val alpha: Int = animation.animatedValue as Int
-                // Throttle to ~OPAQUE/ALPHA_STEP frames to limit IPC; always send the last frame.
-                if (alpha < OPAQUE && alpha - lastAlpha < ALPHA_STEP) return@addUpdateListener
-                lastAlpha = alpha
+            val animator: ValueAnimator = ValueAnimator.ofInt(TRANSPARENT, OPAQUE).apply {
+                duration = CROSSFADE_DURATION_MS
+                addUpdateListener { animation ->
+                    val alpha: Int = animation.animatedValue as Int
+                    // Throttle to ~OPAQUE/ALPHA_STEP frames to limit IPC; always send the last frame.
+                    if (alpha < OPAQUE && alpha - lastAlpha < ALPHA_STEP) return@addUpdateListener
+                    lastAlpha = alpha
 
-                val partial = RemoteViews(context.packageName, R.layout.photo_widget)
-                partial.setInt(animatedImageViewId, METHOD_SET_IMAGE_ALPHA, alpha)
+                    val partial = RemoteViews(context.packageName, R.layout.photo_widget)
+                    partial.setInt(animatedImageViewId, METHOD_SET_IMAGE_ALPHA, alpha)
 
-                runCatching { appWidgetManager.partiallyUpdateAppWidget(appWidgetId, partial) }
-                    .onFailure { Timber.w(it, "Failed partial crossfade update") }
-            }
-            addListener(
-                object : AnimatorListenerAdapter() {
-                    override fun onAnimationCancel(animation: Animator) {
-                        Timber.d(
-                            "Crossfade animation cancelled %s",
-                            mapOf("appWidgetId" to appWidgetId, "animatedImageViewId" to animatedImageViewId),
-                        )
-
-                        cancelled = true
-                        // An interrupted fade must never strand the widget on a translucent frame.
-                        // Settle on the opaque steady state; the render that cancelled this animation
-                        // pushes its own frame right after, showing the same photo, so this is
-                        // visually continuous.
-                        runCatching { appWidgetManager.updateAppWidget(appWidgetId, finalViews) }
-                            .onFailure { Timber.w(it, "Failed to settle cancelled crossfade") }
-                    }
-
-                    override fun onAnimationEnd(animation: Animator) {
-                        Timber.d(
-                            "Crossfade animation ended %s",
-                            mapOf("appWidgetId" to appWidgetId, "animatedImageViewId" to animatedImageViewId),
-                        )
-
-                        if (crossfadeAnimators[appWidgetId] === animation) {
-                            crossfadeAnimators.remove(appWidgetId)
+                    runCatching { appWidgetManager.partiallyUpdateAppWidget(appWidgetId, partial) }
+                        .onFailure { Timber.w(it, "Failed partial crossfade update") }
+                }
+                addListener(
+                    object : AnimatorListenerAdapter() {
+                        override fun onAnimationCancel(animation: Animator) {
+                            canceled = true
                         }
-                        if (!cancelled) {
-                            // Settle on the durable steady state so a process kill mid-fade is clean.
+
+                        override fun onAnimationEnd(animation: Animator) {
+                            Timber.d(
+                                "Crossfade animation ended %s",
+                                mapOf(
+                                    "appWidgetId" to appWidgetId,
+                                    "animatedImageViewId" to animatedImageViewId,
+                                    "canceled" to canceled,
+                                ),
+                            )
+
+                            if (crossfadeAnimators[appWidgetId] === animation) {
+                                crossfadeAnimators.remove(appWidgetId)
+                            }
+
                             runCatching { appWidgetManager.updateAppWidget(appWidgetId, finalViews) }
-                                .onFailure { Timber.w(it, "Failed final crossfade update") }
-                        }
-                    }
-                },
-            )
-        }
+                                .onFailure { Timber.w(it, "Failed to settle crossfade.") }
 
-        crossfadeAnimators[appWidgetId] = animator
-        animator.start()
+                            // onAnimationEnd fires after onAnimationCancel too, so this resumes both the
+                            // natural-completion and the canceled paths exactly once.
+                            if (continuation.isActive) continuation.resume(Unit)
+                        }
+                    },
+                )
+            }
+
+            crossfadeAnimators[appWidgetId] = animator
+
+            continuation.invokeOnCancellation {
+                mainHandler.post { crossfadeAnimators.remove(appWidgetId)?.cancel() }
+            }
+
+            animator.start()
+        }
     }
 
     companion object {
