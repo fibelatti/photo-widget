@@ -1,0 +1,8 @@
+This version brings the following updates:
+
+* Crossfade is now optional and off by default. See the new widget settings
+* Choose which buttons overlay the photo in the viewer
+* Disable the lock screen option, which can't currently be supported
+* Fix some settings being reset by mistake when resetting defaults
+
+Thanks for using the app!
