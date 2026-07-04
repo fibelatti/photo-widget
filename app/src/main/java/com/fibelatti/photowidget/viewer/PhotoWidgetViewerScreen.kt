@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.viewer
 
+import android.app.KeyguardManager
 import android.content.ClipData
 import android.content.Context
 import android.widget.Toast
@@ -61,6 +62,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
@@ -120,6 +122,9 @@ fun PhotoWidgetViewerScreen(
     val localInspectionMode: Boolean = LocalInspectionMode.current
     var showControls: Boolean by remember { mutableStateOf(localInspectionMode) }
 
+    // The picker and share sheet cannot be interacted with over the keyguard, so hide them while locked.
+    val isDeviceLocked: Boolean = rememberIsDeviceLocked()
+
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
     val localContext: Context = LocalContext.current
@@ -152,8 +157,8 @@ fun PhotoWidgetViewerScreen(
         ViewerHeaderControls(
             photo = photo,
             showControls = showControls,
-            showPhotoPicker = showPhotoPicker && showNextButton,
-            showShare = showShare,
+            showPhotoPicker = showPhotoPicker && showNextButton && !isDeviceLocked,
+            showShare = showShare && !isDeviceLocked,
             showPhotoPath = showPhotoPath,
             onAllPhotosClick = onAllPhotosClick,
             onShareClick = onShareClick,
@@ -184,6 +189,16 @@ fun PhotoWidgetViewerScreen(
                 .padding(start = 32.dp, end = 32.dp, bottom = 16.dp),
         )
     }
+}
+
+@Composable
+private fun rememberIsDeviceLocked(): Boolean {
+    if (LocalInspectionMode.current) return false
+
+    val context: Context = LocalContext.current
+    val keyguardManager: KeyguardManager? = remember(context) { context.getSystemService() }
+
+    return remember(keyguardManager) { keyguardManager?.isKeyguardLocked == true }
 }
 
 @Composable

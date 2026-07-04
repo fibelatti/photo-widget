@@ -84,7 +84,8 @@
         <activity
             android:name=".viewer.PhotoWidgetViewerActivity"
             android:exported="false"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance"
+            android:showWhenLocked="true" />
 
         <activity
             android:name=".chooser.PhotoWidgetChooserActivity"
@@ -105,6 +106,7 @@
             android:enableOnBackInvokedCallback="false"
             android:exported="false"
             android:launchMode="singleInstance"
+            android:showWhenLocked="true"
             android:theme="@style/AppTheme.TransparentActivity" />
 
         <activity
@@ -119,6 +121,7 @@
             android:enableOnBackInvokedCallback="false"
             android:exported="false"
             android:launchMode="singleInstance"
+            android:showWhenLocked="true"
             android:theme="@style/AppTheme.TransparentActivity" />
 
         <service
