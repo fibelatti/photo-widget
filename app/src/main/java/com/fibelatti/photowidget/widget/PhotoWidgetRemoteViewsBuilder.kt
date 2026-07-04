@@ -88,6 +88,20 @@ object PhotoWidgetRemoteViewsBuilder {
                 setImageViewBitmap(currentImageViewId, preparedCurrentPhoto.fallback)
             }
 
+            // Restore full opacity on every render except the crossfade start (which deliberately
+            // sets TRANSPARENT below). Widget hosts reapply RemoteViews onto the reused ImageView
+            // without resetting it, so a fade interrupted before reaching OPAQUE (canceled by a
+            // newer update, or with its final frame dropped while the host was suspended), leaves a
+            // stuck sub-255 alpha. Setting it here (and in the durable SETTLE views the host caches)
+            // heals that translucency the next time any render touches this view.
+            if (!setupCrossfade) {
+                setInt(
+                    currentImageViewId,
+                    PhotoWidgetCrossfadeAnimator.METHOD_SET_IMAGE_ALPHA,
+                    PhotoWidgetCrossfadeAnimator.OPAQUE,
+                )
+            }
+
             setPadding(
                 remoteViews = this,
                 viewId = currentImageViewId,
