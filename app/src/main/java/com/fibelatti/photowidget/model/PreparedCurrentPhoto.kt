@@ -11,10 +11,14 @@ import android.net.Uri
  * already has granted permissions for all required packages.
  * @property previousBitmap in-memory [Bitmap] of the previous widget photo, when available.
  * @property fadeBitmap in-memory, downscaled version of [bitmap] used for crossfade.
+ * @property pendingWrite a write operation that has NOT run yet, present only on the crossfade
+ * path. The fade renders from the in-memory bitmaps as an optimization to avoid reading files.
+ * The caller may run this concurrently with the fade instead of having to wait for it beforehand.
  */
 data class PreparedCurrentPhoto(
     val bitmap: Bitmap,
     val uri: Uri? = null,
     val previousBitmap: Bitmap? = null,
     val fadeBitmap: Bitmap? = null,
+    val pendingWrite: (suspend () -> Unit)? = null,
 )

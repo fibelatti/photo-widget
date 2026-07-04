@@ -229,6 +229,19 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     return@launch
                 }
 
+                // Run the crossfade path's deferred write here so it overlaps the fade instead of
+                // gating it — the fade renders from in-memory bitmaps and never reads this file.
+                // Launched as a child of this update job so the next update's `job.join()` waits
+                // for it, keeping the previous-photo file chain ordered. `runCatching` so a write
+                // failure degrades to a self-healing plain photo swap rather than canceling the
+                // in-flight fade and leaving a half-faded frame.
+                preparedCurrentPhoto.pendingWrite?.let { write ->
+                    launch(Dispatchers.IO) {
+                        runCatching { write() }
+                            .onFailure { Timber.w(it, "Deferred widget photo write failed") }
+                    }
+                }
+
                 val isLocked: Boolean = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = appWidgetId)
                 val isCyclePaused: Boolean = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = appWidgetId)
 
@@ -369,7 +382,9 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         /**
          * Confirms a crossfade can actually run for this render, on top of [crossfadeIntent], once the
          * photo is prepared: the downscaled fade bitmap and a previous photo must both exist (the
-         * first render of a widget has no previous) and the URI-backed current photo must be present.
+         * first render of a widget has no previous). The persisted file/URI is deliberately NOT
+         * required since the fade renders and settles using the in-memory bitmaps, so it can start
+         * while the persist still runs in the background.
          *
          * The fade is rendered entirely from in-memory bitmaps (current + previous) so the host never
          * decodes a content URI mid-animation (which would race the fade and makes it jump).
@@ -387,7 +402,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             preparedCurrentPhoto: PreparedCurrentPhoto,
         ): Boolean {
             if (!crossfadeIntent) return false
-            if (preparedCurrentPhoto.uri == null) return false
 
             val fadeBitmap: Bitmap = preparedCurrentPhoto.fadeBitmap ?: return false
             val previousBitmap: Bitmap = preparedCurrentPhoto.previousBitmap ?: return false

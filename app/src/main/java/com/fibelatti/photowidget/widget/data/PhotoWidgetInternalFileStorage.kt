@@ -256,46 +256,70 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         // on screen only while persistence keeps running (crossfade enabled or recovery mode).
         // If photos change while these conditions are not true, nothing is persisted. On
         // re-enabling crossfade, the first transition may start from a stale previous, which
-        // self-heals on the next iteration.
-        val previousFile: File? = dir.listFiles()?.toList()?.sortedBy { it.name }
-            ?.also { existing -> existing.dropLast(1).forEach { it.delete() } }
-            ?.lastOrNull()
+        // self-heals on the next iteration. Only `.webp` files count — a stray `.tmp` is an
+        // interrupted write (see the atomic write below); ignore and delete those so a truncated
+        // file is never picked as the previous.
+        val existing: List<File> = dir.listFiles()?.toList().orEmpty()
+        existing.filter { it.name.endsWith(TMP_SUFFIX) }.forEach { it.delete() }
+        val previousFile: File? = existing.filter { it.name.endsWith(WEBP_SUFFIX) }.sortedBy { it.name }
+            .also { photos -> photos.dropLast(1).forEach { it.delete() } }
+            .lastOrNull()
 
         // Using `currentTimeMillis` to generate unique files, otherwise the widget won't update if
         // the same file is overwritten every time
-        val file = File("$dir/${System.currentTimeMillis()}.webp")
-
-        // WebP-lossy encodes faster than lossless PNG for this transformed bitmap.
-        // It retains the alpha channel needed by rounded corners and polygonal shapes.
-        file.runWithFileOutputStream { fos ->
-            currentPhoto.compress(webpLossyFormat(), WIDGET_PHOTO_QUALITY, fos)
-        }
+        val file = File("$dir/${System.currentTimeMillis()}$WEBP_SUFFIX")
 
         // Build the crossfade source bitmaps only when the caller is setting up a fade.
         // Both the incoming photo and the decoded previous one are capped at
         // getMaxCrossfadeBitmapDimension so the two together fit a single RemoteViews update.
         // The widget still settles on the full-resolution `bitmap`, so this downscale only softens
         // the ~1s fade, not the resting image.
-        val previousBitmap: Bitmap?
-        val fadeBitmap: Bitmap?
-
         if (crossfadeIntent) {
             val fadeDimension: Int = context.getMaxCrossfadeBitmapDimension()
-            fadeBitmap = currentPhoto.scaledToMaxDimension(fadeDimension)
-            previousBitmap = previousFile?.let { existing ->
-                decoder.decode(data = existing.path, maxDimension = fadeDimension)
+            val fadeBitmap: Bitmap = currentPhoto.scaledToMaxDimension(fadeDimension)
+            val previousBitmap: Bitmap? = previousFile?.let { existingFile ->
+                decoder.decode(data = existingFile.path, maxDimension = fadeDimension)
             }
-        } else {
-            fadeBitmap = null
-            previousBitmap = null
+
+            // The crossfade renders entirely from the in-memory bitmaps above and never reads this
+            // file, so the WebP encode+write is only needed to seed the next iteration. Hand it
+            // back as a deferred action the caller runs concurrently with the fade instead of
+            // before it.
+            return@withContext PreparedCurrentPhoto(
+                bitmap = currentPhoto,
+                previousBitmap = previousBitmap,
+                fadeBitmap = fadeBitmap,
+                pendingWrite = { writeWidgetPhoto(bitmap = currentPhoto, file = file) },
+            )
         }
+
+        // Recovery/plain persist: the render uses the URI, so the file must exist before returning.
+        writeWidgetPhoto(bitmap = currentPhoto, file = file)
 
         return@withContext PreparedCurrentPhoto(
             bitmap = currentPhoto,
             uri = uriPermissionGrantor(path = file.path),
-            previousBitmap = previousBitmap,
-            fadeBitmap = fadeBitmap,
         )
+    }
+
+    /**
+     * Atomically persists [bitmap] to [file]: encodes to a sibling `.tmp` then renames it into place,
+     * so a reader (e.g. the next tap selecting the previous photo) only ever sees a fully written
+     * file, never a half-encoded one, even if the process dies mid-write. Rename is atomic within
+     * the same directory. WebP-lossy encodes faster than lossless PNG for this transformed bitmap,
+     * and retains the alpha channel needed by rounded corners and polygonal shapes.
+     */
+    private suspend fun writeWidgetPhoto(bitmap: Bitmap, file: File) {
+        withContext(Dispatchers.IO) {
+            val tempFile = File(file.path + TMP_SUFFIX)
+            tempFile.runWithFileOutputStream { fos ->
+                bitmap.compress(webpLossyFormat(), WIDGET_PHOTO_QUALITY, fos)
+            }
+            if (!tempFile.renameTo(file)) {
+                tempFile.delete()
+                error("Failed to persist widget photo ${file.name}")
+            }
+        }
     }
 
     suspend fun duplicateWidgetDir(sourceDirectoryName: String, targetDirectoryName: String) {
@@ -348,5 +372,10 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         // than lossless PNG (and faster than lossless WebP, which is slower than PNG).
         // The render cache is the only lossy step throughout processing.
         private const val WIDGET_PHOTO_QUALITY: Int = 100
+
+        private const val WEBP_SUFFIX: String = ".webp"
+
+        // Suffix for the in-progress atomic write; renamed to its `.webp` target once fully encoded.
+        private const val TMP_SUFFIX: String = ".tmp"
     }
 }
