@@ -15,6 +15,7 @@ import android.graphics.RectF
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import androidx.core.graphics.createBitmap
+import androidx.core.graphics.scale
 import androidx.core.graphics.toRect
 import androidx.core.graphics.toRectF
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
@@ -24,7 +25,22 @@ import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.rawAspectRatio
 import kotlin.math.min
+import kotlin.math.roundToInt
 import timber.log.Timber
+
+/**
+ * Returns a copy scaled down so its largest side is at most [maxDimension] px, preserving aspect
+ * ratio. Returns the receiver unchanged when it already fits.
+ */
+fun Bitmap.scaledToMaxDimension(maxDimension: Int): Bitmap {
+    val largestSide: Int = maxOf(width, height)
+    if (largestSide <= maxDimension) return this
+    val scale: Float = maxDimension.toFloat() / largestSide
+    return scale(
+        width = (width * scale).roundToInt().coerceAtLeast(1),
+        height = (height * scale).roundToInt().coerceAtLeast(1),
+    )
+}
 
 fun Bitmap.withRoundedCorners(
     radius: Float,

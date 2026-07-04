@@ -83,7 +83,15 @@ object PhotoWidgetRemoteViewsBuilder {
             // The crossfade path forces the in-memory bitmap so the host has no URI to decode
             // mid-animation.
             if (renderCurrentFromBitmap || preparedCurrentPhoto.uri == null) {
-                setImageViewBitmap(currentImageViewId, preparedCurrentPhoto.bitmap)
+                // CROSSFADE_START pairs the current photo with the previous one in a single update, so
+                // it uses the downscaled `fadeBitmap` to fit the host's bitmap budget; every other
+                // render (including the crossfade's own SETTLE) uses the full-resolution `bitmap`.
+                val currentBitmap: Bitmap = if (setupCrossfade) {
+                    preparedCurrentPhoto.fadeBitmap ?: preparedCurrentPhoto.bitmap
+                } else {
+                    preparedCurrentPhoto.bitmap
+                }
+                setImageViewBitmap(currentImageViewId, currentBitmap)
             } else {
                 setImageViewUri(currentImageViewId, preparedCurrentPhoto.uri)
             }

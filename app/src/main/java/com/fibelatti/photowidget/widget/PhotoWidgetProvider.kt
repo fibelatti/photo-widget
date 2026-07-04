@@ -24,6 +24,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PreparedCurrentPhoto
 import com.fibelatti.photowidget.platform.ExceptionReporter
 import com.fibelatti.photowidget.platform.KeepAliveService
+import com.fibelatti.photowidget.platform.getMaxCrossfadeBitmapDimension
 import com.fibelatti.photowidget.platform.getMaxRemoteViewsBitmapMemory
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider.Companion.update
@@ -268,10 +269,12 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         }
 
                         canCrossfade -> {
-                            // Settle from the same in-memory bitmap the fade used; rebuilding from the
-                            // URI here would make the host re-decode and flash as the animation completes.
-                            // Built up front so it can serve as the opaque fallback if starting the
-                            // animation fails.
+                            // Settle from the full-resolution in-memory bitmap; rebuilding from the URI
+                            // here would make the host re-decode and flash as the animation completes.
+                            // The fade runs on downscaled bitmaps to fit the paired update, so settling
+                            // on the full-res photo also sharpens back to full quality at rest. Built up
+                            // front so it can serve as the opaque fallback if starting the animation
+                            // fails — the widget must never be left on the transparent start frame.
                             val finalViews: RemoteViews = PhotoWidgetRemoteViewsBuilder.build(
                                 context = context,
                                 appWidgetId = appWidgetId,
@@ -365,18 +368,18 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
         /**
          * Confirms a crossfade can actually run for this render, on top of [crossfadeIntent], once the
-         * photo is prepared: a previous photo must exist (the first render of a widget has none) and
-         * the URI-backed current photo must be present.
+         * photo is prepared: the downscaled fade bitmap and a previous photo must both exist (the
+         * first render of a widget has no previous) and the URI-backed current photo must be present.
          *
          * The fade is rendered entirely from in-memory bitmaps (current + previous) so the host never
          * decodes a content URI mid-animation (which would race the fade and makes it jump).
-         * Both bitmaps travel in a single RemoteViews update, so this only attempts a crossfade
-         * when their combined size fits [Context.getMaxRemoteViewsBitmapMemory].
+         * Both bitmaps travel in a single RemoteViews update, so they are pre-sized by
+         * [Context.getMaxCrossfadeBitmapDimension] to fit the host's bitmap cap.
          *
-         * That estimate can exceed the host's real per-update bitmap cap, so a two-bitmap render may
-         * still be rejected with an IllegalArgumentException; [update] catches it and re-renders in
-         * recovery mode as a plain URI swap. When the estimate is wrong the fade therefore costs an
-         * extra prepare + render, so keep the budget conservative rather than optimistic.
+         * The final check on their combined bytes is a cheap guard. Should sizing still be wrong
+         * on some host, [update] catches the resulting IllegalArgumentException and re-renders as
+         * a plain swap in recovery mode, so a mis-estimate degrades the behavior rather than
+         * failing altogether.
          */
         private fun canCrossfade(
             context: Context,
@@ -385,9 +388,13 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         ): Boolean {
             if (!crossfadeIntent) return false
             if (preparedCurrentPhoto.uri == null) return false
+
+            val fadeBitmap: Bitmap = preparedCurrentPhoto.fadeBitmap ?: return false
             val previousBitmap: Bitmap = preparedCurrentPhoto.previousBitmap ?: return false
-            val combinedBitmapBytes: Long = preparedCurrentPhoto.bitmap.allocationByteCount.toLong() +
+
+            val combinedBitmapBytes: Long = fadeBitmap.allocationByteCount.toLong() +
                 previousBitmap.allocationByteCount.toLong()
+
             return combinedBitmapBytes <= context.getMaxRemoteViewsBitmapMemory()
         }
 

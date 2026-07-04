@@ -106,12 +106,30 @@ fun widgetPinningNotAvailable(): Boolean {
 }
 
 /**
- * Approximate memory budget (in bytes) for the bitmaps carried by a single `RemoteViews` update.
- * Mirrors the host's per-widget bitmap limit, derived from the display size.
+ * Rough upper budget (in bytes) for the bitmaps carried by a single `RemoteViews` update, derived
+ * from the display size. A widget host may enforce a different cap when computing its limit from
+ * a smaller display size than the one reported by [DisplayMetrics]. A single widget-sized bitmap
+ * stays comfortably under both, so this is safe for the normal one-bitmap render (and for
+ * [getMaxBitmapWidgetDimension]); but two bitmaps sized against it can exceed the real cap and get
+ * rejected, which is why the crossfade sizes its pair via [getMaxCrossfadeBitmapDimension]'s
+ * discounted budget instead of trusting this figure at face value.
  */
 fun Context.getMaxRemoteViewsBitmapMemory(): Long {
     val displayMetrics: DisplayMetrics = resources.displayMetrics
     return (displayMetrics.heightPixels.toLong() * displayMetrics.widthPixels * 4 * 1.5).toLong()
+}
+
+/**
+ * Max size (largest side, px) for each of the two bitmaps carried together in a crossfade update
+ * (current + previous). [getMaxRemoteViewsBitmapMemory] is only an estimate and can run well over
+ * the host's real per-update bitmap cap, so this splits a heavily discounted budget between the
+ * two bitmaps, leaving headroom for the label bitmap and for the estimate's overshoot. This gives
+ * the paired render a better chance to succeed instead of throwing an exception.
+ */
+fun Context.getMaxCrossfadeBitmapDimension(): Int {
+    val combinedBudgetFraction = 0.45
+    val perBitmapBytes: Double = getMaxRemoteViewsBitmapMemory() * combinedBudgetFraction / 2
+    return sqrt(perBitmapBytes / 4).roundToInt()
 }
 
 fun Context.getMaxBitmapWidgetDimension(coerceMaxMemory: Boolean = false): Int {
@@ -119,7 +137,9 @@ fun Context.getMaxBitmapWidgetDimension(coerceMaxMemory: Boolean = false): Int {
 
     val displayMetrics: DisplayMetrics = resources.displayMetrics
     val maxMemoryAllowed: Int = if (coerceMaxMemory) {
-        6_912_000 // `RemoteViews` have a maximum allowed memory for bitmaps
+        // Conservative fixed floor for the recovery render — well under any host's real bitmap
+        // cap, so a render that already failed once fits on retry.
+        6_912_000
     } else {
         getMaxRemoteViewsBitmapMemory().toInt()
     }

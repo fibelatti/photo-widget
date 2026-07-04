@@ -10,9 +10,11 @@ import android.net.Uri
  * @property uri content [Uri] for the file that [bitmap] was persisted to, if available. The [uri]
  * already has granted permissions for all required packages.
  * @property previousBitmap in-memory [Bitmap] of the previous widget photo, when available.
+ * @property fadeBitmap in-memory, downscaled version of [bitmap] used for crossfade.
  */
 data class PreparedCurrentPhoto(
     val bitmap: Bitmap,
     val uri: Uri? = null,
     val previousBitmap: Bitmap? = null,
+    val fadeBitmap: Bitmap? = null,
 )

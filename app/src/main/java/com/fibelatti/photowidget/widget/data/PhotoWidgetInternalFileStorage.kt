@@ -13,8 +13,9 @@ import com.fibelatti.photowidget.platform.ImageFormat
 import com.fibelatti.photowidget.platform.ImageFormatDetector
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.UriPermissionGrantor
-import com.fibelatti.photowidget.platform.getMaxBitmapWidgetDimension
+import com.fibelatti.photowidget.platform.getMaxCrossfadeBitmapDimension
 import com.fibelatti.photowidget.platform.runWithFileOutputStream
+import com.fibelatti.photowidget.platform.scaledToMaxDimension
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
@@ -270,16 +271,30 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
             currentPhoto.compress(webpLossyFormat(), WIDGET_PHOTO_QUALITY, fos)
         }
 
-        // Decode the previous photo only when the caller is setting up a crossfade.
-        // The file is already a transformed and resized to reduce decoding cost.
-        val previousBitmap: Bitmap? = previousFile?.takeIf { crossfadeIntent }?.let { existing ->
-            decoder.decode(data = existing.path, maxDimension = context.getMaxBitmapWidgetDimension())
+        // Build the crossfade source bitmaps only when the caller is setting up a fade.
+        // Both the incoming photo and the decoded previous one are capped at
+        // getMaxCrossfadeBitmapDimension so the two together fit a single RemoteViews update.
+        // The widget still settles on the full-resolution `bitmap`, so this downscale only softens
+        // the ~1s fade, not the resting image.
+        val previousBitmap: Bitmap?
+        val fadeBitmap: Bitmap?
+
+        if (crossfadeIntent) {
+            val fadeDimension: Int = context.getMaxCrossfadeBitmapDimension()
+            fadeBitmap = currentPhoto.scaledToMaxDimension(fadeDimension)
+            previousBitmap = previousFile?.let { existing ->
+                decoder.decode(data = existing.path, maxDimension = fadeDimension)
+            }
+        } else {
+            fadeBitmap = null
+            previousBitmap = null
         }
 
         return@withContext PreparedCurrentPhoto(
             bitmap = currentPhoto,
             uri = uriPermissionGrantor(path = file.path),
             previousBitmap = previousBitmap,
+            fadeBitmap = fadeBitmap,
         )
     }
 
