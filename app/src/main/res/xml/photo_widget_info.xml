@@ -12,6 +12,6 @@
     android:targetCellWidth="2"
     android:targetCellHeight="2"
     android:updatePeriodMillis="0"
-    android:widgetCategory="home_screen|not_keyguard"
+    android:widgetCategory="home_screen"
     android:widgetFeatures="reconfigurable"
     tools:targetApi="s" />

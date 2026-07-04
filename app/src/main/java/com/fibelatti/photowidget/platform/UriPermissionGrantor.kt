@@ -19,11 +19,11 @@ class UriPermissionGrantor @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
 
-    private val launcherPackagesCache: List<String> by lazy { getLauncherPackages() }
+    private val widgetHostPackagesCache: List<String> by lazy { getWidgetHostPackages() }
 
     suspend operator fun invoke(path: String): Uri? = withContext(Dispatchers.IO) {
-        if (launcherPackagesCache.isEmpty()) {
-            Timber.w("No launcher packages found, unable to generate URI.")
+        if (widgetHostPackagesCache.isEmpty()) {
+            Timber.w("No widget host packages found, unable to generate URI.")
             return@withContext null
         }
 
@@ -37,7 +37,7 @@ class UriPermissionGrantor @Inject constructor(
         val uri: Uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
         Timber.d("New URI: $uri. %s", mapOf("path" to path))
 
-        for (pkg in launcherPackagesCache) {
+        for (pkg in widgetHostPackagesCache) {
             context.grantUriPermission(pkg, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
             Timber.d("Granted URI permission for package: $pkg")
         }
@@ -45,9 +45,13 @@ class UriPermissionGrantor @Inject constructor(
         return@withContext uri
     }
 
-    private fun getLauncherPackages(): List<String> {
+    private fun getWidgetHostPackages(): List<String> {
         val intent: Intent = Intent("android.intent.action.MAIN")
             .addCategory("android.intent.category.HOME")
+
+        // Lock screen / glanceable hub widgets are hosted by SystemUI rather than a launcher,
+        // so it never resolves via the HOME query above and must be granted explicitly.
+        val lockScreenHostPackages: List<String> = listOf("com.android.systemui")
 
         val samsungPackages: List<String> = listOf(
             "com.samsung.android.goodlock",
@@ -58,6 +62,7 @@ class UriPermissionGrantor @Inject constructor(
             .mapNotNull { resolveInfo -> resolveInfo.activityInfo?.packageName }
             .distinct()
             .ifEmpty { return emptyList() }
+            .plus(lockScreenHostPackages)
             .plus(
                 if (Build.MANUFACTURER.equals("samsung", ignoreCase = true)) {
                     samsungPackages

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+* Fix support for lock screen widgets and re-enable them
+
 ## [v1.44.2] - 2026-07-01
 [v1.44.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.44.2
 
