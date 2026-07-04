@@ -35,8 +35,8 @@ object PhotoWidgetRemoteViewsBuilder {
 
     /**
      * How the current photo is drawn:
-     * - [DEFAULT]: no crossfade; the current photo renders from its URI to stay under the transaction
-     *   limit.
+     * - [DEFAULT]: no crossfade. The current photo may render straight from the in-memory bitmap
+     *   or from its URI when the one was persisted to stay under IPC transaction limit.
      * - [CROSSFADE_START]: the previous photo is shown opaque and the current photo starts
      *   transparent on top, both from in-memory bitmaps so the host never decodes mid-animation.
      * - [CROSSFADE_SETTLE]: the durable steady state the animation ends on — current photo only,
@@ -81,11 +81,11 @@ object PhotoWidgetRemoteViewsBuilder {
 
             setViewVisibility(currentImageViewId, View.VISIBLE)
             // The crossfade path forces the in-memory bitmap so the host has no URI to decode
-            // mid-animation; plain renders use the URI to stay under the transaction limit.
-            if (!renderCurrentFromBitmap && preparedCurrentPhoto.uri != null) {
-                setImageViewUri(currentImageViewId, preparedCurrentPhoto.uri)
-            } else {
+            // mid-animation.
+            if (renderCurrentFromBitmap || preparedCurrentPhoto.uri == null) {
                 setImageViewBitmap(currentImageViewId, preparedCurrentPhoto.bitmap)
+            } else {
+                setImageViewUri(currentImageViewId, preparedCurrentPhoto.uri)
             }
 
             // Restore full opacity on every render except the crossfade start (which deliberately

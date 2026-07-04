@@ -32,6 +32,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
         context: Context,
         appWidgetId: Int,
         photoWidget: PhotoWidget,
+        crossfadeIntent: Boolean = false,
         recoveryMode: Boolean = false,
     ): PreparedCurrentPhoto? {
         val currentPhotoPath: String = photoWidget.currentPhoto?.getPhotoPath() ?: return null
@@ -87,20 +88,30 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
             )
         }
 
-        // Persist the photo to a file (and keep the previous one) for every static-photo widget: the
-        // content URI lets the provider render large photos without hitting the RemoteViews Binder
-        // transaction size limit, and the retained previous file is decoded for the crossfade. GIF
-        // widgets keep their existing behavior and only persist in recovery mode.
-        val shouldPersist: Boolean = photoWidget.source != PhotoWidgetSource.GIF || recoveryMode
-        val directoryName: String? = widgetDirectoryDao.getDirectoryName(appWidgetId)
+        // Persist the transformed photo to a file only when a later step actually needs it on disk:
+        // - recovery mode renders the current photo from a content URI to stay under the RemoteViews
+        //   Binder transaction size limit, and
+        // - a crossfade needs the retained previous file (decoded into `previousBitmap`) to fade from.
+        // Otherwise, the transformed bitmap goes straight into the RemoteViews in memory, skipping
+        // encoding and previous photo decoding which delay the overall processing.
+        val shouldPersist: Boolean = recoveryMode ||
+            (crossfadeIntent && photoWidget.source != PhotoWidgetSource.GIF)
+        val directoryName: String? = if (shouldPersist) widgetDirectoryDao.getDirectoryName(appWidgetId) else null
+
+        if (shouldPersist && directoryName == null) {
+            Timber.w(
+                "Unable to find the directory of widget %s",
+                mapOf("appWidgetId" to appWidgetId),
+            )
+        }
 
         return if (shouldPersist && directoryName != null) {
             photoWidgetInternalFileStorage.prepareCurrentWidgetPhoto(
                 directoryName = directoryName,
                 currentPhoto = transformedBitmap,
+                crossfadeIntent = crossfadeIntent,
             )
         } else {
-            if (shouldPersist) Timber.w("Unable to find the directory of widget with ID = $appWidgetId.")
             PreparedCurrentPhoto(bitmap = transformedBitmap)
         }
     }

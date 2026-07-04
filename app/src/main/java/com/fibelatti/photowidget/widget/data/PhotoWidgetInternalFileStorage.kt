@@ -246,30 +246,33 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
     suspend fun prepareCurrentWidgetPhoto(
         directoryName: String,
         currentPhoto: Bitmap,
+        crossfadeIntent: Boolean,
     ): PreparedCurrentPhoto = withContext(Dispatchers.IO) {
         val dir: File = getCurrentPhotoDir(directoryName = directoryName)
 
-        // The newest existing file is the photo currently on screen; keep it so it can be used as
-        // the "previous" image for a crossfade transition, and drop anything older.
+        // The newest existing file is the last photo persisted; keep it as the "previous" image
+        // for a crossfade transition and drop anything older. It reflects the photo currently
+        // on screen only while persistence keeps running (crossfade enabled or recovery mode).
+        // If photos change while these conditions are not true, nothing is persisted. On
+        // re-enabling crossfade, the first transition may start from a stale previous, which
+        // self-heals on the next iteration.
         val previousFile: File? = dir.listFiles()?.toList()?.sortedBy { it.name }
             ?.also { existing -> existing.dropLast(1).forEach { it.delete() } }
             ?.lastOrNull()
 
-        // Using `currentTimeMillis` to generate unique files,
-        // otherwise the widget won't update if the same file is overwritten every time
+        // Using `currentTimeMillis` to generate unique files, otherwise the widget won't update if
+        // the same file is overwritten every time
         val file = File("$dir/${System.currentTimeMillis()}.webp")
 
-        // WebP-lossy encodes markedly faster than lossless PNG for this transformed, widget-sized
-        // bitmap, shortening the prepare step that gates a tap-to-swap crossfade. It retains the
-        // alpha channel needed by rounded corners and polygonal shapes.
+        // WebP-lossy encodes faster than lossless PNG for this transformed bitmap.
+        // It retains the alpha channel needed by rounded corners and polygonal shapes.
         file.runWithFileOutputStream { fos ->
             currentPhoto.compress(webpLossyFormat(), WIDGET_PHOTO_QUALITY, fos)
         }
 
-        // Decode the previous photo off the main thread so the provider can render the crossfade from
-        // in-memory bitmaps (see PhotoWidgetProvider.canCrossfade). The file is already a transformed,
-        // widget-sized image, so this is a cheap load.
-        val previousBitmap: Bitmap? = previousFile?.let { existing ->
+        // Decode the previous photo only when the caller is setting up a crossfade.
+        // The file is already a transformed and resized to reduce decoding cost.
+        val previousBitmap: Bitmap? = previousFile?.takeIf { crossfadeIntent }?.let { existing ->
             decoder.decode(data = existing.path, maxDimension = context.getMaxBitmapWidgetDimension())
         }
 
@@ -326,9 +329,9 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
     private companion object {
 
-        // Max-quality lossy: visually indistinguishable from the source yet still encodes markedly
-        // faster than lossless PNG (and faster than lossless WebP, which is slower than PNG here).
-        // The render cache is the only lossy step in the pipeline, so it stays at the top setting.
+        // Max-quality lossy: visually indistinguishable from the source yet still encodes faster
+        // than lossless PNG (and faster than lossless WebP, which is slower than PNG).
+        // The render cache is the only lossy step throughout processing.
         private const val WIDGET_PHOTO_QUALITY: Int = 100
     }
 }
