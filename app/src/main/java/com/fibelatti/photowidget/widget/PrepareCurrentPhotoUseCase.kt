@@ -101,7 +101,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
             )
         } else {
             if (shouldPersist) Timber.w("Unable to find the directory of widget with ID = $appWidgetId.")
-            PreparedCurrentPhoto(uri = null, fallback = transformedBitmap, previousBitmap = null)
+            PreparedCurrentPhoto(bitmap = transformedBitmap)
         }
     }
 }

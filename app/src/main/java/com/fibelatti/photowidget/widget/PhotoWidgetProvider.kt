@@ -353,7 +353,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val userPreferencesStorage: UserPreferencesStorage = entryPoint<PhotoWidgetEntryPoint>(context)
                 .userPreferencesStorage()
             val previousBitmap: Bitmap? = preparedCurrentPhoto.previousBitmap
-            val combinedBitmapBytes: Long = preparedCurrentPhoto.fallback.allocationByteCount.toLong() +
+            val combinedBitmapBytes: Long = preparedCurrentPhoto.bitmap.allocationByteCount.toLong() +
                 (previousBitmap?.allocationByteCount?.toLong() ?: 0L)
             return userPreferencesStorage.widgetEnableCrossfade &&
                 allowCrossfade &&

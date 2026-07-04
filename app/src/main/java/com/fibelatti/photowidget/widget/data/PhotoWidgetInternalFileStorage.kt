@@ -274,8 +274,8 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
 
         return@withContext PreparedCurrentPhoto(
+            bitmap = currentPhoto,
             uri = uriPermissionGrantor(path = file.path),
-            fallback = currentPhoto,
             previousBitmap = previousBitmap,
         )
     }

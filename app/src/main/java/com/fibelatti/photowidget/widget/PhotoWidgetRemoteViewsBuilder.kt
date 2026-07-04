@@ -85,7 +85,7 @@ object PhotoWidgetRemoteViewsBuilder {
             if (!renderCurrentFromBitmap && preparedCurrentPhoto.uri != null) {
                 setImageViewUri(currentImageViewId, preparedCurrentPhoto.uri)
             } else {
-                setImageViewBitmap(currentImageViewId, preparedCurrentPhoto.fallback)
+                setImageViewBitmap(currentImageViewId, preparedCurrentPhoto.bitmap)
             }
 
             // Restore full opacity on every render except the crossfade start (which deliberately
