@@ -1,0 +1,8 @@
+This version brings the following updates:
+
+* Fix and re-enable support for lock screen widgets
+* Fix photo changing duration when crossfade is disabled
+* Fix crossfade sometimes not working when optimized storage is disabled
+* Fix tap to view next not working the first time after viewing all photos
+
+Thanks for using the app!
