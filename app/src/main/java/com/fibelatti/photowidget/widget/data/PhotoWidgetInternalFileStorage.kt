@@ -252,12 +252,12 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         val dir: File = getCurrentPhotoDir(directoryName = directoryName)
 
         // The newest existing file is the last photo persisted; keep it as the "previous" image
-        // for a crossfade transition and drop anything older. It reflects the photo currently
-        // on screen only while persistence keeps running (crossfade enabled or recovery mode).
-        // If photos change while these conditions are not true, nothing is persisted. On
-        // re-enabling crossfade, the first transition may start from a stale previous, which
-        // self-heals on the next iteration. Only `.webp` files count — a stray `.tmp` is an
-        // interrupted write (see the atomic write below); ignore and delete those so a truncated
+        // for a crossfade transition and drop anything older. Renders that put a new photo up
+        // without persisting it invalidate this cache (see invalidateCurrentPhotoCache), so a
+        // present file always reflects the photo currently on screen — the "previous" is either
+        // fresh or absent, never stale. When absent, the caller falls back to a plain swap that
+        // reseeds the cache for the next transition. Only `.webp` files count — a stray `.tmp` is
+        // an interrupted write (see the atomic write below); ignore and delete those so a truncated
         // file is never picked as the previous.
         val existing: List<File> = dir.listFiles()?.toList().orEmpty()
         existing.filter { it.name.endsWith(TMP_SUFFIX) }.forEach { it.delete() }
@@ -301,6 +301,24 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
             bitmap = currentPhoto,
             uri = uriPermissionGrantor(path = file.path),
         )
+    }
+
+    /**
+     * Drops the retained render cache for [directoryName] so the next crossfade sees no previous
+     * photo and does a plain swap that reseeds it, instead of fading from a photo no longer on
+     * screen. Called for renders that put a new photo up without persisting it, which would
+     * otherwise leave the cache pointing at a stale photo. Does not create the directory: a widget
+     * that never crossfaded has no cache, so this is a cheap no-op for it.
+     */
+    suspend fun invalidateCurrentPhotoCache(directoryName: String) {
+        withContext(Dispatchers.IO) {
+            val dir = File("$rootDir/current_photos/$directoryName")
+            if (!dir.exists()) return@withContext
+
+            dir.listFiles()
+                ?.filter { it.name.endsWith(WEBP_SUFFIX) || it.name.endsWith(TMP_SUFFIX) }
+                ?.forEach { it.delete() }
+        }
     }
 
     /**

@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.widget
 
 import android.content.Context
 import android.graphics.Bitmap
+import androidx.annotation.ColorInt
 import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -46,17 +47,21 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
             ),
         )
 
-        val bitmap: Bitmap = try {
-            val maxDimension = context.getMaxBitmapWidgetDimension(coerceMaxMemory = recoveryMode)
+        val sourceBitmap: Bitmap = try {
+            val maxDimension: Int = context.getMaxBitmapWidgetDimension(coerceMaxMemory = recoveryMode)
 
-            Timber.d("Creating widget bitmap %s", mapOf("maxDimension" to maxDimension, "recoveryMode" to recoveryMode))
+            Timber.d(
+                "Creating widget bitmap %s",
+                mapOf("maxDimension" to maxDimension, "recoveryMode" to recoveryMode),
+            )
 
             requireNotNull(decoder.decode(data = currentPhotoPath, maxDimension = maxDimension))
         } catch (_: Exception) {
             return null
         }
 
-        val borderColor = when (photoWidget.border) {
+        @ColorInt
+        val borderColor: Int? = when (photoWidget.border) {
             is PhotoWidgetBorder.None -> null
 
             is PhotoWidgetBorder.Color -> "#${photoWidget.border.colorHex}".toColorInt()
@@ -65,13 +70,13 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 photoWidget.border.type.colorAttr,
             )
 
-            is PhotoWidgetBorder.MatchPhoto -> getColorPalette(bitmap).colorForType(photoWidget.border.type)
+            is PhotoWidgetBorder.MatchPhoto -> getColorPalette(sourceBitmap).colorForType(photoWidget.border.type)
         }
-        val borderPercent = photoWidget.border.borderPercent()
+        val borderPercent: Float = photoWidget.border.borderPercent()
 
         Timber.d("Transforming the bitmap")
         val transformedBitmap: Bitmap = if (photoWidget.aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
-            bitmap.withPolygonalShape(
+            sourceBitmap.withPolygonalShape(
                 context = context,
                 shapeId = photoWidget.shapeId,
                 colors = photoWidget.colors,
@@ -79,7 +84,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 borderPercent = borderPercent,
             )
         } else {
-            bitmap.withRoundedCorners(
+            sourceBitmap.withRoundedCorners(
                 radius = photoWidget.cornerRadius * context.resources.displayMetrics.density,
                 aspectRatio = photoWidget.aspectRatio,
                 colors = photoWidget.colors,
@@ -96,9 +101,20 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
         // encoding and previous photo decoding which delay the overall processing.
         val shouldPersist: Boolean = recoveryMode ||
             (crossfadeIntent && photoWidget.source != PhotoWidgetSource.GIF)
-        val directoryName: String? = if (shouldPersist) widgetDirectoryDao.getDirectoryName(appWidgetId) else null
 
-        if (shouldPersist && directoryName == null) {
+        // A non-persisting static render puts a new photo up without updating the render cache,
+        // which would leave it pointing at a photo no longer on screen. Invalidate it so the next
+        // crossfade starts from a plain swap that reseeds it, instead of fading from a stale
+        // photo.
+        val shouldInvalidateCache: Boolean = !shouldPersist && photoWidget.source != PhotoWidgetSource.GIF
+
+        val directoryName: String? = if (shouldPersist || shouldInvalidateCache) {
+            widgetDirectoryDao.getDirectoryName(appWidgetId)
+        } else {
+            null
+        }
+
+        if ((shouldPersist || shouldInvalidateCache) && directoryName == null) {
             Timber.w(
                 "Unable to find the directory of widget %s",
                 mapOf("appWidgetId" to appWidgetId),
@@ -112,6 +128,9 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 crossfadeIntent = crossfadeIntent,
             )
         } else {
+            if (shouldInvalidateCache && directoryName != null) {
+                photoWidgetInternalFileStorage.invalidateCurrentPhotoCache(directoryName = directoryName)
+            }
             PreparedCurrentPhoto(bitmap = transformedBitmap)
         }
     }
