@@ -51,8 +51,21 @@ class CyclePhotoUseCase @Inject constructor(
         val displayedPhotos: MutableList<String> = photoWidgetStorage.getDisplayedPhotoIds(appWidgetId = appWidgetId)
             .toMutableList()
 
+        val shuffle: Boolean = photoWidgetStorage.getWidgetShuffle(appWidgetId = appWidgetId) && !noShuffle
+
+        // Resolve the current photo before any clear. clearDisplayedPhotos() empties the table that
+        // backs getCurrentPhotoId(), so reading it afterwards would fall back to the widget index and
+        // resolve the wrong photo (which would then be excluded incorrectly below, allowing a repeat).
+        val resolvedPhotoId: String? = currentPhoto
+            ?: photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)
+            ?: widgetPhotoIds.getOrNull(photoWidgetStorage.getWidgetIndex(appWidgetId = appWidgetId))
+        val currentPhotoId: String? = resolvedPhotoId?.ifEmpty { null }
+
+        // The clear only resets the shuffle "already shown" set. For non-shuffle cycling the next
+        // photo is derived from the current index, so clearing here would wipe the current photo
+        // tracking and force a fallback to the first photo (visibly skipping a tap).
         var didClear = false
-        if (direction == Direction.NEXT && displayedPhotos.size >= widgetPhotoIds.size) {
+        if (shuffle && direction == Direction.NEXT && displayedPhotos.size >= widgetPhotoIds.size) {
             Timber.d("All photos displayed, starting over")
 
             if (!skipSaving) {
@@ -63,21 +76,14 @@ class CyclePhotoUseCase @Inject constructor(
             didClear = true
         }
 
-        val resolvedPhotoId: String? = currentPhoto
-            ?: photoWidgetStorage.getCurrentPhotoId(appWidgetId = appWidgetId)
-            ?: widgetPhotoIds.getOrNull(photoWidgetStorage.getWidgetIndex(appWidgetId = appWidgetId))
-        val currentPhotoId: String? = resolvedPhotoId?.ifEmpty { null }
-
-        val shuffle: Boolean = photoWidgetStorage.getWidgetShuffle(appWidgetId = appWidgetId) && !noShuffle
-
         // After a clear, the current photo is no longer in displayedPhotos, so without this it
         // could be picked again immediately, showing the same photo twice in a row.
-        if (didClear && shuffle && currentPhotoId != null) {
+        if (didClear && currentPhotoId != null) {
             displayedPhotos.add(currentPhotoId)
         }
 
         val newPhotoId: String = when {
-            currentPhotoId == null || (didClear && !shuffle) -> {
+            currentPhotoId == null -> {
                 widgetPhotoIds.first()
             }
 

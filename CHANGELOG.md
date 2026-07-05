@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fix support for lock screen widgets and re-enable them
 * Fix photo changing duration when crossfade is disabled
 * Fix crossfade sometimes not working when optimized storage is disabled
+* Fix tap to view next not working the first time after viewing all photos
 
 ## [v1.44.2] - 2026-07-01
 [v1.44.2]: https://github.com/fibelatti/photo-widget/releases/tag/v1.44.2
