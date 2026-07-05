@@ -211,13 +211,21 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     recoveryMode = recoveryMode,
                 )
 
-                val preparedCurrentPhoto: PreparedCurrentPhoto? = prepareCurrentPhotoUseCase(
-                    context = context,
-                    appWidgetId = appWidgetId,
-                    photoWidget = photoWidget,
-                    crossfadeIntent = crossfadeIntent,
-                    recoveryMode = recoveryMode,
-                )
+                val preparedCurrentPhoto: PreparedCurrentPhoto? = try {
+                    prepareCurrentPhotoUseCase(
+                        context = context,
+                        appWidgetId = appWidgetId,
+                        photoWidget = photoWidget,
+                        crossfadeIntent = crossfadeIntent,
+                        recoveryMode = recoveryMode,
+                    )
+                } catch (cancellation: CancellationException) {
+                    throw cancellation
+                } catch (ex: Exception) {
+                    Timber.e(ex, "Error preparing current photo")
+                    exceptionReporter.collectReport(ex)
+                    null
+                }
 
                 if (preparedCurrentPhoto == null) {
                     Timber.e("Failed to prepare current photo")

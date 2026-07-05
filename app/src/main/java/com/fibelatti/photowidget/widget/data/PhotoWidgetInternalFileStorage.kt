@@ -293,7 +293,8 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
             )
         }
 
-        // Recovery/plain persist: the render uses the URI, so the file must exist before returning.
+        // Recovery branch: the render uses the URI, so the file must exist before returning.
+        // A write failure here is a genuine dead-end so the caller must surface the error.
         writeWidgetPhoto(bitmap = currentPhoto, file = file)
 
         return@withContext PreparedCurrentPhoto(
