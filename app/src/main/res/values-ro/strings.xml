@@ -12,6 +12,11 @@
     <string name="photo_widget_home_new">Widget nou</string>
     <string name="photo_widget_home_current">Widget-urile mele</string>
     <string name="photo_widget_home_settings">Setări</string>
+    <string name="photo_widget_home_section_widgets">Widgeturi</string>
+    <string name="photo_widget_home_section_background_activity">Activitate în fundal</string>
+    <string name="photo_widget_home_section_data">Date</string>
+    <string name="photo_widget_home_section_appearance">Aspect</string>
+    <string name="photo_widget_home_section_about">Despre</string>
     <string name="photo_widget_home_data_saver">Stocare optimizată</string>
     <string name="photo_widget_home_data_saver_description">Controlează calitatea imaginii pentru fotografiile importate</string>
     <string name="photo_widget_home_appearance">Tema aplicației</string>

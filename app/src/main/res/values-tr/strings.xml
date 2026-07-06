@@ -12,6 +12,11 @@
     <string name="photo_widget_home_new">Yeni widget</string>
     <string name="photo_widget_home_current">Widget\'larım</string>
     <string name="photo_widget_home_settings">Ayarlar</string>
+    <string name="photo_widget_home_section_widgets">Widget\'lar</string>
+    <string name="photo_widget_home_section_background_activity">Arka plan etkinliği</string>
+    <string name="photo_widget_home_section_data">Veriler</string>
+    <string name="photo_widget_home_section_appearance">Görünüm</string>
+    <string name="photo_widget_home_section_about">Hakkında</string>
     <string name="photo_widget_home_data_saver">Optimize edilmiş depolama</string>
     <string name="photo_widget_home_data_saver_description">İçe aktarılan fotoğrafların görüntü kalitesini kontrol edin</string>
     <string name="photo_widget_home_appearance">Uygulama teması</string>

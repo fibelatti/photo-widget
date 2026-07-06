@@ -12,6 +12,11 @@
     <string name="photo_widget_home_new">新しいウィジェット</string>
     <string name="photo_widget_home_current">マイウィジェット</string>
     <string name="photo_widget_home_settings">設定</string>
+    <string name="photo_widget_home_section_widgets">ウィジェット</string>
+    <string name="photo_widget_home_section_background_activity">バックグラウンド動作</string>
+    <string name="photo_widget_home_section_data">データ</string>
+    <string name="photo_widget_home_section_appearance">外観</string>
+    <string name="photo_widget_home_section_about">アプリについて</string>
     <string name="photo_widget_home_data_saver">最適化されたストレージ</string>
     <string name="photo_widget_home_data_saver_description">インポートされた写真の画質を制御する</string>
     <string name="photo_widget_home_appearance">アプリのテーマ</string>

@@ -12,6 +12,11 @@
     <string name="photo_widget_home_new">Neues Widget</string>
     <string name="photo_widget_home_current">Meine Widgets</string>
     <string name="photo_widget_home_settings">Einstellungen</string>
+    <string name="photo_widget_home_section_widgets">Widgets</string>
+    <string name="photo_widget_home_section_background_activity">Hintergrundaktivität</string>
+    <string name="photo_widget_home_section_data">Daten</string>
+    <string name="photo_widget_home_section_appearance">Darstellung</string>
+    <string name="photo_widget_home_section_about">Über</string>
     <string name="photo_widget_home_data_saver">Optimierter Speicher</string>
     <string name="photo_widget_home_data_saver_description">Bildqualität importierter Fotos steuern</string>
     <string name="photo_widget_home_appearance">App-Theme</string>

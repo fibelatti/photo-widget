@@ -12,6 +12,11 @@
     <string name="photo_widget_home_new">Нови виџет</string>
     <string name="photo_widget_home_current">Моји виџети</string>
     <string name="photo_widget_home_settings">Подешавања</string>
+    <string name="photo_widget_home_section_widgets">Виџети</string>
+    <string name="photo_widget_home_section_background_activity">Активност у позадини</string>
+    <string name="photo_widget_home_section_data">Подаци</string>
+    <string name="photo_widget_home_section_appearance">Изглед</string>
+    <string name="photo_widget_home_section_about">О апликацији</string>
     <string name="photo_widget_home_data_saver">Оптимизовано складиштење</string>
     <string name="photo_widget_home_data_saver_description">Контролишите квалитет слике увезених фотографија</string>
     <string name="photo_widget_home_appearance">Тема апликације</string>

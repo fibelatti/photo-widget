@@ -12,6 +12,11 @@
     <string name="photo_widget_home_new">Новый виджет</string>
     <string name="photo_widget_home_current">Мои виджеты</string>
     <string name="photo_widget_home_settings">Настройки</string>
+    <string name="photo_widget_home_section_widgets">Виджеты</string>
+    <string name="photo_widget_home_section_background_activity">Фоновая активность</string>
+    <string name="photo_widget_home_section_data">Данные</string>
+    <string name="photo_widget_home_section_appearance">Оформление</string>
+    <string name="photo_widget_home_section_about">О приложении</string>
     <string name="photo_widget_home_data_saver">Оптимизированное хранилище</string>
     <string name="photo_widget_home_data_saver_description">Управление качеством импортированных фотографий</string>
     <string name="photo_widget_home_appearance">Тема приложения</string>

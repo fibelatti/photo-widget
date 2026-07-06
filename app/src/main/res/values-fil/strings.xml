@@ -12,6 +12,11 @@
     <string name="photo_widget_home_new">Bagong Widget</string>
     <string name="photo_widget_home_current">Mga Widget Ko</string>
     <string name="photo_widget_home_settings">Mga Setting</string>
+    <string name="photo_widget_home_section_widgets">Mga Widget</string>
+    <string name="photo_widget_home_section_background_activity">Aktibidad sa background</string>
+    <string name="photo_widget_home_section_data">Data</string>
+    <string name="photo_widget_home_section_appearance">Hitsura</string>
+    <string name="photo_widget_home_section_about">Tungkol sa app</string>
     <string name="photo_widget_home_data_saver">Storage na naka-optimize</string>
     <string name="photo_widget_home_data_saver_description">Kontrolin ang kalidad ng imahe ng mga na-import na larawan</string>
     <string name="photo_widget_home_appearance">Tema ng app</string>

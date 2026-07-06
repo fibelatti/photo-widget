@@ -12,6 +12,11 @@
     <string name="photo_widget_home_new">ווידגט חדש</string>
     <string name="photo_widget_home_current">הווידג\'טים שלי</string>
     <string name="photo_widget_home_settings">הגדרות</string>
+    <string name="photo_widget_home_section_widgets">ווידג\'טים</string>
+    <string name="photo_widget_home_section_background_activity">פעילות ברקע</string>
+    <string name="photo_widget_home_section_data">נתונים</string>
+    <string name="photo_widget_home_section_appearance">מראה</string>
+    <string name="photo_widget_home_section_about">אודות</string>
     <string name="photo_widget_home_data_saver">אחסון אופטימלי</string>
     <string name="photo_widget_home_data_saver_description">שליטה באיכות התמונה של תמונות מיובאות</string>
     <string name="photo_widget_home_appearance">עיצוב</string>

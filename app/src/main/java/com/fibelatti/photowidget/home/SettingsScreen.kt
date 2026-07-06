@@ -12,10 +12,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -198,6 +196,10 @@ private fun SettingsScreen(
                 .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = footerHeight + 16.dp),
             verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
+            SettingsSectionHeader(
+                text = R.string.photo_widget_home_section_widgets,
+            )
+
             SettingsListItem(
                 icon = rememberVectorPainter(AppIcons.Default),
                 label = R.string.widget_defaults_title,
@@ -218,6 +220,11 @@ private fun SettingsScreen(
                 label = R.string.photo_widget_home_data_saver,
                 onClick = onDataSaverClick,
                 description = R.string.photo_widget_home_data_saver_description,
+                shape = Shapes.BottomShape,
+            )
+
+            SettingsSectionHeader(
+                text = R.string.photo_widget_home_section_background_activity,
             )
 
             AnimatedVisibility(visible = !canScheduleExactAlarms) {
@@ -226,6 +233,7 @@ private fun SettingsScreen(
                     label = R.string.photo_widget_configure_interval_grant_permission,
                     onClick = onScheduleExactAlarmsClick,
                     description = R.string.photo_widget_configure_interval_grant_permission_description,
+                    shape = Shapes.TopShape,
                 )
             }
 
@@ -235,6 +243,7 @@ private fun SettingsScreen(
                     label = R.string.photo_widget_configure_battery_optimization,
                     onClick = onBatteryOptimizationClick,
                     description = R.string.photo_widget_configure_battery_optimization_description,
+                    shape = if (!canScheduleExactAlarms) Shapes.MiddleShape else Shapes.TopShape,
                 )
             }
 
@@ -242,28 +251,27 @@ private fun SettingsScreen(
                 icon = rememberVectorPainter(AppIcons.KeepAlive),
                 label = R.string.photo_widget_keep_alive_service_dialog_title,
                 onClick = onKeepAliveClick,
-                shape = Shapes.BottomShape,
+                shape = if (!canScheduleExactAlarms || isBatteryUsageRestricted) {
+                    Shapes.BottomShape
+                } else {
+                    Shapes.StandaloneShape
+                },
             )
 
-            Spacer(modifier = Modifier.height(30.dp))
+            SettingsSectionHeader(
+                text = R.string.photo_widget_home_section_data,
+            )
 
             SettingsListItem(
                 icon = rememberVectorPainter(AppIcons.Backup),
                 label = R.string.photo_widget_home_backup,
                 onClick = onBackupClick,
-                shape = MaterialTheme.shapes.medium,
+                shape = Shapes.StandaloneShape,
             )
 
-            Spacer(modifier = Modifier.height(30.dp))
-
-            SettingsListItem(
-                icon = rememberVectorPainter(AppIcons.PrivacyPolicy),
-                label = R.string.photo_widget_home_privacy_policy,
-                onClick = onPrivacyPolicyClick,
-                shape = MaterialTheme.shapes.medium,
+            SettingsSectionHeader(
+                text = R.string.photo_widget_home_section_appearance,
             )
-
-            Spacer(modifier = Modifier.height(30.dp))
 
             SettingsListItem(
                 icon = rememberVectorPainter(AppIcons.Appearance),
@@ -287,7 +295,9 @@ private fun SettingsScreen(
                 shape = Shapes.BottomShape,
             )
 
-            Spacer(modifier = Modifier.height(30.dp))
+            SettingsSectionHeader(
+                text = R.string.photo_widget_home_section_about,
+            )
 
             SettingsListItem(
                 icon = rememberVectorPainter(AppIcons.Question),
@@ -306,6 +316,12 @@ private fun SettingsScreen(
                 icon = rememberVectorPainter(AppIcons.Send),
                 label = R.string.photo_widget_home_share,
                 onClick = onShareClick,
+            )
+
+            SettingsListItem(
+                icon = rememberVectorPainter(AppIcons.PrivacyPolicy),
+                label = R.string.photo_widget_home_privacy_policy,
+                onClick = onPrivacyPolicyClick,
                 shape = Shapes.BottomShape,
             )
         }
@@ -388,6 +404,21 @@ private fun SettingsFooter(
             )
         }
     }
+}
+
+@Composable
+private fun SettingsSectionHeader(
+    @StringRes text: Int,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = stringResource(id = text),
+        modifier = modifier
+            .padding(horizontal = 12.dp)
+            .padding(top = 26.dp, bottom = 2.dp),
+        color = MaterialTheme.colorScheme.secondary,
+        style = MaterialTheme.typography.titleSmall,
+    )
 }
 
 @Composable
