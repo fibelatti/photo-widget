@@ -24,9 +24,12 @@
     <string name="photo_widget_home_dynamic_colors">应用颜色</string>
     <string name="photo_widget_home_translations">App 语言</string>
     <string name="photo_widget_home_backup">备份</string>
+    <string name="photo_widget_home_backup_description">导出和导入你的小组件</string>
     <string name="photo_widget_home_share">分享此应用</string>
     <string name="photo_widget_home_rate">撰写评价</string>
     <string name="photo_widget_home_help">出错了？</string>
+    <string name="photo_widget_home_help_settings">帮助</string>
+    <string name="photo_widget_home_background_service_description">保持应用处于活动状态，使小组件按计划更新且 GIF 继续播放</string>
     <string name="photo_widget_home_create_transparent">创建透明小组件</string>
     <string name="photo_widget_home_common_issues">常见问题</string>
     <string name="photo_widget_home_privacy_policy">隐私条款</string>
@@ -75,8 +78,8 @@
     <string name="preferences_dynamic_colors_enabled">动态取色</string>
     <string name="preferences_dynamic_colors_disabled">默认颜色</string>
     <!-- Widget Defaults -->
-    <string name="widget_defaults_title">小组件默认值</string>
-    <string name="widget_defaults_description">所有新小组件的常用设置</string>
+    <string name="widget_defaults_title">小组件预设</string>
+    <string name="widget_defaults_description">创建新小组件时应用的值</string>
     <string name="widget_defaults_explanation">当您创建一个小组件时，这些值会被预加载。 它们有助于设置具有相同配置的多个小组件，消除每次调整设置的必要性。 请注意，对这些值的任何更改都不会影响到现有的小组件。</string>
     <string name="widget_defaults_source">来源</string>
     <string name="widget_defaults_shuffle">随机</string>
@@ -90,8 +93,8 @@
     <string name="widget_defaults_reset">重置值</string>
     <!-- Widget Settings -->
     <string name="widget_settings_title">微件设置</string>
-    <string name="widget_settings_description">适用于所有微件的设置</string>
-    <string name="widget_settings_explanation">与微件默认值不同，这些设置始终应用于你的所有微件。更改可能会立即生效，或在微件下次更新时生效，无论是通过你的操作还是其计划。</string>
+    <string name="widget_settings_description">始终应用于所有微件的偏好设置</string>
+    <string name="widget_settings_explanation">与微件预设不同，这些设置始终应用于你的所有微件。更改可能会立即生效，或在微件下次更新时生效，无论是通过你的操作还是其计划。</string>
     <string name="widget_settings_crossfade">照片淡入淡出</string>
     <string name="widget_settings_crossfade_description">微件切换到下一张照片时以淡入淡出方式过渡。设备动画关闭时此设置无效。</string>
     <!-- Share -->

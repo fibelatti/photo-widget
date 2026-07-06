@@ -24,9 +24,12 @@
     <string name="photo_widget_home_dynamic_colors">アプリの色</string>
     <string name="photo_widget_home_translations">アプリの言語</string>
     <string name="photo_widget_home_backup">バックアップ</string>
+    <string name="photo_widget_home_backup_description">ウィジェットをエクスポート・インポートします</string>
     <string name="photo_widget_home_share">アプリを共有</string>
     <string name="photo_widget_home_rate">レビューを書く</string>
     <string name="photo_widget_home_help">何かが機能していませんか？</string>
+    <string name="photo_widget_home_help_settings">ヘルプ</string>
+    <string name="photo_widget_home_background_service_description">アプリをアクティブに保ち、ウィジェットが予定どおり更新され、GIFのアニメーションが続くようにします</string>
     <string name="photo_widget_home_create_transparent">透明ウィジェットを作成</string>
     <string name="photo_widget_home_common_issues">よくある問題</string>
     <string name="photo_widget_home_privacy_policy">プライバシーポリシー</string>
@@ -75,8 +78,8 @@
     <string name="preferences_dynamic_colors_enabled">ダイナミックカラー</string>
     <string name="preferences_dynamic_colors_disabled">デフォルトカラー</string>
     <!-- Widget Defaults -->
-    <string name="widget_defaults_title">ウィジェットのデフォルト設定</string>
-    <string name="widget_defaults_description">すべての新しいウィジェットに共通の設定</string>
+    <string name="widget_defaults_title">ウィジェットのプリセット</string>
+    <string name="widget_defaults_description">新しいウィジェットを作成するときに適用される値</string>
     <string name="widget_defaults_explanation">これらの値は、新しいウィジェットを作成する際に事前に読み込まれます。同じ設定で複数のウィジェットを設定する際に便利で、毎回設定を調整する必要がなくなります。これらの値を変更しても、既存のウィジェットには影響しません。</string>
     <string name="widget_defaults_source">ソース</string>
     <string name="widget_defaults_shuffle">シャッフル</string>
@@ -90,8 +93,8 @@
     <string name="widget_defaults_reset">値をリセット</string>
     <!-- Widget Settings -->
     <string name="widget_settings_title">ウィジェット設定</string>
-    <string name="widget_settings_description">すべてのウィジェットに適用される設定</string>
-    <string name="widget_settings_explanation">ウィジェットの初期値とは異なり、これらの設定は常にすべてのウィジェットに適用されます。変更はすぐに反映される場合もあれば、操作またはスケジュールによってウィジェットが次に更新されたときに反映される場合もあります。</string>
+    <string name="widget_settings_description">すべてのウィジェットに常に適用される設定</string>
+    <string name="widget_settings_explanation">ウィジェットのプリセットとは異なり、これらの設定は常にすべてのウィジェットに適用されます。変更はすぐに反映される場合もあれば、操作またはスケジュールによってウィジェットが次に更新されたときに反映される場合もあります。</string>
     <string name="widget_settings_crossfade">写真をクロスフェード</string>
     <string name="widget_settings_crossfade_description">ウィジェットが次の写真に切り替わるときにフェードで切り替えます。デバイスのアニメーションがオフの場合は効果がありません。</string>
     <!-- Share -->

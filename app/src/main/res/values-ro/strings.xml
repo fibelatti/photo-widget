@@ -24,9 +24,12 @@
     <string name="photo_widget_home_dynamic_colors">Culorile aplicației</string>
     <string name="photo_widget_home_translations">Limba aplicației</string>
     <string name="photo_widget_home_backup">Copie de rezervă</string>
+    <string name="photo_widget_home_backup_description">Exportă și importă widgeturile tale</string>
     <string name="photo_widget_home_share">Distribuie aplicația</string>
     <string name="photo_widget_home_rate">Scrie o recenzie</string>
     <string name="photo_widget_home_help">Ceva nu funcționează?</string>
+    <string name="photo_widget_home_help_settings">Ajutor</string>
+    <string name="photo_widget_home_background_service_description">Menține aplicația activă pentru ca widgeturile să se actualizeze conform programului, iar GIF-urile să ruleze în continuare</string>
     <string name="photo_widget_home_create_transparent">Creează un widget transparent</string>
     <string name="photo_widget_home_common_issues">Probleme frecvente</string>
     <string name="photo_widget_home_privacy_policy">Politica de confidențialitate</string>
@@ -77,8 +80,8 @@
     <string name="preferences_dynamic_colors_enabled">Culori dinamice</string>
     <string name="preferences_dynamic_colors_disabled">Culori implicite</string>
     <!-- Widget Defaults -->
-    <string name="widget_defaults_title">Setări widget prestabilite</string>
-    <string name="widget_defaults_description">Setări comune pentru toate widgeturile noi</string>
+    <string name="widget_defaults_title">Presetări widget</string>
+    <string name="widget_defaults_description">Valori aplicate la crearea unui widget nou</string>
     <string name="widget_defaults_explanation">Aceste valori sunt pre-încărcate când creați un widget nou. Sunt utile pentru configurarea mai multor widget-uri cu aceeași configurație, eliminând necesitatea de a ajusta setările de fiecare dată. Țineți cont că orice modificare a acestor valori nu va afecta widget-urile existente.</string>
     <string name="widget_defaults_source">Sursă</string>
     <string name="widget_defaults_shuffle">Amestecare</string>
@@ -92,8 +95,8 @@
     <string name="widget_defaults_reset">Resetează valorile</string>
     <!-- Widget Settings -->
     <string name="widget_settings_title">Setări widget</string>
-    <string name="widget_settings_description">Setări care se aplică tuturor widgeturilor</string>
-    <string name="widget_settings_explanation">Spre deosebire de valorile implicite ale widgeturilor, aceste setări se aplică tuturor widgeturilor tale în permanență. Modificările pot avea efect imediat sau la următoarea actualizare a unui widget, fie prin interacțiunea ta, fie conform programării sale.</string>
+    <string name="widget_settings_description">Preferințe aplicate tuturor widgeturilor în permanență</string>
+    <string name="widget_settings_explanation">Spre deosebire de presetările widgeturilor, aceste setări se aplică tuturor widgeturilor tale în permanență. Modificările pot avea efect imediat sau la următoarea actualizare a unui widget, fie prin interacțiunea ta, fie conform programării sale.</string>
     <string name="widget_settings_crossfade">Tranziție între fotografii</string>
     <string name="widget_settings_crossfade_description">Estompează trecerea de la o fotografie la următoarea când un widget schimbă imaginea. Nu are efect când animațiile dispozitivului sunt dezactivate.</string>
     <!-- Share -->

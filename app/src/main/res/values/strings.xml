@@ -25,9 +25,12 @@
     <string name="photo_widget_home_dynamic_colors">App colors</string>
     <string name="photo_widget_home_translations">App language</string>
     <string name="photo_widget_home_backup">Backup</string>
+    <string name="photo_widget_home_backup_description">Export and import your widgets</string>
     <string name="photo_widget_home_share">Share the app</string>
     <string name="photo_widget_home_rate">Write a review</string>
     <string name="photo_widget_home_help">Something is not working?</string>
+    <string name="photo_widget_home_help_settings">Help</string>
+    <string name="photo_widget_home_background_service_description">Keeps the app active so widgets update on schedule and GIFs keep animating</string>
     <string name="photo_widget_home_create_transparent">Create a transparent widget</string>
     <string name="photo_widget_home_common_issues">Common issues</string>
     <string name="photo_widget_home_privacy_policy">Privacy policy</string>
@@ -89,8 +92,8 @@
     <string name="preferences_dynamic_colors_disabled">Default colors</string>
 
     <!-- Widget Defaults -->
-    <string name="widget_defaults_title">Widget defaults</string>
-    <string name="widget_defaults_description">Common settings to all new widgets</string>
+    <string name="widget_defaults_title">Widget presets</string>
+    <string name="widget_defaults_description">Values applied when creating a new widget</string>
     <string name="widget_defaults_explanation">These values are preloaded when you create a new widget. They are useful for setting up multiple widgets with the same configuration, eliminating the need to adjust settings each time. Note that any changes to these values won\'t affect existing widgets.</string>
     <string name="widget_defaults_source">Source</string>
     <string name="widget_defaults_shuffle">Shuffle</string>
@@ -105,8 +108,8 @@
 
     <!-- Widget Settings -->
     <string name="widget_settings_title">Widget settings</string>
-    <string name="widget_settings_description">Preferences that apply to all widgets</string>
-    <string name="widget_settings_explanation">Unlike widget defaults, these settings apply to all of your widgets at all times. Changes might take effect immediately or the next time a widget updates, either through your interaction or its schedule.</string>
+    <string name="widget_settings_description">Preferences applied to all widgets at all times</string>
+    <string name="widget_settings_explanation">Unlike widget presets, these settings apply to all of your widgets at all times. Changes might take effect immediately or the next time a widget updates, either through your interaction or its schedule.</string>
     <string name="widget_settings_crossfade">Crossfade photos</string>
     <string name="widget_settings_crossfade_description">Fade between photos when a widget switches to the next one. Has no effect when device animations are turned off.</string>
 
@@ -411,8 +414,8 @@
     <string name="photo_widget_app_folder_add_app">Add app</string>
 
     <!-- Keep-alive service -->
-    <string name="photo_widget_keep_alive_service_dialog_title">Background Service</string>
-    <string name="photo_widget_keep_alive_service_dialog_toggle">Enable Background Service</string>
+    <string name="photo_widget_keep_alive_service_dialog_title">Background service</string>
+    <string name="photo_widget_keep_alive_service_dialog_toggle">Enable background service</string>
     <string name="photo_widget_keep_alive_service_dialog_body">You can enable the background service to let Android know the app is important and that it shouldn\'t be stopped. Don\'t worry, the app only does what\'s needed to keep your widgets showing photos on schedule, without extra battery drain.&lt;br/>&lt;br/>Widgets on your home screen are managed by your app launcher, not directly by the app. Since the app rarely runs in the foreground, &lt;b>the system may assume it\'s not important and stop it&lt;/b>. When that happens, &lt;b>widgets are stopped too, causing photos not to appear&lt;/b>. This is especially common on &lt;b>Samsung devices&lt;/b>.</string>
     <string name="photo_widget_keep_alive_service_required_for_gif">GIF widgets require the background service to play animations. You can find more about it in the settings tab. Would you like to enable it?</string>
     <string name="photo_widget_keep_alive_service_gif_widgets_warning">There are active GIF widgets that depend on the background service. Disabling it may cause them to stop playing animations.</string>

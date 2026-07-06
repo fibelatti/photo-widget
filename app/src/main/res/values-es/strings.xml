@@ -24,9 +24,12 @@
     <string name="photo_widget_home_dynamic_colors">Colores de la app</string>
     <string name="photo_widget_home_translations">Idioma de la app</string>
     <string name="photo_widget_home_backup">Copia de seguridad</string>
+    <string name="photo_widget_home_backup_description">Exporta e importa tus widgets</string>
     <string name="photo_widget_home_share">Comparte la app</string>
     <string name="photo_widget_home_rate">Escribe una reseña</string>
     <string name="photo_widget_home_help">¿Algo no está funcionando?</string>
+    <string name="photo_widget_home_help_settings">Ayuda</string>
+    <string name="photo_widget_home_background_service_description">Mantiene la app activa para que los widgets se actualicen a tiempo y los GIF sigan animándose</string>
     <string name="photo_widget_home_create_transparent">Crear un widget transparente</string>
     <string name="photo_widget_home_common_issues">Problemas comunes</string>
     <string name="photo_widget_home_privacy_policy">Política de privacidad</string>
@@ -76,8 +79,8 @@
     <string name="preferences_dynamic_colors_enabled">Colores dinámicos</string>
     <string name="preferences_dynamic_colors_disabled">Colores predeterminados</string>
     <!-- Widget Defaults -->
-    <string name="widget_defaults_title">Valores predeterminados</string>
-    <string name="widget_defaults_description">Ajustes comunes para todos los widgets nuevos</string>
+    <string name="widget_defaults_title">Preajustes del widget</string>
+    <string name="widget_defaults_description">Valores aplicados al crear un widget nuevo</string>
     <string name="widget_defaults_explanation">Estos valores se precargan al crear un nuevo widget. Son útiles para configurar varios widgets con la misma configuración, eliminando la necesidad de ajustar la configuración cada vez. Ten en cuenta que cualquier cambio en estos valores no afectará a los widgets existentes.</string>
     <string name="widget_defaults_source">Fuente</string>
     <string name="widget_defaults_shuffle">Barajar</string>
@@ -91,8 +94,8 @@
     <string name="widget_defaults_reset">Restablecer valores</string>
     <!-- Widget Settings -->
     <string name="widget_settings_title">Ajustes de los widgets</string>
-    <string name="widget_settings_description">Ajustes que se aplican a todos los widgets</string>
-    <string name="widget_settings_explanation">A diferencia de los valores predeterminados de los widgets, estos ajustes se aplican a todos tus widgets en todo momento. Los cambios pueden aplicarse de inmediato o la próxima vez que se actualice un widget, ya sea por tu interacción o por su programación.</string>
+    <string name="widget_settings_description">Preferencias aplicadas a todos los widgets en todo momento</string>
+    <string name="widget_settings_explanation">A diferencia de los preajustes de los widgets, estos ajustes se aplican a todos tus widgets en todo momento. Los cambios pueden aplicarse de inmediato o la próxima vez que se actualice un widget, ya sea por tu interacción o por su programación.</string>
     <string name="widget_settings_crossfade">Transición entre fotos</string>
     <string name="widget_settings_crossfade_description">Funde una foto con la siguiente cuando un widget cambia de imagen. No tiene efecto si las animaciones del dispositivo están desactivadas.</string>
     <!-- Share -->

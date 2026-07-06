@@ -24,9 +24,12 @@
     <string name="photo_widget_home_dynamic_colors">Mga kulay ng app</string>
     <string name="photo_widget_home_translations">Wika ng app</string>
     <string name="photo_widget_home_backup">Backup</string>
+    <string name="photo_widget_home_backup_description">I-export at i-import ang iyong mga widget</string>
     <string name="photo_widget_home_share">Ibahagi ang app</string>
     <string name="photo_widget_home_rate">Mag-iwan ng rebyu</string>
     <string name="photo_widget_home_help">May hindi gumagana?</string>
+    <string name="photo_widget_home_help_settings">Tulong</string>
+    <string name="photo_widget_home_background_service_description">Pinapanatiling aktibo ang app para mag-update ang mga widget ayon sa iskedyul at patuloy na gumalaw ang mga GIF</string>
     <string name="photo_widget_home_create_transparent">Gumawa ng transparent na widget</string>
     <string name="photo_widget_home_common_issues">Mga pangkaraniwang isyu</string>
     <string name="photo_widget_home_privacy_policy">Patakaran sa privacy</string>
@@ -75,8 +78,8 @@
     <string name="preferences_dynamic_colors_enabled">Mga dimanikong kulay</string>
     <string name="preferences_dynamic_colors_disabled">Paunang setting ng kulay</string>
     <!-- Widget Defaults -->
-    <string name="widget_defaults_title">Mga paunang setting ng widget</string>
-    <string name="widget_defaults_description">Mga karaniwang setting para sa lahat ng bagong widget</string>
+    <string name="widget_defaults_title">Mga preset ng widget</string>
+    <string name="widget_defaults_description">Mga value na inilalapat kapag gumagawa ng bagong widget</string>
     <string name="widget_defaults_explanation">Ito ang mga setting na ito ay awtomikong nilalagay kapag gumawa ka ng bagong widget. Nakakatulong ito sa paggawa ng maramihang widget na may parehong pagkakaayos ng setting, kaya hindi mo na kakailanganing baguhin ang mga setting sa bawat widget na linilikha. Hindi makakaapekto ang mga pagbabago rito sa mga widget na nagawa mo na.</string>
     <string name="widget_defaults_source">Pinagmulan</string>
     <string name="widget_defaults_shuffle">Paghalu-haluin</string>
@@ -90,8 +93,8 @@
     <string name="widget_defaults_reset">Ibalik ang mga orihinal na setting</string>
     <!-- Widget Settings -->
     <string name="widget_settings_title">Mga setting ng widget</string>
-    <string name="widget_settings_description">Mga setting na nalalapat sa lahat ng widget</string>
-    <string name="widget_settings_explanation">Hindi tulad ng mga default ng widget, ang mga setting na ito ay nalalapat sa lahat ng iyong widget sa lahat ng oras. Maaaring magkabisa kaagad ang mga pagbabago o sa susunod na pag-update ng isang widget, sa pamamagitan man ng iyong pakikipag-ugnayan o ng iskedyul nito.</string>
+    <string name="widget_settings_description">Mga kagustuhang inilalapat sa lahat ng widget sa lahat ng oras</string>
+    <string name="widget_settings_explanation">Hindi tulad ng mga preset ng widget, ang mga setting na ito ay nalalapat sa lahat ng iyong widget sa lahat ng oras. Maaaring magkabisa kaagad ang mga pagbabago o sa susunod na pag-update ng isang widget, sa pamamagitan man ng iyong pakikipag-ugnayan o ng iskedyul nito.</string>
     <string name="widget_settings_crossfade">I-crossfade ang mga larawan</string>
     <string name="widget_settings_crossfade_description">I-fade ang isang larawan papunta sa susunod kapag lumipat ang widget. Walang epekto ito kapag naka-off ang mga animation ng device.</string>
     <!-- Share -->

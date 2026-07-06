@@ -251,6 +251,7 @@ private fun SettingsScreen(
                 icon = rememberVectorPainter(AppIcons.KeepAlive),
                 label = R.string.photo_widget_keep_alive_service_dialog_title,
                 onClick = onKeepAliveClick,
+                description = R.string.photo_widget_home_background_service_description,
                 shape = if (!canScheduleExactAlarms || isBatteryUsageRestricted) {
                     Shapes.BottomShape
                 } else {
@@ -266,6 +267,7 @@ private fun SettingsScreen(
                 icon = rememberVectorPainter(AppIcons.Backup),
                 label = R.string.photo_widget_home_backup,
                 onClick = onBackupClick,
+                description = R.string.photo_widget_home_backup_description,
                 shape = Shapes.StandaloneShape,
             )
 
@@ -301,7 +303,7 @@ private fun SettingsScreen(
 
             SettingsListItem(
                 icon = rememberVectorPainter(AppIcons.Question),
-                label = R.string.photo_widget_home_help,
+                label = R.string.photo_widget_home_help_settings,
                 onClick = onSendFeedbackClick,
                 shape = Shapes.TopShape,
             )

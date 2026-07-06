@@ -24,9 +24,12 @@
     <string name="photo_widget_home_dynamic_colors">Uygulama renkleri</string>
     <string name="photo_widget_home_translations">Uygulama dili</string>
     <string name="photo_widget_home_backup">Yedekleme</string>
+    <string name="photo_widget_home_backup_description">Widget\'larınızı dışa ve içe aktarın</string>
     <string name="photo_widget_home_share">Uygulamayı paylaş</string>
     <string name="photo_widget_home_rate">Yorum yaz</string>
     <string name="photo_widget_home_help">Bir şey mi çalışmıyor?</string>
+    <string name="photo_widget_home_help_settings">Yardım</string>
+    <string name="photo_widget_home_background_service_description">Widget\'ların zamanında güncellenmesi ve GIF\'lerin oynatılmaya devam etmesi için uygulamayı etkin tutar</string>
     <string name="photo_widget_home_create_transparent">Şeffaf widget oluştur</string>
     <string name="photo_widget_home_common_issues">Yaygın sorunlar</string>
     <string name="photo_widget_home_privacy_policy">Gizlilik politikası</string>
@@ -76,8 +79,8 @@
     <string name="preferences_dynamic_colors_enabled">Dinamik renkler</string>
     <string name="preferences_dynamic_colors_disabled">Varsayılan renkler</string>
     <!-- Widget Defaults -->
-    <string name="widget_defaults_title">Widget varsayılanları</string>
-    <string name="widget_defaults_description">Tüm yeni araç takımları için ortak ayarlar</string>
+    <string name="widget_defaults_title">Widget ön ayarları</string>
+    <string name="widget_defaults_description">Yeni bir widget oluşturulurken uygulanan değerler</string>
     <string name="widget_defaults_explanation">Bu değerler, yeni bir widget oluşturduğunuzda önceden yüklenir. Aynı ayarlara sahip birden fazla widget oluştururken ayarları her seferinde değiştirme ihtiyacını ortadan kaldırdığı için kullanışlıdır. Bu değerlerde yapılan değişikliklerin mevcut widget\'ları etkilemeyeceğini unutmayın.</string>
     <string name="widget_defaults_source">Kaynak</string>
     <string name="widget_defaults_shuffle">Karıştır</string>
@@ -91,8 +94,8 @@
     <string name="widget_defaults_reset">Değerleri sıfırla</string>
     <!-- Widget Settings -->
     <string name="widget_settings_title">Widget ayarları</string>
-    <string name="widget_settings_description">Tüm widget\'lara uygulanan ayarlar</string>
-    <string name="widget_settings_explanation">Widget varsayılanlarının aksine, bu ayarlar her zaman tüm widget\'larınıza uygulanır. Değişiklikler hemen veya bir widget bir sonraki güncellendiğinde, ister sizin etkileşiminizle ister kendi zamanlamasıyla yürürlüğe girebilir.</string>
+    <string name="widget_settings_description">Tüm widget\'lara her zaman uygulanan tercihler</string>
+    <string name="widget_settings_explanation">Widget ön ayarlarının aksine, bu ayarlar her zaman tüm widget\'larınıza uygulanır. Değişiklikler hemen veya bir widget bir sonraki güncellendiğinde, ister sizin etkileşiminizle ister kendi zamanlamasıyla yürürlüğe girebilir.</string>
     <string name="widget_settings_crossfade">Fotoğrafları çapraz geçişle değiştir</string>
     <string name="widget_settings_crossfade_description">Bir widget sonraki fotoğrafa geçerken yumuşak geçiş uygular. Cihaz animasyonları kapalıyken etkisi yoktur.</string>
     <!-- Share -->

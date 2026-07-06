@@ -24,9 +24,12 @@
     <string name="photo_widget_home_dynamic_colors">Боје апликације</string>
     <string name="photo_widget_home_translations">Језик апликације</string>
     <string name="photo_widget_home_backup">Резервна копија</string>
+    <string name="photo_widget_home_backup_description">Извезите и увезите своје виџете</string>
     <string name="photo_widget_home_share">Поделите ову апликацију</string>
     <string name="photo_widget_home_rate">Напишите рецензију</string>
     <string name="photo_widget_home_help">Нешто не функционише?</string>
+    <string name="photo_widget_home_help_settings">Помоћ</string>
+    <string name="photo_widget_home_background_service_description">Одржава апликацију активном да би се виџети ажурирали по распореду, а GIF-ови наставили да се анимирају</string>
     <string name="photo_widget_home_create_transparent">Направите прозирни виџет</string>
     <string name="photo_widget_home_common_issues">Уобичајени проблеми</string>
     <string name="photo_widget_home_privacy_policy">Политика приватности</string>
@@ -77,8 +80,8 @@
     <string name="preferences_dynamic_colors_enabled">Динамичне боје</string>
     <string name="preferences_dynamic_colors_disabled">Подразумеване боје</string>
     <!-- Widget Defaults -->
-    <string name="widget_defaults_title">Подразумеване поставке виџета</string>
-    <string name="widget_defaults_description">Заједничка подешавања за све нове виџете</string>
+    <string name="widget_defaults_title">Унапред задате поставке виџета</string>
+    <string name="widget_defaults_description">Вредности које се примењују при прављењу новог виџета</string>
     <string name="widget_defaults_explanation">Ове вредности се унапред учитавају када креирате нови виџет. Корисне су за подешавање више виџета са истом конфигурацијом, елиминишући потребу за подешавањем сваки пут. Имајте на уму да било какве промене ових вредности неће утицати на постојеће виџете.</string>
     <string name="widget_defaults_source">Извор</string>
     <string name="widget_defaults_shuffle">Насумично</string>
@@ -92,8 +95,8 @@
     <string name="widget_defaults_reset">Ресетујте вредности</string>
     <!-- Widget Settings -->
     <string name="widget_settings_title">Подешавања виџета</string>
-    <string name="widget_settings_description">Подешавања која важе за све виџете</string>
-    <string name="widget_settings_explanation">За разлику од подразумеваних вредности виџета, ова подешавања важе за све ваше виџете у сваком тренутку. Промене могу ступити на снагу одмах или при следећем ажурирању виџета, било кроз вашу интеракцију или по његовом распореду.</string>
+    <string name="widget_settings_description">Подешавања која се примењују на све виџете у сваком тренутку</string>
+    <string name="widget_settings_explanation">За разлику од унапред задатих поставки виџета, ова подешавања важе за све ваше виџете у сваком тренутку. Промене могу ступити на снагу одмах или при следећем ажурирању виџета, било кроз вашу интеракцију или по његовом распореду.</string>
     <string name="widget_settings_crossfade">Прелаз између фотографија</string>
     <string name="widget_settings_crossfade_description">Постепено претапа једну фотографију у следећу када виџет промени слику. Нема ефекта када су анимације уређаја искључене.</string>
     <!-- Share -->

@@ -24,9 +24,12 @@
     <string name="photo_widget_home_dynamic_colors">צבעי אפליקציה</string>
     <string name="photo_widget_home_translations">שפת האפליקציה</string>
     <string name="photo_widget_home_backup">גיבוי</string>
+    <string name="photo_widget_home_backup_description">ייצוא וייבוא של הווידג\'טים שלך</string>
     <string name="photo_widget_home_share">שתף את האפליקציה</string>
     <string name="photo_widget_home_rate">כתיבת ביקורת</string>
     <string name="photo_widget_home_help">משהו לא עובד?</string>
+    <string name="photo_widget_home_help_settings">עזרה</string>
+    <string name="photo_widget_home_background_service_description">שומר על האפליקציה פעילה כדי שהווידג\'טים יתעדכנו לפי לוח הזמנים וקובצי ה-GIF ימשיכו לזוז</string>
     <string name="photo_widget_home_create_transparent">צור ווידג\'ט שקוף</string>
     <string name="photo_widget_home_common_issues">בעיות נפוצות</string>
     <string name="photo_widget_home_privacy_policy">מדיניות פרטיות</string>
@@ -78,8 +81,8 @@
     <string name="preferences_dynamic_colors_enabled">צבעים דינמיים</string>
     <string name="preferences_dynamic_colors_disabled">צבעי ברירת מחדל</string>
     <!-- Widget Defaults -->
-    <string name="widget_defaults_title">ברירות מחדל של ווידג\'ט</string>
-    <string name="widget_defaults_description">הגדרות משותפות לכל הווידג\'טים החדשים</string>
+    <string name="widget_defaults_title">ערכים מוגדרים מראש</string>
+    <string name="widget_defaults_description">ערכים שמוחלים בעת יצירת ווידג\'ט חדש</string>
     <string name="widget_defaults_explanation">ערכים אלה נטענים מראש בעת יצירת ווידג\'ט חדש. הם שימושיים להגדרת ווידג\'טים מרובים עם אותה תצורה, ומבטלים את הצורך להתאים הגדרות בכל פעם. שים לב שכל שינוי בערכים אלה לא ישפיע על ווידג\'טים קיימים.</string>
     <string name="widget_defaults_source">מקור</string>
     <string name="widget_defaults_shuffle">ערבוב</string>
@@ -93,8 +96,8 @@
     <string name="widget_defaults_reset">איפוס ערכים</string>
     <!-- Widget Settings -->
     <string name="widget_settings_title">הגדרות הווידג\'ט</string>
-    <string name="widget_settings_description">הגדרות שחלות על כל הווידג\'טים</string>
-    <string name="widget_settings_explanation">בניגוד לברירות המחדל של הווידג\'טים, הגדרות אלה חלות על כל הווידג\'טים שלך בכל עת. השינויים עשויים להיכנס לתוקף מיד או בפעם הבאה שווידג\'ט יתעדכן, בין אם בעקבות פעולה שלך ובין אם לפי לוח הזמנים שלו.</string>
+    <string name="widget_settings_description">העדפות שחלות על כל הווידג\'טים בכל עת</string>
+    <string name="widget_settings_explanation">בניגוד לערכים המוגדרים מראש של הווידג\'טים, הגדרות אלה חלות על כל הווידג\'טים שלך בכל עת. השינויים עשויים להיכנס לתוקף מיד או בפעם הבאה שווידג\'ט יתעדכן, בין אם בעקבות פעולה שלך ובין אם לפי לוח הזמנים שלו.</string>
     <string name="widget_settings_crossfade">מעבר הדרגתי בין תמונות</string>
     <string name="widget_settings_crossfade_description">מעבר הדרגתי מתמונה אחת לבאה כשווידג\'ט מחליף תמונה. אין לכך השפעה כשהאנימציות של המכשיר כבויות.</string>
     <!-- Share -->

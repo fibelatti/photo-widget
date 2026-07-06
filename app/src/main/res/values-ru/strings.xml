@@ -24,9 +24,12 @@
     <string name="photo_widget_home_dynamic_colors">Цвета приложения</string>
     <string name="photo_widget_home_translations">Язык приложения</string>
     <string name="photo_widget_home_backup">Резервная копия</string>
+    <string name="photo_widget_home_backup_description">Экспорт и импорт ваших виджетов</string>
     <string name="photo_widget_home_share">Поделиться приложением</string>
     <string name="photo_widget_home_rate">Оставить отзыв</string>
     <string name="photo_widget_home_help">Что-то не работает?</string>
+    <string name="photo_widget_home_help_settings">Помощь</string>
+    <string name="photo_widget_home_background_service_description">Поддерживает приложение активным, чтобы виджеты обновлялись по расписанию, а GIF продолжали воспроизводиться</string>
     <string name="photo_widget_home_create_transparent">Создать прозрачный виджет</string>
     <string name="photo_widget_home_common_issues">Распространённые проблемы</string>
     <string name="photo_widget_home_privacy_policy">Политика конфиденциальности</string>
@@ -78,8 +81,8 @@
     <string name="preferences_dynamic_colors_enabled">Динамические цвета</string>
     <string name="preferences_dynamic_colors_disabled">Цвета по умолчанию</string>
     <!-- Widget Defaults -->
-    <string name="widget_defaults_title">Параметры виджета по умолчанию</string>
-    <string name="widget_defaults_description">Общие настройки для всех новых виджетов</string>
+    <string name="widget_defaults_title">Предустановки виджета</string>
+    <string name="widget_defaults_description">Значения, применяемые при создании нового виджета</string>
     <string name="widget_defaults_explanation">Эти значения загружаются автоматически при создании нового виджета. Они полезны для настройки нескольких виджетов с одинаковой конфигурацией, что устраняет необходимость настраивать их каждый раз. Обратите внимание, что изменения этих значений не повлияют на уже существующие виджеты.</string>
     <string name="widget_defaults_source">Источник</string>
     <string name="widget_defaults_shuffle">Перемешивание</string>
@@ -93,8 +96,8 @@
     <string name="widget_defaults_reset">Сбросить значения</string>
     <!-- Widget Settings -->
     <string name="widget_settings_title">Настройки виджетов</string>
-    <string name="widget_settings_description">Настройки, применяемые ко всем виджетам</string>
-    <string name="widget_settings_explanation">В отличие от значений по умолчанию для виджетов, эти настройки всегда применяются ко всем вашим виджетам. Изменения могут вступить в силу сразу или при следующем обновлении виджета — по вашему действию или по расписанию.</string>
+    <string name="widget_settings_description">Настройки, всегда применяемые ко всем виджетам</string>
+    <string name="widget_settings_explanation">В отличие от предустановок виджетов, эти настройки всегда применяются ко всем вашим виджетам. Изменения могут вступить в силу сразу или при следующем обновлении виджета — по вашему действию или по расписанию.</string>
     <string name="widget_settings_crossfade">Плавный переход между фото</string>
     <string name="widget_settings_crossfade_description">Плавно сменять одно фото другим, когда виджет переключается на следующее. Не действует, если анимации устройства отключены.</string>
     <!-- Share -->

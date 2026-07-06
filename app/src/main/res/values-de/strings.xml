@@ -24,9 +24,12 @@
     <string name="photo_widget_home_dynamic_colors">App-Farben</string>
     <string name="photo_widget_home_translations">App-Sprache</string>
     <string name="photo_widget_home_backup">Sicherung</string>
+    <string name="photo_widget_home_backup_description">Exportiere und importiere deine Widgets</string>
     <string name="photo_widget_home_share">App teilen</string>
     <string name="photo_widget_home_rate">Eine Bewertung schreiben</string>
     <string name="photo_widget_home_help">Etwas funktioniert nicht?</string>
+    <string name="photo_widget_home_help_settings">Hilfe</string>
+    <string name="photo_widget_home_background_service_description">Hält die App aktiv, damit Widgets planmäßig aktualisiert werden und GIFs weiter animiert werden</string>
     <string name="photo_widget_home_create_transparent">Transparentes Widget erstellen</string>
     <string name="photo_widget_home_common_issues">Häufige Probleme</string>
     <string name="photo_widget_home_privacy_policy">Datenschutzrichtlinie</string>
@@ -76,8 +79,8 @@
     <string name="preferences_dynamic_colors_enabled">Dynamische Farben</string>
     <string name="preferences_dynamic_colors_disabled">Standardfarben</string>
     <!-- Widget Defaults -->
-    <string name="widget_defaults_title">Widget-Standardeinstellungen</string>
-    <string name="widget_defaults_description">Allgemeine Einstellungen für alle neuen Widgets</string>
+    <string name="widget_defaults_title">Widget-Voreinstellungen</string>
+    <string name="widget_defaults_description">Werte, die beim Erstellen eines neuen Widgets angewendet werden</string>
     <string name="widget_defaults_explanation">Diese Werte werden beim Erstellen eines neuen Widgets vorgeladen. Sie sind nützlich, um mehrere Widgets mit derselben Konfiguration einzurichten, wodurch du die Einstellungen nicht jedes Mal anpassen musst. Beachte, dass Änderungen an diesen Werten keine Auswirkungen auf bestehende Widgets haben.</string>
     <string name="widget_defaults_source">Quelle</string>
     <string name="widget_defaults_shuffle">Zufällig</string>
@@ -91,8 +94,8 @@
     <string name="widget_defaults_reset">Werte zurücksetzen</string>
     <!-- Widget Settings -->
     <string name="widget_settings_title">Widget-Einstellungen</string>
-    <string name="widget_settings_description">Einstellungen, die für alle Widgets gelten</string>
-    <string name="widget_settings_explanation">Anders als die Widget-Standardwerte gelten diese Einstellungen jederzeit für alle deine Widgets. Änderungen werden möglicherweise sofort wirksam oder bei der nächsten Aktualisierung eines Widgets, entweder durch deine Interaktion oder seinen Zeitplan.</string>
+    <string name="widget_settings_description">Einstellungen, die jederzeit für alle Widgets gelten</string>
+    <string name="widget_settings_explanation">Anders als die Widget-Voreinstellungen gelten diese Einstellungen jederzeit für alle deine Widgets. Änderungen werden möglicherweise sofort wirksam oder bei der nächsten Aktualisierung eines Widgets, entweder durch deine Interaktion oder seinen Zeitplan.</string>
     <string name="widget_settings_crossfade">Fotos überblenden</string>
     <string name="widget_settings_crossfade_description">Beim Wechsel zum nächsten Foto sanft überblenden. Hat keine Wirkung, wenn die Geräteanimationen deaktiviert sind.</string>
     <!-- Share -->
