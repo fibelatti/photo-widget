@@ -35,6 +35,7 @@
     <string name="photo_widget_home_privacy_policy">隐私条款</string>
     <string name="photo_widget_home_developer">由 Filipe Belatti 用❤开发</string>
     <string name="photo_widget_home_version">应用版本：%s</string>
+    <string name="photo_widget_home_changelog">更新内容</string>
     <string name="photo_widget_home_view_licenses">开源软件许可证</string>
     <plurals name="photo_widget_home_share_received">
         <item quantity="other">已接收到 %d 张照片。你可以使用这些照片新建一个小组件，或将这些照片添加到现有小组件中。</item>

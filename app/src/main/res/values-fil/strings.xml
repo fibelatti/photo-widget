@@ -35,6 +35,7 @@
     <string name="photo_widget_home_privacy_policy">Patakaran sa privacy</string>
     <string name="photo_widget_home_developer">Binuo ni Filipe Belatti nang may ❤</string>
     <string name="photo_widget_home_version">Bersyon ng app: %s</string>
+    <string name="photo_widget_home_changelog">Ano\'ng bago</string>
     <string name="photo_widget_home_view_licenses">Mga Lisensya sa OSS</string>
     <plurals name="photo_widget_home_share_received">
         <item quantity="other">Nakuha ang %d larawan. Gumawa ng bagong widget o pumili ng isang nagawa na upang idagdag.</item>

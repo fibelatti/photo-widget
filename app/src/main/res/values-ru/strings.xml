@@ -35,6 +35,7 @@
     <string name="photo_widget_home_privacy_policy">Политика конфиденциальности</string>
     <string name="photo_widget_home_developer">Разработано с ❤ Филипом Белатти</string>
     <string name="photo_widget_home_version">Версия приложения: %s</string>
+    <string name="photo_widget_home_changelog">Что нового</string>
     <string name="photo_widget_home_view_licenses">Лицензии OSS</string>
     <plurals name="photo_widget_home_share_received">
         <item quantity="one">Получено %d фото. Создайте новый виджет или выберите существующий, чтобы добавить его.</item>

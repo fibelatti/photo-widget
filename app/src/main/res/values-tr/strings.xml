@@ -35,6 +35,7 @@
     <string name="photo_widget_home_privacy_policy">Gizlilik politikası</string>
     <string name="photo_widget_home_developer">❤ ile geliştiren Filipe Belatti</string>
     <string name="photo_widget_home_version">Uygulama sürümü: %s</string>
+    <string name="photo_widget_home_changelog">Yenilikler</string>
     <string name="photo_widget_home_view_licenses">OSS Lisansları</string>
     <plurals name="photo_widget_home_share_received">
         <item quantity="one">1 fotoğraf alındı. Yeni bir widget oluşturun veya eklemek için mevcut birini seçin.</item>

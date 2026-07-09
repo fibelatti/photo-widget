@@ -35,6 +35,7 @@
     <string name="photo_widget_home_privacy_policy">Política de privacidade</string>
     <string name="photo_widget_home_developer">Feito com ❤ por Filipe Belatti</string>
     <string name="photo_widget_home_version">Versão: %s</string>
+    <string name="photo_widget_home_changelog">Novidades</string>
     <string name="photo_widget_home_view_licenses">Licenças de Software</string>
     <plurals name="photo_widget_home_share_received">
         <item quantity="one">%d foto recebida. Crie um widget ou escolha um existente para adicioná-la.</item>

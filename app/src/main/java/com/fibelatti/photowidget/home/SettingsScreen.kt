@@ -6,12 +6,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,16 +28,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
@@ -69,6 +62,7 @@ import com.fibelatti.photowidget.ui.icons.Send
 import com.fibelatti.photowidget.ui.icons.Settings
 import com.fibelatti.photowidget.ui.icons.Translation
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
+import com.fibelatti.ui.component.AutoSizeText
 import com.fibelatti.ui.component.ListItem
 import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.Shapes
@@ -184,168 +178,147 @@ private fun SettingsScreen(
     onViewLicensesClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = modifier.fillMaxSize(),
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(all = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        var footerHeight by remember { mutableStateOf(64.dp) }
+        SettingsSectionHeader(
+            text = R.string.photo_widget_home_section_widgets,
+        )
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = footerHeight + 16.dp),
-            verticalArrangement = Arrangement.spacedBy(2.dp),
-        ) {
-            SettingsSectionHeader(
-                text = R.string.photo_widget_home_section_widgets,
-            )
+        SettingsListItem(
+            icon = rememberVectorPainter(AppIcons.Default),
+            label = R.string.widget_defaults_title,
+            onClick = onDefaultsClick,
+            description = R.string.widget_defaults_description,
+            shape = Shapes.TopShape,
+        )
 
+        SettingsListItem(
+            icon = rememberVectorPainter(AppIcons.Settings),
+            label = R.string.widget_settings_title,
+            onClick = onWidgetSettingsClick,
+            description = R.string.widget_settings_description,
+        )
+
+        SettingsListItem(
+            icon = rememberVectorPainter(AppIcons.HardDrive),
+            label = R.string.photo_widget_home_data_saver,
+            onClick = onDataSaverClick,
+            description = R.string.photo_widget_home_data_saver_description,
+            shape = Shapes.BottomShape,
+        )
+
+        SettingsSectionHeader(
+            text = R.string.photo_widget_home_section_background_activity,
+        )
+
+        AnimatedVisibility(visible = !canScheduleExactAlarms) {
             SettingsListItem(
-                icon = rememberVectorPainter(AppIcons.Default),
-                label = R.string.widget_defaults_title,
-                onClick = onDefaultsClick,
-                description = R.string.widget_defaults_description,
+                icon = rememberVectorPainter(AppIcons.Alarm),
+                label = R.string.photo_widget_configure_interval_grant_permission,
+                onClick = onScheduleExactAlarmsClick,
+                description = R.string.photo_widget_configure_interval_grant_permission_description,
                 shape = Shapes.TopShape,
-            )
-
-            SettingsListItem(
-                icon = rememberVectorPainter(AppIcons.Settings),
-                label = R.string.widget_settings_title,
-                onClick = onWidgetSettingsClick,
-                description = R.string.widget_settings_description,
-            )
-
-            SettingsListItem(
-                icon = rememberVectorPainter(AppIcons.HardDrive),
-                label = R.string.photo_widget_home_data_saver,
-                onClick = onDataSaverClick,
-                description = R.string.photo_widget_home_data_saver_description,
-                shape = Shapes.BottomShape,
-            )
-
-            SettingsSectionHeader(
-                text = R.string.photo_widget_home_section_background_activity,
-            )
-
-            AnimatedVisibility(visible = !canScheduleExactAlarms) {
-                SettingsListItem(
-                    icon = rememberVectorPainter(AppIcons.Alarm),
-                    label = R.string.photo_widget_configure_interval_grant_permission,
-                    onClick = onScheduleExactAlarmsClick,
-                    description = R.string.photo_widget_configure_interval_grant_permission_description,
-                    shape = Shapes.TopShape,
-                )
-            }
-
-            AnimatedVisibility(visible = isBatteryUsageRestricted) {
-                SettingsListItem(
-                    icon = rememberVectorPainter(AppIcons.Battery),
-                    label = R.string.photo_widget_configure_battery_optimization,
-                    onClick = onBatteryOptimizationClick,
-                    description = R.string.photo_widget_configure_battery_optimization_description,
-                    shape = if (!canScheduleExactAlarms) Shapes.MiddleShape else Shapes.TopShape,
-                )
-            }
-
-            SettingsListItem(
-                icon = rememberVectorPainter(AppIcons.KeepAlive),
-                label = R.string.photo_widget_keep_alive_service_dialog_title,
-                onClick = onKeepAliveClick,
-                description = R.string.photo_widget_home_background_service_description,
-                shape = if (!canScheduleExactAlarms || isBatteryUsageRestricted) {
-                    Shapes.BottomShape
-                } else {
-                    Shapes.StandaloneShape
-                },
-            )
-
-            SettingsSectionHeader(
-                text = R.string.photo_widget_home_section_data,
-            )
-
-            SettingsListItem(
-                icon = rememberVectorPainter(AppIcons.Backup),
-                label = R.string.photo_widget_home_backup,
-                onClick = onBackupClick,
-                description = R.string.photo_widget_home_backup_description,
-                shape = Shapes.StandaloneShape,
-            )
-
-            SettingsSectionHeader(
-                text = R.string.photo_widget_home_section_appearance,
-            )
-
-            SettingsListItem(
-                icon = rememberVectorPainter(AppIcons.Appearance),
-                label = R.string.photo_widget_home_appearance,
-                onClick = onAppearanceClick,
-                shape = Shapes.TopShape,
-            )
-
-            if (DynamicColors.isDynamicColorAvailable() || LocalInspectionMode.current) {
-                SettingsListItem(
-                    icon = rememberVectorPainter(AppIcons.DynamicColor),
-                    label = R.string.photo_widget_home_dynamic_colors,
-                    onClick = onColorsClick,
-                )
-            }
-
-            SettingsListItem(
-                icon = rememberVectorPainter(AppIcons.Translation),
-                label = R.string.photo_widget_home_translations,
-                onClick = onAppLanguageClick,
-                shape = Shapes.BottomShape,
-            )
-
-            SettingsSectionHeader(
-                text = R.string.photo_widget_home_section_about,
-            )
-
-            SettingsListItem(
-                icon = rememberVectorPainter(AppIcons.Question),
-                label = R.string.photo_widget_home_help_settings,
-                onClick = onSendFeedbackClick,
-                shape = Shapes.TopShape,
-            )
-
-            SettingsListItem(
-                icon = rememberVectorPainter(AppIcons.Rate),
-                label = R.string.photo_widget_home_rate,
-                onClick = onRateClick,
-            )
-
-            SettingsListItem(
-                icon = rememberVectorPainter(AppIcons.Send),
-                label = R.string.photo_widget_home_share,
-                onClick = onShareClick,
-            )
-
-            SettingsListItem(
-                icon = rememberVectorPainter(AppIcons.PrivacyPolicy),
-                label = R.string.photo_widget_home_privacy_policy,
-                onClick = onPrivacyPolicyClick,
-                shape = Shapes.BottomShape,
             )
         }
 
-        val localDensity = LocalDensity.current
+        AnimatedVisibility(visible = isBatteryUsageRestricted) {
+            SettingsListItem(
+                icon = rememberVectorPainter(AppIcons.Battery),
+                label = R.string.photo_widget_configure_battery_optimization,
+                onClick = onBatteryOptimizationClick,
+                description = R.string.photo_widget_configure_battery_optimization_description,
+                shape = if (!canScheduleExactAlarms) Shapes.MiddleShape else Shapes.TopShape,
+            )
+        }
+
+        SettingsListItem(
+            icon = rememberVectorPainter(AppIcons.KeepAlive),
+            label = R.string.photo_widget_keep_alive_service_dialog_title,
+            onClick = onKeepAliveClick,
+            description = R.string.photo_widget_home_background_service_description,
+            shape = if (!canScheduleExactAlarms || isBatteryUsageRestricted) {
+                Shapes.BottomShape
+            } else {
+                Shapes.StandaloneShape
+            },
+        )
+
+        SettingsSectionHeader(
+            text = R.string.photo_widget_home_section_data,
+        )
+
+        SettingsListItem(
+            icon = rememberVectorPainter(AppIcons.Backup),
+            label = R.string.photo_widget_home_backup,
+            onClick = onBackupClick,
+            description = R.string.photo_widget_home_backup_description,
+            shape = Shapes.StandaloneShape,
+        )
+
+        SettingsSectionHeader(
+            text = R.string.photo_widget_home_section_appearance,
+        )
+
+        SettingsListItem(
+            icon = rememberVectorPainter(AppIcons.Appearance),
+            label = R.string.photo_widget_home_appearance,
+            onClick = onAppearanceClick,
+            shape = Shapes.TopShape,
+        )
+
+        if (DynamicColors.isDynamicColorAvailable() || LocalInspectionMode.current) {
+            SettingsListItem(
+                icon = rememberVectorPainter(AppIcons.DynamicColor),
+                label = R.string.photo_widget_home_dynamic_colors,
+                onClick = onColorsClick,
+            )
+        }
+
+        SettingsListItem(
+            icon = rememberVectorPainter(AppIcons.Translation),
+            label = R.string.photo_widget_home_translations,
+            onClick = onAppLanguageClick,
+            shape = Shapes.BottomShape,
+        )
+
+        SettingsSectionHeader(
+            text = R.string.photo_widget_home_section_about,
+        )
+
+        SettingsListItem(
+            icon = rememberVectorPainter(AppIcons.Question),
+            label = R.string.photo_widget_home_help_settings,
+            onClick = onSendFeedbackClick,
+            shape = Shapes.TopShape,
+        )
+
+        SettingsListItem(
+            icon = rememberVectorPainter(AppIcons.Rate),
+            label = R.string.photo_widget_home_rate,
+            onClick = onRateClick,
+        )
+
+        SettingsListItem(
+            icon = rememberVectorPainter(AppIcons.Send),
+            label = R.string.photo_widget_home_share,
+            onClick = onShareClick,
+        )
+
+        SettingsListItem(
+            icon = rememberVectorPainter(AppIcons.PrivacyPolicy),
+            label = R.string.photo_widget_home_privacy_policy,
+            onClick = onPrivacyPolicyClick,
+            shape = Shapes.BottomShape,
+        )
+
         SettingsFooter(
             onViewLicensesClick = onViewLicensesClick,
-            modifier = Modifier
-                .onGloballyPositioned { coordinates ->
-                    footerHeight = with(localDensity) { coordinates.size.height.toDp() }
-                }
-                .background(
-                    brush = Brush.verticalGradient(
-                        colorStops = arrayOf(
-                            0f to Color.Transparent,
-                            0.3f to MaterialTheme.colorScheme.background.copy(alpha = 0.9f),
-                            0.4f to MaterialTheme.colorScheme.background,
-                        ),
-                    ),
-                )
-                .padding(top = 30.dp, bottom = 16.dp)
-                .align(Alignment.BottomCenter),
+            modifier = Modifier.padding(top = 46.dp, bottom = 32.dp),
         )
     }
 }
@@ -355,56 +328,56 @@ private fun SettingsFooter(
     onViewLicensesClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .pointerInput(Unit) {},
-    ) {
-        HorizontalDivider(
-            modifier = Modifier.padding(vertical = 12.dp),
-            color = MaterialTheme.colorScheme.surfaceVariant,
-        )
+    val localResources = LocalResources.current
+    val localUriHandler = LocalUriHandler.current
 
-        Text(
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        AutoSizeText(
             text = stringResource(id = R.string.photo_widget_home_developer),
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 2.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontFamily = FontFamily.Monospace,
+            maxLines = 1,
             style = MaterialTheme.typography.labelLarge,
         )
 
-        Row(
+        AutoSizeText(
+            text = remember(localResources) {
+                buildString {
+                    append(localResources.getString(R.string.photo_widget_home_version, BuildConfig.VERSION_NAME))
+                    append(" ")
+                    append("(${localResources.getString(R.string.photo_widget_home_changelog)})")
+                }
+            },
             modifier = Modifier
-                .align(Alignment.CenterHorizontally)
+                .clip(MaterialTheme.shapes.medium)
+                .clickable(
+                    onClick = {
+                        localUriHandler.openUri("https://www.fibelatti.com/changelog/material-photo-widget")
+                    },
+                    role = Role.Button,
+                )
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontFamily = FontFamily.Monospace,
+            maxLines = 1,
+            style = MaterialTheme.typography.labelMedium,
+        )
+
+        AutoSizeText(
+            text = stringResource(id = R.string.photo_widget_home_view_licenses),
+            modifier = Modifier
                 .clip(MaterialTheme.shapes.medium)
                 .clickable(onClick = onViewLicensesClick, role = Role.Button)
-                .padding(all = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = stringResource(R.string.photo_widget_home_version, BuildConfig.VERSION_NAME),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontFamily = FontFamily.Monospace,
-                style = MaterialTheme.typography.labelMedium,
-            )
-
-            Text(
-                text = "—",
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontFamily = FontFamily.Monospace,
-                style = MaterialTheme.typography.labelMedium,
-            )
-
-            Text(
-                text = stringResource(id = R.string.photo_widget_home_view_licenses),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontFamily = FontFamily.Monospace,
-                style = MaterialTheme.typography.labelMedium,
-            )
-        }
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontFamily = FontFamily.Monospace,
+            maxLines = 1,
+            style = MaterialTheme.typography.labelMedium,
+        )
     }
 }
 

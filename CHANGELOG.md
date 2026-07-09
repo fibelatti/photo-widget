@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* Link to the full changelog in the settings tab
+
 ## [v1.44.3] - 2026-07-05
 [v1.44.3]: https://github.com/fibelatti/photo-widget/releases/tag/v1.44.3
 

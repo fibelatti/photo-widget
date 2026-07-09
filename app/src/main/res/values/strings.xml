@@ -36,6 +36,7 @@
     <string name="photo_widget_home_privacy_policy">Privacy policy</string>
     <string name="photo_widget_home_developer">Developed with ❤ by Filipe Belatti</string>
     <string name="photo_widget_home_version">App version: %s</string>
+    <string name="photo_widget_home_changelog">What\'s new</string>
     <string name="photo_widget_home_view_licenses">OSS Licenses</string>
 
     <plurals name="photo_widget_home_share_received">

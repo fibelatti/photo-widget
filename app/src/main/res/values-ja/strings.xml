@@ -35,6 +35,7 @@
     <string name="photo_widget_home_privacy_policy">プライバシーポリシー</string>
     <string name="photo_widget_home_developer">Filipe Belatti が❤を込めて開発</string>
     <string name="photo_widget_home_version">アプリのバージョン: %s</string>
+    <string name="photo_widget_home_changelog">変更点</string>
     <string name="photo_widget_home_view_licenses">OSS ライセンス</string>
     <plurals name="photo_widget_home_share_received">
         <item quantity="other">%d枚の写真を受信しました。新しいウィジェットを作成するか、既存のウィジェットを選択して追加してください。</item>

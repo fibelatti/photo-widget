@@ -35,6 +35,7 @@
     <string name="photo_widget_home_privacy_policy">מדיניות פרטיות</string>
     <string name="photo_widget_home_developer">פותח עם ❤ על ידי Filipe Belatti</string>
     <string name="photo_widget_home_version">גרסת אפליקציה: %s</string>
+    <string name="photo_widget_home_changelog">מה חדש</string>
     <string name="photo_widget_home_view_licenses">רישיונות OSS</string>
     <plurals name="photo_widget_home_share_received">
         <item quantity="one">התקבלה תמונה אחת. צור ווידג\'ט חדש או בחר ווידג\'ט קיים כדי להוסיף אותו.</item>

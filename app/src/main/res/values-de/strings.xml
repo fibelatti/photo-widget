@@ -35,6 +35,7 @@
     <string name="photo_widget_home_privacy_policy">Datenschutzrichtlinie</string>
     <string name="photo_widget_home_developer">Mit ❤ entwickelt von Filipe Belatti</string>
     <string name="photo_widget_home_version">App-Version: %s</string>
+    <string name="photo_widget_home_changelog">Was ist neu</string>
     <string name="photo_widget_home_view_licenses">OSS-Lizenzen</string>
     <plurals name="photo_widget_home_share_received">
         <item quantity="one">1 Foto empfangen. Erstelle ein neues Widget oder wähle ein vorhandenes aus, um es hinzuzufügen.</item>

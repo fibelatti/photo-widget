@@ -35,6 +35,7 @@
     <string name="photo_widget_home_privacy_policy">Politica de confidențialitate</string>
     <string name="photo_widget_home_developer">Dezvoltat cu ❤ de Filipe Belatti</string>
     <string name="photo_widget_home_version">Versiunea aplicației: %s</string>
+    <string name="photo_widget_home_changelog">Noutăți</string>
     <string name="photo_widget_home_view_licenses">Licențe OSS</string>
     <plurals name="photo_widget_home_share_received">
         <item quantity="one">1 fotografie primită. Creează un widget nou sau alege unul existent pentru a o adăuga.</item>
