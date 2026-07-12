@@ -366,7 +366,12 @@ private fun PhotoCycleModeIntervalContent(
                             }
 
                             TimeUnit.DAYS -> {
-                                interval.copy(timeUnit = TimeUnit.DAYS)
+                                interval.copy(
+                                    repeatInterval = interval.repeatInterval.coerceAtMost(
+                                        maximumValue = PhotoWidgetLoopingInterval.MAX_DAYS,
+                                    ),
+                                    timeUnit = TimeUnit.DAYS,
+                                )
                             }
 
                             else -> interval
