@@ -14,7 +14,6 @@ import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -31,17 +30,14 @@ fun rememberZoomableImageViewerState(
     onTap: (() -> Unit)? = null,
     onDragToDismiss: (() -> Unit)? = null,
 ): ZoomableImageViewerState {
-    val tap by rememberUpdatedState(onTap)
-    val dragToDismiss by rememberUpdatedState(onDragToDismiss)
-
     return rememberSaveable(saver = ZoomableImageViewerState.Saver) {
         ZoomableImageViewerState(
             minimumScale = minimumScale,
             maximumScale = maximumScale,
         )
     }.apply {
-        this.onTap = tap
-        this.onDragToDismiss = dragToDismiss
+        this.onTap = onTap
+        this.onDragToDismiss = onDragToDismiss
     }
 }
 

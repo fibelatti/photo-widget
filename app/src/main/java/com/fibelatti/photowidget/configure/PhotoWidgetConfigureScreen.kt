@@ -125,7 +125,7 @@ fun PhotoWidgetConfigureScreen(
     }
 
     val localLifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-    val isLifecycleStateValid: () -> Boolean by rememberUpdatedState {
+    val isLifecycleStateValid: () -> Boolean = {
         localLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)
     }
 

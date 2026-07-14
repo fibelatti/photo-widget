@@ -14,8 +14,6 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
@@ -153,13 +151,11 @@ private fun <T> SelectionDialogLazyListContent(
     header: @Composable () -> Unit,
     footer: @Composable () -> Unit,
 ) {
-    val keyProvider: ((Int, T) -> Any)? by rememberUpdatedState(
-        if (optionKey != null) {
-            { _: Int, option: T -> optionKey(option) }
-        } else {
-            null
-        },
-    )
+    val keyProvider: ((Int, T) -> Any)? = if (optionKey != null) {
+        { _: Int, option: T -> optionKey(option) }
+    } else {
+        null
+    }
 
     LazyColumn(
         modifier = Modifier

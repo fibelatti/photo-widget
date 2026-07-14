@@ -42,7 +42,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -358,13 +357,11 @@ private fun RatioShortcuts(
     modifier: Modifier = Modifier,
 ) {
     val freeFormLabel = stringResource(R.string.photo_widget_crop_free_form)
-    val items: Map<String, () -> Unit> by rememberUpdatedState(
-        mapOf(
-            freeFormLabel to onFreeFormClick,
-            "1:1" to onSquareClick,
-            "16:10" to onTallClick,
-            "10:16" to onWideClick,
-        ),
+    val items: Map<String, () -> Unit> = mapOf(
+        freeFormLabel to onFreeFormClick,
+        "1:1" to onSquareClick,
+        "16:10" to onTallClick,
+        "10:16" to onWideClick,
     )
     var selectionIndex by rememberSaveable { mutableIntStateOf(0) }
 

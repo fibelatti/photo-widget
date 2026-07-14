@@ -17,7 +17,6 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -85,7 +84,7 @@ fun Modifier.onHorizontalDrag(
     val rightInset: Int = systemGesturesInset.getRight(LocalDensity.current, LocalLayoutDirection.current)
 
     val velocityTracker = remember { VelocityTracker() }
-    val onHorizontalDrag by rememberUpdatedState { change: PointerInputChange, dragAmount: Float ->
+    val onHorizontalDrag = { change: PointerInputChange, dragAmount: Float ->
         velocityTracker.addPointerInputChange(change)
         onDrag(dragAmount)
     }
@@ -142,14 +141,11 @@ fun rememberDragState(
     onConfirm: (DragState.Direction) -> Unit,
     onThreshold: (() -> Unit)? = null,
 ): DragState {
-    val confirmState: (DragState.Direction) -> Unit by rememberUpdatedState(onConfirm)
-    val thresholdState: (() -> Unit)? by rememberUpdatedState(onThreshold)
-
     return rememberSaveable(saver = DragState.Saver) {
         DragState(mode = mode)
     }.apply {
-        this.onConfirm = confirmState
-        this.onThreshold = thresholdState
+        this.onConfirm = onConfirm
+        this.onThreshold = onThreshold
     }
 }
 
