@@ -272,6 +272,7 @@ private fun PhotoWidgetTextValuePicker(
             ),
             onKeyboardAction = { confirmAction() },
             lineLimits = TextFieldLineLimits.SingleLine,
+            shape = Shapes.StandaloneShape,
         )
 
         Spacer(modifier = Modifier.height(16.dp))

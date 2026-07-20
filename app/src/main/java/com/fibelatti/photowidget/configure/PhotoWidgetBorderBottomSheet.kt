@@ -56,6 +56,7 @@ import com.fibelatti.photowidget.ui.rememberSampleBitmap
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.RadioGroup
+import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.preview.PreviewThemesAndColors
 import com.fibelatti.ui.theme.ExtendedTheme
@@ -273,6 +274,7 @@ private fun ColorBorderContent(
                     imeAction = ImeAction.Done,
                 ),
                 singleLine = true,
+                shape = Shapes.StandaloneShape,
             )
         }
     }

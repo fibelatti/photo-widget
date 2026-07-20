@@ -46,6 +46,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.InstalledApp
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.foundation.pxToDp
 
@@ -173,6 +174,7 @@ fun AppPickerBottomSheet(
                     label = { Text(text = stringResource(R.string.photo_widget_configure_tap_action_search_apps)) },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     lineLimits = TextFieldLineLimits.SingleLine,
+                    shape = Shapes.StandaloneShape,
                 )
             }
         }
