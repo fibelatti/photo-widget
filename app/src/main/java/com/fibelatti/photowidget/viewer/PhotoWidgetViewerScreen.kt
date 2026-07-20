@@ -49,7 +49,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.Clipboard
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
@@ -295,10 +295,7 @@ private fun FullScreenPhotoViewer(
                 isLoading = isLoading,
                 contentScale = ContentScale.Inside,
                 modifier = Modifier
-                    .onGloballyPositioned { coordinates ->
-                        val height = coordinates.size.height
-                        val width = coordinates.size.width
-
+                    .onSizeChanged { (width: Int, height: Int) ->
                         if (height > width) {
                             verticalDragState.setThreshold(height * LARGEST_DIMENSION_FRACTION)
                             horizontalDragState.setThreshold(width * SMALLEST_DIMENSION_FRACTION)
