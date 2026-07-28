@@ -7,7 +7,7 @@ hiltExtensions = "1.4.0"
 kotlin = "2.4.10"
 nav3 = "1.1.4"
 room = "2.8.4"
-spotless = "8.8.0"
+spotless = "8.9.0"
 aboutLibraries = "15.0.4"
 
 [libraries]
