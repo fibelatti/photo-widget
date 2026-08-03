@@ -48,6 +48,7 @@ fun AsyncPhotoViewer(
     isLoading: Boolean,
     contentScale: ContentScale,
     modifier: Modifier = Modifier,
+    version: Long? = null,
     constraintMode: AsyncPhotoViewer.BitmapSizeConstraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.DISPLAY,
     transformations: List<Transformation> = emptyList(),
 ) {
@@ -86,7 +87,7 @@ fun AsyncPhotoViewer(
         if (maxDimension <= 0) maxDimension else ((maxDimension + 63) / 64) * 64
     }
 
-    LaunchedEffect(data, maxDimensionBucketed, isLoading, transformations.joinToString { it.cacheKey }) {
+    LaunchedEffect(data, version, maxDimensionBucketed, isLoading, transformations.joinToString { it.cacheKey }) {
         if (localInspectionMode || maxDimensionBucketed <= 0) return@LaunchedEffect
 
         when {
@@ -95,6 +96,7 @@ fun AsyncPhotoViewer(
                     data = data,
                     maxDimension = maxDimensionBucketed,
                     transformations = transformations,
+                    version = version,
                 )?.asImageBitmap()?.let {
                     viewerState = AsyncPhotoViewerState.Success(it)
                 }

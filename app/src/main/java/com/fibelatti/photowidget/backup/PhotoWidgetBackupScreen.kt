@@ -70,6 +70,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.getPhotoPath
+import com.fibelatti.photowidget.model.getPhotoVersion
 import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.photowidget.ui.LoadingIndicator
@@ -387,6 +388,7 @@ private fun RestoredWidgetItem(
             items(items, key = { it.photoId }) { localPhoto ->
                 AsyncPhotoViewer(
                     data = localPhoto.getPhotoPath(),
+                    version = localPhoto.getPhotoVersion(),
                     isLoading = false,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier

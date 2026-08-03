@@ -67,6 +67,7 @@ import androidx.core.net.toUri
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.getPhotoPath
+import com.fibelatti.photowidget.model.getPhotoVersion
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.photowidget.ui.icons.Album
 import com.fibelatti.photowidget.ui.icons.AppIcons
@@ -292,6 +293,7 @@ private fun FullScreenPhotoViewer(
         if (photo != null) {
             AsyncPhotoViewer(
                 data = photo.getPhotoPath(viewOriginalPhoto = viewOriginalPhoto),
+                version = photo.getPhotoVersion(viewOriginalPhoto = viewOriginalPhoto),
                 isLoading = isLoading,
                 contentScale = ContentScale.Inside,
                 modifier = Modifier

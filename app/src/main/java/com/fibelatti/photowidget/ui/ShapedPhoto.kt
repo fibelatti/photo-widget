@@ -13,6 +13,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.getPhotoPath
+import com.fibelatti.photowidget.model.getPhotoVersion
 import com.fibelatti.photowidget.platform.PolygonalShapeTransformation
 import com.fibelatti.photowidget.platform.RoundedCornersTransformation
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
@@ -66,6 +67,7 @@ fun ShapedPhoto(
 
     AsyncPhotoViewer(
         data = photo?.getPhotoPath(),
+        version = photo?.getPhotoVersion(),
         isLoading = isLoading,
         contentScale = if (aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET) {
             ContentScale.Crop

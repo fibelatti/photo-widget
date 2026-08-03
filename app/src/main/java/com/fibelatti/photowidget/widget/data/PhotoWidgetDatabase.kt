@@ -74,9 +74,6 @@ interface LocalPhotoDao {
     )
     suspend fun getLocalPhotos(widgetId: Int): List<LocalPhotoDto>
 
-    @Query("select photoId from local_widget_photos where widgetId = :widgetId")
-    suspend fun getLocalPhotoIds(widgetId: Int): List<String>
-
     @Query(
         "select lwp.photoId from local_widget_photos as lwp " +
             "left join photo_widget_order pwo " +

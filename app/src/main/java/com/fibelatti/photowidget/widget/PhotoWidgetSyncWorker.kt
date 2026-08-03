@@ -43,7 +43,13 @@ class PhotoWidgetSyncWorker @AssistedInject constructor(
                     try {
                         Timber.d("Processing widget %s", mapOf("id" to id))
                         if (photoWidgetStorage.getWidgetSource(appWidgetId = id) == PhotoWidgetSource.DIRECTORY) {
-                            photoWidgetStorage.syncWidgetPhotos(appWidgetId = id)
+                            if (photoWidgetStorage.syncWidgetPhotos(appWidgetId = id)) {
+                                Timber.d("Photos changed, updating widget %s", mapOf("id" to id))
+                                // Joined so the worker stays alive until the render completes: it runs on the
+                                // application scope, and returning from `doWork` while it is ongoing lets the process
+                                // be killed mid-render.
+                                PhotoWidgetProvider.update(context = applicationContext, appWidgetId = id).join()
+                            }
                         }
                     } catch (e: CancellationException) {
                         throw e

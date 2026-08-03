@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
@@ -148,6 +149,30 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
 
             return@withContext result
         }
+    }
+
+    /**
+     * Returns the current `COLUMN_LAST_MODIFIED` of [uri], or null when it can't be read.
+     *
+     * A file overwritten in place keeps its document URI, so nothing about the URI reflects that
+     * its content changed. [LocalPhoto.timestamp] carries this same value, but only as fresh as the
+     * last directory sync, which is too coarse to key a render on.
+     */
+    suspend fun getLastModified(uri: Uri): Long? = withContext(Dispatchers.IO) {
+        runCatching {
+            contentResolver.query(
+                /* uri = */ uri,
+                /* projection = */ arrayOf(DocumentsContract.Document.COLUMN_LAST_MODIFIED),
+                /* selection = */ null,
+                /* selectionArgs = */ null,
+                /* sortOrder = */ null,
+            )?.use { cursor ->
+                if (cursor.moveToFirst()) cursor.getLong(0) else null
+            }
+        }.onFailure { throwable ->
+            ensureActive()
+            Timber.e(throwable, "Failed to read the last modified date of $uri")
+        }.getOrNull()
     }
 
     /**

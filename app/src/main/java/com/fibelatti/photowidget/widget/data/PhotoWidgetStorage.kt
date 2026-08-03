@@ -329,11 +329,17 @@ class PhotoWidgetStorage @Inject constructor(
         orderDao.copyWidgetOrder(sourceWidgetId = sourceWidgetId, targetWidgetId = targetWidgetId)
     }
 
+    /**
+     * Refreshes the local photo cache of [appWidgetId] from its source.
+     *
+     * Returns whether the cache actually changed (photos added, removed, or when an existing photo
+     * whose file was modified in place).
+     */
     suspend fun syncWidgetPhotos(
         appWidgetId: Int,
         currentPhotos: List<LocalPhoto>? = null,
         removedPhotos: List<LocalPhoto>? = null,
-    ) {
+    ): Boolean {
         Timber.i("Syncing photos %s", mapOf("appWidgetId" to appWidgetId, "fromWidget" to (currentPhotos != null)))
 
         val excludedPhotos: Set<String> = removedPhotos?.map { it.photoId }?.toSet()
@@ -351,12 +357,13 @@ class PhotoWidgetStorage @Inject constructor(
                 timestamp = localPhoto.timestamp,
             )
         }
-        val newPhotoIds = newLocalPhotos.map { it.photoId }.toSet()
+        val newPhotoIds: Set<String> = newLocalPhotos.map { it.photoId }.toSet()
+        val existingLocalPhotos: List<LocalPhotoDto> = localPhotoDao.getLocalPhotos(widgetId = appWidgetId)
 
         localPhotoDao.replacePhotos(
             widgetId = appWidgetId,
             photos = newLocalPhotos,
-            idsToDelete = localPhotoDao.getLocalPhotoIds(widgetId = appWidgetId).subtract(newPhotoIds),
+            idsToDelete = existingLocalPhotos.map { it.photoId }.subtract(newPhotoIds),
         )
 
         saveWidgetOrder(appWidgetId = appWidgetId, order = newPhotoIds)
@@ -365,6 +372,8 @@ class PhotoWidgetStorage @Inject constructor(
             widgetId = appWidgetId,
             photoIds = displayedPhotoDao.getDisplayedPhotoIds(widgetId = appWidgetId).subtract(newPhotoIds),
         )
+
+        return existingLocalPhotos.toSet() != newLocalPhotos.toSet()
     }
 
     suspend fun getCurrentPhotoId(appWidgetId: Int): String? {

@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Update interval ranges (up to 90 seconds, 90 minutes and 36 hours)
 
+### Fixed
+
+* Fix how the widget handles changes to existing photos in synced folders
+
 ## [v1.44.3] - 2026-07-05
 [v1.44.3]: https://github.com/fibelatti/photo-widget/releases/tag/v1.44.3
 

@@ -110,7 +110,9 @@ class HomeViewModel @Inject constructor(
         scope.launch {
             withContext(NonCancellable) {
                 if (photoWidgetStorage.getWidgetSource(appWidgetId = appWidgetId) == PhotoWidgetSource.DIRECTORY) {
-                    photoWidgetStorage.syncWidgetPhotos(appWidgetId = appWidgetId)
+                    if (photoWidgetStorage.syncWidgetPhotos(appWidgetId = appWidgetId)) {
+                        PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+                    }
                 }
             }
         }

@@ -166,12 +166,18 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             .toList()
             .also { Timber.d("Provider widget IDs: $it") }
 
+        /**
+         * Renders [appWidgetId], returning the [Job] doing the work. The render runs on the
+         * application scope and outlives this call, so a caller whose own lifetime bounds the
+         * process (e.g. a worker) must join the job to keep the render from being cut short.
+         * Callers running in a scope that is already kept alive can ignore it.
+         */
         fun update(
             context: Context,
             appWidgetId: Int,
             allowCrossfade: Boolean = false,
             recoveryMode: Boolean = false,
-        ) {
+        ): Job {
             Timber.i("Updating widget %s", mapOf("appWidgetId" to appWidgetId))
 
             val appWidgetManager: AppWidgetManager = AppWidgetManager.getInstance(context)
@@ -355,6 +361,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 // Only remove if we're still the current job (avoid racing with a newer update)
                 if (updateJobMap[appWidgetId] === newJob) updateJobMap.remove(appWidgetId)
             }
+
+            return newJob
         }
 
         /**

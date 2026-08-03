@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import androidx.annotation.ColorInt
 import androidx.core.graphics.toColorInt
+import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
@@ -18,6 +19,7 @@ import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.getMaxBitmapWidgetDimension
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
+import com.fibelatti.photowidget.widget.data.PhotoWidgetExternalFileStorage
 import com.fibelatti.photowidget.widget.data.PhotoWidgetInternalFileStorage
 import com.fibelatti.photowidget.widget.data.WidgetDirectoryDao
 import javax.inject.Inject
@@ -26,6 +28,7 @@ import timber.log.Timber
 class PrepareCurrentPhotoUseCase @Inject constructor(
     private val decoder: PhotoDecoder,
     private val photoWidgetInternalFileStorage: PhotoWidgetInternalFileStorage,
+    private val photoWidgetExternalFileStorage: PhotoWidgetExternalFileStorage,
     private val widgetDirectoryDao: WidgetDirectoryDao,
 ) {
 
@@ -36,7 +39,17 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
         crossfadeIntent: Boolean = false,
         recoveryMode: Boolean = false,
     ): PreparedCurrentPhoto? {
-        val currentPhotoPath: String = photoWidget.currentPhoto?.getPhotoPath() ?: return null
+        val currentPhoto: LocalPhoto = photoWidget.currentPhoto ?: return null
+        val currentPhotoPath: String = currentPhoto.getPhotoPath() ?: return null
+
+        // Directory photos are read straight from their `content://` document, which another app can
+        // overwrite in place. The URI stays the same when that happens, so without a version the
+        // decoder would keep serving the cached bitmap of the previous content. Only needed when the
+        // external photo is what's actually being rendered: a cropped photo resolves to an internal
+        // file path instead, and those are already versioned by their last modified date.
+        val photoVersion: Long? = currentPhoto.externalUri
+            ?.takeIf { uri -> currentPhotoPath == uri.toString() }
+            ?.let { uri -> photoWidgetExternalFileStorage.getLastModified(uri = uri) }
 
         Timber.i(
             "Preparing current photo %s",
@@ -44,6 +57,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 "appWidgetId" to appWidgetId,
                 "recoveryMode" to recoveryMode,
                 "currentPhotoPath" to currentPhotoPath,
+                "photoVersion" to photoVersion,
             ),
         )
 
@@ -55,7 +69,13 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 mapOf("maxDimension" to maxDimension, "recoveryMode" to recoveryMode),
             )
 
-            requireNotNull(decoder.decode(data = currentPhotoPath, maxDimension = maxDimension))
+            requireNotNull(
+                decoder.decode(
+                    data = currentPhotoPath,
+                    maxDimension = maxDimension,
+                    version = photoVersion,
+                ),
+            )
         } catch (_: Exception) {
             return null
         }
