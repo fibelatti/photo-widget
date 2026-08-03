@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.ChevronLeft: ImageVector
     get() {
-        if (_ChevronLeft != null) {
-            return _ChevronLeft!!
-        }
-        _ChevronLeft = ImageVector.Builder(
+        _ChevronLeft?.let { return it }
+
+        return ImageVector.Builder(
             name = "ChevronLeft",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -30,9 +30,7 @@ val AppIcons.ChevronLeft: ImageVector
                 lineTo(9f, 12f)
                 lineTo(15f, 18f)
             }
-        }.build()
-
-        return _ChevronLeft!!
+        }.build().also { _ChevronLeft = it }
     }
 
 @Suppress("ObjectPropertyName")

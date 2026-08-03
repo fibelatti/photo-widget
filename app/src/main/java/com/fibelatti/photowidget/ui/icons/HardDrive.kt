@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.HardDrive: ImageVector
     get() {
-        if (_HardDrive != null) {
-            return _HardDrive!!
-        }
-        _HardDrive = ImageVector.Builder(
+        _HardDrive?.let { return it }
+
+        return ImageVector.Builder(
             name = "HardDrive",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -57,9 +57,7 @@ val AppIcons.HardDrive: ImageVector
                 moveTo(15f, 15f)
                 horizontalLineTo(17f)
             }
-        }.build()
-
-        return _HardDrive!!
+        }.build().also { _HardDrive = it }
     }
 
 @Suppress("ObjectPropertyName")

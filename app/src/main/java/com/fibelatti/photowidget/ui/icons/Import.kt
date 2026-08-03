@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Import: ImageVector
     get() {
-        if (_Import != null) {
-            return _Import!!
-        }
-        _Import = ImageVector.Builder(
+        _Import?.let { return it }
+
+        return ImageVector.Builder(
             name = "Import",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -51,9 +51,7 @@ val AppIcons.Import: ImageVector
                 curveTo(19.48f, 9f, 18.92f, 9f, 17.8f, 9f)
                 horizontalLineTo(17f)
             }
-        }.build()
-
-        return _Import!!
+        }.build().also { _Import = it }
     }
 
 @Suppress("ObjectPropertyName")

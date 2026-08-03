@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Expand: ImageVector
     get() {
-        if (_Expand != null) {
-            return _Expand!!
-        }
-        _Expand = ImageVector.Builder(
+        _Expand?.let { return it }
+
+        return ImageVector.Builder(
             name = "Expand",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -39,9 +39,7 @@ val AppIcons.Expand: ImageVector
                 moveTo(3f, 21f)
                 lineTo(3f, 16.5f)
             }
-        }.build()
-
-        return _Expand!!
+        }.build().also { _Expand = it }
     }
 
 @Suppress("ObjectPropertyName")

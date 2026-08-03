@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Crop: ImageVector
     get() {
-        if (_Crop != null) {
-            return _Crop!!
-        }
-        _Crop = ImageVector.Builder(
+        _Crop?.let { return it }
+
+        return ImageVector.Builder(
             name = "Crop",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -43,9 +43,7 @@ val AppIcons.Crop: ImageVector
                 moveTo(3f, 6f)
                 horizontalLineTo(6f)
             }
-        }.build()
-
-        return _Crop!!
+        }.build().also { _Crop = it }
     }
 
 @Suppress("ObjectPropertyName")

@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Plus: ImageVector
     get() {
-        if (_Plus != null) {
-            return _Plus!!
-        }
-        _Plus = ImageVector.Builder(
+        _Plus?.let { return it }
+
+        return ImageVector.Builder(
             name = "Plus",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -31,9 +31,7 @@ val AppIcons.Plus: ImageVector
                 moveTo(12f, 6f)
                 verticalLineTo(18f)
             }
-        }.build()
-
-        return _Plus!!
+        }.build().also { _Plus = it }
     }
 
 @Suppress("ObjectPropertyName")

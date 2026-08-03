@@ -7,12 +7,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Default: ImageVector
     get() {
-        if (_Default != null) {
-            return _Default!!
-        }
-        _Default = ImageVector.Builder(
+        _Default?.let { return it }
+
+        return ImageVector.Builder(
             name = "Default",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -38,9 +38,7 @@ val AppIcons.Default: ImageVector
                 verticalLineTo(6.2f)
                 close()
             }
-        }.build()
-
-        return _Default!!
+        }.build().also { _Default = it }
     }
 
 @Suppress("ObjectPropertyName")

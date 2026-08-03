@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Alarm: ImageVector
     get() {
-        if (_Alarm != null) {
-            return _Alarm!!
-        }
-        _Alarm = ImageVector.Builder(
+        _Alarm?.let { return it }
+
+        return ImageVector.Builder(
             name = "Alarm",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -40,9 +40,7 @@ val AppIcons.Alarm: ImageVector
                 curveTo(16.418f, 4.5f, 20f, 8.082f, 20f, 12.5f)
                 close()
             }
-        }.build()
-
-        return _Alarm!!
+        }.build().also { _Alarm = it }
     }
 
 @Suppress("ObjectPropertyName")

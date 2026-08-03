@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Xmark: ImageVector
     get() {
-        if (_Xmark != null) {
-            return _Xmark!!
-        }
-        _Xmark = ImageVector.Builder(
+        _Xmark?.let { return it }
+
+        return ImageVector.Builder(
             name = "Xmark",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -31,9 +31,7 @@ val AppIcons.Xmark: ImageVector
                 moveTo(18f, 6f)
                 lineTo(6f, 18f)
             }
-        }.build()
-
-        return _Xmark!!
+        }.build().also { _Xmark = it }
     }
 
 @Suppress("ObjectPropertyName")

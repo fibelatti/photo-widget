@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Battery: ImageVector
     get() {
-        if (_Battery != null) {
-            return _Battery!!
-        }
-        _Battery = ImageVector.Builder(
+        _Battery?.let { return it }
+
+        return ImageVector.Builder(
             name = "Battery",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -51,9 +51,7 @@ val AppIcons.Battery: ImageVector
                 curveTo(4.52f, 18f, 5.08f, 18f, 6.2f, 18f)
                 close()
             }
-        }.build()
-
-        return _Battery!!
+        }.build().also { _Battery = it }
     }
 
 @Suppress("ObjectPropertyName")

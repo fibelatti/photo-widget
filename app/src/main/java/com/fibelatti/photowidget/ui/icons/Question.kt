@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Question: ImageVector
     get() {
-        if (_Question != null) {
-            return _Question!!
-        }
-        _Question = ImageVector.Builder(
+        _Question?.let { return it }
+
+        return ImageVector.Builder(
             name = "Question",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -41,9 +41,7 @@ val AppIcons.Question: ImageVector
                 curveTo(16.975f, 3f, 21.004f, 7.029f, 21.004f, 12f)
                 close()
             }
-        }.build()
-
-        return _Question!!
+        }.build().also { _Question = it }
     }
 
 @Suppress("ObjectPropertyName")

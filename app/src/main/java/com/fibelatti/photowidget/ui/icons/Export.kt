@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Export: ImageVector
     get() {
-        if (_Export != null) {
-            return _Export!!
-        }
-        _Export = ImageVector.Builder(
+        _Export?.let { return it }
+
+        return ImageVector.Builder(
             name = "Export",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -51,9 +51,7 @@ val AppIcons.Export: ImageVector
                 moveTo(12f, 4f)
                 lineTo(15f, 7f)
             }
-        }.build()
-
-        return _Export!!
+        }.build().also { _Export = it }
     }
 
 @Suppress("ObjectPropertyName")

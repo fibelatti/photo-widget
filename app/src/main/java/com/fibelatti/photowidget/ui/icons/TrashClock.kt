@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.TrashClock: ImageVector
     get() {
-        if (_TrashClock != null) {
-            return _TrashClock!!
-        }
-        _TrashClock = ImageVector.Builder(
+        _TrashClock?.let { return it }
+
+        return ImageVector.Builder(
             name = "TrashClock",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -58,9 +58,7 @@ val AppIcons.TrashClock: ImageVector
                 curveTo(19.209f, 13f, 21f, 14.791f, 21f, 17f)
                 close()
             }
-        }.build()
-
-        return _TrashClock!!
+        }.build().also { _TrashClock = it }
     }
 
 @Suppress("ObjectPropertyName")

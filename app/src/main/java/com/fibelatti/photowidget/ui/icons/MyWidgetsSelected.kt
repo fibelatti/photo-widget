@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.MyWidgetsSelected: ImageVector
     get() {
-        if (_MyWidgetsSelected != null) {
-            return _MyWidgetsSelected!!
-        }
-        _MyWidgetsSelected = ImageVector.Builder(
+        _MyWidgetsSelected?.let { return it }
+
+        return ImageVector.Builder(
             name = "MyWidgetsSelected",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -124,9 +124,7 @@ val AppIcons.MyWidgetsSelected: ImageVector
                 verticalLineTo(15.6f)
                 close()
             }
-        }.build()
-
-        return _MyWidgetsSelected!!
+        }.build().also { _MyWidgetsSelected = it }
     }
 
 @Suppress("ObjectPropertyName")

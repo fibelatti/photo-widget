@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.PrivacyPolicy: ImageVector
     get() {
-        if (_PrivacyPolicy != null) {
-            return _PrivacyPolicy!!
-        }
-        _PrivacyPolicy = ImageVector.Builder(
+        _PrivacyPolicy?.let { return it }
+
+        return ImageVector.Builder(
             name = "PrivacyPolicy",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -63,9 +63,7 @@ val AppIcons.PrivacyPolicy: ImageVector
                 curveTo(21f, 15.986f, 21f, 15.21f, 21f, 15.21f)
                 close()
             }
-        }.build()
-
-        return _PrivacyPolicy!!
+        }.build().also { _PrivacyPolicy = it }
     }
 
 @Suppress("ObjectPropertyName")

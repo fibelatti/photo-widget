@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.KeepAlive: ImageVector
     get() {
-        if (_KeepAlive != null) {
-            return _KeepAlive!!
-        }
-        _KeepAlive = ImageVector.Builder(
+        _KeepAlive?.let { return it }
+
+        return ImageVector.Builder(
             name = "KeepAlive",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -49,9 +49,7 @@ val AppIcons.KeepAlive: ImageVector
                 curveTo(10.5f, 12.404f, 7.969f, 14.179f, 7.5f, 14.5f)
                 horizontalLineTo(10.5f)
             }
-        }.build()
-
-        return _KeepAlive!!
+        }.build().also { _KeepAlive = it }
     }
 
 @Suppress("ObjectPropertyName")

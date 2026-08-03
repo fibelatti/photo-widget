@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Translation: ImageVector
     get() {
-        if (_Translation != null) {
-            return _Translation!!
-        }
-        _Translation = ImageVector.Builder(
+        _Translation?.let { return it }
+
+        return ImageVector.Builder(
             name = "Translation",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -54,9 +54,7 @@ val AppIcons.Translation: ImageVector
                 curveTo(7.355f, 17.255f, 7.745f, 17.645f, 8.235f, 17.848f)
                 curveTo(8.602f, 18f, 9.068f, 18f, 10f, 18f)
             }
-        }.build()
-
-        return _Translation!!
+        }.build().also { _Translation = it }
     }
 
 @Suppress("ObjectPropertyName")

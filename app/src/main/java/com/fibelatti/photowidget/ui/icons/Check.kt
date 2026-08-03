@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Check: ImageVector
     get() {
-        if (_Check != null) {
-            return _Check!!
-        }
-        _Check = ImageVector.Builder(
+        _Check?.let { return it }
+
+        return ImageVector.Builder(
             name = "Check",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -30,9 +30,7 @@ val AppIcons.Check: ImageVector
                 lineTo(8.923f, 17.5f)
                 lineTo(20f, 6.5f)
             }
-        }.build()
-
-        return _Check!!
+        }.build().also { _Check = it }
     }
 
 @Suppress("ObjectPropertyName")

@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Warning: ImageVector
     get() {
-        if (_Warning != null) {
-            return _Warning!!
-        }
-        _Warning = ImageVector.Builder(
+        _Warning?.let { return it }
+
+        return ImageVector.Builder(
             name = "Warning",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -39,9 +39,7 @@ val AppIcons.Warning: ImageVector
                 curveTo(16.975f, 3f, 21.004f, 7.029f, 21.004f, 12f)
                 close()
             }
-        }.build()
-
-        return _Warning!!
+        }.build().also { _Warning = it }
     }
 
 @Suppress("ObjectPropertyName")

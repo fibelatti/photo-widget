@@ -6,12 +6,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Album: ImageVector
     get() {
-        if (_Album != null) {
-            return _Album!!
-        }
-        _Album = ImageVector.Builder(
+        _Album?.let { return it }
+
+        return ImageVector.Builder(
             name = "Album",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -73,9 +73,7 @@ val AppIcons.Album: ImageVector
                 quadToRelative(-12.1f, 12.1f, -29.82f, 12.1f)
                 close()
             }
-        }.build()
-
-        return _Album!!
+        }.build().also { _Album = it }
     }
 
 @Suppress("ObjectPropertyName")

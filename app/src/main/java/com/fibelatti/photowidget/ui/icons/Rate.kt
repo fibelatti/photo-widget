@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Rate: ImageVector
     get() {
-        if (_Rate != null) {
-            return _Rate!!
-        }
-        _Rate = ImageVector.Builder(
+        _Rate?.let { return it }
+
+        return ImageVector.Builder(
             name = "Rate",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -69,9 +69,7 @@ val AppIcons.Rate: ImageVector
                 lineTo(11.245f, 4.174f)
                 close()
             }
-        }.build()
-
-        return _Rate!!
+        }.build().also { _Rate = it }
     }
 
 @Suppress("ObjectPropertyName")

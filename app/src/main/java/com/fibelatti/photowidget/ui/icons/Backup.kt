@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Backup: ImageVector
     get() {
-        if (_Backup != null) {
-            return _Backup!!
-        }
-        _Backup = ImageVector.Builder(
+        _Backup?.let { return it }
+
+        return ImageVector.Builder(
             name = "Backup",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -59,9 +59,7 @@ val AppIcons.Backup: ImageVector
                 curveTo(8.04f, 21f, 9.16f, 21f, 11.4f, 21f)
                 close()
             }
-        }.build()
-
-        return _Backup!!
+        }.build().also { _Backup = it }
     }
 
 @Suppress("ObjectPropertyName")

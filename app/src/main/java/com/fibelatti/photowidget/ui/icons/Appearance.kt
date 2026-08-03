@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Appearance: ImageVector
     get() {
-        if (_Appearance != null) {
-            return _Appearance!!
-        }
-        _Appearance = ImageVector.Builder(
+        _Appearance?.let { return it }
+
+        return ImageVector.Builder(
             name = "Appearance",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -35,9 +35,7 @@ val AppIcons.Appearance: ImageVector
                 curveTo(5.656f, 4.66f, 3.32f, 7.899f, 3.32f, 11.684f)
                 close()
             }
-        }.build()
-
-        return _Appearance!!
+        }.build().also { _Appearance = it }
     }
 
 @Suppress("ObjectPropertyName")

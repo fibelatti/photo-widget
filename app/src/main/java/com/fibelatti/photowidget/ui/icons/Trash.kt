@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Trash: ImageVector
     get() {
-        if (_Trash != null) {
-            return _Trash!!
-        }
-        _Trash = ImageVector.Builder(
+        _Trash?.let { return it }
+
+        return ImageVector.Builder(
             name = "Trash",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -53,9 +53,7 @@ val AppIcons.Trash: ImageVector
                 moveTo(10f, 10f)
                 verticalLineTo(17f)
             }
-        }.build()
-
-        return _Trash!!
+        }.build().also { _Trash = it }
     }
 
 @Suppress("ObjectPropertyName")

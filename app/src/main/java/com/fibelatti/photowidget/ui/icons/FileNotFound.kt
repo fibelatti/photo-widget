@@ -6,12 +6,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.FileNotFound: ImageVector
     get() {
-        if (_FileNotFound != null) {
-            return _FileNotFound!!
-        }
-        _FileNotFound = ImageVector.Builder(
+        _FileNotFound?.let { return it }
+
+        return ImageVector.Builder(
             name = "FileNotFound",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -246,9 +246,7 @@ val AppIcons.FileNotFound: ImageVector
                 verticalLineTo(19f)
                 close()
             }
-        }.build()
-
-        return _FileNotFound!!
+        }.build().also { _FileNotFound = it }
     }
 
 @Suppress("ObjectPropertyName")

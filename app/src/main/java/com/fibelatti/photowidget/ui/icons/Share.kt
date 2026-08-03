@@ -6,12 +6,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Share: ImageVector
     get() {
-        if (_Share != null) {
-            return _Share!!
-        }
-        _Share = ImageVector.Builder(
+        _Share?.let { return it }
+
+        return ImageVector.Builder(
             name = "Share",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -57,9 +57,7 @@ val AppIcons.Share: ImageVector
                 quadToRelative(-37.16f, 37.03f, -90.26f, 37.03f)
                 close()
             }
-        }.build()
-
-        return _Share!!
+        }.build().also { _Share = it }
     }
 
 @Suppress("ObjectPropertyName")

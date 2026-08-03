@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.Back: ImageVector
     get() {
-        if (_Back != null) {
-            return _Back!!
-        }
-        _Back = ImageVector.Builder(
+        _Back?.let { return it }
+
+        return ImageVector.Builder(
             name = "Back",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -33,9 +33,7 @@ val AppIcons.Back: ImageVector
                 moveTo(5f, 12f)
                 lineTo(11f, 18f)
             }
-        }.build()
-
-        return _Back!!
+        }.build().also { _Back = it }
     }
 
 @Suppress("ObjectPropertyName")

@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.NewWidgetSelected: ImageVector
     get() {
-        if (_NewWidgetSelected != null) {
-            return _NewWidgetSelected!!
-        }
-        _NewWidgetSelected = ImageVector.Builder(
+        _NewWidgetSelected?.let { return it }
+
+        return ImageVector.Builder(
             name = "NewWidgetSelected",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -86,9 +86,7 @@ val AppIcons.NewWidgetSelected: ImageVector
                 curveTo(4.76f, 20f, 5.04f, 20f, 5.6f, 20f)
                 close()
             }
-        }.build()
-
-        return _NewWidgetSelected!!
+        }.build().also { _NewWidgetSelected = it }
     }
 
 @Suppress("ObjectPropertyName")

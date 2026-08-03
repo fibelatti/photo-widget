@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
+@Suppress("UnusedReceiverParameter")
 val AppIcons.DynamicColor: ImageVector
     get() {
-        if (_DynamicColor != null) {
-            return _DynamicColor!!
-        }
-        _DynamicColor = ImageVector.Builder(
+        _DynamicColor?.let { return it }
+
+        return ImageVector.Builder(
             name = "DynamicColor",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
@@ -63,9 +63,7 @@ val AppIcons.DynamicColor: ImageVector
                 curveTo(7.776f, 11f, 8f, 11.224f, 8f, 11.5f)
                 close()
             }
-        }.build()
-
-        return _DynamicColor!!
+        }.build().also { _DynamicColor = it }
     }
 
 @Suppress("ObjectPropertyName")
