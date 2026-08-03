@@ -90,6 +90,7 @@
         <activity
             android:name=".chooser.PhotoWidgetChooserActivity"
             android:enableOnBackInvokedCallback="false"
+            android:excludeFromRecents="true"
             android:exported="false"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme.TransparentActivity" />
@@ -97,6 +98,7 @@
         <activity
             android:name=".folder.PhotoWidgetAppFolderActivity"
             android:enableOnBackInvokedCallback="false"
+            android:excludeFromRecents="true"
             android:exported="false"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme.TransparentActivity" />
@@ -104,6 +106,7 @@
         <activity
             android:name=".widget.ToggleCyclingFeedbackActivity"
             android:enableOnBackInvokedCallback="false"
+            android:excludeFromRecents="true"
             android:exported="false"
             android:launchMode="singleInstance"
             android:showWhenLocked="true"
@@ -112,6 +115,7 @@
         <activity
             android:name=".widget.AppShortcutLauncherActivity"
             android:enableOnBackInvokedCallback="false"
+            android:excludeFromRecents="true"
             android:exported="false"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme.TransparentActivity" />
@@ -119,6 +123,7 @@
         <activity
             android:name=".widget.HeadlessFeedbackActivity"
             android:enableOnBackInvokedCallback="false"
+            android:excludeFromRecents="true"
             android:exported="false"
             android:launchMode="singleInstance"
             android:showWhenLocked="true"
