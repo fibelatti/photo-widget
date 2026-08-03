@@ -100,6 +100,8 @@
     <string name="widget_settings_explanation">Spre deosebire de presetările widgeturilor, aceste setări se aplică tuturor widgeturilor tale în permanență. Modificările pot avea efect imediat sau la următoarea actualizare a unui widget, fie prin interacțiunea ta, fie conform programării sale.</string>
     <string name="widget_settings_crossfade">Tranziție între fotografii</string>
     <string name="widget_settings_crossfade_description">Estompează trecerea de la o fotografie la următoarea când un widget schimbă imaginea. Nu are efect când animațiile dispozitivului sunt dezactivate.</string>
+    <string name="widget_settings_folder_sync_interval">Interval de sincronizare a dosarelor</string>
+    <string name="widget_settings_folder_sync_interval_description">Cât de des sunt verificate dosarele adăugate la widgeturile tale pentru fotografii adăugate, eliminate sau modificate.\n\nVerificările mai frecvente actualizează widgeturile mai repede, dar consumă mai multă baterie.</string>
     <!-- Share -->
     <string name="share_title">Răspândește lumii</string>
     <string name="share_text">Adaugă fotografiile tale preferate pe ecranul de pornire cu Material Photo Widget. Descarcă gratuit la %s</string>

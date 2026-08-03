@@ -101,6 +101,8 @@
     <string name="widget_settings_explanation">В отличие от предустановок виджетов, эти настройки всегда применяются ко всем вашим виджетам. Изменения могут вступить в силу сразу или при следующем обновлении виджета — по вашему действию или по расписанию.</string>
     <string name="widget_settings_crossfade">Плавный переход между фото</string>
     <string name="widget_settings_crossfade_description">Плавно сменять одно фото другим, когда виджет переключается на следующее. Не действует, если анимации устройства отключены.</string>
+    <string name="widget_settings_folder_sync_interval">Интервал синхронизации папок</string>
+    <string name="widget_settings_folder_sync_interval_description">Как часто папки, добавленные в ваши виджеты, проверяются на наличие добавленных, удалённых или изменённых фото.\n\nБолее частая проверка быстрее обновляет виджеты, но расходует больше заряда батареи.</string>
     <!-- Share -->
     <string name="share_title">Расскажите другим</string>
     <string name="share_text">Добавляйте свои любимые фотографии на главный экран с помощью Material Photo Widget. Скачайте бесплатно по ссылке %s</string>

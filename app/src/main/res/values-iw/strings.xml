@@ -101,6 +101,8 @@
     <string name="widget_settings_explanation">בניגוד לערכים המוגדרים מראש של הווידג\'טים, הגדרות אלה חלות על כל הווידג\'טים שלך בכל עת. השינויים עשויים להיכנס לתוקף מיד או בפעם הבאה שווידג\'ט יתעדכן, בין אם בעקבות פעולה שלך ובין אם לפי לוח הזמנים שלו.</string>
     <string name="widget_settings_crossfade">מעבר הדרגתי בין תמונות</string>
     <string name="widget_settings_crossfade_description">מעבר הדרגתי מתמונה אחת לבאה כשווידג\'ט מחליף תמונה. אין לכך השפעה כשהאנימציות של המכשיר כבויות.</string>
+    <string name="widget_settings_folder_sync_interval">מרווח סנכרון התיקיות</string>
+    <string name="widget_settings_folder_sync_interval_description">באיזו תדירות נבדקות התיקיות שנוספו לווידג\'טים שלך כדי לאתר תמונות שנוספו, הוסרו או השתנו.\n\nבדיקות תכופות יותר מעדכנות את הווידג\'טים מהר יותר, אך צורכות יותר סוללה.</string>
     <!-- Share -->
     <string name="share_title">ספר לחברים</string>
     <string name="share_text">הוסף את התמונות האהובות עליך למסך הבית שלך בעזרת Material Photo Widget. הורד בחינם ב- %s</string>

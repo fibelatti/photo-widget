@@ -98,6 +98,8 @@
     <string name="widget_settings_explanation">ウィジェットのプリセットとは異なり、これらの設定は常にすべてのウィジェットに適用されます。変更はすぐに反映される場合もあれば、操作またはスケジュールによってウィジェットが次に更新されたときに反映される場合もあります。</string>
     <string name="widget_settings_crossfade">写真をクロスフェード</string>
     <string name="widget_settings_crossfade_description">ウィジェットが次の写真に切り替わるときにフェードで切り替えます。デバイスのアニメーションがオフの場合は効果がありません。</string>
+    <string name="widget_settings_folder_sync_interval">フォルダーの同期間隔</string>
+    <string name="widget_settings_folder_sync_interval_description">ウィジェットに追加したフォルダーを確認し、写真の追加、削除、変更を検出する頻度です。\n\n確認の頻度を上げるとウィジェットが早く最新になりますが、バッテリーの消費が増えます。</string>
     <!-- Share -->
     <string name="share_title">情報を広める</string>
     <string name="share_text">Material Photo Widget でお気に入りの写真をホーム画面に追加しましょう。無料でダウンロード: %s</string>

@@ -98,6 +98,8 @@
     <string name="widget_settings_explanation">与微件预设不同，这些设置始终应用于你的所有微件。更改可能会立即生效，或在微件下次更新时生效，无论是通过你的操作还是其计划。</string>
     <string name="widget_settings_crossfade">照片淡入淡出</string>
     <string name="widget_settings_crossfade_description">微件切换到下一张照片时以淡入淡出方式过渡。设备动画关闭时此设置无效。</string>
+    <string name="widget_settings_folder_sync_interval">文件夹同步间隔</string>
+    <string name="widget_settings_folder_sync_interval_description">检查添加到微件的文件夹中是否有新增、移除或更改的照片的频率。\n\n检查越频繁，微件更新越及时，但也会消耗更多电量。</string>
     <!-- Share -->
     <string name="share_title">分享</string>
     <string name="share_text">将您最喜欢的照片添加到桌面上带有素材照片小组件。免费在 %s 下载</string>

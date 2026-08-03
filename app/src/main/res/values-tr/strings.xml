@@ -99,6 +99,8 @@
     <string name="widget_settings_explanation">Widget ön ayarlarının aksine, bu ayarlar her zaman tüm widget\'larınıza uygulanır. Değişiklikler hemen veya bir widget bir sonraki güncellendiğinde, ister sizin etkileşiminizle ister kendi zamanlamasıyla yürürlüğe girebilir.</string>
     <string name="widget_settings_crossfade">Fotoğrafları çapraz geçişle değiştir</string>
     <string name="widget_settings_crossfade_description">Bir widget sonraki fotoğrafa geçerken yumuşak geçiş uygular. Cihaz animasyonları kapalıyken etkisi yoktur.</string>
+    <string name="widget_settings_folder_sync_interval">Klasör senkronizasyon aralığı</string>
+    <string name="widget_settings_folder_sync_interval_description">Widget\'larınıza eklenen klasörlerin, eklenen, kaldırılan veya değiştirilen fotoğraflar için ne sıklıkla denetleneceği.\n\nDaha sık denetleme widget\'ları daha çabuk güncel tutar, ancak daha fazla pil harcar.</string>
     <!-- Share -->
     <string name="share_title">Sözü yay</string>
     <string name="share_text">Favori fotoğraflarınızı Ana ekranınıza ekleyin. Material Photo Widget ile ücretsiz indir %s</string>

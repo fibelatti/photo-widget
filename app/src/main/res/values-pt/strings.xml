@@ -99,6 +99,8 @@
     <string name="widget_settings_explanation">Diferente das predefinições dos widgets, estas configurações se aplicam a todos os seus widgets o tempo todo. As alterações podem entrar em vigor imediatamente ou na próxima vez que um widget for atualizado, seja pela sua interação ou pela programação dele.</string>
     <string name="widget_settings_crossfade">Transição entre fotos</string>
     <string name="widget_settings_crossfade_description">Faz a transição suave de uma foto para a próxima quando um widget muda de imagem. Não tem efeito quando as animações do dispositivo estão desativadas.</string>
+    <string name="widget_settings_folder_sync_interval">Intervalo de sincronização das pastas</string>
+    <string name="widget_settings_folder_sync_interval_description">Com que frequência as pastas adicionadas aos seus widgets são verificadas em busca de fotos adicionadas, removidas ou alteradas.\n\nVerificar com mais frequência mantém os widgets atualizados mais rápido, mas consome mais bateria.</string>
     <!-- Share -->
     <string name="share_title">Compartilhe</string>
     <string name="share_text">Enfeite a sua tela inicial com as suas fotos favoritas usando o Material Photo Widget. Baixe de graça em %s</string>

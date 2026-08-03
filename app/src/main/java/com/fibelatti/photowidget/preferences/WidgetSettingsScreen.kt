@@ -33,8 +33,11 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.ui.BooleanListItem
+import com.fibelatti.photowidget.ui.PickerListItem
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Back
+import com.fibelatti.photowidget.widget.PhotoWidgetSyncWorker
+import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
@@ -46,10 +49,19 @@ fun WidgetSettingsScreen(
 ) {
     val preferences by widgetSettingsViewModel.userPreferences.collectAsStateWithLifecycle()
 
+    val folderSyncIntervalSheetState = rememberAppSheetState()
+
     WidgetSettingsScreen(
         userPreferences = preferences,
         onNavClick = onNavClick,
         onEnableCrossfadeChange = widgetSettingsViewModel::saveEnableCrossfade,
+        onFolderSyncIntervalClick = folderSyncIntervalSheetState::showBottomSheet,
+    )
+
+    FolderSyncIntervalBottomSheet(
+        sheetState = folderSyncIntervalSheetState,
+        currentValue = preferences.folderSyncInterval,
+        onApplyClick = widgetSettingsViewModel::saveFolderSyncInterval,
     )
 }
 
@@ -58,6 +70,7 @@ private fun WidgetSettingsScreen(
     userPreferences: UserPreferences,
     onNavClick: () -> Unit,
     onEnableCrossfadeChange: (Boolean) -> Unit,
+    onFolderSyncIntervalClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -88,6 +101,7 @@ private fun WidgetSettingsScreen(
         WidgetSettingsContent(
             userPreferences = userPreferences,
             onEnableCrossfadeChange = onEnableCrossfadeChange,
+            onFolderSyncIntervalClick = onFolderSyncIntervalClick,
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
@@ -100,6 +114,7 @@ private fun WidgetSettingsScreen(
 private fun WidgetSettingsContent(
     userPreferences: UserPreferences,
     onEnableCrossfadeChange: (Boolean) -> Unit,
+    onFolderSyncIntervalClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -113,7 +128,7 @@ private fun WidgetSettingsContent(
             currentValue = userPreferences.widgetEnableCrossfade,
             onValueChange = onEnableCrossfadeChange,
             supportingText = stringResource(id = R.string.widget_settings_crossfade_description),
-            shape = Shapes.StandaloneShape,
+            shape = Shapes.TopShape,
             headlineFlag = {
                 Text(
                     text = stringResource(R.string.warning_experimental),
@@ -129,6 +144,13 @@ private fun WidgetSettingsContent(
                     style = MaterialTheme.typography.labelSmall,
                 )
             },
+        )
+
+        PickerListItem(
+            headlineText = stringResource(id = R.string.widget_settings_folder_sync_interval),
+            currentValue = folderSyncIntervalLabel(value = userPreferences.folderSyncInterval),
+            onClick = onFolderSyncIntervalClick,
+            shape = Shapes.BottomShape,
         )
 
         HorizontalDivider(modifier = Modifier.padding(all = 8.dp))
@@ -154,6 +176,7 @@ private fun WidgetSettingsScreenPreview() {
                 useTrueBlack = false,
                 dynamicColors = true,
                 widgetEnableCrossfade = false,
+                folderSyncInterval = PhotoWidgetSyncWorker.DEFAULT_INTERVAL_HOURS,
                 defaultAspectRatio = PhotoWidgetAspectRatio.SQUARE,
                 defaultSource = PhotoWidgetSource.PHOTOS,
                 defaultShuffle = false,
@@ -168,6 +191,7 @@ private fun WidgetSettingsScreenPreview() {
             ),
             onNavClick = {},
             onEnableCrossfadeChange = {},
+            onFolderSyncIntervalClick = {},
         )
     }
 }

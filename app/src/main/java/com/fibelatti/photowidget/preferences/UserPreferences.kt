@@ -12,6 +12,7 @@ data class UserPreferences(
     val useTrueBlack: Boolean,
     val dynamicColors: Boolean,
     val widgetEnableCrossfade: Boolean,
+    val folderSyncInterval: Int,
     val defaultAspectRatio: PhotoWidgetAspectRatio,
     val defaultSource: PhotoWidgetSource,
     val defaultShuffle: Boolean,

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Link to the full changelog in the settings tab
+* New setting to control how frequently folders are synced
 
 ### Changed
 

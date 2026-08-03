@@ -50,6 +50,7 @@ import com.fibelatti.photowidget.ui.PickerListItem
 import com.fibelatti.photowidget.ui.ShapeListItem
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Back
+import com.fibelatti.photowidget.widget.PhotoWidgetSyncWorker
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
 import com.fibelatti.ui.component.SelectionDialogBottomSheetMode
@@ -389,6 +390,7 @@ private fun WidgetDefaultsScreenPreview() {
                 useTrueBlack = false,
                 dynamicColors = true,
                 widgetEnableCrossfade = false,
+                folderSyncInterval = PhotoWidgetSyncWorker.DEFAULT_INTERVAL_HOURS,
                 defaultAspectRatio = PhotoWidgetAspectRatio.SQUARE,
                 defaultSource = PhotoWidgetSource.PHOTOS,
                 defaultShuffle = false,

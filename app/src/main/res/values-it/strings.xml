@@ -99,6 +99,8 @@
     <string name="widget_settings_explanation">A differenza dei preset dei widget, queste impostazioni si applicano a tutti i tuoi widget in ogni momento. Le modifiche possono avere effetto immediatamente o al successivo aggiornamento di un widget, tramite la tua interazione o la sua pianificazione.</string>
     <string name="widget_settings_crossfade">Dissolvenza tra le foto</string>
     <string name="widget_settings_crossfade_description">Sfuma da una foto alla successiva quando un widget cambia immagine. Non ha effetto se le animazioni del dispositivo sono disattivate.</string>
+    <string name="widget_settings_folder_sync_interval">Intervallo di sincronizzazione delle cartelle</string>
+    <string name="widget_settings_folder_sync_interval_description">Con quale frequenza le cartelle aggiunte ai tuoi widget vengono controllate per foto aggiunte, rimosse o modificate.\n\nControlli più frequenti aggiornano prima i widget, ma consumano più batteria.</string>
     <!-- Share -->
     <string name="share_title">Spargi la voce</string>
     <string name="share_text">Aggiungi le tue foto preferite alla schermata iniziale con Material Photo Widget. Scaricalo gratuitamente su %s</string>

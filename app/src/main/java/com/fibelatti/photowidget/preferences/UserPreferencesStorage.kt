@@ -13,6 +13,7 @@ import com.fibelatti.photowidget.model.minutesToLoopingInterval
 import com.fibelatti.photowidget.model.repeatIntervalAsSeconds
 import com.fibelatti.photowidget.model.secondsToLoopingInterval
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
+import com.fibelatti.photowidget.widget.PhotoWidgetSyncWorker
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -40,6 +41,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
             useTrueBlack = useTrueBlack,
             dynamicColors = dynamicColors,
             widgetEnableCrossfade = widgetEnableCrossfade,
+            folderSyncInterval = folderSyncInterval,
             defaultAspectRatio = defaultAspectRatio,
             defaultSource = defaultSource,
             defaultShuffle = defaultShuffle,
@@ -120,6 +122,22 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         set(value) {
             sharedPreferences.edit { putBoolean(Preference.WIDGET_ENABLE_CROSSFADE.value, value) }
             _userPreferences.update { current -> current.copy(widgetEnableCrossfade = value) }
+        }
+
+    var folderSyncInterval: Int
+        get() {
+            return sharedPreferences.getInt(
+                Preference.FOLDER_SYNC_INTERVAL.value,
+                PhotoWidgetSyncWorker.DEFAULT_INTERVAL_HOURS,
+            ).coerceIn(PhotoWidgetSyncWorker.MIN_INTERVAL_HOURS, PhotoWidgetSyncWorker.MAX_INTERVAL_HOURS)
+        }
+        set(value) {
+            val newValue: Int = value.coerceIn(
+                PhotoWidgetSyncWorker.MIN_INTERVAL_HOURS,
+                PhotoWidgetSyncWorker.MAX_INTERVAL_HOURS,
+            )
+            sharedPreferences.edit { putInt(Preference.FOLDER_SYNC_INTERVAL.value, newValue) }
+            _userPreferences.update { current -> current.copy(folderSyncInterval = newValue) }
         }
     // endregion
 
@@ -334,6 +352,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
                 useTrueBlack = useTrueBlack,
                 dynamicColors = dynamicColors,
                 widgetEnableCrossfade = widgetEnableCrossfade,
+                folderSyncInterval = folderSyncInterval,
                 defaultAspectRatio = defaultAspectRatio,
                 defaultSource = defaultSource,
                 defaultShuffle = defaultShuffle,
@@ -357,6 +376,7 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         APP_DYNAMIC_COLORS(value = "user_preferences_dynamic_colors"),
         HIGHLIGHT_TRANSPARENT_WIDGETS(value = "user_preferences_highlight_transparent_widgets"),
         WIDGET_ENABLE_CROSSFADE(value = "widget_settings_enable_crossfade"),
+        FOLDER_SYNC_INTERVAL(value = "widget_settings_folder_sync_interval"),
         DEFAULT_ASPECT_RATIO(value = "default_aspect_ratio", resettable = true),
         DEFAULT_SOURCE(value = "default_source", resettable = true),
         DEFAULT_SHUFFLE(value = "default_shuffle", resettable = true),

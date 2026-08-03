@@ -113,6 +113,8 @@
     <string name="widget_settings_explanation">Unlike widget presets, these settings apply to all of your widgets at all times. Changes might take effect immediately or the next time a widget updates, either through your interaction or its schedule.</string>
     <string name="widget_settings_crossfade">Crossfade photos</string>
     <string name="widget_settings_crossfade_description">Fade between photos when a widget switches to the next one. Has no effect when device animations are turned off.</string>
+    <string name="widget_settings_folder_sync_interval">Folder sync interval</string>
+    <string name="widget_settings_folder_sync_interval_description">How often the folders added to your widgets are checked for photos that were added, removed, or changed.\n\nChecking more often keeps widgets up to date sooner, but uses more battery.</string>
 
     <!-- Share -->
     <string name="share_title">Spread the word</string>

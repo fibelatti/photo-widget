@@ -99,6 +99,8 @@
     <string name="widget_settings_explanation">Contrairement aux préréglages des widgets, ces paramètres s\'appliquent à tous vos widgets en permanence. Les modifications peuvent prendre effet immédiatement ou à la prochaine mise à jour d\'un widget, que ce soit par votre interaction ou selon sa planification.</string>
     <string name="widget_settings_crossfade">Fondu enchaîné des photos</string>
     <string name="widget_settings_crossfade_description">Effectuer un fondu d\'une photo à la suivante lorsqu\'un widget change d\'image. Sans effet si les animations de l\'appareil sont désactivées.</string>
+    <string name="widget_settings_folder_sync_interval">Intervalle de synchronisation des dossiers</string>
+    <string name="widget_settings_folder_sync_interval_description">Fréquence à laquelle les dossiers ajoutés à vos widgets sont vérifiés pour détecter les photos ajoutées, supprimées ou modifiées.\n\nDes vérifications plus fréquentes actualisent les widgets plus vite, mais consomment plus de batterie.</string>
     <!-- Share -->
     <string name="share_title">Faire connaître</string>
     <string name="share_text">Ajoutez vos photos préférées à votre écran d\'accueil avec Material Photo Widget. Téléchargez gratuitement à %s</string>

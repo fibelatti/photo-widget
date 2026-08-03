@@ -98,6 +98,8 @@
     <string name="widget_settings_explanation">Hindi tulad ng mga preset ng widget, ang mga setting na ito ay nalalapat sa lahat ng iyong widget sa lahat ng oras. Maaaring magkabisa kaagad ang mga pagbabago o sa susunod na pag-update ng isang widget, sa pamamagitan man ng iyong pakikipag-ugnayan o ng iskedyul nito.</string>
     <string name="widget_settings_crossfade">I-crossfade ang mga larawan</string>
     <string name="widget_settings_crossfade_description">I-fade ang isang larawan papunta sa susunod kapag lumipat ang widget. Walang epekto ito kapag naka-off ang mga animation ng device.</string>
+    <string name="widget_settings_folder_sync_interval">Agwat ng pag-sync ng folder</string>
+    <string name="widget_settings_folder_sync_interval_description">Kung gaano kadalas sinusuri ang mga folder na idinagdag sa iyong mga widget para sa mga larawang naidagdag, natanggal, o nabago.\n\nAng mas madalas na pagsuri ay mas mabilis na nagpapa-update sa mga widget, ngunit mas maraming baterya ang nagagamit.</string>
     <!-- Share -->
     <string name="share_title">Ibahagi sa iba</string>
     <string name="share_text">Idagdag ang mga paborito mong larawan sa iyong home screen gamit ang Material Photo Widget. I-download nang libre sa %s</string>

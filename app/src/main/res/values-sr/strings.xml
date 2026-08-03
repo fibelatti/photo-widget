@@ -100,6 +100,8 @@
     <string name="widget_settings_explanation">За разлику од унапред задатих поставки виџета, ова подешавања важе за све ваше виџете у сваком тренутку. Промене могу ступити на снагу одмах или при следећем ажурирању виџета, било кроз вашу интеракцију или по његовом распореду.</string>
     <string name="widget_settings_crossfade">Прелаз између фотографија</string>
     <string name="widget_settings_crossfade_description">Постепено претапа једну фотографију у следећу када виџет промени слику. Нема ефекта када су анимације уређаја искључене.</string>
+    <string name="widget_settings_folder_sync_interval">Интервал синхронизације фолдера</string>
+    <string name="widget_settings_folder_sync_interval_description">Колико често се фолдери додати вашим виџетима проверавају због фотографија које су додате, уклоњене или измењене.\n\nЧешће провере брже ажурирају виџете, али троше више батерије.</string>
     <!-- Share -->
     <string name="share_title">Проширите вест</string>
     <string name="share_text">Додајте своје омиљене фотографије на почетни екран помоћу Material Photo Widget-а. Преузмите бесплатно на %s</string>
