@@ -1,0 +1,8 @@
+This version brings the following updates:
+
+* New setting to control how frequently folders are synced
+* Wider interval ranges: up to 90 seconds, 90 minutes and 36 hours
+* Fix how the widget handles changes to photos in synced folders
+* Exclude the folder view from the Android recents apps menu
+
+Thanks for using the app!
