@@ -186,7 +186,10 @@ private fun <T> SelectionDialogLazyListContent(
                     .clip(shape)
                     .clickable(onClick = { onOptionSelect(option) }, role = Role.Button),
                 shape = shape,
-                colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                colors = ListItemDefaults.colors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                ),
             )
         }
 

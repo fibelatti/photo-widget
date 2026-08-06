@@ -1390,6 +1390,7 @@ private fun AppFolderCustomizationItem(
 ) {
     val colors: ListItemColors = ListItemDefaults.colors(
         containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        contentColor = MaterialTheme.colorScheme.onSurface,
     )
 
     CompositionLocalProvider(LocalContentColor provides colors.contentColor) {

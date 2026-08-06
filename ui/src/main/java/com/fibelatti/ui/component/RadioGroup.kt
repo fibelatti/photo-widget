@@ -79,6 +79,7 @@ private fun RadioGroupItem(
             MaterialTheme.colorScheme.surfaceContainerHigh
         },
     )
+    val contentColor: Color = contentColorFor(backgroundColor)
 
     ListItem(
         modifier = modifier
@@ -103,14 +104,14 @@ private fun RadioGroupItem(
             if (description != null) {
                 AutoSizeText(
                     text = description,
-                    color = contentColorFor(backgroundColor),
+                    color = contentColor,
                     minFontSize = 8.sp,
                     maxLines = 2,
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
         },
-        colors = ListItemDefaults.colors(containerColor = backgroundColor),
+        colors = ListItemDefaults.colors(containerColor = backgroundColor, contentColor = contentColor),
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -118,7 +119,7 @@ private fun RadioGroupItem(
             ) {
                 Text(
                     text = title,
-                    color = contentColorFor(backgroundColor),
+                    color = contentColor,
                     style = MaterialTheme.typography.titleMediumEmphasized,
                 )
 
