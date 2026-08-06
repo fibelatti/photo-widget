@@ -344,6 +344,8 @@
     <string name="backup_feedback_restore_error">Falha ao restaurar o backup. Certifique-se de estar escolhendo um arquivo de backup válido.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Todas as fotos</string>
+    <string name="photo_widget_viewer_quick_actions_copy">Copiar caminho</string>
+    <string name="photo_widget_viewer_quick_actions_open_folder">Abrir pasta pai</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Widget pausado</string>
     <string name="photo_widget_cycling_feedback_resumed">Widget retomado</string>

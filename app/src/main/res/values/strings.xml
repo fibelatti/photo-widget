@@ -407,6 +407,8 @@
 
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">All photos</string>
+    <string name="photo_widget_viewer_quick_actions_copy">Copy path</string>
+    <string name="photo_widget_viewer_quick_actions_open_folder">Open parent folder</string>
 
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Widget paused</string>

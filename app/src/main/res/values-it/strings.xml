@@ -345,6 +345,8 @@
 
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Tutte le foto</string>
+    <string name="photo_widget_viewer_quick_actions_copy">Copia percorso</string>
+    <string name="photo_widget_viewer_quick_actions_open_folder">Apri cartella principale</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Widget in pausa</string>
     <string name="photo_widget_cycling_feedback_resumed">Widget ripreso</string>

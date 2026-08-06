@@ -350,6 +350,8 @@
     <string name="backup_feedback_restore_error">Враћање резервне копије није успело. Уверите се да бирате важећу датотеку резервне копије.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Све фотографије</string>
+    <string name="photo_widget_viewer_quick_actions_copy">Копирај путању</string>
+    <string name="photo_widget_viewer_quick_actions_open_folder">Отвори надређени фолдер</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Виџет је паузиран</string>
     <string name="photo_widget_cycling_feedback_resumed">Виџет је настављен</string>

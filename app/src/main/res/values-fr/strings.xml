@@ -344,6 +344,8 @@
     <string name="backup_feedback_restore_error">Échec de la restauration de la sauvegarde. Veuillez vous assurer que vous choisissez un fichier de sauvegarde valide.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Toutes les photos</string>
+    <string name="photo_widget_viewer_quick_actions_copy">Copier le chemin</string>
+    <string name="photo_widget_viewer_quick_actions_open_folder">Ouvrir le dossier parent</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Widget en pause</string>
     <string name="photo_widget_cycling_feedback_resumed">Widget repris</string>

@@ -344,6 +344,8 @@
     <string name="backup_feedback_restore_error">No se pudo restaurar la copia de seguridad. Asegúrate de elegir un archivo de copia de seguridad válido.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Todas las fotos</string>
+    <string name="photo_widget_viewer_quick_actions_copy">Copiar ruta</string>
+    <string name="photo_widget_viewer_quick_actions_open_folder">Abrir carpeta principal</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Widget en pausa</string>
     <string name="photo_widget_cycling_feedback_resumed">Widget reanudado</string>

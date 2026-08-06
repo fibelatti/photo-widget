@@ -344,6 +344,8 @@
     <string name="backup_feedback_restore_error">Fehler beim Wiederherstellen der Sicherung. Bitte stelle sicher, dass du eine gültige Sicherungsdatei auswählst.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Alle Fotos</string>
+    <string name="photo_widget_viewer_quick_actions_copy">Pfad kopieren</string>
+    <string name="photo_widget_viewer_quick_actions_open_folder">Übergeordneten Ordner öffnen</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Widget pausiert</string>
     <string name="photo_widget_cycling_feedback_resumed">Widget fortgesetzt</string>

@@ -358,6 +358,8 @@
     <string name="backup_feedback_restore_error">Не удалось восстановить резервную копию. Пожалуйста, убедитесь, что вы выбираете действительный файл резервной копии.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Все фото</string>
+    <string name="photo_widget_viewer_quick_actions_copy">Копировать путь</string>
+    <string name="photo_widget_viewer_quick_actions_open_folder">Открыть родительскую папку</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Виджет приостановлен</string>
     <string name="photo_widget_cycling_feedback_resumed">Виджет возобновлён</string>

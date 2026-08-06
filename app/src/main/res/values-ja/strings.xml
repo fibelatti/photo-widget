@@ -334,6 +334,8 @@
     <string name="backup_feedback_restore_error">バックアップの復元に失敗しました。有効なバックアップファイルを選択していることを確認してください。</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">すべての写真</string>
+    <string name="photo_widget_viewer_quick_actions_copy">パスをコピー</string>
+    <string name="photo_widget_viewer_quick_actions_open_folder">親フォルダーを開く</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">ウィジェットを一時停止しました</string>
     <string name="photo_widget_cycling_feedback_resumed">ウィジェットを再開しました</string>

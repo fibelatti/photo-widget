@@ -342,6 +342,8 @@
     <string name="backup_feedback_restore_error">Yedekleme geri yüklenemedi. Lütfen geçerli bir yedekleme dosyası seçtiğinizden emin olun.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Tüm fotoğraflar</string>
+    <string name="photo_widget_viewer_quick_actions_copy">Yolu kopyala</string>
+    <string name="photo_widget_viewer_quick_actions_open_folder">Üst klasörü aç</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Widget duraklatıldı</string>
     <string name="photo_widget_cycling_feedback_resumed">Widget devam etti</string>

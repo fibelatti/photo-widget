@@ -342,6 +342,8 @@
     <string name="backup_feedback_restore_error">Nabigo ang pag-restore ng backup. Pakitiyak na pumipili ka ng wastong backup file.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Lahat ng larawan</string>
+    <string name="photo_widget_viewer_quick_actions_copy">Kopyahin ang path</string>
+    <string name="photo_widget_viewer_quick_actions_open_folder">Buksan ang parent folder</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Naka-hinto ang widget</string>
     <string name="photo_widget_cycling_feedback_resumed">Pinatuloy ang widget</string>

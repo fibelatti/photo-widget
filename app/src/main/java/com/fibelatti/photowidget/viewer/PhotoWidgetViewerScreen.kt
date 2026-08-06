@@ -1,9 +1,8 @@
 package com.fibelatti.photowidget.viewer
 
 import android.app.KeyguardManager
-import android.content.ClipData
 import android.content.Context
-import android.widget.Toast
+import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -11,7 +10,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,12 +49,9 @@ import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.Clipboard
-import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.platform.toClipEntry
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
@@ -74,6 +70,8 @@ import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.ChevronLeft
 import com.fibelatti.photowidget.ui.icons.ChevronRight
 import com.fibelatti.photowidget.ui.icons.Share
+import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.DragState
 import com.fibelatti.ui.foundation.onHorizontalDrag
 import com.fibelatti.ui.foundation.onVerticalDrag
@@ -126,10 +124,7 @@ fun PhotoWidgetViewerScreen(
     // The picker and share sheet cannot be interacted with over the keyguard, so hide them while locked.
     val isDeviceLocked: Boolean = rememberIsDeviceLocked()
 
-    val coroutineScope: CoroutineScope = rememberCoroutineScope()
-
-    val localContext: Context = LocalContext.current
-    val localClipboard: Clipboard = LocalClipboard.current
+    val sheetState: AppSheetState = rememberAppSheetState()
 
     LaunchedEffect(Unit) {
         showControls = true
@@ -163,13 +158,8 @@ fun PhotoWidgetViewerScreen(
             showPhotoPath = showPhotoPath,
             onAllPhotosClick = onAllPhotosClick,
             onShareClick = onShareClick,
-            onPhotoPathClick = { path: String ->
-                Toast.makeText(localContext, path, Toast.LENGTH_SHORT).show()
-            },
-            onPhotoPathLongClick = { path: String ->
-                coroutineScope.launch {
-                    localClipboard.setClipEntry(ClipData.newPlainText("", path).toClipEntry())
-                }
+            onPhotoPathClick = { path: String, pathUri: Uri ->
+                sheetState.showBottomSheet(data = path to pathUri.toString())
             },
             modifier = Modifier
                 .align(Alignment.TopEnd)
@@ -190,6 +180,8 @@ fun PhotoWidgetViewerScreen(
                 .padding(start = 32.dp, end = 32.dp, bottom = 16.dp),
         )
     }
+
+    PhotoPathBottomSheet(sheetState = sheetState)
 }
 
 @Composable
@@ -351,8 +343,7 @@ private fun ViewerHeaderControls(
     showPhotoPath: Boolean,
     onAllPhotosClick: () -> Unit,
     onShareClick: (LocalPhoto) -> Unit,
-    onPhotoPathClick: (String) -> Unit,
-    onPhotoPathLongClick: (String) -> Unit,
+    onPhotoPathClick: (path: String, pathUri: Uri) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     AnimatedVisibility(
@@ -414,7 +405,7 @@ private fun ViewerHeaderControls(
                 photo?.externalPhotoPathString()
             }
 
-            if (showPhotoPath && path != null) {
+            if (showPhotoPath && path != null && photo?.externalUri != null) {
                 Box(
                     modifier = Modifier.fillMaxWidth(fraction = .75f),
                     contentAlignment = Alignment.CenterEnd,
@@ -426,10 +417,9 @@ private fun ViewerHeaderControls(
                                 color = MaterialTheme.colorScheme.secondaryContainer,
                                 shape = MaterialTheme.shapes.large,
                             )
-                            .combinedClickable(
+                            .clickable(
                                 role = Role.Button,
-                                onClick = { onPhotoPathClick(path) },
-                                onLongClick = { onPhotoPathLongClick(path) },
+                                onClick = { onPhotoPathClick(path, photo.externalUri) },
                             )
                             .padding(all = 8.dp),
                         color = MaterialTheme.colorScheme.onSecondaryContainer,

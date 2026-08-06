@@ -358,6 +358,8 @@
     <string name="backup_feedback_restore_error">שחזור גיבוי נכשל. אנא ודא שאתה בוחר קובץ גיבוי חוקי.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">כל התמונות</string>
+    <string name="photo_widget_viewer_quick_actions_copy">העתקת נתיב</string>
+    <string name="photo_widget_viewer_quick_actions_open_folder">פתיחת תיקיית האב</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">הווידג\'ט הושהה</string>
     <string name="photo_widget_cycling_feedback_resumed">הווידג\'ט חודש</string>

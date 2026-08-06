@@ -352,6 +352,8 @@
     <string name="backup_feedback_restore_error">Nu s-a reușit restaurarea copiei de rezervă. Asigurați-vă că alegeți un fișier valid de rezervă.</string>
     <!-- Viewer -->
     <string name="photo_widget_viewer_all_photos">Toate fotografiile</string>
+    <string name="photo_widget_viewer_quick_actions_copy">Copiază calea</string>
+    <string name="photo_widget_viewer_quick_actions_open_folder">Deschide dosarul părinte</string>
     <!-- Cycling feedback -->
     <string name="photo_widget_cycling_feedback_paused">Widget întrerupt</string>
     <string name="photo_widget_cycling_feedback_resumed">Widget reluat</string>
