@@ -1312,16 +1312,17 @@ private fun AppFolderCustomizationContent(
             verticalArrangement = Arrangement.spacedBy(2.dp),
         ) ReorderableColumnItem@{ index: Int, item: AppFolderResolvedEntry, isDragging: Boolean ->
             ReorderableItem {
+                val isLastItem: Boolean = index == items.lastIndex && value.shortcuts.size == 12
                 val topCorner: Dp by animateDpAsState(
                     targetValue = when {
-                        index == 0 || isDragging -> 12.dp
-                        else -> 2.dp
+                        index == 0 || isDragging -> Shapes.GroupCornerRadius
+                        else -> Shapes.SeamCornerRadius
                     },
                 )
                 val bottomCorner: Dp by animateDpAsState(
                     targetValue = when {
-                        (index == items.lastIndex && value.shortcuts.size == 12) || isDragging -> 12.dp
-                        else -> 2.dp
+                        isLastItem || isDragging -> Shapes.GroupCornerRadius
+                        else -> Shapes.SeamCornerRadius
                     },
                 )
 

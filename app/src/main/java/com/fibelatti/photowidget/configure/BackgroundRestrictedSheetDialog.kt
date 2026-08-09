@@ -62,7 +62,7 @@ fun BackgroundRestrictionWarningDialog(
             modifier = Modifier
                 .background(
                     color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                    shape = MaterialTheme.shapes.medium,
+                    shape = MaterialTheme.shapes.extraLarge,
                 )
                 .padding(all = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),

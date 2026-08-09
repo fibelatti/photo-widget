@@ -3,12 +3,16 @@ package com.fibelatti.ui.foundation
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 object Shapes {
 
-    private val mediumCornerSize: CornerSize = CornerSize(12.dp)
-    private val smallCornerSize: CornerSize = CornerSize(2.dp)
+    val GroupCornerRadius: Dp = 16.dp
+    val SeamCornerRadius: Dp = 4.dp
+
+    private val mediumCornerSize: CornerSize = CornerSize(GroupCornerRadius)
+    private val smallCornerSize: CornerSize = CornerSize(SeamCornerRadius)
 
     val TopShape: Shape = RoundedCornerShape(
         topStart = mediumCornerSize,

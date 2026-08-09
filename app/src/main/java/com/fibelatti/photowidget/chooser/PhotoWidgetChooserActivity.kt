@@ -129,7 +129,7 @@ private fun ScreenContent(
         LazyVerticalGrid(
             columns = GridCells.Fixed(count = 5),
             modifier = Modifier
-                .background(shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.surface)
+                .background(shape = MaterialTheme.shapes.extraLarge, color = MaterialTheme.colorScheme.surface)
                 .padding(all = 16.dp)
                 .fadingEdges(scrollState = lazyGridState),
             state = lazyGridState,

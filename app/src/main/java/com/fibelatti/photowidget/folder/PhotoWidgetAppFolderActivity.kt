@@ -155,6 +155,7 @@ private fun ScreenContent(
             InformationalPanel(
                 text = stringResource(R.string.photo_widget_app_folder_empty),
                 textStyle = MaterialTheme.typography.bodyLarge,
+                backgroundShape = MaterialTheme.shapes.extraLarge,
                 showActionButton = true,
                 actionButtonText = stringResource(R.string.photo_widget_action_continue),
                 onActionButtonClick = onEditWidgetClick,

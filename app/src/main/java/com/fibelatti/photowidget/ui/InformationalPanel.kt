@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.Warning
+import com.fibelatti.ui.foundation.Shapes
 
 @Composable
 fun InformationalPanel(
@@ -29,7 +30,7 @@ fun InformationalPanel(
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     icon: Painter = rememberVectorPainter(AppIcons.Warning),
-    backgroundShape: Shape = MaterialTheme.shapes.medium,
+    backgroundShape: Shape = Shapes.StandaloneShape,
     backgroundColor: Color = Color(0xFFFFE57F),
     contentColor: Color = Color.Black,
     showActionButton: Boolean = false,
