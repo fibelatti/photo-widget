@@ -41,7 +41,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -193,7 +192,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
     private fun updateState(photoWidget: PhotoWidget, hasEdits: Boolean) {
         val resolvedAspectRatio: PhotoWidgetAspectRatio = aspectRatio ?: photoWidget.aspectRatio
-        _state.getAndUpdate { current ->
+        _state.update { current ->
             current.copy(
                 photoWidget = photoWidget.copy(
                     aspectRatio = resolvedAspectRatio,
@@ -211,7 +210,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     private fun trackEdits() {
         viewModelScope.launch {
             state.withIndex().first { (index, value) -> index > 0 && !value.hasEdits }
-            _state.getAndUpdate { current -> current.copy(hasEdits = true) }
+            _state.update { current -> current.copy(hasEdits = true) }
         }
     }
 
@@ -238,7 +237,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             photoWidgetStorage.saveWidgetSource(appWidgetId = effectiveWidgetId, source = newSource)
             photoWidgetStorage.loadWidgetPhotos(appWidgetId = effectiveWidgetId)
                 .onEach { widgetPhotos ->
-                    _state.getAndUpdate { current ->
+                    _state.update { current ->
                         current.copy(
                             photoWidget = current.photoWidget.copy(
                                 source = newSource,
@@ -329,7 +328,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
             val shouldTriggerCrop = newPhotos.isNotEmpty() && newPhotos.size <= 5
 
-            _state.getAndUpdate { current ->
+            _state.update { current ->
                 current.copy(
                     isProcessing = false,
                     cropQueue = if (shouldTriggerCrop) newPhotos else emptyList(),
@@ -371,7 +370,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 null
             }
 
-            _state.getAndUpdate { current ->
+            _state.update { current ->
                 current.copy(
                     photoWidget = current.photoWidget.copy(gifInterval = gifFrames.interval),
                     isProcessing = false,
@@ -435,7 +434,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     private fun reloadDirPhotos(syncedDir: Collection<Uri>) {
         photoWidgetStorage.loadWidgetPhotos(appWidgetId = effectiveWidgetId)
             .onEach { widgetPhotos ->
-                _state.getAndUpdate { current ->
+                _state.update { current ->
                     current.copy(
                         photoWidget = current.photoWidget.copy(
                             photos = widgetPhotos.current,
@@ -453,7 +452,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     }
 
     fun previewPhoto(photo: LocalPhoto) {
-        _state.getAndUpdate { current -> current.copy(selectedPhoto = photo) }
+        _state.update { current -> current.copy(selectedPhoto = photo) }
     }
 
     fun requestCrop(photo: LocalPhoto) {
@@ -463,7 +462,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 localPhoto = photo,
             )
 
-            _state.getAndUpdate { current ->
+            _state.update { current ->
                 current.copy(
                     photoWidget = current.photoWidget.copy(
                         photos = current.photoWidget.photos.map { it.copy(cropping = it.photoId == photo.photoId) },
@@ -492,7 +491,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             }
         }
 
-        _state.getAndUpdate { current ->
+        _state.update { current ->
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     photos = current.photoWidget.photos.map(updateMatchingPhoto),
@@ -514,7 +513,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     }
 
     fun removePhoto(photo: LocalPhoto) {
-        _state.getAndUpdate { current ->
+        _state.update { current ->
             val removedPhoto = current.photoWidget.photos.firstOrNull { it.photoId == photo.photoId }
             val updatedPhotos = current.photoWidget.photos.filterNot { it.photoId == photo.photoId }
             val newIndex = current.photoWidget.photos.indexOfFirst { it.photoId == photo.photoId }
@@ -554,11 +553,11 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     }
 
     fun restorePhoto(photo: LocalPhoto) {
-        _state.getAndUpdate { current -> current + photo }
+        _state.update { current -> current + photo }
     }
 
     fun deletePhotoPermanently(photo: LocalPhoto) {
-        _state.getAndUpdate { current ->
+        _state.update { current ->
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     removedPhotos = current.photoWidget.removedPhotos.filterNot { it.photoId == photo.photoId },
@@ -586,7 +585,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     }
 
     private fun move(moveOp: MutableList<LocalPhoto>.() -> Unit) {
-        _state.getAndUpdate { current ->
+        _state.update { current ->
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     photos = current.photoWidget.photos.toMutableList().apply(moveOp),
@@ -596,7 +595,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     }
 
     fun reorderPhotos(photos: List<LocalPhoto>) {
-        _state.getAndUpdate { current ->
+        _state.update { current ->
             current.copy(
                 photoWidget = current.photoWidget.copy(
                     photos = photos,
@@ -824,7 +823,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
                     pinningCache.populate(pendingWidget = currentState.photoWidget, draftWidgetId = effectiveWidgetId)
 
-                    _state.getAndUpdate { current ->
+                    _state.update { current ->
                         current.copy(isProcessing = false) +
                             PhotoWidgetConfigureState.Message.RequestPin(transparent = current.photoWidget.transparent)
                     }
@@ -848,7 +847,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                         )
                     }
 
-                    _state.getAndUpdate { current ->
+                    _state.update { current ->
                         current.copy(isProcessing = false) +
                             PhotoWidgetConfigureState.Message.AddWidget(
                                 appWidgetId = appWidgetId,
@@ -880,7 +879,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 )
             }
 
-            _state.getAndUpdate { current ->
+            _state.update { current ->
                 current.copy(isProcessing = false) + PhotoWidgetConfigureState.Message.DraftSaved
             }
         }
