@@ -46,6 +46,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.flow.withIndex
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -413,7 +414,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 }
             }
 
-            val updatedState: PhotoWidgetConfigureState = _state.getAndUpdate { current ->
+            val updatedState: PhotoWidgetConfigureState = _state.updateAndGet { current ->
                 current.copy(isProcessing = false, cropQueue = emptyList()) + source + newDirPhotos
             }
             photoWidgetStorage.saveWidgetSyncedDir(
