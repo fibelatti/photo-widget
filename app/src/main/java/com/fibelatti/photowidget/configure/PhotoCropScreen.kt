@@ -314,7 +314,7 @@ private fun CropControls(
                 )
             }
 
-            Spacer(modifier = Modifier.width(6.dp))
+            Spacer(modifier = Modifier.width(8.dp))
 
             FilledTonalIconButton(
                 onClick = onFlipHorizontalClick,

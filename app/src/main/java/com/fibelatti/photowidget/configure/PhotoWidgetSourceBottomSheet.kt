@@ -136,7 +136,7 @@ private fun SourcePickerContent(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
+                    .padding(horizontal = 16.dp),
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.labelLarge,
@@ -145,7 +145,7 @@ private fun SourcePickerContent(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
+                    .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
                 dirList.forEachIndexed { index, dir ->

@@ -1030,7 +1030,7 @@ private fun ViewFullScreenCustomizationContent(
             shape = Shapes.BottomShape,
         )
 
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         BooleanListItem(
             headlineText = stringResource(R.string.photo_widget_configure_tap_action_show_navigation_controls),
@@ -1056,7 +1056,7 @@ private fun ViewFullScreenCustomizationContent(
             shape = Shapes.BottomShape,
         )
 
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         BooleanListItem(
             headlineText = stringResource(R.string.photo_widget_configure_tap_action_show_photo_picker),
@@ -1088,7 +1088,7 @@ private fun ViewFullScreenCustomizationContent(
             shape = Shapes.BottomShape,
         )
 
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         PickerListItem(
             headlineText = stringResource(R.string.photo_widget_configure_tap_action_viewer_background_color),
@@ -1098,13 +1098,13 @@ private fun ViewFullScreenCustomizationContent(
             modifier = Modifier.fillMaxWidth(),
         )
 
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         InformationalPanel(
             text = stringResource(id = R.string.photo_widget_configure_tap_action_shared_preferences),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp),
+                .padding(horizontal = 16.dp),
         )
     }
 
@@ -1140,7 +1140,7 @@ private fun ViewInGalleryCustomizationContent(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp),
+                .padding(horizontal = 16.dp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.bodyMedium,
         )
@@ -1154,7 +1154,7 @@ private fun ViewInGalleryCustomizationContent(
             text = stringResource(id = R.string.photo_widget_configure_tap_action_shared_preferences),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp),
+                .padding(horizontal = 16.dp),
         )
     }
 }
@@ -1201,7 +1201,7 @@ private fun ToggleCyclingCustomizationContent(
             text = stringResource(id = R.string.photo_widget_configure_tap_action_toggle_cycling_description),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp),
+                .padding(horizontal = 16.dp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.bodyMedium,
         )
@@ -1216,7 +1216,7 @@ private fun ToggleCyclingCustomizationContent(
             text = stringResource(id = R.string.photo_widget_configure_tap_action_shared_preferences),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp),
+                .padding(horizontal = 16.dp),
         )
     }
 }
@@ -1262,7 +1262,7 @@ private fun FolderShortcutCustomizationContent(
             text = stringResource(R.string.photo_widget_configure_tap_action_choose_folder_description),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp),
+                .padding(horizontal = 16.dp),
         )
     }
 }

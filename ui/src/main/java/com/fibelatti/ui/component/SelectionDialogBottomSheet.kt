@@ -167,7 +167,7 @@ private fun <T> SelectionDialogLazyListContent(
         stickyHeader {
             Column {
                 header()
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
 
@@ -195,7 +195,7 @@ private fun <T> SelectionDialogLazyListContent(
 
         item {
             Column {
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 footer()
             }
         }

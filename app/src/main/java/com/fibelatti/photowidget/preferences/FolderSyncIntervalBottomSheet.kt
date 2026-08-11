@@ -66,7 +66,7 @@ fun FolderSyncIntervalContent(
             text = stringResource(R.string.widget_settings_folder_sync_interval_description),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 32.dp),
+                .padding(horizontal = 16.dp),
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
         )

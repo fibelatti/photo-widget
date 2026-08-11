@@ -67,7 +67,7 @@ fun PhotoWidgetGifIntervalContent(
             text = stringResource(R.string.photo_widget_configure_gif_frame_interval_description),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 32.dp),
+                .padding(horizontal = 16.dp),
             color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyMedium,
@@ -86,7 +86,7 @@ fun PhotoWidgetGifIntervalContent(
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 32.dp),
+                .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp, alignment = Alignment.CenterHorizontally),
             verticalArrangement = Arrangement.spacedBy(4.dp),
             itemVerticalAlignment = Alignment.CenterVertically,

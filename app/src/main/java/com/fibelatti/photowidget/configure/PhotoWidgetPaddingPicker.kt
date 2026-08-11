@@ -46,7 +46,7 @@ fun PhotoWidgetPaddingPicker(
             value = value,
             onIncreaseClick = { value++ },
             onDecreaseClick = { value-- },
-            modifier = Modifier.padding(horizontal = 24.dp),
+            modifier = Modifier.padding(horizontal = 16.dp),
             upperBound = 20,
             lowerBound = 0,
         )

@@ -153,11 +153,11 @@ private fun WidgetSettingsContent(
             shape = Shapes.BottomShape,
         )
 
-        HorizontalDivider(modifier = Modifier.padding(all = 8.dp))
+        HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
 
         Text(
             text = stringResource(id = R.string.widget_settings_explanation),
-            modifier = Modifier.padding(horizontal = 8.dp),
+            modifier = Modifier.padding(horizontal = 16.dp),
             style = MaterialTheme.typography.bodyMedium,
         )
     }

@@ -97,7 +97,7 @@ fun NewWidgetScreen(
         ShapesBanner(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(vertical = 10.dp),
+                .padding(vertical = 8.dp),
         )
 
         Column(

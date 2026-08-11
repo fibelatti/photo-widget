@@ -367,11 +367,11 @@ private fun WidgetDefaultsContent(
             Text(text = stringResource(id = R.string.widget_defaults_reset))
         }
 
-        HorizontalDivider(modifier = Modifier.padding(all = 8.dp))
+        HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
 
         Text(
             text = stringResource(id = R.string.widget_defaults_explanation),
-            modifier = Modifier.padding(horizontal = 8.dp),
+            modifier = Modifier.padding(horizontal = 16.dp),
             style = MaterialTheme.typography.bodyMedium,
         )
     }

@@ -134,7 +134,7 @@ fun PhotoWidgetConfigureTextTab(
                     shape = Shapes.BottomShape,
                 )
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
                 InformationalPanel(
                     text = stringResource(R.string.photo_widget_configure_text_caveat),

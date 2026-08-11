@@ -317,7 +317,7 @@ private fun SettingsScreen(
 
         SettingsFooter(
             onViewLicensesClick = onViewLicensesClick,
-            modifier = Modifier.padding(top = 46.dp, bottom = 32.dp),
+            modifier = Modifier.padding(top = 48.dp, bottom = 32.dp),
         )
     }
 }
@@ -388,8 +388,8 @@ private fun SettingsSectionHeader(
     Text(
         text = stringResource(id = text),
         modifier = modifier
-            .padding(horizontal = 12.dp)
-            .padding(top = 26.dp, bottom = 2.dp),
+            .padding(horizontal = 16.dp)
+            .padding(top = 24.dp, bottom = 4.dp),
         color = MaterialTheme.colorScheme.secondary,
         style = MaterialTheme.typography.titleSmall,
     )
