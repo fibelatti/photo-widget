@@ -144,6 +144,9 @@
     <string name="photo_widget_configure_source_selection_directory_empty">Этот виджет еще не синхронизирован с какой-либо папкой.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Этот виджет синхронизирован с этими папками:</string>
     <string name="photo_widget_configure_source_warning">Изменение источника удалит все данные содержимого этого виджета после подтверждения. Это действие нельзя отменить, и вам придётся снова выбрать фотографии или папки.</string>
+    <string name="photo_widget_configure_source_sync_scope">Область синхронизации</string>
+    <string name="photo_widget_configure_source_sync_scope_subfolders">Включая подпапки</string>
+    <string name="photo_widget_configure_source_sync_scope_folder_only">Только эта папка</string>
     <string name="photo_widget_configure_menu_crop">Обрезать</string>
     <string name="photo_widget_configure_menu_remove">Удалить</string>
     <string name="photo_widget_configure_menu_move_left">Переместить влево</string>

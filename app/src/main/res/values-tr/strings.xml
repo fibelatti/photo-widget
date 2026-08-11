@@ -142,6 +142,9 @@
     <string name="photo_widget_configure_source_selection_directory_empty">Bu widget henüz herhangi bir klasör ile senkronize edilmedi.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Bu widget şu klasörler ile senkronize edildi:</string>
     <string name="photo_widget_configure_source_warning">Kaynağı değiştirmek, onayladığınızda bu widget\'teki tüm içerik verilerini silecektir. Bu değişiklik geri alınamaz ve fotoğrafları veya klasörleri yeniden seçmeniz gerekecektir.</string>
+    <string name="photo_widget_configure_source_sync_scope">Eşitleme kapsamı</string>
+    <string name="photo_widget_configure_source_sync_scope_subfolders">Alt klasörler dahil</string>
+    <string name="photo_widget_configure_source_sync_scope_folder_only">Yalnızca bu klasör</string>
     <string name="photo_widget_configure_menu_crop">Kırp</string>
     <string name="photo_widget_configure_menu_remove">Kaldır</string>
     <string name="photo_widget_configure_menu_move_left">Sola taşı</string>

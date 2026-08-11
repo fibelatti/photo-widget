@@ -11,6 +11,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetText
+import com.fibelatti.photowidget.model.SyncDir
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.WidgetOffset
@@ -116,7 +117,7 @@ class PhotoWidgetStorage @Inject constructor(
 
             deleteWidgetTableData(appWidgetId = appWidgetId)
 
-            sharedPreferences.saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = emptySet())
+            sharedPreferences.saveWidgetSyncedDir(appWidgetId = appWidgetId, syncDirs = emptySet())
         }
 
         sharedPreferences.saveWidgetSource(appWidgetId = appWidgetId, source = source)
@@ -140,17 +141,20 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
-    fun saveWidgetSyncedDir(appWidgetId: Int, dirUri: Set<Uri>) {
-        externalFileStorage.takePersistableUriPermission(dirUri = dirUri)
-        sharedPreferences.saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = dirUri)
+    fun saveWidgetSyncedDir(appWidgetId: Int, syncDirs: Set<SyncDir>) {
+        externalFileStorage.takePersistableUriPermission(syncDirs = syncDirs)
+        sharedPreferences.saveWidgetSyncedDir(appWidgetId = appWidgetId, syncDirs = syncDirs)
     }
 
     fun removeSyncedDir(appWidgetId: Int, dirUri: Uri) {
         val currentDir = getWidgetSyncDir(appWidgetId = appWidgetId)
-        saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = currentDir - dirUri)
+        saveWidgetSyncedDir(
+            appWidgetId = appWidgetId,
+            syncDirs = currentDir.filterNot { it.dir == dirUri }.toSet(),
+        )
     }
 
-    fun getWidgetSyncDir(appWidgetId: Int): Set<Uri> {
+    fun getWidgetSyncDir(appWidgetId: Int): Set<SyncDir> {
         return sharedPreferences.getWidgetSyncDir(appWidgetId = appWidgetId)
     }
 
@@ -164,15 +168,15 @@ class PhotoWidgetStorage @Inject constructor(
         return internalFileStorage.newWidgetPhotosFromGif(directoryName = directoryName, source = source)
     }
 
-    suspend fun getNewDirPhotos(dirUri: Uri, sorting: DirectorySorting): List<LocalPhoto>? {
-        if (dirUri.toString().endsWith("DCIM%2FCamera", ignoreCase = true)) {
+    suspend fun getNewDirPhotos(syncDir: SyncDir, sorting: DirectorySorting): List<LocalPhoto>? {
+        if (syncDir.dir.toString().endsWith("DCIM%2FCamera", ignoreCase = true)) {
             return null
         }
 
         return try {
             // Traverse the directory structure to ensure that all folders contains less than the limit
             externalFileStorage.getPhotos(
-                dirUri = setOf(dirUri),
+                syncDirs = setOf(syncDir),
                 croppedPhotos = emptyMap(),
                 sorting = sorting,
                 applyValidation = true,
@@ -245,7 +249,7 @@ class PhotoWidgetStorage @Inject constructor(
 
         val loadedPhotos: Map<Boolean, List<LocalPhoto>> = if (source == PhotoWidgetSource.DIRECTORY) {
             externalFileStorage.getPhotos(
-                dirUri = getWidgetSyncDir(appWidgetId),
+                syncDirs = getWidgetSyncDir(appWidgetId),
                 croppedPhotos = croppedPhotos,
                 sorting = getWidgetSorting(appWidgetId),
             )
@@ -458,6 +462,39 @@ class PhotoWidgetStorage @Inject constructor(
         }
 
         excludedPhotosDao.saveExcludedPhotos(photos = photos)
+    }
+
+    /**
+     * Deletes the cropped photos of [appWidgetId] that are not in [keepPhotoIds].
+     *
+     * Only meaningful for [PhotoWidgetSource.DIRECTORY] widgets, where the source can stop including
+     * a photo — because a synced directory was removed, or because it stopped syncing its subfolders.
+     *
+     * [keepPhotoIds] must cover the photos the user removed from the widget as well: their ids live
+     * in `excluded_widget_photos` and can be restored, so their crops are deliberately kept. Crops
+     * saved before ids carried the full path are matched by their file name.
+     */
+    suspend fun deleteOrphanedPhotos(appWidgetId: Int, keepPhotoIds: Set<String>) {
+        val directoryName: String = getOrCreateDirectoryName(appWidgetId)
+
+        // Crops are stored under their photo id, but ids only started carrying the full path later,
+        // so a crop file can also be named after the photo's file name alone.
+        val keepFileNames: Set<String> = keepPhotoIds + keepPhotoIds.map { it.substringAfterLast(SEPARATOR) }
+
+        val orphanIds: List<String> = internalFileStorage.getWidgetPhotos(
+            directoryName = directoryName,
+            source = PhotoWidgetSource.DIRECTORY,
+        ).map { it.photoId }
+            .filterNot { photoId -> photoId in keepFileNames }
+
+        if (orphanIds.isEmpty()) return
+
+        Timber.i(
+            "Deleting orphaned photos %s",
+            mapOf("appWidgetId" to appWidgetId, "count" to orphanIds.size),
+        )
+
+        deletePhotos(appWidgetId = appWidgetId, photoIds = orphanIds)
     }
 
     suspend fun deletePhotos(appWidgetId: Int, photoIds: Iterable<String>) {
@@ -778,7 +815,7 @@ class PhotoWidgetStorage @Inject constructor(
 
         val referencedUris: Set<Uri> = buildSet {
             for (id in referencedWidgetIds) {
-                addAll(getWidgetSyncDir(appWidgetId = id))
+                addAll(getWidgetSyncDir(appWidgetId = id).map { it.dir })
                 for (area in TapActionArea.entries) {
                     when (val action = getWidgetTapAction(appWidgetId = id, tapActionArea = area)) {
                         is PhotoWidgetTapAction.FileShortcut if action.fileUri != null -> {

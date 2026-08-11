@@ -141,6 +141,9 @@
     <string name="photo_widget_configure_source_selection_directory_empty">此组件尚未与任何文件夹同步。</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">此小组件已与这些文件夹同步：</string>
     <string name="photo_widget_configure_source_warning">更改来源会清除此小组件中的所有内容数据。此操作不可撤销，您需要重新选择照片或文件夹。</string>
+    <string name="photo_widget_configure_source_sync_scope">同步范围</string>
+    <string name="photo_widget_configure_source_sync_scope_subfolders">包含子文件夹</string>
+    <string name="photo_widget_configure_source_sync_scope_folder_only">仅此文件夹</string>
     <string name="photo_widget_configure_menu_crop">裁切</string>
     <string name="photo_widget_configure_menu_remove">移除</string>
     <string name="photo_widget_configure_menu_move_left">左移</string>

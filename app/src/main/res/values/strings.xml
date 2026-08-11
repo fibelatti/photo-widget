@@ -167,6 +167,9 @@
     <string name="photo_widget_configure_source_selection_directory_empty">This widget is not synced with any folder yet.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">This widget is synced with these folders:</string>
     <string name="photo_widget_configure_source_warning">Changing the source will erase all content data from this widget once you confirm. This change cannot be reversed, and you will have to select photos or folders again.</string>
+    <string name="photo_widget_configure_source_sync_scope">Sync scope</string>
+    <string name="photo_widget_configure_source_sync_scope_subfolders">Includes subfolders</string>
+    <string name="photo_widget_configure_source_sync_scope_folder_only">This folder only</string>
 
     <string name="photo_widget_configure_menu_crop">Crop</string>
     <string name="photo_widget_configure_menu_remove">Remove</string>

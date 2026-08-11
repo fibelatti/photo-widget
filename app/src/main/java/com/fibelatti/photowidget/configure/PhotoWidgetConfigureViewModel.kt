@@ -17,6 +17,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.PhotoWidgetText
+import com.fibelatti.photowidget.model.SyncDir
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.coerceTapActions
 import com.fibelatti.photowidget.model.orderedPhotosForDisplay
@@ -385,8 +386,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { current -> current.copy(isProcessing = true) }
 
+            val syncDir = SyncDir(dir = source)
             val newDirPhotos: List<LocalPhoto>? = photoWidgetStorage.getNewDirPhotos(
-                dirUri = source,
+                syncDir = syncDir,
                 sorting = _state.value.photoWidget.directorySorting,
             )
             if (newDirPhotos == null) {
@@ -414,11 +416,11 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
             }
 
             val updatedState: PhotoWidgetConfigureState = _state.updateAndGet { current ->
-                current.copy(isProcessing = false, cropQueue = emptyList()) + source + newDirPhotos
+                current.copy(isProcessing = false, cropQueue = emptyList()) + syncDir + newDirPhotos
             }
             photoWidgetStorage.saveWidgetSyncedDir(
                 appWidgetId = effectiveWidgetId,
-                dirUri = updatedState.photoWidget.syncedDir,
+                syncDirs = updatedState.photoWidget.syncedDir,
             )
         }
     }
@@ -427,11 +429,28 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         viewModelScope.launch {
             photoWidgetStorage.removeSyncedDir(appWidgetId = effectiveWidgetId, dirUri = source)
 
-            reloadDirPhotos(syncedDir = _state.value.photoWidget.syncedDir - source)
+            reloadDirPhotos(syncedDir = _state.value.photoWidget.syncedDir.filterNot { it.dir == source })
         }
     }
 
-    private fun reloadDirPhotos(syncedDir: Collection<Uri>) {
+    fun changeSyncDirSubdirectories(source: Uri, subdirectories: Boolean) {
+        val updatedSyncedDir: Set<SyncDir> = _state.value.photoWidget.syncedDir
+            .map { syncDir ->
+                if (syncDir.dir == source) syncDir.copy(subdirectories = subdirectories) else syncDir
+            }
+            .toSet()
+
+        // Updated eagerly so the picker reflects the choice while the photos are reloaded, and
+        // persisted before reloading because the photos are resolved from the preferences.
+        _state.update { current ->
+            current.copy(photoWidget = current.photoWidget.copy(syncedDir = updatedSyncedDir))
+        }
+        photoWidgetStorage.saveWidgetSyncedDir(appWidgetId = effectiveWidgetId, syncDirs = updatedSyncedDir)
+
+        reloadDirPhotos(syncedDir = updatedSyncedDir)
+    }
+
+    private fun reloadDirPhotos(syncedDir: Collection<SyncDir>) {
         photoWidgetStorage.loadWidgetPhotos(appWidgetId = effectiveWidgetId)
             .onEach { widgetPhotos ->
                 _state.update { current ->
@@ -442,7 +461,11 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                             syncedDir = syncedDir.toSet(),
                             removedPhotos = widgetPhotos.excluded,
                         ),
-                        selectedPhoto = current.selectedPhoto ?: widgetPhotos.current.firstOrNull(),
+                        // The previewed photo can be one that the source stopped including, so it
+                        // is only kept while it is still part of the widget.
+                        selectedPhoto = current.selectedPhoto
+                            ?.takeIf { photo -> widgetPhotos.current.any { it.photoId == photo.photoId } }
+                            ?: widgetPhotos.current.firstOrNull(),
                         isProcessing = false,
                         cropQueue = emptyList(),
                     )

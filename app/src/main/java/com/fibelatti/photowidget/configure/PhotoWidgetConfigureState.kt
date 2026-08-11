@@ -6,6 +6,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.SyncDir
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
@@ -97,10 +98,12 @@ operator fun PhotoWidgetConfigureState.plus(photos: Collection<LocalPhoto>): Pho
     )
 }
 
-operator fun PhotoWidgetConfigureState.plus(dir: Uri): PhotoWidgetConfigureState {
+operator fun PhotoWidgetConfigureState.plus(dir: SyncDir): PhotoWidgetConfigureState {
     return copy(
         photoWidget = photoWidget.copy(
-            syncedDir = photoWidget.syncedDir + dir,
+            // Replacing by directory keeps a re-picked directory from being synced twice, which
+            // would happen otherwise since its subfolder setting could be different.
+            syncedDir = photoWidget.syncedDir.filterNot { it.dir == dir.dir }.plus(dir).toSet(),
         ),
     )
 }

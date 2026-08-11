@@ -143,6 +143,9 @@
     <string name="photo_widget_configure_source_selection_directory_empty">Acest widget nu este încă sincronizat cu niciun dosar.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Acest widget este sincronizat cu aceste dosare:</string>
     <string name="photo_widget_configure_source_warning">Schimbarea sursei va șterge toate datele de conținut ale acestui widget imediat ce confirmi. Această modificare nu poate fi anulată și va trebui să selectezi din nou fotografii sau foldere.</string>
+    <string name="photo_widget_configure_source_sync_scope">Domeniu de sincronizare</string>
+    <string name="photo_widget_configure_source_sync_scope_subfolders">Include subdosarele</string>
+    <string name="photo_widget_configure_source_sync_scope_folder_only">Doar acest dosar</string>
     <string name="photo_widget_configure_menu_crop">Taie</string>
     <string name="photo_widget_configure_menu_remove">Șterge</string>
     <string name="photo_widget_configure_menu_move_left">Mută la stânga</string>

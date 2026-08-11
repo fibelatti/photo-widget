@@ -142,6 +142,9 @@
     <string name="photo_widget_configure_source_selection_directory_empty">Dieses Widget ist noch nicht mit einem Ordner synchronisiert.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Dieses Widget ist mit diesen Ordnern synchronisiert:</string>
     <string name="photo_widget_configure_source_warning">Das Ändern der Quelle löscht alle Inhaltsdaten dieses Widgets, sobald du bestätigst. Diese Änderung kann nicht rückgängig gemacht werden und du musst Fotos oder Ordner erneut auswählen.</string>
+    <string name="photo_widget_configure_source_sync_scope">Synchronisierungsbereich</string>
+    <string name="photo_widget_configure_source_sync_scope_subfolders">Inklusive Unterordner</string>
+    <string name="photo_widget_configure_source_sync_scope_folder_only">Nur dieser Ordner</string>
     <string name="photo_widget_configure_menu_crop">Zuschneiden</string>
     <string name="photo_widget_configure_menu_remove">Entfernen</string>
     <string name="photo_widget_configure_menu_move_left">Nach links verschieben</string>

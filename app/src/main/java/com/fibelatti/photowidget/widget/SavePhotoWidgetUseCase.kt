@@ -65,7 +65,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
         }
 
         if (photoWidget.source == PhotoWidgetSource.DIRECTORY) {
-            photoWidgetStorage.saveWidgetSyncedDir(appWidgetId = appWidgetId, dirUri = photoWidget.syncedDir)
+            photoWidgetStorage.saveWidgetSyncedDir(appWidgetId = appWidgetId, syncDirs = photoWidget.syncedDir)
         }
 
         photoWidgetStorage.syncWidgetPhotos(
@@ -115,6 +115,18 @@ class SavePhotoWidgetUseCase @Inject constructor(
                     photoIds = removedPhotoIds,
                 )
             }
+        }
+
+        // The synced directories, or their subfolder setting, may have changed while configuring the
+        // widget. Photos that are no longer part of the source have just been dropped from the
+        // database, so their crops would linger with nothing referencing them.
+        if (photoWidget.source == PhotoWidgetSource.DIRECTORY && photoWidget.syncedDir.isNotEmpty()) {
+            photoWidgetStorage.deleteOrphanedPhotos(
+                appWidgetId = appWidgetId,
+                keepPhotoIds = photoWidget.photos.map { it.photoId }
+                    .plus(removedPhotoIds)
+                    .toSet(),
+            )
         }
     }
 

@@ -141,6 +141,9 @@
     <string name="photo_widget_configure_source_selection_directory_empty">Hindi pa naka-sync ang widget na ito sa kahit na anong folder.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Naka-sync ang widget sa mga folder na ito:</string>
     <string name="photo_widget_configure_source_warning">Mabubura ang lahat ng nilalaman ng widget na ito kapag binago ang pinagmulan at nakumpirma mo na ito. Hindi maibabalik ang pagbabagong ito at kakailanganing pumili ulit ng mga larawan o folder.</string>
+    <string name="photo_widget_configure_source_sync_scope">Saklaw ng pag-sync</string>
+    <string name="photo_widget_configure_source_sync_scope_subfolders">Kasama ang mga subfolder</string>
+    <string name="photo_widget_configure_source_sync_scope_folder_only">Ang folder na ito lang</string>
     <string name="photo_widget_configure_menu_crop">I-krop</string>
     <string name="photo_widget_configure_menu_remove">Tanggalin</string>
     <string name="photo_widget_configure_menu_move_left">Ilipat sa kaliwa</string>

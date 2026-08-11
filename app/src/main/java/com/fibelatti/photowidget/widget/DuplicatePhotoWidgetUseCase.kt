@@ -34,7 +34,7 @@ class DuplicatePhotoWidgetUseCase @Inject constructor(
             PhotoWidgetSource.DIRECTORY -> {
                 photoWidgetStorage.saveWidgetSyncedDir(
                     appWidgetId = newAppWidgetId,
-                    dirUri = appWidget.syncedDir,
+                    syncDirs = appWidget.syncedDir,
                 )
             }
         }

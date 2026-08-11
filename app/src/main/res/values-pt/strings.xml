@@ -142,6 +142,9 @@
     <string name="photo_widget_configure_source_selection_directory_empty">Este widget ainda não está sincronizado com nenhuma pasta.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Este widget está sincronizado com estas pastas:</string>
     <string name="photo_widget_configure_source_warning">Alterar a origem apagará todos os dados de conteúdo deste widget assim que você confirmar. Esta alteração não pode ser revertida e você terá que selecionar fotos ou pastas novamente.</string>
+    <string name="photo_widget_configure_source_sync_scope">Escopo da sincronização</string>
+    <string name="photo_widget_configure_source_sync_scope_subfolders">Inclui subpastas</string>
+    <string name="photo_widget_configure_source_sync_scope_folder_only">Somente esta pasta</string>
     <string name="photo_widget_configure_menu_crop">Recortar</string>
     <string name="photo_widget_configure_menu_remove">Remover</string>
     <string name="photo_widget_configure_menu_move_left">Mover à esquerda</string>

@@ -9,6 +9,7 @@ import android.os.Build
 import android.provider.DocumentsContract
 import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.LocalPhoto
+import com.fibelatti.photowidget.model.SyncDir
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -25,10 +26,10 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
 
     private val contentResolver: ContentResolver = context.contentResolver
 
-    fun takePersistableUriPermission(dirUri: Set<Uri>) {
-        for (dir in dirUri) {
-            Timber.d("Taking persistable uri permission for $dir")
-            contentResolver.takePersistableUriPermission(dir, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    fun takePersistableUriPermission(syncDirs: Set<SyncDir>) {
+        for (syncDir in syncDirs) {
+            Timber.d("Taking persistable uri permission for ${syncDir.dir}")
+            contentResolver.takePersistableUriPermission(syncDir.dir, Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
     }
 
@@ -45,18 +46,23 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
     }
 
     suspend fun getPhotos(
-        dirUri: Set<Uri>,
+        syncDirs: Set<SyncDir>,
         croppedPhotos: Map<String, LocalPhoto>,
         sorting: DirectorySorting,
         applyValidation: Boolean = false,
     ): List<LocalPhoto> = coroutineScope {
-        val photos: List<LocalPhoto> = dirUri.map { uri ->
+        val photos: List<LocalPhoto> = syncDirs.map { syncDir ->
             async {
                 val documentUri = DocumentsContract.buildDocumentUriUsingTree(
-                    /* treeUri = */ uri,
-                    /* documentId = */ DocumentsContract.getTreeDocumentId(uri),
+                    /* treeUri = */ syncDir.dir,
+                    /* documentId = */ DocumentsContract.getTreeDocumentId(syncDir.dir),
                 )
-                getPhotos(documentUri = documentUri, croppedPhotos = croppedPhotos, applyValidation = applyValidation)
+                getPhotos(
+                    documentUri = documentUri,
+                    croppedPhotos = croppedPhotos,
+                    subdirectories = syncDir.subdirectories,
+                    applyValidation = applyValidation,
+                )
             }
         }.awaitAll().flatten()
 
@@ -69,6 +75,7 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
     private suspend fun getPhotos(
         documentUri: Uri,
         croppedPhotos: Map<String, LocalPhoto>,
+        subdirectories: Boolean,
         applyValidation: Boolean = false,
     ): List<LocalPhoto> {
         return withContext(Dispatchers.IO) {
@@ -140,8 +147,16 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
                             }
                         }
 
-                        documentName?.startsWith(".") != true && mimeType == "vnd.android.document/directory" -> {
-                            result.addAll(getPhotos(documentUri = fileUri, croppedPhotos = croppedPhotos))
+                        mimeType == "vnd.android.document/directory" &&
+                            subdirectories &&
+                            documentName?.startsWith(".") != true -> {
+                            result.addAll(
+                                getPhotos(
+                                    documentUri = fileUri,
+                                    croppedPhotos = croppedPhotos,
+                                    subdirectories = true,
+                                ),
+                            )
                         }
                     }
                 }

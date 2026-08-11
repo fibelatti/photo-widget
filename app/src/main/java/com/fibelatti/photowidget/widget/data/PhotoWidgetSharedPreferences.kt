@@ -12,6 +12,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetText
+import com.fibelatti.photowidget.model.SyncDir
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.WidgetOffset
@@ -54,24 +55,37 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         return sharedPreferences.getBoolean("${PreferencePrefix.TRANSPARENT}$appWidgetId", false)
     }
 
-    fun saveWidgetSyncedDir(appWidgetId: Int, dirUri: Set<Uri>) {
+    fun saveWidgetSyncedDir(appWidgetId: Int, syncDirs: Set<SyncDir>) {
         sharedPreferences.edit {
-            putStringSet("${PreferencePrefix.SYNCED_DIR}$appWidgetId", dirUri.map { it.toString() }.toSet())
+            putStringSet(
+                "${PreferencePrefix.SYNCED_DIR}$appWidgetId",
+                syncDirs.map { it.dir.toString() }.toSet(),
+            )
+            putStringSet(
+                "${PreferencePrefix.SYNCED_DIR_NO_SUBFOLDERS}$appWidgetId",
+                syncDirs.filterNot { it.subdirectories }.map { it.dir.toString() }.toSet(),
+            )
         }
     }
 
-    fun getWidgetSyncDir(appWidgetId: Int): Set<Uri> {
+    fun getWidgetSyncDir(appWidgetId: Int): Set<SyncDir> {
         val legacyUriString = sharedPreferences.getString("${PreferencePrefix.LEGACY_SYNCED_DIR}$appWidgetId", null)
             ?.let(Uri::parse)
 
         if (legacyUriString != null) {
-            saveWidgetSyncedDir(appWidgetId = appWidgetId, setOf(legacyUriString))
+            saveWidgetSyncedDir(appWidgetId = appWidgetId, setOf(SyncDir(dir = legacyUriString)))
             sharedPreferences.edit { remove("${PreferencePrefix.LEGACY_SYNCED_DIR}$appWidgetId") }
         }
 
+        // Directories not in this set sync their subfolders, which is both the default and the
+        // behavior of every directory widget configured before the setting existed.
+        val noSubfolders: Set<String> = sharedPreferences
+            .getStringSet("${PreferencePrefix.SYNCED_DIR_NO_SUBFOLDERS}$appWidgetId", null)
+            .orEmpty()
+
         return sharedPreferences.getStringSet("${PreferencePrefix.SYNCED_DIR}$appWidgetId", null)
             .orEmpty()
-            .map(Uri::parse)
+            .map { uri -> SyncDir(dir = Uri.parse(uri), subdirectories = uri !in noSubfolders) }
             .toSet()
     }
 
@@ -743,6 +757,13 @@ class PhotoWidgetSharedPreferences @Inject constructor(
          * Key from when support for syncing multiple directories was introduced.
          */
         SYNCED_DIR(value = "appwidget_synced_dir_set_"),
+
+        /**
+         * The subset of [SYNCED_DIR] that should not sync their subfolders. Storing the exclusions
+         * separately keeps [SYNCED_DIR] parseable as plain URIs: document tree URIs come from
+         * arbitrary providers, so no delimiter could be safely embedded in them.
+         */
+        SYNCED_DIR_NO_SUBFOLDERS(value = "appwidget_synced_dir_no_subfolders_"),
 
         LEGACY_ORDER(value = "appwidget_order_"),
         SHUFFLE(value = "appwidget_shuffle_"),

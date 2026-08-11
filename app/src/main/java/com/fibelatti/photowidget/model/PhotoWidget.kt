@@ -1,6 +1,5 @@
 package com.fibelatti.photowidget.model
 
-import android.net.Uri
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
 import kotlinx.parcelize.Parcelize
@@ -9,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Immutable
 data class PhotoWidget(
     val source: PhotoWidgetSource = PhotoWidgetSource.PHOTOS,
-    val syncedDir: Set<Uri> = emptySet(),
+    val syncedDir: Set<SyncDir> = emptySet(),
     val photos: List<LocalPhoto> = emptyList(),
     val currentPhoto: LocalPhoto? = null,
     val shuffle: Boolean = false,

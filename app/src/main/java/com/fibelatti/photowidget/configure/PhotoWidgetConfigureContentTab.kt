@@ -154,6 +154,7 @@ fun PhotoWidgetConfigureContentTab(
         currentSource = state.photoWidget.source,
         syncedDir = state.photoWidget.syncedDir,
         onDirRemove = viewModel::removeDir,
+        onDirSubdirectoriesChange = viewModel::changeSyncDirSubdirectories,
         onChangeSource = viewModel::changeSource,
     )
 

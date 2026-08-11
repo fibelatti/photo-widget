@@ -142,6 +142,9 @@
     <string name="photo_widget_configure_source_selection_directory_empty">Este widget aún no está sincronizado con ninguna carpeta.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Este widget está sincronizado con estas carpetas:</string>
     <string name="photo_widget_configure_source_warning">Cambiar la fuente borrará todos los datos de contenido de este widget cuando confirmes. Este cambio no se puede revertir y tendrás que seleccionar fotos o carpetas de nuevo.</string>
+    <string name="photo_widget_configure_source_sync_scope">Alcance de sincronización</string>
+    <string name="photo_widget_configure_source_sync_scope_subfolders">Incluye subcarpetas</string>
+    <string name="photo_widget_configure_source_sync_scope_folder_only">Solo esta carpeta</string>
     <string name="photo_widget_configure_menu_crop">Recortar</string>
     <string name="photo_widget_configure_menu_remove">Eliminar</string>
     <string name="photo_widget_configure_menu_move_left">Mover a la izquierda</string>

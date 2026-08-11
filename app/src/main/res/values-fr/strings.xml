@@ -142,6 +142,9 @@
     <string name="photo_widget_configure_source_selection_directory_empty">Ce widget n\'est pas encore synchronisé avec un dossier.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Ce widget est synchronisé avec ces dossiers :</string>
     <string name="photo_widget_configure_source_warning">Changer la source effacera toutes les données de contenu de ce widget dès que vous confirmez. Cette modification ne peut pas être annulée et vous devrez sélectionner à nouveau des photos ou des dossiers.</string>
+    <string name="photo_widget_configure_source_sync_scope">Portée de la synchronisation</string>
+    <string name="photo_widget_configure_source_sync_scope_subfolders">Inclut les sous-dossiers</string>
+    <string name="photo_widget_configure_source_sync_scope_folder_only">Ce dossier uniquement</string>
     <string name="photo_widget_configure_menu_crop">Rogner</string>
     <string name="photo_widget_configure_menu_remove">Supprimer</string>
     <string name="photo_widget_configure_menu_move_left">Déplacer vers la gauche</string>

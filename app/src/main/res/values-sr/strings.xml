@@ -143,6 +143,9 @@
     <string name="photo_widget_configure_source_selection_directory_empty">Овај виџет још увек није синхронизован ни са једном фасциклом.</string>
     <string name="photo_widget_configure_source_selection_directory_non_empty">Овај виџет је синхронизован са овим фасциклама:</string>
     <string name="photo_widget_configure_source_warning">Промена извора ће обрисати све податке садржаја са овог виџета након што га потврдите. Ова промена се не може поништити и мораћете поново да изаберете фотографије или фасцикле.</string>
+    <string name="photo_widget_configure_source_sync_scope">Опсег синхронизације</string>
+    <string name="photo_widget_configure_source_sync_scope_subfolders">Укључује подфасцикле</string>
+    <string name="photo_widget_configure_source_sync_scope_folder_only">Само ова фасцикла</string>
     <string name="photo_widget_configure_menu_crop">Опсеци</string>
     <string name="photo_widget_configure_menu_remove">Уклони</string>
     <string name="photo_widget_configure_menu_move_left">Помери лево</string>
