@@ -24,7 +24,7 @@ val AppIcons.Warning: ImageVector
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 2f,
                 strokeLineCap = StrokeCap.Round,
-                strokeLineJoin = StrokeJoin.Round
+                strokeLineJoin = StrokeJoin.Round,
             ) {
                 moveTo(12f, 17f)
                 horizontalLineTo(12.01f)
