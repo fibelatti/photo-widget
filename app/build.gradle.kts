@@ -192,7 +192,7 @@ dependencies {
     implementation(libs.navigation3.ui)
 
     // Compose
-    implementation(libs.compose.material)
+//    implementation(libs.compose.material)
     implementation(libs.adaptive.android)
 
     // Misc

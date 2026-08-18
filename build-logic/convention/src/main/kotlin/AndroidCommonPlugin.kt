@@ -84,9 +84,6 @@ class AndroidCommonPlugin : Plugin<Project> {
         }
 
         dependencies {
-            val bom = versionCatalog.findLibrary("compose-bom").get()
-
-            implementation(platform(bom))
             implementation("compose-runtime")
             implementation("compose-material3")
             implementation("compose-ui")
