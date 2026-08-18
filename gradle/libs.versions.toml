@@ -37,7 +37,7 @@ compose-material3 = { module = "androidx.compose.material3:material3" } # Used i
 compose-ui = { module = "androidx.compose.ui:ui" } # Used in build-logic
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" } # Used in build-logic
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" } # Used in build-logic
-adaptive-android = { module = "androidx.compose.material3.adaptive:adaptive-android", version = "1.2.0" }
+adaptive-android = { module = "androidx.compose.material3.adaptive:adaptive-android", version = "1.3.0" }
 
 core-library-desugaring = { module = "com.android.tools:desugar_jdk_libs", version = "2.1.5" } # Used in build-logic
 
