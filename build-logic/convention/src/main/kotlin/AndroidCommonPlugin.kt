@@ -59,7 +59,6 @@ class AndroidCommonPlugin : Plugin<Project> {
         }
 
         dependencies {
-            implementation("kotlin")
             implementation("coroutines-core")
         }
     }
