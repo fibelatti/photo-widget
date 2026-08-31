@@ -11,7 +11,7 @@ kotlin = "2.4.10"
 nav3 = "1.1.6"
 room = "2.8.4"
 spotless = "8.10.0"
-aboutLibraries = "15.1.1"
+aboutLibraries = "15.2.0"
 
 [libraries]
 kotlin-metadata-jvm = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlin" }
