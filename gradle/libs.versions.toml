@@ -2,7 +2,7 @@
 agp = "9.3.2"
 coil = "3.5.0"
 composeMaterial3 = "1.5.0-alpha26"
-composeRuntime = "1.13.0-alpha01"
+composeRuntime = "1.13.0-alpha02"
 composeUi = "1.13.0-alpha01"
 coroutines = "1.11.0"
 hilt = "2.60.1"
