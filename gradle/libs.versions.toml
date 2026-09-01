@@ -1,6 +1,6 @@
 [versions]
 agp = "9.3.2"
-coil = "3.6.0"
+coil = "3.6.1"
 composeMaterial3 = "1.5.0-alpha27"
 composeRuntime = "1.13.0-alpha02"
 composeUi = "1.13.0-alpha02"
