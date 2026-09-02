@@ -1,0 +1,6 @@
+This version brings the following updates:
+
+* Select whether synced folders include subdirectories
+* Copy or open the folder path from the photo viewer
+
+Thanks for using the app!

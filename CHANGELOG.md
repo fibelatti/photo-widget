@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.46.0] - 2026-09-02
+[v1.46.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.46.0
+
 ### Added
 
 * Select whether synced folders include subdirectories
+* Copy or open the folder path from the photo viewer
 
 ## [v1.45.0] - 2026-08-04
 [v1.45.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.45.0
