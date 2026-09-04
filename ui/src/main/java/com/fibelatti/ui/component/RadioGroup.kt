@@ -14,6 +14,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
@@ -98,6 +99,10 @@ private fun RadioGroupItem(
                 onClick = null,
                 modifier = Modifier.padding(vertical = 8.dp),
                 enabled = enabled,
+                colors = RadioButtonDefaults.colors(
+                    selectedColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    unselectedColor = MaterialTheme.colorScheme.onSurface,
+                ),
             )
         },
         supportingContent = {
