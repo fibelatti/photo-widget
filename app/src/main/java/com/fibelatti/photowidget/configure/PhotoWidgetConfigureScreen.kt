@@ -166,9 +166,6 @@ fun PhotoWidgetConfigureScreen(
         popTransitionSpec = {
             EnterTransition.None togetherWith slideOutHorizontally(targetOffsetX = { it })
         },
-        predictivePopTransitionSpec = {
-            EnterTransition.None togetherWith slideOutHorizontally(targetOffsetX = { it })
-        },
         entryProvider = entryProvider {
             entry<PhotoWidgetConfigureNav.Home> {
                 PhotoWidgetConfigureHomeScreen(

@@ -5,7 +5,10 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -14,11 +17,13 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -26,7 +31,10 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.movableContentOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -38,14 +46,21 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
+import androidx.compose.ui.util.lerp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import androidx.navigationevent.NavigationEventDispatcherOwner
+import androidx.navigationevent.NavigationEventTransitionState
+import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.backup.PhotoWidgetBackupScreen
 import com.fibelatti.photowidget.configure.BackgroundRestrictionBottomSheet
@@ -75,6 +90,7 @@ import com.fibelatti.photowidget.ui.icons.NewWidgetSelected
 import com.fibelatti.photowidget.ui.icons.Settings
 import com.fibelatti.photowidget.ui.icons.SettingsSelected
 import com.fibelatti.ui.component.rememberAppSheetState
+import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -101,7 +117,7 @@ fun HomeScreenNavDisplay(
             EnterTransition.None togetherWith slideOutHorizontally(targetOffsetX = { it })
         },
         predictivePopTransitionSpec = {
-            EnterTransition.None togetherWith slideOutHorizontally(targetOffsetX = { it })
+            EnterTransition.None togetherWith ExitTransition.None
         },
         entryProvider = entryProvider {
             entry<HomeNav.Home> {
@@ -121,31 +137,89 @@ fun HomeScreenNavDisplay(
             }
 
             entry<HomeNav.WidgetDefaults> {
-                WidgetDefaultsScreen(
-                    onNavClick = navBackStack::popNavKey,
-                )
+                PredictiveBackRoundedContainer {
+                    WidgetDefaultsScreen(
+                        onNavClick = navBackStack::popNavKey,
+                    )
+                }
             }
 
             entry<HomeNav.WidgetSettings> {
-                WidgetSettingsScreen(
-                    onNavClick = navBackStack::popNavKey,
-                )
+                PredictiveBackRoundedContainer {
+                    WidgetSettingsScreen(
+                        onNavClick = navBackStack::popNavKey,
+                    )
+                }
             }
 
             entry<HomeNav.WidgetBackup> {
-                PhotoWidgetBackupScreen(
-                    onNavClick = navBackStack::popNavKey,
-                    onRestoreClick = onRestoreWidgetClick,
-                )
+                PredictiveBackRoundedContainer {
+                    PhotoWidgetBackupScreen(
+                        onNavClick = navBackStack::popNavKey,
+                        onRestoreClick = onRestoreWidgetClick,
+                    )
+                }
             }
 
             entry<HomeNav.OssLicenses> {
-                OssLicensesScreen(
-                    onBackNavClick = navBackStack::popNavKey,
-                )
+                PredictiveBackRoundedContainer {
+                    OssLicensesScreen(
+                        onBackNavClick = navBackStack::popNavKey,
+                    )
+                }
             }
         },
     )
+}
+
+@Composable
+private fun PredictiveBackRoundedContainer(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    val content: @Composable () -> Unit = remember { movableContentOf(content) }
+
+    val owner: NavigationEventDispatcherOwner = LocalNavigationEventDispatcherOwner.current
+        ?: return Box(modifier = modifier) { content() }
+    val transitionState by owner.navigationEventDispatcher.transitionState.collectAsState()
+
+    var latchedProgress: Float by remember { mutableFloatStateOf(0f) }
+    var latchedTouchY: Float? by remember { mutableStateOf(null) }
+
+    when (val state: NavigationEventTransitionState = transitionState) {
+        is NavigationEventTransitionState.InProgress -> {
+            latchedProgress = state.latestEvent.progress
+            latchedTouchY = state.latestEvent.touchY
+        }
+
+        is NavigationEventTransitionState.Idle -> {}
+    }
+
+    val cornerRadius: Dp by animateDpAsState(
+        targetValue = lerp(start = 0.dp, stop = 36.dp, fraction = latchedProgress),
+        animationSpec = spring(stiffness = Spring.StiffnessLow),
+    )
+
+    val maxTranslationPx: Float = 72.dp.dpToPx()
+    val screenHeightPx: Float = LocalWindowInfo.current.containerSize.height.toFloat()
+    val normalizedY: Float = latchedTouchY
+        ?.let { ((it / screenHeightPx) - 0.5f) * 2f }
+        ?: 0f
+
+    val transY: Float = normalizedY * maxTranslationPx * latchedProgress
+    val scale: Float = lerp(start = 1f, stop = 0.8f, fraction = latchedProgress)
+
+    Box(
+        modifier = modifier.graphicsLayer {
+            clip = true
+            shape = RoundedCornerShape(cornerRadius)
+            translationY = transY
+            scaleX = scale
+            scaleY = scale
+        },
+    ) {
+        content()
+    }
 }
 
 @Composable
