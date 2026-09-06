@@ -4,6 +4,9 @@ package com.fibelatti.ui.component
 
 import androidx.compose.foundation.LocalOverscrollFactory
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -21,6 +24,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 import kotlinx.coroutines.CoroutineScope
@@ -84,12 +89,19 @@ fun AppBottomSheet(
                 sheetState.isVisible = false
                 onDismissRequest()
             },
-            modifier = modifier,
+            modifier = modifier
+                .padding(top = TOP_INSET)
+                .consumeWindowInsets(PaddingValues(top = TOP_INSET)),
             sheetState = sheetState.state,
             content = content,
         )
     }
 }
+
+/**
+ * The minimum gap left between the top of the window and the top of the bottom sheet.
+ */
+private val TOP_INSET: Dp = 80.dp
 
 /**
  * Creates and remembers an [AppSheetState] instance, used to control the visibility of an [AppBottomSheet].
