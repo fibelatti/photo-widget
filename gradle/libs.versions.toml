@@ -9,7 +9,7 @@ hilt = "2.60.1"
 hiltExtensions = "1.4.0"
 kotlin = "2.4.20"
 nav3 = "1.1.7"
-room = "2.8.4"
+room = "2.8.5"
 spotless = "8.10.2"
 aboutLibraries = "15.2.0"
 
