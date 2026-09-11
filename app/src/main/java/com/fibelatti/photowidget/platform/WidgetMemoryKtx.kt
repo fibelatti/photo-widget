@@ -2,7 +2,6 @@ package com.fibelatti.photowidget.platform
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
 import android.util.DisplayMetrics
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
@@ -125,29 +124,23 @@ fun Context.getMaxCrossfadeBitmapDimension(
 
 /**
  * Caps [dimension] at the largest side the widget can actually display, so a photo is never
- * decoded larger than the widget it is drawn into. The host reports the size range it gives the
- * widget in dp; some report nothing usable, in which case [dimension] stands as it is.
+ * decoded larger than the widget it is drawn into. Hosts that report nothing usable leave
+ * [dimension] as it is.
  */
 private fun Context.coerceToWidgetSize(appWidgetId: Int, dimension: Int): Int {
     val options: Bundle = runCatching {
         AppWidgetManager.getInstance(this).getAppWidgetOptions(appWidgetId)
     }.getOrNull() ?: return dimension
 
-    // The host reports the widget's size in both orientations at once: the width it has in portrait
-    // and the height it has in landscape as the lower bounds, the other two as the upper bounds.
-    // Only the pair belonging to the current orientation describes a widget that exists.
-    // Rotating re-renders the widget, which sizes the photo for the new orientation.
-    val widthDp: Int
-    val heightDp: Int
-
-    if (resources.configuration.orientation != Configuration.ORIENTATION_LANDSCAPE) {
-        widthDp = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
-        heightDp = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)
-    } else {
-        widthDp = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH)
-        heightDp = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
-    }
-
+    // The four bounds are the box enclosing every size the host may display the widget at, across
+    // orientations and, on a folding device, postures. Which of those sizes is on screen right now
+    // is not recoverable from them: a device offering several reports bounds that belong to
+    // different sizes, so no pairing of them describes a widget that exists. Only the upper bounds
+    // are of use here, as the largest side of the box cannot be smaller than the largest side of
+    // the widget, which is all a cap needs. A widget currently smaller than that decodes a photo
+    // larger than it displays.
+    val widthDp: Int = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH)
+    val heightDp: Int = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)
     val largestSideDp: Int = maxOf(widthDp, heightDp)
 
     Timber.d(
