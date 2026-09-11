@@ -141,11 +141,11 @@ private fun Context.coerceToWidgetSize(appWidgetId: Int, dimension: Int): Int {
     val heightDp: Int
 
     if (resources.configuration.orientation != Configuration.ORIENTATION_LANDSCAPE) {
-        widthDp = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH)
-        heightDp = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
-    } else {
         widthDp = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
         heightDp = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)
+    } else {
+        widthDp = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH)
+        heightDp = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
     }
 
     val largestSideDp: Int = maxOf(widthDp, heightDp)
