@@ -22,10 +22,12 @@ import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PreparedCurrentPhoto
+import com.fibelatti.photowidget.model.bitmapByteCount
 import com.fibelatti.photowidget.platform.ExceptionReporter
 import com.fibelatti.photowidget.platform.KeepAliveService
-import com.fibelatti.photowidget.platform.getMaxCrossfadeBitmapDimension
-import com.fibelatti.photowidget.platform.getMaxRemoteViewsBitmapMemory
+import com.fibelatti.photowidget.platform.RemoteViewsBitmapMemoryCap
+import com.fibelatti.photowidget.platform.displayPixels
+import com.fibelatti.photowidget.platform.getMaxCrossfadeBitmapMemory
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider.Companion.update
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
@@ -159,6 +161,19 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
     companion object {
 
+        /**
+         * How many times a rejected update is retried, each with a smaller budget, before the
+         * widget gives up and shows the error state.
+         */
+        private const val MAX_RECOVERY_ATTEMPTS: Int = 2
+
+        /**
+         * Matches the cap in the message the widget host attaches when it rejects an update:
+         * `RemoteViews for widget update exceeds maximum bitmap memory usage
+         * (used: 8128512, max: 6912000)`.
+         */
+        private val MAX_BITMAP_MEMORY_REGEX = Regex("max: (\\d+)")
+
         private val updateJobMap: MutableMap<Int, Job> = mutableMapOf()
 
         fun ids(context: Context): List<Int> = AppWidgetManager.getInstance(context)
@@ -176,7 +191,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             context: Context,
             appWidgetId: Int,
             allowCrossfade: Boolean = false,
-            recoveryMode: Boolean = false,
+            recoveryAttempt: Int = 0,
         ): Job {
             Timber.i("Updating widget %s", mapOf("appWidgetId" to appWidgetId))
 
@@ -214,7 +229,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     context = context,
                     photoWidget = photoWidget,
                     allowCrossfade = allowCrossfade,
-                    recoveryMode = recoveryMode,
+                    recoveryAttempt = recoveryAttempt,
                 )
 
                 val preparedCurrentPhoto: PreparedCurrentPhoto? = try {
@@ -223,7 +238,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         appWidgetId = appWidgetId,
                         photoWidget = photoWidget,
                         crossfadeIntent = crossfadeIntent,
-                        recoveryMode = recoveryMode,
+                        recoveryAttempt = recoveryAttempt,
                     )
                 } catch (cancellation: CancellationException) {
                     throw cancellation
@@ -269,6 +284,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 val canCrossfade: Boolean = canCrossfade(
                     context = context,
                     crossfadeIntent = crossfadeIntent,
+                    photoWidget = photoWidget,
                     preparedCurrentPhoto = preparedCurrentPhoto,
                 )
 
@@ -327,8 +343,13 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                                 }
                             } catch (cancellation: CancellationException) {
                                 throw cancellation
+                            } catch (ex: IllegalArgumentException) {
+                                // The host rejected a frame for its size. Re-sending it would only be
+                                // rejected again, so let the handler below learn the host's cap and
+                                // re-render within it.
+                                throw ex
                             } catch (ex: Exception) {
-                                Timber.w(ex, "Crossfade failed to start; settling on the opaque frame")
+                                Timber.w(ex, "Crossfade failed; settling on the opaque frame")
                                 appWidgetManager.updateAppWidget(appWidgetId, finalViews)
                             }
                         }
@@ -338,12 +359,14 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         }
                     }
                 } catch (ex: IllegalArgumentException) {
-                    if (!recoveryMode) {
+                    learnHostBitmapMemoryCap(context = context, exception = ex)
+
+                    if (recoveryAttempt < MAX_RECOVERY_ATTEMPTS) {
                         update(
                             context = context,
                             appWidgetId = appWidgetId,
                             allowCrossfade = allowCrossfade,
-                            recoveryMode = true,
+                            recoveryAttempt = recoveryAttempt + 1,
                         )
                     } else {
                         exceptionReporter.collectReport(ex)
@@ -383,7 +406,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             context: Context,
             photoWidget: PhotoWidget,
             allowCrossfade: Boolean,
-            recoveryMode: Boolean,
+            recoveryAttempt: Int,
         ): Boolean {
             val userPreferencesStorage: UserPreferencesStorage = entryPoint<PhotoWidgetEntryPoint>(context)
                 .userPreferencesStorage()
@@ -392,29 +415,54 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 allowCrossfade &&
                 isScreenInteractive(context = context) &&
                 photoWidget.source != PhotoWidgetSource.GIF &&
-                !recoveryMode
+                recoveryAttempt == 0
         }
 
         /**
-         * Confirms a crossfade can actually run for this render, on top of [crossfadeIntent], once the
-         * photo is prepared: the downscaled fade bitmap and a previous photo must both exist (the
-         * first render of a widget has no previous). The persisted file/URI is deliberately NOT
-         * required since the fade renders and settles using the in-memory bitmaps, so it can start
-         * while the persist still runs in the background.
+         * Records the bitmap memory cap reported by the given [exception] to use it for subsequent
+         * update requests.
+         */
+        private fun learnHostBitmapMemoryCap(context: Context, exception: IllegalArgumentException) {
+            val reportedCap: Long = MAX_BITMAP_MEMORY_REGEX.find(exception.message.orEmpty())
+                ?.groupValues
+                ?.get(1)
+                ?.toLongOrNull()
+                ?: return
+
+            val userPreferencesStorage: UserPreferencesStorage = entryPoint<PhotoWidgetEntryPoint>(context)
+                .userPreferencesStorage()
+            val cap = RemoteViewsBitmapMemoryCap(
+                bytes = reportedCap,
+                displayPixels = context.displayPixels(),
+            )
+
+            if (userPreferencesStorage.remoteViewsBitmapMemoryCap != cap) {
+                Timber.i("Saving host bitmap memory cap %s", mapOf("cap" to cap))
+                userPreferencesStorage.remoteViewsBitmapMemoryCap = cap
+            }
+        }
+
+        /**
+         * Confirms a crossfade can actually run for this update, on top of [crossfadeIntent], once
+         * the photo is prepared: the downscaled fade bitmap and a previous photo must both exist
+         * (the first render of a widget has no previous). The persisted file/URI is deliberately
+         * not required since the fade renders and settles using the in-memory bitmaps, so it can
+         * start while the persist still runs in the background.
          *
-         * The fade is rendered entirely from in-memory bitmaps (current + previous) so the host never
-         * decodes a content URI mid-animation (which would race the fade and makes it jump).
-         * Both bitmaps travel in a single RemoteViews update, so they are pre-sized by
-         * [Context.getMaxCrossfadeBitmapDimension] to fit the host's bitmap cap.
+         * The fade is rendered entirely from in-memory bitmaps so the host never decodes a content
+         * URI mid-animation (which would race the fade and makes it jump). Both bitmaps travel in
+         * a single RemoteViews update, so they are pre-sized by to fit the host's bitmap cap.
          *
-         * The final check on their combined bytes is a cheap guard. Should sizing still be wrong
-         * on some host, [update] catches the resulting IllegalArgumentException and re-renders as
-         * a plain swap in recovery mode, so a mis-estimate degrades the behavior rather than
-         * failing altogether.
+         * The final check measures what the update will actually carry against the same budget the
+         * pair was sized from, so a pair that came out larger than intended falls back to a plain
+         * swap. Should sizing still be wrong on some host, [update] catches the resulting
+         * `IllegalArgumentException` and re-renders with a smaller budget, so a mis-estimate
+         * degrades the behavior rather than failing altogether.
          */
         private fun canCrossfade(
             context: Context,
             crossfadeIntent: Boolean,
+            photoWidget: PhotoWidget,
             preparedCurrentPhoto: PreparedCurrentPhoto,
         ): Boolean {
             if (!crossfadeIntent) return false
@@ -423,9 +471,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val previousBitmap: Bitmap = preparedCurrentPhoto.previousBitmap ?: return false
 
             val combinedBitmapBytes: Long = fadeBitmap.allocationByteCount.toLong() +
-                previousBitmap.allocationByteCount.toLong()
+                previousBitmap.allocationByteCount.toLong() +
+                photoWidget.text.bitmapByteCount(context = context)
 
-            return combinedBitmapBytes <= context.getMaxRemoteViewsBitmapMemory()
+            return combinedBitmapBytes <= context.getMaxCrossfadeBitmapMemory()
         }
 
         private fun isScreenInteractive(context: Context): Boolean {

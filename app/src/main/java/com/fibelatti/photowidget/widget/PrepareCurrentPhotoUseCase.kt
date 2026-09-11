@@ -10,13 +10,14 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PreparedCurrentPhoto
+import com.fibelatti.photowidget.model.bitmapByteCount
 import com.fibelatti.photowidget.model.borderPercent
 import com.fibelatti.photowidget.model.getPhotoPath
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.colorForType
 import com.fibelatti.photowidget.platform.getColorPalette
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
-import com.fibelatti.photowidget.platform.getMaxBitmapWidgetDimension
+import com.fibelatti.photowidget.platform.getMaxWidgetPhotoDimension
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.widget.data.PhotoWidgetExternalFileStorage
@@ -37,8 +38,9 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
         appWidgetId: Int,
         photoWidget: PhotoWidget,
         crossfadeIntent: Boolean = false,
-        recoveryMode: Boolean = false,
+        recoveryAttempt: Int = 0,
     ): PreparedCurrentPhoto? {
+        val recoveryMode: Boolean = recoveryAttempt > 0
         val currentPhoto: LocalPhoto = photoWidget.currentPhoto ?: return null
         val currentPhotoPath: String = currentPhoto.getPhotoPath() ?: return null
 
@@ -55,18 +57,32 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
             "Preparing current photo %s",
             mapOf(
                 "appWidgetId" to appWidgetId,
-                "recoveryMode" to recoveryMode,
+                "recoveryAttempt" to recoveryAttempt,
                 "currentPhotoPath" to currentPhotoPath,
                 "photoVersion" to photoVersion,
             ),
         )
 
+        // The label bitmap travels in the same update as the photo, so its bytes come out of the
+        // render budget before the photo is sized against what is left.
+        val labelBytes: Long = photoWidget.text.bitmapByteCount(context = context)
+
+        // Every aspect ratio but FILL_WIDGET draws the photo fitted inside the widget, so the
+        // widget's own size is all the resolution it can show. FILL_WIDGET crops the photo to
+        // cover the widget and can scale it well past that, so it keeps the budget as its bound.
+        val coerceToWidgetSize: Boolean = photoWidget.aspectRatio != PhotoWidgetAspectRatio.FILL_WIDGET
+
         val sourceBitmap: Bitmap = try {
-            val maxDimension: Int = context.getMaxBitmapWidgetDimension(coerceMaxMemory = recoveryMode)
+            val maxDimension: Int = context.getMaxWidgetPhotoDimension(
+                appWidgetId = appWidgetId,
+                recoveryAttempt = recoveryAttempt,
+                labelBytes = labelBytes,
+                coerceToWidgetSize = coerceToWidgetSize,
+            )
 
             Timber.d(
                 "Creating widget bitmap %s",
-                mapOf("maxDimension" to maxDimension, "recoveryMode" to recoveryMode),
+                mapOf("maxDimension" to maxDimension, "recoveryAttempt" to recoveryAttempt),
             )
 
             requireNotNull(
@@ -143,9 +159,12 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
 
         return if (shouldPersist && directoryName != null) {
             photoWidgetInternalFileStorage.prepareCurrentWidgetPhoto(
+                appWidgetId = appWidgetId,
                 directoryName = directoryName,
                 currentPhoto = transformedBitmap,
                 crossfadeIntent = crossfadeIntent,
+                labelBytes = labelBytes,
+                coerceToWidgetSize = coerceToWidgetSize,
             )
         } else {
             if (shouldInvalidateCache && directoryName != null) {

@@ -105,6 +105,20 @@ sealed interface PhotoWidgetText : Parcelable {
 }
 
 fun PhotoWidgetText.textToBitmap(context: Context): Bitmap {
+    val staticLayout: StaticLayout = staticLayout(context = context)
+    val output: Bitmap = createBitmap(staticLayout.width, staticLayout.height)
+
+    Canvas(output).apply {
+        drawColor(Color.TRANSPARENT)
+        withTranslation(x = staticLayout.width / 2f) {
+            staticLayout.draw(this)
+        }
+    }
+
+    return output
+}
+
+private fun PhotoWidgetText.staticLayout(context: Context): StaticLayout {
     val textPaint: TextPaint = TextPaint().apply {
         isAntiAlias = true
         textSize = TypedValue.applyDimension(
@@ -114,7 +128,7 @@ fun PhotoWidgetText.textToBitmap(context: Context): Bitmap {
         )
         textAlign = Paint.Align.CENTER
 
-        typeface = this@textToBitmap.typeface?.let { ResourcesCompat.getFont(context, it) }
+        typeface = this@staticLayout.typeface?.let { ResourcesCompat.getFont(context, it) }
             ?: Typeface.DEFAULT
 
         color = "#$colorHex".toColorInt()
@@ -126,7 +140,7 @@ fun PhotoWidgetText.textToBitmap(context: Context): Bitmap {
     }
     val width: Int = (maxWidth * context.resources.displayMetrics.density).roundToInt()
 
-    val staticLayout: StaticLayout = StaticLayout.Builder
+    return StaticLayout.Builder
         .obtain(
             /* source = */ value,
             /* start = */ 0,
@@ -135,15 +149,18 @@ fun PhotoWidgetText.textToBitmap(context: Context): Bitmap {
             /* width = */ width,
         )
         .build()
-
-    val output: Bitmap = createBitmap(staticLayout.width, staticLayout.height)
-
-    Canvas(output).apply {
-        drawColor(Color.TRANSPARENT)
-        withTranslation(x = width / 2f) {
-            staticLayout.draw(this)
-        }
-    }
-
-    return output
 }
+
+/**
+ * Bytes the bitmap produced by [textToBitmap] will occupy in a `RemoteViews` update, so the render
+ * budget can account for the label alongside the photo. Zero when the widget has no label.
+ */
+fun PhotoWidgetText.bitmapByteCount(context: Context): Long {
+    if (this is PhotoWidgetText.None) return 0
+
+    val staticLayout: StaticLayout = staticLayout(context = context)
+
+    return staticLayout.width.toLong() * staticLayout.height * BYTES_PER_PIXEL
+}
+
+private const val BYTES_PER_PIXEL: Int = 4

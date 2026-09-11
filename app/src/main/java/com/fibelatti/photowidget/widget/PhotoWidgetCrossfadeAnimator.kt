@@ -13,6 +13,7 @@ import com.fibelatti.photowidget.R
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
 
@@ -42,7 +43,8 @@ class PhotoWidgetCrossfadeAnimator @Inject constructor() {
     }
 
     /**
-     * Runs the fade animation and suspends until it ends or is canceled.
+     * Runs the fade animation and suspends until it ends or is canceled. Throws when the host
+     * rejects the settle frame, leaving the caller to put a render it accepts up in its place.
      */
     @MainThread
     suspend fun runCrossfade(
@@ -100,12 +102,24 @@ class PhotoWidgetCrossfadeAnimator @Inject constructor() {
                                 crossfadeAnimators.remove(appWidgetId)
                             }
 
-                            runCatching { appWidgetManager.updateAppWidget(appWidgetId, finalViews) }
-                                .onFailure { Timber.w(it, "Failed to settle crossfade.") }
+                            // The settle frame carries the full-resolution photo so it is the most
+                            // likely to be rejected for exceeding the host's bitmap memory.
+                            // Failing it silently would leave the widget on whichever frame the
+                            // fade reached, so the failure is handed to the caller to re-render
+                            // instead.
+                            val settleFailure: Throwable? = runCatching {
+                                appWidgetManager.updateAppWidget(appWidgetId, finalViews)
+                            }.exceptionOrNull()
 
                             // onAnimationEnd fires after onAnimationCancel too, so this resumes both the
                             // natural-completion and the canceled paths exactly once.
-                            if (continuation.isActive) continuation.resume(Unit)
+                            if (continuation.isActive) {
+                                if (settleFailure != null) {
+                                    continuation.resumeWithException(settleFailure)
+                                } else {
+                                    continuation.resume(Unit)
+                                }
+                            }
                         }
                     },
                 )

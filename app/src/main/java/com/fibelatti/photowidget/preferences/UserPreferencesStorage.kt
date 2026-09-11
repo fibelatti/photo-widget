@@ -12,6 +12,7 @@ import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.minutesToLoopingInterval
 import com.fibelatti.photowidget.model.repeatIntervalAsSeconds
 import com.fibelatti.photowidget.model.secondsToLoopingInterval
+import com.fibelatti.photowidget.platform.RemoteViewsBitmapMemoryCap
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import com.fibelatti.photowidget.widget.PhotoWidgetSyncWorker
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -122,6 +123,27 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         set(value) {
             sharedPreferences.edit { putBoolean(Preference.WIDGET_ENABLE_CROSSFADE.value, value) }
             _userPreferences.update { current -> current.copy(widgetEnableCrossfade = value) }
+        }
+
+    var remoteViewsBitmapMemoryCap: RemoteViewsBitmapMemoryCap?
+        get() {
+            val bytes: Long = sharedPreferences.getLong(Preference.REMOTE_VIEWS_BITMAP_MEMORY_CAP.value, 0)
+            val displayPixels: Long = sharedPreferences.getLong(
+                Preference.REMOTE_VIEWS_BITMAP_MEMORY_CAP_DISPLAY.value,
+                0,
+            )
+
+            return if (bytes > 0 && displayPixels > 0) {
+                RemoteViewsBitmapMemoryCap(bytes = bytes, displayPixels = displayPixels)
+            } else {
+                null
+            }
+        }
+        set(value) {
+            sharedPreferences.edit {
+                putLong(Preference.REMOTE_VIEWS_BITMAP_MEMORY_CAP.value, value?.bytes ?: 0)
+                putLong(Preference.REMOTE_VIEWS_BITMAP_MEMORY_CAP_DISPLAY.value, value?.displayPixels ?: 0)
+            }
         }
 
     var folderSyncInterval: Int
@@ -377,6 +399,8 @@ class UserPreferencesStorage @Inject constructor(@ApplicationContext context: Co
         HIGHLIGHT_TRANSPARENT_WIDGETS(value = "user_preferences_highlight_transparent_widgets"),
         WIDGET_ENABLE_CROSSFADE(value = "widget_settings_enable_crossfade"),
         FOLDER_SYNC_INTERVAL(value = "widget_settings_folder_sync_interval"),
+        REMOTE_VIEWS_BITMAP_MEMORY_CAP(value = "remote_views_bitmap_memory_cap"),
+        REMOTE_VIEWS_BITMAP_MEMORY_CAP_DISPLAY(value = "remote_views_bitmap_memory_cap_display"),
         DEFAULT_ASPECT_RATIO(value = "default_aspect_ratio", resettable = true),
         DEFAULT_SOURCE(value = "default_source", resettable = true),
         DEFAULT_SHUFFLE(value = "default_shuffle", resettable = true),

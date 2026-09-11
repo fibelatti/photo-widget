@@ -75,9 +75,12 @@ fun AsyncPhotoViewer(
     }
 
     val maxViewportDimension: Int = max(viewportSize.width, viewportSize.height)
-    val maxWidgetDimension: Int = localContext.getMaxBitmapWidgetDimension(
-        coerceMaxMemory = constraintMode == AsyncPhotoViewer.BitmapSizeConstraintMode.MEMORY,
-    ).coerceAtMost(maxViewportDimension)
+    val maxBitmapDimension: Int = remember(localContext, constraintMode) {
+        localContext.getMaxBitmapWidgetDimension(
+            coerceMaxMemory = constraintMode == AsyncPhotoViewer.BitmapSizeConstraintMode.MEMORY,
+        )
+    }
+    val maxWidgetDimension: Int = maxBitmapDimension.coerceAtMost(maxViewportDimension)
     val maxDimension: Int = when (constraintMode) {
         AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED -> maxViewportDimension
         else -> maxWidgetDimension

@@ -245,9 +245,12 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
     }
 
     suspend fun prepareCurrentWidgetPhoto(
+        appWidgetId: Int,
         directoryName: String,
         currentPhoto: Bitmap,
         crossfadeIntent: Boolean,
+        labelBytes: Long = 0,
+        coerceToWidgetSize: Boolean = true,
     ): PreparedCurrentPhoto = withContext(Dispatchers.IO) {
         val dir: File = getCurrentPhotoDir(directoryName = directoryName)
 
@@ -271,11 +274,15 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
         // Build the crossfade source bitmaps only when the caller is setting up a fade.
         // Both the incoming photo and the decoded previous one are capped at
-        // getMaxCrossfadeBitmapDimension so the two together fit a single RemoteViews update.
-        // The widget still settles on the full-resolution `bitmap`, so this downscale only softens
-        // the ~1s fade, not the resting image.
+        // getMaxCrossfadeBitmapDimension so the two together, plus the label, fit a single
+        // RemoteViews update. The widget still settles on the full-resolution bitmap, so this
+        // downscale only softens the ~1s fade, not the final widget image.
         if (crossfadeIntent) {
-            val fadeDimension: Int = context.getMaxCrossfadeBitmapDimension()
+            val fadeDimension: Int = context.getMaxCrossfadeBitmapDimension(
+                appWidgetId = appWidgetId,
+                labelBytes = labelBytes,
+                coerceToWidgetSize = coerceToWidgetSize,
+            )
             val fadeBitmap: Bitmap = currentPhoto.scaledToMaxDimension(fadeDimension)
             val previousBitmap: Bitmap? = previousFile?.let { existingFile ->
                 decoder.decode(data = existingFile.path, maxDimension = fadeDimension)

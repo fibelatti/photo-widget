@@ -10,7 +10,6 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.PowerManager
-import android.util.DisplayMetrics
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
@@ -18,9 +17,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import com.fibelatti.photowidget.model.InstalledApp
 import com.google.android.material.color.DynamicColors
-import kotlin.math.roundToInt
-import kotlin.math.sqrt
-import timber.log.Timber
 
 /**
  * Returns the first [ContextWrapper] with type [T] found in the hierarchy if any, or null if none
@@ -103,51 +99,6 @@ fun widgetPinningNotAvailable(): Boolean {
     )
 
     return manufacturer in notAvailable
-}
-
-/**
- * Rough upper budget (in bytes) for the bitmaps carried by a single `RemoteViews` update, derived
- * from the display size. A widget host may enforce a different cap when computing its limit from
- * a smaller display size than the one reported by [DisplayMetrics]. A single widget-sized bitmap
- * stays comfortably under both, so this is safe for the normal one-bitmap render (and for
- * [getMaxBitmapWidgetDimension]); but two bitmaps sized against it can exceed the real cap and get
- * rejected, which is why the crossfade sizes its pair via [getMaxCrossfadeBitmapDimension]'s
- * discounted budget instead of trusting this figure at face value.
- */
-fun Context.getMaxRemoteViewsBitmapMemory(): Long {
-    val displayMetrics: DisplayMetrics = resources.displayMetrics
-    return (displayMetrics.heightPixels.toLong() * displayMetrics.widthPixels * 4 * 1.5).toLong()
-}
-
-/**
- * Max size (largest side, px) for each of the two bitmaps carried together in a crossfade update
- * (current + previous). [getMaxRemoteViewsBitmapMemory] is only an estimate and can run well over
- * the host's real per-update bitmap cap, so this splits a heavily discounted budget between the
- * two bitmaps, leaving headroom for the label bitmap and for the estimate's overshoot. This gives
- * the paired render a better chance to succeed instead of throwing an exception.
- */
-fun Context.getMaxCrossfadeBitmapDimension(): Int {
-    val combinedBudgetFraction = 0.45
-    val perBitmapBytes: Double = getMaxRemoteViewsBitmapMemory() * combinedBudgetFraction / 2
-    return sqrt(perBitmapBytes / 4).roundToInt()
-}
-
-fun Context.getMaxBitmapWidgetDimension(coerceMaxMemory: Boolean = false): Int {
-    Timber.d("Calculating max dimension %s", mapOf("coerceMaxMemory" to coerceMaxMemory))
-
-    val displayMetrics: DisplayMetrics = resources.displayMetrics
-    val maxMemoryAllowed: Int = if (coerceMaxMemory) {
-        // Conservative fixed floor for the recovery render — well under any host's real bitmap
-        // cap, so a render that already failed once fits on retry.
-        6_912_000
-    } else {
-        getMaxRemoteViewsBitmapMemory().toInt()
-    }
-    val maxDimension: Int = sqrt(maxMemoryAllowed / 4 / displayMetrics.density).roundToInt()
-
-    Timber.d("Max dimension allowed: $maxDimension %s", mapOf("maxMemoryAllowed" to maxMemoryAllowed))
-
-    return maxDimension
 }
 
 fun Context.getAllInstalledApps(queryIntent: Intent): List<InstalledApp> {
