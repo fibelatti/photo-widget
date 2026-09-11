@@ -4,11 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.SliderState
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
@@ -97,7 +95,10 @@ private fun ColorMatrixPicker(
         title = title,
         modifier = modifier,
     ) {
-        var value by rememberSaveable(currentValue) { mutableFloatStateOf(currentValue) }
+        val sliderState: SliderState = rememberSliderState(
+            value = currentValue,
+            trackRange = valueRange,
+        )
 
         Image(
             bitmap = rememberSampleBitmap()
@@ -105,22 +106,20 @@ private fun ColorMatrixPicker(
                 .asImageBitmap(),
             contentDescription = null,
             modifier = Modifier.size(200.dp),
-            colorFilter = ColorFilter.colorMatrix(onCurrentValueChange(value)),
+            colorFilter = ColorFilter.colorMatrix(onCurrentValueChange(sliderState.value)),
         )
 
         SliderItem(
-            value = value,
-            valueText = formatRangeValue(value = value),
-            onValueChange = { value = it },
-            valueRange = valueRange,
+            state = sliderState,
+            displayValueTransformation = ::formatRangeValue,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
         )
 
         DefaultSheetFooterButtons(
-            onApplyClick = { onApplyClick(value) },
-            onResetClick = { value = 0f },
+            onApplyClick = { onApplyClick(sliderState.value) },
+            onResetClick = { sliderState.value = 0f },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),

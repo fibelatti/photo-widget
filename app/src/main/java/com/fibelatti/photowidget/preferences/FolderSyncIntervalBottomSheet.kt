@@ -1,17 +1,16 @@
 package com.fibelatti.photowidget.preferences
 
+import android.content.res.Resources
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SliderState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
@@ -57,11 +56,6 @@ fun FolderSyncIntervalContent(
         title = stringResource(R.string.widget_settings_folder_sync_interval),
         modifier = modifier,
     ) {
-        var value: Int by remember(currentValue) { mutableIntStateOf(currentValue) }
-        val valueRange: ClosedFloatingPointRange<Float> = remember {
-            PhotoWidgetSyncWorker.MIN_INTERVAL_HOURS.toFloat()..PhotoWidgetSyncWorker.MAX_INTERVAL_HOURS.toFloat()
-        }
-
         Text(
             text = stringResource(R.string.widget_settings_folder_sync_interval_description),
             modifier = Modifier
@@ -71,18 +65,25 @@ fun FolderSyncIntervalContent(
             style = MaterialTheme.typography.bodyMedium,
         )
 
+        val sliderState: SliderState = rememberSliderState(
+            value = currentValue.toFloat(),
+            trackRange = PhotoWidgetSyncWorker.MIN_INTERVAL_HOURS.toFloat()
+                .rangeTo(PhotoWidgetSyncWorker.MAX_INTERVAL_HOURS.toFloat()),
+        )
+        val resources: Resources = LocalResources.current
+
         SliderItem(
-            value = value.toFloat(),
-            valueText = folderSyncIntervalLabel(value = value),
-            onValueChange = { value = it.fastRoundToInt() },
-            valueRange = valueRange,
+            state = sliderState,
+            displayValueTransformation = { value ->
+                folderSyncIntervalLabel(value = value.fastRoundToInt(), resources = resources)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
         )
 
         Button(
-            onClick = { onApplyClick(value) },
+            onClick = { onApplyClick(sliderState.value.fastRoundToInt()) },
             shapes = ButtonDefaults.shapes(),
             modifier = Modifier
                 .fillMaxWidth()
@@ -93,9 +94,8 @@ fun FolderSyncIntervalContent(
     }
 }
 
-@Composable
-fun folderSyncIntervalLabel(value: Int): String {
-    return LocalResources.current.getQuantityString(
+fun folderSyncIntervalLabel(value: Int, resources: Resources): String {
+    return resources.getQuantityString(
         R.plurals.photo_widget_configure_interval_current_hours,
         value,
         value,

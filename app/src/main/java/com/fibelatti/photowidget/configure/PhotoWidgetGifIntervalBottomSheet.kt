@@ -9,12 +9,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.SliderState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -61,8 +60,6 @@ fun PhotoWidgetGifIntervalContent(
         title = stringResource(R.string.photo_widget_configure_gif_frame_interval),
         modifier = modifier,
     ) {
-        var value: Long by remember(gifInterval) { mutableLongStateOf(gifInterval) }
-
         Text(
             text = stringResource(R.string.photo_widget_configure_gif_frame_interval_description),
             modifier = Modifier
@@ -73,11 +70,14 @@ fun PhotoWidgetGifIntervalContent(
             style = MaterialTheme.typography.bodyMedium,
         )
 
+        val sliderState: SliderState = rememberSliderState(
+            value = gifInterval.toFloat(),
+            trackRange = GifFrames.MIN_INTERVAL_MS.toFloat()..GifFrames.MAX_INTERVAL_MS.toFloat(),
+        )
+
         SliderItem(
-            value = value.toFloat(),
-            valueText = "$value ms",
-            onValueChange = { value = it.fastRoundToInt().toLong() },
-            valueRange = GifFrames.MIN_INTERVAL_MS.toFloat()..GifFrames.MAX_INTERVAL_MS.toFloat(),
+            state = sliderState,
+            displayValueTransformation = { "${it.fastRoundToInt()} ms" },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -116,7 +116,7 @@ fun PhotoWidgetGifIntervalContent(
 
             for (item in presets) {
                 OutlinedButton(
-                    onClick = { value = item.value },
+                    onClick = { sliderState.value = item.value.toFloat() },
                 ) {
                     Text(text = item.key)
                 }
@@ -124,7 +124,7 @@ fun PhotoWidgetGifIntervalContent(
         }
 
         Button(
-            onClick = { onApplyClick(value) },
+            onClick = { onApplyClick(sliderState.value.fastRoundToInt().toLong()) },
             shapes = ButtonDefaults.shapes(),
             modifier = Modifier
                 .fillMaxWidth()

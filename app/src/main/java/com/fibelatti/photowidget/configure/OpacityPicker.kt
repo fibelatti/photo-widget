@@ -4,11 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.SliderState
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.stringResource
@@ -34,13 +32,16 @@ fun OpacityPicker(
         title = stringResource(id = R.string.widget_defaults_opacity),
         modifier = modifier,
     ) {
-        var value by rememberSaveable(currentValue) { mutableFloatStateOf(currentValue) }
+        val sliderState: SliderState = rememberSliderState(
+            value = currentValue,
+            trackRange = 0f..100f,
+        )
 
         Image(
             bitmap = rememberSampleBitmap()
                 .withRoundedCorners(
                     radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
-                    colors = PhotoWidgetColors(opacity = value),
+                    colors = PhotoWidgetColors(opacity = sliderState.value),
                 )
                 .asImageBitmap(),
             contentDescription = null,
@@ -48,18 +49,16 @@ fun OpacityPicker(
         )
 
         SliderItem(
-            value = value,
-            valueText = formatPercent(value = value, fractionDigits = 0),
-            onValueChange = { value = it },
-            valueRange = 0f..100f,
+            state = sliderState,
+            displayValueTransformation = { formatPercent(value = it, fractionDigits = 0) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
         )
 
         DefaultSheetFooterButtons(
-            onApplyClick = { onApplyClick(value) },
-            onResetClick = { value = 100f },
+            onApplyClick = { onApplyClick(sliderState.value) },
+            onResetClick = { sliderState.value = 100f },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),

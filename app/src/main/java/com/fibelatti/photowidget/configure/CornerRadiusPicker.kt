@@ -6,12 +6,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.SliderState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.stringResource
@@ -34,28 +32,29 @@ fun CornerRadiusPicker(
         title = stringResource(id = R.string.widget_defaults_corner_radius),
         modifier = modifier,
     ) {
-        var value by rememberSaveable(currentValue) { mutableIntStateOf(currentValue) }
+        val sliderState: SliderState = rememberSliderState(
+            value = currentValue.toFloat(),
+            trackRange = 0f..128f,
+        )
 
         Image(
             bitmap = rememberSampleBitmap()
-                .withRoundedCorners(radius = value.dpToPx())
+                .withRoundedCorners(radius = sliderState.value.fastRoundToInt().dpToPx())
                 .asImageBitmap(),
             contentDescription = null,
             modifier = Modifier.size(200.dp),
         )
 
         SliderItem(
-            value = value.toFloat(),
-            valueText = "$value",
-            onValueChange = { value = it.fastRoundToInt() },
-            valueRange = 0f..128f,
+            state = sliderState,
+            displayValueTransformation = { "${it.fastRoundToInt()}" },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
         )
 
         Button(
-            onClick = { onApplyClick(value) },
+            onClick = { onApplyClick(sliderState.value.fastRoundToInt()) },
             shapes = ButtonDefaults.shapes(),
             modifier = Modifier
                 .fillMaxWidth()

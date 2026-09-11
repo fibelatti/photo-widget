@@ -30,15 +30,18 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.SliderState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.contentColorFor
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.listSaver
@@ -305,18 +308,28 @@ private fun PhotoCycleModeIntervalContent(
     onApplyClick: (newMode: PhotoWidgetCycleMode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var interval by rememberSaveable { mutableStateOf(photoWidgetCycleMode.loopingInterval) }
+    var interval: PhotoWidgetLoopingInterval by rememberSaveable {
+        mutableStateOf(photoWidgetCycleMode.loopingInterval)
+    }
+    val sliderState: SliderState = key(interval.timeUnit) {
+        rememberSliderState(
+            value = interval.repeatInterval.toFloat(),
+            trackRange = interval.intervalRange(),
+        )
+    }
 
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         SliderItem(
-            value = interval.repeatInterval.toFloat(),
-            valueText = "${interval.repeatInterval}",
-            onValueChange = { newValue -> interval = interval.copy(repeatInterval = newValue.toLong()) },
-            valueRange = interval.intervalRange(),
+            state = sliderState,
+            displayValueTransformation = { "${it.toLong()}" },
             modifier = Modifier.fillMaxWidth(),
+            onValueChange = { newValue ->
+                sliderState.value = newValue
+                interval = interval.copy(repeatInterval = newValue.toLong())
+            },
         )
 
         Row(

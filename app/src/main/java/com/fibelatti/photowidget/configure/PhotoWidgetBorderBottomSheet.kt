@@ -19,8 +19,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SliderState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -408,12 +410,21 @@ private fun BorderWidthPicker(
     onWidthChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    SliderItem(
+    val sliderState: SliderState = rememberSliderState(
         value = currentWidth.toFloat(),
-        valueText = formatPercent(value = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR * 100),
-        onValueChange = { onWidthChange(it.fastRoundToInt()) },
-        valueRange = PhotoWidgetBorder.VALUE_RANGE,
+        trackRange = PhotoWidgetBorder.VALUE_RANGE,
+    )
+
+    SliderItem(
+        state = sliderState,
+        displayValueTransformation = {
+            formatPercent(value = it.fastRoundToInt() * PhotoWidgetBorder.PERCENT_FACTOR * 100)
+        },
         modifier = modifier.fillMaxWidth(),
+        onValueChange = { newValue ->
+            sliderState.value = newValue
+            onWidthChange(newValue.fastRoundToInt())
+        },
     )
 }
 

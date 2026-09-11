@@ -7,6 +7,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
@@ -26,15 +27,14 @@ import com.fibelatti.ui.foundation.Shapes
 
 @Composable
 fun SliderItem(
-    value: Float,
-    valueText: String,
-    onValueChange: (Float) -> Unit,
-    valueRange: ClosedFloatingPointRange<Float>,
+    state: SliderState,
+    displayValueTransformation: (Float) -> String,
     modifier: Modifier = Modifier,
+    onValueChange: ((Float) -> Unit)? = null,
     shape: Shape = Shapes.StandaloneShape,
 ) {
     val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
-    SideEffect(value.fastRoundToInt()) {
+    SideEffect(state.value.fastRoundToInt()) {
         localHapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentTick)
     }
 
@@ -44,7 +44,7 @@ fun SliderItem(
             .heightIn(min = ListItem.MinHeight)
             .clip(shape),
         trailingContent = {
-            SliderLabel(text = valueText)
+            SliderLabel(text = displayValueTransformation(state.value))
         },
         colors = ListItemDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
@@ -52,9 +52,8 @@ fun SliderItem(
         ),
         content = {
             Slider(
-                value = value,
+                state = state,
                 onValueChange = onValueChange,
-                valueRange = valueRange,
                 thumb = { SliderSmallThumb() },
             )
         },

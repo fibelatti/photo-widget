@@ -21,6 +21,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -146,9 +147,10 @@ private fun WidgetSettingsContent(
             },
         )
 
+        val resources = LocalResources.current
         PickerListItem(
             headlineText = stringResource(id = R.string.widget_settings_folder_sync_interval),
-            currentValue = folderSyncIntervalLabel(value = userPreferences.folderSyncInterval),
+            currentValue = folderSyncIntervalLabel(value = userPreferences.folderSyncInterval, resources = resources),
             onClick = onFolderSyncIntervalClick,
             shape = Shapes.BottomShape,
         )
