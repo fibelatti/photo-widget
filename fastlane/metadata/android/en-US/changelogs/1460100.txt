@@ -1,0 +1,5 @@
+This version brings the following updates:
+
+* Fix widgets failing to update on devices with less memory available
+
+Thanks for using the app!

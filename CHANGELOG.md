@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.46.1] - 2026-09-12
+[v1.46.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.46.1
+
 ### Fixed
 
 * Fix widgets failing to update on devices that allow less bitmap memory than
