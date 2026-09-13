@@ -58,7 +58,7 @@ fun Context.getAppShortcuts(packageName: String): List<AppShortcutInfo> {
             }
         }
 
-        shortcuts
+        shortcuts.distinctBy { it.id }
     }.getOrElse { e ->
         Timber.e(e, "Failed to load shortcuts for $packageName")
         emptyList()
