@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -668,12 +669,12 @@ private fun TapAreaSelector(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.height(IntrinsicSize.Max),
         horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
     ) {
         TapActionArea.entries.forEachIndexed { index, area ->
             val weight by animateFloatAsState(
-                targetValue = if (area == selectedArea) 1.2f else 1f,
+                targetValue = if (area == selectedArea) 1.2f else .8f,
             )
 
             ConnectedButtonRowItem(
@@ -682,7 +683,9 @@ private fun TapAreaSelector(
                 itemIndex = index,
                 itemCount = TapActionArea.entries.size,
                 label = stringResource(area.label),
-                modifier = Modifier.weight(weight),
+                modifier = Modifier
+                    .weight(weight)
+                    .fillMaxSize(),
             )
         }
     }

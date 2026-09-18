@@ -16,11 +16,14 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -51,6 +54,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
 import com.fibelatti.photowidget.R
@@ -70,7 +74,7 @@ import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.ui.icons.AppIcons
 import com.fibelatti.photowidget.ui.icons.TrashClock
-import com.fibelatti.ui.component.AutoSizeText
+import com.fibelatti.ui.component.ConnectedButtonRowDefaults
 import com.fibelatti.ui.component.ListItem
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
@@ -164,12 +168,13 @@ fun MyWidgetsScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(IntrinsicSize.Max)
                 .padding(all = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
         ) {
             options.forEachIndexed { index, source ->
                 val weight by animateFloatAsState(
-                    targetValue = if (selectedSource == source) 1.5f else 1f,
+                    targetValue = if (selectedSource == source) 1.2f else .8f,
                 )
 
                 ToggleButton(
@@ -177,16 +182,21 @@ fun MyWidgetsScreen(
                     onCheckedChange = { selectedSource = source },
                     modifier = Modifier
                         .weight(weight)
+                        .fillMaxHeight()
                         .semantics { role = Role.RadioButton },
                     shapes = when (index) {
                         0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
                         options.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
                         else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
                     },
+                    contentPadding = ConnectedButtonRowDefaults.ContentPadding,
                 ) {
-                    AutoSizeText(
+                    Text(
                         text = stringResource(source?.label ?: R.string.photo_widget_home_filter_all),
+                        textAlign = TextAlign.Center,
+                        overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
+                        style = MaterialTheme.typography.bodySmall,
                     )
                 }
             }

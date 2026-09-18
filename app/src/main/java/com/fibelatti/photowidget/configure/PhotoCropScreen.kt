@@ -364,12 +364,14 @@ private fun RatioShortcuts(
     var selectionIndex by rememberSaveable { mutableIntStateOf(0) }
 
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Max),
         horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
     ) {
         items.onEachIndexed { index: Int, (label: String, action: () -> Unit) ->
             val weight by animateFloatAsState(
-                targetValue = if (index == selectionIndex) 1.2f else 1f,
+                targetValue = if (index == selectionIndex) 1.2f else .8f,
             )
 
             ConnectedButtonRowItem(
@@ -382,8 +384,8 @@ private fun RatioShortcuts(
                 itemCount = items.size,
                 label = label,
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(weight),
+                    .weight(weight)
+                    .fillMaxHeight(),
             )
         }
     }

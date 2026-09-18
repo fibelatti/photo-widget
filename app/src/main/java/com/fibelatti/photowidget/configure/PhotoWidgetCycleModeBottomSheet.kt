@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -335,6 +336,7 @@ private fun PhotoCycleModeIntervalContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(IntrinsicSize.Max)
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
         ) {
@@ -349,7 +351,7 @@ private fun PhotoCycleModeIntervalContent(
 
             items.onEachIndexed { index, (timeUnit, label) ->
                 val weight by animateFloatAsState(
-                    targetValue = if (interval.timeUnit == timeUnit) 1.2f else 1f,
+                    targetValue = if (interval.timeUnit == timeUnit) 1.2f else .8f,
                 )
 
                 ConnectedButtonRowItem(
@@ -393,7 +395,9 @@ private fun PhotoCycleModeIntervalContent(
                     itemIndex = index,
                     itemCount = items.size,
                     label = stringResource(id = label),
-                    modifier = Modifier.weight(weight),
+                    modifier = Modifier
+                        .weight(weight)
+                        .fillMaxSize(),
                 )
             }
         }
