@@ -264,13 +264,29 @@ class ExactRepeatingAlarmReceiver : EntryPointBroadcastReceiver() {
         val nextPhotoId: String? = intent.nextPhotoId
 
         entryPoint.run {
-            if (nextPhotoId != null) {
-                photoWidgetStorage().saveDisplayedPhoto(appWidgetId = intent.appWidgetId, photoId = nextPhotoId)
-                PhotoWidgetProvider.update(context = context, appWidgetId = intent.appWidgetId, allowCrossfade = true)
-            } else {
-                cyclePhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
-                photoWidgetStorage().saveWidgetNextCycleTime(appWidgetId = intent.appWidgetId, nextCycleTime = null)
+            val storage: PhotoWidgetStorage = photoWidgetStorage()
+
+            when {
+                storage.getWidgetCyclePaused(appWidgetId = intent.appWidgetId) -> {
+                    Timber.d("Cycling is paused. Keeping the current photo.")
+                }
+
+                nextPhotoId != null -> {
+                    storage.saveDisplayedPhoto(appWidgetId = intent.appWidgetId, photoId = nextPhotoId)
+                    PhotoWidgetProvider.update(
+                        context = context,
+                        appWidgetId = intent.appWidgetId,
+                        allowCrossfade = true,
+                    )
+                }
+
+                else -> cyclePhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
             }
+
+            if (nextPhotoId == null) {
+                storage.saveWidgetNextCycleTime(appWidgetId = intent.appWidgetId, nextCycleTime = null)
+            }
+
             photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
         }
     }

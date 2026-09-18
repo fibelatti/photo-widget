@@ -72,12 +72,11 @@ class ToggleCyclingFeedbackActivity : AppCompatActivity() {
                 KeepAliveService.sendPauseGifBroadcast(context = this, appWidgetId = appWidgetId)
             }
 
+            // The alarm is left in place while cycling is paused. The receiver reads the flag when
+            // it fires and skips the photo change, so resuming only has to make sure an alarm
+            // exists at all.
             paused -> {
                 photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
-            }
-
-            else -> {
-                photoWidgetAlarmManager.cancel(appWidgetId = appWidgetId)
             }
         }
 

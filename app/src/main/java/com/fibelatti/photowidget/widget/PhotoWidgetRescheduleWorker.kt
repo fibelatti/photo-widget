@@ -11,14 +11,11 @@ import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.platform.KeepAliveService
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
-import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.time.Duration
-import kotlin.reflect.KClass
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -37,7 +34,6 @@ import timber.log.Timber
 class PhotoWidgetRescheduleWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParams: WorkerParameters,
-    private val photoWidgetStorage: PhotoWidgetStorage,
     private val photoWidgetAlarmManager: PhotoWidgetAlarmManager,
     private val userPreferencesStorage: UserPreferencesStorage,
 ) : CoroutineWorker(appContext = context, params = workerParams) {
@@ -55,27 +51,12 @@ class PhotoWidgetRescheduleWorker @AssistedInject constructor(
             ids.map { id ->
                 async {
                     try {
-                        val cycleMode: KClass<out PhotoWidgetCycleMode> = photoWidgetStorage.getWidgetCycleModeType(
-                            appWidgetId = id,
-                        )
-                        val isLocked: Boolean = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = id)
-                        val isPaused: Boolean = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = id)
+                        Timber.d("Processing widget %s", mapOf("id" to id))
 
-                        Timber.d(
-                            "Processing widget %s",
-                            mapOf(
-                                "id" to id,
-                                "cycleMode" to cycleMode,
-                                "isLocked" to isLocked,
-                                "isPaused" to isPaused,
-                            ),
-                        )
-
-                        if (cycleMode != PhotoWidgetCycleMode.Disabled::class && !isLocked && !isPaused) {
-                            photoWidgetAlarmManager.setup(appWidgetId = id)
-                        } else {
-                            Timber.d("Skipping alarm setup %s", mapOf("cycleMode" to cycleMode))
-                        }
+                        // Every reason to skip cycling (locked in app, cycling disabled, cycling
+                        // paused) is decided by the alarm manager and by the receiver when the
+                        // alarm fires, making this a self-recevory call.
+                        photoWidgetAlarmManager.setup(appWidgetId = id)
 
                         PhotoWidgetProvider.update(context = applicationContext, appWidgetId = id)
                         true
