@@ -7,6 +7,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.platform.ExceptionReporter
+import com.fibelatti.photowidget.platform.FileLoggingTree
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
@@ -15,6 +16,7 @@ import com.fibelatti.photowidget.widget.TransparentWidgetProvider
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.File
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +46,7 @@ class HomeViewModel @Inject constructor(
     private val photoWidgetAlarmManager: PhotoWidgetAlarmManager,
     private val userPreferencesStorage: UserPreferencesStorage,
     private val exceptionReporter: ExceptionReporter,
+    private val fileLoggingTree: FileLoggingTree,
     private val scope: CoroutineScope,
 ) : ViewModel() {
 
@@ -64,8 +67,8 @@ class HomeViewModel @Inject constructor(
             initialValue = userPreferencesStorage.highlightTransparentWidgets,
         )
 
-    private val _pendingReport: MutableStateFlow<String?> = MutableStateFlow(null)
-    val pendingReport: StateFlow<String?> = _pendingReport.asStateFlow()
+    private val _pendingReport: MutableStateFlow<PendingReport?> = MutableStateFlow(null)
+    val pendingReport: StateFlow<PendingReport?> = _pendingReport.asStateFlow()
 
     fun loadWidgets() {
         viewModelScope.launch {
@@ -167,7 +170,8 @@ class HomeViewModel @Inject constructor(
                 val reportText: String = withContext(Dispatchers.IO) {
                     crashReports.last().readText()
                 }
-                _pendingReport.update { reportText }
+                val logFiles: List<File> = fileLoggingTree.getLogFiles()
+                _pendingReport.update { PendingReport(text = reportText, logFiles = logFiles) }
             }
         }
     }
@@ -178,3 +182,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 }
+
+/**
+ * A crash report ready to be sent, together with the log files covering the period that led to it.
+ */
+data class PendingReport(
+    val text: String,
+    val logFiles: List<File>,
+)

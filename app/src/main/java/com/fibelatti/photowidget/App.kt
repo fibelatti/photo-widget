@@ -10,6 +10,7 @@ import androidx.compose.runtime.tooling.ComposeStackTraceMode
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.fibelatti.photowidget.platform.ConfigurationChangedReceiver
+import com.fibelatti.photowidget.platform.FileLoggingTree
 import com.fibelatti.photowidget.preferences.Appearance
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
@@ -38,6 +39,9 @@ class App : Application(), Configuration.Provider {
     @Inject
     lateinit var hiltWorkerFactory: HiltWorkerFactory
 
+    @Inject
+    lateinit var fileLoggingTree: FileLoggingTree
+
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setMinimumLoggingLevel(android.util.Log.INFO)
@@ -47,6 +51,7 @@ class App : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
 
+        setupLogging()
         setupDebugMode()
         setupNightMode()
         setupDynamicColors()
@@ -54,11 +59,13 @@ class App : Application(), Configuration.Provider {
         getReadyToWork()
     }
 
+    private fun setupLogging() {
+        Timber.plant(if (BuildConfig.DEBUG) Timber.DebugTree() else fileLoggingTree)
+    }
+
     @OptIn(ExperimentalComposeApi::class)
     private fun setupDebugMode() {
         if (!BuildConfig.DEBUG) return
-
-        Timber.plant(Timber.DebugTree())
 
         StrictMode.setThreadPolicy(
             StrictMode.ThreadPolicy.Builder()

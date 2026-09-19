@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.app.ShareCompat
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.fibelatti.photowidget.BuildConfig
@@ -82,7 +83,7 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 Intent.ACTION_SEND_MULTIPLE -> {
-                    intent.getParcelableArrayListExtra<Parcelable>(Intent.EXTRA_STREAM)?.mapNotNull { it as? Uri }
+                    intent.getParcelableArrayListExtra<Parcelable>(Intent.EXTRA_STREAM)?.filterIsInstance<Uri>()
                 }
 
                 else -> null
@@ -161,7 +162,7 @@ class HomeActivity : AppCompatActivity() {
             .startChooser()
     }
 
-    private fun showCrashReportDialog(reportText: String) {
+    private fun showCrashReportDialog(pendingReport: PendingReport) {
         showMaterialAlertDialog {
             setTitle(getString(R.string.photo_widget_home_crash_report_title))
             setMessage(getString(R.string.photo_widget_home_crash_report_body))
@@ -169,11 +170,25 @@ class HomeActivity : AppCompatActivity() {
                 val emailBody = buildString {
                     appendLine("Android Version: ${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})")
                     appendLine()
-                    append(reportText)
+                    append(pendingReport.text)
                     appendLine()
                 }
 
-                val emailIntent = Intent(Intent.ACTION_SENDTO, "mailto:".toUri())
+                val logUris: ArrayList<Uri> = pendingReport.logFiles.mapTo(ArrayList()) { file ->
+                    FileProvider.getUriForFile(this@HomeActivity, "$packageName.fileprovider", file)
+                }
+
+                val emailIntent: Intent = if (logUris.isEmpty()) {
+                    Intent(Intent.ACTION_SENDTO, "mailto:".toUri())
+                } else {
+                    Intent(Intent.ACTION_SEND_MULTIPLE)
+                        .setType("text/plain")
+                        .putParcelableArrayListExtra(Intent.EXTRA_STREAM, logUris)
+                        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        .apply { selector = Intent(Intent.ACTION_SENDTO, "mailto:".toUri()) }
+                }
+
+                emailIntent
                     .putExtra(Intent.EXTRA_EMAIL, arrayOf("appsupport@fibelatti.com"))
                     .putExtra(
                         Intent.EXTRA_SUBJECT,

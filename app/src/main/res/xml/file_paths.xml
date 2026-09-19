@@ -3,4 +3,7 @@
     <files-path
         name="widgets"
         path="widgets/" />
+    <files-path
+        name="logs"
+        path="logs/" />
 </paths>
