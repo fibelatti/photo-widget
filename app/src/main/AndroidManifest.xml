@@ -189,7 +189,7 @@
         </receiver>
 
         <receiver
-            android:name=".widget.ExactRepeatingAlarmReceiver"
+            android:name=".widget.RepeatingAlarmReceiver"
             android:exported="false" />
 
         <receiver

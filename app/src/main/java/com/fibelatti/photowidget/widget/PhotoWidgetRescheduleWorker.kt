@@ -53,9 +53,9 @@ class PhotoWidgetRescheduleWorker @AssistedInject constructor(
                     try {
                         Timber.d("Processing widget %s", mapOf("id" to id))
 
-                        // Every reason to skip cycling (locked in app, cycling disabled, cycling
-                        // paused) is decided by the alarm manager and by the receiver when the
-                        // alarm fires, making this a self-recevory call.
+                        // Every reason to skip cycling (locked in app, cycling disabled) is
+                        // decided by the alarm manager, and a paused widget skips the photo
+                        // change when its alarm fires, making this a self-recovery call.
                         photoWidgetAlarmManager.setup(appWidgetId = id)
 
                         PhotoWidgetProvider.update(context = applicationContext, appWidgetId = id)

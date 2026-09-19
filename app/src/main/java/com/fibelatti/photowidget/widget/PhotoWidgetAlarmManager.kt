@@ -63,11 +63,13 @@ class PhotoWidgetAlarmManager @Inject constructor(
     fun cancel(appWidgetId: Int) {
         Timber.i("Cancelling existing alarms for widget %s", mapOf("appWidgetId" to appWidgetId))
 
+        // Interval alarms used to be scheduled against the tap action intent. Cancel it too so
+        // repeating alarms set by previous versions are cleared.
         alarmManager.cancel(
             TapActionPendingIntentFactory.getChangePhotoPendingIntent(context = context, appWidgetId = appWidgetId),
         )
         alarmManager.cancel(
-            ExactRepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId),
+            RepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId),
         )
     }
 
@@ -83,40 +85,25 @@ class PhotoWidgetAlarmManager @Inject constructor(
 
         photoWidgetStorage.saveWidgetNextCycleTime(appWidgetId = appWidgetId, nextCycleTime = triggerAtMillis)
 
+        val pendingIntent: PendingIntent = RepeatingAlarmReceiver.pendingIntent(
+            context = context,
+            appWidgetId = appWidgetId,
+        )
+
         if (canScheduleExactAlarms) {
             try {
                 alarmManager.setExactAndAllowWhileIdle(
                     /* type = */ AlarmManager.RTC_WAKEUP,
                     /* triggerAtMillis = */ triggerAtMillis,
-                    /* operation = */
-                    ExactRepeatingAlarmReceiver.pendingIntent(context = context, appWidgetId = appWidgetId),
+                    /* operation = */ pendingIntent,
                 )
             } catch (_: SecurityException) {
                 Timber.w("SecurityException: fallback to inexact alarm")
-
-                setRepeatingAlarm(
-                    triggerAtMillis = triggerAtMillis,
-                    intervalMillis = intervalMillis,
-                    appWidgetId = appWidgetId,
-                )
+                setAlarm(triggerAtMillis = triggerAtMillis, pendingIntent = pendingIntent)
             }
         } else {
-            setRepeatingAlarm(
-                triggerAtMillis = triggerAtMillis,
-                intervalMillis = intervalMillis,
-                appWidgetId = appWidgetId,
-            )
+            setAlarm(triggerAtMillis = triggerAtMillis, pendingIntent = pendingIntent)
         }
-    }
-
-    private fun setRepeatingAlarm(triggerAtMillis: Long, intervalMillis: Long, appWidgetId: Int) {
-        alarmManager.setRepeating(
-            /* type = */ AlarmManager.RTC_WAKEUP,
-            /* triggerAtMillis = */ triggerAtMillis,
-            /* intervalMillis = */ intervalMillis,
-            /* operation = */
-            TapActionPendingIntentFactory.getChangePhotoPendingIntent(context = context, appWidgetId = appWidgetId),
-        )
     }
 
     private fun setupScheduleAlarm(cycleMode: PhotoWidgetCycleMode.Schedule, appWidgetId: Int) {
@@ -161,7 +148,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
             set(Calendar.MILLISECOND, 0)
         }
 
-        val pendingIntent: PendingIntent = ExactRepeatingAlarmReceiver.pendingIntent(
+        val pendingIntent: PendingIntent = RepeatingAlarmReceiver.pendingIntent(
             context = context,
             appWidgetId = appWidgetId,
         )
@@ -225,7 +212,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
             set(Calendar.MILLISECOND, 0)
         }
 
-        val pendingIntent: PendingIntent = ExactRepeatingAlarmReceiver.pendingIntent(
+        val pendingIntent: PendingIntent = RepeatingAlarmReceiver.pendingIntent(
             context = context,
             appWidgetId = appWidgetId,
             nextPhotoId = nextEntry.key,
@@ -256,38 +243,34 @@ class PhotoWidgetAlarmManager @Inject constructor(
     }
 }
 
-class ExactRepeatingAlarmReceiver : EntryPointBroadcastReceiver() {
+class RepeatingAlarmReceiver : EntryPointBroadcastReceiver() {
 
     override suspend fun doWork(context: Context, intent: Intent, entryPoint: PhotoWidgetEntryPoint) {
-        Timber.i("Working... %s", mapOf("appWidgetId" to intent.appWidgetId))
-
+        val appWidgetId: Int = intent.appWidgetId
         val nextPhotoId: String? = intent.nextPhotoId
+
+        Timber.i("Working... %s", mapOf("appWidgetId" to appWidgetId))
 
         entryPoint.run {
             val storage: PhotoWidgetStorage = photoWidgetStorage()
 
-            when {
-                storage.getWidgetCyclePaused(appWidgetId = intent.appWidgetId) -> {
-                    Timber.d("Cycling is paused. Keeping the current photo.")
-                }
-
-                nextPhotoId != null -> {
-                    storage.saveDisplayedPhoto(appWidgetId = intent.appWidgetId, photoId = nextPhotoId)
-                    PhotoWidgetProvider.update(
-                        context = context,
-                        appWidgetId = intent.appWidgetId,
-                        allowCrossfade = true,
-                    )
-                }
-
-                else -> cyclePhotoUseCase().invoke(appWidgetId = intent.appWidgetId)
+            if (storage.getWidgetCyclePaused(appWidgetId = appWidgetId)) {
+                // Keep the current photo and let the alarm lapse instead of re-arming it, so a
+                // paused widget stops waking the device. Resuming and the periodic rescheduling
+                // worker both call the alarm manager, which sets a new alarm then.
+                Timber.d("Cycling is paused. Keeping the current photo.")
+                return@run
             }
 
-            if (nextPhotoId == null) {
-                storage.saveWidgetNextCycleTime(appWidgetId = intent.appWidgetId, nextCycleTime = null)
+            if (nextPhotoId != null) {
+                storage.saveDisplayedPhoto(appWidgetId = appWidgetId, photoId = nextPhotoId)
+                PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId, allowCrossfade = true)
+            } else {
+                cyclePhotoUseCase().invoke(appWidgetId = appWidgetId)
+                storage.saveWidgetNextCycleTime(appWidgetId = appWidgetId, nextCycleTime = null)
             }
 
-            photoWidgetAlarmManager().setup(appWidgetId = intent.appWidgetId)
+            photoWidgetAlarmManager().setup(appWidgetId = appWidgetId)
         }
     }
 
@@ -300,7 +283,7 @@ class ExactRepeatingAlarmReceiver : EntryPointBroadcastReceiver() {
             appWidgetId: Int,
             nextPhotoId: String? = null,
         ): PendingIntent {
-            val intent = Intent(context, ExactRepeatingAlarmReceiver::class.java).apply {
+            val intent = Intent(context, RepeatingAlarmReceiver::class.java).apply {
                 setIdentifierCompat("$appWidgetId")
                 this.appWidgetId = appWidgetId
                 this.nextPhotoId = nextPhotoId
