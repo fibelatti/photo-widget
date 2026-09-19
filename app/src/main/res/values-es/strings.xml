@@ -87,6 +87,7 @@
     <string name="widget_defaults_shuffle">Barajar</string>
     <string name="widget_defaults_cycling">Temporizador de fotos</string>
     <string name="widget_defaults_shape">Forma</string>
+    <string name="widget_defaults_shape_rotation">Rotación de la forma</string>
     <string name="widget_defaults_corner_radius">Redondez</string>
     <string name="widget_defaults_opacity">Opacidad</string>
     <string name="widget_defaults_saturation">Saturación</string>

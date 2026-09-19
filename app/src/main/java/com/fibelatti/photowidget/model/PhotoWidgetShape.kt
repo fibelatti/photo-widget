@@ -9,6 +9,11 @@ sealed class PhotoWidgetShape {
     abstract val rotation: Float
     abstract val enabled: Boolean
 
+    /**
+     * Whether the shape can be drawn with a [PhotoWidgetShapeRotation] applied to it.
+     */
+    open val canRotate: Boolean = false
+
     data class CustomPath(
         override val id: String,
     ) : PhotoWidgetShape() {
@@ -45,6 +50,7 @@ sealed class PhotoWidgetShape {
         override val id: String,
         val roundedPolygon: RoundedPolygon,
         override val enabled: Boolean = true,
+        override val canRotate: Boolean = false,
     ) : PhotoWidgetShape() {
 
         override val rotation: Float = Float.NaN

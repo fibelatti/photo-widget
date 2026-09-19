@@ -204,6 +204,7 @@ fun PhotoWidgetConfigureContentTab(
         onEvenSplitClick = onEvenSplitClick,
         aspectRatio = photoWidget.aspectRatio,
         shapeId = photoWidget.shapeId,
+        shapeRotation = photoWidget.shapeRotation,
         modifier = modifier.fillMaxSize(),
     )
 }
@@ -227,6 +228,7 @@ private fun PhotoPicker(
     onEvenSplitClick: () -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
+    shapeRotation: Int,
     modifier: Modifier = Modifier,
 ) {
     val isAdvancedSchedule: Boolean = cycleMode is PhotoWidgetCycleMode.AdvancedSchedule
@@ -242,6 +244,7 @@ private fun PhotoPicker(
             source = source,
             aspectRatio = aspectRatio,
             shapeId = shapeId,
+            shapeRotation = shapeRotation,
             canReorder = canSort,
             onReorderFinish = onReorderFinish,
             onPhotoClick = onPhotoClick,
@@ -275,6 +278,7 @@ private fun PhotoPicker(
             onRemovedPhotoClick = onRemovedPhotoClick,
             aspectRatio = aspectRatio,
             shapeId = shapeId,
+            shapeRotation = shapeRotation,
             modifier = Modifier.align(Alignment.BottomCenter),
         )
     }
@@ -399,6 +403,7 @@ private fun PhotoGrid(
     source: PhotoWidgetSource,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
+    shapeRotation: Int,
     canReorder: Boolean,
     onReorderFinish: (List<LocalPhoto>) -> Unit,
     onPhotoClick: (LocalPhoto) -> Unit,
@@ -470,6 +475,7 @@ private fun PhotoGrid(
                         } else {
                             PhotoWidget.DEFAULT_SHAPE_ID
                         },
+                        shapeRotation = shapeRotation,
                         cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                         modifier = Modifier
                             .longPressDraggableHandle(
@@ -531,6 +537,7 @@ private fun PhotoPickerFooter(
     onRemovedPhotoClick: (LocalPhoto) -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
+    shapeRotation: Int,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -570,6 +577,7 @@ private fun PhotoPickerFooter(
                 onPhotoClick = onRemovedPhotoClick,
                 aspectRatio = aspectRatio,
                 shapeId = shapeId,
+                shapeRotation = shapeRotation,
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
@@ -607,6 +615,7 @@ private fun RemovedPhotosPicker(
     onPhotoClick: (LocalPhoto) -> Unit,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
+    shapeRotation: Int,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -636,6 +645,7 @@ private fun RemovedPhotosPicker(
                     } else {
                         PhotoWidget.DEFAULT_SHAPE_ID
                     },
+                    shapeRotation = shapeRotation,
                     cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                     modifier = Modifier
                         .animateItem()

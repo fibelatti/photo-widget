@@ -75,6 +75,7 @@ fun WidgetPositionViewer(
                     photo = photoWidget.currentPhoto,
                     aspectRatio = photoWidget.aspectRatio,
                     shapeId = photoWidget.shapeId,
+                    shapeRotation = photoWidget.shapeRotation,
                     cornerRadius = photoWidget.cornerRadius,
                     colors = photoWidget.colors,
                     border = photoWidget.border,

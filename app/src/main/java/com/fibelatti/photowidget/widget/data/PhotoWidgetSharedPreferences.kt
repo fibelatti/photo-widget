@@ -9,6 +9,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetText
@@ -281,6 +282,21 @@ class PhotoWidgetSharedPreferences @Inject constructor(
     fun getWidgetShapeId(appWidgetId: Int): String {
         return sharedPreferences.getString("${PreferencePrefix.SHAPE}$appWidgetId", null)
             ?: userPreferencesStorage.defaultShape
+    }
+
+    fun saveWidgetShapeRotation(appWidgetId: Int, shapeRotation: Int) {
+        sharedPreferences.edit {
+            putInt("${PreferencePrefix.SHAPE_ROTATION}$appWidgetId", shapeRotation)
+        }
+    }
+
+    fun getWidgetShapeRotation(appWidgetId: Int): Int {
+        return PhotoWidgetShapeRotation.sanitize(
+            sharedPreferences.getInt(
+                "${PreferencePrefix.SHAPE_ROTATION}$appWidgetId",
+                PhotoWidgetShapeRotation.DEFAULT,
+            ),
+        )
     }
 
     fun saveWidgetCornerRadius(appWidgetId: Int, cornerRadius: Int) {
@@ -793,6 +809,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         LEGACY_PAST_INDICES(value = "appwidget_past_indices_"),
         RATIO(value = "appwidget_aspect_ratio_"),
         SHAPE(value = "appwidget_shape_"),
+        SHAPE_ROTATION(value = "appwidget_shape_rotation_"),
 
         /**
          * Key from when the corner radius was persisted in px.

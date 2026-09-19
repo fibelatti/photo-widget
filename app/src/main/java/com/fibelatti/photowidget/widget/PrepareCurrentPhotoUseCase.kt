@@ -115,6 +115,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
             sourceBitmap.withPolygonalShape(
                 context = context,
                 shapeId = photoWidget.shapeId,
+                shapeRotation = photoWidget.shapeRotation,
                 colors = photoWidget.colors,
                 borderColor = borderColor,
                 borderPercent = borderPercent,

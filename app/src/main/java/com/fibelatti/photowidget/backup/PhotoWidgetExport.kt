@@ -5,6 +5,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
+import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.PhotoWidgetText
@@ -18,6 +19,7 @@ data class PhotoWidgetExport(
     val source: String?,
     val aspectRatio: String,
     val shapeId: String,
+    val shapeRotation: Int? = null,
     val cornerRadius: Int,
     val border: String,
     val borderHex: String?,
@@ -88,6 +90,7 @@ fun PhotoWidgetExport.toPhotoWidget(photos: List<LocalPhoto>): PhotoWidget {
         tapActions = PhotoWidgetTapActions().coerceTapActions(source = source),
         aspectRatio = enumValueOfOrNull<PhotoWidgetAspectRatio>(aspectRatio) ?: PhotoWidgetAspectRatio.SQUARE,
         shapeId = shapeId,
+        shapeRotation = PhotoWidgetShapeRotation.sanitize(shapeRotation ?: PhotoWidgetShapeRotation.DEFAULT),
         cornerRadius = cornerRadius,
         border = photoWidgetBorder,
         colors = PhotoWidgetColors(
@@ -149,6 +152,7 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
         source = source.name,
         aspectRatio = aspectRatio.name,
         shapeId = shapeId,
+        shapeRotation = shapeRotation,
         cornerRadius = cornerRadius,
         border = border.serializedName,
         borderHex = borderHex,

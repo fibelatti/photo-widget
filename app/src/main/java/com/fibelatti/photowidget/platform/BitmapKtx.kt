@@ -60,6 +60,7 @@ fun Bitmap.withRoundedCorners(
 fun Bitmap.withPolygonalShape(
     context: Context,
     shapeId: String,
+    shapeRotation: Int,
     colors: PhotoWidgetColors = PhotoWidgetColors(),
     @ColorInt borderColor: Int? = null,
     @FloatRange(from = 0.0) borderPercent: Float = .0F,
@@ -73,6 +74,7 @@ fun Bitmap.withPolygonalShape(
         val path: Path = PhotoWidgetShapeBuilder.getShapePath(
             shapeId = shapeId,
             size = min(rect.height(), rect.width()).toFloat(),
+            shapeRotation = shapeRotation,
         )
 
         canvas.drawPath(path, paint)
@@ -81,6 +83,7 @@ fun Bitmap.withPolygonalShape(
             buildString {
                 append("Unable to create shape with `withPolygonalShape`! (")
                 append("shapeId=$shapeId,")
+                append("shapeRotation=$shapeRotation,")
                 append("bitmap=[$width;$height],")
                 append("rect=[${rect.width()};${rect.height()}]")
                 append(")")

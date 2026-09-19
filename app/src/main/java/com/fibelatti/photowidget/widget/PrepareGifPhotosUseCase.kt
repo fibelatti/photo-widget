@@ -69,6 +69,7 @@ class PrepareGifPhotosUseCase @Inject constructor(
                             bitmap.withPolygonalShape(
                                 context = context,
                                 shapeId = photoWidget.shapeId,
+                                shapeRotation = photoWidget.shapeRotation,
                                 colors = photoWidget.colors,
                                 borderColor = borderColor,
                                 borderPercent = borderPercent,

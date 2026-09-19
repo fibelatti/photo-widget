@@ -119,6 +119,7 @@ private fun ImportFromWidgetContent(
                         photo = widget.currentPhoto,
                         aspectRatio = widget.aspectRatio,
                         shapeId = widget.shapeId,
+                        shapeRotation = widget.shapeRotation,
                         cornerRadius = widget.cornerRadius,
                         modifier = Modifier
                             .fillMaxSize()

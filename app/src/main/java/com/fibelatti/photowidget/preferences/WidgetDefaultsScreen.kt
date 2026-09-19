@@ -42,6 +42,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
+import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
@@ -274,6 +275,7 @@ private fun WidgetDefaultsContent(
         ShapeListItem(
             headlineText = stringResource(id = R.string.widget_defaults_shape),
             currentValue = userPreferences.defaultShape,
+            shapeRotation = PhotoWidgetShapeRotation.DEFAULT,
             onClick = onShapeClick,
             shape = Shapes.MiddleShape,
         )

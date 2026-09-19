@@ -4,6 +4,8 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
+import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
+import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.TapActionArea
@@ -142,6 +144,15 @@ class SavePhotoWidgetUseCase @Inject constructor(
         photoWidgetStorage.saveWidgetShapeId(
             appWidgetId = appWidgetId,
             shapeId = photoWidget.shapeId,
+        )
+
+        photoWidgetStorage.saveWidgetShapeRotation(
+            appWidgetId = appWidgetId,
+            shapeRotation = if (PhotoWidgetShapeBuilder.getShape(shapeId = photoWidget.shapeId).canRotate) {
+                photoWidget.shapeRotation
+            } else {
+                PhotoWidgetShapeRotation.DEFAULT
+            },
         )
 
         photoWidgetStorage.saveWidgetCornerRadius(

@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
+import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 
@@ -59,6 +60,7 @@ fun ShapePicker(
                 )
                 ColoredShape(
                     shapeId = shape.id,
+                    shapeRotation = PhotoWidgetShapeRotation.DEFAULT,
                     color = color,
                     modifier = Modifier
                         .size(shapeSize)

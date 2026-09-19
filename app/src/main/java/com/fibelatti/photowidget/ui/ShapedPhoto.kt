@@ -23,6 +23,7 @@ fun ShapedPhoto(
     photo: LocalPhoto?,
     aspectRatio: PhotoWidgetAspectRatio,
     shapeId: String,
+    shapeRotation: Int,
     cornerRadius: Int,
     modifier: Modifier = Modifier,
     colors: PhotoWidgetColors = PhotoWidgetColors(),
@@ -39,6 +40,7 @@ fun ShapedPhoto(
     val transformations: List<Transformation> = remember(
         aspectRatio,
         shapeId,
+        shapeRotation,
         cornerRadius,
         colors,
         border,
@@ -49,6 +51,7 @@ fun ShapedPhoto(
             PolygonalShapeTransformation(
                 context = localContext,
                 shapeId = shapeId,
+                shapeRotation = shapeRotation,
                 colors = colors,
                 border = border,
                 resolvedDynamicBorderColor = resolvedDynamicBorderColor,

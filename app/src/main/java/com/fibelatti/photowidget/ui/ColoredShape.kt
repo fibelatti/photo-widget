@@ -14,6 +14,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 @Composable
 fun ColoredShape(
     shapeId: String,
+    shapeRotation: Int,
     color: Color,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit = {},
@@ -25,6 +26,7 @@ fun ColoredShape(
                 val shapePath = PhotoWidgetShapeBuilder.getShapePath(
                     shapeId = shapeId,
                     size = size.minDimension,
+                    shapeRotation = shapeRotation,
                 ).asComposePath()
 
                 onDrawWithContent {

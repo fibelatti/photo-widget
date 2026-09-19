@@ -43,6 +43,7 @@ import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
+import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.disableWindowNavigationBarContrastEnforced
 import com.fibelatti.photowidget.platform.enableEdgeToEdgeTransparent
@@ -152,6 +153,7 @@ private fun ScreenContent(
                     photo = photo,
                     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
                     shapeId = PhotoWidget.DEFAULT_SHAPE_ID,
+                    shapeRotation = PhotoWidgetShapeRotation.DEFAULT,
                     cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                     modifier = Modifier
                         .fillMaxWidth()

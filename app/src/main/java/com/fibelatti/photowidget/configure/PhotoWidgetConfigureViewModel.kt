@@ -744,6 +744,12 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
+    fun shapeRotationSelected(shapeRotation: Int) {
+        _state.update { current ->
+            current.copy(photoWidget = current.photoWidget.copy(shapeRotation = shapeRotation))
+        }
+    }
+
     fun cornerRadiusSelected(cornerRadius: Int) {
         _state.update { current ->
             current.copy(photoWidget = current.photoWidget.copy(cornerRadius = cornerRadius))

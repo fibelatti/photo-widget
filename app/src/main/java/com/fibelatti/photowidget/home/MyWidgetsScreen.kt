@@ -63,6 +63,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
+import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.model.isWidgetRemoved
@@ -151,6 +152,7 @@ fun MyWidgetsScreen(
                 ) {
                     ColoredShape(
                         shapeId = remember { PhotoWidgetShapeBuilder.shapes.random().id },
+                        shapeRotation = PhotoWidgetShapeRotation.DEFAULT,
                         color = MaterialTheme.colorScheme.primaryContainer,
                         modifier = Modifier.size(120.dp),
                     )
@@ -255,6 +257,7 @@ private fun WidgetGridItem(
                 photo = widget.currentPhoto,
                 aspectRatio = widget.aspectRatio,
                 shapeId = widget.shapeId,
+                shapeRotation = widget.shapeRotation,
                 cornerRadius = widget.cornerRadius,
                 modifier = Modifier
                     .fillMaxSize()

@@ -17,6 +17,7 @@ data class PhotoWidget(
     val tapActions: PhotoWidgetTapActions = PhotoWidgetTapActions(),
     val aspectRatio: PhotoWidgetAspectRatio = PhotoWidgetAspectRatio.SQUARE,
     val shapeId: String = DEFAULT_SHAPE_ID,
+    val shapeRotation: Int = PhotoWidgetShapeRotation.DEFAULT,
     val cornerRadius: Int = DEFAULT_CORNER_RADIUS,
     val border: PhotoWidgetBorder = PhotoWidgetBorder.None,
     val colors: PhotoWidgetColors = PhotoWidgetColors(),

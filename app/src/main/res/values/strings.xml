@@ -100,6 +100,7 @@
     <string name="widget_defaults_shuffle">Shuffle</string>
     <string name="widget_defaults_cycling">Photo timer</string>
     <string name="widget_defaults_shape">Shape</string>
+    <string name="widget_defaults_shape_rotation">Shape rotation</string>
     <string name="widget_defaults_corner_radius">Roundness</string>
     <string name="widget_defaults_opacity">Opacity</string>
     <string name="widget_defaults_saturation">Saturation</string>

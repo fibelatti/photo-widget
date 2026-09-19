@@ -38,18 +38,22 @@ object PhotoWidgetShapeBuilder {
         PhotoWidgetShape.Material(
             id = "slanted",
             roundedPolygon = MaterialShapes.Slanted,
+            canRotate = true,
         ),
         PhotoWidgetShape.Material(
             id = "arch",
             roundedPolygon = MaterialShapes.Arch,
+            canRotate = true,
         ),
         PhotoWidgetShape.Material(
             id = "ghostish",
             roundedPolygon = MaterialShapes.Ghostish,
+            canRotate = true,
         ),
         PhotoWidgetShape.Material(
             id = "fan",
             roundedPolygon = MaterialShapes.Fan,
+            canRotate = true,
         ),
         PhotoWidgetShape.Polygon(
             id = "circle",
@@ -59,22 +63,27 @@ object PhotoWidgetShapeBuilder {
         PhotoWidgetShape.Material(
             id = "oval",
             roundedPolygon = MaterialShapes.Oval,
+            canRotate = true,
         ),
         PhotoWidgetShape.Material(
             id = "pill",
             roundedPolygon = MaterialShapes.Pill,
+            canRotate = true,
         ),
         PhotoWidgetShape.Material(
             id = "bun",
             roundedPolygon = MaterialShapes.Bun,
+            canRotate = true,
         ),
         PhotoWidgetShape.Material(
             id = "diamond",
             roundedPolygon = MaterialShapes.Diamond,
+            canRotate = true,
         ),
         PhotoWidgetShape.Material(
             id = "gem",
             roundedPolygon = MaterialShapes.Gem,
+            canRotate = true,
         ),
         PhotoWidgetShape.Material(
             id = "clover-8-leaf",
@@ -132,11 +141,13 @@ object PhotoWidgetShapeBuilder {
         PhotoWidgetShape.Material(
             id = "clam-shell",
             roundedPolygon = MaterialShapes.ClamShell,
+            canRotate = true,
         ),
         PhotoWidgetShape.CustomPath(id = "heart"),
         PhotoWidgetShape.Material(
             id = "puffy",
             roundedPolygon = MaterialShapes.Puffy,
+            canRotate = true,
         ),
         PhotoWidgetShape.Material(
             id = "puffy-diamond",
@@ -159,8 +170,10 @@ object PhotoWidgetShapeBuilder {
         }
     }
 
-    fun getShapePath(shapeId: String, size: Float): Path {
-        val photoWidgetShape: PhotoWidgetShape = shapes.firstOrNull { it.id == shapeId } ?: shapes.first()
+    fun getShape(shapeId: String): PhotoWidgetShape = shapes.firstOrNull { it.id == shapeId } ?: shapes.first()
+
+    fun getShapePath(shapeId: String, size: Float, shapeRotation: Int): Path {
+        val photoWidgetShape: PhotoWidgetShape = getShape(shapeId = shapeId)
 
         val polygon: RoundedPolygon = when (photoWidgetShape) {
             is PhotoWidgetShape.CustomPath -> {
@@ -188,6 +201,12 @@ object PhotoWidgetShapeBuilder {
                 )
             }
 
+            is PhotoWidgetShape.Material if photoWidgetShape.canRotate -> {
+                photoWidgetShape.roundedPolygon.transformedRotation(
+                    rotation = PhotoWidgetShapeRotation.sanitize(shapeRotation).toFloat(),
+                )
+            }
+
             is PhotoWidgetShape.Material -> {
                 photoWidgetShape.roundedPolygon
             }
@@ -199,7 +218,7 @@ object PhotoWidgetShapeBuilder {
             .toPath()
     }
 
-    fun RoundedPolygon.transformedRotation(rotation: Float): RoundedPolygon {
+    private fun RoundedPolygon.transformedRotation(rotation: Float): RoundedPolygon {
         return transformed(
             matrix = Matrix().apply {
                 if (!rotation.isNaN()) postRotate(rotation)

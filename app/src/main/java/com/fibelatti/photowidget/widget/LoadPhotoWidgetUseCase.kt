@@ -87,6 +87,7 @@ class LoadPhotoWidgetUseCase @Inject constructor(
             ),
             aspectRatio = aspectRatio,
             shapeId = getWidgetShapeId(appWidgetId = appWidgetId),
+            shapeRotation = getWidgetShapeRotation(appWidgetId = appWidgetId),
             cornerRadius = cornerRadius,
             border = border,
             colors = PhotoWidgetColors(

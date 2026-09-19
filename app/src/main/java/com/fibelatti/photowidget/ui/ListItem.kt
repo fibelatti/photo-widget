@@ -88,6 +88,7 @@ fun PickerListItem(
 fun ShapeListItem(
     headlineText: String,
     currentValue: String,
+    shapeRotation: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = Shapes.StandaloneShape,
@@ -97,6 +98,7 @@ fun ShapeListItem(
         trailingContent = {
             ColoredShape(
                 shapeId = currentValue,
+                shapeRotation = shapeRotation,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(40.dp),
             )

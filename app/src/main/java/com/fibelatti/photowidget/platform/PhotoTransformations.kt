@@ -14,17 +14,20 @@ import com.fibelatti.photowidget.model.borderPercent
 class PolygonalShapeTransformation(
     private val context: Context,
     private val shapeId: String,
+    private val shapeRotation: Int,
     private val colors: PhotoWidgetColors,
     private val border: PhotoWidgetBorder,
     private val resolvedDynamicBorderColor: Int?,
 ) : Transformation() {
 
-    override val cacheKey: String = "polygonal|$shapeId|$colors|$border|$resolvedDynamicBorderColor"
+    override val cacheKey: String =
+        "polygonal|$shapeId|$shapeRotation|$colors|$border|$resolvedDynamicBorderColor"
 
     override suspend fun transform(input: Bitmap, size: Size): Bitmap {
         return input.withPolygonalShape(
             context = context,
             shapeId = shapeId,
+            shapeRotation = shapeRotation,
             colors = colors,
             borderColor = resolveBorderColor(border = border, source = input, dynamic = resolvedDynamicBorderColor),
             borderPercent = border.borderPercent(),

@@ -19,12 +19,16 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
+import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
+import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.ui.PickerListItem
 import com.fibelatti.photowidget.ui.ShapeListItem
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.SelectionDialogBottomSheet
+import com.fibelatti.ui.component.SelectionDialogBottomSheetMode
 import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.preview.PreviewAll
@@ -39,6 +43,7 @@ fun PhotoWidgetConfigureAppearanceTab(
 
     val aspectRatioPickerSheetState: AppSheetState = rememberAppSheetState()
     val shapePickerSheetState: AppSheetState = rememberAppSheetState()
+    val shapeRotationPickerSheetState: AppSheetState = rememberAppSheetState()
     val cornerRadiusPickerSheetState: AppSheetState = rememberAppSheetState()
     val borderPickerSheetState: AppSheetState = rememberAppSheetState()
     val opacityPickerSheetState: AppSheetState = rememberAppSheetState()
@@ -51,6 +56,7 @@ fun PhotoWidgetConfigureAppearanceTab(
         photoWidget = state.photoWidget,
         onAspectRatioClick = aspectRatioPickerSheetState::showBottomSheet,
         onShapeClick = shapePickerSheetState::showBottomSheet,
+        onShapeRotationClick = shapeRotationPickerSheetState::showBottomSheet,
         onCornerRadiusClick = cornerRadiusPickerSheetState::showBottomSheet,
         onBorderClick = borderPickerSheetState::showBottomSheet,
         onOpacityClick = opacityPickerSheetState::showBottomSheet,
@@ -78,6 +84,18 @@ fun PhotoWidgetConfigureAppearanceTab(
             selectedShapeId = state.photoWidget.shapeId,
         )
     }
+
+    SelectionDialogBottomSheet(
+        sheetState = shapeRotationPickerSheetState,
+        title = stringResource(id = R.string.widget_defaults_shape_rotation),
+        options = PhotoWidgetShapeRotation.values,
+        optionName = PhotoWidgetShapeRotation::degreesLabel,
+        onOptionSelect = { option: Int ->
+            viewModel.shapeRotationSelected(option)
+            shapeRotationPickerSheetState.hideBottomSheet()
+        },
+        mode = SelectionDialogBottomSheetMode.Radio(currentSelection = state.photoWidget.shapeRotation),
+    )
 
     AppBottomSheet(
         sheetState = cornerRadiusPickerSheetState,
@@ -153,6 +171,7 @@ fun PhotoWidgetConfigureAppearanceTab(
     photoWidget: PhotoWidget,
     onAspectRatioClick: () -> Unit,
     onShapeClick: () -> Unit,
+    onShapeRotationClick: () -> Unit,
     onCornerRadiusClick: () -> Unit,
     onBorderClick: () -> Unit,
     onOpacityClick: () -> Unit,
@@ -178,10 +197,21 @@ fun PhotoWidgetConfigureAppearanceTab(
             ShapeListItem(
                 headlineText = stringResource(id = R.string.widget_defaults_shape),
                 currentValue = photoWidget.shapeId,
+                shapeRotation = photoWidget.shapeRotation,
                 onClick = onShapeClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
                 shape = Shapes.MiddleShape,
             )
+
+            if (PhotoWidgetShapeBuilder.getShape(shapeId = photoWidget.shapeId).canRotate) {
+                PickerListItem(
+                    headlineText = stringResource(id = R.string.widget_defaults_shape_rotation),
+                    currentValue = PhotoWidgetShapeRotation.degreesLabel(photoWidget.shapeRotation),
+                    onClick = onShapeRotationClick,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    shape = Shapes.MiddleShape,
+                )
+            }
         } else if (photoWidget.aspectRatio != PhotoWidgetAspectRatio.FILL_WIDGET) {
             PickerListItem(
                 headlineText = stringResource(id = R.string.widget_defaults_corner_radius),
@@ -286,6 +316,7 @@ private fun PhotoWidgetConfigureAppearanceTabPreview() {
             ),
             onAspectRatioClick = {},
             onShapeClick = {},
+            onShapeRotationClick = {},
             onCornerRadiusClick = {},
             onBorderClick = {},
             onOpacityClick = {},
@@ -309,6 +340,7 @@ private fun PhotoWidgetConfigureAppearanceTabShapePreview() {
             ),
             onAspectRatioClick = {},
             onShapeClick = {},
+            onShapeRotationClick = {},
             onCornerRadiusClick = {},
             onBorderClick = {},
             onOpacityClick = {},
@@ -332,6 +364,7 @@ private fun PhotoWidgetConfigureAppearanceTabFillPreview() {
             ),
             onAspectRatioClick = {},
             onShapeClick = {},
+            onShapeRotationClick = {},
             onCornerRadiusClick = {},
             onBorderClick = {},
             onOpacityClick = {},

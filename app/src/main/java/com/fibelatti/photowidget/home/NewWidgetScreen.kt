@@ -62,6 +62,7 @@ import androidx.compose.ui.zIndex
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
+import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.model.rawAspectRatio
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.ui.ColoredShape
@@ -336,6 +337,7 @@ private fun ShapedAspectRatioItemRepresentation(
                 .filterNot { it.id.contains("square") }
                 .random().id
         },
+        shapeRotation = PhotoWidgetShapeRotation.DEFAULT,
         color = MaterialTheme.colorScheme.onSurface,
         modifier = modifier.fillMaxSize(),
     )

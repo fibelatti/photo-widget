@@ -14,6 +14,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
@@ -48,6 +49,7 @@ fun RecentlyDeletedPhotoBottomSheet(
                     photo = photo,
                     aspectRatio = PhotoWidgetAspectRatio.SQUARE,
                     shapeId = PhotoWidget.DEFAULT_SHAPE_ID,
+                    shapeRotation = PhotoWidgetShapeRotation.DEFAULT,
                     cornerRadius = PhotoWidget.DEFAULT_CORNER_RADIUS,
                     modifier = Modifier.size(80.dp),
                 )

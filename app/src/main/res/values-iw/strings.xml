@@ -89,6 +89,7 @@
     <string name="widget_defaults_shuffle">ערבוב</string>
     <string name="widget_defaults_cycling">טיימר צילום</string>
     <string name="widget_defaults_shape">צורה</string>
+    <string name="widget_defaults_shape_rotation">סיבוב הצורה</string>
     <string name="widget_defaults_corner_radius">מעוגל</string>
     <string name="widget_defaults_opacity">שקיפות</string>
     <string name="widget_defaults_saturation">רוויה</string>
