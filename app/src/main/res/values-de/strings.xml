@@ -261,6 +261,10 @@
     <string name="photo_widget_configure_tap_action_set_wallpaper">Als Hintergrundbild festlegen</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Foto entfernen</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">Schließt es vom Widget aus. Das Originalfoto wird nicht von deinem Telefon entfernt.</string>
+    <string name="photo_widget_configure_tap_action_media_play_pause">Medien abspielen/pausieren</string>
+    <string name="photo_widget_configure_tap_action_media_next_track">Nächster Titel</string>
+    <string name="photo_widget_configure_tap_action_media_previous_track">Vorheriger Titel</string>
+    <string name="photo_widget_configure_tap_action_media_description">Steuert die App, die gerade abspielt. Es passiert nichts, wenn keine Medien abgespielt werden.</string>
 
     <string name="photo_widget_remove_action_feedback_positive">Foto entfernt!</string>
     <string name="photo_widget_remove_action_feedback_negative">Nur noch ein Foto übrig, kann nicht entfernt werden.</string>

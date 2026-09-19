@@ -269,6 +269,10 @@
     <string name="photo_widget_configure_tap_action_set_wallpaper">Постави као позадину</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Уклоните фотографију</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">Искључује је из виџета. Оригинална фотографија се не уклања са телефона.</string>
+    <string name="photo_widget_configure_tap_action_media_play_pause">Пусти/паузирај медије</string>
+    <string name="photo_widget_configure_tap_action_media_next_track">Следећа нумера</string>
+    <string name="photo_widget_configure_tap_action_media_previous_track">Претходна нумера</string>
+    <string name="photo_widget_configure_tap_action_media_description">Управља апликацијом која тренутно репродукује. Ништа се не дешава ако се ништа не репродукује.</string>
     <string name="photo_widget_remove_action_feedback_positive">Слика је уклоњена!</string>
     <string name="photo_widget_remove_action_feedback_negative">Остала је само једна фотографија, не може се уклонити.</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Аутоматски повећајте осветљеност</string>

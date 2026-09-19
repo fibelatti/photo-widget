@@ -952,6 +952,18 @@ private fun TapActionCustomizationContent(
             )
         }
 
+        is PhotoWidgetTapAction.MediaPlayPause,
+        is PhotoWidgetTapAction.MediaNextTrack,
+        is PhotoWidgetTapAction.MediaPreviousTrack,
+        -> {
+            InformationalPanel(
+                text = stringResource(R.string.photo_widget_configure_tap_action_media_description),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+            )
+        }
+
         else -> return // No content
     }
 }

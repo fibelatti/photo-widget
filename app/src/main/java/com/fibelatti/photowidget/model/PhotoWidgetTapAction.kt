@@ -20,7 +20,8 @@ sealed interface PhotoWidgetTapAction : Parcelable {
 
     /**
      * Whether the action is meaningful on a transparent widget, which has no photos. Only the
-     * actions that don't depend on a photo (launching apps, folders, links, files) qualify.
+     * actions that don't depend on a photo (launching apps, folders, links, files, controlling
+     * media playback) qualify.
      */
     val availableWithoutPhotos: Boolean get() = false
 
@@ -289,6 +290,45 @@ sealed interface PhotoWidgetTapAction : Parcelable {
         override val disallowedSources: List<PhotoWidgetSource> = listOf(PhotoWidgetSource.GIF)
     }
 
+    @Parcelize
+    data object MediaPlayPause : PhotoWidgetTapAction {
+
+        @IgnoredOnParcel
+        override val label: Int = R.string.photo_widget_configure_tap_action_media_play_pause
+
+        @IgnoredOnParcel
+        override val serializedName: String = "MEDIA_PLAY_PAUSE"
+
+        @IgnoredOnParcel
+        override val availableWithoutPhotos: Boolean = true
+    }
+
+    @Parcelize
+    data object MediaNextTrack : PhotoWidgetTapAction {
+
+        @IgnoredOnParcel
+        override val label: Int = R.string.photo_widget_configure_tap_action_media_next_track
+
+        @IgnoredOnParcel
+        override val serializedName: String = "MEDIA_NEXT_TRACK"
+
+        @IgnoredOnParcel
+        override val availableWithoutPhotos: Boolean = true
+    }
+
+    @Parcelize
+    data object MediaPreviousTrack : PhotoWidgetTapAction {
+
+        @IgnoredOnParcel
+        override val label: Int = R.string.photo_widget_configure_tap_action_media_previous_track
+
+        @IgnoredOnParcel
+        override val serializedName: String = "MEDIA_PREVIOUS_TRACK"
+
+        @IgnoredOnParcel
+        override val availableWithoutPhotos: Boolean = true
+    }
+
     companion object {
 
         val DEFAULT: PhotoWidgetTapAction = None
@@ -311,6 +351,9 @@ sealed interface PhotoWidgetTapAction : Parcelable {
                 SharePhoto,
                 SetWallpaper,
                 RemovePhoto,
+                MediaPlayPause,
+                MediaNextTrack,
+                MediaPreviousTrack,
             )
         }
 

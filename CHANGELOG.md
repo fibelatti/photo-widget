@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* New tap actions: media controls
+
 ## [v1.46.1] - 2026-09-12
 [v1.46.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.46.1
 

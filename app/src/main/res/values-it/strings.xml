@@ -261,6 +261,10 @@
     <string name="photo_widget_configure_tap_action_set_wallpaper">Imposta come sfondo</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Rimuovi foto</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">La esclude dal widget. La foto originale non viene rimossa dal tuo telefono.</string>
+    <string name="photo_widget_configure_tap_action_media_play_pause">Riproduci/metti in pausa i media</string>
+    <string name="photo_widget_configure_tap_action_media_next_track">Traccia successiva</string>
+    <string name="photo_widget_configure_tap_action_media_previous_track">Traccia precedente</string>
+    <string name="photo_widget_configure_tap_action_media_description">Controlla l\'app attualmente in riproduzione. Non succede nulla se non è in riproduzione alcun contenuto.</string>
 
     <string name="photo_widget_remove_action_feedback_positive">Foto rimossa!</string>
     <string name="photo_widget_remove_action_feedback_negative">È rimasta solo una foto, impossibile rimuoverla.</string>

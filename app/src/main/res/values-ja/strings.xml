@@ -253,6 +253,10 @@
     <string name="photo_widget_configure_tap_action_set_wallpaper">壁紙として設定</string>
     <string name="photo_widget_configure_tap_action_remove_photo">写真を削除</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">ウィジェットから除外します。元の写真はスマートフォンから削除されません。</string>
+    <string name="photo_widget_configure_tap_action_media_play_pause">メディアを再生/一時停止</string>
+    <string name="photo_widget_configure_tap_action_media_next_track">次のトラック</string>
+    <string name="photo_widget_configure_tap_action_media_previous_track">前のトラック</string>
+    <string name="photo_widget_configure_tap_action_media_description">現在再生中のアプリを操作します。何も再生されていない場合は何も起こりません。</string>
     <string name="photo_widget_remove_action_feedback_positive">写真を削除しました！</string>
     <string name="photo_widget_remove_action_feedback_negative">写真が1枚しかないため、削除できません。</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">明るさを自動的に上げる</string>

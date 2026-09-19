@@ -277,6 +277,10 @@
     <string name="photo_widget_configure_tap_action_set_wallpaper">Установить как обои</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Удалить фото</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">Исключает из виджета. Оригинальное фото не удаляется с вашего телефона.</string>
+    <string name="photo_widget_configure_tap_action_media_play_pause">Воспроизвести/приостановить медиа</string>
+    <string name="photo_widget_configure_tap_action_media_next_track">Следующий трек</string>
+    <string name="photo_widget_configure_tap_action_media_previous_track">Предыдущий трек</string>
+    <string name="photo_widget_configure_tap_action_media_description">Управляет приложением, которое воспроизводит медиа. Если ничего не воспроизводится, ничего не произойдёт.</string>
     <string name="photo_widget_remove_action_feedback_positive">Фото удалено!</string>
     <string name="photo_widget_remove_action_feedback_negative">Осталось только одно фото, удалить невозможно.</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Автоматически увеличить яркость</string>

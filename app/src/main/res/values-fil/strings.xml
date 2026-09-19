@@ -259,6 +259,10 @@
     <string name="photo_widget_configure_tap_action_set_wallpaper">Itakda bilang wallpaper</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Alisin ang larawan</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">Ibinubukod ito sa widget. Hindi tinanggal ang orihinal na larawan sa iyong telepono.</string>
+    <string name="photo_widget_configure_tap_action_media_play_pause">I-play/i-pause ang media</string>
+    <string name="photo_widget_configure_tap_action_media_next_track">Susunod na track</string>
+    <string name="photo_widget_configure_tap_action_media_previous_track">Nakaraang track</string>
+    <string name="photo_widget_configure_tap_action_media_description">Kinokontrol ang app na kasalukuyang nagpe-play. Walang mangyayari kung walang media na nagpe-play.</string>
 
     <string name="photo_widget_remove_action_feedback_positive">Natanggal na ang larawan!</string>
     <string name="photo_widget_remove_action_feedback_negative">Isang larawan na lang ang natitira, hindi maaaring alisin.</string>

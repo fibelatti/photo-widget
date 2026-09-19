@@ -261,6 +261,10 @@
     <string name="photo_widget_configure_tap_action_set_wallpaper">Definir como papel de parede</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Remover foto</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">Exclui-a do widget. A foto original não é removida do seu telefone.</string>
+    <string name="photo_widget_configure_tap_action_media_play_pause">Reproduzir/pausar mídia</string>
+    <string name="photo_widget_configure_tap_action_media_next_track">Próxima faixa</string>
+    <string name="photo_widget_configure_tap_action_media_previous_track">Faixa anterior</string>
+    <string name="photo_widget_configure_tap_action_media_description">Controla o app que está tocando no momento. Nada acontece se nenhuma mídia estiver tocando.</string>
 
     <string name="photo_widget_remove_action_feedback_positive">Foto removida!</string>
     <string name="photo_widget_remove_action_feedback_negative">Resta apenas uma foto, não é possível remover.</string>

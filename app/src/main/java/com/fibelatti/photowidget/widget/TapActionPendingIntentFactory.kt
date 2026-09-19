@@ -265,6 +265,30 @@ object TapActionPendingIntentFactory {
                     action = PhotoWidgetProvider.Action.REMOVE_PHOTO,
                 )
             }
+
+            is PhotoWidgetTapAction.MediaPlayPause -> {
+                return MediaKeyReceiver.pendingIntent(
+                    context = context,
+                    appWidgetId = appWidgetId,
+                    action = MediaKeyReceiver.Action.PLAY_PAUSE,
+                )
+            }
+
+            is PhotoWidgetTapAction.MediaNextTrack -> {
+                return MediaKeyReceiver.pendingIntent(
+                    context = context,
+                    appWidgetId = appWidgetId,
+                    action = MediaKeyReceiver.Action.NEXT_TRACK,
+                )
+            }
+
+            is PhotoWidgetTapAction.MediaPreviousTrack -> {
+                return MediaKeyReceiver.pendingIntent(
+                    context = context,
+                    appWidgetId = appWidgetId,
+                    action = MediaKeyReceiver.Action.PREVIOUS_TRACK,
+                )
+            }
         }
     }
 

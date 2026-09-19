@@ -261,6 +261,10 @@
     <string name="photo_widget_configure_tap_action_set_wallpaper">Définir comme fond d\'écran</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Supprimer la photo</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">L\'exclut du widget. La photo originale n\'est pas supprimée de votre téléphone.</string>
+    <string name="photo_widget_configure_tap_action_media_play_pause">Lire/mettre en pause le média</string>
+    <string name="photo_widget_configure_tap_action_media_next_track">Piste suivante</string>
+    <string name="photo_widget_configure_tap_action_media_previous_track">Piste précédente</string>
+    <string name="photo_widget_configure_tap_action_media_description">Contrôle l\'application en cours de lecture. Rien ne se passe si aucun média n\'est en cours de lecture.</string>
 
     <string name="photo_widget_remove_action_feedback_positive">Photo supprimée !</string>
     <string name="photo_widget_remove_action_feedback_negative">Il ne reste qu\'une photo, impossible de la supprimer.</string>

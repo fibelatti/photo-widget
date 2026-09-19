@@ -261,6 +261,10 @@
     <string name="photo_widget_configure_tap_action_set_wallpaper">Duvar kağıdı olarak ayarla</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Fotoğrafı kaldır</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">Widget\'tan hariç tutar. Orijinal fotoğraf telefonunuzdan kaldırılmaz.</string>
+    <string name="photo_widget_configure_tap_action_media_play_pause">Medyayı oynat/duraklat</string>
+    <string name="photo_widget_configure_tap_action_media_next_track">Sonraki parça</string>
+    <string name="photo_widget_configure_tap_action_media_previous_track">Önceki parça</string>
+    <string name="photo_widget_configure_tap_action_media_description">O anda oynatan uygulamayı kontrol eder. Hiçbir medya oynatılmıyorsa hiçbir şey olmaz.</string>
     <string name="photo_widget_remove_action_feedback_positive">Fotoğraf kaldırıldı!</string>
     <string name="photo_widget_remove_action_feedback_negative">Yalnızca bir fotoğraf kaldı, kaldırılamaz.</string>
     <string name="photo_widget_configure_tap_action_increase_brightness">Parlaklığı otomatik olarak artır</string>

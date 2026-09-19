@@ -269,6 +269,10 @@
     <string name="photo_widget_configure_tap_action_set_wallpaper">Setează ca fundal</string>
     <string name="photo_widget_configure_tap_action_remove_photo">Elimină fotografia</string>
     <string name="photo_widget_configure_tap_action_remove_photo_description">O exclude din widget. Fotografia originală nu este eliminată de pe telefon.</string>
+    <string name="photo_widget_configure_tap_action_media_play_pause">Redare/pauză media</string>
+    <string name="photo_widget_configure_tap_action_media_next_track">Piesa următoare</string>
+    <string name="photo_widget_configure_tap_action_media_previous_track">Piesa anterioară</string>
+    <string name="photo_widget_configure_tap_action_media_description">Controlează aplicația care redă în acest moment. Nu se întâmplă nimic dacă nu se redă nimic.</string>
 
     <string name="photo_widget_remove_action_feedback_positive">Fotografie eliminată!</string>
     <string name="photo_widget_remove_action_feedback_negative">A rămas doar o fotografie, nu se poate elimina.</string>

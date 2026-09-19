@@ -193,6 +193,10 @@
             android:exported="false" />
 
         <receiver
+            android:name=".widget.MediaKeyReceiver"
+            android:exported="false" />
+
+        <receiver
             android:name=".platform.ConfigurationChangedReceiver"
             android:exported="false">
 
