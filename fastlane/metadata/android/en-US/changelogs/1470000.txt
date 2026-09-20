@@ -1,0 +1,8 @@
+This version brings the following updates:
+
+* New tap actions: media controls (play/pause, next and previous)
+* Custom rotation for selected shapes
+* Fix a crash when listing an app's shortcuts
+* Fix widgets that could have stopped updating
+
+Thanks for using the app!

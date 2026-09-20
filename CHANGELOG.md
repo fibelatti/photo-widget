@@ -7,10 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.47.0] - 2026-09-20
+[v1.47.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.47.0
+
 ### Added
 
 * New tap actions: media controls
 * Custom rotation for selected shapes
+
+### Changed
+
+* Crash reports can optionally include recent app logs
+
+### Fixed
+
+* Fix a crash when listing an app's shortcuts
+* Fix widgets that could have stopped updating
 
 ## [v1.46.1] - 2026-09-12
 [v1.46.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.46.1
