@@ -88,6 +88,7 @@
     <string name="widget_defaults_cycling">Foto-Timer</string>
     <string name="widget_defaults_shape">Form</string>
     <string name="widget_defaults_shape_rotation">Formdrehung</string>
+    <string name="widget_defaults_shape_rotation_hint">Unterstützt Drehung</string>
     <string name="widget_defaults_corner_radius">Abrundung</string>
     <string name="widget_defaults_opacity">Deckkraft</string>
     <string name="widget_defaults_saturation">Sättigung</string>

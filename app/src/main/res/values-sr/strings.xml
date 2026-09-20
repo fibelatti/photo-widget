@@ -89,6 +89,7 @@
     <string name="widget_defaults_cycling">Тајмер за фотографије</string>
     <string name="widget_defaults_shape">Облик</string>
     <string name="widget_defaults_shape_rotation">Ротација облика</string>
+    <string name="widget_defaults_shape_rotation_hint">Подржава ротацију</string>
     <string name="widget_defaults_corner_radius">Округли</string>
     <string name="widget_defaults_opacity">Провидност</string>
     <string name="widget_defaults_saturation">Засићеност</string>

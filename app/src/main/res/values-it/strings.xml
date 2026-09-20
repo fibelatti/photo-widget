@@ -88,6 +88,7 @@
     <string name="widget_defaults_cycling">Timer foto</string>
     <string name="widget_defaults_shape">Forma</string>
     <string name="widget_defaults_shape_rotation">Rotazione della forma</string>
+    <string name="widget_defaults_shape_rotation_hint">Supporta la rotazione</string>
     <string name="widget_defaults_corner_radius">Arrotondamento</string>
     <string name="widget_defaults_opacity">Opacità</string>
     <string name="widget_defaults_saturation">Saturazione</string>

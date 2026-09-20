@@ -82,6 +82,7 @@ fun PhotoWidgetConfigureAppearanceTab(
                 shapePickerSheetState.hideBottomSheet()
             },
             selectedShapeId = state.photoWidget.shapeId,
+            shapeRotation = state.photoWidget.shapeRotation,
         )
     }
 

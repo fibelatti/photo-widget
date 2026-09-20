@@ -87,6 +87,7 @@
     <string name="widget_defaults_cycling">照片定时器</string>
     <string name="widget_defaults_shape">形状</string>
     <string name="widget_defaults_shape_rotation">形状旋转</string>
+    <string name="widget_defaults_shape_rotation_hint">支持旋转</string>
     <string name="widget_defaults_corner_radius">圆角</string>
     <string name="widget_defaults_opacity">不透明度</string>
     <string name="widget_defaults_saturation">饱和度</string>

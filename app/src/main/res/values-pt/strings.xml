@@ -88,6 +88,7 @@
     <string name="widget_defaults_cycling">Alternância de fotos</string>
     <string name="widget_defaults_shape">Forma</string>
     <string name="widget_defaults_shape_rotation">Rotação da forma</string>
+    <string name="widget_defaults_shape_rotation_hint">Suporta rotação</string>
     <string name="widget_defaults_corner_radius">Arredondamento</string>
     <string name="widget_defaults_opacity">Opacidade</string>
     <string name="widget_defaults_saturation">Saturação</string>
