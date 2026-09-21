@@ -92,7 +92,7 @@ class FileLoggingTree @Inject constructor(
      * includes the entries describing it.
      */
     suspend fun getLogFiles(): List<File> = withContext(Dispatchers.IO) {
-        awaitPendingEntries()
+        flushPendingEntries()
         listOf(previousFile, currentFile).filter { it.exists() && it.length() > 0 }
     }
 
@@ -101,7 +101,11 @@ class FileLoggingTree @Inject constructor(
         runCatching { executor.execute(action) }
     }
 
-    private fun awaitPendingEntries() {
+    /**
+     * Blocks until the queued entries have been written, for callers that cannot outlive the
+     * queue being flushed.
+     */
+    fun flushPendingEntries() {
         // Reporting a slightly shorter log is better than making the caller wait on the queue.
         runCatching { executor.submit { }.get(FLUSH_TIMEOUT_SECONDS, TimeUnit.SECONDS) }
     }

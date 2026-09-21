@@ -10,6 +10,7 @@ import androidx.compose.runtime.tooling.ComposeStackTraceMode
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.fibelatti.photowidget.platform.ConfigurationChangedReceiver
+import com.fibelatti.photowidget.platform.ExceptionReporter
 import com.fibelatti.photowidget.platform.FileLoggingTree
 import com.fibelatti.photowidget.preferences.Appearance
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
@@ -42,6 +43,9 @@ class App : Application(), Configuration.Provider {
     @Inject
     lateinit var fileLoggingTree: FileLoggingTree
 
+    @Inject
+    lateinit var exceptionReporter: ExceptionReporter
+
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setMinimumLoggingLevel(android.util.Log.INFO)
@@ -52,6 +56,7 @@ class App : Application(), Configuration.Provider {
         super.onCreate()
 
         setupLogging()
+        setupExceptionHandler()
         setupDebugMode()
         setupNightMode()
         setupDynamicColors()
@@ -61,6 +66,29 @@ class App : Application(), Configuration.Provider {
 
     private fun setupLogging() {
         Timber.plant(if (BuildConfig.DEBUG) Timber.DebugTree() else fileLoggingTree)
+    }
+
+    /**
+     * Records the failure before the process goes down, then hands it to the handler that was
+     * already installed so the crash still surfaces as it otherwise would.
+     *
+     * Uncaught exceptions from coroutines reach this handler too: the application scope carries no
+     * `CoroutineExceptionHandler`, so the machinery falls back to the thread's handler.
+     */
+    private fun setupExceptionHandler() {
+        val defaultHandler: Thread.UncaughtExceptionHandler? = Thread.getDefaultUncaughtExceptionHandler()
+
+        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+            // The report and the log entries are written on this thread: anything queued elsewhere
+            // dies with the process. Guarded so a failure here still lets the crash through.
+            runCatching {
+                Timber.e(throwable, "Uncaught exception")
+                exceptionReporter.collectReportBlocking(throwable = throwable)
+                fileLoggingTree.flushPendingEntries()
+            }
+
+            defaultHandler?.uncaughtException(thread, throwable)
+        }
     }
 
     @OptIn(ExperimentalComposeApi::class)

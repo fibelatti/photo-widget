@@ -29,19 +29,31 @@ class ExceptionReporter @Inject constructor(
     fun collectReport(throwable: Throwable) {
         coroutineScope.launch {
             withContext(NonCancellable + Dispatchers.IO) {
-                val stringWriter = StringWriter()
-
-                throwable.printStackTrace(PrintWriter(stringWriter))
-
-                val timestamp: String = Clock.System.now()
-                    .toLocalDateTime(timeZone = TimeZone.UTC)
-                    .format(format = LocalDateTime.Formats.ISO)
-
-                val file: File = File(parentDir, "$timestamp.txt").apply { createNewFile() }
-
-                file.writeText(stringWriter.toString())
+                writeReport(throwable = throwable)
             }
         }
+    }
+
+    /**
+     * Writes the report on the calling thread, for callers that cannot outlive the file being
+     * written.
+     */
+    fun collectReportBlocking(throwable: Throwable) {
+        runCatching { writeReport(throwable = throwable) }
+    }
+
+    private fun writeReport(throwable: Throwable) {
+        val stringWriter = StringWriter()
+
+        throwable.printStackTrace(PrintWriter(stringWriter))
+
+        val timestamp: String = Clock.System.now()
+            .toLocalDateTime(timeZone = TimeZone.UTC)
+            .format(format = LocalDateTime.Formats.ISO)
+
+        val file: File = File(parentDir, "$timestamp.txt").apply { createNewFile() }
+
+        file.writeText(stringWriter.toString())
     }
 
     suspend fun getPendingReports(): List<File> {
