@@ -30,13 +30,13 @@ class PhotoWidgetAlarmManager @Inject constructor(
     private val alarmManager: AlarmManager by lazy { requireNotNull(context.getSystemService()) }
     private val canScheduleExactAlarms: Boolean
         get() = AlarmManagerCompat.canScheduleExactAlarms(alarmManager)
-            .also { Timber.d("Schedule exact alarms permission granted: $it") }
+            .also { Timber.i("Schedule exact alarms permission granted: $it") }
 
     suspend fun setup(appWidgetId: Int) {
         Timber.i("Setting alarm for widget %s", mapOf("appWidgetId" to appWidgetId))
 
         if (photoWidgetStorage.getWidgetLockedInApp(appWidgetId = appWidgetId)) {
-            Timber.d("Widget locked in-app. Skipping alarm setup.")
+            Timber.i("Widget locked in-app. Skipping alarm setup.")
             return
         }
 
@@ -44,7 +44,7 @@ class PhotoWidgetAlarmManager @Inject constructor(
 
         val cycleMode: PhotoWidgetCycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = appWidgetId)
 
-        Timber.d("Widget alarm type: $cycleMode")
+        Timber.i("Widget alarm type: $cycleMode")
 
         when (cycleMode) {
             is PhotoWidgetCycleMode.Interval -> setupIntervalAlarm(cycleMode = cycleMode, appWidgetId = appWidgetId)
@@ -258,7 +258,7 @@ class RepeatingAlarmReceiver : EntryPointBroadcastReceiver() {
                 // Keep the current photo and let the alarm lapse instead of re-arming it, so a
                 // paused widget stops waking the device. Resuming and the periodic rescheduling
                 // worker both call the alarm manager, which sets a new alarm then.
-                Timber.d("Cycling is paused. Keeping the current photo.")
+                Timber.i("Cycling is paused. Keeping the current photo.")
                 return@run
             }
 

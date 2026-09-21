@@ -51,7 +51,7 @@ class PhotoWidgetRescheduleWorker @AssistedInject constructor(
             ids.map { id ->
                 async {
                     try {
-                        Timber.d("Processing widget %s", mapOf("id" to id))
+                        Timber.i("Processing widget %s", mapOf("id" to id))
 
                         // Every reason to skip cycling (locked in app, cycling disabled) is
                         // decided by the alarm manager, and a paused widget skips the photo
@@ -74,7 +74,7 @@ class PhotoWidgetRescheduleWorker @AssistedInject constructor(
             return Result.retry()
         }
 
-        Timber.d("Enqueueing RecurringWorker...")
+        Timber.i("Enqueueing RecurringWorker...")
         // Directly calling `Companion.enqueueWork` at this point would mark this work execution as
         // canceled. The work itself would be finished by now, so that would be fine although not
         // healthy. Using another worker to reschedule ensures a successful completion of the run.

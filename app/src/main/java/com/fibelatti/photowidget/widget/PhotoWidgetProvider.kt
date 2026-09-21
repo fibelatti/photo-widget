@@ -299,7 +299,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     },
                 )
 
-                Timber.d("Invoking AppWidgetManager#updateAppWidget")
+                Timber.i("Invoking AppWidgetManager#updateAppWidget")
 
                 // Cancel any in-flight crossfade so its trailing frames can't clobber this render.
                 withContext(Dispatchers.Main) { crossfadeAnimator.cancel(appWidgetId) }

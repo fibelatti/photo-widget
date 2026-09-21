@@ -40,9 +40,13 @@ class CyclePhotoUseCase @Inject constructor(
         )
 
         val widgetPhotoIds: List<String> = photoWidgetStorage.getSyncedWidgetPhotoIds(appWidgetId = appWidgetId)
-            .ifEmpty { return "" }
+            .ifEmpty {
+                Timber.w("The widget has no photos to cycle through")
+                return ""
+            }
 
         if (widgetPhotoIds.size == 1) {
+            Timber.i("The widget has a single photo, there is nothing to cycle through")
             // Cannot cycle, but if a photo was recently removed the widget still needs to be updated
             PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
             return widgetPhotoIds.first()
@@ -66,7 +70,7 @@ class CyclePhotoUseCase @Inject constructor(
         // tracking and force a fallback to the first photo (visibly skipping a tap).
         var didClear = false
         if (shuffle && direction == Direction.NEXT && displayedPhotos.size >= widgetPhotoIds.size) {
-            Timber.d("All photos displayed, starting over")
+            Timber.i("All photos displayed, starting over")
 
             if (!skipSaving) {
                 photoWidgetStorage.clearDisplayedPhotos(appWidgetId = appWidgetId)
@@ -112,7 +116,7 @@ class CyclePhotoUseCase @Inject constructor(
             }
         }
 
-        Timber.d("Updating current photo to $newPhotoId")
+        Timber.i("Updating current photo to $newPhotoId")
 
         if (!skipSaving) {
             photoWidgetStorage.saveDisplayedPhoto(appWidgetId = appWidgetId, photoId = newPhotoId)

@@ -46,7 +46,7 @@ class PhotoWidgetSyncWorker @AssistedInject constructor(
                         Timber.d("Processing widget %s", mapOf("id" to id))
                         if (photoWidgetStorage.getWidgetSource(appWidgetId = id) == PhotoWidgetSource.DIRECTORY) {
                             if (photoWidgetStorage.syncWidgetPhotos(appWidgetId = id)) {
-                                Timber.d("Photos changed, updating widget %s", mapOf("id" to id))
+                                Timber.i("Photos changed, updating widget %s", mapOf("id" to id))
                                 // Joined so the worker stays alive until the render completes: it runs on the
                                 // application scope, and returning from `doWork` while it is ongoing lets the process
                                 // be killed mid-render.

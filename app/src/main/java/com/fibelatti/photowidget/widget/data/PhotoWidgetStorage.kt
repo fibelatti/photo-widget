@@ -274,7 +274,7 @@ class PhotoWidgetStorage @Inject constructor(
             current = loadedPhotos[true].orEmpty(),
             excluded = loadedPhotos[false].orEmpty(),
         ).also {
-            Timber.d("Total photos found: ${it.current.size} current, ${it.excluded.size} excluded.")
+            Timber.i("Total photos found: ${it.current.size} current, ${it.excluded.size} excluded.")
         }
     }
 
@@ -311,7 +311,7 @@ class PhotoWidgetStorage @Inject constructor(
             current = localPhotos[true].orEmpty(),
             excluded = localPhotos[false].orEmpty(),
         ).also {
-            Timber.d("Total local photos found: ${it.current.size} current, ${it.excluded.size} excluded.")
+            Timber.i("Total local photos found: ${it.current.size} current, ${it.excluded.size} excluded.")
         }
     }
 
