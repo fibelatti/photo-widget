@@ -318,7 +318,10 @@ private fun PhotoWidgetBackupContent(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(widgets, key = { widget -> widget.photos.firstOrNull()?.photoId ?: widget.hashCode() }) { widget ->
+            // Photo ids are file names, which are not unique across widgets.
+            // The position is the only stable identity available here, and the list is only ever
+            // replaced as a whole, so the default position-based key is used.
+            items(widgets) { widget ->
                 RestoredWidgetItem(
                     photoWidget = widget,
                     onRestoreClick = { onRestoreClick(widget) },
