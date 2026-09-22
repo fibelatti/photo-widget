@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.47.1] - 2026-09-22
+[v1.47.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.47.1
+
+### Added
+
+* Show which widgets are paused in-app, with an option to resume them
+
+### Fixed
+
+* Fix a crash when restoring a backup
+
 ## [v1.47.0] - 2026-09-20
 [v1.47.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.47.0
 
