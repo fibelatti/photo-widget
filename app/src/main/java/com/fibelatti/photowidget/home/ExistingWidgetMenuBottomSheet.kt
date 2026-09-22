@@ -26,6 +26,7 @@ fun ExistingWidgetMenuBottomSheet(
     onSync: (appWidgetId: Int) -> Unit,
     onLock: (appWidgetId: Int) -> Unit,
     onUnlock: (appWidgetId: Int) -> Unit,
+    onResume: (appWidgetId: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val localContext: Context = LocalContext.current
@@ -34,7 +35,12 @@ fun ExistingWidgetMenuBottomSheet(
 
     SelectionDialogBottomSheet(
         sheetState = sheetState,
-        options = MyWidgetOptions.options(canSync = data.canSync, canLock = data.canLock, isLocked = data.isLocked),
+        options = MyWidgetOptions.options(
+            canSync = data.canSync,
+            canLock = data.canLock,
+            isLocked = data.isLocked,
+            isPaused = data.isPaused,
+        ),
         optionName = { option -> localResources.getString(option.label) },
         onOptionSelect = { option ->
             when (option) {
@@ -73,6 +79,16 @@ fun ExistingWidgetMenuBottomSheet(
                 MyWidgetOptions.UNLOCK -> {
                     onUnlock(data.appWidgetId)
                 }
+
+                MyWidgetOptions.RESUME -> {
+                    onResume(data.appWidgetId)
+
+                    Toast.makeText(
+                        localContext,
+                        R.string.photo_widget_cycling_feedback_resumed,
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
             }
         },
         modifier = modifier,
@@ -96,6 +112,7 @@ class ExistingWidgetMenuBottomSheetData(
     val canSync: Boolean,
     val canLock: Boolean,
     val isLocked: Boolean,
+    val isPaused: Boolean,
 ) : Parcelable
 
 private enum class MyWidgetOptions(
@@ -107,11 +124,21 @@ private enum class MyWidgetOptions(
     DUPLICATE(label = R.string.photo_widget_home_my_widget_action_duplicate),
     LOCK(label = R.string.photo_widget_home_my_widget_action_lock),
     UNLOCK(label = R.string.photo_widget_home_my_widget_action_unlock),
+    RESUME(label = R.string.photo_widget_home_my_widget_action_resume),
     ;
 
     companion object {
 
-        fun options(canSync: Boolean, canLock: Boolean, isLocked: Boolean): List<MyWidgetOptions> = buildList {
+        fun options(
+            canSync: Boolean,
+            canLock: Boolean,
+            isLocked: Boolean,
+            isPaused: Boolean,
+        ): List<MyWidgetOptions> = buildList {
+            if (isPaused) {
+                add(RESUME)
+            }
+
             if (canSync) {
                 add(SYNC_PHOTOS)
             }

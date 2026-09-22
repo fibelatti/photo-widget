@@ -57,6 +57,7 @@
     <string name="photo_widget_home_draft_label">Rascunho</string>
     <string name="photo_widget_home_draft_action_discard">Descartar rascunho</string>
     <string name="photo_widget_home_locked_label">Travado</string>
+    <string name="photo_widget_home_paused_label">Pausado</string>
     <string name="photo_widget_home_removed_label">Removido</string>
     <string name="photo_widget_home_removed_widgets_hint">Os widgets removidos não estão mais na sua tela inicial. Eles são excluídos permanentemente do aplicativo após 7 dias. Você pode escolher \"Mantê-los\".</string>
     <string name="photo_widget_home_invalid_label">Atenção necessária</string>
@@ -66,6 +67,7 @@
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicar</string>
     <string name="photo_widget_home_my_widget_action_lock">Travar com a foto atual</string>
     <string name="photo_widget_home_my_widget_action_unlock">Destravar widget</string>
+    <string name="photo_widget_home_my_widget_action_resume">Retomar alternância de fotos</string>
     <string name="photo_widget_home_my_widget_lock_explainer">As fotos não irão mudar automaticamente ou ao tocar caso o widget esteja travado</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restaurar</string>
     <string name="photo_widget_home_removed_widget_action_keep">Manter</string>

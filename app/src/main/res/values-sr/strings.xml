@@ -58,6 +58,7 @@
     <string name="photo_widget_home_draft_label">Нацрт</string>
     <string name="photo_widget_home_draft_action_discard">Одбаци нацрт</string>
     <string name="photo_widget_home_locked_label">Закључано</string>
+    <string name="photo_widget_home_paused_label">Паузирано</string>
     <string name="photo_widget_home_removed_label">Уклоњено</string>
     <string name="photo_widget_home_removed_widgets_hint">Уклоњени виџети више нису на почетном екрану. Трајно се бришу из апликације након 7 дана. Можете да их „задржите“.</string>
     <string name="photo_widget_home_invalid_label">Потребна је пажња</string>
@@ -67,6 +68,7 @@
     <string name="photo_widget_home_my_widget_action_duplicate">Дупликат</string>
     <string name="photo_widget_home_my_widget_action_lock">Закључај са тренутном фотографијом</string>
     <string name="photo_widget_home_my_widget_action_unlock">Откључај виџет</string>
+    <string name="photo_widget_home_my_widget_action_resume">Настави тајмер за фотографије</string>
     <string name="photo_widget_home_my_widget_lock_explainer">Фотографије се неће мењати аутоматски нити додиром када је виџет закључан</string>
     <string name="photo_widget_home_removed_widget_action_restore">Поврати</string>
     <string name="photo_widget_home_removed_widget_action_keep">Задржи</string>

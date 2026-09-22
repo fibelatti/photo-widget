@@ -289,6 +289,15 @@ private fun WidgetGridItem(
                 )
             }
 
+            widget.status == PhotoWidgetStatus.PAUSED -> {
+                MyWidgetBadge(
+                    text = stringResource(R.string.photo_widget_home_paused_label),
+                    backgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
+            }
+
             widget.status.isWidgetRemoved -> {
                 MyWidgetBadge(
                     text = stringResource(R.string.photo_widget_home_removed_label),
@@ -342,6 +351,7 @@ private fun MyWidgetsScreenPreview() {
                     2 -> PhotoWidgetStatus.REMOVED
                     3 -> PhotoWidgetStatus.KEPT
                     4 -> PhotoWidgetStatus.INVALID
+                    5 -> PhotoWidgetStatus.PAUSED
                     else -> PhotoWidgetStatus.ACTIVE
                 }
 

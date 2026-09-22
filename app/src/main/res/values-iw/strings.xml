@@ -59,6 +59,7 @@
     <string name="photo_widget_home_draft_label">טיוטה</string>
     <string name="photo_widget_home_draft_action_discard">מחק טיוטה</string>
     <string name="photo_widget_home_locked_label">נעול</string>
+    <string name="photo_widget_home_paused_label">מושהה</string>
     <string name="photo_widget_home_removed_label">הוסר</string>
     <string name="photo_widget_home_removed_widgets_hint">ווידג\'טים שהוסרו אינם מופיעים עוד במסך הבית. הם נמחקים לצמיתות מהאפליקציה לאחר 7 ימים. ניתן לבחור \"לשמור\" אותם.</string>
     <string name="photo_widget_home_invalid_label">נדרשת תשומת לב</string>
@@ -68,6 +69,7 @@
     <string name="photo_widget_home_my_widget_action_duplicate">שכפול</string>
     <string name="photo_widget_home_my_widget_action_lock">נעילה עם התמונה הנוכחית</string>
     <string name="photo_widget_home_my_widget_action_unlock">שיחרור נעילת הווידג\'ט</string>
+    <string name="photo_widget_home_my_widget_action_resume">חידוש טיימר הצילום</string>
     <string name="photo_widget_home_my_widget_lock_explainer">תמונות לא ישתנו אוטומטית או בהקשה כאשר הווידג\'ט נעול</string>
     <string name="photo_widget_home_removed_widget_action_restore">שחזור</string>
     <string name="photo_widget_home_removed_widget_action_keep">שמור</string>

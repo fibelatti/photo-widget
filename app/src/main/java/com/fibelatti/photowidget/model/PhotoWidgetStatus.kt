@@ -18,6 +18,11 @@ enum class PhotoWidgetStatus {
     LOCKED,
 
     /**
+     * The widget is currently added to a home screen, but its photo timer is paused.
+     */
+    PAUSED,
+
+    /**
      * The widget was removed from a home screen and will be permanently deleted soon.
      */
     REMOVED,

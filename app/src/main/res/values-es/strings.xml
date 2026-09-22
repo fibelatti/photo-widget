@@ -57,6 +57,7 @@
     <string name="photo_widget_home_draft_label">Borrador</string>
     <string name="photo_widget_home_draft_action_discard">Descartar borrador</string>
     <string name="photo_widget_home_locked_label">Bloqueado</string>
+    <string name="photo_widget_home_paused_label">En pausa</string>
     <string name="photo_widget_home_removed_label">Eliminado</string>
     <string name="photo_widget_home_removed_widgets_hint">Los widgets eliminados ya no aparecen en la pantalla de inicio. Se eliminan de forma permanente de la aplicación después de 7 días. Puedes elegir \"Mantener\" ellos.</string>
     <string name="photo_widget_home_invalid_label">Atención necesaria</string>
@@ -66,6 +67,7 @@
     <string name="photo_widget_home_my_widget_action_duplicate">Duplicar</string>
     <string name="photo_widget_home_my_widget_action_lock">Bloquear con la foto actual</string>
     <string name="photo_widget_home_my_widget_action_unlock">Desbloquear widget</string>
+    <string name="photo_widget_home_my_widget_action_resume">Reanudar temporizador de fotos</string>
     <string name="photo_widget_home_my_widget_lock_explainer">Las fotos no cambiarán automáticamente ni al tocar si el widget está bloqueado</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restaurar</string>
     <string name="photo_widget_home_removed_widget_action_keep">Mantener</string>

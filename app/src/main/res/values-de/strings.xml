@@ -57,6 +57,7 @@
     <string name="photo_widget_home_draft_label">Entwurf</string>
     <string name="photo_widget_home_draft_action_discard">Entwurf verwerfen</string>
     <string name="photo_widget_home_locked_label">Gesperrt</string>
+    <string name="photo_widget_home_paused_label">Pausiert</string>
     <string name="photo_widget_home_removed_label">Entfernt</string>
     <string name="photo_widget_home_removed_widgets_hint">Entfernte Widgets befinden sich nicht mehr auf deinem Startbildschirm. Sie werden nach 7 Tagen endgültig aus der App gelöscht. Du kannst sie \"Behalten\".</string>
     <string name="photo_widget_home_invalid_label">Handlung erforderlich</string>
@@ -66,6 +67,7 @@
     <string name="photo_widget_home_my_widget_action_duplicate">Duplizieren</string>
     <string name="photo_widget_home_my_widget_action_lock">Mit aktuellem Foto sperren</string>
     <string name="photo_widget_home_my_widget_action_unlock">Widget entsperren</string>
+    <string name="photo_widget_home_my_widget_action_resume">Foto-Timer fortsetzen</string>
     <string name="photo_widget_home_my_widget_lock_explainer">Fotos werden nicht automatisch oder durch Tippen geändert, wenn das Widget gesperrt ist</string>
     <string name="photo_widget_home_removed_widget_action_restore">Wiederherstellen</string>
     <string name="photo_widget_home_removed_widget_action_keep">Behalten</string>

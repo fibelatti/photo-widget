@@ -291,6 +291,7 @@ private fun HomeScreen(
                             canSync = widget.canSync,
                             canLock = widget.canLock,
                             isLocked = widget.status == PhotoWidgetStatus.LOCKED,
+                            isPaused = widget.status == PhotoWidgetStatus.PAUSED,
                         ),
                     )
                 }
@@ -323,6 +324,7 @@ private fun HomeScreen(
         onSync = homeViewModel::syncPhotos,
         onLock = homeViewModel::lockWidget,
         onUnlock = homeViewModel::unlockWidget,
+        onResume = homeViewModel::resumeWidget,
     )
 
     RemovedWidgetBottomSheet(

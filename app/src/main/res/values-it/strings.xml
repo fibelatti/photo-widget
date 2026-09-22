@@ -57,6 +57,7 @@
     <string name="photo_widget_home_draft_label">Bozza</string>
     <string name="photo_widget_home_draft_action_discard">Elimina bozza</string>
     <string name="photo_widget_home_locked_label">Bloccato</string>
+    <string name="photo_widget_home_paused_label">In pausa</string>
     <string name="photo_widget_home_removed_label">Rimosso</string>
     <string name="photo_widget_home_removed_widgets_hint">I widget rimossi non sono più sulla tua schermata iniziale. Vengono eliminati definitivamente dall\'app dopo 7 giorni. Puoi scegliere di \"Mantenerli\".</string>
     <string name="photo_widget_home_invalid_label">Intervento necessario</string>
@@ -66,6 +67,7 @@
     <string name="photo_widget_home_my_widget_action_duplicate">Duplica</string>
     <string name="photo_widget_home_my_widget_action_lock">Blocca con la foto attuale</string>
     <string name="photo_widget_home_my_widget_action_unlock">Sblocca widget</string>
+    <string name="photo_widget_home_my_widget_action_resume">Riprendi timer foto</string>
     <string name="photo_widget_home_my_widget_lock_explainer">Le foto non cambieranno automaticamente o al tocco quando il widget è bloccato</string>
     <string name="photo_widget_home_removed_widget_action_restore">Ripristina</string>
     <string name="photo_widget_home_removed_widget_action_keep">Mantieni</string>

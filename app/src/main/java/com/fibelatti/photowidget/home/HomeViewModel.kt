@@ -94,11 +94,13 @@ class HomeViewModel @Inject constructor(
 
                 widgets.mapValues { (widgetId: Int, widget: PhotoWidget) ->
                     val isLocked: Boolean = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = widgetId)
+                    val isPaused: Boolean = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = widgetId)
                     val status: PhotoWidgetStatus = when {
                         PhotoWidget.isDraftWidgetId(widgetId) -> PhotoWidgetStatus.DRAFT
                         !widget.transparent && widget.photos.isEmpty() && !widget.isLoading -> PhotoWidgetStatus.INVALID
                         widget.deletionTimestamp > 0L -> PhotoWidgetStatus.REMOVED
                         isLocked && widgetId in providerIds -> PhotoWidgetStatus.LOCKED
+                        isPaused && widgetId in providerIds -> PhotoWidgetStatus.PAUSED
                         widgetId in providerIds -> PhotoWidgetStatus.ACTIVE
                         else -> PhotoWidgetStatus.KEPT
                     }
@@ -134,7 +136,27 @@ class HomeViewModel @Inject constructor(
     fun unlockWidget(appWidgetId: Int) {
         viewModelScope.launch {
             photoWidgetStorage.saveWidgetLockedInApp(appWidgetId = appWidgetId, value = false)
-            photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
+
+            // Locking a paused widget keeps it paused. Unlocking only restores the lock state, so
+            // the widget surfaces as paused and stays that way until it is intentionally resumed.
+            if (!photoWidgetStorage.getWidgetCyclePaused(appWidgetId = appWidgetId)) {
+                photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
+            }
+
+            PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+
+            updateSignal.send(Unit)
+        }
+    }
+
+    fun resumeWidget(appWidgetId: Int) {
+        viewModelScope.launch {
+            photoWidgetStorage.saveWidgetCyclePaused(appWidgetId = appWidgetId, value = false)
+
+            if (photoWidgetStorage.getWidgetSource(appWidgetId = appWidgetId) != PhotoWidgetSource.GIF) {
+                photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
+            }
+
             PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
 
             updateSignal.send(Unit)

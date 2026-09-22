@@ -56,6 +56,7 @@
     <string name="photo_widget_home_draft_label">Draft</string>
     <string name="photo_widget_home_draft_action_discard">I-discard ang draft</string>
     <string name="photo_widget_home_locked_label">Naka-lock</string>
+    <string name="photo_widget_home_paused_label">Naka-hinto</string>
     <string name="photo_widget_home_removed_label">Tinanggal</string>
     <string name="photo_widget_home_removed_widgets_hint">Wala na sa iyong home screen ang mga tinanggal na widget. Binubura ang mga ito sa app pagkalipas ng 7 araw. Maaari mong piliing \"Panatilihin\" sila.</string>
     <string name="photo_widget_home_invalid_label">Kailangang pansinin</string>
@@ -65,6 +66,7 @@
     <string name="photo_widget_home_my_widget_action_duplicate">Duplikahin</string>
     <string name="photo_widget_home_my_widget_action_lock">I-lock kasama ang kasalukuyang larawan</string>
     <string name="photo_widget_home_my_widget_action_unlock">I-unlock ang widget</string>
+    <string name="photo_widget_home_my_widget_action_resume">Ipagpatuloy ang timer sa paglipat ng larawan</string>
     <string name="photo_widget_home_my_widget_lock_explainer">Hindi magbabago ang mga larawan nang awtomatiko o pag pinipindot habang naka-lock ang widget</string>
     <string name="photo_widget_home_removed_widget_action_restore">Ibalik</string>
     <string name="photo_widget_home_removed_widget_action_keep">Panatilihin</string>

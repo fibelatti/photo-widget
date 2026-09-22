@@ -57,6 +57,7 @@
     <string name="photo_widget_home_draft_label">Taslak</string>
     <string name="photo_widget_home_draft_action_discard">Taslağı sil</string>
     <string name="photo_widget_home_locked_label">Kilitli</string>
+    <string name="photo_widget_home_paused_label">Duraklatıldı</string>
     <string name="photo_widget_home_removed_label">Kaldırıldı</string>
     <string name="photo_widget_home_removed_widgets_hint">Silinen widget\'lar artık ana ekranınızda yer almayacak. 7 gün sonra uygulamadan kalıcı olarak silinirler. Bunları \"Tutmayı\" seçebilirsiniz.</string>
     <string name="photo_widget_home_invalid_label">İşlem gerekiyor</string>
@@ -66,6 +67,7 @@
     <string name="photo_widget_home_my_widget_action_duplicate">Çoğalt</string>
     <string name="photo_widget_home_my_widget_action_lock">Geçerli fotoğrafla kilitle</string>
     <string name="photo_widget_home_my_widget_action_unlock">Widget\'ın kilidini aç</string>
+    <string name="photo_widget_home_my_widget_action_resume">Fotoğraf zamanlayıcıyı devam ettir</string>
     <string name="photo_widget_home_my_widget_lock_explainer">Widget kilitliyken fotoğraflar otomatik olarak veya dokunulduğunda değişmez</string>
     <string name="photo_widget_home_removed_widget_action_restore">Eski haline getir</string>
     <string name="photo_widget_home_removed_widget_action_keep">Tut</string>

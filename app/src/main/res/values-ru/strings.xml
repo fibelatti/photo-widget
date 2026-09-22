@@ -59,6 +59,7 @@
     <string name="photo_widget_home_draft_label">Черновик</string>
     <string name="photo_widget_home_draft_action_discard">Удалить черновик</string>
     <string name="photo_widget_home_locked_label">Заблокировано</string>
+    <string name="photo_widget_home_paused_label">Приостановлено</string>
     <string name="photo_widget_home_removed_label">Удаленный</string>
     <string name="photo_widget_home_removed_widgets_hint">Удаленные виджеты больше не отображаются на главном экране. Они навсегда удаляются из приложения через 7 дней. Вы можете выбрать «Сохранить» их.</string>
     <string name="photo_widget_home_invalid_label">Требуется внимание</string>
@@ -68,6 +69,7 @@
     <string name="photo_widget_home_my_widget_action_duplicate">Дублировать</string>
     <string name="photo_widget_home_my_widget_action_lock">Заблокировать с текущим фото</string>
     <string name="photo_widget_home_my_widget_action_unlock">Разблокировать виджет</string>
+    <string name="photo_widget_home_my_widget_action_resume">Возобновить фототаймер</string>
     <string name="photo_widget_home_my_widget_lock_explainer">Фотографии не будут меняться автоматически или при нажатии, если виджет заблокирован</string>
     <string name="photo_widget_home_removed_widget_action_restore">Восстановить</string>
     <string name="photo_widget_home_removed_widget_action_keep">Держать</string>

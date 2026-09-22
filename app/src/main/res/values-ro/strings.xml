@@ -58,6 +58,7 @@
     <string name="photo_widget_home_draft_label">Ciornă</string>
     <string name="photo_widget_home_draft_action_discard">Șterge ciorna</string>
     <string name="photo_widget_home_locked_label">Blocat</string>
+    <string name="photo_widget_home_paused_label">Întrerupt</string>
     <string name="photo_widget_home_removed_label">Eliminat</string>
     <string name="photo_widget_home_removed_widgets_hint">Widget-urile șterse nu mai sunt pe ecranul de pornire. Ele sunt șterse definitiv din aplicație după 7 zile. Puteți alege „Păstrează”.</string>
     <string name="photo_widget_home_invalid_label">Necesită atenție</string>
@@ -67,6 +68,7 @@
     <string name="photo_widget_home_my_widget_action_duplicate">Duplică</string>
     <string name="photo_widget_home_my_widget_action_lock">Blochează cu fotografia curentă</string>
     <string name="photo_widget_home_my_widget_action_unlock">Deblochează widget-ul</string>
+    <string name="photo_widget_home_my_widget_action_resume">Reia temporizatorul de poze</string>
     <string name="photo_widget_home_my_widget_lock_explainer">Fotografiile nu se vor schimba automat sau la atingere atunci când widget-ul este blocat</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restaurează</string>
     <string name="photo_widget_home_removed_widget_action_keep">Păstrează</string>
