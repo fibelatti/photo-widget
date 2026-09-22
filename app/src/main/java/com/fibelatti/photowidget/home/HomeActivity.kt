@@ -30,6 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
@@ -167,42 +168,7 @@ class HomeActivity : AppCompatActivity() {
             setTitle(getString(R.string.photo_widget_home_crash_report_title))
             setMessage(getString(R.string.photo_widget_home_crash_report_body))
             setPositiveButton(getString(R.string.photo_widget_home_crash_report_action_confirm)) { dialog, _ ->
-                val emailBody = buildString {
-                    appendLine("Android Version: ${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})")
-                    appendLine()
-                    append(pendingReport.text)
-                    appendLine()
-                }
-
-                val logUris: ArrayList<Uri> = pendingReport.logFiles.mapTo(ArrayList()) { file ->
-                    FileProvider.getUriForFile(this@HomeActivity, "$packageName.fileprovider", file)
-                }
-
-                val emailIntent: Intent = if (logUris.isEmpty()) {
-                    Intent(Intent.ACTION_SENDTO, "mailto:".toUri())
-                } else {
-                    Intent(Intent.ACTION_SEND_MULTIPLE)
-                        .setType("text/plain")
-                        .putParcelableArrayListExtra(Intent.EXTRA_STREAM, logUris)
-                        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        .apply { selector = Intent(Intent.ACTION_SENDTO, "mailto:".toUri()) }
-                }
-
-                emailIntent
-                    .putExtra(Intent.EXTRA_EMAIL, arrayOf("appsupport@fibelatti.com"))
-                    .putExtra(
-                        Intent.EXTRA_SUBJECT,
-                        "Material Photo Widget (${BuildConfig.VERSION_NAME}) — Crash Report",
-                    )
-                    .putExtra(Intent.EXTRA_TEXT, emailBody)
-
-                startActivity(
-                    Intent.createChooser(
-                        emailIntent,
-                        getString(R.string.photo_widget_home_crash_report_choose_title),
-                    ),
-                )
-
+                shareReport(pendingReport = pendingReport)
                 homeViewModel.clearPendingExceptionReports()
                 dialog?.dismiss()
             }
@@ -216,7 +182,78 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    private fun shareReport(pendingReport: PendingReport) {
+        val emailBody = buildString {
+            appendLine("Android Version: ${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})")
+            appendLine()
+            append(pendingReport.text)
+            appendLine()
+        }
+
+        val logUris: ArrayList<Uri> = pendingReport.logFiles.mapTo(ArrayList()) { file ->
+            FileProvider.getUriForFile(this@HomeActivity, "$packageName.fileprovider", file)
+        }
+
+        val emailIntent: Intent = if (logUris.isEmpty()) {
+            Intent(Intent.ACTION_SENDTO, MAILTO_URI)
+        } else {
+            Intent(Intent.ACTION_SEND_MULTIPLE)
+                .setType("text/plain")
+                .putParcelableArrayListExtra(Intent.EXTRA_STREAM, logUris)
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        emailIntent
+            .putExtra(Intent.EXTRA_TEXT, emailBody)
+            .putExtra(Intent.EXTRA_EMAIL, arrayOf("appsupport@fibelatti.com"))
+            .putExtra(
+                Intent.EXTRA_SUBJECT,
+                "Material Photo Widget (${BuildConfig.VERSION_NAME}) \u2014 Crash Report",
+            )
+
+        val intent: Intent? = if (logUris.isEmpty()) emailIntent else emailAppsIntent(emailIntent)
+
+        if (intent == null) {
+            Timber.e("No email app is available to share the report.")
+            return
+        }
+
+        runCatching { startActivity(intent) }
+            .onFailure { throwable -> Timber.e(throwable, "Unable to start the email intent.") }
+    }
+
+    /**
+     * Attachments require `ACTION_SEND_MULTIPLE`, which every sharing target accepts, so the intent
+     * is restricted to the apps that also handle `mailto` links to keep the report going to an
+     * email app.
+     */
+    private fun emailAppsIntent(emailIntent: Intent): Intent? {
+        val emailPackages: Set<String> = packageManager
+            .queryIntentActivities(Intent(Intent.ACTION_SENDTO, MAILTO_URI), 0)
+            .mapTo(mutableSetOf()) { resolveInfo -> resolveInfo.activityInfo.packageName }
+
+        val intents: List<Intent> = packageManager
+            .queryIntentActivities(emailIntent, 0)
+            .map { resolveInfo -> resolveInfo.activityInfo.packageName }
+            .filter { packageName -> packageName in emailPackages }
+            .distinct()
+            .map { packageName -> Intent(emailIntent).setPackage(packageName) }
+
+        return when (intents.size) {
+            0 -> null
+
+            1 -> intents.first()
+
+            else -> Intent.createChooser(
+                intents.first(),
+                getString(R.string.photo_widget_home_crash_report_choose_title),
+            ).putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.drop(n = 1).toTypedArray())
+        }
+    }
+
     private companion object {
+
+        private val MAILTO_URI: Uri = "mailto:".toUri()
 
         private const val APP_URL = "https://play.google.com/store/apps/details?id=com.fibelatti.photowidget"
     }
