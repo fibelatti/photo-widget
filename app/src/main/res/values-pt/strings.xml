@@ -111,8 +111,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">Fotos</string>
     <string name="photo_widget_source_directory">Pasta</string>
-    <string name="photo_widget_source_photos_description">Escolha uma ou mais fotos usando o seletor de galeria padrão.</string>
     <string name="photo_widget_source_gif">GIF</string>
+    <string name="photo_widget_source_photos_description">Escolha uma ou mais fotos usando o seletor de galeria padrão.</string>
     <string name="photo_widget_source_directory_description">Escolha uma ou mais pastas para sincronizar. As fotos são adicionadas automaticamente e atualizadas em intervalos regulares.</string>
     <string name="photo_widget_source_gif_description">Escolha um GIF animado para reproduzir na sua tela inicial. GIFs mais curtos e simples são recomendados.</string>
     <!-- Aspect Ratio -->
@@ -176,7 +176,7 @@
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_no_time_warning">Fotos sem horário agendado nunca serão exibidas e os horários devem ser únicos.</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_even_split">Dividir o dia uniformemente</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">Definir horário</string>
-    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">Este widget tinha mais de %d fotos, então o agendamento foi alterado para um intervalo de 15 minutos.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced" tools:ignore="PluralsCandidate">Este widget tinha mais de %d fotos, então o agendamento foi alterado para um intervalo de 15 minutos.</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Este horário já está atribuído a outra foto.</string>
     <string name="photo_widget_configure_cycling_mode_interval_description">Muda para a próxima foto em intervalos regulares</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Muda para a próxima foto em horários agendados (máx. %d horários)</string>
@@ -204,7 +204,7 @@
     <string name="photo_widget_configure_interval_hours_label">Horas</string>
     <string name="photo_widget_configure_interval_days_label">Dias</string>
     <string name="photo_widget_configure_schedule_add_new">Agendar novo</string>
-    <string name="photo_widget_configure_schedule_limit_reached">Máximo de %d horários agendados</string>
+    <string name="photo_widget_configure_schedule_limit_reached" tools:ignore="PluralsCandidate">Máximo de %d horários agendados</string>
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="one">%d horário agendado</item>
         <item quantity="other">%d horários agendados</item>
@@ -269,10 +269,8 @@
     <string name="photo_widget_configure_tap_action_media_next_track">Próxima faixa</string>
     <string name="photo_widget_configure_tap_action_media_previous_track">Faixa anterior</string>
     <string name="photo_widget_configure_tap_action_media_description">Controla o app que está tocando no momento. Nada acontece se nenhuma mídia estiver tocando.</string>
-
     <string name="photo_widget_remove_action_feedback_positive">Foto removida!</string>
     <string name="photo_widget_remove_action_feedback_negative">Resta apenas uma foto, não é possível remover.</string>
-
     <string name="photo_widget_configure_tap_action_increase_brightness">Aumentar o brilho automaticamente</string>
     <string name="photo_widget_configure_tap_action_view_original_photo">Ver a foto original (sem corte ou rotação)</string>
     <string name="photo_widget_configure_tap_action_do_not_shuffle">Não embaralhar as fotos ao alternar no visualizador</string>
@@ -343,9 +341,9 @@
     <string name="translations_dialog_positive_action">Abrir Crowdin</string>
     <string name="translations_dialog_negative_action">Agora não</string>
     <!-- Backup -->
-    <string name="backup_explanation_1">Exporte o &lt;i>conteúdo&lt;/i> e a &lt;i>aparência&lt;/i> dos seus widgets de fotos</string>
+    <string name="backup_explanation_1">Exporte o &lt;i&gt;conteúdo&lt;/i&gt; e a &lt;i&gt;aparência&lt;/i&gt; dos seus widgets de fotos</string>
     <string name="backup_explanation_2">Restaure seus widgets anteriores importando um arquivo de backup</string>
-    <string name="backup_explanation_3">&lt;b>Widgets sincronizados com pastas não podem ser exportados.&lt;/b> A permissão para acessar as pastas selecionadas do dispositivo é armazenada no seu dispositivo e não pode ser migrada. Esses widgets devem ser criados do zero</string>
+    <string name="backup_explanation_3">&lt;b&gt;Widgets sincronizados com pastas não podem ser exportados.&lt;/b&gt; A permissão para acessar as pastas selecionadas do dispositivo é armazenada no seu dispositivo e não pode ser migrada. Esses widgets devem ser criados do zero</string>
     <string name="backup_create">Criar backup</string>
     <string name="backup_restore">Restaurar do backup</string>
     <string name="backup_items_title">Widgets do arquivo de backup</string>
@@ -366,7 +364,7 @@
     <!-- Keep-alive service -->
     <string name="photo_widget_keep_alive_service_dialog_title">Serviço em segundo plano</string>
     <string name="photo_widget_keep_alive_service_dialog_toggle">Ativar serviço em segundo plano</string>
-    <string name="photo_widget_keep_alive_service_dialog_body">Você pode ativar o serviço em segundo plano para informar ao Android que o app é importante e que não deve ser encerrado. Não se preocupe, o app faz apenas o necessário para manter os seus widgets exibindo fotos no horário programado, sem consumo extra de bateria.&lt;br/>&lt;br/>Os widgets na sua tela inicial são gerenciados pelo seu launcher, não diretamente pelo app. Como o app raramente fica em primeiro plano, &lt;b>o sistema pode presumir que não é importante e encerrá-lo&lt;/b>. Quando isso acontece, &lt;b>os widgets também são encerrados, fazendo com que as fotos não apareçam&lt;/b>. Isso é especialmente comum em &lt;b>dispositivos Samsung&lt;/b>.</string>
+    <string name="photo_widget_keep_alive_service_dialog_body">Você pode ativar o serviço em segundo plano para informar ao Android que o app é importante e que não deve ser encerrado. Não se preocupe, o app faz apenas o necessário para manter os seus widgets exibindo fotos no horário programado, sem consumo extra de bateria.&lt;br/&gt;&lt;br/&gt;Os widgets na sua tela inicial são gerenciados pelo seu launcher, não diretamente pelo app. Como o app raramente fica em primeiro plano, &lt;b&gt;o sistema pode presumir que não é importante e encerrá-lo&lt;/b&gt;. Quando isso acontece, &lt;b&gt;os widgets também são encerrados, fazendo com que as fotos não apareçam&lt;/b&gt;. Isso é especialmente comum em &lt;b&gt;dispositivos Samsung&lt;/b&gt;.</string>
     <string name="photo_widget_keep_alive_service_required_for_gif">Widgets GIF requerem o serviço em segundo plano para reproduzir animações. Você pode encontrar mais informações na aba de configurações. Deseja ativá-lo?</string>
     <string name="photo_widget_keep_alive_service_gif_widgets_warning">Existem widgets GIF ativos que dependem do serviço em segundo plano. Desativá-lo pode fazer com que parem de reproduzir animações.</string>
     <!-- Notifications -->
