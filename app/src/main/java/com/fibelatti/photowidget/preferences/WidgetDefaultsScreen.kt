@@ -46,11 +46,11 @@ import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.formatRangeValue
-import com.fibelatti.photowidget.ui.BooleanListItem
-import com.fibelatti.photowidget.ui.PickerListItem
 import com.fibelatti.photowidget.ui.ShapeListItem
 import com.fibelatti.photowidget.widget.PhotoWidgetSyncWorker
 import com.fibelatti.ui.component.AppBottomSheet
+import com.fibelatti.ui.component.BooleanListItem
+import com.fibelatti.ui.component.PickerListItem
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
 import com.fibelatti.ui.component.SelectionDialogBottomSheetMode
 import com.fibelatti.ui.component.rememberAppSheetState

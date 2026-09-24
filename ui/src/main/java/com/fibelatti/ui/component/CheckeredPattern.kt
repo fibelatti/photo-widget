@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.ui
+package com.fibelatti.ui.component
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.Composable

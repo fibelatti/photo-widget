@@ -18,8 +18,8 @@ import androidx.compose.ui.util.fastRoundToInt
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.DefaultSheetContent
-import com.fibelatti.photowidget.ui.SliderItem
 import com.fibelatti.photowidget.ui.rememberSampleBitmap
+import com.fibelatti.ui.component.SliderItem
 import com.fibelatti.ui.foundation.dpToPx
 
 @Composable

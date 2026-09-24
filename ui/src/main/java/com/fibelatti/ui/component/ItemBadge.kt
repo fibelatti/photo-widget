@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.ui
+package com.fibelatti.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MyWidgetBadge(
+fun ItemBadge(
     text: String,
     backgroundColor: Color,
     contentColor: Color,

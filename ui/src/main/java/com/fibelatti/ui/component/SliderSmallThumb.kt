@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.ui
+package com.fibelatti.ui.component
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.SliderColors

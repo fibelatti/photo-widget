@@ -33,9 +33,9 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
-import com.fibelatti.photowidget.ui.BooleanListItem
-import com.fibelatti.photowidget.ui.PickerListItem
 import com.fibelatti.photowidget.widget.PhotoWidgetSyncWorker
+import com.fibelatti.ui.component.BooleanListItem
+import com.fibelatti.ui.component.PickerListItem
 import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.icons.AppIcons

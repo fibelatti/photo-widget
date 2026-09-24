@@ -47,9 +47,9 @@ import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.disableWindowNavigationBarContrastEnforced
 import com.fibelatti.photowidget.platform.enableEdgeToEdgeTransparent
-import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
+import com.fibelatti.ui.component.LoadingIndicator
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme

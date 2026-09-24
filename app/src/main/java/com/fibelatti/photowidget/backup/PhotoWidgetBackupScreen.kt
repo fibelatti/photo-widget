@@ -73,8 +73,8 @@ import com.fibelatti.photowidget.model.getPhotoPath
 import com.fibelatti.photowidget.model.getPhotoVersion
 import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
-import com.fibelatti.photowidget.ui.LoadingIndicator
 import com.fibelatti.ui.component.ListItem
+import com.fibelatti.ui.component.LoadingIndicator
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.icons.AppIcons
 import com.fibelatti.ui.icons.Back

@@ -24,9 +24,9 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.canShuffle
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
-import com.fibelatti.photowidget.ui.BooleanListItem
-import com.fibelatti.photowidget.ui.PickerListItem
 import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.BooleanListItem
+import com.fibelatti.ui.component.PickerListItem
 import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.preview.PreviewAll

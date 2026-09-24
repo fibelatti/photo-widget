@@ -17,8 +17,8 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.DefaultSheetFooterButtons
 import com.fibelatti.photowidget.ui.LocalSamplePhoto
-import com.fibelatti.photowidget.ui.NumberSpinner
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
+import com.fibelatti.ui.component.NumberSpinner
 
 @Composable
 fun PhotoWidgetPaddingPicker(

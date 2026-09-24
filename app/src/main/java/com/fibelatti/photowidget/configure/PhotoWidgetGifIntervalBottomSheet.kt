@@ -23,9 +23,9 @@ import androidx.compose.ui.util.fastRoundToInt
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.GifFrames
 import com.fibelatti.photowidget.ui.DefaultSheetContent
-import com.fibelatti.photowidget.ui.SliderItem
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.SliderItem
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 

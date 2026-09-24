@@ -37,10 +37,10 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.model.isWidgetRemoved
 import com.fibelatti.photowidget.platform.letIf
-import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.ItemBadge
 import com.fibelatti.ui.icons.AppIcons
 import com.fibelatti.ui.icons.TrashClock
 
@@ -132,7 +132,7 @@ private fun ImportFromWidgetContent(
                     )
 
                     if (widget.status.isWidgetRemoved) {
-                        MyWidgetBadge(
+                        ItemBadge(
                             text = stringResource(R.string.photo_widget_home_removed_label),
                             backgroundColor = MaterialTheme.colorScheme.errorContainer,
                             contentColor = MaterialTheme.colorScheme.onErrorContainer,

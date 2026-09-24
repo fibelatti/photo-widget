@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.fibelatti.ui.component.LoadingIndicator
 import com.fibelatti.ui.preview.PreviewDevices
 import com.fibelatti.ui.theme.ExtendedTheme
 

@@ -10,8 +10,8 @@ import androidx.compose.ui.res.stringResource
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
-import com.fibelatti.photowidget.ui.BooleanListItem
 import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.BooleanListItem
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
 import com.fibelatti.ui.component.SelectionDialogBottomSheetMode
 

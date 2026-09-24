@@ -20,10 +20,10 @@ import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.DefaultSheetFooterButtons
-import com.fibelatti.photowidget.ui.SliderItem
 import com.fibelatti.photowidget.ui.rememberSampleBitmap
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.component.SliderItem
 import com.fibelatti.ui.foundation.dpToPx
 
 @Composable

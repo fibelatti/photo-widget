@@ -1,4 +1,4 @@
-package com.fibelatti.photowidget.ui
+package com.fibelatti.ui.component
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.scaleIn
@@ -25,7 +25,6 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import com.fibelatti.ui.component.AutoSizeText
 import com.fibelatti.ui.icons.AppIcons
 import com.fibelatti.ui.icons.Minus
 import com.fibelatti.ui.icons.Plus

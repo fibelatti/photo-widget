@@ -68,12 +68,12 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.model.isWidgetRemoved
 import com.fibelatti.photowidget.platform.letIf
-import com.fibelatti.photowidget.ui.BooleanListItem
-import com.fibelatti.photowidget.ui.CheckeredPattern
 import com.fibelatti.photowidget.ui.ColoredShape
-import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
+import com.fibelatti.ui.component.BooleanListItem
+import com.fibelatti.ui.component.CheckeredPattern
 import com.fibelatti.ui.component.ConnectedButtonRowDefaults
+import com.fibelatti.ui.component.ItemBadge
 import com.fibelatti.ui.component.ListItem
 import com.fibelatti.ui.icons.AppIcons
 import com.fibelatti.ui.icons.TrashClock
@@ -272,7 +272,7 @@ private fun WidgetGridItem(
 
         when {
             widget.status == PhotoWidgetStatus.DRAFT -> {
-                MyWidgetBadge(
+                ItemBadge(
                     text = stringResource(R.string.photo_widget_home_draft_label),
                     backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
                     contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
@@ -281,7 +281,7 @@ private fun WidgetGridItem(
             }
 
             widget.status == PhotoWidgetStatus.LOCKED -> {
-                MyWidgetBadge(
+                ItemBadge(
                     text = stringResource(R.string.photo_widget_home_locked_label),
                     backgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                     contentColor = MaterialTheme.colorScheme.onSurface,
@@ -290,7 +290,7 @@ private fun WidgetGridItem(
             }
 
             widget.status == PhotoWidgetStatus.PAUSED -> {
-                MyWidgetBadge(
+                ItemBadge(
                     text = stringResource(R.string.photo_widget_home_paused_label),
                     backgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                     contentColor = MaterialTheme.colorScheme.onSurface,
@@ -299,7 +299,7 @@ private fun WidgetGridItem(
             }
 
             widget.status.isWidgetRemoved -> {
-                MyWidgetBadge(
+                ItemBadge(
                     text = stringResource(R.string.photo_widget_home_removed_label),
                     backgroundColor = MaterialTheme.colorScheme.errorContainer,
                     contentColor = MaterialTheme.colorScheme.onErrorContainer,
@@ -310,7 +310,7 @@ private fun WidgetGridItem(
             }
 
             widget.status == PhotoWidgetStatus.INVALID -> {
-                MyWidgetBadge(
+                ItemBadge(
                     text = stringResource(R.string.photo_widget_home_invalid_label),
                     backgroundColor = Color(0xFFFF8A65),
                     contentColor = MaterialTheme.colorScheme.onErrorContainer,
@@ -319,7 +319,7 @@ private fun WidgetGridItem(
             }
 
             widget.transparent -> {
-                MyWidgetBadge(
+                ItemBadge(
                     text = stringResource(R.string.photo_widget_home_transparent_label),
                     backgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                     contentColor = MaterialTheme.colorScheme.onSurface,

@@ -18,8 +18,8 @@ import com.fibelatti.photowidget.platform.formatPercent
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.DefaultSheetFooterButtons
-import com.fibelatti.photowidget.ui.SliderItem
 import com.fibelatti.photowidget.ui.rememberSampleBitmap
+import com.fibelatti.ui.component.SliderItem
 import com.fibelatti.ui.foundation.dpToPx
 
 @Composable
