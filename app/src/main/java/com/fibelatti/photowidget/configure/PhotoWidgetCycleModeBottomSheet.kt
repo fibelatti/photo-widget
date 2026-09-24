@@ -327,10 +327,7 @@ private fun PhotoCycleModeIntervalContent(
             state = sliderState,
             displayValueTransformation = { "${it.toLong()}" },
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { newValue ->
-                sliderState.value = newValue
-                interval = interval.copy(repeatInterval = newValue.toLong())
-            },
+            onValueChange = { newValue -> interval = interval.copy(repeatInterval = newValue.toLong()) },
         )
 
         Row(

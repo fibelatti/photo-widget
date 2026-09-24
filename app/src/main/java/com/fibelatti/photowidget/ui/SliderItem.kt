@@ -53,7 +53,10 @@ fun SliderItem(
         content = {
             Slider(
                 state = state,
-                onValueChange = onValueChange,
+                onValueChange = { newValue ->
+                    state.value = newValue
+                    onValueChange?.invoke(newValue)
+                },
                 thumb = { SliderSmallThumb() },
             )
         },

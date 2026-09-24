@@ -421,10 +421,7 @@ private fun BorderWidthPicker(
             formatPercent(value = it.fastRoundToInt() * PhotoWidgetBorder.PERCENT_FACTOR * 100)
         },
         modifier = modifier.fillMaxWidth(),
-        onValueChange = { newValue ->
-            sliderState.value = newValue
-            onWidthChange(newValue.fastRoundToInt())
-        },
+        onValueChange = { newValue -> onWidthChange(newValue.fastRoundToInt()) },
     )
 }
 
