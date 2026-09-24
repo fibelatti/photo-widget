@@ -36,11 +36,11 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.appSettingsIntent
 import com.fibelatti.photowidget.platform.disableBatteryOptimizationIntent
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.Warning
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.TextWithLinks
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.Warning
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 

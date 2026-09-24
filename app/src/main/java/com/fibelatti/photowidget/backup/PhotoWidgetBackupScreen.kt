@@ -74,13 +74,13 @@ import com.fibelatti.photowidget.model.getPhotoVersion
 import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.photowidget.ui.LoadingIndicator
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.Back
-import com.fibelatti.photowidget.ui.icons.Export
-import com.fibelatti.photowidget.ui.icons.Import
-import com.fibelatti.photowidget.ui.icons.Warning
 import com.fibelatti.ui.component.ListItem
 import com.fibelatti.ui.foundation.Shapes
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.Back
+import com.fibelatti.ui.icons.Export
+import com.fibelatti.ui.icons.Import
+import com.fibelatti.ui.icons.Warning
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 

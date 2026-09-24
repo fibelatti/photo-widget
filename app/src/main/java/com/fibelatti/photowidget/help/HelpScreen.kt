@@ -37,11 +37,11 @@ import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.ui.InformationalPanel
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.ChevronDown
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.foundation.Shapes
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.ChevronDown
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 

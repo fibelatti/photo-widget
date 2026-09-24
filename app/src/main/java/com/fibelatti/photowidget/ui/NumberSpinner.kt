@@ -25,10 +25,10 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.Minus
-import com.fibelatti.photowidget.ui.icons.Plus
 import com.fibelatti.ui.component.AutoSizeText
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.Minus
+import com.fibelatti.ui.icons.Plus
 
 @Composable
 fun NumberSpinner(

@@ -27,9 +27,9 @@ import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.fibelatti.photowidget.R
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.Warning
 import com.fibelatti.ui.foundation.Shapes
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.Warning
 import com.fibelatti.ui.theme.ExtendedTheme
 
 private const val INLINE_ICON_ID = "informational-panel-icon"

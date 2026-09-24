@@ -49,14 +49,14 @@ import com.fibelatti.photowidget.platform.formatRangeValue
 import com.fibelatti.photowidget.ui.BooleanListItem
 import com.fibelatti.photowidget.ui.PickerListItem
 import com.fibelatti.photowidget.ui.ShapeListItem
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.Back
 import com.fibelatti.photowidget.widget.PhotoWidgetSyncWorker
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
 import com.fibelatti.ui.component.SelectionDialogBottomSheetMode
 import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.Shapes
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.Back
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit

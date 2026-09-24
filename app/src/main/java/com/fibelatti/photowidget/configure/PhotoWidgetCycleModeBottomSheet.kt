@@ -71,14 +71,14 @@ import com.fibelatti.photowidget.model.intervalRange
 import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.SliderItem
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.Trash
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.AutoSizeText
 import com.fibelatti.ui.component.ConnectedButtonRowItem
 import com.fibelatti.ui.component.RadioGroup
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.Trash
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.Calendar

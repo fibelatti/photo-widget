@@ -82,15 +82,15 @@ import com.fibelatti.photowidget.preferences.DataSaverBottomSheet
 import com.fibelatti.photowidget.preferences.KeepAliveServiceBottomSheet
 import com.fibelatti.photowidget.preferences.WidgetDefaultsScreen
 import com.fibelatti.photowidget.preferences.WidgetSettingsScreen
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.MyWidgets
-import com.fibelatti.photowidget.ui.icons.MyWidgetsSelected
-import com.fibelatti.photowidget.ui.icons.NewWidget
-import com.fibelatti.photowidget.ui.icons.NewWidgetSelected
-import com.fibelatti.photowidget.ui.icons.Settings
-import com.fibelatti.photowidget.ui.icons.SettingsSelected
 import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.dpToPx
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.MyWidgets
+import com.fibelatti.ui.icons.MyWidgetsSelected
+import com.fibelatti.ui.icons.NewWidget
+import com.fibelatti.ui.icons.NewWidgetSelected
+import com.fibelatti.ui.icons.Settings
+import com.fibelatti.ui.icons.SettingsSelected
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 

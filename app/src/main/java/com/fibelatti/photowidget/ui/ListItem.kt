@@ -19,11 +19,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.Check
-import com.fibelatti.photowidget.ui.icons.Xmark
 import com.fibelatti.ui.component.ListItem
 import com.fibelatti.ui.foundation.Shapes
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.Check
+import com.fibelatti.ui.icons.Xmark
 
 @Composable
 fun BooleanListItem(

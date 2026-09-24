@@ -68,12 +68,12 @@ import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.ShapesBanner
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.ChevronRight
-import com.fibelatti.photowidget.ui.icons.Expand
 import com.fibelatti.ui.component.AutoSizeText
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.fadingEdges
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.ChevronRight
+import com.fibelatti.ui.icons.Expand
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 import kotlin.math.roundToInt

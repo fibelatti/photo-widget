@@ -116,9 +116,6 @@ import com.fibelatti.photowidget.ui.BooleanListItem
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.PickerListItem
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.Back
-import com.fibelatti.photowidget.ui.icons.Trash
 import com.fibelatti.photowidget.ui.rememberSampleBitmap
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
@@ -131,6 +128,9 @@ import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.dpToPx
 import com.fibelatti.ui.foundation.fadingEdges
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.Back
+import com.fibelatti.ui.icons.Trash
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.preview.PreviewLocales
 import com.fibelatti.ui.theme.ExtendedTheme

@@ -39,10 +39,10 @@ import com.fibelatti.photowidget.model.isWidgetRemoved
 import com.fibelatti.photowidget.platform.letIf
 import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.TrashClock
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.TrashClock
 
 @Suppress("ktlint:compose:vm-forwarding-check")
 @Composable

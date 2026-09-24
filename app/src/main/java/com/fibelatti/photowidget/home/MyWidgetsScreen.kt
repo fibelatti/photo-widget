@@ -73,10 +73,10 @@ import com.fibelatti.photowidget.ui.CheckeredPattern
 import com.fibelatti.photowidget.ui.ColoredShape
 import com.fibelatti.photowidget.ui.MyWidgetBadge
 import com.fibelatti.photowidget.ui.ShapedPhoto
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.TrashClock
 import com.fibelatti.ui.component.ConnectedButtonRowDefaults
 import com.fibelatti.ui.component.ListItem
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.TrashClock
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 

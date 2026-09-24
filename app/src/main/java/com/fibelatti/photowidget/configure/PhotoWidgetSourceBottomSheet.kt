@@ -45,15 +45,15 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.SyncDir
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.InformationalPanel
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.Check
-import com.fibelatti.photowidget.ui.icons.ChevronDown
-import com.fibelatti.photowidget.ui.icons.Trash
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.AutoSizeText
 import com.fibelatti.ui.component.RadioGroup
 import com.fibelatti.ui.foundation.Shapes
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.Check
+import com.fibelatti.ui.icons.ChevronDown
+import com.fibelatti.ui.icons.Trash
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 

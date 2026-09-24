@@ -37,8 +37,8 @@ import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.getMaxBitmapWidgetDimension
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.FileNotFound
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.FileNotFound
 import kotlin.math.max
 import kotlinx.coroutines.delay
 

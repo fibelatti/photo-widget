@@ -31,11 +31,11 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.AppShortcutInfo
-import com.fibelatti.photowidget.ui.icons.AppIcons
-import com.fibelatti.photowidget.ui.icons.Export
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.foundation.fadingEdges
+import com.fibelatti.ui.icons.AppIcons
+import com.fibelatti.ui.icons.Export
 
 @Composable
 fun AppShortcutPickerBottomSheet(
