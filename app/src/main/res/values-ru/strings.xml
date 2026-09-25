@@ -331,8 +331,11 @@
     <string name="photo_widget_configure_text_size">Размер</string>
     <string name="photo_widget_configure_text_vertical_offset">Вертикальное смещение</string>
     <string name="photo_widget_configure_text_apply_shadow">Применить тень</string>
+    <string name="photo_widget_configure_text_font">Шрифт</string>
+    <string name="photo_widget_configure_text_font_default">Системный по умолчанию</string>
+    <string name="photo_widget_configure_text_font_load_error">Не удалось загрузить некоторые шрифты.</string>
     <string name="photo_widget_configure_text_sample">Пример текста</string>
-    <string name="photo_widget_configure_text_caveat">Фото и текст используют одну и ту же область виджета. Текст отображается с использованием стандартного оформления системы. Положение можно точно настроить с помощью параметров выше, а также смещения и отступов фото.</string>
+    <string name="photo_widget_configure_text_caveat">Фото и текст используют одну и ту же область виджета. Положение можно точно настроить с помощью параметров выше, а также смещения и отступов фото.</string>
     <!-- Help -->
     <string name="help_article_title_1">Не получается добавить виджет на главный экран</string>
     <string name="help_article_body_1">Если вы настроили виджет, но при попытке добавить его на главный экран ничего не происходит или он добавлен, но не отображает выбранные фотографии, попробуйте добавить его напрямую с главного экрана.\n\nИнструкции могут различаться в зависимости от версии Android, производителя устройства и лаунчера, но, как правило, процесс выглядит следующим образом:\n\n1. Нажмите и удерживайте пустое пространство на главном экране, пока не появится всплывающее меню.\n2. Найдите опцию «Виджеты».\n3. Найдите «Material Photo Widget» среди доступных виджетов.\n4. Перетащите его на главный экран и настройте, как обычно.</string>
@@ -401,6 +404,7 @@
     <string name="photo_widget_action_restore">Восстановить</string>
     <string name="photo_widget_action_delete_permanently">Удалить навсегда</string>
     <string name="photo_widget_action_reset">Сбросить</string>
+    <string name="photo_widget_action_retry">Повторить</string>
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Прокрутите, чтобы увидеть больше</string>
     <string name="warning_experimental">Экспериментальный</string>

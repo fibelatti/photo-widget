@@ -36,6 +36,7 @@ data class PhotoWidgetExport(
     val textSize: Int?,
     val textVerticalOffset: Int?,
     val textHasShadow: Boolean?,
+    val textFontFamily: String? = null,
     val gifInterval: Long?,
 )
 
@@ -80,6 +81,7 @@ fun PhotoWidgetExport.toPhotoWidget(photos: List<LocalPhoto>): PhotoWidget {
                 size = textSize ?: widgetText.size,
                 verticalOffset = textVerticalOffset ?: widgetText.verticalOffset,
                 hasShadow = textHasShadow ?: widgetText.hasShadow,
+                fontFamily = textFontFamily,
             )
         }
     }
@@ -115,6 +117,7 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
     var textSize: Int? = null
     var textVerticalOffset: Int? = null
     var textHasShadow: Boolean? = null
+    var textFontFamily: String? = null
 
     when (border) {
         // Nothing else to export
@@ -144,6 +147,7 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
             textSize = text.size
             textVerticalOffset = text.verticalOffset
             textHasShadow = text.hasShadow
+            textFontFamily = text.fontFamily
         }
     }
 
@@ -169,6 +173,7 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
         textSize = textSize,
         textVerticalOffset = textVerticalOffset,
         textHasShadow = textHasShadow,
+        textFontFamily = textFontFamily,
         gifInterval = gifInterval,
     )
 }

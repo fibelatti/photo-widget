@@ -307,8 +307,11 @@
     <string name="photo_widget_configure_text_size">尺寸</string>
     <string name="photo_widget_configure_text_vertical_offset">垂直偏移</string>
     <string name="photo_widget_configure_text_apply_shadow">应用阴影</string>
+    <string name="photo_widget_configure_text_font">字体</string>
+    <string name="photo_widget_configure_text_font_default">系统默认</string>
+    <string name="photo_widget_configure_text_font_load_error">部分字体无法加载。</string>
     <string name="photo_widget_configure_text_sample">示例文本</string>
-    <string name="photo_widget_configure_text_caveat">照片和文本共享相同的小组件区域。文本使用系统默认外观。 您可以通过上述设置以及照片偏移和填充调整位置。</string>
+    <string name="photo_widget_configure_text_caveat">照片和文本共享相同的小组件区域。您可以通过上述设置以及照片偏移和填充调整位置。</string>
     <!-- Help -->
     <string name="help_article_title_1">无法正常添加小组件到桌面</string>
     <string name="help_article_body_1">如果你已经配置了一个小组件，但在尝试将其添加到桌面时没有任何反应，或者添加后无法显示所选照片，你可以尝试直接从桌面添加它。\n\n根据你的 Android 版本、设备制造商和桌面启动器，具体操作可能有所不同，但一般流程如下：\n\n1. 在桌面的空白区域长按，直到出现弹出菜单。\n2. 找到“组件”选项。\n3. 在可用组件中搜索“Material Photo Widget”。\n4. 将其拖动到桌面并按常规方式进行配置。</string>
@@ -377,6 +380,7 @@
     <string name="photo_widget_action_restore">还原</string>
     <string name="photo_widget_action_delete_permanently">永久删除</string>
     <string name="photo_widget_action_reset">重置</string>
+    <string name="photo_widget_action_retry">重试</string>
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">滚动查看更多</string>
     <string name="warning_experimental">实验性功能</string>

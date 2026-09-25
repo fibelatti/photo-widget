@@ -307,8 +307,11 @@
     <string name="photo_widget_configure_text_size">サイズ</string>
     <string name="photo_widget_configure_text_vertical_offset">垂直オフセット</string>
     <string name="photo_widget_configure_text_apply_shadow">影を適用</string>
+    <string name="photo_widget_configure_text_font">フォント</string>
+    <string name="photo_widget_configure_text_font_default">システムのデフォルト</string>
+    <string name="photo_widget_configure_text_font_load_error">一部のフォントを読み込めませんでした。</string>
     <string name="photo_widget_configure_text_sample">サンプルテキスト</string>
-    <string name="photo_widget_configure_text_caveat">写真とテキストは同じウィジェット領域を共有します。テキストはシステムのデフォルト表示を使用します。上記の設定に加え、写真のオフセットや余白で位置を微調整できます。</string>
+    <string name="photo_widget_configure_text_caveat">写真とテキストは同じウィジェット領域を共有します。上記の設定に加え、写真のオフセットや余白で位置を微調整できます。</string>
     <!-- Help -->
     <string name="help_article_title_1">ホーム画面へのウィジェットの追加が機能しない</string>
     <string name="help_article_body_1">ウィジェットを設定してもホーム画面に追加されない場合や、追加されても選択した写真が表示されない場合は、ホーム画面から直接追加してみてください。\n\n手順はAndroidのバージョン、デバイスメーカー、ホーム画面ランチャーによって異なる場合がありますが、一般的には以下のとおりです。\n\n1. ホーム画面の空いているスペースを長押しすると、ポップアップメニューが表示されます。\n2. 「ウィジェット」オプションを探します。\n3. 利用可能なウィジェットの中から「Material Photo Widget」を検索します。\n4. ホーム画面にドラッグし、通常どおり設定します。</string>
@@ -377,6 +380,7 @@
     <string name="photo_widget_action_restore">復元</string>
     <string name="photo_widget_action_delete_permanently">完全に削除</string>
     <string name="photo_widget_action_reset">リセット</string>
+    <string name="photo_widget_action_retry">再試行</string>
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">スクロールしてもっと表示</string>
     <string name="warning_experimental">試験的</string>

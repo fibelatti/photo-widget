@@ -7,6 +7,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -24,6 +25,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PreparedCurrentPhoto
 import com.fibelatti.photowidget.model.bitmapByteCount
 import com.fibelatti.photowidget.platform.ExceptionReporter
+import com.fibelatti.photowidget.platform.GoogleFontsLoader
 import com.fibelatti.photowidget.platform.KeepAliveService
 import com.fibelatti.photowidget.platform.RemoteViewsBitmapMemoryCap
 import com.fibelatti.photowidget.platform.displayPixels
@@ -202,6 +204,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val pinningCache: PhotoWidgetPinningCache = entryPoint.photoWidgetPinningCache()
             val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
             val prepareCurrentPhotoUseCase: PrepareCurrentPhotoUseCase = entryPoint.prepareCurrentPhotoUseCase()
+            val googleFontsLoader: GoogleFontsLoader = entryPoint.googleFontsLoader()
             val exceptionReporter: ExceptionReporter = entryPoint.exceptionReporter()
             val crossfadeAnimator: PhotoWidgetCrossfadeAnimator = entryPoint.photoWidgetCrossfadeAnimator()
 
@@ -223,6 +226,10 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     ?.also { Timber.d("Updating using the pending widget data") }
                     ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId).first { !it.isLoading }
 
+                // Resolved once so the label is measured for the render budget and drawn with the
+                // same typeface
+                val labelTypeface: Typeface = googleFontsLoader.getTypeface(photoWidget.text.fontFamily)
+
                 // Decided before preparing the photo to enable skipping unnecessary work (encoding
                 // and decoding only needed by crossfade)
                 val crossfadeIntent: Boolean = crossfadeIntent(
@@ -237,6 +244,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                         context = context,
                         appWidgetId = appWidgetId,
                         photoWidget = photoWidget,
+                        labelTypeface = labelTypeface,
                         crossfadeIntent = crossfadeIntent,
                         recoveryAttempt = recoveryAttempt,
                     )
@@ -277,6 +285,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 val renderState = PhotoWidgetRemoteViewsBuilder.RenderState(
                     photoWidget = photoWidget,
                     preparedCurrentPhoto = preparedCurrentPhoto,
+                    labelTypeface = labelTypeface,
                     isLocked = isLocked,
                     isCyclePaused = isCyclePaused,
                 )
@@ -285,6 +294,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     context = context,
                     crossfadeIntent = crossfadeIntent,
                     photoWidget = photoWidget,
+                    labelTypeface = labelTypeface,
                     preparedCurrentPhoto = preparedCurrentPhoto,
                 )
 
@@ -463,6 +473,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             context: Context,
             crossfadeIntent: Boolean,
             photoWidget: PhotoWidget,
+            labelTypeface: Typeface,
             preparedCurrentPhoto: PreparedCurrentPhoto,
         ): Boolean {
             if (!crossfadeIntent) return false
@@ -472,7 +483,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
             val combinedBitmapBytes: Long = fadeBitmap.allocationByteCount.toLong() +
                 previousBitmap.allocationByteCount.toLong() +
-                photoWidget.text.bitmapByteCount(context = context)
+                photoWidget.text.bitmapByteCount(context = context, typeface = labelTypeface)
 
             return combinedBitmapBytes <= context.getMaxCrossfadeBitmapMemory()
         }

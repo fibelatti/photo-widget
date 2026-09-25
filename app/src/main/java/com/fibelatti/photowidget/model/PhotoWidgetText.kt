@@ -10,7 +10,6 @@ import android.os.Parcelable
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.TypedValue
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.toColorInt
 import androidx.core.graphics.withTranslation
@@ -22,7 +21,9 @@ sealed interface PhotoWidgetText : Parcelable {
 
     val value: String
     val size: Int
-    val typeface: Int?
+
+    /** The Google Fonts family used to render the text, or `null` to use the system default. */
+    val fontFamily: String?
     val colorHex: String
     val horizontalOffset: Int
     val verticalOffset: Int
@@ -41,7 +42,7 @@ sealed interface PhotoWidgetText : Parcelable {
         override val size: Int = 0
 
         @IgnoredOnParcel
-        override val typeface: Int? = null
+        override val fontFamily: String? = null
 
         @IgnoredOnParcel
         override val colorHex: String = "00000000"
@@ -68,11 +69,8 @@ sealed interface PhotoWidgetText : Parcelable {
         override val size: Int = 12,
         override val verticalOffset: Int = 0,
         override val hasShadow: Boolean = true,
+        override val fontFamily: String? = null,
     ) : PhotoWidgetText {
-
-        // Always fallback to `Typeface.DEFAULT` to match the system
-        @IgnoredOnParcel
-        override val typeface: Int? = null
 
         // Always white to match the launcher color
         @IgnoredOnParcel
@@ -104,8 +102,8 @@ sealed interface PhotoWidgetText : Parcelable {
     }
 }
 
-fun PhotoWidgetText.textToBitmap(context: Context): Bitmap {
-    val staticLayout: StaticLayout = staticLayout(context = context)
+fun PhotoWidgetText.textToBitmap(context: Context, typeface: Typeface): Bitmap {
+    val staticLayout: StaticLayout = staticLayout(context = context, typeface = typeface)
     val output: Bitmap = createBitmap(staticLayout.width, staticLayout.height)
 
     Canvas(output).apply {
@@ -118,7 +116,7 @@ fun PhotoWidgetText.textToBitmap(context: Context): Bitmap {
     return output
 }
 
-private fun PhotoWidgetText.staticLayout(context: Context): StaticLayout {
+private fun PhotoWidgetText.staticLayout(context: Context, typeface: Typeface): StaticLayout {
     val textPaint: TextPaint = TextPaint().apply {
         isAntiAlias = true
         textSize = TypedValue.applyDimension(
@@ -128,8 +126,7 @@ private fun PhotoWidgetText.staticLayout(context: Context): StaticLayout {
         )
         textAlign = Paint.Align.CENTER
 
-        typeface = this@staticLayout.typeface?.let { ResourcesCompat.getFont(context, it) }
-            ?: Typeface.DEFAULT
+        this.typeface = typeface
 
         color = "#$colorHex".toColorInt()
 
@@ -154,11 +151,13 @@ private fun PhotoWidgetText.staticLayout(context: Context): StaticLayout {
 /**
  * Bytes the bitmap produced by [textToBitmap] will occupy in a `RemoteViews` update, so the render
  * budget can account for the label alongside the photo. Zero when the widget has no label.
+ *
+ * [typeface] must be the same one given to [textToBitmap], since it determines the text bounds.
  */
-fun PhotoWidgetText.bitmapByteCount(context: Context): Long {
+fun PhotoWidgetText.bitmapByteCount(context: Context, typeface: Typeface): Long {
     if (this is PhotoWidgetText.None) return 0
 
-    val staticLayout: StaticLayout = staticLayout(context = context)
+    val staticLayout: StaticLayout = staticLayout(context = context, typeface = typeface)
 
     return staticLayout.width.toLong() * staticLayout.height * BYTES_PER_PIXEL
 }

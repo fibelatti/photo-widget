@@ -3,6 +3,7 @@ package com.fibelatti.photowidget.widget
 import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Typeface
 import android.view.View
 import android.widget.RemoteViews
 import com.fibelatti.photowidget.R
@@ -29,6 +30,7 @@ object PhotoWidgetRemoteViewsBuilder {
     data class RenderState(
         val photoWidget: PhotoWidget,
         val preparedCurrentPhoto: PreparedCurrentPhoto,
+        val labelTypeface: Typeface,
         val isLocked: Boolean,
         val isCyclePaused: Boolean,
     )
@@ -148,6 +150,7 @@ object PhotoWidgetRemoteViewsBuilder {
                 remoteViews = this,
                 context = context,
                 photoWidgetText = photoWidget.text,
+                typeface = state.labelTypeface,
             )
 
             setWidgetTapActions(
@@ -193,6 +196,7 @@ object PhotoWidgetRemoteViewsBuilder {
         remoteViews: RemoteViews,
         context: Context,
         photoWidgetText: PhotoWidgetText,
+        typeface: Typeface,
     ) {
         when (photoWidgetText) {
             is PhotoWidgetText.None -> {
@@ -200,7 +204,7 @@ object PhotoWidgetRemoteViewsBuilder {
             }
 
             is PhotoWidgetText.Label -> {
-                val bitmap: Bitmap = photoWidgetText.textToBitmap(context = context)
+                val bitmap: Bitmap = photoWidgetText.textToBitmap(context = context, typeface = typeface)
                 val bottomPadding: Int = abs(photoWidgetText.verticalOffset)
                     .times(context.resources.displayMetrics.density)
                     .roundToInt()

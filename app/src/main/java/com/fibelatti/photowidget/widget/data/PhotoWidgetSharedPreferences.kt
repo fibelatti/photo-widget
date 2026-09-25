@@ -653,11 +653,13 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 remove("${PreferencePrefix.TEXT_SIZE}$appWidgetId")
                 remove("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId")
                 remove("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId")
+                remove("${PreferencePrefix.TEXT_FONT_FAMILY}$appWidgetId")
             } else {
                 putString("${PreferencePrefix.TEXT_VALUE}$appWidgetId", text.value)
                 putInt("${PreferencePrefix.TEXT_SIZE}$appWidgetId", text.size)
                 putInt("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId", text.verticalOffset)
                 putBoolean("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId", text.hasShadow)
+                putString("${PreferencePrefix.TEXT_FONT_FAMILY}$appWidgetId", text.fontFamily)
             }
         }
     }
@@ -674,6 +676,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     size = getInt("${PreferencePrefix.TEXT_SIZE}$appWidgetId", 12),
                     verticalOffset = getInt("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId", 0),
                     hasShadow = getBoolean("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId", true),
+                    fontFamily = getString("${PreferencePrefix.TEXT_FONT_FAMILY}$appWidgetId", null),
                 )
             }
         }
@@ -870,6 +873,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         TEXT_SIZE(value = "appwidget_text_size_"),
         TEXT_VERTICAL_OFFSET(value = "appwidget_text_vertical_offset_"),
         TEXT_HAS_SHADOW(value = "appwidget_text_has_shadow_"),
+        TEXT_FONT_FAMILY(value = "appwidget_text_font_family_"),
 
         GIF_INTERVAL(value = "appwidget_gif_interval_"),
 

@@ -323,8 +323,11 @@
     <string name="photo_widget_configure_text_size">Величина</string>
     <string name="photo_widget_configure_text_vertical_offset">Вертикални помак</string>
     <string name="photo_widget_configure_text_apply_shadow">Нанесите сенку</string>
+    <string name="photo_widget_configure_text_font">Фонт</string>
+    <string name="photo_widget_configure_text_font_default">Системски подразумевани</string>
+    <string name="photo_widget_configure_text_font_load_error">Неки фонтови нису могли да се учитају.</string>
     <string name="photo_widget_configure_text_sample">Пример текста</string>
-    <string name="photo_widget_configure_text_caveat">Фотографија и текст деле исту област виџета. Текст користи подразумевани изглед система. Можете фино подесити позиционирање помоћу горе наведених подешавања, заједно са помаком и размаком између фотографија.</string>
+    <string name="photo_widget_configure_text_caveat">Фотографија и текст деле исту област виџета. Можете фино подесити позиционирање помоћу горе наведених подешавања, заједно са помаком и размаком између фотографија.</string>
     <!-- Help -->
     <string name="help_article_title_1">Додавање виџета на почетни екран не функционише</string>
     <string name="help_article_body_1">Ако сте конфигурисали виџет и ништа се не дешава када покушате да га додате на почетни екран или ако је додат, али не приказује изабране фотографије, можете покушати да га додате директно са почетног екрана.\n\nУпутства се могу разликовати у зависности од верзије Андроида, произвођача уређаја и покретача почетног екрана, али генерално, поступак је следећи:\n\n1. Дуго притисните празан простор на почетном екрану док се не појави искачући мени.\n2. Пронађите опцију „Виџети“.\n3. Потражите „Виџет за материјалне фотографије“ међу доступним виџетима.\n4. Превуците га на почетни екран и конфигуришите га као и обично.</string>
@@ -393,6 +396,7 @@
     <string name="photo_widget_action_restore">Поврати</string>
     <string name="photo_widget_action_delete_permanently">Избриши трајно</string>
     <string name="photo_widget_action_reset">Ресетуј</string>
+    <string name="photo_widget_action_retry">Покушај поново</string>
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Померите да видите више</string>
     <string name="warning_experimental">Експериментално</string>

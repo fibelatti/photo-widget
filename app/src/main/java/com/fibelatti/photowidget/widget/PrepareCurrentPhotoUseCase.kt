@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.widget
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Typeface
 import androidx.annotation.ColorInt
 import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.model.LocalPhoto
@@ -37,6 +38,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
         context: Context,
         appWidgetId: Int,
         photoWidget: PhotoWidget,
+        labelTypeface: Typeface,
         crossfadeIntent: Boolean = false,
         recoveryAttempt: Int = 0,
     ): PreparedCurrentPhoto? {
@@ -65,7 +67,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
 
         // The label bitmap travels in the same update as the photo, so its bytes come out of the
         // render budget before the photo is sized against what is left.
-        val labelBytes: Long = photoWidget.text.bitmapByteCount(context = context)
+        val labelBytes: Long = photoWidget.text.bitmapByteCount(context = context, typeface = labelTypeface)
 
         // Every aspect ratio but FILL_WIDGET draws the photo fitted inside the widget, so the
         // widget's own size is all the resolution it can show. FILL_WIDGET crops the photo to

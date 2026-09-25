@@ -325,8 +325,11 @@
     <string name="photo_widget_configure_text_size">Dimensiune</string>
     <string name="photo_widget_configure_text_vertical_offset">Deplasare verticală</string>
     <string name="photo_widget_configure_text_apply_shadow">Aplică umbră</string>
+    <string name="photo_widget_configure_text_font">Font</string>
+    <string name="photo_widget_configure_text_font_default">Implicit al sistemului</string>
+    <string name="photo_widget_configure_text_font_load_error">Unele fonturi nu au putut fi încărcate.</string>
     <string name="photo_widget_configure_text_sample">Text de exemplu</string>
-    <string name="photo_widget_configure_text_caveat">Fotografia și textul folosesc aceeași zonă a widgetului. Textul utilizează aspectul implicit al sistemului. Poți ajusta fin poziția folosind setările de mai sus, împreună cu deplasarea și spațierea fotografiei.</string>
+    <string name="photo_widget_configure_text_caveat">Fotografia și textul folosesc aceeași zonă a widgetului. Poți ajusta fin poziția folosind setările de mai sus, împreună cu deplasarea și spațierea fotografiei.</string>
     <!-- Help -->
     <string name="help_article_title_1">Adăugarea unui widget pe ecranul de pornire nu funcționează</string>
     <string name="help_article_body_1">Dacă ați configurat un widget şi nu se întâmplă nimic atunci când încercați să-l adăugați pe ecranul de pornire, sau dacă este adăugat, dar nu afișează fotografiile selectate, puteți încerca să le adăugați direct de pe ecranul de pornire.\n\nInstrucțiunile pot varia în funcție de versiunea Android, producătorul dispozitivului, și lansatorul ecranului de pornire, dar în general, procesul este după cum urmează:\n\n1. Apăsați lung pe un spațiu gol pe ecranul de pornire până când apare un meniu pop-up.\n2. Localizați opțiunea „Widget-uri”.\n3. Căutați \"Material Photo Widget\" în interiorul widget-urilor disponibile.\n4. Trageți-l pe ecranul de pornire și configurați-l ca de obicei.</string>
@@ -395,6 +398,7 @@
     <string name="photo_widget_action_restore">Restabilește</string>
     <string name="photo_widget_action_delete_permanently">Șterge definitiv</string>
     <string name="photo_widget_action_reset">Resetează</string>
+    <string name="photo_widget_action_retry">Reîncearcă</string>
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Derulează pentru a vedea mai mult</string>
     <string name="warning_experimental">Experimental</string>

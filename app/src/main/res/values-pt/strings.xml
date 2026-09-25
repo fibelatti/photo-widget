@@ -315,8 +315,11 @@
     <string name="photo_widget_configure_text_size">Tamanho</string>
     <string name="photo_widget_configure_text_vertical_offset">Deslocamento vertical</string>
     <string name="photo_widget_configure_text_apply_shadow">Aplicar sombra</string>
+    <string name="photo_widget_configure_text_font">Fonte</string>
+    <string name="photo_widget_configure_text_font_default">Padrão do sistema</string>
+    <string name="photo_widget_configure_text_font_load_error">Não foi possível carregar algumas fontes.</string>
     <string name="photo_widget_configure_text_sample">Texto de exemplo</string>
-    <string name="photo_widget_configure_text_caveat">A foto e o texto compartilham a mesma área do widget. O texto usa a aparência padrão do sistema. Você pode ajustar a posição usando as configurações acima, junto com o deslocamento e o espaçamento da foto.</string>
+    <string name="photo_widget_configure_text_caveat">A foto e o texto compartilham a mesma área do widget. Você pode ajustar a posição usando as configurações acima, junto com o deslocamento e o espaçamento da foto.</string>
     <!-- Help -->
     <string name="help_article_title_1">Adicionar um widget à tela inicial não está funcionando</string>
     <string name="help_article_body_1">Se você configurou um widget e nada acontece ao tentar adicioná-lo à tela inicial, ou se ele foi adicionado, mas não exibe as fotos selecionadas, você pode tentar adicioná-lo diretamente da sua tela inicial.\n\nAs instruções podem variar dependendo da versão do Android, do fabricante do dispositivo e do launcher da tela inicial, mas geralmente o processo é o seguinte:\n\n1. Pressione e segure um espaço vazio na sua tela inicial até que um menu pop-up apareça.\n2. Localize a opção \"Widgets\".\n3. Procure por \"Material Photo Widget\" dentro dos widgets disponíveis.\n4. Arraste-o para sua tela inicial e configure-o como de costume.</string>
@@ -385,6 +388,7 @@
     <string name="photo_widget_action_restore">Restaurar</string>
     <string name="photo_widget_action_delete_permanently">Excluir permanentemente</string>
     <string name="photo_widget_action_reset">Redefinir</string>
+    <string name="photo_widget_action_retry">Tentar novamente</string>
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Role para ver mais</string>
     <string name="warning_experimental">Experimental</string>

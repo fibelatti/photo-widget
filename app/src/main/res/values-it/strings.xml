@@ -317,8 +317,11 @@
     <string name="photo_widget_configure_text_size">Dimensione</string>
     <string name="photo_widget_configure_text_vertical_offset">Offset verticale</string>
     <string name="photo_widget_configure_text_apply_shadow">Applica ombra</string>
+    <string name="photo_widget_configure_text_font">Carattere</string>
+    <string name="photo_widget_configure_text_font_default">Predefinito di sistema</string>
+    <string name="photo_widget_configure_text_font_load_error">Impossibile caricare alcuni caratteri.</string>
     <string name="photo_widget_configure_text_sample">Testo di esempio</string>
-    <string name="photo_widget_configure_text_caveat">La foto e il testo condividono la stessa area del widget. Il testo utilizza l\'aspetto predefinito del sistema. Puoi regolare con precisione la posizione usando le impostazioni sopra, insieme all\'offset e al padding della foto.</string>
+    <string name="photo_widget_configure_text_caveat">La foto e il testo condividono la stessa area del widget. Puoi regolare con precisione la posizione usando le impostazioni sopra, insieme all\'offset e al padding della foto.</string>
     <!-- Help -->
     <string name="help_article_title_1">L\'aggiunta di un widget alla schermata iniziale non funziona</string>
     <string name="help_article_body_1">Se hai configurato un widget e non succede nulla quando provi ad aggiungerlo alla schermata iniziale, o se viene aggiunto ma non visualizza le foto selezionate, puoi provare ad aggiungerlo direttamente dalla tua schermata iniziale.\n\nLe istruzioni possono variare a seconda della versione di Android, del produttore del dispositivo e del launcher della schermata iniziale, ma in generale il processo è il seguente:\n\n1. Premi a lungo su uno spazio vuoto della tua schermata iniziale finché non appare un menu pop-up.\n2. Individua l\'opzione \"Widget\".\n3. Cerca \"Material Photo Widget\" tra i widget disponibili.\n4. Trascinalo sulla tua schermata iniziale e configuralo come di consueto.</string>
@@ -388,6 +391,7 @@
     <string name="photo_widget_action_restore">Ripristina</string>
     <string name="photo_widget_action_delete_permanently">Elimina definitivamente</string>
     <string name="photo_widget_action_reset">Reimposta</string>
+    <string name="photo_widget_action_retry">Riprova</string>
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Scorri per visualizzare altro</string>
     <string name="warning_experimental">Sperimentale</string>

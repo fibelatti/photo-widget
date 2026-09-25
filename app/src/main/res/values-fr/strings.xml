@@ -317,8 +317,11 @@
     <string name="photo_widget_configure_text_size">Taille</string>
     <string name="photo_widget_configure_text_vertical_offset">Décalage vertical</string>
     <string name="photo_widget_configure_text_apply_shadow">Appliquer une ombre</string>
+    <string name="photo_widget_configure_text_font">Police</string>
+    <string name="photo_widget_configure_text_font_default">Par défaut du système</string>
+    <string name="photo_widget_configure_text_font_load_error">Certaines polices n\'ont pas pu être chargées.</string>
     <string name="photo_widget_configure_text_sample">Texte d\'exemple</string>
-    <string name="photo_widget_configure_text_caveat">La photo et le texte partagent la même zone du widget. Le texte utilise l\'apparence par défaut du système. Vous pouvez ajuster finement la position à l\'aide des réglages ci-dessus, ainsi que du décalage et des marges de la photo.</string>
+    <string name="photo_widget_configure_text_caveat">La photo et le texte partagent la même zone du widget. Vous pouvez ajuster finement la position à l\'aide des réglages ci-dessus, ainsi que du décalage et des marges de la photo.</string>
     <!-- Help -->
     <string name="help_article_title_1">L\'ajout d\'un widget à l\'écran d\'accueil ne fonctionne pas</string>
     <string name="help_article_body_1">Si vous avez configuré un widget et que rien ne se passe lorsque vous essayez de l\'ajouter à l\'écran d\'accueil, ou s\'il est ajouté, mais n\'affiche pas les photos sélectionnées, essayez de l\'ajouter directement depuis votre écran d\'accueil.\n\nLes instructions peuvent varier en fonction de votre version Android, du fabricant de votre appareil et du lanceur d\'écran d\'accueil, mais en général, le processus est le suivant :\n\n1. Appuyez longuement sur un espace vide de votre écran d\'accueil jusqu\'à ce qu\'un menu contextuel apparaisse.\n2. Trouvez l\'option \"Widgets\".\n3. Recherchez \"Material Photo Widget\" dans les widgets disponibles.\n4. Faites-le glisser vers votre écran d\'accueil et configurez-le comme d\'habitude.</string>
@@ -387,6 +390,7 @@
     <string name="photo_widget_action_restore">Restaurer</string>
     <string name="photo_widget_action_delete_permanently">Supprimer définitivement</string>
     <string name="photo_widget_action_reset">Réinitialiser</string>
+    <string name="photo_widget_action_retry">Réessayer</string>
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Faites défiler pour en voir plus</string>
     <string name="warning_experimental">Expérimental</string>

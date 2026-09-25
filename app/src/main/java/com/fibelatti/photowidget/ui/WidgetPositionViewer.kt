@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.ui
 
+import android.graphics.Typeface
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,6 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,11 +23,15 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
+import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.textToBitmap
+import com.fibelatti.photowidget.platform.GoogleFontsLoader
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.ui.foundation.dpToPx
 import kotlin.math.abs
@@ -93,9 +102,11 @@ fun WidgetPositionViewer(
         }
 
         if (photoWidget.text is PhotoWidgetText.Label) {
+            val labelTypeface: Typeface by rememberLabelTypeface(fontFamily = photoWidget.text.fontFamily)
+
             Image(
                 bitmap = photoWidget.text
-                    .textToBitmap(context = LocalContext.current)
+                    .textToBitmap(context = LocalContext.current, typeface = labelTypeface)
                     .asImageBitmap(),
                 contentDescription = null,
                 modifier = Modifier
@@ -103,5 +114,30 @@ fun WidgetPositionViewer(
                     .padding(bottom = abs(photoWidget.text.verticalOffset).dp),
             )
         }
+    }
+}
+
+/**
+ * The typeface of [fontFamily], drawn with [Typeface.DEFAULT] until it finishes loading unless it
+ * was already loaded.
+ */
+@Composable
+private fun rememberLabelTypeface(fontFamily: String?): State<Typeface> {
+    val localContext = LocalContext.current
+    val localInspectionMode: Boolean = LocalInspectionMode.current
+    val googleFontsLoader: GoogleFontsLoader by remember {
+        lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).googleFontsLoader() }
+    }
+
+    val initialValue: Typeface = if (localInspectionMode || fontFamily == null) {
+        Typeface.DEFAULT
+    } else {
+        googleFontsLoader.peekTypeface(fontFamily = fontFamily) ?: Typeface.DEFAULT
+    }
+
+    return produceState(initialValue = initialValue, fontFamily) {
+        if (localInspectionMode) return@produceState
+
+        value = googleFontsLoader.getTypeface(fontFamily = fontFamily)
     }
 }

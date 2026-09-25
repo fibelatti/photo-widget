@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* Custom font support for the widget label
+
 ## [v1.47.1] - 2026-09-22
 [v1.47.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.47.1
 

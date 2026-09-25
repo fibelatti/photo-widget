@@ -369,10 +369,13 @@
     <string name="photo_widget_configure_text_size">Size</string>
     <string name="photo_widget_configure_text_vertical_offset">Vertical offset</string>
     <string name="photo_widget_configure_text_apply_shadow">Apply shadow</string>
+    <string name="photo_widget_configure_text_font">Font</string>
+    <string name="photo_widget_configure_text_font_default">System default</string>
+    <string name="photo_widget_configure_text_font_load_error">Some fonts couldn\'t be loaded.</string>
 
     <string name="photo_widget_configure_text_sample">Sample text</string>
 
-    <string name="photo_widget_configure_text_caveat">The photo and text share the same widget area. The text uses the system\'s default appearance. You can fine tune the positioning using the settings above, along with the photo offset and padding.</string>
+    <string name="photo_widget_configure_text_caveat">The photo and text share the same widget area. You can fine tune the positioning using the settings above, along with the photo offset and padding.</string>
 
     <!-- Help -->
     <string name="help_article_title_1">Adding a widget to the home screen is not working</string>
@@ -455,6 +458,7 @@
     <string name="photo_widget_action_restore">Restore</string>
     <string name="photo_widget_action_delete_permanently">Delete permanently</string>
     <string name="photo_widget_action_reset">Reset</string>
+    <string name="photo_widget_action_retry">Retry</string>
 
     <!-- Hints -->
     <string name="hint_scroll_to_view_more">Scroll to view more</string>
