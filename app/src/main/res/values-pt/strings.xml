@@ -313,7 +313,10 @@
     <string name="photo_widget_configure_text_type_label_description">Imita o nome de um app para combinar com a estética da tela inicial</string>
     <string name="photo_widget_configure_text_value">Texto</string>
     <string name="photo_widget_configure_text_size">Tamanho</string>
-    <string name="photo_widget_configure_text_vertical_offset">Deslocamento vertical</string>
+    <string name="photo_widget_configure_text_vertical_offset">Posição e deslocamento vertical</string>
+    <string name="photo_widget_configure_text_position_top">Topo</string>
+    <string name="photo_widget_configure_text_position_center">Centro</string>
+    <string name="photo_widget_configure_text_position_bottom">Base</string>
     <string name="photo_widget_configure_text_apply_shadow">Aplicar sombra</string>
     <string name="photo_widget_configure_text_color">Cor</string>
     <string name="photo_widget_configure_text_font">Fonte</string>

@@ -315,7 +315,10 @@
     <string name="photo_widget_configure_text_type_label_description">Imita il nome di un\'app per adattarsi all\'estetica della schermata Home</string>
     <string name="photo_widget_configure_text_value">Testo</string>
     <string name="photo_widget_configure_text_size">Dimensione</string>
-    <string name="photo_widget_configure_text_vertical_offset">Offset verticale</string>
+    <string name="photo_widget_configure_text_vertical_offset">Posizione e offset verticali</string>
+    <string name="photo_widget_configure_text_position_top">In alto</string>
+    <string name="photo_widget_configure_text_position_center">Centro</string>
+    <string name="photo_widget_configure_text_position_bottom">In basso</string>
     <string name="photo_widget_configure_text_apply_shadow">Applica ombra</string>
     <string name="photo_widget_configure_text_color">Colore</string>
     <string name="photo_widget_configure_text_font">Carattere</string>

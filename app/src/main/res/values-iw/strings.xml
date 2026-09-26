@@ -329,7 +329,10 @@
     <string name="photo_widget_configure_text_type_label_description">מדמה שם של אפליקציה כדי להתאים לאסתטיקה של מסך הבית שלך</string>
     <string name="photo_widget_configure_text_value">טקסט</string>
     <string name="photo_widget_configure_text_size">גודל</string>
-    <string name="photo_widget_configure_text_vertical_offset">היסט אנכי</string>
+    <string name="photo_widget_configure_text_vertical_offset">מיקום והיסט אנכי</string>
+    <string name="photo_widget_configure_text_position_top">למעלה</string>
+    <string name="photo_widget_configure_text_position_center">מרכז</string>
+    <string name="photo_widget_configure_text_position_bottom">למטה</string>
     <string name="photo_widget_configure_text_apply_shadow">החל צל</string>
     <string name="photo_widget_configure_text_color">צבע</string>
     <string name="photo_widget_configure_text_font">גופן</string>

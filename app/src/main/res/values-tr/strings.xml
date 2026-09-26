@@ -313,7 +313,10 @@
     <string name="photo_widget_configure_text_type_label_description">Ana ekran estetiğine uyum sağlamak için bir uygulama adını taklit eder</string>
     <string name="photo_widget_configure_text_value">Metin</string>
     <string name="photo_widget_configure_text_size">Boyut</string>
-    <string name="photo_widget_configure_text_vertical_offset">Dikey kaydırma</string>
+    <string name="photo_widget_configure_text_vertical_offset">Dikey konum ve kaydırma</string>
+    <string name="photo_widget_configure_text_position_top">Üst</string>
+    <string name="photo_widget_configure_text_position_center">Merkez</string>
+    <string name="photo_widget_configure_text_position_bottom">Alt</string>
     <string name="photo_widget_configure_text_apply_shadow">Gölge uygula</string>
     <string name="photo_widget_configure_text_color">Renk</string>
     <string name="photo_widget_configure_text_font">Yazı tipi</string>

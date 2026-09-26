@@ -72,14 +72,21 @@
         android:visibility="gone"
         tools:src="@drawable/widget_preview" />
 
-    <ImageView
-        android:id="@+id/iv_widget_label"
+    <LinearLayout
+        android:id="@+id/layout_label"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:importantForAccessibility="no"
-        android:scaleType="center"
-        android:visibility="gone" />
+        android:layout_height="match_parent"
+        android:gravity="bottom|center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_widget_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
+            android:scaleType="center" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/tap_actions_layout"

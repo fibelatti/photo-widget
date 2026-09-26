@@ -34,8 +34,10 @@ import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.PhotoWidgetTextColor
+import com.fibelatti.photowidget.model.PhotoWidgetTextPosition
 import com.fibelatti.photowidget.model.resolve
 import com.fibelatti.photowidget.model.textToBitmap
+import com.fibelatti.photowidget.model.verticalPadding
 import com.fibelatti.photowidget.platform.ColorPalette
 import com.fibelatti.photowidget.platform.GoogleFontsLoader
 import com.fibelatti.photowidget.platform.getColorPalette
@@ -113,14 +115,25 @@ fun WidgetPositionViewer(
             val labelColor: Int? = rememberLabelColor(color = photoWidget.text.color, photo = photoWidget.currentPhoto)
 
             if (labelColor != null) {
+                val (topPadding: Int, bottomPadding: Int) = photoWidget.text.verticalPadding
+
                 Image(
                     bitmap = photoWidget.text
                         .textToBitmap(context = LocalContext.current, typeface = labelTypeface, color = labelColor)
                         .asImageBitmap(),
                     contentDescription = null,
                     modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(bottom = abs(photoWidget.text.verticalOffset).dp),
+                        .align(
+                            when (photoWidget.text.position) {
+                                PhotoWidgetTextPosition.TOP -> Alignment.TopCenter
+                                PhotoWidgetTextPosition.CENTER -> Alignment.Center
+                                PhotoWidgetTextPosition.BOTTOM -> Alignment.BottomCenter
+                            },
+                        )
+                        .padding(
+                            top = topPadding.dp,
+                            bottom = bottomPadding.dp,
+                        ),
                 )
             }
         }

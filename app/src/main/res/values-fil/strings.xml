@@ -313,7 +313,10 @@
     <string name="photo_widget_configure_text_type_label_description">Ginagaya ang pangalan ng app upang tumugma sa itsura ng home screen</string>
     <string name="photo_widget_configure_text_value">Teksto</string>
     <string name="photo_widget_configure_text_size">Laki</string>
-    <string name="photo_widget_configure_text_vertical_offset">Patayong offset</string>
+    <string name="photo_widget_configure_text_vertical_offset">Patayong posisyon at offset</string>
+    <string name="photo_widget_configure_text_position_top">Itaas</string>
+    <string name="photo_widget_configure_text_position_center">Gitna</string>
+    <string name="photo_widget_configure_text_position_bottom">Ibaba</string>
     <string name="photo_widget_configure_text_apply_shadow">Ilapat ang anino</string>
     <string name="photo_widget_configure_text_color">Kulay</string>
     <string name="photo_widget_configure_text_font">Font</string>

@@ -329,7 +329,10 @@
     <string name="photo_widget_configure_text_type_label_description">Имитирует название приложения, чтобы соответствовать эстетике главного экрана</string>
     <string name="photo_widget_configure_text_value">Значение</string>
     <string name="photo_widget_configure_text_size">Размер</string>
-    <string name="photo_widget_configure_text_vertical_offset">Вертикальное смещение</string>
+    <string name="photo_widget_configure_text_vertical_offset">Вертикальное положение и смещение</string>
+    <string name="photo_widget_configure_text_position_top">Сверху</string>
+    <string name="photo_widget_configure_text_position_center">Центр</string>
+    <string name="photo_widget_configure_text_position_bottom">Снизу</string>
     <string name="photo_widget_configure_text_apply_shadow">Применить тень</string>
     <string name="photo_widget_configure_text_color">Цвет</string>
     <string name="photo_widget_configure_text_font">Шрифт</string>

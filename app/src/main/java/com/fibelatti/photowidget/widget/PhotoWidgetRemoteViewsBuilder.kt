@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Typeface
+import android.view.Gravity
 import android.view.View
 import android.widget.RemoteViews
 import androidx.annotation.ColorInt
@@ -12,8 +13,10 @@ import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetText
+import com.fibelatti.photowidget.model.PhotoWidgetTextPosition
 import com.fibelatti.photowidget.model.PreparedCurrentPhoto
 import com.fibelatti.photowidget.model.textToBitmap
+import com.fibelatti.photowidget.model.verticalPadding
 import kotlin.math.abs
 import kotlin.math.roundToInt
 import timber.log.Timber
@@ -45,7 +48,12 @@ object PhotoWidgetRemoteViewsBuilder {
      * - [CROSSFADE_SETTLE]: the durable steady state the animation ends on — current photo only,
      *   still from the in-memory bitmap so completing the fade doesn't re-decode and flash.
      */
-    enum class RenderMode { DEFAULT, CROSSFADE_START, CROSSFADE_SETTLE }
+    enum class RenderMode {
+
+        DEFAULT,
+        CROSSFADE_START,
+        CROSSFADE_SETTLE,
+    }
 
     /**
      * Returns the (current, previous) image view IDs for the given aspect ratio. The two views
@@ -203,7 +211,7 @@ object PhotoWidgetRemoteViewsBuilder {
     ) {
         when (photoWidgetText) {
             is PhotoWidgetText.None -> {
-                remoteViews.setViewVisibility(R.id.iv_widget_label, View.GONE)
+                remoteViews.setViewVisibility(R.id.layout_label, View.GONE)
             }
 
             is PhotoWidgetText.Label -> {
@@ -212,16 +220,25 @@ object PhotoWidgetRemoteViewsBuilder {
                     typeface = typeface,
                     color = color,
                 )
-                val bottomPadding: Int = abs(photoWidgetText.verticalOffset)
-                    .times(context.resources.displayMetrics.density)
-                    .roundToInt()
+                val (topPaddingDp: Int, bottomPaddingDp: Int) = photoWidgetText.verticalPadding
+                val density: Float = context.resources.displayMetrics.density
+                val topPadding: Int = (topPaddingDp * density).roundToInt()
+                val bottomPadding: Int = (bottomPaddingDp * density).roundToInt()
 
-                remoteViews.setViewVisibility(R.id.iv_widget_label, View.VISIBLE)
+                remoteViews.setViewVisibility(R.id.layout_label, View.VISIBLE)
+
+                val gravity: Int = when (photoWidgetText.position) {
+                    PhotoWidgetTextPosition.TOP -> Gravity.TOP or Gravity.CENTER_HORIZONTAL
+                    PhotoWidgetTextPosition.CENTER -> Gravity.CENTER
+                    PhotoWidgetTextPosition.BOTTOM -> Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+                }
+                remoteViews.setInt(R.id.layout_label, "setGravity", gravity)
+
                 remoteViews.setImageViewBitmap(R.id.iv_widget_label, bitmap)
                 remoteViews.setViewPadding(
                     /* viewId = */ R.id.iv_widget_label,
                     /* left = */ 0,
-                    /* top = */ 0,
+                    /* top = */ topPadding,
                     /* right = */ 0,
                     /* bottom = */ bottomPadding,
                 )

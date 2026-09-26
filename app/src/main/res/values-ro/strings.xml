@@ -323,7 +323,10 @@
     <string name="photo_widget_configure_text_type_label_description">Imită numele unei aplicații pentru a se potrivi cu estetica ecranului principal</string>
     <string name="photo_widget_configure_text_value">Text</string>
     <string name="photo_widget_configure_text_size">Dimensiune</string>
-    <string name="photo_widget_configure_text_vertical_offset">Deplasare verticală</string>
+    <string name="photo_widget_configure_text_vertical_offset">Poziție și deplasare verticală</string>
+    <string name="photo_widget_configure_text_position_top">Sus</string>
+    <string name="photo_widget_configure_text_position_center">Centru</string>
+    <string name="photo_widget_configure_text_position_bottom">Jos</string>
     <string name="photo_widget_configure_text_apply_shadow">Aplică umbră</string>
     <string name="photo_widget_configure_text_color">Culoare</string>
     <string name="photo_widget_configure_text_font">Font</string>

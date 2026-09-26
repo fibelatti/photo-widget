@@ -367,7 +367,10 @@
 
     <string name="photo_widget_configure_text_value">Text</string>
     <string name="photo_widget_configure_text_size">Size</string>
-    <string name="photo_widget_configure_text_vertical_offset">Vertical offset</string>
+    <string name="photo_widget_configure_text_vertical_offset">Vertical position and offset</string>
+    <string name="photo_widget_configure_text_position_top">Top</string>
+    <string name="photo_widget_configure_text_position_center">Center</string>
+    <string name="photo_widget_configure_text_position_bottom">Bottom</string>
     <string name="photo_widget_configure_text_apply_shadow">Apply shadow</string>
     <string name="photo_widget_configure_text_color">Color</string>
     <string name="photo_widget_configure_text_font">Font</string>

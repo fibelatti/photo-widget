@@ -305,7 +305,10 @@
     <string name="photo_widget_configure_text_type_label_description">ホーム画面の見た目に合わせてアプリ名を再現します</string>
     <string name="photo_widget_configure_text_value">テキスト</string>
     <string name="photo_widget_configure_text_size">サイズ</string>
-    <string name="photo_widget_configure_text_vertical_offset">垂直オフセット</string>
+    <string name="photo_widget_configure_text_vertical_offset">垂直位置とオフセット</string>
+    <string name="photo_widget_configure_text_position_top">上</string>
+    <string name="photo_widget_configure_text_position_center">中央</string>
+    <string name="photo_widget_configure_text_position_bottom">下</string>
     <string name="photo_widget_configure_text_apply_shadow">影を適用</string>
     <string name="photo_widget_configure_text_color">色</string>
     <string name="photo_widget_configure_text_font">フォント</string>

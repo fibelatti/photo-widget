@@ -315,7 +315,10 @@
     <string name="photo_widget_configure_text_type_label_description">Imitiert einen App-Namen, um zur Ästhetik deines Startbildschirms zu passen</string>
     <string name="photo_widget_configure_text_value">Text</string>
     <string name="photo_widget_configure_text_size">Größe</string>
-    <string name="photo_widget_configure_text_vertical_offset">Vertikaler Versatz</string>
+    <string name="photo_widget_configure_text_vertical_offset">Vertikale Position und Versatz</string>
+    <string name="photo_widget_configure_text_position_top">Oben</string>
+    <string name="photo_widget_configure_text_position_center">Mitte</string>
+    <string name="photo_widget_configure_text_position_bottom">Unten</string>
     <string name="photo_widget_configure_text_apply_shadow">Schatten anwenden</string>
     <string name="photo_widget_configure_text_color">Farbe</string>
     <string name="photo_widget_configure_text_font">Schriftart</string>

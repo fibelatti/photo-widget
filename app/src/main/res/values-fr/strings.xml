@@ -315,7 +315,10 @@
     <string name="photo_widget_configure_text_type_label_description">Imite le nom d\'une application pour s\'adapter à l\'esthétique de votre écran d\'accueil</string>
     <string name="photo_widget_configure_text_value">Texte</string>
     <string name="photo_widget_configure_text_size">Taille</string>
-    <string name="photo_widget_configure_text_vertical_offset">Décalage vertical</string>
+    <string name="photo_widget_configure_text_vertical_offset">Position et décalage verticaux</string>
+    <string name="photo_widget_configure_text_position_top">Haut</string>
+    <string name="photo_widget_configure_text_position_center">Centre</string>
+    <string name="photo_widget_configure_text_position_bottom">Bas</string>
     <string name="photo_widget_configure_text_apply_shadow">Appliquer une ombre</string>
     <string name="photo_widget_configure_text_color">Couleur</string>
     <string name="photo_widget_configure_text_font">Police</string>

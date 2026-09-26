@@ -305,7 +305,10 @@
     <string name="photo_widget_configure_text_type_label_description">模拟应用名称，以匹配您的桌面美化</string>
     <string name="photo_widget_configure_text_value">文本</string>
     <string name="photo_widget_configure_text_size">尺寸</string>
-    <string name="photo_widget_configure_text_vertical_offset">垂直偏移</string>
+    <string name="photo_widget_configure_text_vertical_offset">垂直位置和偏移</string>
+    <string name="photo_widget_configure_text_position_top">顶部</string>
+    <string name="photo_widget_configure_text_position_center">中间</string>
+    <string name="photo_widget_configure_text_position_bottom">底部</string>
     <string name="photo_widget_configure_text_apply_shadow">应用阴影</string>
     <string name="photo_widget_configure_text_color">颜色</string>
     <string name="photo_widget_configure_text_font">字体</string>

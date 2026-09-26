@@ -16,6 +16,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.PhotoWidgetTextColor
+import com.fibelatti.photowidget.model.PhotoWidgetTextPosition
 import com.fibelatti.photowidget.model.SyncDir
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.Time
@@ -654,6 +655,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
             if (text is PhotoWidgetText.None) {
                 remove("${PreferencePrefix.TEXT_VALUE}$appWidgetId")
                 remove("${PreferencePrefix.TEXT_SIZE}$appWidgetId")
+                remove("${PreferencePrefix.TEXT_POSITION}$appWidgetId")
                 remove("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId")
                 remove("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId")
                 remove("${PreferencePrefix.TEXT_FONT_FAMILY}$appWidgetId")
@@ -662,6 +664,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
             } else {
                 putString("${PreferencePrefix.TEXT_VALUE}$appWidgetId", text.value)
                 putInt("${PreferencePrefix.TEXT_SIZE}$appWidgetId", text.size)
+                putString("${PreferencePrefix.TEXT_POSITION}$appWidgetId", text.position.name)
                 putInt("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId", text.verticalOffset)
                 putBoolean("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId", text.hasShadow)
                 putString("${PreferencePrefix.TEXT_FONT_FAMILY}$appWidgetId", text.fontFamily)
@@ -681,6 +684,9 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 is PhotoWidgetText.Label -> photoWidgetText.copy(
                     value = getString("${PreferencePrefix.TEXT_VALUE}$appWidgetId", "") ?: "",
                     size = getInt("${PreferencePrefix.TEXT_SIZE}$appWidgetId", 12),
+                    position = enumValueOfOrNull<PhotoWidgetTextPosition>(
+                        getString("${PreferencePrefix.TEXT_POSITION}$appWidgetId", null),
+                    ) ?: PhotoWidgetTextPosition.BOTTOM,
                     verticalOffset = getInt("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId", 0),
                     hasShadow = getBoolean("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId", true),
                     fontFamily = getString("${PreferencePrefix.TEXT_FONT_FAMILY}$appWidgetId", null),
@@ -882,6 +888,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         TEXT_TYPE(value = "appwidget_text_type_"),
         TEXT_VALUE(value = "appwidget_text_value_"),
         TEXT_SIZE(value = "appwidget_text_size_"),
+        TEXT_POSITION(value = "appwidget_text_position_"),
         TEXT_VERTICAL_OFFSET(value = "appwidget_text_vertical_offset_"),
         TEXT_HAS_SHADOW(value = "appwidget_text_has_shadow_"),
         TEXT_FONT_FAMILY(value = "appwidget_text_font_family_"),

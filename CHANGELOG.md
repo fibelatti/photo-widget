@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Custom font support for the widget label
 * Custom color support for the widget label
+* Vertical position support for the widget label
 
 ### Changed
 

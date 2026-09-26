@@ -11,6 +11,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.PhotoWidgetTextColor
+import com.fibelatti.photowidget.model.PhotoWidgetTextPosition
 import com.fibelatti.photowidget.model.coerceTapActions
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import kotlinx.serialization.Serializable
@@ -36,6 +37,7 @@ data class PhotoWidgetExport(
     val text: String?,
     val textValue: String?,
     val textSize: Int?,
+    val textPosition: String? = null,
     val textVerticalOffset: Int?,
     val textHasShadow: Boolean?,
     val textFontFamily: String? = null,
@@ -83,6 +85,7 @@ fun PhotoWidgetExport.toPhotoWidget(photos: List<LocalPhoto>): PhotoWidget {
             PhotoWidgetText.Label(
                 value = textValue ?: widgetText.value,
                 size = textSize ?: widgetText.size,
+                position = enumValueOfOrNull<PhotoWidgetTextPosition>(textPosition) ?: widgetText.position,
                 verticalOffset = textVerticalOffset ?: widgetText.verticalOffset,
                 hasShadow = textHasShadow ?: widgetText.hasShadow,
                 fontFamily = textFontFamily,
@@ -123,6 +126,7 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
 
     var textValue: String? = null
     var textSize: Int? = null
+    var textPosition: String? = null
     var textVerticalOffset: Int? = null
     var textHasShadow: Boolean? = null
     var textFontFamily: String? = null
@@ -155,6 +159,7 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
         is PhotoWidgetText.Label -> {
             textValue = text.value
             textSize = text.size
+            textPosition = text.position.name
             textVerticalOffset = text.verticalOffset
             textHasShadow = text.hasShadow
             textFontFamily = text.fontFamily
@@ -183,6 +188,7 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
         text = text.serializedName,
         textValue = textValue,
         textSize = textSize,
+        textPosition = textPosition,
         textVerticalOffset = textVerticalOffset,
         textHasShadow = textHasShadow,
         textFontFamily = textFontFamily,

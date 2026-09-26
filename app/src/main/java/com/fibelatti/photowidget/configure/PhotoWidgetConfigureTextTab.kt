@@ -6,6 +6,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -34,6 +35,7 @@ import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -85,6 +87,7 @@ import com.fibelatti.photowidget.model.MatchPhotoColorType
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.PhotoWidgetTextColor
+import com.fibelatti.photowidget.model.PhotoWidgetTextPosition
 import com.fibelatti.photowidget.platform.GoogleFontsLoader
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.DefaultSheetFooterButtons
@@ -94,6 +97,7 @@ import com.fibelatti.photowidget.ui.WidgetPositionViewer
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.BooleanListItem
+import com.fibelatti.ui.component.ConnectedButtonRowItem
 import com.fibelatti.ui.component.ListItem
 import com.fibelatti.ui.component.NumberSpinner
 import com.fibelatti.ui.component.PickerListItem
@@ -207,7 +211,8 @@ fun PhotoWidgetConfigureTextTab(
 
                 PickerListItem(
                     headlineText = stringResource(R.string.photo_widget_configure_text_vertical_offset),
-                    currentValue = photoWidgetText.verticalOffset.toString(),
+                    currentValue = "${stringResource(photoWidgetText.position.label)} " +
+                        "(${photoWidgetText.verticalOffset})",
                     onClick = verticalOffsetSheetState::showBottomSheet,
                     shape = Shapes.MiddleShape,
                 )
@@ -288,13 +293,17 @@ fun PhotoWidgetConfigureTextTab(
 
     PhotoWidgetVerticalOffsetPicker(
         appSheetState = verticalOffsetSheetState,
-        currentValue = photoWidgetText.verticalOffset,
+        currentPosition = photoWidgetText.position,
+        currentOffset = photoWidgetText.verticalOffset,
         fontFamily = photoWidgetText.fontFamily,
         color = photoWidgetText.color,
-        onApplyClick = { newValue: Int ->
+        onApplyClick = { newPosition: PhotoWidgetTextPosition, newOffset: Int ->
             when (photoWidgetText) {
                 is PhotoWidgetText.None -> Unit
-                is PhotoWidgetText.Label -> onPhotoWidgetTextChange(photoWidgetText.copy(verticalOffset = newValue))
+
+                is PhotoWidgetText.Label -> onPhotoWidgetTextChange(
+                    photoWidgetText.copy(position = newPosition, verticalOffset = newOffset),
+                )
             }
         },
     )
@@ -822,10 +831,11 @@ private fun PhotoWidgetTextSizePicker(
 @Composable
 private fun PhotoWidgetVerticalOffsetPicker(
     appSheetState: AppSheetState,
-    currentValue: Int,
+    currentPosition: PhotoWidgetTextPosition,
+    currentOffset: Int,
     fontFamily: String?,
     color: PhotoWidgetTextColor,
-    onApplyClick: (Int) -> Unit,
+    onApplyClick: (PhotoWidgetTextPosition, Int) -> Unit,
 ) {
     AppBottomSheet(
         sheetState = appSheetState,
@@ -833,14 +843,20 @@ private fun PhotoWidgetVerticalOffsetPicker(
         DefaultSheetContent(
             title = stringResource(R.string.photo_widget_configure_text_vertical_offset),
         ) {
-            var updatedValue: Int by rememberSaveable(currentValue) { mutableIntStateOf(currentValue) }
+            var updatedPosition: PhotoWidgetTextPosition by rememberSaveable(currentPosition) {
+                mutableStateOf(currentPosition)
+            }
+            var updatedOffset: Int by rememberSaveable(currentPosition, currentOffset) {
+                mutableIntStateOf(currentOffset)
+            }
 
             WidgetPositionViewer(
                 photoWidget = PhotoWidget(
                     currentPhoto = LocalSamplePhoto.current,
                     text = PhotoWidgetText.Label(
                         value = stringResource(R.string.photo_widget_configure_text_sample),
-                        verticalOffset = updatedValue,
+                        position = updatedPosition,
+                        verticalOffset = updatedOffset,
                         fontFamily = fontFamily,
                         color = color,
                     ),
@@ -850,20 +866,44 @@ private fun PhotoWidgetVerticalOffsetPicker(
                     .aspectRatio(.75f),
             )
 
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Max)
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
+            ) {
+                PhotoWidgetTextPosition.entries.forEachIndexed { index, position ->
+                    ConnectedButtonRowItem(
+                        checked = position == updatedPosition,
+                        onCheckedChange = {
+                            updatedPosition = position
+                            updatedOffset = 0
+                        },
+                        itemIndex = index,
+                        itemCount = PhotoWidgetTextPosition.entries.size,
+                        label = stringResource(id = position.label),
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize(),
+                    )
+                }
+            }
+
             NumberSpinner(
-                value = updatedValue,
-                onIncreaseClick = { updatedValue++ },
-                onDecreaseClick = { updatedValue-- },
-                lowerBound = PhotoWidgetText.VERTICAL_OFFSET_RANGE.first,
-                upperBound = PhotoWidgetText.VERTICAL_OFFSET_RANGE.last,
+                value = updatedOffset,
+                onIncreaseClick = { updatedOffset++ },
+                onDecreaseClick = { updatedOffset-- },
+                lowerBound = updatedPosition.verticalOffsetRange.first,
+                upperBound = updatedPosition.verticalOffsetRange.last,
             )
 
             DefaultSheetFooterButtons(
                 onApplyClick = {
-                    onApplyClick(updatedValue)
+                    onApplyClick(updatedPosition, updatedOffset)
                     appSheetState.hideBottomSheet()
                 },
-                onResetClick = { updatedValue = 0 },
+                onResetClick = { updatedOffset = 0 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
