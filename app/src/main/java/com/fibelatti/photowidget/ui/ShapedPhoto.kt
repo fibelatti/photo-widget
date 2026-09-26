@@ -16,7 +16,6 @@ import com.fibelatti.photowidget.model.getPhotoPath
 import com.fibelatti.photowidget.model.getPhotoVersion
 import com.fibelatti.photowidget.platform.PolygonalShapeTransformation
 import com.fibelatti.photowidget.platform.RoundedCornersTransformation
-import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 
 @Composable
 fun ShapedPhoto(
@@ -33,10 +32,6 @@ fun ShapedPhoto(
     val localContext = LocalContext.current
     val localDensity = LocalDensity.current.density
 
-    val resolvedDynamicBorderColor: Int? = (border as? PhotoWidgetBorder.Dynamic)?.let {
-        localContext.getDynamicAttributeColor(it.type.colorAttr)
-    }
-
     val transformations: List<Transformation> = remember(
         aspectRatio,
         shapeId,
@@ -44,7 +39,6 @@ fun ShapedPhoto(
         cornerRadius,
         colors,
         border,
-        resolvedDynamicBorderColor,
         localDensity,
     ) {
         val transformation: Transformation = if (aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
@@ -54,15 +48,14 @@ fun ShapedPhoto(
                 shapeRotation = shapeRotation,
                 colors = colors,
                 border = border,
-                resolvedDynamicBorderColor = resolvedDynamicBorderColor,
             )
         } else {
             RoundedCornersTransformation(
+                context = localContext,
                 aspectRatio = aspectRatio,
                 radius = cornerRadius * localDensity,
                 colors = colors,
                 border = border,
-                resolvedDynamicBorderColor = resolvedDynamicBorderColor,
             )
         }
         listOf(transformation)

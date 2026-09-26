@@ -2,15 +2,13 @@ package com.fibelatti.photowidget.widget
 
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.core.graphics.toColorInt
+import androidx.annotation.ColorInt
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.borderPercent
+import com.fibelatti.photowidget.model.resolveColor
 import com.fibelatti.photowidget.platform.PhotoDecoder
-import com.fibelatti.photowidget.platform.colorForType
 import com.fibelatti.photowidget.platform.getColorPalette
-import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.getMaxBitmapWidgetDimension
 import com.fibelatti.photowidget.platform.runWithFileOutputStream
 import com.fibelatti.photowidget.platform.withPolygonalShape
@@ -50,19 +48,11 @@ class PrepareGifPhotosUseCase @Inject constructor(
                             maxDimension = maxDimension,
                         ) ?: return@async
 
-                        val borderColor: Int? = when (photoWidget.border) {
-                            is PhotoWidgetBorder.None -> null
-
-                            is PhotoWidgetBorder.Color -> "#${photoWidget.border.colorHex}".toColorInt()
-
-                            is PhotoWidgetBorder.Dynamic -> context.getDynamicAttributeColor(
-                                photoWidget.border.type.colorAttr,
-                            )
-
-                            is PhotoWidgetBorder.MatchPhoto -> getColorPalette(bitmap).colorForType(
-                                photoWidget.border.type,
-                            )
-                        }
+                        @ColorInt
+                        val borderColor: Int? = photoWidget.border.resolveColor(
+                            context = context,
+                            colorPalette = { getColorPalette(bitmap) },
+                        )
 
                         Timber.d("Transforming the bitmap")
                         val transformedBitmap: Bitmap = if (photoWidget.aspectRatio == PhotoWidgetAspectRatio.SQUARE) {

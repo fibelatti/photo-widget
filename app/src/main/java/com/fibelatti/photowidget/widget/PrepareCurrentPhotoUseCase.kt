@@ -4,22 +4,19 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Typeface
 import androidx.annotation.ColorInt
-import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
-import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PreparedCurrentPhoto
 import com.fibelatti.photowidget.model.bitmapByteCount
 import com.fibelatti.photowidget.model.borderPercent
 import com.fibelatti.photowidget.model.getPhotoPath
 import com.fibelatti.photowidget.model.resolve
+import com.fibelatti.photowidget.model.resolveColor
 import com.fibelatti.photowidget.platform.ColorPalette
 import com.fibelatti.photowidget.platform.PhotoDecoder
-import com.fibelatti.photowidget.platform.colorForType
 import com.fibelatti.photowidget.platform.getColorPalette
-import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.fibelatti.photowidget.platform.getMaxWidgetPhotoDimension
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
@@ -104,17 +101,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
         val colorPalette: ColorPalette by lazy { getColorPalette(sourceBitmap) }
 
         @ColorInt
-        val borderColor: Int? = when (photoWidget.border) {
-            is PhotoWidgetBorder.None -> null
-
-            is PhotoWidgetBorder.Color -> "#${photoWidget.border.colorHex}".toColorInt()
-
-            is PhotoWidgetBorder.Dynamic -> context.getDynamicAttributeColor(
-                photoWidget.border.type.colorAttr,
-            )
-
-            is PhotoWidgetBorder.MatchPhoto -> colorPalette.colorForType(photoWidget.border.type)
-        }
+        val borderColor: Int? = photoWidget.border.resolveColor(context = context, colorPalette = { colorPalette })
         val borderPercent: Float = photoWidget.border.borderPercent()
 
         @ColorInt

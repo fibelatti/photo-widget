@@ -1,9 +1,15 @@
 package com.fibelatti.photowidget.model
 
+import android.content.Context
 import android.os.Parcelable
 import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
+import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.platform.ColorPalette
+import com.fibelatti.photowidget.platform.colorForType
+import com.fibelatti.photowidget.platform.getDynamicAttributeColor
 import com.google.android.material.color.DynamicColors
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
@@ -113,6 +119,18 @@ sealed interface PhotoWidgetBorder : Parcelable {
             return entries.firstOrNull { it.serializedName == serializedName } ?: None
         }
     }
+}
+
+/**
+ * The color used to draw the border. [colorPalette] is only invoked for
+ * [PhotoWidgetBorder.MatchPhoto], and must describe the photo the border is drawn around.
+ */
+@ColorInt
+fun PhotoWidgetBorder.resolveColor(context: Context, colorPalette: () -> ColorPalette): Int? = when (this) {
+    is PhotoWidgetBorder.None -> null
+    is PhotoWidgetBorder.Color -> "#$colorHex".toColorInt()
+    is PhotoWidgetBorder.Dynamic -> context.getDynamicAttributeColor(type.colorAttr)
+    is PhotoWidgetBorder.MatchPhoto -> colorPalette().colorForType(type)
 }
 
 fun PhotoWidgetBorder.borderPercent(): Float = getBorderWidth() * PhotoWidgetBorder.PERCENT_FACTOR
