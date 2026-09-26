@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -115,12 +116,16 @@ fun WidgetPositionViewer(
             val labelColor: Int? = rememberLabelColor(color = photoWidget.text.color, photo = photoWidget.currentPhoto)
 
             if (labelColor != null) {
+                val localContext = LocalContext.current
+                val labelBitmap: ImageBitmap = remember(photoWidget.text, labelTypeface, labelColor) {
+                    photoWidget.text
+                        .textToBitmap(context = localContext, typeface = labelTypeface, color = labelColor)
+                        .asImageBitmap()
+                }
                 val (topPadding: Int, bottomPadding: Int) = photoWidget.text.verticalPadding
 
                 Image(
-                    bitmap = photoWidget.text
-                        .textToBitmap(context = LocalContext.current, typeface = labelTypeface, color = labelColor)
-                        .asImageBitmap(),
+                    bitmap = labelBitmap,
                     contentDescription = null,
                     modifier = Modifier
                         .align(
