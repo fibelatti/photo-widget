@@ -8,33 +8,48 @@ import android.os.OperationCanceledException
 import androidx.core.provider.FontRequest
 import androidx.core.provider.FontsContractCompat
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.platform.GoogleFontsLoader.Companion.WIDGET_GRACE_PERIOD
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import timber.log.Timber
 
 /**
  * Loads fonts from the Google Fonts provider, which ships with Google Play services.
  *
  * Callers must check [isAvailable] first since devices without the services can't load them.
- * [getTypeface] falls back to [Typeface.DEFAULT] for widgets configured elsewhere (e.g. restored
- * from a backup).
+ * [getTypeface] and [getWidgetTypeface] fall back to [Typeface.DEFAULT] for widgets configured
+ * elsewhere (e.g. restored from a backup).
  */
 @Singleton
 class GoogleFontsLoader @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val coroutineScope: CoroutineScope,
 ) {
 
     private val cache: MutableMap<String, Typeface> = ConcurrentHashMap()
+
+    /**
+     * Requests made by [getWidgetTypeface] that are still in progress, shared by every widget that
+     * uses the same font.
+     */
+    private val widgetRequests: MutableMap<String, Deferred<Typeface?>> = ConcurrentHashMap()
 
     /**
      * The provider gives each request 10 seconds to download its font before failing it, and then
@@ -63,8 +78,8 @@ class GoogleFontsLoader @Inject constructor(
     fun peekTypeface(fontFamily: String): Typeface? = cache[fontFamily]
 
     /**
-     * The typeface of [fontFamily] to render the text with, or [Typeface.DEFAULT] when it's `null`
-     * or fails to load.
+     * The typeface of [fontFamily] used to render the text, or [Typeface.DEFAULT] when it's `null`
+     * or fails to load. Waits for the request to finish, so widgets use [getWidgetTypeface] instead.
      */
     suspend fun getTypeface(fontFamily: String?): Typeface {
         if (fontFamily == null) return Typeface.DEFAULT
@@ -73,9 +88,47 @@ class GoogleFontsLoader @Inject constructor(
     }
 
     /**
+     * The typeface of [fontFamily] used to render a widget, or [Typeface.DEFAULT] when it's `null`,
+     * fails to load, or doesn't load within [WIDGET_GRACE_PERIOD].
+     *
+     * Fonts are only cached in memory, so the first render after the process starts has to request
+     * them again. The grace period covers fonts the provider already has on the device, without
+     * holding the widget for a download. When the grace period runs out, the request keeps going
+     * and [onLateLoad] is invoked if it succeeds, so the widget can be rendered again with it.
+     */
+    suspend fun getWidgetTypeface(fontFamily: String?, onLateLoad: suspend () -> Unit): Typeface {
+        if (fontFamily == null) return Typeface.DEFAULT
+        cache[fontFamily]?.let { return it }
+
+        val request: Deferred<Typeface?> = widgetRequests.computeIfAbsent(fontFamily) {
+            coroutineScope.async(start = CoroutineStart.LAZY) {
+                try {
+                    loadTypeface(fontFamily = fontFamily, dispatcher = renderDispatcher)
+                } finally {
+                    @Suppress("DeferredResultUnused")
+                    widgetRequests.remove(fontFamily)
+                }
+            }
+        }
+        request.start()
+
+        // `null` only when the grace period runs out, since a failed request resolves to the default
+        val typeface: Typeface? = withTimeoutOrNull(WIDGET_GRACE_PERIOD) {
+            request.await() ?: Typeface.DEFAULT
+        }
+        if (typeface != null) return typeface
+
+        coroutineScope.launch {
+            if (request.await() != null) onLateLoad()
+        }
+
+        return Typeface.DEFAULT
+    }
+
+    /**
      * The typeface of [fontFamily], or `null` when it fails to load. Failures aren't cached, so
      * calling this again retries the request. Meant for loading the catalog, so these requests
-     * yield to the ones made by [getTypeface].
+     * yield to the ones made by [getTypeface] and [getWidgetTypeface].
      */
     suspend fun loadTypeface(fontFamily: String): Typeface? {
         return loadTypeface(fontFamily = fontFamily, dispatcher = catalogDispatcher)
@@ -138,14 +191,14 @@ class GoogleFontsLoader @Inject constructor(
     }
 
     /**
-     * Runs the blocking [block] with a [CancellationSignal] that is cancelled along with the
+     * Runs the blocking [block] with a [CancellationSignal] that is canceled along with the
      * calling coroutine, so the provider stops the request instead of it holding the queue until
      * it times out.
      */
     private suspend fun <T> withCancellationSignal(block: (CancellationSignal) -> T): T = coroutineScope {
         val cancellationSignal = CancellationSignal()
 
-        // Unconfined so the signal is cancelled from the cancelling thread, since the thread running
+        // Unconfined so the signal is canceled from the cancelling thread, since the thread running
         // the block stays blocked until the request returns
         val cancellationJob: Job = launch(Dispatchers.Unconfined) {
             try {
@@ -166,6 +219,8 @@ class GoogleFontsLoader @Inject constructor(
 
         private const val PROVIDER_AUTHORITY: String = "com.google.android.gms.fonts"
         private const val PROVIDER_PACKAGE: String = "com.google.android.gms"
+
+        private val WIDGET_GRACE_PERIOD: Duration = 300.milliseconds
 
         /**
          * The font families offered when customizing the widget text, as named in the Google Fonts

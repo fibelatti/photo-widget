@@ -227,8 +227,15 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId).first { !it.isLoading }
 
                 // Resolved once so the label is measured for the render budget and drawn with the
-                // same typeface
-                val labelTypeface: Typeface = googleFontsLoader.getTypeface(photoWidget.text.fontFamily)
+                // same typeface. A font that takes longer to load triggers another render once ready,
+                // after the current one settles so it doesn't cut a crossfade short.
+                val labelTypeface: Typeface = googleFontsLoader.getWidgetTypeface(
+                    fontFamily = photoWidget.text.fontFamily,
+                    onLateLoad = {
+                        updateJobMap[appWidgetId]?.join()
+                        update(context = context, appWidgetId = appWidgetId)
+                    },
+                )
 
                 // Decided before preparing the photo to enable skipping unnecessary work (encoding
                 // and decoding only needed by crossfade)
