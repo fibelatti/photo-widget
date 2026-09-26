@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
+import androidx.annotation.ColorInt
 import com.fibelatti.photowidget.model.GifFrames
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetSource
@@ -248,6 +249,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         appWidgetId: Int,
         directoryName: String,
         currentPhoto: Bitmap,
+        @ColorInt labelColor: Int,
         crossfadeIntent: Boolean,
         labelBytes: Long = 0,
         coerceToWidgetSize: Boolean = true,
@@ -294,6 +296,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
             // before it.
             return@withContext PreparedCurrentPhoto(
                 bitmap = currentPhoto,
+                labelColor = labelColor,
                 previousBitmap = previousBitmap,
                 fadeBitmap = fadeBitmap,
                 pendingWrite = { writeWidgetPhoto(bitmap = currentPhoto, file = file) },
@@ -306,6 +309,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
         return@withContext PreparedCurrentPhoto(
             bitmap = currentPhoto,
+            labelColor = labelColor,
             uri = uriPermissionGrantor(path = file.path),
         )
     }

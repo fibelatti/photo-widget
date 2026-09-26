@@ -13,6 +13,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetText
+import com.fibelatti.photowidget.model.PhotoWidgetTextColor
 import com.fibelatti.photowidget.model.SyncDir
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.Time
@@ -654,12 +655,16 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 remove("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId")
                 remove("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId")
                 remove("${PreferencePrefix.TEXT_FONT_FAMILY}$appWidgetId")
+                remove("${PreferencePrefix.TEXT_COLOR}$appWidgetId")
+                remove("${PreferencePrefix.TEXT_COLOR_VALUE}$appWidgetId")
             } else {
                 putString("${PreferencePrefix.TEXT_VALUE}$appWidgetId", text.value)
                 putInt("${PreferencePrefix.TEXT_SIZE}$appWidgetId", text.size)
                 putInt("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId", text.verticalOffset)
                 putBoolean("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId", text.hasShadow)
                 putString("${PreferencePrefix.TEXT_FONT_FAMILY}$appWidgetId", text.fontFamily)
+                putString("${PreferencePrefix.TEXT_COLOR}$appWidgetId", text.color.serializedName)
+                putString("${PreferencePrefix.TEXT_COLOR_VALUE}$appWidgetId", text.color.serializedValue)
             }
         }
     }
@@ -677,6 +682,10 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     verticalOffset = getInt("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId", 0),
                     hasShadow = getBoolean("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId", true),
                     fontFamily = getString("${PreferencePrefix.TEXT_FONT_FAMILY}$appWidgetId", null),
+                    color = PhotoWidgetTextColor.fromSerialized(
+                        serializedName = getString("${PreferencePrefix.TEXT_COLOR}$appWidgetId", null),
+                        serializedValue = getString("${PreferencePrefix.TEXT_COLOR_VALUE}$appWidgetId", null),
+                    ),
                 )
             }
         }
@@ -874,6 +883,8 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         TEXT_VERTICAL_OFFSET(value = "appwidget_text_vertical_offset_"),
         TEXT_HAS_SHADOW(value = "appwidget_text_has_shadow_"),
         TEXT_FONT_FAMILY(value = "appwidget_text_font_family_"),
+        TEXT_COLOR(value = "appwidget_text_color_"),
+        TEXT_COLOR_VALUE(value = "appwidget_text_color_value_"),
 
         GIF_INTERVAL(value = "appwidget_gif_interval_"),
 

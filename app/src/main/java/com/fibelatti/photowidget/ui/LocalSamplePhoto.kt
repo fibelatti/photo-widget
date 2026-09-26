@@ -27,9 +27,22 @@ val LocalSamplePhoto = staticCompositionLocalOf<LocalPhoto?> { null }
 
 @Composable
 fun rememberSampleBitmap(): Bitmap {
+    val localResources: Resources = LocalResources.current
+    val fallbackBitmap: Bitmap = remember {
+        BitmapFactory.decodeResource(localResources, R.drawable.image_sample)
+    }
+
+    return rememberPhotoBitmap(photo = LocalSamplePhoto.current) ?: fallbackBitmap
+}
+
+/**
+ * [photo] decoded at the maximum widget dimension, or `null` until the first decode succeeds. When
+ * [photo] changes, the previous bitmap is kept until the new one finishes decoding.
+ */
+@Composable
+fun rememberPhotoBitmap(photo: LocalPhoto?): Bitmap? {
     val localContext: Context = LocalContext.current
     val localResources: Resources = LocalResources.current
-    val localPhoto: LocalPhoto? = LocalSamplePhoto.current
     val decoder: PhotoDecoder by remember {
         lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
     }
@@ -37,12 +50,10 @@ fun rememberSampleBitmap(): Bitmap {
         localContext.getMaxBitmapWidgetDimension()
     }
 
-    var bitmap: Bitmap by remember {
-        mutableStateOf(BitmapFactory.decodeResource(localResources, R.drawable.image_sample))
-    }
+    var bitmap: Bitmap? by remember { mutableStateOf(null) }
 
-    LaunchedEffect(localPhoto) {
-        localPhoto?.getPhotoPath()?.let { path ->
+    LaunchedEffect(photo) {
+        photo?.getPhotoPath()?.let { path ->
             decoder.decode(data = path, maxDimension = maxDimension)?.let { result ->
                 bitmap = result
             }

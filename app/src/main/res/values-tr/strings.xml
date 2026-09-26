@@ -315,6 +315,7 @@
     <string name="photo_widget_configure_text_size">Boyut</string>
     <string name="photo_widget_configure_text_vertical_offset">Dikey kaydırma</string>
     <string name="photo_widget_configure_text_apply_shadow">Gölge uygula</string>
+    <string name="photo_widget_configure_text_color">Renk</string>
     <string name="photo_widget_configure_text_font">Yazı tipi</string>
     <string name="photo_widget_configure_text_font_default">Sistem varsayılanı</string>
     <string name="photo_widget_configure_text_font_load_error">Bazı yazı tipleri yüklenemedi.</string>

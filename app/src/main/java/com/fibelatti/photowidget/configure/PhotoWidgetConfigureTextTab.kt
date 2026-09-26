@@ -2,10 +2,12 @@ package com.fibelatti.photowidget.configure
 
 import android.graphics.Typeface
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -46,6 +49,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -59,21 +63,27 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetText
+import com.fibelatti.photowidget.model.PhotoWidgetTextColor
 import com.fibelatti.photowidget.platform.GoogleFontsLoader
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.DefaultSheetFooterButtons
@@ -118,6 +128,7 @@ fun PhotoWidgetConfigureTextTab(
 ) {
     val textTypeSheetState: AppSheetState = rememberAppSheetState()
     val textValueSheetState: AppSheetState = rememberAppSheetState()
+    val colorSheetState: AppSheetState = rememberAppSheetState()
     val fontSheetState: AppSheetState = rememberAppSheetState()
     val textSizeSheetState: AppSheetState = rememberAppSheetState()
     val verticalOffsetSheetState: AppSheetState = rememberAppSheetState()
@@ -150,6 +161,29 @@ fun PhotoWidgetConfigureTextTab(
                     headlineText = stringResource(R.string.photo_widget_configure_text_value),
                     currentValue = photoWidgetText.value,
                     onClick = textValueSheetState::showBottomSheet,
+                    shape = Shapes.MiddleShape,
+                )
+
+                PickerListItem(
+                    headlineText = stringResource(R.string.photo_widget_configure_text_color),
+                    currentValue = buildString {
+                        append(stringResource(photoWidgetText.color.label))
+
+                        when (photoWidgetText.color) {
+                            is PhotoWidgetTextColor.Colored -> {
+                                append(" (#${photoWidgetText.color.colorHex.toUpperCase(Locale.current)})")
+                            }
+
+                            is PhotoWidgetTextColor.Dynamic -> {
+                                append(" (${stringResource(photoWidgetText.color.type.label)})")
+                            }
+
+                            is PhotoWidgetTextColor.Palette -> {
+                                append(" (${stringResource(photoWidgetText.color.type.label)})")
+                            }
+                        }
+                    },
+                    onClick = colorSheetState::showBottomSheet,
                     shape = Shapes.MiddleShape,
                 )
 
@@ -214,6 +248,18 @@ fun PhotoWidgetConfigureTextTab(
         },
     )
 
+    PhotoWidgetTextColorPicker(
+        appSheetState = colorSheetState,
+        currentValue = photoWidgetText.color,
+        fontFamily = photoWidgetText.fontFamily,
+        onApplyClick = { newValue: PhotoWidgetTextColor ->
+            when (photoWidgetText) {
+                is PhotoWidgetText.None -> Unit
+                is PhotoWidgetText.Label -> onPhotoWidgetTextChange(photoWidgetText.copy(color = newValue))
+            }
+        },
+    )
+
     PhotoWidgetTextFontPicker(
         appSheetState = fontSheetState,
         currentValue = photoWidgetText.fontFamily,
@@ -230,6 +276,7 @@ fun PhotoWidgetConfigureTextTab(
         appSheetState = textSizeSheetState,
         currentValue = photoWidgetText.size,
         fontFamily = photoWidgetText.fontFamily,
+        color = photoWidgetText.color,
         onApplyClick = { newValue: Int ->
             when (photoWidgetText) {
                 is PhotoWidgetText.None -> Unit
@@ -242,6 +289,7 @@ fun PhotoWidgetConfigureTextTab(
         appSheetState = verticalOffsetSheetState,
         currentValue = photoWidgetText.verticalOffset,
         fontFamily = photoWidgetText.fontFamily,
+        color = photoWidgetText.color,
         onApplyClick = { newValue: Int ->
             when (photoWidgetText) {
                 is PhotoWidgetText.None -> Unit
@@ -353,6 +401,175 @@ private fun PhotoWidgetTextValuePicker(
             Text(text = stringResource(id = R.string.photo_widget_action_apply))
         }
     }
+}
+
+@Composable
+private fun PhotoWidgetTextColorPicker(
+    appSheetState: AppSheetState,
+    currentValue: PhotoWidgetTextColor,
+    fontFamily: String?,
+    onApplyClick: (PhotoWidgetTextColor) -> Unit,
+) {
+    AppBottomSheet(
+        sheetState = appSheetState,
+    ) {
+        TextColorPickerContent(
+            currentValue = currentValue,
+            fontFamily = fontFamily,
+        ) { newValue: PhotoWidgetTextColor ->
+            onApplyClick(newValue)
+            appSheetState.hideBottomSheet()
+        }
+    }
+}
+
+@Composable
+private fun TextColorPickerContent(
+    currentValue: PhotoWidgetTextColor,
+    fontFamily: String?,
+    onApplyClick: (PhotoWidgetTextColor) -> Unit,
+) {
+    var color: PhotoWidgetTextColor by rememberSaveable { mutableStateOf(currentValue) }
+    val localResources = LocalResources.current
+
+    DefaultSheetContent(
+        title = stringResource(R.string.photo_widget_configure_text_color),
+        modifier = Modifier.animateContentSize(),
+    ) {
+        RadioGroup(
+            items = PhotoWidgetTextColor.entries,
+            itemSelected = { item: PhotoWidgetTextColor -> item.serializedName == color.serializedName },
+            onItemClick = { item: PhotoWidgetTextColor ->
+                color = if (item.serializedName == currentValue.serializedName) {
+                    currentValue
+                } else {
+                    item
+                }
+            },
+            itemTitle = { item: PhotoWidgetTextColor -> localResources.getString(item.label) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+        )
+
+        when (val current = color) {
+            is PhotoWidgetTextColor.Colored -> {
+                ColorPickerContent(
+                    currentColorHex = current.colorHex,
+                    onColorChange = { newValue: String -> color = current.copy(colorHex = newValue) },
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                ) {
+                    TextColorPreview(
+                        color = current,
+                        fontFamily = fontFamily,
+                        modifier = Modifier
+                            .weight(1f, fill = false)
+                            .widthIn(max = 200.dp)
+                            .aspectRatio(.75f),
+                    )
+                }
+            }
+
+            is PhotoWidgetTextColor.Dynamic -> {
+                TextColorTypeContent(
+                    color = current,
+                    fontFamily = fontFamily,
+                    types = PhotoWidgetBorder.Dynamic.Type.entries,
+                    selectedType = current.type,
+                    onTypeSelect = { newValue: PhotoWidgetBorder.Dynamic.Type ->
+                        color = current.copy(type = newValue)
+                    },
+                    typeLabel = { type: PhotoWidgetBorder.Dynamic.Type -> localResources.getString(type.label) },
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
+
+                Text(
+                    text = stringResource(R.string.photo_widget_configure_border_explanation),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 32.dp, end = 32.dp, bottom = 8.dp),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+
+            is PhotoWidgetTextColor.Palette -> {
+                TextColorTypeContent(
+                    color = current,
+                    fontFamily = fontFamily,
+                    types = PhotoWidgetBorder.MatchPhoto.Type.entries,
+                    selectedType = current.type,
+                    onTypeSelect = { newValue: PhotoWidgetBorder.MatchPhoto.Type ->
+                        color = current.copy(type = newValue)
+                    },
+                    typeLabel = { type: PhotoWidgetBorder.MatchPhoto.Type -> localResources.getString(type.label) },
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
+            }
+        }
+
+        Button(
+            onClick = { onApplyClick(color) },
+            shapes = ButtonDefaults.shapes(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+        ) {
+            Text(text = stringResource(id = R.string.photo_widget_action_apply))
+        }
+    }
+}
+
+@Composable
+private fun <T> TextColorTypeContent(
+    color: PhotoWidgetTextColor,
+    fontFamily: String?,
+    types: List<T>,
+    selectedType: T,
+    onTypeSelect: (T) -> Unit,
+    typeLabel: (T) -> String,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        TextColorPreview(
+            color = color,
+            fontFamily = fontFamily,
+            modifier = Modifier
+                .widthIn(max = min(200.dp, LocalWindowInfo.current.containerDpSize.width / 2))
+                .aspectRatio(.75f),
+        )
+
+        RadioGroup(
+            items = types,
+            itemSelected = { type: T -> type == selectedType },
+            onItemClick = onTypeSelect,
+            itemTitle = typeLabel,
+            modifier = Modifier.weight(1f),
+        )
+    }
+}
+
+@Composable
+private fun TextColorPreview(
+    color: PhotoWidgetTextColor,
+    fontFamily: String?,
+    modifier: Modifier = Modifier,
+) {
+    WidgetPositionViewer(
+        photoWidget = PhotoWidget(
+            currentPhoto = LocalSamplePhoto.current,
+            text = PhotoWidgetText.Label(
+                value = stringResource(R.string.photo_widget_configure_text_sample),
+                fontFamily = fontFamily,
+                color = color,
+            ),
+        ),
+        modifier = modifier,
+    )
 }
 
 @Composable
@@ -550,6 +767,7 @@ private fun PhotoWidgetTextSizePicker(
     appSheetState: AppSheetState,
     currentValue: Int,
     fontFamily: String?,
+    color: PhotoWidgetTextColor,
     onApplyClick: (Int) -> Unit,
 ) {
     AppBottomSheet(
@@ -567,6 +785,7 @@ private fun PhotoWidgetTextSizePicker(
                         value = stringResource(R.string.photo_widget_configure_text_sample),
                         size = updatedValue,
                         fontFamily = fontFamily,
+                        color = color,
                     ),
                 ),
                 modifier = Modifier
@@ -604,6 +823,7 @@ private fun PhotoWidgetVerticalOffsetPicker(
     appSheetState: AppSheetState,
     currentValue: Int,
     fontFamily: String?,
+    color: PhotoWidgetTextColor,
     onApplyClick: (Int) -> Unit,
 ) {
     AppBottomSheet(
@@ -621,6 +841,7 @@ private fun PhotoWidgetVerticalOffsetPicker(
                         value = stringResource(R.string.photo_widget_configure_text_sample),
                         verticalOffset = updatedValue,
                         fontFamily = fontFamily,
+                        color = color,
                     ),
                 ),
                 modifier = Modifier

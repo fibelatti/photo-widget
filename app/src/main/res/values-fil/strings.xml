@@ -315,6 +315,7 @@
     <string name="photo_widget_configure_text_size">Laki</string>
     <string name="photo_widget_configure_text_vertical_offset">Patayong offset</string>
     <string name="photo_widget_configure_text_apply_shadow">Ilapat ang anino</string>
+    <string name="photo_widget_configure_text_color">Kulay</string>
     <string name="photo_widget_configure_text_font">Font</string>
     <string name="photo_widget_configure_text_font_default">Default ng system</string>
     <string name="photo_widget_configure_text_font_load_error">Hindi ma-load ang ilang font.</string>

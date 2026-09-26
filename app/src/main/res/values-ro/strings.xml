@@ -325,6 +325,7 @@
     <string name="photo_widget_configure_text_size">Dimensiune</string>
     <string name="photo_widget_configure_text_vertical_offset">Deplasare verticală</string>
     <string name="photo_widget_configure_text_apply_shadow">Aplică umbră</string>
+    <string name="photo_widget_configure_text_color">Culoare</string>
     <string name="photo_widget_configure_text_font">Font</string>
     <string name="photo_widget_configure_text_font_default">Implicit al sistemului</string>
     <string name="photo_widget_configure_text_font_load_error">Unele fonturi nu au putut fi încărcate.</string>

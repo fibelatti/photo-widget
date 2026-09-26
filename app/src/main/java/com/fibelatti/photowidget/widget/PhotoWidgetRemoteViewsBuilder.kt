@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.Typeface
 import android.view.View
 import android.widget.RemoteViews
+import androidx.annotation.ColorInt
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -151,6 +152,7 @@ object PhotoWidgetRemoteViewsBuilder {
                 context = context,
                 photoWidgetText = photoWidget.text,
                 typeface = state.labelTypeface,
+                color = preparedCurrentPhoto.labelColor,
             )
 
             setWidgetTapActions(
@@ -197,6 +199,7 @@ object PhotoWidgetRemoteViewsBuilder {
         context: Context,
         photoWidgetText: PhotoWidgetText,
         typeface: Typeface,
+        @ColorInt color: Int,
     ) {
         when (photoWidgetText) {
             is PhotoWidgetText.None -> {
@@ -204,7 +207,11 @@ object PhotoWidgetRemoteViewsBuilder {
             }
 
             is PhotoWidgetText.Label -> {
-                val bitmap: Bitmap = photoWidgetText.textToBitmap(context = context, typeface = typeface)
+                val bitmap: Bitmap = photoWidgetText.textToBitmap(
+                    context = context,
+                    typeface = typeface,
+                    color = color,
+                )
                 val bottomPadding: Int = abs(photoWidgetText.verticalOffset)
                     .times(context.resources.displayMetrics.density)
                     .roundToInt()

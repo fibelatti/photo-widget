@@ -369,6 +369,7 @@
     <string name="photo_widget_configure_text_size">Size</string>
     <string name="photo_widget_configure_text_vertical_offset">Vertical offset</string>
     <string name="photo_widget_configure_text_apply_shadow">Apply shadow</string>
+    <string name="photo_widget_configure_text_color">Color</string>
     <string name="photo_widget_configure_text_font">Font</string>
     <string name="photo_widget_configure_text_font_default">System default</string>
     <string name="photo_widget_configure_text_font_load_error">Some fonts couldn\'t be loaded.</string>

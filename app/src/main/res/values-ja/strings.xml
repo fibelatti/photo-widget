@@ -307,6 +307,7 @@
     <string name="photo_widget_configure_text_size">サイズ</string>
     <string name="photo_widget_configure_text_vertical_offset">垂直オフセット</string>
     <string name="photo_widget_configure_text_apply_shadow">影を適用</string>
+    <string name="photo_widget_configure_text_color">色</string>
     <string name="photo_widget_configure_text_font">フォント</string>
     <string name="photo_widget_configure_text_font_default">システムのデフォルト</string>
     <string name="photo_widget_configure_text_font_load_error">一部のフォントを読み込めませんでした。</string>

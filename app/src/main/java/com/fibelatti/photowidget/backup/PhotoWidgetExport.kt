@@ -9,6 +9,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.PhotoWidgetText
+import com.fibelatti.photowidget.model.PhotoWidgetTextColor
 import com.fibelatti.photowidget.model.coerceTapActions
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import kotlinx.serialization.Serializable
@@ -37,6 +38,8 @@ data class PhotoWidgetExport(
     val textVerticalOffset: Int?,
     val textHasShadow: Boolean?,
     val textFontFamily: String? = null,
+    val textColor: String? = null,
+    val textColorValue: String? = null,
     val gifInterval: Long?,
 )
 
@@ -82,6 +85,10 @@ fun PhotoWidgetExport.toPhotoWidget(photos: List<LocalPhoto>): PhotoWidget {
                 verticalOffset = textVerticalOffset ?: widgetText.verticalOffset,
                 hasShadow = textHasShadow ?: widgetText.hasShadow,
                 fontFamily = textFontFamily,
+                color = PhotoWidgetTextColor.fromSerialized(
+                    serializedName = textColor,
+                    serializedValue = textColorValue,
+                ),
             )
         }
     }
@@ -118,6 +125,8 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
     var textVerticalOffset: Int? = null
     var textHasShadow: Boolean? = null
     var textFontFamily: String? = null
+    var textColor: String? = null
+    var textColorValue: String? = null
 
     when (border) {
         // Nothing else to export
@@ -148,6 +157,8 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
             textVerticalOffset = text.verticalOffset
             textHasShadow = text.hasShadow
             textFontFamily = text.fontFamily
+            textColor = text.color.serializedName
+            textColorValue = text.color.serializedValue
         }
     }
 
@@ -174,6 +185,8 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
         textVerticalOffset = textVerticalOffset,
         textHasShadow = textHasShadow,
         textFontFamily = textFontFamily,
+        textColor = textColor,
+        textColorValue = textColorValue,
         gifInterval = gifInterval,
     )
 }

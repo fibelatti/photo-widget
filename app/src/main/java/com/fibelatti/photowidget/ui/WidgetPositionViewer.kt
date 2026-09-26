@@ -1,6 +1,8 @@
 package com.fibelatti.photowidget.ui
 
+import android.graphics.Bitmap
 import android.graphics.Typeface
+import androidx.annotation.ColorInt
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,10 +30,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
+import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetText
+import com.fibelatti.photowidget.model.PhotoWidgetTextColor
+import com.fibelatti.photowidget.model.resolve
 import com.fibelatti.photowidget.model.textToBitmap
+import com.fibelatti.photowidget.platform.ColorPalette
 import com.fibelatti.photowidget.platform.GoogleFontsLoader
+import com.fibelatti.photowidget.platform.getColorPalette
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.ui.foundation.dpToPx
 import kotlin.math.abs
@@ -103,16 +110,45 @@ fun WidgetPositionViewer(
 
         if (photoWidget.text is PhotoWidgetText.Label) {
             val labelTypeface: Typeface by rememberLabelTypeface(fontFamily = photoWidget.text.fontFamily)
+            val labelColor: Int? = rememberLabelColor(color = photoWidget.text.color, photo = photoWidget.currentPhoto)
 
-            Image(
-                bitmap = photoWidget.text
-                    .textToBitmap(context = LocalContext.current, typeface = labelTypeface)
-                    .asImageBitmap(),
-                contentDescription = null,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = abs(photoWidget.text.verticalOffset).dp),
-            )
+            if (labelColor != null) {
+                Image(
+                    bitmap = photoWidget.text
+                        .textToBitmap(context = LocalContext.current, typeface = labelTypeface, color = labelColor)
+                        .asImageBitmap(),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = abs(photoWidget.text.verticalOffset).dp),
+                )
+            }
+        }
+    }
+}
+
+/**
+ * The resolved [color], or `null` while the photo it depends on is still decoding. It is matched
+ * against [photo], or against the sample photo when there is none, the same photo that
+ * [WidgetPositionViewer] displays.
+ */
+@ColorInt
+@Composable
+private fun rememberLabelColor(color: PhotoWidgetTextColor, photo: LocalPhoto?): Int? {
+    val localContext = LocalContext.current
+
+    val colorPalette: ColorPalette? = if (color is PhotoWidgetTextColor.Palette) {
+        val photoBitmap: Bitmap? = if (photo != null) rememberPhotoBitmap(photo = photo) else rememberSampleBitmap()
+        remember(photoBitmap) { photoBitmap?.let { bitmap -> getColorPalette(bitmap) } }
+    } else {
+        null
+    }
+
+    return remember(color, colorPalette) {
+        if (color is PhotoWidgetTextColor.Palette && colorPalette == null) {
+            null
+        } else {
+            color.resolve(context = localContext, colorPalette = { requireNotNull(colorPalette) })
         }
     }
 }

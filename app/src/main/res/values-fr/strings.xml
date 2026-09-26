@@ -317,6 +317,7 @@
     <string name="photo_widget_configure_text_size">Taille</string>
     <string name="photo_widget_configure_text_vertical_offset">Décalage vertical</string>
     <string name="photo_widget_configure_text_apply_shadow">Appliquer une ombre</string>
+    <string name="photo_widget_configure_text_color">Couleur</string>
     <string name="photo_widget_configure_text_font">Police</string>
     <string name="photo_widget_configure_text_font_default">Par défaut du système</string>
     <string name="photo_widget_configure_text_font_load_error">Certaines polices n\'ont pas pu être chargées.</string>

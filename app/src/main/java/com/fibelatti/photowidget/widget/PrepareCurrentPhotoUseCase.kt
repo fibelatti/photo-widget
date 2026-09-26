@@ -14,6 +14,8 @@ import com.fibelatti.photowidget.model.PreparedCurrentPhoto
 import com.fibelatti.photowidget.model.bitmapByteCount
 import com.fibelatti.photowidget.model.borderPercent
 import com.fibelatti.photowidget.model.getPhotoPath
+import com.fibelatti.photowidget.model.resolve
+import com.fibelatti.photowidget.platform.ColorPalette
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.colorForType
 import com.fibelatti.photowidget.platform.getColorPalette
@@ -98,6 +100,9 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
             return null
         }
 
+        // Shared by the border and the label, both can match the photo
+        val colorPalette: ColorPalette by lazy { getColorPalette(sourceBitmap) }
+
         @ColorInt
         val borderColor: Int? = when (photoWidget.border) {
             is PhotoWidgetBorder.None -> null
@@ -108,9 +113,12 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 photoWidget.border.type.colorAttr,
             )
 
-            is PhotoWidgetBorder.MatchPhoto -> getColorPalette(sourceBitmap).colorForType(photoWidget.border.type)
+            is PhotoWidgetBorder.MatchPhoto -> colorPalette.colorForType(photoWidget.border.type)
         }
         val borderPercent: Float = photoWidget.border.borderPercent()
+
+        @ColorInt
+        val labelColor: Int = photoWidget.text.color.resolve(context = context, colorPalette = { colorPalette })
 
         Timber.d("Transforming the bitmap")
         val transformedBitmap: Bitmap = if (photoWidget.aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
@@ -165,6 +173,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 appWidgetId = appWidgetId,
                 directoryName = directoryName,
                 currentPhoto = transformedBitmap,
+                labelColor = labelColor,
                 crossfadeIntent = crossfadeIntent,
                 labelBytes = labelBytes,
                 coerceToWidgetSize = coerceToWidgetSize,
@@ -173,7 +182,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
             if (shouldInvalidateCache && directoryName != null) {
                 photoWidgetInternalFileStorage.invalidateCurrentPhotoCache(directoryName = directoryName)
             }
-            PreparedCurrentPhoto(bitmap = transformedBitmap)
+            PreparedCurrentPhoto(bitmap = transformedBitmap, labelColor = labelColor)
         }
     }
 }

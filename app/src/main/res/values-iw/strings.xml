@@ -331,6 +331,7 @@
     <string name="photo_widget_configure_text_size">גודל</string>
     <string name="photo_widget_configure_text_vertical_offset">היסט אנכי</string>
     <string name="photo_widget_configure_text_apply_shadow">החל צל</string>
+    <string name="photo_widget_configure_text_color">צבע</string>
     <string name="photo_widget_configure_text_font">גופן</string>
     <string name="photo_widget_configure_text_font_default">ברירת המחדל של המערכת</string>
     <string name="photo_widget_configure_text_font_load_error">לא ניתן היה לטעון חלק מהגופנים.</string>

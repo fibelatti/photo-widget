@@ -323,6 +323,7 @@
     <string name="photo_widget_configure_text_size">Величина</string>
     <string name="photo_widget_configure_text_vertical_offset">Вертикални помак</string>
     <string name="photo_widget_configure_text_apply_shadow">Нанесите сенку</string>
+    <string name="photo_widget_configure_text_color">Боја</string>
     <string name="photo_widget_configure_text_font">Фонт</string>
     <string name="photo_widget_configure_text_font_default">Системски подразумевани</string>
     <string name="photo_widget_configure_text_font_load_error">Неки фонтови нису могли да се учитају.</string>

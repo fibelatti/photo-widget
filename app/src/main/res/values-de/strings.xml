@@ -317,6 +317,7 @@
     <string name="photo_widget_configure_text_size">Größe</string>
     <string name="photo_widget_configure_text_vertical_offset">Vertikaler Versatz</string>
     <string name="photo_widget_configure_text_apply_shadow">Schatten anwenden</string>
+    <string name="photo_widget_configure_text_color">Farbe</string>
     <string name="photo_widget_configure_text_font">Schriftart</string>
     <string name="photo_widget_configure_text_font_default">Systemstandard</string>
     <string name="photo_widget_configure_text_font_load_error">Einige Schriftarten konnten nicht geladen werden.</string>

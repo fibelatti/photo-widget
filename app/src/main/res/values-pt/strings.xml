@@ -315,6 +315,7 @@
     <string name="photo_widget_configure_text_size">Tamanho</string>
     <string name="photo_widget_configure_text_vertical_offset">Deslocamento vertical</string>
     <string name="photo_widget_configure_text_apply_shadow">Aplicar sombra</string>
+    <string name="photo_widget_configure_text_color">Cor</string>
     <string name="photo_widget_configure_text_font">Fonte</string>
     <string name="photo_widget_configure_text_font_default">Padrão do sistema</string>
     <string name="photo_widget_configure_text_font_load_error">Não foi possível carregar algumas fontes.</string>

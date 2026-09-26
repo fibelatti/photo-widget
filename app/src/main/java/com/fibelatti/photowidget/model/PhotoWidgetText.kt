@@ -10,6 +10,7 @@ import android.os.Parcelable
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.TypedValue
+import androidx.annotation.ColorInt
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.toColorInt
 import androidx.core.graphics.withTranslation
@@ -24,7 +25,7 @@ sealed interface PhotoWidgetText : Parcelable {
 
     /** The Google Fonts family used to render the text, or `null` to use the system default. */
     val fontFamily: String?
-    val colorHex: String
+    val color: PhotoWidgetTextColor
     val horizontalOffset: Int
     val verticalOffset: Int
     val hasShadow: Boolean
@@ -45,7 +46,7 @@ sealed interface PhotoWidgetText : Parcelable {
         override val fontFamily: String? = null
 
         @IgnoredOnParcel
-        override val colorHex: String = "00000000"
+        override val color: PhotoWidgetTextColor = PhotoWidgetTextColor.DEFAULT
 
         @IgnoredOnParcel
         override val horizontalOffset: Int = 0
@@ -70,11 +71,8 @@ sealed interface PhotoWidgetText : Parcelable {
         override val verticalOffset: Int = 0,
         override val hasShadow: Boolean = true,
         override val fontFamily: String? = null,
+        override val color: PhotoWidgetTextColor = PhotoWidgetTextColor.DEFAULT,
     ) : PhotoWidgetText {
-
-        // Always white to match the launcher color
-        @IgnoredOnParcel
-        override val colorHex: String = "FFFFFF"
 
         // Always centered
         @IgnoredOnParcel
@@ -105,8 +103,11 @@ sealed interface PhotoWidgetText : Parcelable {
     }
 }
 
-fun PhotoWidgetText.textToBitmap(context: Context, typeface: Typeface): Bitmap {
-    val staticLayout: StaticLayout = staticLayout(context = context, typeface = typeface)
+/**
+ * [color] is the resolved value of [PhotoWidgetText.color], see [PhotoWidgetTextColor.resolve].
+ */
+fun PhotoWidgetText.textToBitmap(context: Context, typeface: Typeface, @ColorInt color: Int): Bitmap {
+    val staticLayout: StaticLayout = staticLayout(context = context, typeface = typeface, color = color)
     val output: Bitmap = createBitmap(staticLayout.width, staticLayout.height)
 
     Canvas(output).apply {
@@ -119,7 +120,11 @@ fun PhotoWidgetText.textToBitmap(context: Context, typeface: Typeface): Bitmap {
     return output
 }
 
-private fun PhotoWidgetText.staticLayout(context: Context, typeface: Typeface): StaticLayout {
+private fun PhotoWidgetText.staticLayout(
+    context: Context,
+    typeface: Typeface,
+    @ColorInt color: Int,
+): StaticLayout {
     val textPaint: TextPaint = TextPaint().apply {
         isAntiAlias = true
         textSize = TypedValue.applyDimension(
@@ -130,8 +135,7 @@ private fun PhotoWidgetText.staticLayout(context: Context, typeface: Typeface): 
         textAlign = Paint.Align.CENTER
 
         this.typeface = typeface
-
-        color = "#$colorHex".toColorInt()
+        this.color = color
 
         if (hasShadow) {
             // Match the "Glow" look from the system launcher
@@ -160,7 +164,8 @@ private fun PhotoWidgetText.staticLayout(context: Context, typeface: Typeface): 
 fun PhotoWidgetText.bitmapByteCount(context: Context, typeface: Typeface): Long {
     if (this is PhotoWidgetText.None) return 0
 
-    val staticLayout: StaticLayout = staticLayout(context = context, typeface = typeface)
+    // The color doesn't affect the text bounds, so it can be hardcoded
+    val staticLayout: StaticLayout = staticLayout(context = context, typeface = typeface, color = Color.WHITE)
 
     return staticLayout.width.toLong() * staticLayout.height * BYTES_PER_PIXEL
 }

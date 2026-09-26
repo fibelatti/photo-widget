@@ -317,6 +317,7 @@
     <string name="photo_widget_configure_text_size">Dimensione</string>
     <string name="photo_widget_configure_text_vertical_offset">Offset verticale</string>
     <string name="photo_widget_configure_text_apply_shadow">Applica ombra</string>
+    <string name="photo_widget_configure_text_color">Colore</string>
     <string name="photo_widget_configure_text_font">Carattere</string>
     <string name="photo_widget_configure_text_font_default">Predefinito di sistema</string>
     <string name="photo_widget_configure_text_font_load_error">Impossibile caricare alcuni caratteri.</string>

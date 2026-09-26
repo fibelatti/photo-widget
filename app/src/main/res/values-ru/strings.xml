@@ -331,6 +331,7 @@
     <string name="photo_widget_configure_text_size">Размер</string>
     <string name="photo_widget_configure_text_vertical_offset">Вертикальное смещение</string>
     <string name="photo_widget_configure_text_apply_shadow">Применить тень</string>
+    <string name="photo_widget_configure_text_color">Цвет</string>
     <string name="photo_widget_configure_text_font">Шрифт</string>
     <string name="photo_widget_configure_text_font_default">Системный по умолчанию</string>
     <string name="photo_widget_configure_text_font_load_error">Не удалось загрузить некоторые шрифты.</string>

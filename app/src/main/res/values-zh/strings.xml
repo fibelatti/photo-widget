@@ -307,6 +307,7 @@
     <string name="photo_widget_configure_text_size">尺寸</string>
     <string name="photo_widget_configure_text_vertical_offset">垂直偏移</string>
     <string name="photo_widget_configure_text_apply_shadow">应用阴影</string>
+    <string name="photo_widget_configure_text_color">颜色</string>
     <string name="photo_widget_configure_text_font">字体</string>
     <string name="photo_widget_configure_text_font_default">系统默认</string>
     <string name="photo_widget_configure_text_font_load_error">部分字体无法加载。</string>
