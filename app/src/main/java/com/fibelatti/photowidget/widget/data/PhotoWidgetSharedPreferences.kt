@@ -4,7 +4,9 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.content.edit
 import com.fibelatti.photowidget.model.DirectorySorting
+import com.fibelatti.photowidget.model.DynamicColorType
 import com.fibelatti.photowidget.model.LegacyPhotoWidgetLoopingInterval
+import com.fibelatti.photowidget.model.MatchPhotoColorType
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
@@ -374,14 +376,14 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         return when {
             borderDynamic -> PhotoWidgetBorder.Dynamic(
                 width = borderWidth,
-                type = enumValueOfOrNull<PhotoWidgetBorder.Dynamic.Type>(borderDynamicType)
-                    ?: PhotoWidgetBorder.Dynamic.Type.PRIMARY_INVERSE,
+                type = enumValueOfOrNull<DynamicColorType>(borderDynamicType)
+                    ?: DynamicColorType.PRIMARY_INVERSE,
             )
 
             borderColorPaletteType != null -> PhotoWidgetBorder.MatchPhoto(
                 width = borderWidth,
-                type = enumValueOfOrNull<PhotoWidgetBorder.MatchPhoto.Type>(borderColorPaletteType)
-                    ?: PhotoWidgetBorder.MatchPhoto.Type.DOMINANT,
+                type = enumValueOfOrNull<MatchPhotoColorType>(borderColorPaletteType)
+                    ?: MatchPhotoColorType.DOMINANT,
             )
 
             borderColorHex != null -> PhotoWidgetBorder.Color(colorHex = borderColorHex, width = borderWidth)

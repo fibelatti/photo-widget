@@ -80,8 +80,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
+import com.fibelatti.photowidget.model.DynamicColorType
+import com.fibelatti.photowidget.model.MatchPhotoColorType
 import com.fibelatti.photowidget.model.PhotoWidget
-import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.PhotoWidgetTextColor
 import com.fibelatti.photowidget.platform.GoogleFontsLoader
@@ -474,17 +475,17 @@ private fun TextColorPickerContent(
                 TextColorTypeContent(
                     color = current,
                     fontFamily = fontFamily,
-                    types = PhotoWidgetBorder.Dynamic.Type.entries,
+                    types = DynamicColorType.entries,
                     selectedType = current.type,
-                    onTypeSelect = { newValue: PhotoWidgetBorder.Dynamic.Type ->
+                    onTypeSelect = { newValue: DynamicColorType ->
                         color = current.copy(type = newValue)
                     },
-                    typeLabel = { type: PhotoWidgetBorder.Dynamic.Type -> localResources.getString(type.label) },
+                    typeLabel = { type: DynamicColorType -> localResources.getString(type.label) },
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )
 
                 Text(
-                    text = stringResource(R.string.photo_widget_configure_border_explanation),
+                    text = stringResource(R.string.photo_widget_configure_color_dynamic_explanation),
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -497,12 +498,12 @@ private fun TextColorPickerContent(
                 TextColorTypeContent(
                     color = current,
                     fontFamily = fontFamily,
-                    types = PhotoWidgetBorder.MatchPhoto.Type.entries,
+                    types = MatchPhotoColorType.entries,
                     selectedType = current.type,
-                    onTypeSelect = { newValue: PhotoWidgetBorder.MatchPhoto.Type ->
+                    onTypeSelect = { newValue: MatchPhotoColorType ->
                         color = current.copy(type = newValue)
                     },
-                    typeLabel = { type: PhotoWidgetBorder.MatchPhoto.Type -> localResources.getString(type.label) },
+                    typeLabel = { type: MatchPhotoColorType -> localResources.getString(type.label) },
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }

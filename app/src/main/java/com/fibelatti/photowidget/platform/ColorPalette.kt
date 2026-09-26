@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import androidx.annotation.ColorInt
 import androidx.palette.graphics.Palette
-import com.fibelatti.photowidget.model.PhotoWidgetBorder
+import com.fibelatti.photowidget.model.MatchPhotoColorType
 
 class ColorPalette(
     @ColorInt val dominantColor: Int,
@@ -13,11 +13,11 @@ class ColorPalette(
 )
 
 @ColorInt
-fun ColorPalette.colorForType(type: PhotoWidgetBorder.MatchPhoto.Type): Int {
+fun ColorPalette.colorForType(type: MatchPhotoColorType): Int {
     return when (type) {
-        PhotoWidgetBorder.MatchPhoto.Type.DOMINANT -> dominantColor
-        PhotoWidgetBorder.MatchPhoto.Type.VIBRANT -> vibrantColor
-        PhotoWidgetBorder.MatchPhoto.Type.MUTED -> mutedColor
+        MatchPhotoColorType.DOMINANT -> dominantColor
+        MatchPhotoColorType.VIBRANT -> vibrantColor
+        MatchPhotoColorType.MUTED -> mutedColor
     }
 }
 

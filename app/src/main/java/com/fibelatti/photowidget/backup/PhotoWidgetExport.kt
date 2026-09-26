@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.backup
 
 import com.fibelatti.photowidget.model.LocalPhoto
+import com.fibelatti.photowidget.model.MatchPhotoColorType
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
@@ -67,8 +68,8 @@ fun PhotoWidgetExport.toPhotoWidget(photos: List<LocalPhoto>): PhotoWidget {
         is PhotoWidgetBorder.MatchPhoto -> {
             PhotoWidgetBorder.MatchPhoto(
                 width = borderWidth ?: PhotoWidgetBorder.DEFAULT_WIDTH,
-                type = enumValueOfOrNull<PhotoWidgetBorder.MatchPhoto.Type>(borderType)
-                    ?: PhotoWidgetBorder.MatchPhoto.Type.DOMINANT,
+                type = enumValueOfOrNull<MatchPhotoColorType>(borderType)
+                    ?: MatchPhotoColorType.DOMINANT,
             )
         }
     }

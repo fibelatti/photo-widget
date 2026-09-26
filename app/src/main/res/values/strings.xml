@@ -258,19 +258,19 @@
 
     <string name="photo_widget_configure_border">Border</string>
     <string name="photo_widget_configure_border_none">None</string>
-    <string name="photo_widget_configure_border_dynamic">Dynamic</string>
-    <string name="photo_widget_configure_border_dynamic_inverse">Color 1</string>
-    <string name="photo_widget_configure_border_dynamic_primary">Color 2</string>
-    <string name="photo_widget_configure_border_dynamic_primary_fixed">Color 3</string>
-    <string name="photo_widget_configure_border_dynamic_secondary">Color 4</string>
-    <string name="photo_widget_configure_border_dynamic_secondary_fixed">Color 5</string>
-    <string name="photo_widget_configure_border_color">Colored</string>
-    <string name="photo_widget_configure_border_color_palette">Palette</string>
-    <string name="photo_widget_configure_border_color_palette_dominant">Dominant color</string>
-    <string name="photo_widget_configure_border_color_palette_vibrant">Vibrant color</string>
-    <string name="photo_widget_configure_border_color_palette_muted">Muted color</string>
+    <string name="photo_widget_configure_color_dynamic">Dynamic</string>
+    <string name="photo_widget_configure_color_dynamic_inverse">Color 1</string>
+    <string name="photo_widget_configure_color_dynamic_primary">Color 2</string>
+    <string name="photo_widget_configure_color_dynamic_primary_fixed">Color 3</string>
+    <string name="photo_widget_configure_color_dynamic_secondary">Color 4</string>
+    <string name="photo_widget_configure_color_dynamic_secondary_fixed">Color 5</string>
+    <string name="photo_widget_configure_color_colored">Colored</string>
+    <string name="photo_widget_configure_color_palette">Palette</string>
+    <string name="photo_widget_configure_color_palette_dominant">Dominant color</string>
+    <string name="photo_widget_configure_color_palette_vibrant">Vibrant color</string>
+    <string name="photo_widget_configure_color_palette_muted">Muted color</string>
 
-    <string name="photo_widget_configure_border_explanation">Changes will take place during the next widget update after you change your phone\'s theme color. To update all widgets immediately, simply open the app.</string>
+    <string name="photo_widget_configure_color_dynamic_explanation">Changes will take place during the next widget update after you change your phone\'s theme color. To update all widgets immediately, simply open the app.</string>
 
     <string name="photo_widget_configure_offset">Offset</string>
     <string name="photo_widget_configure_offset_current_values">Horizontal: %1$d, Vertical: %2$d</string>

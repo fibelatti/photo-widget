@@ -34,6 +34,8 @@ import androidx.compose.ui.unit.min
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.core.graphics.toColorInt
 import com.fibelatti.photowidget.R
+import com.fibelatti.photowidget.model.DynamicColorType
+import com.fibelatti.photowidget.model.MatchPhotoColorType
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.platform.colorForType
@@ -190,8 +192,8 @@ private fun ColorBorderContent(
 @Composable
 private fun DynamicBorderContent(
     sampleBitmap: Bitmap,
-    currentType: PhotoWidgetBorder.Dynamic.Type,
-    onTypeChange: (PhotoWidgetBorder.Dynamic.Type) -> Unit,
+    currentType: DynamicColorType,
+    onTypeChange: (DynamicColorType) -> Unit,
     currentWidth: Int,
     onWidthChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -213,7 +215,7 @@ private fun DynamicBorderContent(
         ) {
             val localContext = LocalContext.current
             val localResources = LocalResources.current
-            val radioTypes = PhotoWidgetBorder.Dynamic.Type.entries
+            val radioTypes = DynamicColorType.entries
             val (selectedType, onTypeSelected) = rememberSaveable { mutableStateOf(currentType) }
 
             Image(
@@ -243,7 +245,7 @@ private fun DynamicBorderContent(
         }
 
         Text(
-            text = stringResource(R.string.photo_widget_configure_border_explanation),
+            text = stringResource(R.string.photo_widget_configure_color_dynamic_explanation),
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .fillMaxWidth()
@@ -256,8 +258,8 @@ private fun DynamicBorderContent(
 @Composable
 private fun MatchPhotoBorderContent(
     sampleBitmap: Bitmap,
-    currentType: PhotoWidgetBorder.MatchPhoto.Type,
-    onTypeChange: (PhotoWidgetBorder.MatchPhoto.Type) -> Unit,
+    currentType: MatchPhotoColorType,
+    onTypeChange: (MatchPhotoColorType) -> Unit,
     currentWidth: Int,
     onWidthChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -278,7 +280,7 @@ private fun MatchPhotoBorderContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             val colorPalette = remember(sampleBitmap) { getColorPalette(sampleBitmap) }
-            val radioTypes = PhotoWidgetBorder.MatchPhoto.Type.entries
+            val radioTypes = MatchPhotoColorType.entries
             val (selectedType, onTypeSelected) = rememberSaveable { mutableStateOf(currentType) }
             val localResources = LocalResources.current
 

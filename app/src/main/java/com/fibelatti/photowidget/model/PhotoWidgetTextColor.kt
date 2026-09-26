@@ -29,7 +29,7 @@ sealed interface PhotoWidgetTextColor : Parcelable {
     data class Colored(val colorHex: String) : PhotoWidgetTextColor {
 
         @IgnoredOnParcel
-        override val label: Int = R.string.photo_widget_configure_border_color
+        override val label: Int = R.string.photo_widget_configure_color_colored
 
         @IgnoredOnParcel
         override val serializedName: String = "COLORED"
@@ -40,11 +40,11 @@ sealed interface PhotoWidgetTextColor : Parcelable {
 
     @Parcelize
     data class Dynamic(
-        val type: PhotoWidgetBorder.Dynamic.Type = PhotoWidgetBorder.Dynamic.Type.PRIMARY_INVERSE,
+        val type: DynamicColorType = DynamicColorType.PRIMARY_INVERSE,
     ) : PhotoWidgetTextColor {
 
         @IgnoredOnParcel
-        override val label: Int = R.string.photo_widget_configure_border_dynamic
+        override val label: Int = R.string.photo_widget_configure_color_dynamic
 
         @IgnoredOnParcel
         override val serializedName: String = "DYNAMIC"
@@ -55,11 +55,11 @@ sealed interface PhotoWidgetTextColor : Parcelable {
 
     @Parcelize
     data class Palette(
-        val type: PhotoWidgetBorder.MatchPhoto.Type = PhotoWidgetBorder.MatchPhoto.Type.DOMINANT,
+        val type: MatchPhotoColorType = MatchPhotoColorType.DOMINANT,
     ) : PhotoWidgetTextColor {
 
         @IgnoredOnParcel
-        override val label: Int = R.string.photo_widget_configure_border_color_palette
+        override val label: Int = R.string.photo_widget_configure_color_palette
 
         @IgnoredOnParcel
         override val serializedName: String = "PALETTE"
@@ -94,13 +94,13 @@ sealed interface PhotoWidgetTextColor : Parcelable {
                         ?: DEFAULT
 
                 is Dynamic -> Dynamic(
-                    type = enumValueOfOrNull<PhotoWidgetBorder.Dynamic.Type>(serializedValue)
-                        ?: PhotoWidgetBorder.Dynamic.Type.PRIMARY_INVERSE,
+                    type = enumValueOfOrNull<DynamicColorType>(serializedValue)
+                        ?: DynamicColorType.PRIMARY_INVERSE,
                 )
 
                 is Palette -> Palette(
-                    type = enumValueOfOrNull<PhotoWidgetBorder.MatchPhoto.Type>(serializedValue)
-                        ?: PhotoWidgetBorder.MatchPhoto.Type.DOMINANT,
+                    type = enumValueOfOrNull<MatchPhotoColorType>(serializedValue)
+                        ?: MatchPhotoColorType.DOMINANT,
                 )
 
                 null -> DEFAULT
