@@ -92,6 +92,9 @@ sealed interface PhotoWidgetText : Parcelable {
 
         val DEFAULT: PhotoWidgetText = None
 
+        val SIZE_RANGE: IntRange = 10..40
+        val VERTICAL_OFFSET_RANGE: IntRange = -40..0
+
         val entries: List<PhotoWidgetText> by lazy {
             listOf(None, Label())
         }

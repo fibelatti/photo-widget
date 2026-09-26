@@ -579,8 +579,8 @@ private fun PhotoWidgetTextSizePicker(
                 onIncreaseClick = { updatedValue++ },
                 onDecreaseClick = { updatedValue-- },
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                lowerBound = 10,
-                upperBound = 20,
+                lowerBound = PhotoWidgetText.SIZE_RANGE.first,
+                upperBound = PhotoWidgetText.SIZE_RANGE.last,
             )
 
             Button(
@@ -632,8 +632,8 @@ private fun PhotoWidgetVerticalOffsetPicker(
                 value = updatedValue,
                 onIncreaseClick = { updatedValue++ },
                 onDecreaseClick = { updatedValue-- },
-                lowerBound = -20,
-                upperBound = 0,
+                lowerBound = PhotoWidgetText.VERTICAL_OFFSET_RANGE.first,
+                upperBound = PhotoWidgetText.VERTICAL_OFFSET_RANGE.last,
             )
 
             DefaultSheetFooterButtons(
