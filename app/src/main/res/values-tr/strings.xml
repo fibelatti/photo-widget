@@ -111,8 +111,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">Fotoğraflar</string>
     <string name="photo_widget_source_directory">Klasör</string>
-    <string name="photo_widget_source_photos_description">Varsayılan galeri seçiciyi kullanarak bir veya daha fazla fotoğraf seçin.</string>
     <string name="photo_widget_source_gif">GIF</string>
+    <string name="photo_widget_source_photos_description">Varsayılan galeri seçiciyi kullanarak bir veya daha fazla fotoğraf seçin.</string>
     <string name="photo_widget_source_directory_description">Senkronize etmek için bir veya daha fazla klasör seçin. Fotoğraflar otomatik olarak eklenir ve düzenli aralıklarla yenilenir.</string>
     <string name="photo_widget_source_gif_description">Ana ekranınızda oynatmak için animasyonlu bir GIF seçin. Daha kısa ve basit GIF\'ler önerilir.</string>
     <!-- Aspect Ratio -->
@@ -176,7 +176,7 @@
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_no_time_warning">Zamanlanmış saati olmayan fotoğraflar hiçbir zaman gösterilmez ve saatler benzersiz olmalıdır.</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_even_split">Günü eşit böl</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">Saat ayarla</string>
-    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">Bu widget\'ta %d\'den fazla fotoğraf vardı, bu nedenle zamanlaması 15 dakikalık zamanlayıcıya geri döndürüldü.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced" tools:ignore="PluralsCandidate">Bu widget\'ta %d\'den fazla fotoğraf vardı, bu nedenle zamanlaması 15 dakikalık zamanlayıcıya geri döndürüldü.</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">Bu saat zaten başka bir fotoğrafa atanmış.</string>
     <string name="photo_widget_configure_cycling_mode_interval_description">Düzenli aralıklarla bir sonraki fotoğrafa geçer</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">Planlanan saatlerde bir sonraki fotoğrafa geçer (maks. %d saat)</string>

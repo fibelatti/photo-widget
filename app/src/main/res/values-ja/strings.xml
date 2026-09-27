@@ -110,8 +110,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">写真</string>
     <string name="photo_widget_source_directory">フォルダー</string>
-    <string name="photo_widget_source_photos_description">デフォルトのギャラリーピッカーを使用して、1枚以上の写真を選択します。</string>
     <string name="photo_widget_source_gif">GIF</string>
+    <string name="photo_widget_source_photos_description">デフォルトのギャラリーピッカーを使用して、1枚以上の写真を選択します。</string>
     <string name="photo_widget_source_directory_description">同期するフォルダを1つ以上選択します。写真は自動的に追加され、定期的に更新されます。</string>
     <string name="photo_widget_source_gif_description">ホーム画面で再生するアニメーションGIFを選択します。短くシンプルなGIFを推奨します。</string>
     <!-- Aspect Ratio -->
@@ -173,7 +173,7 @@
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_no_time_warning">スケジュールされた時間のない写真は表示されません。また、時間は重複できません。</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_even_split">1日を均等に分割</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">時間を設定</string>
-    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">このウィジェットには%d枚を超える写真があったため、スケジュールが15分タイマーに変更されました。</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced" tools:ignore="PluralsCandidate">このウィジェットには%d枚を超える写真があったため、スケジュールが15分タイマーに変更されました。</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">この時間は別の写真にすでに割り当てられています。</string>
     <string name="photo_widget_configure_cycling_mode_interval_description">一定間隔で次の写真に切り替わる</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">スケジュールされた時間に次の写真に切り替わる（最大%d回）</string>

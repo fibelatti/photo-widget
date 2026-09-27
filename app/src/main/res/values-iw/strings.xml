@@ -40,7 +40,6 @@
     <plurals name="photo_widget_home_share_received">
         <item quantity="one">התקבלה תמונה אחת. צור ווידג\'ט חדש או בחר ווידג\'ט קיים כדי להוסיף אותו.</item>
         <item quantity="two">%d תמונות התקבלו. צור ווידג\'ט חדש או בחר ווידג\'ט קיים כדי להוסיף אותם.</item>
-        <item quantity="many">%d תמונות התקבלו. צור ווידג\'ט חדש או בחר ווידג\'ט קיים כדי להוסיף אותם.</item>
         <item quantity="other">%d תמונות התקבלו. צור ווידג\'ט חדש או בחר ווידג\'ט קיים כדי להוסיף אותם.</item>
     </plurals>
     <string name="photo_widget_home_pinning_not_supported_title">הוסף ווידג\'ט ישירות ממסך הבית שלך</string>
@@ -113,8 +112,8 @@
     <!-- Source -->
     <string name="photo_widget_source_photos">תמונות</string>
     <string name="photo_widget_source_directory">תיקייה</string>
-    <string name="photo_widget_source_photos_description">בחר תמונה אחת או יותר באמצעות בורר הגלריה המוגדר כברירת מחדל.</string>
     <string name="photo_widget_source_gif">GIF</string>
+    <string name="photo_widget_source_photos_description">בחר תמונה אחת או יותר באמצעות בורר הגלריה המוגדר כברירת מחדל.</string>
     <string name="photo_widget_source_directory_description">בחר תיקייה אחת או יותר לסנכרון. התמונות מתווספות אוטומטית ומתעדכנות במרווחי זמן קבועים.</string>
     <string name="photo_widget_source_gif_description">בחר GIF מונפש לניגון על מסך הבית שלך. מומלץ להשתמש ב-GIF קצרים ופשוטים יותר.</string>
     <!-- Aspect Ratio -->
@@ -165,13 +164,11 @@
     <plurals name="photo_widget_configure_photo_quantity">
         <item quantity="one">%d תמונה</item>
         <item quantity="two">%d תמונות</item>
-        <item quantity="many">%d תמונות</item>
         <item quantity="other">%d תמונות</item>
     </plurals>
     <plurals name="photo_widget_configure_photo_quantity_gif">
         <item quantity="one">%d פריים</item>
         <item quantity="two">%d פריימים</item>
-        <item quantity="many">%d פריימים</item>
         <item quantity="other">%d פריימים</item>
     </plurals>
     <string name="photo_widget_configure_select_cycling_mode">טיימר צילום</string>
@@ -182,7 +179,7 @@
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_no_time_warning">תמונות ללא זמן מתוזמן לא יוצגו לעולם, וזמנים חייבים להיות ייחודיים.</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_even_split">חלוקה שווה של היום</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_set_time">קבע זמן</string>
-    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced">ווידג\'ט זה היה עם יותר מ-%d תמונות, לכן תזמונו שונה לטיימר של 15 דקות.</string>
+    <string name="photo_widget_configure_cycle_mode_advanced_schedule_coerced" tools:ignore="PluralsCandidate">ווידג\'ט זה היה עם יותר מ-%d תמונות, לכן תזמונו שונה לטיימר של 15 דקות.</string>
     <string name="photo_widget_configure_cycle_mode_advanced_schedule_existing_time">זמן זה כבר מוקצה לתמונה אחרת.</string>
     <string name="photo_widget_configure_cycling_mode_interval_description">עובר לתמונה הבאה במרווחי זמן קבועים</string>
     <string name="photo_widget_configure_cycling_mode_schedule_description" tools:ignore="PluralsCandidate">עובר לתמונה הבאה בזמנים מתוזמנים (מקס. %d זמנים)</string>
@@ -192,25 +189,21 @@
     <plurals name="photo_widget_configure_interval_current_seconds">
         <item quantity="one">שנייה %d</item>
         <item quantity="two">%d שניות</item>
-        <item quantity="many">%d שניות</item>
         <item quantity="other">%d שניות</item>
     </plurals>
     <plurals name="photo_widget_configure_interval_current_minutes">
         <item quantity="one">דקה %d</item>
         <item quantity="two">%d דקות</item>
-        <item quantity="many">%d דקות</item>
         <item quantity="other">%d דקות</item>
     </plurals>
     <plurals name="photo_widget_configure_interval_current_hours">
         <item quantity="one">שעה %d</item>
         <item quantity="two">%d שעות</item>
-        <item quantity="many">%d שעות</item>
         <item quantity="other">%d שעות</item>
     </plurals>
     <plurals name="photo_widget_configure_interval_current_days">
         <item quantity="one">יום %d</item>
         <item quantity="two">%d ימים</item>
-        <item quantity="many">%d ימים</item>
         <item quantity="other">%d ימים</item>
     </plurals>
     <string name="photo_widget_configure_interval_seconds_label">שניות</string>
@@ -222,7 +215,6 @@
     <plurals name="photo_widget_configure_schedule_times">
         <item quantity="one">נבחר פעם אחת</item>
         <item quantity="two">נבחרו %d פעמים</item>
-        <item quantity="many">נבחרו %d פעמים</item>
         <item quantity="other">נבחרו %d פעמים</item>
     </plurals>
     <string name="photo_widget_configure_interval_warning">זמן המרווח בפועל או הזמן שתוזמן עשויים להשתנות עקב הגבלות אנדרואיד שנועדו כדי לייעל את חיי הסוללה. כדי להבטיח שהכל יעבוד כצפוי, הענק את ההרשאה למטה</string>
