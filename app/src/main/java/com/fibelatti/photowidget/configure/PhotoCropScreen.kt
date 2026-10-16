@@ -10,6 +10,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalFlexBoxApi
 import androidx.compose.foundation.layout.FlexAlignContent
 import androidx.compose.foundation.layout.FlexAlignItems
 import androidx.compose.foundation.layout.FlexBox
@@ -244,6 +245,7 @@ private fun cropImage(
     )
 }
 
+@OptIn(ExperimentalFlexBoxApi::class)
 @Composable
 private fun CropControls(
     onRotateLeftClick: () -> Unit,

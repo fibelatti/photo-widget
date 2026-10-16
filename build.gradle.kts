@@ -17,6 +17,7 @@ plugins {
 
 buildscript {
     extra["compileSdkVersion"] = 37
+    extra["compileSdkMinorVersion"] = 1
     extra["targetSdkVersion"] = 37
     extra["minSdkVersion"] = 26
 }
