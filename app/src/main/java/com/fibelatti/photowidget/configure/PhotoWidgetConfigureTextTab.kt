@@ -598,6 +598,7 @@ private fun PhotoWidgetTextFontPicker(
         }
 
         val previewText: String = text.ifBlank { stringResource(R.string.photo_widget_configure_text_sample) }
+        val showLanguageHint: Boolean = remember(text) { text.isBlank() || text.hasNonLatinLetters() }
         val fontFamilies: List<String?> = remember { listOf(null) + GoogleFontsLoader.FONT_FAMILIES }
 
         val fontLoadStates: SnapshotStateMap<String, FontLoadState> = remember { mutableStateMapOf() }
@@ -651,6 +652,17 @@ private fun PhotoWidgetTextFontPicker(
                 )
             }
 
+            if (showLanguageHint) {
+                item {
+                    InformationalPanel(
+                        text = stringResource(R.string.photo_widget_configure_text_font_language_hint),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 14.dp),
+                    )
+                }
+            }
+
             if (fontLoadStates.values.any { it is FontLoadState.Failed }) {
                 item {
                     InformationalPanel(
@@ -692,6 +704,16 @@ private fun PhotoWidgetTextFontPicker(
                 )
             }
         }
+    }
+}
+
+/**
+ * Whether this contains letters written in a script other than Latin. Digits, punctuation, emoji
+ * and combining marks are shared by every script, so they don't count.
+ */
+private fun String.hasNonLatinLetters(): Boolean {
+    return codePoints().anyMatch { codePoint: Int ->
+        Character.isLetter(codePoint) && Character.UnicodeScript.of(codePoint) != Character.UnicodeScript.LATIN
     }
 }
 

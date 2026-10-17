@@ -322,6 +322,7 @@
     <string name="photo_widget_configure_text_font">Fonte</string>
     <string name="photo_widget_configure_text_font_default">Padrão do sistema</string>
     <string name="photo_widget_configure_text_font_load_error">Não foi possível carregar algumas fontes.</string>
+    <string name="photo_widget_configure_text_font_language_hint">Algumas fontes não são compatíveis com todos os idiomas. Se o seu texto não estiver aparecendo corretamente, tente outra fonte.</string>
     <string name="photo_widget_configure_text_sample">Texto de exemplo</string>
     <string name="photo_widget_configure_text_caveat">A foto e o texto compartilham a mesma área do widget. Você pode ajustar a posição usando as configurações acima, junto com o deslocamento e o espaçamento da foto.</string>
     <!-- Help -->

@@ -330,6 +330,7 @@
     <string name="photo_widget_configure_text_font">גופן</string>
     <string name="photo_widget_configure_text_font_default">ברירת המחדל של המערכת</string>
     <string name="photo_widget_configure_text_font_load_error">לא ניתן היה לטעון חלק מהגופנים.</string>
+    <string name="photo_widget_configure_text_font_language_hint">חלק מהגופנים לא תומכים בכל השפות. אם הטקסט לא נראה תקין, נסו גופן אחר.</string>
     <string name="photo_widget_configure_text_sample">טקסט לדוגמה</string>
     <string name="photo_widget_configure_text_caveat">התמונה והטקסט חולקים את אותו אזור בווידג׳ט. ניתן לכוונן את המיקום באמצעות ההגדרות שלמעלה, יחד עם היסט וריפוד התמונה.</string>
     <!-- Help -->

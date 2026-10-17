@@ -324,6 +324,7 @@
     <string name="photo_widget_configure_text_font">Carattere</string>
     <string name="photo_widget_configure_text_font_default">Predefinito di sistema</string>
     <string name="photo_widget_configure_text_font_load_error">Impossibile caricare alcuni caratteri.</string>
+    <string name="photo_widget_configure_text_font_language_hint">Alcuni caratteri non supportano tutte le lingue. Se il tuo testo non viene visualizzato correttamente, prova un carattere diverso.</string>
     <string name="photo_widget_configure_text_sample">Testo di esempio</string>
     <string name="photo_widget_configure_text_caveat">La foto e il testo condividono la stessa area del widget. Puoi regolare con precisione la posizione usando le impostazioni sopra, insieme all\'offset e al padding della foto.</string>
     <!-- Help -->

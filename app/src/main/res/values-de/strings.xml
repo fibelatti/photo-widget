@@ -324,6 +324,7 @@
     <string name="photo_widget_configure_text_font">Schriftart</string>
     <string name="photo_widget_configure_text_font_default">Systemstandard</string>
     <string name="photo_widget_configure_text_font_load_error">Einige Schriftarten konnten nicht geladen werden.</string>
+    <string name="photo_widget_configure_text_font_language_hint">Einige Schriftarten unterstützen nicht alle Sprachen. Wenn dein Text nicht richtig aussieht, probiere eine andere Schriftart aus.</string>
     <string name="photo_widget_configure_text_sample">Beispieltext</string>
     <string name="photo_widget_configure_text_caveat">Foto und Text teilen sich denselben Widget-Bereich. Die Position kann mit den obigen Einstellungen sowie mit Foto-Versatz und Innenabstand feinjustiert werden.</string>
     <!-- Help -->

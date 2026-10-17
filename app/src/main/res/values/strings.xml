@@ -376,6 +376,7 @@
     <string name="photo_widget_configure_text_font">Font</string>
     <string name="photo_widget_configure_text_font_default">System default</string>
     <string name="photo_widget_configure_text_font_load_error">Some fonts couldn\'t be loaded.</string>
+    <string name="photo_widget_configure_text_font_language_hint">Some fonts don\'t support every language. If your text doesn\'t look right, try a different font.</string>
 
     <string name="photo_widget_configure_text_sample">Sample text</string>
 

@@ -314,6 +314,7 @@
     <string name="photo_widget_configure_text_font">字体</string>
     <string name="photo_widget_configure_text_font_default">系统默认</string>
     <string name="photo_widget_configure_text_font_load_error">部分字体无法加载。</string>
+    <string name="photo_widget_configure_text_font_language_hint">部分字体不支持所有语言。如果文字显示不正确，请尝试其他字体。</string>
     <string name="photo_widget_configure_text_sample">示例文本</string>
     <string name="photo_widget_configure_text_caveat">照片和文本共享相同的小组件区域。您可以通过上述设置以及照片偏移和填充调整位置。</string>
     <!-- Help -->

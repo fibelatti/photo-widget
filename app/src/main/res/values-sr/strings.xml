@@ -330,6 +330,7 @@
     <string name="photo_widget_configure_text_font">Фонт</string>
     <string name="photo_widget_configure_text_font_default">Системски подразумевани</string>
     <string name="photo_widget_configure_text_font_load_error">Неки фонтови нису могли да се учитају.</string>
+    <string name="photo_widget_configure_text_font_language_hint">Неки фонтови не подржавају све језике. Ако ваш текст не изгледа како треба, покушајте са другим фонтом.</string>
     <string name="photo_widget_configure_text_sample">Пример текста</string>
     <string name="photo_widget_configure_text_caveat">Фотографија и текст деле исту област виџета. Можете фино подесити позиционирање помоћу горе наведених подешавања, заједно са помаком и размаком између фотографија.</string>
     <!-- Help -->

@@ -322,6 +322,7 @@
     <string name="photo_widget_configure_text_font">Yazı tipi</string>
     <string name="photo_widget_configure_text_font_default">Sistem varsayılanı</string>
     <string name="photo_widget_configure_text_font_load_error">Bazı yazı tipleri yüklenemedi.</string>
+    <string name="photo_widget_configure_text_font_language_hint">Bazı yazı tipleri tüm dilleri desteklemez. Metniniz düzgün görünmüyorsa farklı bir yazı tipi deneyin.</string>
     <string name="photo_widget_configure_text_sample">Örnek metin</string>
     <string name="photo_widget_configure_text_caveat">Fotoğraf ve metin aynı widget alanını paylaşır. Yukarıdaki ayarların yanı sıra fotoğraf kaydırması ve dolgu ile konumu ince ayarlayabilirsiniz.</string>
     <!-- Help -->

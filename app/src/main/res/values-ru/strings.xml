@@ -338,6 +338,7 @@
     <string name="photo_widget_configure_text_font">Шрифт</string>
     <string name="photo_widget_configure_text_font_default">Системный по умолчанию</string>
     <string name="photo_widget_configure_text_font_load_error">Не удалось загрузить некоторые шрифты.</string>
+    <string name="photo_widget_configure_text_font_language_hint">Некоторые шрифты поддерживают не все языки. Если текст выглядит неправильно, попробуйте другой шрифт.</string>
     <string name="photo_widget_configure_text_sample">Пример текста</string>
     <string name="photo_widget_configure_text_caveat">Фото и текст используют одну и ту же область виджета. Положение можно точно настроить с помощью параметров выше, а также смещения и отступов фото.</string>
     <!-- Help -->
