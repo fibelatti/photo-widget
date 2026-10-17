@@ -77,7 +77,10 @@ operator fun PhotoWidgetConfigureState.plus(photo: LocalPhoto): PhotoWidgetConfi
 }
 
 operator fun PhotoWidgetConfigureState.plus(photos: Collection<LocalPhoto>): PhotoWidgetConfigureState {
-    val updatedPhotos: List<LocalPhoto> = photoWidget.photos + photos
+    val existingIds: Set<String> = photoWidget.photos.map { it.photoId }.toSet()
+    // Photos are identified by their ID, so a re-picked directory must not add the same photo twice.
+    val updatedPhotos: List<LocalPhoto> = photoWidget.photos +
+        photos.distinctBy { it.photoId }.filterNot { it.photoId in existingIds }
     val newIds: Set<String> = photos.map { it.photoId }.toSet()
 
     return copy(

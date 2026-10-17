@@ -65,6 +65,9 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
                 )
             }
         }.awaitAll().flatten()
+            // Overlapping directories, or providers whose document IDs fall back to the file name,
+            // can yield the same photo ID more than once, while photos are stored unique by ID.
+            .distinctBy { it.photoId }
 
         return@coroutineScope when (sorting) {
             DirectorySorting.NEWEST_FIRST -> photos.sortedByDescending { it.timestamp }

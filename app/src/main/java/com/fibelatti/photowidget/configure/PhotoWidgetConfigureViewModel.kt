@@ -403,7 +403,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
             val currentState: PhotoWidgetConfigureState = _state.value
             if (currentState.photoWidget.cycleMode is PhotoWidgetCycleMode.AdvancedSchedule) {
-                val totalSize: Int = currentState.photoWidget.photos.size + newDirPhotos.size
+                val existingIds: Set<String> = currentState.photoWidget.photos.map { it.photoId }.toSet()
+                val totalSize: Int = currentState.photoWidget.photos.size +
+                    newDirPhotos.count { it.photoId !in existingIds }
                 if (totalSize > PhotoWidgetCycleMode.MAX_ADVANCED_SCHEDULE_PHOTOS) {
                     _state.update { current ->
                         current.copy(isProcessing = false) + PhotoWidgetConfigureState.Message.UserPrompt(
