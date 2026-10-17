@@ -339,6 +339,7 @@
     <string name="translations_dialog_title">需要你的帮助翻译 ！</string>
     <string name="translations_dialog_body">这个应用使用社区驱动的翻译方法，您的帮助可以使它变得更好。 如果您希望看到新的语言可用，或者发现了一些看起来不对的东西，您可以做出贡献。</string>
     <string name="translations_dialog_positive_action">打开Crowdin</string>
+    <string name="translations_dialog_neutral_action">打开设置</string>
     <string name="translations_dialog_negative_action">不是现在</string>
     <!-- Backup -->
     <string name="backup_explanation_1">导出您的照片组件的 &lt;i&gt;内容&lt;/i&gt; 和 &lt;i&gt;外观。&lt;/i&gt;</string>

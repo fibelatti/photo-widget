@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import java.io.File
 
@@ -24,6 +25,13 @@ fun requestScheduleExactAlarmIntent(context: Context): Intent {
 
 fun appSettingsIntent(context: Context): Intent {
     return Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+        data = Uri.fromParts("package", context.packageName, null)
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+fun appLocaleSettingsIntent(context: Context): Intent {
+    return Intent(Settings.ACTION_APP_LOCALE_SETTINGS).apply {
         data = Uri.fromParts("package", context.packageName, null)
     }
 }

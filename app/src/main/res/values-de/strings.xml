@@ -349,6 +349,7 @@
     <string name="translations_dialog_title">Hilf beim Übersetzen in deine Sprache!</string>
     <string name="translations_dialog_body">Diese App verwendet einen Community-basierten Ansatz für Übersetzungen, und deine Hilfe kann sie verbessern. Du kannst dazu beitragen, wenn du eine neue Sprache verfügbar sehen möchtest oder etwas entdeckt hast, das nicht richtig aussieht.</string>
     <string name="translations_dialog_positive_action">Crowdin öffnen</string>
+    <string name="translations_dialog_neutral_action">Einstellungen öffnen</string>
     <string name="translations_dialog_negative_action">Nicht jetzt</string>
     <!-- Backup -->
     <string name="backup_explanation_1">Exportiere den &lt;i&gt;Inhalt&lt;/i&gt; und das &lt;i&gt;Aussehen&lt;/i&gt; deiner Foto-Widgets</string>

@@ -349,6 +349,7 @@
     <string name="translations_dialog_title">Aidez à traduire dans votre langue !</string>
     <string name="translations_dialog_body">Cette application utilise une approche communautaire pour les traductions, et votre aide peut l\'améliorer. Vous pouvez contribuer si vous souhaitez qu\'une nouvelle langue soit disponible ou si vous remarquez une anomalie.</string>
     <string name="translations_dialog_positive_action">Ouvrir Crowdin</string>
+    <string name="translations_dialog_neutral_action">Ouvrir les paramètres</string>
     <string name="translations_dialog_negative_action">Pas maintenant</string>
     <!-- Backup -->
     <string name="backup_explanation_1">Exportez le &lt;i&gt;contenu&lt;/i&gt; et l\'&lt;i&gt;apparence&lt;/i&gt; de vos widgets photo</string>

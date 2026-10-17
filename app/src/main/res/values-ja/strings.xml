@@ -339,6 +339,7 @@
     <string name="translations_dialog_title">あなたの言語への翻訳にご協力ください！</string>
     <string name="translations_dialog_body">このアプリはコミュニティ主導の翻訳アプローチを採用しており、皆様のご協力によりさらに改善されます。新しい言語の追加をご希望の場合や、誤りを見つけた場合はご貢献いただけます。</string>
     <string name="translations_dialog_positive_action">Crowdinを開く</string>
+    <string name="translations_dialog_neutral_action">設定を開く</string>
     <string name="translations_dialog_negative_action">今はしない</string>
     <!-- Backup -->
     <string name="backup_explanation_1">写真ウィジェットの&lt;i&gt;コンテンツ&lt;/i&gt;と&lt;i&gt;外観&lt;/i&gt;をエクスポートする</string>

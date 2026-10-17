@@ -24,6 +24,7 @@ import com.fibelatti.photowidget.configure.sharedPhotos
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
+import com.fibelatti.photowidget.platform.appLocaleSettingsIntent
 import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.platform.widgetPinningNotAvailable
 import dagger.hilt.android.AndroidEntryPoint
@@ -150,6 +151,11 @@ class HomeActivity : AppCompatActivity() {
             setMessage(R.string.translations_dialog_body)
             setPositiveButton(R.string.translations_dialog_positive_action) { _, _ ->
                 startActivity(Intent(Intent.ACTION_VIEW, "https://crowdin.com/project/material-photo-widget".toUri()))
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                setNeutralButton(R.string.translations_dialog_neutral_action) { _, _ ->
+                    startActivity(appLocaleSettingsIntent(context = this@HomeActivity))
+                }
             }
             setNegativeButton(R.string.translations_dialog_negative_action) { _, _ -> }
         }

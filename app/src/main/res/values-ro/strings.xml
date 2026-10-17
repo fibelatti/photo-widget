@@ -357,6 +357,7 @@
     <string name="translations_dialog_title">Ajută la traducerea în limba ta!</string>
     <string name="translations_dialog_body">Această aplicație folosește o abordare bazată pe comunitate pentru traduceri, iar ajutorul dvs. poate să o facă mai bună. Puteți contribui dacă doriți să vedeți o nouă limbă disponibilă sau dacă ați găsit ceva care nu arată corect.</string>
     <string name="translations_dialog_positive_action">Deschide Crowdin</string>
+    <string name="translations_dialog_neutral_action">Deschide Setări</string>
     <string name="translations_dialog_negative_action">Nu acum</string>
     <!-- Backup -->
     <string name="backup_explanation_1">Exportă &lt;i&gt;conținutul&lt;/i&gt; și &lt;i&gt;aspectul&lt;/i&gt; widget-urilor tale foto</string>

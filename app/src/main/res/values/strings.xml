@@ -410,6 +410,7 @@
     <string name="translations_dialog_title">Help translate to your language!</string>
     <string name="translations_dialog_body">This app uses a community-driven approach for translations, and your help can make it better. You can contribute if you would like to see a new language available, or spotted something that doesn\'t look right.</string>
     <string name="translations_dialog_positive_action">Open Crowdin</string>
+    <string name="translations_dialog_neutral_action">Open Settings</string>
     <string name="translations_dialog_negative_action">Not now</string>
 
     <!-- Backup -->

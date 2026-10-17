@@ -347,6 +347,7 @@
     <string name="translations_dialog_title">Kendi dilinize çeviriye yardım edin!</string>
     <string name="translations_dialog_body">Bu uygulama çeviriler için topluluk odaklı bir yaklaşım kullanır ve sizin yardımınız onu daha iyi hale getirebilir. Yeni bir dilin kullanılabilir olmasını istiyorsanız veya doğru görünmeyen bir şey fark ettiyseniz katkıda bulunabilirsiniz.</string>
     <string name="translations_dialog_positive_action">Crowdin\'i Aç</string>
+    <string name="translations_dialog_neutral_action">Ayarları Aç</string>
     <string name="translations_dialog_negative_action">Şimdi değil</string>
     <!-- Backup -->
     <string name="backup_explanation_1">Foto widget\'lerinizin &lt;i&gt;içeriğini&lt;/i&gt; ve &lt;i&gt;görünümünü&lt;/i&gt; dışa aktarın</string>

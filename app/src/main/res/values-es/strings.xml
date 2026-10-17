@@ -349,6 +349,7 @@
     <string name="translations_dialog_title">¡Ayuda a traducir a tu idioma!</string>
     <string name="translations_dialog_body">Esta aplicación utiliza un enfoque comunitario para las traducciones, y tu ayuda puede mejorarla. Puedes contribuir si quieres ver un nuevo idioma disponible o si detectas algo que no se ve bien.</string>
     <string name="translations_dialog_positive_action">Abrir Crowdin</string>
+    <string name="translations_dialog_neutral_action">Abrir Ajustes</string>
     <string name="translations_dialog_negative_action">Ahora no</string>
     <!-- Backup -->
     <string name="backup_explanation_1">Exporta el &lt;i&gt;contenido&lt;/i&gt; y la &lt;i&gt;apariencia&lt;/i&gt; de tus widgets de fotos</string>

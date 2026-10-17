@@ -355,6 +355,7 @@
     <string name="translations_dialog_title">Помогни при преводу на ваш језик!</string>
     <string name="translations_dialog_body">Ова апликација користи приступ преводима вођен заједницом, а ваша помоћ може да је побољша. Можете допринети ако желите да видите нови језик који је доступан или сте приметили нешто што не изгледа како треба.</string>
     <string name="translations_dialog_positive_action">Отвори Crowdin</string>
+    <string name="translations_dialog_neutral_action">Отвори подешавања</string>
     <string name="translations_dialog_negative_action">Не сада</string>
     <!-- Backup -->
     <string name="backup_explanation_1">Извези &lt;i&gt;садржај&lt;/i&gt; и &lt;i&gt;изглед&lt;/i&gt; ваших фото виџета</string>

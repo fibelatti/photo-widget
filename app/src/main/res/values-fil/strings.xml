@@ -347,6 +347,7 @@
     <string name="translations_dialog_title">Tumulong sa pagsasalin-wika!</string>
     <string name="translations_dialog_body">Pinangungunahan ng komunidad ang pagsasalin ng app na ito, at maaari kang tumulong. Puwede kang mag-ambag kung nais mong makakita ng bagong wika, o kung may nakita kang mukhang mali.</string>
     <string name="translations_dialog_positive_action">Buksan ang Crowdin</string>
+    <string name="translations_dialog_neutral_action">Buksan ang Mga Setting</string>
     <string name="translations_dialog_negative_action">Huwag muna</string>
     <!-- Backup -->
     <string name="backup_explanation_1">I-export ang &lt;i>nilalaman&lt;/i> at &lt;i>hitsura&lt;/i> ng iyong mga photo widget</string>

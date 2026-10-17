@@ -355,6 +355,7 @@
     <string name="translations_dialog_title">עזור לתרגם לשפה שלך!</string>
     <string name="translations_dialog_body">אפליקציה זו משתמשת בגישה קהילתית לתרגומים, והעזרה שלך יכולה לשפר אותה. אתה יכול לתרום אם תרצה לראות שפה חדשה זמינה, או אם הבחנת במשהו שלא נראה טוב.</string>
     <string name="translations_dialog_positive_action">פתח Crowdin</string>
+    <string name="translations_dialog_neutral_action">פתח הגדרות</string>
     <string name="translations_dialog_negative_action">לא כעת</string>
     <!-- Backup -->
     <string name="backup_explanation_1">ייצא את ה&lt;i&gt;תוכן&lt;/i&gt; וה&lt;i&gt;מראה&lt;/i&gt; של ווידג\'טי התמונות שלך</string>
