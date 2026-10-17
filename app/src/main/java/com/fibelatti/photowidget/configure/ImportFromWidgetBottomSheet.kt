@@ -48,6 +48,7 @@ import com.fibelatti.ui.icons.TrashClock
 @Composable
 fun ImportFromWidgetBottomSheet(
     sheetState: AppSheetState,
+    excludedWidgetId: Int,
     onWidgetSelect: (appWidgetId: Int) -> Unit,
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
@@ -63,7 +64,7 @@ fun ImportFromWidgetBottomSheet(
         }
 
         ImportFromWidgetContent(
-            currentWidgets = currentWidgets,
+            currentWidgets = currentWidgets.filter { (id, _) -> id != excludedWidgetId },
             onWidgetSelect = { id ->
                 onWidgetSelect(id)
                 sheetState.hideBottomSheet()

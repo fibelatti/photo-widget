@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.configure
 
+import android.appwidget.AppWidgetManager
 import android.net.Uri
 import androidx.annotation.StringRes
 import com.fibelatti.photowidget.R
@@ -18,6 +19,7 @@ data class PhotoWidgetConfigureState(
     val messages: List<Message> = emptyList(),
     val hasEdits: Boolean = false,
     val isDraft: Boolean = false,
+    val widgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,
     val isImportAvailable: Boolean = false,
 ) {
 
