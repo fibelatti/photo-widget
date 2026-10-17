@@ -245,7 +245,9 @@ class GoogleFontsLoader @Inject constructor(
             "Special Elite",
             "Limelight",
             "Permanent Marker",
+            "Yuji Boku",
             "Henny Penny",
+            "Rampart One",
             "Sixtyfour",
 
             // Cursive
