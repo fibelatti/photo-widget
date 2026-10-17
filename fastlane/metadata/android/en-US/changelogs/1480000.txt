@@ -1,0 +1,7 @@
+This version brings the following updates:
+
+* Widget labels now support custom fonts, colors and vertical positions
+* Larger text size and offset range for widget labels
+* Fix occasional crashes
+
+Thanks for using the app!

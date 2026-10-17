@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.48.0] - 2026-10-17
+[v1.48.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.48.0
+
 ### Added
 
 * Custom font support for the widget label
@@ -16,6 +19,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Increase text size and offset range
+
+### Fixed
+
+* Fix an occasional crash when cropping a photo
+* Fix an occasional crash when importing from another widget
+* Fix a crash when adding a widget to the home screen on certain phones
+* Fix a crash caused by duplicate photos when selecting overlapping folders
 
 ## [v1.47.1] - 2026-09-22
 [v1.47.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.47.1
