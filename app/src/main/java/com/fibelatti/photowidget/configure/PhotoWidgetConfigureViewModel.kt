@@ -506,8 +506,24 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
-    fun photoCropped(path: String) {
-        val cropping = _state.value.photoWidget.photos.firstOrNull { it.cropping } ?: return
+    fun photoCropped(cropOutputPath: String, destinationPath: String) {
+        val cropping: LocalPhoto = _state.value.photoWidget.photos.firstOrNull { it.cropping } ?: return
+
+        viewModelScope.launch {
+            val saved: Boolean = photoWidgetStorage.saveCroppedPhoto(
+                sourcePath = cropOutputPath,
+                destinationPath = destinationPath,
+            )
+
+            if (saved) {
+                updateCroppedPhoto(cropping = cropping, path = destinationPath)
+            } else {
+                cropCancelled()
+            }
+        }
+    }
+
+    private fun updateCroppedPhoto(cropping: LocalPhoto, path: String) {
         val currentTimeMillis = System.currentTimeMillis()
         val updateMatchingPhoto = { photo: LocalPhoto ->
             if (photo.photoId == cropping.photoId) {

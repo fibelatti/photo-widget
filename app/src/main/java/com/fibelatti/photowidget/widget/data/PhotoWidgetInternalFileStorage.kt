@@ -23,6 +23,9 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.FilenameFilter
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 import java.util.UUID
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -165,7 +168,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         localPhoto: LocalPhoto,
     ): Pair<Uri, Uri> = withContext(Dispatchers.IO) {
         val widgetDir = getWidgetDir(directoryName = directoryName)
-        val croppedPhoto = File("$widgetDir/${localPhoto.photoId}").apply { createNewFile() }
+        val croppedPhoto = File("$widgetDir/${localPhoto.photoId}")
 
         return@withContext if (localPhoto.externalUri != null) {
             localPhoto.externalUri to Uri.fromFile(croppedPhoto)
@@ -183,6 +186,15 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
             Uri.fromFile(originalPhoto) to Uri.fromFile(croppedPhoto)
         }
+    }
+
+    suspend fun saveCroppedPhoto(sourcePath: String, destinationPath: String): Boolean = withContext(Dispatchers.IO) {
+        runCatching {
+            Files.move(Paths.get(sourcePath), Paths.get(destinationPath), StandardCopyOption.REPLACE_EXISTING)
+        }.onFailure {
+            Timber.e(it, "Failed to save the cropped photo")
+            File(sourcePath).delete()
+        }.isSuccess
     }
 
     suspend fun deleteWidgetPhoto(directoryName: String, photoId: String) {
@@ -222,12 +234,20 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
             val originalPhotosDir = File("$widgetDir/original")
             val originalPhotoNames = originalPhotosDir.list().orEmpty().toSet()
 
+            // Decides what's listed: for photo widgets everything from the "original" dir, except the dir itself;
+            // or everything for directory widget since their original comes from user storage
             val fileNameFilter = FilenameFilter { _, name ->
                 name != "original" && (name in originalPhotoNames || source == PhotoWidgetSource.DIRECTORY)
             }
 
             widgetDir.list(fileNameFilter)
                 .orEmpty()
+                // Decides which listed files can be deleted: an empty crop without an original is a folder
+                // photo that falls back to its source file. Photos with an original are kept, since the
+                // filter above lets them through and deleting their crop would drop them from the widget.
+                .filterNot { fileName ->
+                    fileName !in originalPhotoNames && deleteIfEmpty(File("$widgetDir/$fileName"))
+                }
                 .map { fileName ->
                     val croppedPhotoPath = "$widgetDir/$fileName"
 
@@ -243,6 +263,23 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
                     )
                 }
         }
+    }
+
+    /**
+     * A failed crop could result in an empty file, which can't be decoded.
+     *
+     * Folder photos fall back to their source file when there's no cropped version, so an empty
+     * cropped file is removed instead of listed.
+     *
+     * @return true if [file] is empty
+     */
+    private fun deleteIfEmpty(file: File): Boolean {
+        if (!file.isFile || file.length() > 0) return false
+
+        Timber.d("Deleting empty cropped photo %s", file.path)
+        file.delete()
+
+        return true
     }
 
     suspend fun prepareCurrentWidgetPhoto(

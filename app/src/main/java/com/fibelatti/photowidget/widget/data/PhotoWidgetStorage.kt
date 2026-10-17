@@ -429,6 +429,10 @@ class PhotoWidgetStorage @Inject constructor(
         return internalFileStorage.getCropSources(directoryName = directoryName, localPhoto = localPhoto)
     }
 
+    suspend fun saveCroppedPhoto(sourcePath: String, destinationPath: String): Boolean {
+        return internalFileStorage.saveCroppedPhoto(sourcePath = sourcePath, destinationPath = destinationPath)
+    }
+
     suspend fun replacePhotosForDeletion(appWidgetId: Int, photoIds: Collection<String>) {
         pendingDeletionPhotosDao.deletePhotosByWidgetId(widgetId = appWidgetId)
         appendPhotosForDeletion(appWidgetId = appWidgetId, photoIds = photoIds)

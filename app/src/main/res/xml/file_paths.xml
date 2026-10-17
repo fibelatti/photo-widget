@@ -6,4 +6,7 @@
     <files-path
         name="logs"
         path="logs/" />
+    <cache-path
+        name="crop"
+        path="crop/" />
 </paths>

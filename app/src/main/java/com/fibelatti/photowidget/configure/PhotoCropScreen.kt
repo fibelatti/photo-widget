@@ -53,7 +53,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.FileProvider
-import androidx.core.net.toFile
 import androidx.core.view.WindowInsetsControllerCompat
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
@@ -68,14 +67,15 @@ import com.fibelatti.ui.preview.PreviewAccessibility
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.preview.PreviewThemesAndColors
 import com.fibelatti.ui.theme.ExtendedTheme
+import java.io.File
+import java.util.UUID
 
 @Composable
 fun PhotoCropScreen(
     sourceUri: Uri,
-    destinationUri: Uri,
     cropImageOptions: CropImageOptions,
     onBackClick: () -> Unit,
-    onCropComplete: (CropImageView.CropResult) -> Unit,
+    onCropComplete: (croppedPhoto: File?) -> Unit,
     showAspectRatioShortcuts: Boolean,
 ) {
     AppTheme(
@@ -96,7 +96,6 @@ fun PhotoCropScreen(
 
         PhotoCropContent(
             sourceUri = sourceUri,
-            destinationUri = destinationUri,
             cropImageOptions = cropImageOptions,
             onBackClick = onBackClick,
             onCropComplete = onCropComplete,
@@ -108,10 +107,9 @@ fun PhotoCropScreen(
 @Composable
 private fun PhotoCropContent(
     sourceUri: Uri,
-    destinationUri: Uri,
     cropImageOptions: CropImageOptions,
     onBackClick: () -> Unit,
-    onCropComplete: (CropImageView.CropResult) -> Unit,
+    onCropComplete: (croppedPhoto: File?) -> Unit,
     showAspectRatioShortcuts: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -122,12 +120,15 @@ private fun PhotoCropContent(
             .safeDrawingPadding(),
     ) {
         val localContext: Context = LocalContext.current
+        val cropOutput: CropOutput = remember(localContext, sourceUri) {
+            cropOutput(context = localContext, sourceUri = sourceUri)
+        }
         val cropImageView: CropImageView = remember(localContext) {
             CropImageView(localContext).apply {
                 setImageUriAsync(sourceUri)
                 setImageCropOptions(cropImageOptions)
                 setOnCropImageCompleteListener { _: CropImageView, result: CropImageView.CropResult ->
-                    onCropComplete(result)
+                    onCropComplete(cropOutput.file.takeIf { result.isSuccessful && result.uriContent != null })
                 }
             }
         }
@@ -168,8 +169,7 @@ private fun PhotoCropContent(
                             cropImage(
                                 context = localContext,
                                 cropImageView = cropImageView,
-                                sourceUri = sourceUri,
-                                destinationUri = destinationUri,
+                                cropOutput = cropOutput,
                             )
                         },
                         shapes = IconButtonDefaults.shapes(),
@@ -217,30 +217,53 @@ private fun PhotoCropContent(
     }
 }
 
-private fun cropImage(
-    context: Context,
-    cropImageView: CropImageView,
-    sourceUri: Uri,
-    destinationUri: Uri,
-) {
+/**
+ * The crop library rejects output files whose extension doesn't match [compressFormat], and that
+ * rejection crashes the app instead of failing the crop.
+ *
+ * The photo ID names the destination and can have any extension, so the crop is written to a
+ * temporary [file] that is then moved into place after the fact.
+ */
+private class CropOutput(val file: File, val compressFormat: Bitmap.CompressFormat)
+
+private fun cropOutput(context: Context, sourceUri: Uri): CropOutput {
     val typeExtension: String? = MimeTypeMap.getSingleton()
         .getExtensionFromMimeType(context.contentResolver.getType(sourceUri))
         ?.lowercase()
     val urlExtension: String? = MimeTypeMap.getFileExtensionFromUrl(sourceUri.toString())
         ?.lowercase()
     val jpeg: Array<String> = arrayOf("jpeg", "jpg")
-    val compressFormat: Bitmap.CompressFormat = if (typeExtension in jpeg || urlExtension in jpeg) {
-        Bitmap.CompressFormat.JPEG
+
+    val compressFormat: Bitmap.CompressFormat
+    val extension: String
+
+    if (typeExtension in jpeg || urlExtension in jpeg) {
+        compressFormat = Bitmap.CompressFormat.JPEG
+        extension = "jpg"
     } else {
-        Bitmap.CompressFormat.PNG
+        compressFormat = Bitmap.CompressFormat.PNG
+        extension = "png"
     }
 
+    return CropOutput(
+        file = File("${context.cacheDir}/crop/${UUID.randomUUID()}.$extension"),
+        compressFormat = compressFormat,
+    )
+}
+
+private fun cropImage(
+    context: Context,
+    cropImageView: CropImageView,
+    cropOutput: CropOutput,
+) {
+    cropOutput.file.parentFile?.mkdirs()
+
     cropImageView.croppedImageAsync(
-        saveCompressFormat = compressFormat,
+        saveCompressFormat = cropOutput.compressFormat,
         customOutputUri = FileProvider.getUriForFile(
             /* context = */ context,
             /* authority = */ "${context.packageName}.fileprovider",
-            /* file = */ destinationUri.toFile(),
+            /* file = */ cropOutput.file,
         ),
     )
 }
@@ -400,7 +423,6 @@ private fun PhotoCropContentPreview() {
     ExtendedTheme(darkTheme = true) {
         PhotoCropContent(
             sourceUri = Uri.EMPTY,
-            destinationUri = Uri.EMPTY,
             cropImageOptions = CropImageOptions(
                 guidelines = CropImageView.Guidelines.ON_TOUCH,
                 showProgressBar = false,

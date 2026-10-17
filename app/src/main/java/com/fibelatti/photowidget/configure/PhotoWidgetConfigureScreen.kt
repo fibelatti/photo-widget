@@ -101,6 +101,7 @@ import com.fibelatti.ui.icons.Crop
 import com.fibelatti.ui.icons.Trash
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
+import java.io.File
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
@@ -205,7 +206,6 @@ fun PhotoWidgetConfigureScreen(
             entry<PhotoWidgetConfigureNav.PhotoCrop> { key: PhotoWidgetConfigureNav.PhotoCrop ->
                 PhotoCropScreen(
                     sourceUri = key.sourceUri.toUri(),
-                    destinationUri = key.destinationUri.toUri(),
                     cropImageOptions = CropImageOptions(
                         guidelines = CropImageView.Guidelines.ON_TOUCH,
                         showProgressBar = false,
@@ -218,10 +218,13 @@ fun PhotoWidgetConfigureScreen(
                         viewModel.cropCancelled()
                         configureBackStack.popNavKey()
                     },
-                    onCropComplete = { cropResult ->
+                    onCropComplete = { croppedPhoto: File? ->
                         val destinationPath: String? = key.destinationUri.toUri().path
-                        if (cropResult.isSuccessful && cropResult.uriContent != null && destinationPath != null) {
-                            viewModel.photoCropped(destinationPath)
+                        if (croppedPhoto != null && destinationPath != null) {
+                            viewModel.photoCropped(
+                                cropOutputPath = croppedPhoto.path,
+                                destinationPath = destinationPath,
+                            )
                         } else {
                             viewModel.cropCancelled()
                         }
