@@ -924,6 +924,10 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
+    fun pinRequestFailed() {
+        pinningCache.clear()
+    }
+
     fun messageHandled(message: PhotoWidgetConfigureState.Message) {
         _state -= message
     }

@@ -96,6 +96,8 @@ fun widgetPinningNotAvailable(): Boolean {
     val notAvailable = listOf(
         "oppo",
         "realme",
+        "zte",
+        "nubia",
     )
 
     return manufacturer in notAvailable

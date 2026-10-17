@@ -269,11 +269,24 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         }
 
         Timber.d("Invoking AppWidgetManager#requestPinAppWidget")
-        AppWidgetManager.getInstance(this).requestPinAppWidget(
-            /* provider = */ ComponentName(this, provider),
-            /* extras = */ null,
-            /* successCallback = */ successCallback,
-        )
+        try {
+            AppWidgetManager.getInstance(this).requestPinAppWidget(
+                /* provider = */ ComponentName(this, provider),
+                /* extras = */ null,
+                /* successCallback = */ successCallback,
+            )
+        } catch (e: RuntimeException) {
+            // Some OEM builds report pinning as supported but fail inside the system service, e.g.
+            // ZTE's ShortcutService hook dereferences a ShortcutInfo that is null for widget requests.
+            Timber.e(e, "AppWidgetManager#requestPinAppWidget failed")
+            viewModel.pinRequestFailed()
+
+            showMaterialAlertDialog {
+                setTitle(R.string.photo_widget_home_pinning_not_supported_title)
+                setMessage(R.string.photo_widget_home_pinning_not_supported_message)
+                setPositiveButton(R.string.photo_widget_action_got_it) { _, _ -> }
+            }
+        }
     }
 
     companion object {
