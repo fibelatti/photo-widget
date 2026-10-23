@@ -95,7 +95,7 @@ val PhotoWidget.canSync: Boolean
     get() = source == PhotoWidgetSource.DIRECTORY
 
 val PhotoWidget.canLock: Boolean
-    get() = photos.isNotEmpty() && source != PhotoWidgetSource.GIF
+    get() = currentPhoto != null && source != PhotoWidgetSource.GIF
 
 val PhotoWidget.tapActionIncreaseBrightness: Boolean
     get() = tapActions.increaseBrightness

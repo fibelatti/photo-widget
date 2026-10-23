@@ -2,6 +2,7 @@ package com.fibelatti.photowidget.widget.data
 
 import android.net.Uri
 import androidx.core.net.toUri
+import androidx.room.withTransaction
 import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.GifFrames
 import com.fibelatti.photowidget.model.LocalPhoto
@@ -17,6 +18,7 @@ import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.WidgetOffset
 import com.fibelatti.photowidget.model.WidgetPhotos
 import com.fibelatti.photowidget.model.allWidgetPhotos
+import com.fibelatti.photowidget.model.resolveCurrentPhoto
 import com.fibelatti.photowidget.platform.UriPermissionGrantor
 import java.io.File
 import java.util.UUID
@@ -24,6 +26,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.reflect.KClass
 import kotlin.time.Duration.Companion.days
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -31,11 +35,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @Singleton
 class PhotoWidgetStorage @Inject constructor(
     private val sharedPreferences: PhotoWidgetSharedPreferences,
+    private val database: PhotoWidgetDatabase,
     private val internalFileStorage: PhotoWidgetInternalFileStorage,
     private val externalFileStorage: PhotoWidgetExternalFileStorage,
     private val localPhotoDao: LocalPhotoDao,
@@ -186,6 +192,13 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
+    /**
+     * Loads the photos of [appWidgetId], first from the local photo cache and then from the widget
+     * source, which also refreshes the cache when it has no photos to show.
+     *
+     * Collectors that only need the cached photos can stop after the first emission, in which case
+     * the source is only read if the cache has no photos to show.
+     */
     fun loadWidgetPhotos(appWidgetId: Int): Flow<WidgetPhotos> = flow {
         Timber.i("Retrieving photos %s", mapOf("appWidgetId" to appWidgetId))
 
@@ -216,17 +229,151 @@ class PhotoWidgetStorage @Inject constructor(
         emit(source)
     }
 
+    /**
+     * Resolves the photo [appWidgetId] is currently displaying, reading only that photo from the
+     * local photo cache. Falls back to [loadWidgetPhotos] when the cache has no photos to show,
+     * which populates it from the widget source.
+     */
+    suspend fun loadCurrentWidgetPhoto(appWidgetId: Int): LocalPhoto? {
+        Timber.i("Retrieving current photo %s", mapOf("appWidgetId" to appWidgetId))
+
+        val source: PhotoWidgetSource = getWidgetSource(appWidgetId = appWidgetId)
+        val excludedPhotos: Set<String> = getExcludedPhotoIds(appWidgetId = appWidgetId)
+        val currentPhotoId: String? = getCurrentPhotoId(appWidgetId = appWidgetId)
+            ?.takeUnless { photoId -> isExcluded(photoId = photoId, excludedPhotos = excludedPhotos) }
+
+        val widgetIndex: Int = getWidgetIndex(appWidgetId = appWidgetId)
+
+        val localPhoto: LocalPhotoDto? = currentPhotoId
+            ?.let { photoId -> localPhotoDao.getLocalPhoto(widgetId = appWidgetId, photoId = photoId) }
+            ?: run {
+                val photoId: String? = getSyncedWidgetPhotoIds(
+                    appWidgetId = appWidgetId,
+                    excludedPhotos = excludedPhotos,
+                )
+                    .resolveCurrentPhoto(currentPhotoId = currentPhotoId, currentIndex = widgetIndex) { it }
+
+                photoId?.let { localPhotoDao.getLocalPhoto(widgetId = appWidgetId, photoId = it) }
+            }
+
+        if (localPhoto != null) {
+            return localPhoto.toLocalPhoto(source = source)
+        }
+
+        return loadWidgetPhotos(appWidgetId = appWidgetId).first().current
+            .resolveCurrentPhoto(currentPhotoId = currentPhotoId, currentIndex = widgetIndex) { it.photoId }
+    }
+
+    fun getPersistedUriPermissions(): List<Uri> = externalFileStorage.getPersistedUriPermissions()
+
+    /**
+     * Returns whether the source of [appWidgetId] can still be read, without listing its photos.
+     *
+     * Only directory widgets can lose access to their source, which happens when none of the
+     * synced directories is in [persistedUris], as returned by [getPersistedUriPermissions]. The
+     * source of other widgets is internal storage, which the local photo cache already reflects.
+     */
+    fun hasSourceAccess(appWidgetId: Int, persistedUris: List<Uri>): Boolean {
+        if (getWidgetSource(appWidgetId = appWidgetId) != PhotoWidgetSource.DIRECTORY) return true
+
+        return getWidgetSyncDir(appWidgetId = appWidgetId).any { syncDir -> syncDir.dir in persistedUris }
+    }
+
     suspend fun getSyncedWidgetPhotoIds(appWidgetId: Int): List<String> {
-        val excluded: Set<String> = getExcludedPhotoIds(appWidgetId = appWidgetId)
-        return localPhotoDao.getOrderedLocalPhotoIds(widgetId = appWidgetId)
-            .filterNot { id -> id in excluded || id.substringAfterLast(SEPARATOR) in excluded }
+        return getSyncedWidgetPhotoIds(
+            appWidgetId = appWidgetId,
+            excludedPhotos = getExcludedPhotoIds(appWidgetId = appWidgetId),
+        )
+    }
+
+    private suspend fun getSyncedWidgetPhotoIds(appWidgetId: Int, excludedPhotos: Set<String>): List<String> {
+        val photoIds: List<String> = localPhotoDao.getOrderedLocalPhotoIds(widgetId = appWidgetId)
+
+        return withContext(Dispatchers.Default) {
+            photoIds.filterNot { id -> isExcluded(photoId = id, excludedPhotos = excludedPhotos) }
+        }
+    }
+
+    private fun isExcluded(photoId: String, excludedPhotos: Set<String>): Boolean {
+        return photoId in excludedPhotos || photoId.substringAfterLast(SEPARATOR) in excludedPhotos
+    }
+
+    /**
+     * Returns the photo of [appWidgetId] identified by [photoId], reading only that photo from the
+     * local photo cache.
+     */
+    suspend fun getWidgetPhoto(appWidgetId: Int, photoId: String): LocalPhoto? {
+        return localPhotoDao.getLocalPhoto(widgetId = appWidgetId, photoId = photoId)
+            ?.toLocalPhoto(source = getWidgetSource(appWidgetId = appWidgetId))
+    }
+
+    /**
+     * Returns the photo that comes before or after [photoId] in the order of [appWidgetId], skipping
+     * excluded photos and wrapping around at either end. The order is read in small batches rather
+     * than loading every photo ID.
+     *
+     * Returns [photoId] itself when it is the only photo to show, and null when it isn't part of the
+     * widget order, leaving the caller to resolve it from the full photo list.
+     */
+    suspend fun getAdjacentWidgetPhotoId(appWidgetId: Int, photoId: String, forward: Boolean): String? {
+        val excludedPhotos: Set<String> = getExcludedPhotoIds(appWidgetId = appWidgetId)
+        if (isExcluded(photoId = photoId, excludedPhotos = excludedPhotos)) return null
+
+        val photoIndex: Int = localPhotoDao.getLocalPhotoIndex(widgetId = appWidgetId, photoId = photoId)
+            ?: return null
+
+        return findWidgetPhotoId(
+            appWidgetId = appWidgetId,
+            startIndex = photoIndex,
+            forward = forward,
+            excludedPhotos = excludedPhotos,
+        ) ?: findWidgetPhotoId(
+            appWidgetId = appWidgetId,
+            // Wrapping around always finds a photo: at worst, [photoId] itself
+            startIndex = if (forward) Int.MIN_VALUE else Int.MAX_VALUE,
+            forward = forward,
+            excludedPhotos = excludedPhotos,
+        )
+    }
+
+    private suspend fun findWidgetPhotoId(
+        appWidgetId: Int,
+        startIndex: Int,
+        forward: Boolean,
+        excludedPhotos: Set<String>,
+    ): String? {
+        var photoIndex: Int = startIndex
+
+        while (true) {
+            val batch: List<PhotoWidgetOrderDto> = if (forward) {
+                localPhotoDao.getLocalPhotoOrderAfter(
+                    widgetId = appWidgetId,
+                    photoIndex = photoIndex,
+                    limit = ORDER_BATCH_SIZE,
+                )
+            } else {
+                localPhotoDao.getLocalPhotoOrderBefore(
+                    widgetId = appWidgetId,
+                    photoIndex = photoIndex,
+                    limit = ORDER_BATCH_SIZE,
+                )
+            }
+
+            batch.firstOrNull { !isExcluded(photoId = it.photoId, excludedPhotos = excludedPhotos) }
+                ?.let { return it.photoId }
+
+            if (batch.size < ORDER_BATCH_SIZE) return null
+
+            photoIndex = batch.last().photoIndex
+        }
     }
 
     suspend fun getWidgetPhotoCountEstimate(appWidgetId: Int): Int {
-        return localPhotoDao.getLocalPhotos(widgetId = appWidgetId)
-            .map { it.photoId }
-            .minus(getExcludedPhotoIds(appWidgetId = appWidgetId))
-            .size
+        return when (getWidgetSource(appWidgetId = appWidgetId)) {
+            PhotoWidgetSource.PHOTOS -> localPhotoDao.countLocalPhotosNotPendingDeletion(widgetId = appWidgetId)
+            PhotoWidgetSource.DIRECTORY -> localPhotoDao.countLocalPhotosNotExcluded(widgetId = appWidgetId)
+            PhotoWidgetSource.GIF -> localPhotoDao.countLocalPhotos(widgetId = appWidgetId)
+        }
     }
 
     private suspend fun getSourceWidgetPhotos(
@@ -248,11 +395,15 @@ class PhotoWidgetStorage @Inject constructor(
         Timber.d("Cropped photos found: ${croppedPhotos.size}")
 
         val loadedPhotos: Map<Boolean, List<LocalPhoto>> = if (source == PhotoWidgetSource.DIRECTORY) {
-            externalFileStorage.getPhotos(
+            val photos: List<LocalPhoto> = externalFileStorage.getPhotos(
                 syncDirs = getWidgetSyncDir(appWidgetId),
                 croppedPhotos = croppedPhotos,
                 sorting = getWidgetSorting(appWidgetId),
             )
+
+            withContext(Dispatchers.Default) {
+                photos.groupBy { !isExcluded(photoId = it.photoId, excludedPhotos = excludedPhotos) }
+            }
         } else {
             // Check for legacy storage value
             // Migrate found value to the new storage
@@ -261,13 +412,13 @@ class PhotoWidgetStorage @Inject constructor(
                 ?.also { saveWidgetOrder(appWidgetId = appWidgetId, order = it.toSet()) }
                 ?: orderDao.getWidgetOrder(widgetId = appWidgetId)
 
-            widgetOrder.ifEmpty(croppedPhotos::keys)
-                // Excluded photos weren't always saved with the order
-                .plus(excludedPhotos).distinct()
-                .mapNotNull(croppedPhotos::get)
-        }.groupBy {
-            val isExcluded = it.photoId in excludedPhotos || it.photoId.substringAfterLast(SEPARATOR) in excludedPhotos
-            !isExcluded
+            withContext(Dispatchers.Default) {
+                widgetOrder.ifEmpty(croppedPhotos::keys)
+                    // Excluded photos weren't always saved with the order
+                    .plus(excludedPhotos).distinct()
+                    .mapNotNull(croppedPhotos::get)
+                    .groupBy { !isExcluded(photoId = it.photoId, excludedPhotos = excludedPhotos) }
+            }
         }
 
         return WidgetPhotos(
@@ -286,26 +437,13 @@ class PhotoWidgetStorage @Inject constructor(
 
         val source: PhotoWidgetSource = getWidgetSource(appWidgetId)
 
-        val localPhotos: Map<Boolean, List<LocalPhoto>> = localPhotoDao.getLocalPhotos(widgetId = appWidgetId)
-            .map {
-                LocalPhoto(
-                    photoId = it.photoId,
-                    croppedPhotoPath = it.croppedPhotoPath,
-                    originalPhotoPath = it.originalPhotoPath,
-                    externalUri = it.externalUri?.let(Uri::parse),
-                    launcherUri = if (source == PhotoWidgetSource.GIF && it.croppedPhotoPath != null) {
-                        uriPermissionGrantor(it.croppedPhotoPath)
-                    } else {
-                        null
-                    },
-                    timestamp = it.timestamp,
-                )
-            }
-            .groupBy {
-                val isExcluded = it.photoId in excludedPhotos ||
-                    it.photoId.substringAfterLast(SEPARATOR) in excludedPhotos
-                !isExcluded
-            }
+        val localPhotoDtos: List<LocalPhotoDto> = localPhotoDao.getLocalPhotos(widgetId = appWidgetId)
+
+        val localPhotos: Map<Boolean, List<LocalPhoto>> = withContext(Dispatchers.Default) {
+            localPhotoDtos
+                .map { it.toLocalPhoto(source = source) }
+                .groupBy { !isExcluded(photoId = it.photoId, excludedPhotos = excludedPhotos) }
+        }
 
         return WidgetPhotos(
             current = localPhotos[true].orEmpty(),
@@ -315,17 +453,40 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
+    private suspend fun LocalPhotoDto.toLocalPhoto(source: PhotoWidgetSource): LocalPhoto {
+        return LocalPhoto(
+            photoId = photoId,
+            croppedPhotoPath = croppedPhotoPath,
+            originalPhotoPath = originalPhotoPath,
+            externalUri = externalUri?.toUri(),
+            launcherUri = if (source == PhotoWidgetSource.GIF && croppedPhotoPath != null) {
+                uriPermissionGrantor(croppedPhotoPath)
+            } else {
+                null
+            },
+            timestamp = timestamp,
+        )
+    }
+
     private suspend fun saveWidgetOrder(appWidgetId: Int, order: Set<String>) {
-        orderDao.replaceWidgetOrder(
-            widgetId = appWidgetId,
-            order = order.mapIndexed { index, photoId ->
+        val currentOrder: List<String> = orderDao.getWidgetOrder(widgetId = appWidgetId)
+
+        val (newOrder: List<PhotoWidgetOrderDto>, idsToDelete: Set<String>) = withContext(Dispatchers.Default) {
+            val photoWidgetOrder: List<PhotoWidgetOrderDto> = order.mapIndexed { index, photoId ->
                 PhotoWidgetOrderDto(
                     widgetId = appWidgetId,
                     photoIndex = index,
                     photoId = photoId,
                 )
-            },
-            idsToDelete = orderDao.getWidgetOrder(widgetId = appWidgetId).subtract(order),
+            }
+
+            photoWidgetOrder to currentOrder.subtract(order)
+        }
+
+        orderDao.replaceWidgetOrder(
+            widgetId = appWidgetId,
+            order = newOrder,
+            idsToDelete = idsToDelete,
         )
     }
 
@@ -351,33 +512,48 @@ class PhotoWidgetStorage @Inject constructor(
         val allPhotos: List<LocalPhoto> = currentPhotos?.plus(removedPhotos.orEmpty())
             ?: getSourceWidgetPhotos(appWidgetId = appWidgetId, excludedPhotos = excludedPhotos).allWidgetPhotos()
 
-        val newLocalPhotos: List<LocalPhotoDto> = allPhotos.map { localPhoto: LocalPhoto ->
-            LocalPhotoDto(
-                widgetId = appWidgetId,
-                photoId = localPhoto.photoId,
-                croppedPhotoPath = localPhoto.croppedPhotoPath,
-                originalPhotoPath = localPhoto.originalPhotoPath,
-                externalUri = localPhoto.externalUri?.toString(),
-                timestamp = localPhoto.timestamp,
-            )
+        val (newLocalPhotos: List<LocalPhotoDto>, newPhotoIds: Set<String>) = withContext(Dispatchers.Default) {
+            val localPhotoDtos: List<LocalPhotoDto> = allPhotos.map { localPhoto: LocalPhoto ->
+                LocalPhotoDto(
+                    widgetId = appWidgetId,
+                    photoId = localPhoto.photoId,
+                    croppedPhotoPath = localPhoto.croppedPhotoPath,
+                    originalPhotoPath = localPhoto.originalPhotoPath,
+                    externalUri = localPhoto.externalUri?.toString(),
+                    timestamp = localPhoto.timestamp,
+                )
+            }
+
+            localPhotoDtos to localPhotoDtos.map { it.photoId }.toSet()
         }
-        val newPhotoIds: Set<String> = newLocalPhotos.map { it.photoId }.toSet()
-        val existingLocalPhotos: List<LocalPhotoDto> = localPhotoDao.getLocalPhotos(widgetId = appWidgetId)
 
-        localPhotoDao.replacePhotos(
-            widgetId = appWidgetId,
-            photos = newLocalPhotos,
-            idsToDelete = existingLocalPhotos.map { it.photoId }.subtract(newPhotoIds),
-        )
+        // Cycling reads the photos together with their order, so both must change at once. The write
+        // also completes when the caller is cancelled, so the source read that preceded it isn't lost.
+        val existingLocalPhotos: List<LocalPhotoDto> = withContext(NonCancellable) {
+            database.withTransaction {
+                val localPhotoDtos: List<LocalPhotoDto> = localPhotoDao.getLocalPhotos(widgetId = appWidgetId)
+                val displayedPhotoIds: List<String> = displayedPhotoDao.getDisplayedPhotoIds(widgetId = appWidgetId)
 
-        saveWidgetOrder(appWidgetId = appWidgetId, order = newPhotoIds)
+                localPhotoDao.replacePhotos(
+                    widgetId = appWidgetId,
+                    photos = newLocalPhotos,
+                    idsToDelete = localPhotoDtos.map { it.photoId }.subtract(newPhotoIds),
+                )
 
-        displayedPhotoDao.deletePhotosByPhotoIds(
-            widgetId = appWidgetId,
-            photoIds = displayedPhotoDao.getDisplayedPhotoIds(widgetId = appWidgetId).subtract(newPhotoIds),
-        )
+                saveWidgetOrder(appWidgetId = appWidgetId, order = newPhotoIds)
 
-        return existingLocalPhotos.toSet() != newLocalPhotos.toSet()
+                displayedPhotoDao.deletePhotosByPhotoIds(
+                    widgetId = appWidgetId,
+                    photoIds = displayedPhotoIds.subtract(newPhotoIds),
+                )
+
+                localPhotoDtos
+            }
+        }
+
+        return withContext(Dispatchers.Default) {
+            existingLocalPhotos.toSet() != newLocalPhotos.toSet()
+        }
     }
 
     suspend fun getCurrentPhotoId(appWidgetId: Int): String? {
@@ -796,10 +972,10 @@ class PhotoWidgetStorage @Inject constructor(
         }
 
         val photosToDelete = pendingDeletionPhotosDao.getPhotosToDelete(timestamp = currentTimestamp)
-        for (photo in photosToDelete) {
-            val directoryName: String? = widgetDirectoryDao.getDirectoryName(photo.widgetId)
+        for ((widgetId: Int, photoId: String) in photosToDelete) {
+            val directoryName: String? = widgetDirectoryDao.getDirectoryName(widgetId)
             if (directoryName != null) {
-                internalFileStorage.deleteWidgetPhoto(directoryName = directoryName, photoId = photo.photoId)
+                internalFileStorage.deleteWidgetPhoto(directoryName = directoryName, photoId = photoId)
             }
         }
         pendingDeletionPhotosDao.deletePhotosBeforeTimestamp(timestamp = currentTimestamp)
@@ -871,19 +1047,22 @@ class PhotoWidgetStorage @Inject constructor(
     suspend fun migrateDraftToWidget(draftWidgetId: Int, appWidgetId: Int) {
         Timber.i("Migrating draft to widget %s", mapOf("draftWidgetId" to draftWidgetId, "appWidgetId" to appWidgetId))
 
-        localPhotoDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
-        displayedPhotoDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
-        orderDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
-        pendingDeletionPhotosDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
-        excludedPhotosDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
-        advancedScheduleTimeDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+        // Cycling reads the photos together with their order, so every table must move at once
+        database.withTransaction {
+            localPhotoDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+            displayedPhotoDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+            orderDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+            pendingDeletionPhotosDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+            excludedPhotosDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+            advancedScheduleTimeDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
 
-        // `widget_directories` is migrated last because `getKnownWidgetIds` reads from it. The
-        // `PhotoWidgetProvider.update` flow only falls back to `loadPhotoWidgetUseCase` (which can
-        // write to `local_widget_photos` via `syncWidgetPhotos`) once the new ID is "known", so
-        // keeping this row absent until everything else is in place forces concurrent updates to
-        // keep rendering from the pinning cache.
-        widgetDirectoryDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+            // `getKnownWidgetIds` reads from `widget_directories`. The `PhotoWidgetProvider.update`
+            // flow only falls back to `loadPhotoWidgetUseCase` (which can write to
+            // `local_widget_photos` via `syncWidgetPhotos`) once the new ID is "known". The
+            // transaction keeps this row absent until everything else is in place, which forces
+            // concurrent updates to keep rendering from the pinning cache.
+            widgetDirectoryDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
+        }
 
         sharedPreferences.migrateWidgetData(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
     }
@@ -916,6 +1095,8 @@ class PhotoWidgetStorage @Inject constructor(
         private val DELETION_THRESHOLD_MILLIS: Long = 7.days.inWholeMilliseconds
 
         private const val LEGACY_DRAFT_WIDGET_ID: Int = 0
+
+        private const val ORDER_BATCH_SIZE: Int = 50
 
         const val SEPARATOR = "#mpw#"
     }

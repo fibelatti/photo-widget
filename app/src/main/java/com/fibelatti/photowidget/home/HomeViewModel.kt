@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.home
 
 import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.PhotoWidget
@@ -85,23 +86,36 @@ class HomeViewModel @Inject constructor(
             .flatMapLatest { allIds: List<Int> ->
                 if (allIds.isEmpty()) return@flatMapLatest flowOf(emptyMap())
 
-                combine(flows = allIds.map(loadPhotoWidgetUseCase::invoke)) { widgets ->
+                val widgetFlows: List<Flow<PhotoWidget>> = allIds.map { id: Int ->
+                    loadPhotoWidgetUseCase(appWidgetId = id, currentPhotoOnly = true)
+                }
+
+                combine(flows = widgetFlows) { widgets ->
                     allIds.withIndex().associate { (index, id) -> id to widgets[index] }
                 }
             }
             .map { widgets: Map<Int, PhotoWidget> ->
                 val providerIds: List<Int> = PhotoWidgetProvider.ids(context) + TransparentWidgetProvider.ids(context)
+                val persistedUris: List<Uri> = photoWidgetStorage.getPersistedUriPermissions()
 
                 widgets.mapValues { (widgetId: Int, widget: PhotoWidget) ->
                     val isLocked: Boolean = photoWidgetStorage.getWidgetLockedInApp(appWidgetId = widgetId)
                     val isPaused: Boolean = photoWidgetStorage.getWidgetCyclePaused(appWidgetId = widgetId)
                     val status: PhotoWidgetStatus = when {
                         PhotoWidget.isDraftWidgetId(widgetId) -> PhotoWidgetStatus.DRAFT
-                        !widget.transparent && widget.photos.isEmpty() && !widget.isLoading -> PhotoWidgetStatus.INVALID
+
+                        isInvalid(widgetId = widgetId, widget = widget, persistedUris = persistedUris) -> {
+                            PhotoWidgetStatus.INVALID
+                        }
+
                         widget.deletionTimestamp > 0L -> PhotoWidgetStatus.REMOVED
+
                         isLocked && widgetId in providerIds -> PhotoWidgetStatus.LOCKED
+
                         isPaused && widgetId in providerIds -> PhotoWidgetStatus.PAUSED
+
                         widgetId in providerIds -> PhotoWidgetStatus.ACTIVE
+
                         else -> PhotoWidgetStatus.KEPT
                     }
 
@@ -109,6 +123,14 @@ class HomeViewModel @Inject constructor(
                 }.toList()
             }
             .flowOn(Dispatchers.Default)
+    }
+
+    private fun isInvalid(widgetId: Int, widget: PhotoWidget, persistedUris: List<Uri>): Boolean {
+        if (widget.transparent || widget.isLoading) return false
+
+        // Widgets only load their cached photos, which outlive access to the source
+        return widget.currentPhoto == null ||
+            !photoWidgetStorage.hasSourceAccess(appWidgetId = widgetId, persistedUris = persistedUris)
     }
 
     fun syncPhotos(appWidgetId: Int) {

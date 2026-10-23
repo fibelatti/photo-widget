@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.stateIn
 import timber.log.Timber
 
@@ -29,6 +30,7 @@ class PhotoWidgetChooserViewModel @Inject constructor(
     )
 
     val state: StateFlow<PhotoWidget?> = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+        .filterNot { it.isLoading }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),

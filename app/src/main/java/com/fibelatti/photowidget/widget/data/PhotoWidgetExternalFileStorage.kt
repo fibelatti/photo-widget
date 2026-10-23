@@ -7,6 +7,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.provider.DocumentsContract
+import com.fibelatti.photowidget.BuildConfig
 import com.fibelatti.photowidget.model.DirectorySorting
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.SyncDir
@@ -27,9 +28,9 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
     private val contentResolver: ContentResolver = context.contentResolver
 
     fun takePersistableUriPermission(syncDirs: Set<SyncDir>) {
-        for (syncDir in syncDirs) {
-            Timber.d("Taking persistable uri permission for ${syncDir.dir}")
-            contentResolver.takePersistableUriPermission(syncDir.dir, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        for ((dir: Uri) in syncDirs) {
+            Timber.d("Taking persistable uri permission for $dir")
+            contentResolver.takePersistableUriPermission(dir, Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
     }
 
@@ -51,7 +52,7 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
         sorting: DirectorySorting,
         applyValidation: Boolean = false,
     ): List<LocalPhoto> = coroutineScope {
-        val photos: List<LocalPhoto> = syncDirs.map { syncDir ->
+        val photos: List<List<LocalPhoto>> = syncDirs.map { syncDir ->
             async {
                 val documentUri = DocumentsContract.buildDocumentUriUsingTree(
                     /* treeUri = */ syncDir.dir,
@@ -64,14 +65,18 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
                     applyValidation = applyValidation,
                 )
             }
-        }.awaitAll().flatten()
-            // Overlapping directories, or providers whose document IDs fall back to the file name,
-            // can yield the same photo ID more than once, while photos are stored unique by ID.
-            .distinctBy { it.photoId }
+        }.awaitAll()
 
-        return@coroutineScope when (sorting) {
-            DirectorySorting.NEWEST_FIRST -> photos.sortedByDescending { it.timestamp }
-            DirectorySorting.OLDEST_FIRST -> photos.sortedBy { it.timestamp }
+        return@coroutineScope withContext(Dispatchers.Default) {
+            val uniquePhotos: List<LocalPhoto> = photos.flatten()
+                // Overlapping directories, or providers whose document IDs fall back to the file name,
+                // can yield the same photo ID more than once, while photos are stored unique by ID.
+                .distinctBy { it.photoId }
+
+            when (sorting) {
+                DirectorySorting.NEWEST_FIRST -> uniquePhotos.sortedByDescending { it.timestamp }
+                DirectorySorting.OLDEST_FIRST -> uniquePhotos.sortedBy { it.timestamp }
+            }
         }
     }
 
@@ -112,6 +117,8 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
 
             cursor.use { cursor ->
                 while (cursor.moveToNext()) {
+                    ensureActive()
+
                     val documentId = cursor.getString(0)
                     val mimeType = cursor.getString(1)
                     val documentName = cursor.getString(2).takeUnless { it.startsWith(".trashed") }
@@ -121,17 +128,20 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
                         createPhotoId(documentId = documentId, documentName = documentName)
                     }
 
-                    Timber.d(
-                        "Processing cursor item %s",
-                        mapOf(
-                            "documentId" to documentId,
-                            "mimeType" to mimeType,
-                            "documentName" to documentName,
-                            "documentLastModified" to documentLastModified,
-                            "fileUri" to fileUri,
-                            "photoId" to photoId,
-                        ),
-                    )
+                    // Explicit guard to avoid throwaway allocations
+                    if (BuildConfig.DEBUG) {
+                        Timber.d(
+                            "Processing cursor item %s",
+                            mapOf(
+                                "documentId" to documentId,
+                                "mimeType" to mimeType,
+                                "documentName" to documentName,
+                                "documentLastModified" to documentLastModified,
+                                "fileUri" to fileUri,
+                                "photoId" to photoId,
+                            ),
+                        )
+                    }
 
                     when {
                         photoId != null && mimeType in ALLOWED_TYPES && fileUri != null -> {

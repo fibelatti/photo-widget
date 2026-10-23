@@ -39,6 +39,32 @@ class CyclePhotoUseCase @Inject constructor(
             ),
         )
 
+        val shuffle: Boolean = photoWidgetStorage.getWidgetShuffle(appWidgetId = appWidgetId) && !noShuffle
+
+        // Cycling in order only needs the photos next to the current one, which avoids loading every
+        // photo ID. The full list below remains the fallback when the current photo can't be placed.
+        if (!shuffle) {
+            val currentPhotoId: String? = (currentPhoto ?: photoWidgetStorage.getCurrentPhotoId(appWidgetId))
+                ?.ifEmpty { null }
+            val adjacentPhotoId: String? = currentPhotoId?.let { photoId: String ->
+                photoWidgetStorage.getAdjacentWidgetPhotoId(
+                    appWidgetId = appWidgetId,
+                    photoId = photoId,
+                    forward = direction == Direction.NEXT,
+                )
+            }
+
+            when {
+                adjacentPhotoId != null && adjacentPhotoId == currentPhotoId -> {
+                    return showSinglePhoto(appWidgetId = appWidgetId, photoId = adjacentPhotoId)
+                }
+
+                adjacentPhotoId != null -> {
+                    return showPhoto(appWidgetId = appWidgetId, photoId = adjacentPhotoId, skipSaving = skipSaving)
+                }
+            }
+        }
+
         val widgetPhotoIds: List<String> = photoWidgetStorage.getSyncedWidgetPhotoIds(appWidgetId = appWidgetId)
             .ifEmpty {
                 Timber.w("The widget has no photos to cycle through")
@@ -46,16 +72,15 @@ class CyclePhotoUseCase @Inject constructor(
             }
 
         if (widgetPhotoIds.size == 1) {
-            Timber.i("The widget has a single photo, there is nothing to cycle through")
-            // Cannot cycle, but if a photo was recently removed the widget still needs to be updated
-            PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
-            return widgetPhotoIds.first()
+            return showSinglePhoto(appWidgetId = appWidgetId, photoId = widgetPhotoIds.first())
         }
 
-        val displayedPhotos: MutableList<String> = photoWidgetStorage.getDisplayedPhotoIds(appWidgetId = appWidgetId)
-            .toMutableList()
-
-        val shuffle: Boolean = photoWidgetStorage.getWidgetShuffle(appWidgetId = appWidgetId) && !noShuffle
+        // Only shuffling needs to know which photos were already displayed
+        val displayedPhotos: MutableList<String> = if (shuffle) {
+            photoWidgetStorage.getDisplayedPhotoIds(appWidgetId = appWidgetId).toMutableList()
+        } else {
+            mutableListOf()
+        }
 
         // Resolve the current photo before any clear. clearDisplayedPhotos() empties the table that
         // backs getCurrentPhotoId(), so reading it afterwards would fall back to the widget index and
@@ -116,15 +141,26 @@ class CyclePhotoUseCase @Inject constructor(
             }
         }
 
-        Timber.i("Updating current photo to $newPhotoId")
+        return showPhoto(appWidgetId = appWidgetId, photoId = newPhotoId, skipSaving = skipSaving)
+    }
+
+    private suspend fun showPhoto(appWidgetId: Int, photoId: String, skipSaving: Boolean): String {
+        Timber.i("Updating current photo to $photoId")
 
         if (!skipSaving) {
-            photoWidgetStorage.saveDisplayedPhoto(appWidgetId = appWidgetId, photoId = newPhotoId)
+            photoWidgetStorage.saveDisplayedPhoto(appWidgetId = appWidgetId, photoId = photoId)
         }
 
         PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId, allowCrossfade = true)
 
-        return newPhotoId
+        return photoId
+    }
+
+    private fun showSinglePhoto(appWidgetId: Int, photoId: String): String {
+        Timber.i("The widget has a single photo, there is nothing to cycle through")
+        // Cannot cycle, but if a photo was recently removed the widget still needs to be updated
+        PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+        return photoId
     }
 
     private fun previousShufflePhoto(

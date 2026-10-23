@@ -84,6 +84,60 @@ interface LocalPhotoDao {
     )
     suspend fun getOrderedLocalPhotoIds(widgetId: Int): List<String>
 
+    @Query("select * from local_widget_photos where widgetId = :widgetId and photoId = :photoId")
+    suspend fun getLocalPhoto(widgetId: Int, photoId: String): LocalPhotoDto?
+
+    @Query("select count(*) from local_widget_photos where widgetId = :widgetId")
+    suspend fun countLocalPhotos(widgetId: Int): Int
+
+    @Query(
+        "select count(*) from local_widget_photos " +
+            "where widgetId = :widgetId " +
+            "and photoId not in (select photoId from pending_deletion_widget_photos where widgetId = :widgetId)",
+    )
+    suspend fun countLocalPhotosNotPendingDeletion(widgetId: Int): Int
+
+    @Query(
+        "select count(*) from local_widget_photos " +
+            "where widgetId = :widgetId " +
+            "and photoId not in (select photoId from excluded_widget_photos where widgetId = :widgetId)",
+    )
+    suspend fun countLocalPhotosNotExcluded(widgetId: Int): Int
+
+    @Query(
+        "select pwo.photoIndex from local_widget_photos as lwp " +
+            "inner join photo_widget_order pwo " +
+            "on lwp.widgetId = pwo.widgetId " +
+            "and lwp.photoId = pwo.photoId " +
+            "where lwp.widgetId = :widgetId " +
+            "and lwp.photoId = :photoId",
+    )
+    suspend fun getLocalPhotoIndex(widgetId: Int, photoId: String): Int?
+
+    @Query(
+        "select pwo.* from local_widget_photos as lwp " +
+            "inner join photo_widget_order pwo " +
+            "on lwp.widgetId = pwo.widgetId " +
+            "and lwp.photoId = pwo.photoId " +
+            "where lwp.widgetId = :widgetId " +
+            "and pwo.photoIndex > :photoIndex " +
+            "order by pwo.photoIndex asc " +
+            "limit :limit",
+    )
+    suspend fun getLocalPhotoOrderAfter(widgetId: Int, photoIndex: Int, limit: Int): List<PhotoWidgetOrderDto>
+
+    @Query(
+        "select pwo.* from local_widget_photos as lwp " +
+            "inner join photo_widget_order pwo " +
+            "on lwp.widgetId = pwo.widgetId " +
+            "and lwp.photoId = pwo.photoId " +
+            "where lwp.widgetId = :widgetId " +
+            "and pwo.photoIndex < :photoIndex " +
+            "order by pwo.photoIndex desc " +
+            "limit :limit",
+    )
+    suspend fun getLocalPhotoOrderBefore(widgetId: Int, photoIndex: Int, limit: Int): List<PhotoWidgetOrderDto>
+
     @Upsert
     suspend fun saveLocalPhotos(photos: Collection<LocalPhotoDto>)
 

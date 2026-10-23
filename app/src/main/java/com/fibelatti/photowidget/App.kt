@@ -19,6 +19,7 @@ import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleWorker
 import com.fibelatti.photowidget.widget.PhotoWidgetSyncWorker
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
+import dagger.Lazy
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -35,7 +36,7 @@ class App : Application(), Configuration.Provider {
     lateinit var coroutineScope: CoroutineScope
 
     @Inject
-    lateinit var deleteStaleDataUseCase: DeleteStaleDataUseCase
+    lateinit var deleteStaleDataUseCase: Lazy<DeleteStaleDataUseCase>
 
     @Inject
     lateinit var hiltWorkerFactory: HiltWorkerFactory
@@ -135,7 +136,7 @@ class App : Application(), Configuration.Provider {
 
     private fun deleteStaleData() {
         coroutineScope.launch {
-            deleteStaleDataUseCase()
+            deleteStaleDataUseCase.get().invoke()
         }
     }
 

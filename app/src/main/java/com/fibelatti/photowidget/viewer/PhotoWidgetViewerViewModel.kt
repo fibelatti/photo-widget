@@ -4,12 +4,14 @@ import android.appwidget.AppWidgetManager
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.tapActionKeepCurrentPhoto
 import com.fibelatti.photowidget.model.tapActionNoShuffle
 import com.fibelatti.photowidget.platform.savedState
 import com.fibelatti.photowidget.widget.CyclePhotoUseCase
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
+import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Job
@@ -25,6 +27,7 @@ class PhotoWidgetViewerViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
     private val cyclePhotoUseCase: CyclePhotoUseCase,
+    private val photoWidgetStorage: PhotoWidgetStorage,
 ) : ViewModel() {
 
     private val appWidgetId: Int by savedStateHandle.savedState(
@@ -59,10 +62,13 @@ class PhotoWidgetViewerViewModel @Inject constructor(
                 skipSaving = photoWidget.tapActionKeepCurrentPhoto,
                 currentPhoto = photoWidget.currentPhoto?.photoId,
             )
-            updateState(
-                fromWidget = photoWidget.photos.firstOrNull { it.photoId == newPhotoId }
-                    ?.let { newPhoto -> photoWidget.copy(currentPhoto = newPhoto) },
-            )
+            // Read by ID rather than reloading the current photo: when the tap action keeps the
+            // current photo, cycling doesn't save the new one
+            val newPhoto: LocalPhoto? = newPhotoId.ifEmpty { null }?.let { photoId: String ->
+                photoWidgetStorage.getWidgetPhoto(appWidgetId = appWidgetId, photoId = photoId)
+            }
+
+            updateState(fromWidget = newPhoto?.let { photoWidget.copy(currentPhoto = it) })
         }
     }
 
@@ -70,13 +76,24 @@ class PhotoWidgetViewerViewModel @Inject constructor(
         loadWidgetJob?.cancel()
         loadWidgetJob = viewModelScope.launch {
             val photoWidget: PhotoWidget = fromWidget
-                ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId).first { !it.isLoading }
+                ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId, currentPhotoOnly = true).first { !it.isLoading }
+            val currentPhotoId: String? = photoWidget.currentPhoto?.photoId
+            // The adjacent photo is exact, the count is the fallback when the current photo can't be placed
+            val canCycle: Boolean = currentPhotoId
+                ?.let { photoId: String ->
+                    photoWidgetStorage.getAdjacentWidgetPhotoId(
+                        appWidgetId = appWidgetId,
+                        photoId = photoId,
+                        forward = true,
+                    ) != currentPhotoId
+                }
+                ?: (photoWidgetStorage.getWidgetPhotoCountEstimate(appWidgetId = appWidgetId) > 1)
 
             _state.update { current ->
                 current.copy(
                     photoWidget = photoWidget,
-                    showNextButton = photoWidget.photos.size > 1,
-                    showPreviousButton = photoWidget.photos.size > 1,
+                    showNextButton = canCycle,
+                    showPreviousButton = canCycle,
                 )
             }
         }

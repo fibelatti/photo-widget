@@ -18,6 +18,20 @@ data class LocalPhoto(
 ) : Parcelable
 
 /**
+ * Resolves the photo (or its ID) a widget is currently displaying: the one matching
+ * [currentPhotoId], falling back to the item at [currentIndex], and then to the first item.
+ */
+fun <T> List<T>.resolveCurrentPhoto(
+    currentPhotoId: String?,
+    currentIndex: Int,
+    photoId: (T) -> String,
+): T? {
+    return firstOrNull { photoId(it) == currentPhotoId }
+        ?: getOrNull(currentIndex)
+        ?: firstOrNull()
+}
+
+/**
  * Returns the path of the photo to be displayed to the user.
  *
  * If the photo has been cropped and [viewOriginalPhoto] is false, the cropped photo path is

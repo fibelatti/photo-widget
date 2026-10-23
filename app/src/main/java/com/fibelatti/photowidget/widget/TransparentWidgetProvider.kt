@@ -94,7 +94,8 @@ class TransparentWidgetProvider : AppWidgetProvider() {
                 val photoWidget: PhotoWidget = pinningCache.pendingWidget
                     ?.takeIf { appWidgetId !in storage.getKnownWidgetIds().first() }
                     ?.also { Timber.d("Updating using the pending widget data") }
-                    ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId).first { !it.isLoading }
+                    ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId, currentPhotoOnly = true)
+                        .first { !it.isLoading }
 
                 val views = RemoteViews(context.packageName, R.layout.transparent_widget)
 
