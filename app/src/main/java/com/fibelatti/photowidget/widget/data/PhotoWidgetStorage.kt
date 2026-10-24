@@ -231,10 +231,10 @@ class PhotoWidgetStorage @Inject constructor(
 
     /**
      * Resolves the photo [appWidgetId] is currently displaying, reading only that photo from the
-     * local photo cache. Falls back to [loadWidgetPhotos] when the cache has no photos to show,
-     * which populates it from the widget source.
+     * local photo cache. Returns null when the cache has no photos to show, without reading the
+     * widget source.
      */
-    suspend fun loadCurrentWidgetPhoto(appWidgetId: Int): LocalPhoto? {
+    suspend fun getCachedCurrentWidgetPhoto(appWidgetId: Int): LocalPhoto? {
         Timber.i("Retrieving current photo %s", mapOf("appWidgetId" to appWidgetId))
 
         val source: PhotoWidgetSource = getWidgetSource(appWidgetId = appWidgetId)
@@ -256,12 +256,7 @@ class PhotoWidgetStorage @Inject constructor(
                 photoId?.let { localPhotoDao.getLocalPhoto(widgetId = appWidgetId, photoId = it) }
             }
 
-        if (localPhoto != null) {
-            return localPhoto.toLocalPhoto(source = source)
-        }
-
-        return loadWidgetPhotos(appWidgetId = appWidgetId).first().current
-            .resolveCurrentPhoto(currentPhotoId = currentPhotoId, currentIndex = widgetIndex) { it.photoId }
+        return localPhoto?.toLocalPhoto(source = source)
     }
 
     fun getPersistedUriPermissions(): List<Uri> = externalFileStorage.getPersistedUriPermissions()
@@ -424,6 +419,7 @@ class PhotoWidgetStorage @Inject constructor(
         return WidgetPhotos(
             current = loadedPhotos[true].orEmpty(),
             excluded = loadedPhotos[false].orEmpty(),
+            fromCache = false,
         ).also {
             Timber.i("Total photos found: ${it.current.size} current, ${it.excluded.size} excluded.")
         }
@@ -448,6 +444,7 @@ class PhotoWidgetStorage @Inject constructor(
         return WidgetPhotos(
             current = localPhotos[true].orEmpty(),
             excluded = localPhotos[false].orEmpty(),
+            fromCache = true,
         ).also {
             Timber.i("Total local photos found: ${it.current.size} current, ${it.excluded.size} excluded.")
         }
@@ -527,8 +524,8 @@ class PhotoWidgetStorage @Inject constructor(
             localPhotoDtos to localPhotoDtos.map { it.photoId }.toSet()
         }
 
-        // Cycling reads the photos together with their order, so both must change at once. The write
-        // also completes when the caller is cancelled, so the source read that preceded it isn't lost.
+        // Cycling reads the photos together with their order, so both must change at once. Writing
+        // also completes when the caller is canceled, so the source read that preceded it isn't lost.
         val existingLocalPhotos: List<LocalPhotoDto> = withContext(NonCancellable) {
             database.withTransaction {
                 val localPhotoDtos: List<LocalPhotoDto> = localPhotoDao.getLocalPhotos(widgetId = appWidgetId)

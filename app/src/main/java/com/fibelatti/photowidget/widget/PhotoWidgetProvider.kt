@@ -21,6 +21,7 @@ import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetLoadStage
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PreparedCurrentPhoto
 import com.fibelatti.photowidget.model.bitmapByteCount
@@ -223,8 +224,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 val photoWidget: PhotoWidget = pinningCache.pendingWidget
                     ?.takeIf { appWidgetId !in photoWidgetStorage.getKnownWidgetIds().first() }
                     ?.also { Timber.d("Updating using the pending widget data") }
-                    ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId, currentPhotoOnly = true)
-                        .first { !it.isLoading }
+                    ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+                        .first { it.loadStage >= PhotoWidgetLoadStage.CURRENT_PHOTO }
 
                 // Resolved once so the label is measured for the render budget and drawn with the
                 // same typeface. A font that takes longer to load triggers another render once ready,

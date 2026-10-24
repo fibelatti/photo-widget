@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.widget
 
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetLoadStage
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import javax.inject.Inject
@@ -63,7 +64,7 @@ class DuplicatePhotoWidgetUseCase @Inject constructor(
             currentPhoto = photos.firstOrNull(),
             deletionTimestamp = -1,
             removedPhotos = emptyList(),
-            isLoading = false,
+            loadStage = PhotoWidgetLoadStage.SOURCE_PHOTOS,
         )
     }
 }

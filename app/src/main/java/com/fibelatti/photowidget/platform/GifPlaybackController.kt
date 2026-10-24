@@ -6,6 +6,7 @@ import android.net.Uri
 import android.widget.RemoteViews
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.GifFrames
+import com.fibelatti.photowidget.model.PhotoWidgetLoadStage
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
@@ -19,7 +20,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterNot
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
@@ -92,7 +93,7 @@ class GifPlaybackController @Inject constructor(
     private fun getGifPlaybackJob(appWidgetId: Int, packageName: String): Job {
         return coroutineScope.launch {
             val gifFlow: Flow<Pair<List<Uri>, Long>> = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
-                .filterNot { it.isLoading }
+                .filter { it.loadStage >= PhotoWidgetLoadStage.CACHED_PHOTOS }
                 .take(1)
                 .map { photoWidget ->
                     photoWidget.photos.mapNotNull { it.launcherUri } to photoWidget.gifInterval

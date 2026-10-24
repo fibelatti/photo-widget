@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetLoadStage
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.platform.ExceptionReporter
@@ -35,6 +36,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.transformWhile
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -86,8 +88,12 @@ class HomeViewModel @Inject constructor(
             .flatMapLatest { allIds: List<Int> ->
                 if (allIds.isEmpty()) return@flatMapLatest flowOf(emptyMap())
 
+                // Combining collects every flow to completion, so each one stops at the current photo
                 val widgetFlows: List<Flow<PhotoWidget>> = allIds.map { id: Int ->
-                    loadPhotoWidgetUseCase(appWidgetId = id, currentPhotoOnly = true)
+                    loadPhotoWidgetUseCase(appWidgetId = id).transformWhile { widget: PhotoWidget ->
+                        emit(widget)
+                        widget.loadStage < PhotoWidgetLoadStage.CURRENT_PHOTO
+                    }
                 }
 
                 combine(flows = widgetFlows) { widgets ->
@@ -126,7 +132,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun isInvalid(widgetId: Int, widget: PhotoWidget, persistedUris: List<Uri>): Boolean {
-        if (widget.transparent || widget.isLoading) return false
+        if (widget.transparent || widget.loadStage < PhotoWidgetLoadStage.CURRENT_PHOTO) return false
 
         // Widgets only load their cached photos, which outlive access to the source
         return widget.currentPhoto == null ||

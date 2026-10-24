@@ -5,6 +5,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetColors
+import com.fibelatti.photowidget.model.PhotoWidgetLoadStage
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.resolveCurrentPhoto
@@ -21,44 +22,35 @@ class LoadPhotoWidgetUseCase @Inject constructor(
 ) {
 
     /**
-     * Loads the widget data of [appWidgetId]. Widget properties are emitted first, with its photos
-     * following after. The returned [Flow] is expected to emit until [PhotoWidget.isLoading] is
-     * false.
+     * Loads the widget data of [appWidgetId], emitting once per [PhotoWidgetLoadStage] reached, in
+     * order. Collectors should stop once [PhotoWidget.loadStage] satisfies their use case, which
+     * cancels the remaining stages:
      *
-     * When [currentPhotoOnly] is set, only [PhotoWidget.currentPhoto] is loaded from the local
-     * photo cache, while [PhotoWidget.photos] and [PhotoWidget.removedPhotos] are left empty.
-     * Callers that only display the widget should prefer it to avoid potentially loading thousands
-     * of photos unnecessarily.
+     * - Callers that only display the widget need [PhotoWidgetLoadStage.CURRENT_PHOTO], which
+     * avoids potentially loading thousands of photos unnecessarily.
+     * - Callers that need every photo but not the latest source state need
+     * [PhotoWidgetLoadStage.CACHED_PHOTOS].
      *
-     * Otherwise, photos are emitted first from the local photo cache and then from the widget
-     * source. Callers that only need the cached photos can stop at the first emission where
-     * [PhotoWidget.isLoading] is false, in which case the source is only read if the cache is empty.
+     * When the local photo cache has no photos to show, the cached photos stage is skipped and the
+     * source is read right away. So is the current photo stage, except for transparent widgets,
+     * which always reach it without a photo.
+     *
+     * Stopping early relies on each stage only running once the previous emission is collected, so
+     * the returned [Flow] **must not be buffered**, e.g. with `flowOn` or `buffer`.
      */
-    operator fun invoke(
-        appWidgetId: Int,
-        currentPhotoOnly: Boolean = false,
-    ): Flow<PhotoWidget> = with(photoWidgetStorage) {
-        Timber.i(
-            "Loading widget data %s",
-            mapOf(
-                "appWidgetId" to appWidgetId,
-                "currentPhotoOnly" to currentPhotoOnly,
-            ),
-        )
+    operator fun invoke(appWidgetId: Int): Flow<PhotoWidget> = with(photoWidgetStorage) {
+        Timber.i("Loading widget data %s", mapOf("appWidgetId" to appWidgetId))
 
         return flow {
             val widget = withContext(Dispatchers.IO) { loadWidgetData(appWidgetId = appWidgetId) }
-            emit(widget.copy(isLoading = true))
+            emit(widget.copy(loadStage = PhotoWidgetLoadStage.METADATA))
 
-            if (currentPhotoOnly) {
-                val currentPhoto: LocalPhoto? = if (widget.transparent) {
-                    null
-                } else {
-                    loadCurrentWidgetPhoto(appWidgetId = appWidgetId)
+            if (widget.transparent) {
+                emit(widget.copy(loadStage = PhotoWidgetLoadStage.CURRENT_PHOTO))
+            } else {
+                getCachedCurrentWidgetPhoto(appWidgetId = appWidgetId)?.let { currentPhoto: LocalPhoto ->
+                    emit(widget.copy(currentPhoto = currentPhoto, loadStage = PhotoWidgetLoadStage.CURRENT_PHOTO))
                 }
-
-                emit(widget.copy(currentPhoto = currentPhoto, isLoading = false))
-                return@flow
             }
 
             val currentPhotoId: String? = getCurrentPhotoId(appWidgetId = appWidgetId)
@@ -73,7 +65,11 @@ class LoadPhotoWidgetUseCase @Inject constructor(
                         photos = widgetPhotos.current,
                         currentPhoto = currentPhoto,
                         removedPhotos = widgetPhotos.excluded,
-                        isLoading = false,
+                        loadStage = if (widgetPhotos.fromCache) {
+                            PhotoWidgetLoadStage.CACHED_PHOTOS
+                        } else {
+                            PhotoWidgetLoadStage.SOURCE_PHOTOS
+                        },
                     ),
                 )
             }

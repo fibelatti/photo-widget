@@ -34,6 +34,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.home.HomeViewModel
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetLoadStage
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.model.isWidgetRemoved
 import com.fibelatti.photowidget.platform.letIf
@@ -129,7 +130,7 @@ private fun ImportFromWidgetContent(
                             },
                         colors = widget.colors,
                         border = widget.border,
-                        isLoading = widget.isLoading,
+                        isLoading = widget.loadStage < PhotoWidgetLoadStage.CURRENT_PHOTO,
                     )
 
                     if (widget.status.isWidgetRemoved) {

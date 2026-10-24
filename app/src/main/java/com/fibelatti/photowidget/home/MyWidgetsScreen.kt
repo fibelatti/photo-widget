@@ -62,6 +62,7 @@ import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetColors
+import com.fibelatti.photowidget.model.PhotoWidgetLoadStage
 import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.model.PhotoWidgetSource
@@ -266,7 +267,7 @@ private fun WidgetGridItem(
                     },
                 colors = widget.colors,
                 border = widget.border,
-                isLoading = widget.isLoading,
+                isLoading = widget.loadStage < PhotoWidgetLoadStage.CURRENT_PHOTO,
             )
         }
 

@@ -22,6 +22,7 @@ import com.fibelatti.photowidget.chooser.PhotoWidgetChooserActivity
 import com.fibelatti.photowidget.configure.appWidgetId
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetLoadStage
 import com.fibelatti.photowidget.model.tapActionIncreaseBrightness
 import com.fibelatti.photowidget.model.tapActionViewOriginalPhoto
 import com.fibelatti.photowidget.model.tapActionViewerBackgroundColorHex
@@ -89,7 +90,7 @@ class PhotoWidgetViewerActivity : AppCompatActivity() {
 
                 PhotoWidgetViewerScreen(
                     photo = photoWidget.currentPhoto,
-                    isLoading = photoWidget.isLoading,
+                    isLoading = photoWidget.loadStage < PhotoWidgetLoadStage.CURRENT_PHOTO,
                     viewOriginalPhoto = photoWidget.tapActionViewOriginalPhoto,
                     onDismissClick = ::finishAndRemoveTask,
                     backgroundColor = backgroundColor,

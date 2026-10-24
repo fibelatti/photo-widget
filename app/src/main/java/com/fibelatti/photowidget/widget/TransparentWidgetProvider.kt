@@ -14,6 +14,7 @@ import com.fibelatti.photowidget.configure.PhotoWidgetPinningCache
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetLoadStage
 import com.fibelatti.photowidget.platform.ExceptionReporter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -94,8 +95,8 @@ class TransparentWidgetProvider : AppWidgetProvider() {
                 val photoWidget: PhotoWidget = pinningCache.pendingWidget
                     ?.takeIf { appWidgetId !in storage.getKnownWidgetIds().first() }
                     ?.also { Timber.d("Updating using the pending widget data") }
-                    ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId, currentPhotoOnly = true)
-                        .first { !it.isLoading }
+                    ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+                        .first { it.loadStage >= PhotoWidgetLoadStage.CURRENT_PHOTO }
 
                 val views = RemoteViews(context.packageName, R.layout.transparent_widget)
 

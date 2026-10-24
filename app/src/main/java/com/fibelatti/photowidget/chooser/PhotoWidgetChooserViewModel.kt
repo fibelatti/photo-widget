@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetLoadStage
 import com.fibelatti.photowidget.platform.savedState
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
@@ -13,7 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filterNot
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.stateIn
 import timber.log.Timber
 
@@ -30,7 +31,7 @@ class PhotoWidgetChooserViewModel @Inject constructor(
     )
 
     val state: StateFlow<PhotoWidget?> = loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
-        .filterNot { it.isLoading }
+        .filter { it.loadStage >= PhotoWidgetLoadStage.CACHED_PHOTOS }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),

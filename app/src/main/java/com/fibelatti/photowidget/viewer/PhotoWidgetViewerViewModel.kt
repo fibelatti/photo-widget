@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetLoadStage
 import com.fibelatti.photowidget.model.tapActionKeepCurrentPhoto
 import com.fibelatti.photowidget.model.tapActionNoShuffle
 import com.fibelatti.photowidget.platform.savedState
@@ -76,7 +77,8 @@ class PhotoWidgetViewerViewModel @Inject constructor(
         loadWidgetJob?.cancel()
         loadWidgetJob = viewModelScope.launch {
             val photoWidget: PhotoWidget = fromWidget
-                ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId, currentPhotoOnly = true).first { !it.isLoading }
+                ?: loadPhotoWidgetUseCase(appWidgetId = appWidgetId)
+                    .first { it.loadStage >= PhotoWidgetLoadStage.CURRENT_PHOTO }
             val currentPhotoId: String? = photoWidget.currentPhoto?.photoId
             // The adjacent photo is exact, the count is the fallback when the current photo can't be placed
             val canCycle: Boolean = currentPhotoId

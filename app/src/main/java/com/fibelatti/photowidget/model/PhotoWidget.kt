@@ -29,7 +29,7 @@ data class PhotoWidget(
     val status: PhotoWidgetStatus = PhotoWidgetStatus.ACTIVE,
     val deletionTimestamp: Long = -1,
     val removedPhotos: List<LocalPhoto> = emptyList(),
-    val isLoading: Boolean = false,
+    val loadStage: PhotoWidgetLoadStage = PhotoWidgetLoadStage.SOURCE_PHOTOS,
     val transparent: Boolean = false,
 ) : Parcelable {
 

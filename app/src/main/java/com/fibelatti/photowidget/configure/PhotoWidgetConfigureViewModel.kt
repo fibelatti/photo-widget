@@ -13,6 +13,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
+import com.fibelatti.photowidget.model.PhotoWidgetLoadStage
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
@@ -206,7 +207,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     transparent = transparent || photoWidget.transparent,
                 ),
                 selectedPhoto = photoWidget.currentPhoto ?: photoWidget.photos.firstOrNull(),
-                isProcessing = photoWidget.isLoading,
+                isProcessing = photoWidget.loadStage < PhotoWidgetLoadStage.CACHED_PHOTOS,
                 hasEdits = hasEdits,
                 isDraft = PhotoWidget.isDraftWidgetId(effectiveWidgetId),
             )
