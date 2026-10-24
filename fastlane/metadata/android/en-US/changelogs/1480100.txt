@@ -1,0 +1,5 @@
+This version brings the following updates:
+
+* Widgets with many photos now load faster and use fewer resources
+
+Thanks for using the app!

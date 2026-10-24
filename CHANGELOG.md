@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.48.1] - 2026-10-24
+[v1.48.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.48.1
+
+### Changed
+
+* Improve how widgets with many photos are loaded to reduce resource usage
+
 ## [v1.48.0] - 2026-10-17
 [v1.48.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.48.0
 
