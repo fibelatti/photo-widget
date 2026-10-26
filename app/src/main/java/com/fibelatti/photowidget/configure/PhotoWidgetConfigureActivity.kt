@@ -28,6 +28,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.KeepAliveService
+import com.fibelatti.photowidget.platform.isForeignContentUri
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
@@ -112,7 +113,9 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     }
 
     private fun checkIntent() {
-        intent.sharedPhotos?.let(viewModel::photoPicked)
+        intent.sharedPhotos
+            ?.filter { uri: Uri -> uri.isForeignContentUri(context = this) }
+            ?.let(viewModel::photoPicked)
     }
 
     private fun handleBackPress() {

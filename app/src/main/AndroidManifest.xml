@@ -37,6 +37,11 @@
         tools:ignore="ForegroundServicesPolicy" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
 
+    <permission
+        android:name="${applicationId}.permission.SEND_WIDGET_BROADCAST"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="${applicationId}.permission.SEND_WIDGET_BROADCAST" />
+
     <application
         android:name=".App"
         android:enableOnBackInvokedCallback="true"
@@ -148,7 +153,8 @@
         <receiver
             android:name=".widget.PhotoWidgetProvider"
             android:exported="true"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:permission="${applicationId}.permission.SEND_WIDGET_BROADCAST">
 
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -162,7 +168,8 @@
         <receiver
             android:name=".widget.TransparentWidgetProvider"
             android:exported="true"
-            android:label="@string/transparent_widget_label">
+            android:label="@string/transparent_widget_label"
+            android:permission="${applicationId}.permission.SEND_WIDGET_BROADCAST">
 
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

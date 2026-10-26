@@ -22,3 +22,10 @@ suspend inline fun File.runWithFileOutputStream(crossinline operation: (FileOutp
         }
     }
 }
+
+/**
+ * Whether this file is located within [dir], after resolving `..` segments and symbolic links.
+ */
+fun File.isInside(dir: File): Boolean {
+    return canonicalFile.toPath().startsWith(dir.canonicalFile.toPath())
+}

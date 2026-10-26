@@ -29,7 +29,7 @@ class RestoreBackupUseCase @Inject constructor(
             .use { zipInputStream ->
                 zipUtils.extractZip(
                     zipInputStream = zipInputStream,
-                    destinationDir = context.cacheDir,
+                    destinationDir = extractionDir(context = context),
                 )
             }
 
@@ -63,5 +63,14 @@ class RestoreBackupUseCase @Inject constructor(
                 },
             )
         }
+    }
+
+    companion object {
+
+        /**
+         * The only location widgets can be restored from, keeping restores away from the app's other
+         * files, some of which are shared through its `FileProvider`.
+         */
+        fun extractionDir(context: Context): File = context.cacheDir.resolve(relative = "restore")
     }
 }

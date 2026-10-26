@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--
 Auto-generated baseline file with the expected permissions for this app.
-Last updated: 2026-03-30T18:03:45.477156
+Last updated: 2026-10-24T15:05:47.793928
 -->
 <!--@formatter:off-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:documentation="custom">
@@ -12,5 +12,7 @@ Last updated: 2026-03-30T18:03:45.477156
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" documentation:comment="This is an optional permission needed to use shorter intervals to switch photos, ensuring that they follow the selected schedule exactly. An app holding this permission can schedule work to happen at a desired time in the future. This also means that the app can run when not actively using the device. The system invokes an exact alarm at a precise moment in the future."/>
     <uses-permission android:name="android.permission.WAKE_LOCK" documentation:comment="This permission is used by Work Manager to manage background work, in this case, used to ensure that widgets are synced and are updated as expected."/>
     <uses-permission android:name="com.fibelatti.photowidget.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" documentation:comment="This is not a real permission, but rather a quirk. It is used with API level 33 and above (Android 13+), simply meaning that the application intends to send intents – but only to itself, while rejecting them from elsewhere."/>
+    <uses-permission android:name="com.fibelatti.photowidget.permission.SEND_WIDGET_BROADCAST" documentation:comment="Not a user-facing permission. Only apps signed with the same key can hold it, restricting who can send actions to the photo widget so that other apps cannot change or remove its photos."/>
     <permission android:name="com.fibelatti.photowidget.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" android:protectionLevel="signature" documentation:comment="This is not a real permission, but rather a quirk. It is used with API level 33 and above (Android 13+), simply meaning that the application intends to send intents – but only to itself, while rejecting them from elsewhere."/>
+    <permission android:name="com.fibelatti.photowidget.permission.SEND_WIDGET_BROADCAST" android:protectionLevel="signature" documentation:comment="Not a user-facing permission. Only apps signed with the same key can hold it, restricting who can send actions to the photo widget so that other apps cannot change or remove its photos."/>
 </manifest>

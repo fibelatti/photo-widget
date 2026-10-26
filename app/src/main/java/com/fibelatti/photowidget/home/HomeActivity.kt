@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Parcelable
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -14,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
+import androidx.core.content.IntentCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.fibelatti.photowidget.BuildConfig
@@ -25,6 +25,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.appLocaleSettingsIntent
+import com.fibelatti.photowidget.platform.isForeignContentUri
 import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.platform.widgetPinningNotAvailable
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,23 +74,24 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel.checkForPendingExceptionReports()
     }
 
-    @Suppress("DEPRECATION")
     private fun checkIntent() {
         if (!intent.hasExtra(Intent.EXTRA_STREAM)) return
 
+        val sharedPhotos: List<Uri>? = when (intent.action) {
+            Intent.ACTION_SEND -> {
+                IntentCompat.getParcelableExtra(intent, Intent.EXTRA_STREAM, Uri::class.java)?.let(::listOf)
+            }
+
+            Intent.ACTION_SEND_MULTIPLE -> {
+                IntentCompat.getParcelableArrayListExtra(intent, Intent.EXTRA_STREAM, Uri::class.java)
+            }
+
+            else -> null
+        }
+
         preparedIntent = PhotoWidgetConfigureActivity.newWidgetIntent(
             context = this,
-            sharedPhotos = when (intent.action) {
-                Intent.ACTION_SEND -> {
-                    (intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let(::listOf)
-                }
-
-                Intent.ACTION_SEND_MULTIPLE -> {
-                    intent.getParcelableArrayListExtra<Parcelable>(Intent.EXTRA_STREAM)?.filterIsInstance<Uri>()
-                }
-
-                else -> null
-            },
+            sharedPhotos = sharedPhotos?.filter { uri: Uri -> uri.isForeignContentUri(context = this) },
         )
 
         val size = preparedIntent?.sharedPhotos?.size ?: 0

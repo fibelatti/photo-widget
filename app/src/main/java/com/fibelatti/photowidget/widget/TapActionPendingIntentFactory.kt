@@ -11,6 +11,7 @@ import com.fibelatti.photowidget.folder.PhotoWidgetAppFolderActivity
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.platform.getInstalledApp
 import com.fibelatti.photowidget.platform.getLaunchIntent
+import com.fibelatti.photowidget.platform.hasPersistedReadPermission
 import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.platform.setWallpaperIntent
 import com.fibelatti.photowidget.platform.sharePhotoChooserIntent
@@ -69,7 +70,7 @@ object TapActionPendingIntentFactory {
             }
 
             is PhotoWidgetTapAction.ViewInGallery -> {
-                if (externalUri == null) return null
+                if (externalUri == null || !context.hasPersistedReadPermission(externalUri)) return null
 
                 val intent = Intent(Intent.ACTION_VIEW)
                     .setDataAndType(externalUri, "image/*")
@@ -193,6 +194,8 @@ object TapActionPendingIntentFactory {
                 if (tapAction.fileUri.isNullOrBlank()) return null
 
                 val fileUri: Uri = tapAction.fileUri.toUri()
+                if (!context.hasPersistedReadPermission(fileUri)) return null
+
                 val mimeType: String = context.contentResolver.getType(fileUri) ?: "*/*"
 
                 val intent = Intent(Intent.ACTION_VIEW)
@@ -213,6 +216,7 @@ object TapActionPendingIntentFactory {
                 if (tapAction.folderUri.isNullOrBlank()) return null
 
                 val treeUri: Uri = tapAction.folderUri.toUri()
+                if (!context.hasPersistedReadPermission(treeUri)) return null
 
                 val intent = Intent(Intent.ACTION_VIEW)
                     .setDataAndType(treeUri.toFolderDocumentUri(), "vnd.android.document/directory")
