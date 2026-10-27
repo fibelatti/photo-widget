@@ -106,7 +106,7 @@ fun AppShortcutPickerBottomSheet(
                 }
 
                 if (shortcuts.isNotEmpty()) {
-                    items(shortcuts, key = { it.id }) { shortcut ->
+                    items(shortcuts, key = { it.id }, contentType = { "shortcut" }) { shortcut ->
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()

@@ -187,6 +187,17 @@ fun AspectRatioPicker(
             itemsIndexed(
                 items = PhotoWidgetAspectRatio.entries,
                 key = { _, item -> item.name },
+                // Items share a content type when they share an item representation
+                contentType = { _, item ->
+                    when (item) {
+                        PhotoWidgetAspectRatio.SQUARE,
+                        PhotoWidgetAspectRatio.ORIGINAL,
+                        PhotoWidgetAspectRatio.FILL_WIDGET,
+                        -> item
+
+                        else -> "default"
+                    }
+                },
             ) { index, item ->
                 AspectRatioItem(
                     item = item,

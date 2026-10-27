@@ -465,7 +465,7 @@ private fun PhotoGrid(
             )
         }
 
-        items(currentPhotos, key = { photo -> photo }) { photo ->
+        items(currentPhotos, key = { photo -> photo }, contentType = { "photo" }) { photo ->
             ReorderableItem(reorderableLazyGridState, key = photo) {
                 Box {
                     ShapedPhoto(

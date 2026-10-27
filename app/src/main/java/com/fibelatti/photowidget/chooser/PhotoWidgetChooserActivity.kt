@@ -149,7 +149,7 @@ private fun ScreenContent(
                 )
             }
 
-            items(photos, key = { photo -> photo.photoId }) { photo ->
+            items(photos, key = { photo -> photo.photoId }, contentType = { "photo" }) { photo ->
                 ShapedPhoto(
                     photo = photo,
                     aspectRatio = PhotoWidgetAspectRatio.SQUARE,

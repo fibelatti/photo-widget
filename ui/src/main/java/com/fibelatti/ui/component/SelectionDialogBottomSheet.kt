@@ -171,7 +171,7 @@ private fun <T> SelectionDialogLazyListContent(
             }
         }
 
-        itemsIndexed(items = options, key = keyProvider) { index: Int, option: T ->
+        itemsIndexed(items = options, key = keyProvider, contentType = { _, _ -> "option" }) { index: Int, option: T ->
             val shape: Shape = when {
                 options.size == 1 -> Shapes.StandaloneShape
                 index == 0 -> Shapes.TopShape
