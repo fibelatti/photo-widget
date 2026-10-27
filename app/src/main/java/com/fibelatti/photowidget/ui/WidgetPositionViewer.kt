@@ -162,7 +162,7 @@ private fun rememberLabelColor(color: PhotoWidgetTextColor, photo: LocalPhoto?):
             if (photo != null) rememberPhotoBitmap(photo = photo) else rememberSampleBitmap()
         } else {
             null
-        }
+        },
     )
 
     return remember(color, colorPalette) {
