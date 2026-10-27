@@ -41,7 +41,7 @@ import com.fibelatti.photowidget.model.textToBitmap
 import com.fibelatti.photowidget.model.verticalPadding
 import com.fibelatti.photowidget.platform.ColorPalette
 import com.fibelatti.photowidget.platform.GoogleFontsLoader
-import com.fibelatti.photowidget.platform.getColorPalette
+import com.fibelatti.photowidget.platform.produceColorPaletteState
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.ui.foundation.dpToPx
 import kotlin.math.abs
@@ -149,21 +149,21 @@ fun WidgetPositionViewer(
 }
 
 /**
- * The resolved [color], or `null` while the photo it depends on is still decoding. It is matched
- * against [photo], or against the sample photo when there is none, the same photo that
- * [WidgetPositionViewer] displays.
+ * The resolved [color], or `null` while the palette of the photo it depends on is still being
+ * extracted. It is matched against [photo], or against the sample photo when there is none, the
+ * same photo that [WidgetPositionViewer] displays.
  */
 @ColorInt
 @Composable
 private fun rememberLabelColor(color: PhotoWidgetTextColor, photo: LocalPhoto?): Int? {
     val localContext = LocalContext.current
-
-    val colorPalette: ColorPalette? = if (color is PhotoWidgetTextColor.Palette) {
-        val photoBitmap: Bitmap? = if (photo != null) rememberPhotoBitmap(photo = photo) else rememberSampleBitmap()
-        remember(photoBitmap) { photoBitmap?.let { bitmap -> getColorPalette(bitmap) } }
-    } else {
-        null
-    }
+    val colorPalette: ColorPalette? by produceColorPaletteState(
+        bitmap = if (color is PhotoWidgetTextColor.Palette) {
+            if (photo != null) rememberPhotoBitmap(photo = photo) else rememberSampleBitmap()
+        } else {
+            null
+        }
+    )
 
     return remember(color, colorPalette) {
         if (color is PhotoWidgetTextColor.Palette && colorPalette == null) {

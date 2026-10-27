@@ -3,8 +3,13 @@ package com.fibelatti.photowidget.platform
 import android.graphics.Bitmap
 import android.graphics.Color
 import androidx.annotation.ColorInt
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.produceState
 import androidx.palette.graphics.Palette
 import com.fibelatti.photowidget.model.MatchPhotoColorType
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class ColorPalette(
     @ColorInt val dominantColor: Int,
@@ -29,4 +34,13 @@ fun getColorPalette(bitmap: Bitmap): ColorPalette {
         vibrantColor = palette.getVibrantColor(Color.BLACK),
         mutedColor = palette.getMutedColor(Color.BLACK),
     )
+}
+
+@Composable
+fun produceColorPaletteState(bitmap: Bitmap?): State<ColorPalette?> {
+    return produceState(initialValue = null, key1 = bitmap) {
+        if (bitmap != null) {
+            value = withContext(Dispatchers.Default) { getColorPalette(bitmap) }
+        }
+    }
 }

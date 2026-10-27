@@ -38,10 +38,11 @@ import com.fibelatti.photowidget.model.DynamicColorType
 import com.fibelatti.photowidget.model.MatchPhotoColorType
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
+import com.fibelatti.photowidget.platform.ColorPalette
 import com.fibelatti.photowidget.platform.colorForType
 import com.fibelatti.photowidget.platform.formatPercent
-import com.fibelatti.photowidget.platform.getColorPalette
 import com.fibelatti.photowidget.platform.getDynamicAttributeColor
+import com.fibelatti.photowidget.platform.produceColorPaletteState
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.rememberSampleBitmap
@@ -286,7 +287,7 @@ private fun MatchPhotoBorderContent(
             horizontalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            val colorPalette = remember(sampleBitmap) { getColorPalette(sampleBitmap) }
+            val colorPalette: ColorPalette? by produceColorPaletteState(bitmap = sampleBitmap)
             val radioTypes = MatchPhotoColorType.entries
             val (selectedType, onTypeSelected) = rememberSaveable { mutableStateOf(currentType) }
             val localResources = LocalResources.current
