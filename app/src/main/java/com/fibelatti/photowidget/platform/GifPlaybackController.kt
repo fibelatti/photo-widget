@@ -3,6 +3,7 @@ package com.fibelatti.photowidget.platform
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.net.Uri
+import android.os.DeadSystemException
 import android.widget.RemoteViews
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.GifFrames
@@ -102,19 +103,30 @@ class GifPlaybackController @Inject constructor(
                 dict.getOrDefault(appWidgetId, false)
             }
 
-            combine(flow = gifFlow, flow2 = playbackFlow) { gif: Pair<List<Uri>, Long>, shouldPlay: Boolean ->
-                Triple(gif.first, gif.second, shouldPlay)
-            }.collectLatest { (frames: List<Uri>, interval: Long, shouldPlay: Boolean) ->
-                while (shouldPlay && frames.isNotEmpty()) {
-                    frames.forEach { frame: Uri ->
-                        val remoteViews = RemoteViews(packageName, R.layout.photo_widget)
-                        remoteViews.setImageViewUri(R.id.iv_widget, frame)
+            try {
+                combine(flow = gifFlow, flow2 = playbackFlow) { gif: Pair<List<Uri>, Long>, shouldPlay: Boolean ->
+                    Triple(gif.first, gif.second, shouldPlay)
+                }.collectLatest { (frames: List<Uri>, interval: Long, shouldPlay: Boolean) ->
+                    while (shouldPlay && frames.isNotEmpty()) {
+                        frames.forEach { frame: Uri ->
+                            val remoteViews = RemoteViews(packageName, R.layout.photo_widget)
+                            remoteViews.setImageViewUri(R.id.iv_widget, frame)
 
-                        widgetManager.partiallyUpdateAppWidget(appWidgetId, remoteViews)
+                            widgetManager.partiallyUpdateAppWidget(appWidgetId, remoteViews)
 
-                        delay(timeMillis = interval.coerceAtLeast(GifFrames.MIN_INTERVAL_MS))
+                            delay(timeMillis = interval.coerceAtLeast(GifFrames.MIN_INTERVAL_MS))
+                        }
                     }
                 }
+            } catch (ex: RuntimeException) {
+                // The system server died and the device is restarting it, which also kills this
+                // process. Nothing can be recovered, so stop playback instead of crashing first.
+                if (ex.cause !is DeadSystemException) throw ex
+                logger.w(
+                    ex,
+                    "System server died; stopping gif playback %s",
+                    mapOf("appWidgetId" to appWidgetId),
+                )
             }
         }
     }
