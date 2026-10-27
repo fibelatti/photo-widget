@@ -47,6 +47,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.computedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
@@ -602,6 +603,9 @@ private fun PhotoWidgetTextFontPicker(
         val fontFamilies: List<String?> = remember { listOf(null) + GoogleFontsLoader.FONT_FAMILIES }
 
         val fontLoadStates: SnapshotStateMap<String, FontLoadState> = remember { mutableStateMapOf() }
+        val hasFailedFonts: Boolean by remember {
+            computedStateOf { fontLoadStates.values.any { it is FontLoadState.Failed } }
+        }
         var loadAttempt: Int by remember { mutableIntStateOf(0) }
 
         LaunchedEffect(loadAttempt) {
@@ -663,7 +667,7 @@ private fun PhotoWidgetTextFontPicker(
                 }
             }
 
-            if (fontLoadStates.values.any { it is FontLoadState.Failed }) {
+            if (hasFailedFonts) {
                 item {
                     InformationalPanel(
                         text = stringResource(R.string.photo_widget_configure_text_font_load_error),
@@ -681,6 +685,7 @@ private fun PhotoWidgetTextFontPicker(
             itemsIndexed(
                 items = fontFamilies,
                 key = { _, fontFamily: String? -> fontFamily.orEmpty() },
+                contentType = { _, _ -> "font" },
             ) { index: Int, fontFamily: String? ->
                 val loadState: FontLoadState? = fontFamily?.let(fontLoadStates::get)
 
