@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.configure
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.SliderState
 import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
@@ -100,10 +102,13 @@ private fun ColorMatrixPicker(
             trackRange = valueRange,
         )
 
+        val sampleBitmap: Bitmap = rememberSampleBitmap()
+        val cornerRadius: Float = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx()
+
         Image(
-            bitmap = rememberSampleBitmap()
-                .withRoundedCorners(radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx())
-                .asImageBitmap(),
+            bitmap = remember(sampleBitmap, cornerRadius) {
+                sampleBitmap.withRoundedCorners(radius = cornerRadius).asImageBitmap()
+            },
             contentDescription = null,
             modifier = Modifier.size(200.dp),
             colorFilter = ColorFilter.colorMatrix(onCurrentValueChange(sliderState.value)),

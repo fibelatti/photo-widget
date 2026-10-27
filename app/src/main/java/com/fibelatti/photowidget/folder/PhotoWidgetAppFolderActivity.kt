@@ -227,7 +227,7 @@ private fun AppItem(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            bitmap = icon.toBitmap().asImageBitmap(),
+            bitmap = remember(icon) { icon.toBitmap().asImageBitmap() },
             contentDescription = null,
             modifier = Modifier.size(48.dp),
         )

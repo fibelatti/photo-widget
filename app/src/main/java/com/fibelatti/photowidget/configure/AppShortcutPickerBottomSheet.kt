@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -117,7 +118,7 @@ fun AppShortcutPickerBottomSheet(
                             val icon = shortcut.icon
                             if (icon != null) {
                                 Image(
-                                    bitmap = icon.toBitmap().asImageBitmap(),
+                                    bitmap = remember(icon) { icon.toBitmap().asImageBitmap() },
                                     contentDescription = null,
                                     modifier = Modifier.size(40.dp),
                                 )

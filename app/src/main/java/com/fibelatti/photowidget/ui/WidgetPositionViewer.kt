@@ -100,10 +100,13 @@ fun WidgetPositionViewer(
                     border = photoWidget.border,
                 )
             } else {
+                val sampleBitmap: Bitmap = rememberSampleBitmap()
+                val cornerRadius: Float = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx()
+
                 Image(
-                    bitmap = rememberSampleBitmap()
-                        .withRoundedCorners(radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx())
-                        .asImageBitmap(),
+                    bitmap = remember(sampleBitmap, cornerRadius) {
+                        sampleBitmap.withRoundedCorners(radius = cornerRadius).asImageBitmap()
+                    },
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Fit,

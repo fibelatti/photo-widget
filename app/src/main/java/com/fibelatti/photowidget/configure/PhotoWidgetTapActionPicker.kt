@@ -3,6 +3,7 @@ package com.fibelatti.photowidget.configure
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -713,10 +714,13 @@ private fun TapAreaIndicator(
             .height(IntrinsicSize.Min),
         contentAlignment = Alignment.Center,
     ) {
+        val sampleBitmap: Bitmap = rememberSampleBitmap()
+        val cornerRadius: Float = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx()
+
         Image(
-            bitmap = rememberSampleBitmap()
-                .withRoundedCorners(radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx())
-                .asImageBitmap(),
+            bitmap = remember(sampleBitmap, cornerRadius) {
+                sampleBitmap.withRoundedCorners(radius = cornerRadius).asImageBitmap()
+            },
             contentDescription = null,
             modifier = Modifier
                 .size(200.dp)

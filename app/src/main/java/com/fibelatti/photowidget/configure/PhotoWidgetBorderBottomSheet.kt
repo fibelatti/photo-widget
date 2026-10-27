@@ -171,14 +171,18 @@ private fun ColorBorderContent(
             currentColorHex = currentColorHex,
             onColorChange = onColorChange,
         ) {
+            val cornerRadius: Float = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx()
+
             Image(
-                bitmap = sampleBitmap
-                    .withRoundedCorners(
-                        radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
-                        borderColor = "#$currentColorHex".toColorInt(),
-                        borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
-                    )
-                    .asImageBitmap(),
+                bitmap = remember(sampleBitmap, cornerRadius, currentColorHex, currentWidth) {
+                    sampleBitmap
+                        .withRoundedCorners(
+                            radius = cornerRadius,
+                            borderColor = "#$currentColorHex".toColorInt(),
+                            borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
+                        )
+                        .asImageBitmap()
+                },
                 contentDescription = null,
                 modifier = Modifier
                     .weight(1f, fill = false)
@@ -217,15 +221,18 @@ private fun DynamicBorderContent(
             val localResources = LocalResources.current
             val radioTypes = DynamicColorType.entries
             val (selectedType, onTypeSelected) = rememberSaveable { mutableStateOf(currentType) }
+            val cornerRadius: Float = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx()
 
             Image(
-                bitmap = sampleBitmap
-                    .withRoundedCorners(
-                        radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
-                        borderColor = localContext.getDynamicAttributeColor(currentType.colorAttr),
-                        borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
-                    )
-                    .asImageBitmap(),
+                bitmap = remember(sampleBitmap, cornerRadius, localContext, currentType, currentWidth) {
+                    sampleBitmap
+                        .withRoundedCorners(
+                            radius = cornerRadius,
+                            borderColor = localContext.getDynamicAttributeColor(currentType.colorAttr),
+                            borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
+                        )
+                        .asImageBitmap()
+                },
                 contentDescription = null,
                 modifier = Modifier
                     .widthIn(max = min(200.dp, LocalWindowInfo.current.containerDpSize.width / 2))
@@ -283,15 +290,18 @@ private fun MatchPhotoBorderContent(
             val radioTypes = MatchPhotoColorType.entries
             val (selectedType, onTypeSelected) = rememberSaveable { mutableStateOf(currentType) }
             val localResources = LocalResources.current
+            val cornerRadius: Float = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx()
 
             Image(
-                bitmap = sampleBitmap
-                    .withRoundedCorners(
-                        radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx(),
-                        borderColor = colorPalette.colorForType(currentType),
-                        borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
-                    )
-                    .asImageBitmap(),
+                bitmap = remember(sampleBitmap, cornerRadius, colorPalette, currentType, currentWidth) {
+                    sampleBitmap
+                        .withRoundedCorners(
+                            radius = cornerRadius,
+                            borderColor = colorPalette?.colorForType(currentType),
+                            borderPercent = currentWidth * PhotoWidgetBorder.PERCENT_FACTOR,
+                        )
+                        .asImageBitmap()
+                },
                 contentDescription = null,
                 modifier = Modifier
                     .widthIn(max = min(200.dp, LocalWindowInfo.current.containerDpSize.width / 2))

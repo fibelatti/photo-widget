@@ -131,10 +131,12 @@ private fun ViewerBackgroundColorContent(
                         .background(color = previewBackgroundColor, shape = MaterialTheme.shapes.small),
                     contentAlignment = Alignment.Center,
                 ) {
+                    val cornerRadius: Float = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx()
+
                     Image(
-                        bitmap = sampleBitmap
-                            .withRoundedCorners(radius = PhotoWidget.DEFAULT_CORNER_RADIUS.dpToPx())
-                            .asImageBitmap(),
+                        bitmap = remember(sampleBitmap, cornerRadius) {
+                            sampleBitmap.withRoundedCorners(radius = cornerRadius).asImageBitmap()
+                        },
                         contentDescription = null,
                     )
                 }

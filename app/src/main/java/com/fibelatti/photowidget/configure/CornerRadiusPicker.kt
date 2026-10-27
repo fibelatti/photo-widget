@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.configure
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,9 @@ import androidx.compose.material3.SliderState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.computedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.stringResource
@@ -37,10 +41,14 @@ fun CornerRadiusPicker(
             trackRange = 0f..128f,
         )
 
+        val sampleBitmap: Bitmap = rememberSampleBitmap()
+        val cornerRadius: Int by remember(sliderState) { computedStateOf { sliderState.value.fastRoundToInt() } }
+        val cornerRadiusPx: Float = cornerRadius.dpToPx()
+
         Image(
-            bitmap = rememberSampleBitmap()
-                .withRoundedCorners(radius = sliderState.value.fastRoundToInt().dpToPx())
-                .asImageBitmap(),
+            bitmap = remember(sampleBitmap, cornerRadiusPx) {
+                sampleBitmap.withRoundedCorners(radius = cornerRadiusPx).asImageBitmap()
+            },
             contentDescription = null,
             modifier = Modifier.size(200.dp),
         )
