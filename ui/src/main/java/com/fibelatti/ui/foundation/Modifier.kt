@@ -64,8 +64,8 @@ fun Modifier.fadingEdges(
 
 fun Modifier.fadingEdges(
     scrollState: ScrollableState,
-    startEdgeSize: Dp = 40.dp,
-    endEdgeSize: Dp = 40.dp,
+    startEdgeSize: () -> Dp = { 40.dp },
+    endEdgeSize: () -> Dp = { 40.dp },
     isHorizontal: Boolean = false,
 ): Modifier {
     return this then Modifier
@@ -79,13 +79,13 @@ fun Modifier.fadingEdges(
                         Brush.horizontalGradient(
                             colors = listOf(Color.Transparent, Color.Black),
                             startX = 0f,
-                            endX = startEdgeSize.toPx(),
+                            endX = startEdgeSize().toPx(),
                         )
                     } else {
                         Brush.verticalGradient(
                             colors = listOf(Color.Transparent, Color.Black),
                             startY = 0f,
-                            endY = startEdgeSize.toPx(),
+                            endY = startEdgeSize().toPx(),
                         )
                     },
                     blendMode = BlendMode.DstIn,
@@ -97,13 +97,13 @@ fun Modifier.fadingEdges(
                     brush = if (isHorizontal) {
                         Brush.horizontalGradient(
                             colors = listOf(Color.Black, Color.Transparent),
-                            startX = size.width - endEdgeSize.toPx(),
+                            startX = size.width - endEdgeSize().toPx(),
                             endX = size.width,
                         )
                     } else {
                         Brush.verticalGradient(
                             colors = listOf(Color.Black, Color.Transparent),
-                            startY = size.height - endEdgeSize.toPx(),
+                            startY = size.height - endEdgeSize().toPx(),
                             endY = size.height,
                         )
                     },

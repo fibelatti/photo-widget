@@ -69,6 +69,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
@@ -755,21 +756,21 @@ private fun TapAreaIndicator(
                 modifier = Modifier
                     .weight(3f)
                     .fillMaxHeight()
-                    .background(color = if (tapActionArea == TapActionArea.LEFT) color else Color.Transparent),
+                    .drawBehind { if (tapActionArea == TapActionArea.LEFT) drawRect(color = color) },
             )
 
             Box(
                 modifier = Modifier
                     .weight(4f)
                     .fillMaxHeight()
-                    .background(color = if (tapActionArea == TapActionArea.CENTER) color else Color.Transparent),
+                    .drawBehind { if (tapActionArea == TapActionArea.CENTER) drawRect(color = color) },
             )
 
             Box(
                 modifier = Modifier
                     .weight(3f)
                     .fillMaxHeight()
-                    .background(color = if (tapActionArea == TapActionArea.RIGHT) color else Color.Transparent),
+                    .drawBehind { if (tapActionArea == TapActionArea.RIGHT) drawRect(color = color) },
             )
         }
     }

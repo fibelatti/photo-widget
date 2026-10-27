@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
@@ -114,7 +115,7 @@ private fun ScreenContent(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = Color.Black.copy(alpha = backgroundAlpha))
+            .drawBehind { drawRect(color = Color.Black, alpha = backgroundAlpha) }
             .clickable(onClick = onBackgroundClick)
             .safeDrawingPadding()
             .padding(horizontal = 48.dp, vertical = 64.dp),

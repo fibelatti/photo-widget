@@ -65,6 +65,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.blur.BlurRadiusSpec
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -344,7 +345,7 @@ fun PhotoWidgetConfigureScreen(
             onAddToHomeClick = onAddToHomeClick,
             modifier = Modifier
                 .fillMaxSize()
-                .blur(radius = blurRadius),
+                .blur { blurRadiusSpec = BlurRadiusSpec.uniform(blurRadius) },
         )
 
         AnimatedVisibility(

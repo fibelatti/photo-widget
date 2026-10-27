@@ -56,6 +56,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.blur.BlurRadiusSpec
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
@@ -181,7 +182,7 @@ fun PhotoWidgetBackupScreen(
         )
 
         Scaffold(
-            modifier = Modifier.blur(radius = blurRadius),
+            modifier = Modifier.blur { blurRadiusSpec = BlurRadiusSpec.uniform(blurRadius) },
             topBar = {
                 TopAppBar(
                     title = {

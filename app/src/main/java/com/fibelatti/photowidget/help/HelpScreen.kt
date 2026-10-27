@@ -26,7 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -148,7 +148,7 @@ private fun HelpCard(
                 imageVector = AppIcons.ChevronDown,
                 contentDescription = "",
                 modifier = Modifier
-                    .rotate(rotation)
+                    .graphicsLayer { rotationZ = rotation }
                     .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
                     .padding(all = 2.dp),
                 tint = MaterialTheme.colorScheme.onPrimary,

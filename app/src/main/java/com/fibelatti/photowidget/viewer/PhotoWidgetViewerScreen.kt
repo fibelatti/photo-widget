@@ -36,7 +36,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.computedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,6 +48,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -55,8 +56,9 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.constrain
 import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
@@ -210,6 +212,7 @@ private fun FullScreenPhotoViewer(
     val localHapticFeedback: HapticFeedback = LocalHapticFeedback.current
 
     val zoomState: ZoomState = rememberZoomState()
+    val isZoomedOut: Boolean by remember(zoomState) { computedStateOf { zoomState.scale == 1f } }
     val verticalDragState: DragState = rememberDragState(
         mode = DragState.Mode.UNIDIRECTIONAL,
         onConfirm = { onDragToDismiss() },
@@ -227,10 +230,11 @@ private fun FullScreenPhotoViewer(
         onThreshold = { localHapticFeedback.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate) },
     )
 
-    val horizontalIndicatorSize: Dp by remember {
-        derivedStateOf {
-            (48 * horizontalDragState.currentOffsetFraction).dp
-        }
+    val isDraggingToPrevious: Boolean by remember(horizontalDragState) {
+        computedStateOf { horizontalDragState.currentOffsetPixel > MIN_OFFSET }
+    }
+    val isDraggingToNext: Boolean by remember(horizontalDragState) {
+        computedStateOf { horizontalDragState.currentOffsetPixel < MIN_OFFSET * -1 }
     }
 
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
@@ -239,7 +243,7 @@ private fun FullScreenPhotoViewer(
         modifier = modifier.fillMaxSize(),
     ) {
         AnimatedVisibility(
-            visible = canDragToPrevious && horizontalDragState.currentOffsetPixel > MIN_OFFSET,
+            visible = canDragToPrevious && isDraggingToPrevious,
             modifier = Modifier
                 .safeDrawingPadding()
                 .padding(all = 32.dp)
@@ -255,13 +259,13 @@ private fun FullScreenPhotoViewer(
                         color = MaterialTheme.colorScheme.tertiaryContainer,
                         shape = MaterialTheme.shapes.small,
                     )
-                    .size(horizontalIndicatorSize),
+                    .indicatorSize(fraction = { horizontalDragState.currentOffsetFraction }),
                 tint = MaterialTheme.colorScheme.onTertiaryContainer,
             )
         }
 
         AnimatedVisibility(
-            visible = canDragToNext && horizontalDragState.currentOffsetPixel < MIN_OFFSET * -1,
+            visible = canDragToNext && isDraggingToNext,
             modifier = Modifier
                 .safeDrawingPadding()
                 .padding(all = 32.dp)
@@ -277,7 +281,7 @@ private fun FullScreenPhotoViewer(
                         color = MaterialTheme.colorScheme.tertiaryContainer,
                         shape = MaterialTheme.shapes.small,
                     )
-                    .size(horizontalIndicatorSize),
+                    .indicatorSize(fraction = { horizontalDragState.currentOffsetFraction }),
                 tint = MaterialTheme.colorScheme.onTertiaryContainer,
             )
         }
@@ -309,7 +313,7 @@ private fun FullScreenPhotoViewer(
                                 verticalDragState.onDragStopped()
                             }
                         },
-                        enabled = zoomState.scale == 1f,
+                        enabled = isZoomedOut,
                     )
                     .onHorizontalDrag(
                         onDrag = { offset ->
@@ -320,7 +324,7 @@ private fun FullScreenPhotoViewer(
                                 horizontalDragState.onDragStopped(resetOnConfirm = true)
                             }
                         },
-                        enabled = canDragToNext && zoomState.scale == 1f,
+                        enabled = canDragToNext && isZoomedOut,
                     )
                     .offset {
                         IntOffset(
@@ -331,6 +335,19 @@ private fun FullScreenPhotoViewer(
                 constraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED,
             )
         }
+    }
+}
+
+/**
+ * Sizes the drag indicator in proportion to the drag progress given by [fraction], read during
+ * layout so that the drag gesture doesn't recompose the viewer.
+ */
+private fun Modifier.indicatorSize(fraction: () -> Float): Modifier = layout { measurable, constraints ->
+    val size: Int = (48.dp * fraction()).roundToPx()
+    val placeable = measurable.measure(constraints.constrain(Constraints.fixed(width = size, height = size)))
+
+    layout(placeable.width, placeable.height) {
+        placeable.place(x = 0, y = 0)
     }
 }
 

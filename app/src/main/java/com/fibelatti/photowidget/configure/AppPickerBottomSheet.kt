@@ -36,10 +36,12 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import com.fibelatti.photowidget.R
@@ -48,7 +50,6 @@ import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.fadingEdges
-import com.fibelatti.ui.foundation.pxToDp
 
 @Composable
 fun AppPickerBottomSheet(
@@ -95,12 +96,16 @@ fun AppPickerBottomSheet(
             ) {
                 val scrollState: LazyListState = rememberLazyListState()
                 var searchBarHeight: Int by remember { mutableIntStateOf(0) }
+                val localDensity: Density = LocalDensity.current
 
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
                         .nestedScroll(rememberNestedScrollInteropConnection())
-                        .fadingEdges(scrollState = scrollState, endEdgeSize = 16.dp + searchBarHeight.pxToDp()),
+                        .fadingEdges(
+                            scrollState = scrollState,
+                            endEdgeSize = { 16.dp + with(localDensity) { searchBarHeight.toDp() } },
+                        ),
                     state = scrollState,
                     contentPadding = PaddingValues(bottom = 72.dp),
                 ) {
