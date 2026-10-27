@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -42,6 +43,10 @@ import com.fibelatti.ui.icons.AppIcons
 import com.fibelatti.ui.icons.FileNotFound
 import kotlin.math.max
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 
 @Composable
 fun AsyncPhotoViewer(
@@ -75,53 +80,61 @@ fun AsyncPhotoViewer(
         lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).photoDecoder() }
     }
 
-    val maxViewportDimension: Int = max(viewportSize.width, viewportSize.height)
     val maxBitmapDimension: Int = remember(localContext, constraintMode) {
         localContext.getMaxBitmapWidgetDimension(
             coerceMaxMemory = constraintMode == AsyncPhotoViewer.BitmapSizeConstraintMode.MEMORY,
         )
     }
-    val maxWidgetDimension: Int = maxBitmapDimension.coerceAtMost(maxViewportDimension)
-    val maxDimension: Int = when (constraintMode) {
-        AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED -> maxViewportDimension
-        else -> maxWidgetDimension
-    }
-    // Snap to a coarser bucket so layout-pass jitter doesn't restart the decode effect.
-    val maxDimensionBucketed: Int = remember(maxDimension) {
-        if (maxDimension <= 0) maxDimension else ((maxDimension + 63) / 64) * 64
-    }
+    val transformationsKey: String = remember(transformations) { transformations.joinToString { it.cacheKey } }
 
-    LaunchedEffect(data, version, maxDimensionBucketed, isLoading, transformations.joinToString { it.cacheKey }) {
-        if (localInspectionMode || maxDimensionBucketed <= 0) return@LaunchedEffect
+    LaunchedEffect(data, isLoading, version, constraintMode, maxBitmapDimension, transformationsKey) {
+        if (localInspectionMode) return@LaunchedEffect
 
-        when {
-            data != null -> {
-                decoder.decode(
-                    data = data,
-                    maxDimension = maxDimensionBucketed,
-                    transformations = transformations,
-                    version = version,
-                )?.asImageBitmap()?.let {
-                    viewerState = AsyncPhotoViewerState.Success(it)
+        // The viewport size is read here rather than in composition so that layout updating it
+        // doesn't recompose this function.
+        snapshotFlow { viewportSize }
+            .map { size: IntSize ->
+                val maxViewportDimension: Int = max(size.width, size.height)
+                val maxDimension: Int = when (constraintMode) {
+                    AsyncPhotoViewer.BitmapSizeConstraintMode.UNCONSTRAINED -> maxViewportDimension
+                    else -> maxBitmapDimension.coerceAtMost(maxViewportDimension)
+                }
+
+                // Snap to a coarser bucket so layout-pass jitter doesn't restart decoding.
+                if (maxDimension <= 0) maxDimension else ((maxDimension + 63) / 64) * 64
+            }
+            .filter { maxDimensionBucketed: Int -> maxDimensionBucketed > 0 }
+            .distinctUntilChanged()
+            .collectLatest { maxDimensionBucketed: Int ->
+                when {
+                    data != null -> {
+                        decoder.decode(
+                            data = data,
+                            maxDimension = maxDimensionBucketed,
+                            transformations = transformations,
+                            version = version,
+                        )?.asImageBitmap()?.let {
+                            viewerState = AsyncPhotoViewerState.Success(it)
+                        }
+                    }
+
+                    !isLoading -> {
+                        viewerState = AsyncPhotoViewerState.Error
+                        return@collectLatest
+                    }
+                }
+
+                // Avoid flickering the indicator, only show if the photo takes a while to load.
+                val isLoaded: () -> Boolean = {
+                    viewerState is AsyncPhotoViewerState.Success || viewerState is AsyncPhotoViewerState.Error
+                }
+                if (isLoading || !isLoaded()) {
+                    delay(timeMillis = 500)
+                    if (isLoading || !isLoaded()) {
+                        viewerState = AsyncPhotoViewerState.Loading
+                    }
                 }
             }
-
-            !isLoading -> {
-                viewerState = AsyncPhotoViewerState.Error
-                return@LaunchedEffect
-            }
-        }
-
-        // Avoid flickering the indicator, only show if the photo takes a while to load
-        val isLoaded: () -> Boolean = {
-            viewerState is AsyncPhotoViewerState.Success || viewerState is AsyncPhotoViewerState.Error
-        }
-        if (isLoading || !isLoaded()) {
-            delay(timeMillis = 500)
-            if (isLoading || !isLoaded()) {
-                viewerState = AsyncPhotoViewerState.Loading
-            }
-        }
     }
 
     AsyncPhotoViewer(
