@@ -14,10 +14,8 @@ import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -48,8 +46,8 @@ inline fun ConfigureTabs(
     tabHeight: Dp = 48.dp,
     tabContent: @Composable (ConfigureTab) -> Unit,
 ) {
-    var selectedTab by rememberSaveable { mutableStateOf(ConfigureTab.CONTENT) }
-    val selectedTabIndex by remember { derivedStateOf { ConfigureTab.entries.indexOf(selectedTab) } }
+    var selectedTab: ConfigureTab by rememberSaveable { mutableStateOf(ConfigureTab.CONTENT) }
+    val selectedTabIndex: Int = selectedTab.ordinal
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -73,7 +71,9 @@ inline fun ConfigureTabs(
                 Tab(
                     selected = selectedTab == tab,
                     onClick = { selectedTab = tab },
-                    modifier = Modifier.height(tabHeight).clip(MaterialTheme.shapes.small),
+                    modifier = Modifier
+                        .height(tabHeight)
+                        .clip(MaterialTheme.shapes.small),
                 ) {
                     AutoSizeText(
                         text = stringResource(tab.title),
