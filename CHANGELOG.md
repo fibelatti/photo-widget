@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+* Widget text handling of RTL languages
+
 ## [v1.48.1] - 2026-10-24
 [v1.48.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.48.1
 

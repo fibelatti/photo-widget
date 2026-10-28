@@ -4,9 +4,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Parcelable
+import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.TypedValue
@@ -14,7 +14,6 @@ import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.toColorInt
-import androidx.core.graphics.withTranslation
 import com.fibelatti.photowidget.R
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -155,9 +154,7 @@ fun PhotoWidgetText.textToBitmap(context: Context, typeface: Typeface, @ColorInt
 
     Canvas(output).apply {
         drawColor(Color.TRANSPARENT)
-        withTranslation(x = staticLayout.width / 2f) {
-            staticLayout.draw(this)
-        }
+        staticLayout.draw(this)
     }
 
     return output
@@ -175,7 +172,6 @@ private fun PhotoWidgetText.staticLayout(
             size.toFloat(),
             context.resources.displayMetrics,
         )
-        textAlign = Paint.Align.CENTER
 
         this.typeface = typeface
         this.color = color
@@ -195,6 +191,7 @@ private fun PhotoWidgetText.staticLayout(
             /* paint = */ textPaint,
             /* width = */ width,
         )
+        .setAlignment(Layout.Alignment.ALIGN_CENTER)
         .build()
 }
 
