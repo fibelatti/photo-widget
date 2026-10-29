@@ -56,6 +56,7 @@ fun sharePhotoChooserIntent(context: Context, originalPhotoPath: String?, extern
     val shareIntent: Intent = Intent(Intent.ACTION_SEND)
         .putExtra(Intent.EXTRA_STREAM, uri)
         .setType("image/*")
+        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
     return Intent.createChooser(shareIntent, null)
 }
