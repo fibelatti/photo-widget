@@ -35,12 +35,13 @@ import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.PhotoWidgetTextColor
+import com.fibelatti.photowidget.model.PhotoWidgetTextFont
 import com.fibelatti.photowidget.model.PhotoWidgetTextPosition
 import com.fibelatti.photowidget.model.resolve
 import com.fibelatti.photowidget.model.textToBitmap
 import com.fibelatti.photowidget.model.verticalPadding
 import com.fibelatti.photowidget.platform.ColorPalette
-import com.fibelatti.photowidget.platform.GoogleFontsLoader
+import com.fibelatti.photowidget.platform.TextFontLoader
 import com.fibelatti.photowidget.platform.produceColorPaletteState
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.ui.foundation.dpToPx
@@ -115,7 +116,7 @@ fun WidgetPositionViewer(
         }
 
         if (photoWidget.text is PhotoWidgetText.Label) {
-            val labelTypeface: Typeface by rememberLabelTypeface(fontFamily = photoWidget.text.fontFamily)
+            val labelTypeface: Typeface by rememberLabelTypeface(font = photoWidget.text.font)
             val labelColor: Int? = rememberLabelColor(color = photoWidget.text.color, photo = photoWidget.currentPhoto)
 
             if (labelColor != null) {
@@ -175,26 +176,26 @@ private fun rememberLabelColor(color: PhotoWidgetTextColor, photo: LocalPhoto?):
 }
 
 /**
- * The typeface of [fontFamily], drawn with [Typeface.DEFAULT] until it finishes loading unless it
- * was already loaded.
+ * The typeface of [font], drawn with [Typeface.DEFAULT] until it finishes loading unless it was
+ * already loaded.
  */
 @Composable
-private fun rememberLabelTypeface(fontFamily: String?): State<Typeface> {
+private fun rememberLabelTypeface(font: PhotoWidgetTextFont): State<Typeface> {
     val localContext = LocalContext.current
     val localInspectionMode: Boolean = LocalInspectionMode.current
-    val googleFontsLoader: GoogleFontsLoader by remember {
-        lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).googleFontsLoader() }
+    val textFontLoader: TextFontLoader by remember {
+        lazy { entryPoint<PhotoWidgetEntryPoint>(localContext).textFontLoader() }
     }
 
-    val initialValue: Typeface = if (localInspectionMode || fontFamily == null) {
+    val initialValue: Typeface = if (localInspectionMode) {
         Typeface.DEFAULT
     } else {
-        googleFontsLoader.peekTypeface(fontFamily = fontFamily) ?: Typeface.DEFAULT
+        textFontLoader.peekTypeface(font = font) ?: Typeface.DEFAULT
     }
 
-    return produceState(initialValue = initialValue, fontFamily) {
+    return produceState(initialValue = initialValue, font) {
         if (localInspectionMode) return@produceState
 
-        value = googleFontsLoader.getTypeface(fontFamily = fontFamily)
+        value = textFontLoader.getTypeface(font = font)
     }
 }

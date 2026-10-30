@@ -5,6 +5,8 @@ import com.fibelatti.photowidget.backup.RestoreBackupUseCase
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetSource
+import com.fibelatti.photowidget.model.PhotoWidgetText
+import com.fibelatti.photowidget.model.PhotoWidgetTextFont
 import com.fibelatti.photowidget.platform.isInside
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -35,7 +37,9 @@ class RestoreWidgetUseCase @Inject constructor(
             "Cannot restore widget. Source directory is missing."
         }
 
-        require(sourceDir.isInside(RestoreBackupUseCase.extractionDir(context = context))) {
+        val extractionDir: File = RestoreBackupUseCase.extractionDir(context = context)
+
+        require(sourceDir.isInside(extractionDir)) {
             "Cannot restore widget. Source directory is not an extracted backup."
         }
 
@@ -56,6 +60,20 @@ class RestoreWidgetUseCase @Inject constructor(
         return originalWidget.copy(
             photos = photos,
             currentPhoto = photos.firstOrNull(),
+            text = photoWidgetStorage.stageWidgetFont(
+                appWidgetId = newAppWidgetId,
+                text = originalWidget.text.withFontInside(dir = extractionDir),
+            ),
         )
+    }
+
+    /**
+     * The name of the custom font comes from the backup, so a font outside of it is dropped like
+     * a missing one.
+     */
+    private fun PhotoWidgetText.withFontInside(dir: File): PhotoWidgetText {
+        if (this !is PhotoWidgetText.Label || font !is PhotoWidgetTextFont.Custom) return this
+
+        return if (File(font.path).isInside(dir)) this else copy(font = PhotoWidgetTextFont.Default)
     }
 }

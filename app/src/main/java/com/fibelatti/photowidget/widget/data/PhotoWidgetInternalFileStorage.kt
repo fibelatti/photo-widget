@@ -5,14 +5,17 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
+import android.provider.OpenableColumns
 import androidx.annotation.ColorInt
 import com.fibelatti.photowidget.model.GifFrames
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidgetSource
+import com.fibelatti.photowidget.model.PhotoWidgetTextFont
 import com.fibelatti.photowidget.model.PreparedCurrentPhoto
 import com.fibelatti.photowidget.platform.ImageFormat
 import com.fibelatti.photowidget.platform.ImageFormatDetector
 import com.fibelatti.photowidget.platform.PhotoDecoder
+import com.fibelatti.photowidget.platform.TextFontLoader
 import com.fibelatti.photowidget.platform.UriPermissionGrantor
 import com.fibelatti.photowidget.platform.getMaxCrossfadeBitmapDimension
 import com.fibelatti.photowidget.platform.runWithFileOutputStream
@@ -48,6 +51,15 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         File("${context.filesDir}/widgets").apply {
             mkdirs()
         }
+    }
+
+    /**
+     * Fonts chosen while configuring a widget, kept apart from its directory until the widget is
+     * saved, see [saveWidgetFont]. Each one has a directory of its own, so files with the same name
+     * don't replace each other.
+     */
+    private val fontStagingRootDir: File by lazy {
+        File("${context.noBackupFilesDir}/font_staging")
     }
 
     suspend fun newWidgetPhoto(directoryName: String, source: Uri): LocalPhoto? {
@@ -211,11 +223,23 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
     }
 
-    suspend fun deleteWidgetData(directoryName: String) {
+    /**
+     * Deletes the files of the widget. [keepFonts] keeps its custom font, for when only its photos
+     * are being replaced.
+     */
+    suspend fun deleteWidgetData(directoryName: String, keepFonts: Boolean = false) {
         withContext(Dispatchers.IO) {
             val deleteOp: suspend () -> Boolean = {
-                getWidgetDir(directoryName).deleteRecursively() &&
-                    getCurrentPhotoDir(directoryName).deleteRecursively()
+                val widgetDir: File = getWidgetDir(directoryName)
+                val widgetDirDeleted: Boolean = if (keepFonts) {
+                    widgetDir.listFiles().orEmpty()
+                        .filterNot { it.name == FONTS_DIR_NAME }
+                        .all { it.deleteRecursively() }
+                } else {
+                    widgetDir.deleteRecursively()
+                }
+
+                widgetDirDeleted && getCurrentPhotoDir(directoryName).deleteRecursively()
             }
             var count = 1
 
@@ -235,9 +259,11 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
             val originalPhotoNames = originalPhotosDir.list().orEmpty().toSet()
 
             // Decides what's listed: for photo widgets everything from the "original" dir, except the dir itself;
-            // or everything for directory widget since their original comes from user storage
+            // or everything for directory widget since their original comes from user storage, except the fonts dir
             val fileNameFilter = FilenameFilter { _, name ->
-                name != "original" && (name in originalPhotoNames || source == PhotoWidgetSource.DIRECTORY)
+                name != "original" &&
+                    name != FONTS_DIR_NAME &&
+                    (name in originalPhotoNames || source == PhotoWidgetSource.DIRECTORY)
             }
 
             widgetDir.list(fileNameFilter)
@@ -389,12 +415,152 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
     }
 
+    /**
+     * Copies the font file in [source] to the staging directory of the widget, under its original
+     * name. It is copied to the widget directory once the widget is saved, see [saveWidgetFont].
+     *
+     * @return the staged font, or `null` when [source] isn't a font file the system can load
+     */
+    suspend fun newWidgetFont(directoryName: String, source: Uri): PhotoWidgetTextFont? = withContext(Dispatchers.IO) {
+        runCatching {
+            Timber.d("New widget font %s", mapOf("directoryName" to directoryName, "source" to source))
+
+            val hasFontSignature: Boolean = contentResolver.openInputStream(source)
+                ?.use(TextFontLoader::hasFontSignature)
+                ?: error("Unable to open $source")
+
+            if (!hasFontSignature) {
+                Timber.w("Not a font file %s", mapOf("source" to source))
+                return@runCatching null
+            }
+
+            val fileName: String = getFileName(uri = source)
+            val stagingDir: File = newFontStagingDir(directoryName = directoryName)
+            val fontFile = File(stagingDir, fileName)
+
+            contentResolver.openInputStream(source)
+                ?.use { input -> fontFile.runWithFileOutputStream(input::copyTo) }
+                ?: error("Unable to open $source")
+
+            if (TextFontLoader.createTypeface(file = fontFile) == null) {
+                Timber.w("Not a valid font file %s", mapOf("source" to source))
+                stagingDir.deleteRecursively()
+                return@runCatching null
+            }
+
+            PhotoWidgetTextFont.Custom(fileName = fileName, path = fontFile.path)
+        }.onFailure { Timber.e(it, "Failed to import the font") }.getOrNull()
+    }
+
+    /**
+     * The name of the file in [uri], without any directories it may contain.
+     */
+    private fun getFileName(uri: Uri): String {
+        val displayName: String? = contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)
+            ?.use { cursor -> if (cursor.moveToFirst()) cursor.getString(0) else null }
+
+        return (displayName ?: uri.lastPathSegment)
+            ?.substringAfterLast("/")
+            ?.takeUnless { it.isBlank() || it == "." || it == ".." }
+            ?: error("Unable to resolve the file name of $uri")
+    }
+
+    /**
+     * Copies the font file in [sourcePath], which belongs to another widget or a backup, to the
+     * staging directory of the widget, keeping its name.
+     *
+     * @return the path of the copy, or `null` when it fails or [sourcePath] isn't a font file the
+     * system can load
+     */
+    suspend fun stageWidgetFont(directoryName: String, sourcePath: String): String? = withContext(Dispatchers.IO) {
+        runCatching {
+            val sourceFile = File(sourcePath)
+            val stagingDir: File = newFontStagingDir(directoryName = directoryName)
+            val fontFile = File(stagingDir, sourceFile.name)
+
+            sourceFile.copyTo(target = fontFile)
+
+            if (TextFontLoader.createTypeface(file = fontFile) == null) {
+                Timber.w("Not a valid font file %s", mapOf("sourcePath" to sourcePath))
+                stagingDir.deleteRecursively()
+                return@runCatching null
+            }
+
+            fontFile.path
+        }.onFailure { Timber.e(it, "Failed to stage the font") }.getOrNull()
+    }
+
+    /**
+     * Makes the font in [sourcePath] the only font in the widget directory, replacing a previous
+     * file with the same name. A `null` [sourcePath] deletes the font of the widget.
+     *
+     * The staged file is copied rather than moved, since a widget that is being placed renders
+     * from its configuration in memory, which still points at the staged file.
+     *
+     * @return the path of the saved font, or `null` when [sourcePath] is `null` or it fails
+     */
+    suspend fun saveWidgetFont(directoryName: String, sourcePath: String?): String? = withContext(Dispatchers.IO) {
+        val fontDir: File = getWidgetFontDir(directoryName = directoryName)
+
+        val savedFont: File? = sourcePath?.let(::File)?.let { sourceFile: File ->
+            runCatching {
+                val fontFile = File(fontDir, sourceFile.name)
+
+                if (sourceFile != fontFile) {
+                    fontDir.mkdirs()
+
+                    // Written to a temporary file first, so a placed widget never reads a partial font
+                    val tempFile: File = File.createTempFile("font", TMP_SUFFIX, fontDir)
+                    sourceFile.copyTo(target = tempFile, overwrite = true)
+                    Files.move(tempFile.toPath(), fontFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                }
+
+                fontFile
+            }.onFailure { Timber.e(it, "Failed to save the font") }.getOrNull()
+        }
+
+        fontDir.listFiles()
+            ?.filterNot { it == savedFont }
+            ?.forEach { it.delete() }
+
+        savedFont?.path
+    }
+
+    /**
+     * Deletes the fonts staged for the widget, for when its configuration is discarded.
+     */
+    suspend fun deleteStagedWidgetFonts(directoryName: String) {
+        withContext(Dispatchers.IO) {
+            File(fontStagingRootDir, directoryName).deleteRecursively()
+        }
+    }
+
+    /**
+     * Deletes the fonts staged before [timestamp], along with the staging directories of widgets
+     * that are left without any.
+     */
+    suspend fun deleteStagedFontsBefore(timestamp: Long) {
+        withContext(Dispatchers.IO) {
+            for (widgetStagingDir in fontStagingRootDir.listFiles().orEmpty()) {
+                widgetStagingDir.listFiles().orEmpty()
+                    .filter { it.lastModified() < timestamp }
+                    .forEach { it.deleteRecursively() }
+
+                widgetStagingDir.delete()
+            }
+        }
+    }
+
+    private fun newFontStagingDir(directoryName: String): File {
+        return File(fontStagingRootDir, "$directoryName/${UUID.randomUUID()}").apply { mkdirs() }
+    }
+
     suspend fun duplicateWidgetDir(sourceDirectoryName: String, targetDirectoryName: String) {
         withContext(Dispatchers.IO) {
             val originalDir = getWidgetDir(directoryName = sourceDirectoryName)
             val newDir = getWidgetDir(directoryName = targetDirectoryName)
 
-            originalDir.copyRecursively(newDir, overwrite = true)
+            originalDir.copyRecursivelyExceptFonts(target = newDir)
         }
     }
 
@@ -410,6 +576,13 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
     }
 
+    /**
+     * Does not create the directory, since widgets may not have a custom font.
+     */
+    suspend fun getWidgetFontDir(directoryName: String): File = withContext(Dispatchers.IO) {
+        File("$rootDir/$directoryName/$FONTS_DIR_NAME")
+    }
+
     suspend fun exportWidgetDir(directoryName: String, appWidgetId: Int, destinationDir: File) {
         withContext(Dispatchers.IO) {
             getWidgetDir(directoryName = directoryName)
@@ -419,8 +592,18 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
     suspend fun importWidgetDir(directoryName: String, sourceDir: File) {
         withContext(Dispatchers.IO) {
-            sourceDir.copyRecursively(target = getWidgetDir(directoryName = directoryName))
+            sourceDir.copyRecursivelyExceptFonts(target = getWidgetDir(directoryName = directoryName))
         }
+    }
+
+    /**
+     * The font of a widget only changes when the widget is saved, so it is copied to a staging
+     * directory instead, see [stageWidgetFont].
+     */
+    private fun File.copyRecursivelyExceptFonts(target: File) {
+        listFiles().orEmpty()
+            .filterNot { it.name == FONTS_DIR_NAME }
+            .forEach { it.copyRecursively(target = File(target, it.name), overwrite = true) }
     }
 
     private fun webpLossyFormat(): Bitmap.CompressFormat {
@@ -433,7 +616,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
     }
 
-    private companion object {
+    companion object {
 
         // Max-quality lossy: visually indistinguishable from the source yet still encodes faster
         // than lossless PNG (and faster than lossless WebP, which is slower than PNG).
@@ -444,5 +627,8 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
         // Suffix for the in-progress atomic write; renamed to its `.webp` target once fully encoded.
         private const val TMP_SUFFIX: String = ".tmp"
+
+        /** The directory, inside the widget directory, that holds its custom font. */
+        const val FONTS_DIR_NAME: String = "fonts"
     }
 }

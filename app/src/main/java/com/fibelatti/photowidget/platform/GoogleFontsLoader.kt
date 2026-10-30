@@ -78,26 +78,23 @@ class GoogleFontsLoader @Inject constructor(
     fun peekTypeface(fontFamily: String): Typeface? = cache[fontFamily]
 
     /**
-     * The typeface of [fontFamily] used to render the text, or [Typeface.DEFAULT] when it's `null`
-     * or fails to load. Waits for the request to finish, so widgets use [getWidgetTypeface] instead.
+     * The typeface of [fontFamily] used to render the text, or [Typeface.DEFAULT] when it fails to
+     * load. Waits for the request to finish, so widgets use [getWidgetTypeface] instead.
      */
-    suspend fun getTypeface(fontFamily: String?): Typeface {
-        if (fontFamily == null) return Typeface.DEFAULT
-
+    suspend fun getTypeface(fontFamily: String): Typeface {
         return loadTypeface(fontFamily = fontFamily, dispatcher = renderDispatcher) ?: Typeface.DEFAULT
     }
 
     /**
-     * The typeface of [fontFamily] used to render a widget, or [Typeface.DEFAULT] when it's `null`,
-     * fails to load, or doesn't load within [WIDGET_GRACE_PERIOD].
+     * The typeface of [fontFamily] used to render a widget, or [Typeface.DEFAULT] when it fails to
+     * load, or doesn't load within [WIDGET_GRACE_PERIOD].
      *
      * Fonts are only cached in memory, so the first render after the process starts has to request
      * them again. The grace period covers fonts the provider already has on the device, without
      * holding the widget for a download. When the grace period runs out, the request keeps going
      * and [onLateLoad] is invoked if it succeeds, so the widget can be rendered again with it.
      */
-    suspend fun getWidgetTypeface(fontFamily: String?, onLateLoad: suspend () -> Unit): Typeface {
-        if (fontFamily == null) return Typeface.DEFAULT
+    suspend fun getWidgetTypeface(fontFamily: String, onLateLoad: suspend () -> Unit): Typeface {
         cache[fontFamily]?.let { return it }
 
         val request: Deferred<Typeface?> = widgetRequests.computeIfAbsent(fontFamily) {

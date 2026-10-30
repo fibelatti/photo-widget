@@ -1,6 +1,9 @@
 package com.fibelatti.photowidget.configure
 
 import android.graphics.Typeface
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
@@ -87,6 +90,7 @@ import com.fibelatti.photowidget.model.MatchPhotoColorType
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.PhotoWidgetTextColor
+import com.fibelatti.photowidget.model.PhotoWidgetTextFont
 import com.fibelatti.photowidget.model.PhotoWidgetTextPosition
 import com.fibelatti.photowidget.platform.GoogleFontsLoader
 import com.fibelatti.photowidget.ui.DefaultSheetContent
@@ -121,6 +125,7 @@ fun PhotoWidgetConfigureTextTab(
     PhotoWidgetConfigureTextTab(
         photoWidgetText = state.photoWidget.text,
         onPhotoWidgetTextChange = viewModel::photoWidgetTextChanged,
+        onCustomFontPick = viewModel::customFontPicked,
         modifier = modifier,
     )
 }
@@ -129,6 +134,7 @@ fun PhotoWidgetConfigureTextTab(
 fun PhotoWidgetConfigureTextTab(
     photoWidgetText: PhotoWidgetText,
     onPhotoWidgetTextChange: (PhotoWidgetText) -> Unit,
+    onCustomFontPick: (Uri?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val textTypeSheetState: AppSheetState = rememberAppSheetState()
@@ -139,6 +145,11 @@ fun PhotoWidgetConfigureTextTab(
     val verticalOffsetSheetState: AppSheetState = rememberAppSheetState()
 
     val isGoogleFontsAvailable: Boolean = rememberIsGoogleFontsAvailable()
+
+    val customFontPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument(),
+        onResult = onCustomFontPick,
+    )
 
     Column(
         modifier = modifier
@@ -192,15 +203,20 @@ fun PhotoWidgetConfigureTextTab(
                     shape = Shapes.MiddleShape,
                 )
 
-                if (isGoogleFontsAvailable) {
-                    PickerListItem(
-                        headlineText = stringResource(R.string.photo_widget_configure_text_font),
-                        currentValue = photoWidgetText.fontFamily
-                            ?: stringResource(R.string.photo_widget_configure_text_font_default),
-                        onClick = fontSheetState::showBottomSheet,
-                        shape = Shapes.MiddleShape,
-                    )
-                }
+                PickerListItem(
+                    headlineText = stringResource(R.string.photo_widget_configure_text_font),
+                    currentValue = when (val font = photoWidgetText.font) {
+                        is PhotoWidgetTextFont.Default -> stringResource(
+                            R.string.photo_widget_configure_text_font_default,
+                        )
+
+                        is PhotoWidgetTextFont.GoogleFont -> font.family
+
+                        is PhotoWidgetTextFont.Custom -> font.fileName
+                    },
+                    onClick = fontSheetState::showBottomSheet,
+                    shape = Shapes.MiddleShape,
+                )
 
                 PickerListItem(
                     headlineText = stringResource(R.string.photo_widget_configure_text_size),
@@ -257,7 +273,7 @@ fun PhotoWidgetConfigureTextTab(
     PhotoWidgetTextColorPicker(
         appSheetState = colorSheetState,
         currentValue = photoWidgetText.color,
-        fontFamily = photoWidgetText.fontFamily,
+        font = photoWidgetText.font,
         onApplyClick = { newValue: PhotoWidgetTextColor ->
             when (photoWidgetText) {
                 is PhotoWidgetText.None -> Unit
@@ -268,20 +284,22 @@ fun PhotoWidgetConfigureTextTab(
 
     PhotoWidgetTextFontPicker(
         appSheetState = fontSheetState,
-        currentValue = photoWidgetText.fontFamily,
+        currentValue = photoWidgetText.font,
         text = photoWidgetText.value,
-        onOptionSelect = { newValue: String? ->
+        isGoogleFontsAvailable = isGoogleFontsAvailable,
+        onOptionSelect = { newValue: PhotoWidgetTextFont ->
             when (photoWidgetText) {
                 is PhotoWidgetText.None -> Unit
-                is PhotoWidgetText.Label -> onPhotoWidgetTextChange(photoWidgetText.copy(fontFamily = newValue))
+                is PhotoWidgetText.Label -> onPhotoWidgetTextChange(photoWidgetText.copy(font = newValue))
             }
         },
+        onChooseCustomFontClick = { customFontPickerLauncher.launch(FONT_MIME_TYPES) },
     )
 
     PhotoWidgetTextSizePicker(
         appSheetState = textSizeSheetState,
         currentValue = photoWidgetText.size,
-        fontFamily = photoWidgetText.fontFamily,
+        font = photoWidgetText.font,
         color = photoWidgetText.color,
         onApplyClick = { newValue: Int ->
             when (photoWidgetText) {
@@ -295,7 +313,7 @@ fun PhotoWidgetConfigureTextTab(
         appSheetState = verticalOffsetSheetState,
         currentPosition = photoWidgetText.position,
         currentOffset = photoWidgetText.verticalOffset,
-        fontFamily = photoWidgetText.fontFamily,
+        font = photoWidgetText.font,
         color = photoWidgetText.color,
         onApplyClick = { newPosition: PhotoWidgetTextPosition, newOffset: Int ->
             when (photoWidgetText) {
@@ -417,7 +435,7 @@ private fun PhotoWidgetTextValuePicker(
 private fun PhotoWidgetTextColorPicker(
     appSheetState: AppSheetState,
     currentValue: PhotoWidgetTextColor,
-    fontFamily: String?,
+    font: PhotoWidgetTextFont,
     onApplyClick: (PhotoWidgetTextColor) -> Unit,
 ) {
     AppBottomSheet(
@@ -425,7 +443,7 @@ private fun PhotoWidgetTextColorPicker(
     ) {
         TextColorPickerContent(
             currentValue = currentValue,
-            fontFamily = fontFamily,
+            font = font,
         ) { newValue: PhotoWidgetTextColor ->
             onApplyClick(newValue)
             appSheetState.hideBottomSheet()
@@ -436,7 +454,7 @@ private fun PhotoWidgetTextColorPicker(
 @Composable
 private fun TextColorPickerContent(
     currentValue: PhotoWidgetTextColor,
-    fontFamily: String?,
+    font: PhotoWidgetTextFont,
     onApplyClick: (PhotoWidgetTextColor) -> Unit,
 ) {
     var color: PhotoWidgetTextColor by rememberSaveable { mutableStateOf(currentValue) }
@@ -471,7 +489,7 @@ private fun TextColorPickerContent(
                 ) {
                     TextColorPreview(
                         color = current,
-                        fontFamily = fontFamily,
+                        font = font,
                         modifier = Modifier
                             .weight(1f, fill = false)
                             .widthIn(max = 200.dp)
@@ -483,7 +501,7 @@ private fun TextColorPickerContent(
             is PhotoWidgetTextColor.Dynamic -> {
                 TextColorTypeContent(
                     color = current,
-                    fontFamily = fontFamily,
+                    font = font,
                     types = DynamicColorType.entries,
                     selectedType = current.type,
                     onTypeSelect = { newValue: DynamicColorType ->
@@ -506,7 +524,7 @@ private fun TextColorPickerContent(
             is PhotoWidgetTextColor.Palette -> {
                 TextColorTypeContent(
                     color = current,
-                    fontFamily = fontFamily,
+                    font = font,
                     types = MatchPhotoColorType.entries,
                     selectedType = current.type,
                     onTypeSelect = { newValue: MatchPhotoColorType ->
@@ -533,7 +551,7 @@ private fun TextColorPickerContent(
 @Composable
 private fun <T> TextColorTypeContent(
     color: PhotoWidgetTextColor,
-    fontFamily: String?,
+    font: PhotoWidgetTextFont,
     types: List<T>,
     selectedType: T,
     onTypeSelect: (T) -> Unit,
@@ -547,7 +565,7 @@ private fun <T> TextColorTypeContent(
     ) {
         TextColorPreview(
             color = color,
-            fontFamily = fontFamily,
+            font = font,
             modifier = Modifier
                 .widthIn(max = min(200.dp, LocalWindowInfo.current.containerDpSize.width / 2))
                 .aspectRatio(.75f),
@@ -566,7 +584,7 @@ private fun <T> TextColorTypeContent(
 @Composable
 private fun TextColorPreview(
     color: PhotoWidgetTextColor,
-    fontFamily: String?,
+    font: PhotoWidgetTextFont,
     modifier: Modifier = Modifier,
 ) {
     WidgetPositionViewer(
@@ -574,7 +592,7 @@ private fun TextColorPreview(
             currentPhoto = LocalSamplePhoto.current,
             text = PhotoWidgetText.Label(
                 value = stringResource(R.string.photo_widget_configure_text_sample),
-                fontFamily = fontFamily,
+                font = font,
                 color = color,
             ),
         ),
@@ -585,9 +603,11 @@ private fun TextColorPreview(
 @Composable
 private fun PhotoWidgetTextFontPicker(
     appSheetState: AppSheetState,
-    currentValue: String?,
+    currentValue: PhotoWidgetTextFont,
     text: String,
-    onOptionSelect: (String?) -> Unit,
+    isGoogleFontsAvailable: Boolean,
+    onOptionSelect: (PhotoWidgetTextFont) -> Unit,
+    onChooseCustomFontClick: () -> Unit,
 ) {
     AppBottomSheet(
         sheetState = appSheetState,
@@ -600,7 +620,14 @@ private fun PhotoWidgetTextFontPicker(
 
         val previewText: String = text.ifBlank { stringResource(R.string.photo_widget_configure_text_sample) }
         val showLanguageHint: Boolean = remember(text) { text.isBlank() || text.hasNonLatinLetters() }
-        val fontFamilies: List<String?> = remember { listOf(null) + GoogleFontsLoader.FONT_FAMILIES }
+        val fonts: List<PhotoWidgetTextFont> = remember(isGoogleFontsAvailable) {
+            buildList {
+                add(PhotoWidgetTextFont.Default)
+                if (isGoogleFontsAvailable) {
+                    addAll(GoogleFontsLoader.FONT_FAMILIES.map(PhotoWidgetTextFont::GoogleFont))
+                }
+            }
+        }
 
         val fontLoadStates: SnapshotStateMap<String, FontLoadState> = remember { mutableStateMapOf() }
         val hasFailedFonts: Boolean by remember {
@@ -609,7 +636,7 @@ private fun PhotoWidgetTextFontPicker(
         var loadAttempt: Int by remember { mutableIntStateOf(0) }
 
         LaunchedEffect(loadAttempt) {
-            if (localInspectionMode) return@LaunchedEffect
+            if (localInspectionMode || !isGoogleFontsAvailable) return@LaunchedEffect
 
             for (fontFamily in GoogleFontsLoader.FONT_FAMILIES) {
                 if (fontLoadStates[fontFamily] is FontLoadState.Loaded) continue
@@ -626,7 +653,11 @@ private fun PhotoWidgetTextFontPicker(
         val listState: LazyListState = rememberLazyListState()
 
         LaunchedEffect(Unit) {
-            val selectedIndex = fontFamilies.indexOfFirst { it == currentValue }
+            val selectedIndex = if (currentValue is PhotoWidgetTextFont.Custom) {
+                fonts.size
+            } else {
+                fonts.indexOf(currentValue)
+            }
             val visibleCount = listState.layoutInfo.visibleItemsInfo.size
 
             if (selectedIndex > visibleCount) {
@@ -683,29 +714,41 @@ private fun PhotoWidgetTextFontPicker(
             }
 
             itemsIndexed(
-                items = fontFamilies,
-                key = { _, fontFamily: String? -> fontFamily.orEmpty() },
+                items = fonts,
+                key = { _, font: PhotoWidgetTextFont -> (font as? PhotoWidgetTextFont.GoogleFont)?.family.orEmpty() },
                 contentType = { _, _ -> "font" },
-            ) { index: Int, fontFamily: String? ->
+            ) { index: Int, font: PhotoWidgetTextFont ->
+                val fontFamily: String? = (font as? PhotoWidgetTextFont.GoogleFont)?.family
                 val loadState: FontLoadState? = fontFamily?.let(fontLoadStates::get)
 
                 FontListItem(
-                    fontFamily = fontFamily,
+                    headlineText = previewText,
+                    supportingText = fontFamily ?: stringResource(R.string.photo_widget_configure_text_font_default),
                     typeface = (loadState as? FontLoadState.Loaded)?.typeface ?: Typeface.DEFAULT,
                     isLoading = loadState is FontLoadState.Loading,
-                    previewText = previewText,
-                    selected = fontFamily == currentValue,
+                    selected = font == currentValue,
                     onClick = {
-                        if (fontFamily != currentValue) {
-                            onOptionSelect(fontFamily)
+                        if (font != currentValue) {
+                            onOptionSelect(font)
                         }
                         appSheetState.hideBottomSheet()
                     },
-                    shape = when (index) {
-                        0 -> Shapes.TopShape
-                        fontFamilies.lastIndex -> Shapes.BottomShape
-                        else -> Shapes.MiddleShape
+                    shape = if (index == 0) Shapes.TopShape else Shapes.MiddleShape,
+                )
+            }
+
+            item(key = "custom", contentType = "font") {
+                FontListItem(
+                    headlineText = stringResource(R.string.photo_widget_configure_text_font_custom),
+                    supportingText = (currentValue as? PhotoWidgetTextFont.Custom)?.fileName,
+                    typeface = Typeface.DEFAULT,
+                    isLoading = false,
+                    selected = currentValue is PhotoWidgetTextFont.Custom,
+                    onClick = {
+                        onChooseCustomFontClick()
+                        appSheetState.hideBottomSheet()
                     },
+                    shape = Shapes.BottomShape,
                 )
             }
         }
@@ -733,10 +776,10 @@ private sealed interface FontLoadState {
 
 @Composable
 private fun FontListItem(
-    fontFamily: String?,
+    headlineText: String,
+    supportingText: String?,
     typeface: Typeface,
     isLoading: Boolean,
-    previewText: String,
     selected: Boolean,
     onClick: () -> Unit,
     shape: Shape,
@@ -776,17 +819,19 @@ private fun FontListItem(
                 CircularWavyProgressIndicator(modifier = Modifier.size(32.dp))
             }
         },
-        supportingContent = {
-            Text(
-                text = fontFamily ?: stringResource(R.string.photo_widget_configure_text_font_default),
-                color = contentColor,
-                style = MaterialTheme.typography.bodyMedium,
-            )
+        supportingContent = supportingText?.let {
+            {
+                Text(
+                    text = supportingText,
+                    color = contentColor,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
         },
         colors = ListItemDefaults.colors(containerColor = backgroundColor, contentColor = contentColor),
         content = {
             Text(
-                text = previewText,
+                text = headlineText,
                 color = contentColor,
                 fontFamily = remember(typeface) { FontFamily(typeface) },
                 overflow = TextOverflow.Ellipsis,
@@ -801,7 +846,7 @@ private fun FontListItem(
 private fun PhotoWidgetTextSizePicker(
     appSheetState: AppSheetState,
     currentValue: Int,
-    fontFamily: String?,
+    font: PhotoWidgetTextFont,
     color: PhotoWidgetTextColor,
     onApplyClick: (Int) -> Unit,
 ) {
@@ -819,7 +864,7 @@ private fun PhotoWidgetTextSizePicker(
                     text = PhotoWidgetText.Label(
                         value = stringResource(R.string.photo_widget_configure_text_sample),
                         size = updatedValue,
-                        fontFamily = fontFamily,
+                        font = font,
                         color = color,
                     ),
                 ),
@@ -858,7 +903,7 @@ private fun PhotoWidgetVerticalOffsetPicker(
     appSheetState: AppSheetState,
     currentPosition: PhotoWidgetTextPosition,
     currentOffset: Int,
-    fontFamily: String?,
+    font: PhotoWidgetTextFont,
     color: PhotoWidgetTextColor,
     onApplyClick: (PhotoWidgetTextPosition, Int) -> Unit,
 ) {
@@ -882,7 +927,7 @@ private fun PhotoWidgetVerticalOffsetPicker(
                         value = stringResource(R.string.photo_widget_configure_text_sample),
                         position = updatedPosition,
                         verticalOffset = updatedOffset,
-                        fontFamily = fontFamily,
+                        font = font,
                         color = color,
                     ),
                 ),
@@ -948,6 +993,19 @@ private fun rememberIsGoogleFontsAvailable(): Boolean {
     }
 }
 
+/**
+ * Font files are reported under several types, and often as a generic binary file, so the picked
+ * file is validated when imported.
+ */
+private val FONT_MIME_TYPES: Array<String> = arrayOf(
+    "font/*",
+    "application/font-sfnt",
+    "application/x-font-ttf",
+    "application/x-font-otf",
+    "application/vnd.ms-opentype",
+    "application/octet-stream",
+)
+
 // region Previews
 @PreviewAll
 @Composable
@@ -956,6 +1014,7 @@ private fun PhotoWidgetConfigureTextTabPreview() {
         PhotoWidgetConfigureTextTab(
             photoWidgetText = PhotoWidgetText.Label(value = "Sample text"),
             onPhotoWidgetTextChange = {},
+            onCustomFontPick = {},
             modifier = Modifier.safeDrawingPadding(),
         )
     }

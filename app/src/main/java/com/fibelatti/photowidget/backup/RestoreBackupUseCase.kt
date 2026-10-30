@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.widget.data.PhotoWidgetInternalFileStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.InputStream
@@ -60,6 +61,9 @@ class RestoreBackupUseCase @Inject constructor(
                         croppedPhotoPath = file.absolutePath,
                         originalPhotoPath = null, // The dir path will be inferred from the cropped photo path
                     )
+                },
+                customFontPath = { fileName: String ->
+                    File(photosDir, "${PhotoWidgetInternalFileStorage.FONTS_DIR_NAME}/$fileName").path
                 },
             )
         }

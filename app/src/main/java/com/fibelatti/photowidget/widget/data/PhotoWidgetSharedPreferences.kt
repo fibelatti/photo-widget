@@ -16,6 +16,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.PhotoWidgetTextColor
+import com.fibelatti.photowidget.model.PhotoWidgetTextFont
 import com.fibelatti.photowidget.model.PhotoWidgetTextPosition
 import com.fibelatti.photowidget.model.SyncDir
 import com.fibelatti.photowidget.model.TapActionArea
@@ -659,6 +660,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 remove("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId")
                 remove("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId")
                 remove("${PreferencePrefix.TEXT_FONT_FAMILY}$appWidgetId")
+                remove("${PreferencePrefix.TEXT_CUSTOM_FONT}$appWidgetId")
                 remove("${PreferencePrefix.TEXT_COLOR}$appWidgetId")
                 remove("${PreferencePrefix.TEXT_COLOR_VALUE}$appWidgetId")
             } else {
@@ -667,14 +669,27 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 putString("${PreferencePrefix.TEXT_POSITION}$appWidgetId", text.position.name)
                 putInt("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId", text.verticalOffset)
                 putBoolean("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId", text.hasShadow)
-                putString("${PreferencePrefix.TEXT_FONT_FAMILY}$appWidgetId", text.fontFamily)
+                putString(
+                    "${PreferencePrefix.TEXT_FONT_FAMILY}$appWidgetId",
+                    (text.font as? PhotoWidgetTextFont.GoogleFont)?.family,
+                )
+                putString(
+                    "${PreferencePrefix.TEXT_CUSTOM_FONT}$appWidgetId",
+                    (text.font as? PhotoWidgetTextFont.Custom)?.fileName,
+                )
                 putString("${PreferencePrefix.TEXT_COLOR}$appWidgetId", text.color.serializedName)
                 putString("${PreferencePrefix.TEXT_COLOR_VALUE}$appWidgetId", text.color.serializedValue)
             }
         }
     }
 
-    fun getWidgetText(appWidgetId: Int): PhotoWidgetText = with(sharedPreferences) {
+    /**
+     * [customFontPath] resolves the path of a custom font from its file name.
+     */
+    fun getWidgetText(
+        appWidgetId: Int,
+        customFontPath: (fileName: String) -> String,
+    ): PhotoWidgetText = with(sharedPreferences) {
         val name = getString("${PreferencePrefix.TEXT_TYPE}$appWidgetId", null)
 
         return PhotoWidgetText.fromSerializedName(name).let { photoWidgetText ->
@@ -689,13 +704,27 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                     ) ?: PhotoWidgetTextPosition.BOTTOM,
                     verticalOffset = getInt("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId", 0),
                     hasShadow = getBoolean("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId", true),
-                    fontFamily = getString("${PreferencePrefix.TEXT_FONT_FAMILY}$appWidgetId", null),
+                    font = getWidgetTextFont(appWidgetId = appWidgetId, customFontPath = customFontPath),
                     color = PhotoWidgetTextColor.fromSerialized(
                         serializedName = getString("${PreferencePrefix.TEXT_COLOR}$appWidgetId", null),
                         serializedValue = getString("${PreferencePrefix.TEXT_COLOR_VALUE}$appWidgetId", null),
                     ),
                 )
             }
+        }
+    }
+
+    private fun getWidgetTextFont(
+        appWidgetId: Int,
+        customFontPath: (fileName: String) -> String,
+    ): PhotoWidgetTextFont = with(sharedPreferences) {
+        val customFont: String? = getString("${PreferencePrefix.TEXT_CUSTOM_FONT}$appWidgetId", null)
+        val fontFamily: String? = getString("${PreferencePrefix.TEXT_FONT_FAMILY}$appWidgetId", null)
+
+        return when {
+            customFont != null -> PhotoWidgetTextFont.Custom(fileName = customFont, path = customFontPath(customFont))
+            fontFamily != null -> PhotoWidgetTextFont.GoogleFont(family = fontFamily)
+            else -> PhotoWidgetTextFont.Default
         }
     }
 
@@ -892,6 +921,7 @@ class PhotoWidgetSharedPreferences @Inject constructor(
         TEXT_VERTICAL_OFFSET(value = "appwidget_text_vertical_offset_"),
         TEXT_HAS_SHADOW(value = "appwidget_text_has_shadow_"),
         TEXT_FONT_FAMILY(value = "appwidget_text_font_family_"),
+        TEXT_CUSTOM_FONT(value = "appwidget_text_custom_font_"),
         TEXT_COLOR(value = "appwidget_text_color_"),
         TEXT_COLOR_VALUE(value = "appwidget_text_color_value_"),
 

@@ -62,6 +62,7 @@ class DuplicatePhotoWidgetUseCase @Inject constructor(
         return appWidget.copy(
             photos = photos,
             currentPhoto = photos.firstOrNull(),
+            text = photoWidgetStorage.stageWidgetFont(appWidgetId = newAppWidgetId, text = appWidget.text),
             deletionTimestamp = -1,
             removedPhotos = emptyList(),
             loadStage = PhotoWidgetLoadStage.SOURCE_PHOTOS,

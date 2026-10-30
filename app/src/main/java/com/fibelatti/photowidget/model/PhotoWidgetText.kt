@@ -25,8 +25,7 @@ sealed interface PhotoWidgetText : Parcelable {
     val value: String
     val size: Int
 
-    /** The Google Fonts family used to render the text, or `null` to use the system default. */
-    val fontFamily: String?
+    val font: PhotoWidgetTextFont
     val color: PhotoWidgetTextColor
     val position: PhotoWidgetTextPosition
     val horizontalOffset: Int
@@ -46,7 +45,7 @@ sealed interface PhotoWidgetText : Parcelable {
         override val size: Int = 0
 
         @IgnoredOnParcel
-        override val fontFamily: String? = null
+        override val font: PhotoWidgetTextFont = PhotoWidgetTextFont.Default
 
         @IgnoredOnParcel
         override val color: PhotoWidgetTextColor = PhotoWidgetTextColor.DEFAULT
@@ -77,7 +76,7 @@ sealed interface PhotoWidgetText : Parcelable {
         override val position: PhotoWidgetTextPosition = PhotoWidgetTextPosition.BOTTOM,
         override val verticalOffset: Int = 0,
         override val hasShadow: Boolean = true,
-        override val fontFamily: String? = null,
+        override val font: PhotoWidgetTextFont = PhotoWidgetTextFont.Default,
         override val color: PhotoWidgetTextColor = PhotoWidgetTextColor.DEFAULT,
     ) : PhotoWidgetText {
 

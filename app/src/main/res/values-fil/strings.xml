@@ -322,6 +322,8 @@
     <string name="photo_widget_configure_text_font">Font</string>
     <string name="photo_widget_configure_text_font_default">Default ng system</string>
     <string name="photo_widget_configure_text_font_load_error">Hindi ma-load ang ilang font.</string>
+    <string name="photo_widget_configure_text_font_custom">Pumili ng sarili mo</string>
+    <string name="photo_widget_configure_text_font_custom_error">Hindi ma-load bilang font ang napiling file. Pumili ng ibang file.</string>
     <string name="photo_widget_configure_text_font_language_hint">Hindi lahat ng font ay sumusuporta sa bawat wika. Kung mukhang hindi tama ang iyong teksto, subukan ang ibang font.</string>
     <string name="photo_widget_configure_text_sample">Halimbawang teksto</string>
     <string name="photo_widget_configure_text_caveat">Magkasama sa iisang widget area ang larawan at teksto. Maaaring ayusin ang posisyon gamit ang mga setting sa itaas, pati ang offset at padding ng larawan.</string>

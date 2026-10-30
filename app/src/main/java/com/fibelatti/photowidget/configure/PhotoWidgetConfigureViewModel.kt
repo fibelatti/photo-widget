@@ -18,6 +18,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.PhotoWidgetText
+import com.fibelatti.photowidget.model.PhotoWidgetTextFont
 import com.fibelatti.photowidget.model.SyncDir
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.coerceTapActions
@@ -844,6 +845,40 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                     text = photoWidgetText,
                 ),
             )
+        }
+    }
+
+    fun customFontPicked(source: Uri?) {
+        if (source == null) return
+
+        viewModelScope.launch {
+            _state.update { current -> current.copy(isProcessing = true) }
+
+            val font: PhotoWidgetTextFont? = photoWidgetStorage.newWidgetFont(
+                appWidgetId = effectiveWidgetId,
+                source = source,
+            )
+
+            _state.update { current ->
+                val text: PhotoWidgetText = current.photoWidget.text
+
+                when {
+                    font == null -> {
+                        current.copy(isProcessing = false) + PhotoWidgetConfigureState.Message.UserPrompt(
+                            textRes = R.string.photo_widget_configure_text_font_custom_error,
+                        )
+                    }
+
+                    text is PhotoWidgetText.Label -> {
+                        current.copy(
+                            photoWidget = current.photoWidget.copy(text = text.copy(font = font)),
+                            isProcessing = false,
+                        )
+                    }
+
+                    else -> current.copy(isProcessing = false)
+                }
+            }
         }
     }
 

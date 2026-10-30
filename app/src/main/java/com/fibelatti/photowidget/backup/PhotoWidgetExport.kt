@@ -11,6 +11,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.PhotoWidgetTextColor
+import com.fibelatti.photowidget.model.PhotoWidgetTextFont
 import com.fibelatti.photowidget.model.PhotoWidgetTextPosition
 import com.fibelatti.photowidget.model.coerceTapActions
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
@@ -41,12 +42,19 @@ data class PhotoWidgetExport(
     val textVerticalOffset: Int?,
     val textHasShadow: Boolean?,
     val textFontFamily: String? = null,
+    val textCustomFont: String? = null,
     val textColor: String? = null,
     val textColorValue: String? = null,
     val gifInterval: Long?,
 )
 
-fun PhotoWidgetExport.toPhotoWidget(photos: List<LocalPhoto>): PhotoWidget {
+/**
+ * [customFontPath] resolves the path of the exported custom font from its file name.
+ */
+fun PhotoWidgetExport.toPhotoWidget(
+    photos: List<LocalPhoto>,
+    customFontPath: (fileName: String) -> String,
+): PhotoWidget {
     val source: PhotoWidgetSource = enumValueOfOrNull<PhotoWidgetSource>(source) ?: PhotoWidgetSource.PHOTOS
 
     val photoWidgetBorder: PhotoWidgetBorder = when (
@@ -88,7 +96,16 @@ fun PhotoWidgetExport.toPhotoWidget(photos: List<LocalPhoto>): PhotoWidget {
                 position = enumValueOfOrNull<PhotoWidgetTextPosition>(textPosition) ?: widgetText.position,
                 verticalOffset = textVerticalOffset ?: widgetText.verticalOffset,
                 hasShadow = textHasShadow ?: widgetText.hasShadow,
-                fontFamily = textFontFamily,
+                font = when {
+                    textCustomFont != null -> PhotoWidgetTextFont.Custom(
+                        fileName = textCustomFont,
+                        path = customFontPath(textCustomFont),
+                    )
+
+                    textFontFamily != null -> PhotoWidgetTextFont.GoogleFont(family = textFontFamily)
+
+                    else -> PhotoWidgetTextFont.Default
+                },
                 color = PhotoWidgetTextColor.fromSerialized(
                     serializedName = textColor,
                     serializedValue = textColorValue,
@@ -130,6 +147,7 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
     var textVerticalOffset: Int? = null
     var textHasShadow: Boolean? = null
     var textFontFamily: String? = null
+    var textCustomFont: String? = null
     var textColor: String? = null
     var textColorValue: String? = null
 
@@ -162,7 +180,8 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
             textPosition = text.position.name
             textVerticalOffset = text.verticalOffset
             textHasShadow = text.hasShadow
-            textFontFamily = text.fontFamily
+            textFontFamily = (text.font as? PhotoWidgetTextFont.GoogleFont)?.family
+            textCustomFont = (text.font as? PhotoWidgetTextFont.Custom)?.fileName
             textColor = text.color.serializedName
             textColorValue = text.color.serializedValue
         }
@@ -192,6 +211,7 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
         textVerticalOffset = textVerticalOffset,
         textHasShadow = textHasShadow,
         textFontFamily = textFontFamily,
+        textCustomFont = textCustomFont,
         textColor = textColor,
         textColorValue = textColorValue,
         gifInterval = gifInterval,

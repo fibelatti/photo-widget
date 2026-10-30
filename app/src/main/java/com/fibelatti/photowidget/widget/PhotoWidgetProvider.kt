@@ -26,9 +26,9 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PreparedCurrentPhoto
 import com.fibelatti.photowidget.model.bitmapByteCount
 import com.fibelatti.photowidget.platform.ExceptionReporter
-import com.fibelatti.photowidget.platform.GoogleFontsLoader
 import com.fibelatti.photowidget.platform.KeepAliveService
 import com.fibelatti.photowidget.platform.RemoteViewsBitmapMemoryCap
+import com.fibelatti.photowidget.platform.TextFontLoader
 import com.fibelatti.photowidget.platform.displayPixels
 import com.fibelatti.photowidget.platform.getMaxCrossfadeBitmapMemory
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
@@ -204,7 +204,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val pinningCache: PhotoWidgetPinningCache = entryPoint.photoWidgetPinningCache()
             val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase = entryPoint.loadPhotoWidgetUseCase()
             val prepareCurrentPhotoUseCase: PrepareCurrentPhotoUseCase = entryPoint.prepareCurrentPhotoUseCase()
-            val googleFontsLoader: GoogleFontsLoader = entryPoint.googleFontsLoader()
+            val textFontLoader: TextFontLoader = entryPoint.textFontLoader()
             val exceptionReporter: ExceptionReporter = entryPoint.exceptionReporter()
             val crossfadeAnimator: PhotoWidgetCrossfadeAnimator = entryPoint.photoWidgetCrossfadeAnimator()
 
@@ -230,8 +230,8 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                 // Resolved once so the label is measured for the render budget and drawn with the
                 // same typeface. A font that takes longer to load triggers another render once ready,
                 // after the current one settles so it doesn't cut a crossfade short.
-                val labelTypeface: Typeface = googleFontsLoader.getWidgetTypeface(
-                    fontFamily = photoWidget.text.fontFamily,
+                val labelTypeface: Typeface = textFontLoader.getWidgetTypeface(
+                    font = photoWidget.text.font,
                     onLateLoad = {
                         updateJobMap[appWidgetId]?.join()
                         update(context = context, appWidgetId = appWidgetId)

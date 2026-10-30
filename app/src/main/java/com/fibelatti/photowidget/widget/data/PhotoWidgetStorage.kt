@@ -12,6 +12,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
 import com.fibelatti.photowidget.model.PhotoWidgetText
+import com.fibelatti.photowidget.model.PhotoWidgetTextFont
 import com.fibelatti.photowidget.model.SyncDir
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.Time
@@ -119,7 +120,10 @@ class PhotoWidgetStorage @Inject constructor(
     suspend fun saveWidgetSource(appWidgetId: Int, source: PhotoWidgetSource) {
         val currentSource: PhotoWidgetSource = sharedPreferences.getWidgetSource(appWidgetId = appWidgetId)
         if (source != currentSource) {
-            internalFileStorage.deleteWidgetData(directoryName = getOrCreateDirectoryName(appWidgetId = appWidgetId))
+            internalFileStorage.deleteWidgetData(
+                directoryName = getOrCreateDirectoryName(appWidgetId = appWidgetId),
+                keepFonts = true,
+            )
 
             deleteWidgetTableData(appWidgetId = appWidgetId)
 
@@ -870,12 +874,67 @@ class PhotoWidgetStorage @Inject constructor(
         )
     }
 
-    fun saveWidgetText(appWidgetId: Int, text: PhotoWidgetText) {
-        sharedPreferences.saveWidgetText(appWidgetId = appWidgetId, text = text)
+    /**
+     * Saves [text], copying its custom font to the widget directory in place of the previous one.
+     * Falls back to the default font when the copy fails.
+     */
+    suspend fun saveWidgetText(appWidgetId: Int, text: PhotoWidgetText) {
+        val customFont: PhotoWidgetTextFont.Custom? = text.font as? PhotoWidgetTextFont.Custom
+        val savedFontPath: String? = internalFileStorage.saveWidgetFont(
+            directoryName = getOrCreateDirectoryName(appWidgetId),
+            sourcePath = customFont?.path,
+        )
+
+        val savedText: PhotoWidgetText = if (text is PhotoWidgetText.Label && customFont != null) {
+            text.copy(font = savedFontPath?.let(::customFontAt) ?: PhotoWidgetTextFont.Default)
+        } else {
+            text
+        }
+
+        sharedPreferences.saveWidgetText(appWidgetId = appWidgetId, text = savedText)
     }
 
-    fun getWidgetText(appWidgetId: Int): PhotoWidgetText {
-        return sharedPreferences.getWidgetText(appWidgetId = appWidgetId)
+    suspend fun getWidgetText(appWidgetId: Int): PhotoWidgetText {
+        val fontDir: File = internalFileStorage.getWidgetFontDir(directoryName = getOrCreateDirectoryName(appWidgetId))
+
+        return sharedPreferences.getWidgetText(
+            appWidgetId = appWidgetId,
+            customFontPath = { fileName: String -> File(fontDir, fileName).path },
+        )
+    }
+
+    /**
+     * Stages the font file chosen by the user. The widget only uses it once it is saved, see
+     * [saveWidgetText].
+     */
+    suspend fun newWidgetFont(appWidgetId: Int, source: Uri): PhotoWidgetTextFont? {
+        val directoryName = getOrCreateDirectoryName(appWidgetId)
+        return internalFileStorage.newWidgetFont(directoryName = directoryName, source = source)
+    }
+
+    /**
+     * Stages the custom font of [text], which belongs to another widget or a backup, for
+     * [appWidgetId]. Falls back to the default font when the copy fails.
+     *
+     * @return [text] pointing at the staged font
+     */
+    suspend fun stageWidgetFont(appWidgetId: Int, text: PhotoWidgetText): PhotoWidgetText {
+        if (text !is PhotoWidgetText.Label || text.font !is PhotoWidgetTextFont.Custom) return text
+
+        val path: String? = internalFileStorage.stageWidgetFont(
+            directoryName = getOrCreateDirectoryName(appWidgetId),
+            sourcePath = text.font.path,
+        )
+
+        return text.copy(font = path?.let(::customFontAt) ?: PhotoWidgetTextFont.Default)
+    }
+
+    /**
+     * The custom font in [path], named after the file itself. The name it had before it was copied
+     * may come from a backup, so it isn't trusted to find the file again.
+     */
+    private fun customFontAt(path: String): PhotoWidgetTextFont.Custom {
+        return PhotoWidgetTextFont.Custom(fileName = File(path).name, path = path)
     }
 
     fun saveWidgetGifInterval(appWidgetId: Int, interval: Long) {
@@ -900,6 +959,7 @@ class PhotoWidgetStorage @Inject constructor(
         val directoryName: String? = widgetDirectoryDao.getDirectoryName(widgetId = appWidgetId)
         if (directoryName != null) {
             internalFileStorage.deleteWidgetData(directoryName = directoryName)
+            internalFileStorage.deleteStagedWidgetFonts(directoryName = directoryName)
             widgetDirectoryDao.deleteByWidgetId(widgetId = appWidgetId)
         }
 
@@ -976,6 +1036,8 @@ class PhotoWidgetStorage @Inject constructor(
             }
         }
         pendingDeletionPhotosDao.deletePhotosBeforeTimestamp(timestamp = currentTimestamp)
+
+        internalFileStorage.deleteStagedFontsBefore(timestamp = currentTimestamp - STAGED_FONT_THRESHOLD_MILLIS)
     }
 
     /**
@@ -1090,6 +1152,12 @@ class PhotoWidgetStorage @Inject constructor(
     companion object {
 
         private val DELETION_THRESHOLD_MILLIS: Long = 7.days.inWholeMilliseconds
+
+        /**
+         * Fonts picked while configuring a widget that was never saved. Kept for a day, since a
+         * widget that is being configured or placed may still use them.
+         */
+        private val STAGED_FONT_THRESHOLD_MILLIS: Long = 1.days.inWholeMilliseconds
 
         private const val LEGACY_DRAFT_WIDGET_ID: Int = 0
 

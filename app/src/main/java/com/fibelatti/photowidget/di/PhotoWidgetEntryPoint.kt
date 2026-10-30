@@ -5,6 +5,7 @@ import com.fibelatti.photowidget.help.HintStorage
 import com.fibelatti.photowidget.platform.ExceptionReporter
 import com.fibelatti.photowidget.platform.GoogleFontsLoader
 import com.fibelatti.photowidget.platform.PhotoDecoder
+import com.fibelatti.photowidget.platform.TextFontLoader
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.CyclePhotoUseCase
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
@@ -48,6 +49,8 @@ interface PhotoWidgetEntryPoint {
     fun photoDecoder(): PhotoDecoder
 
     fun googleFontsLoader(): GoogleFontsLoader
+
+    fun textFontLoader(): TextFontLoader
 
     fun coroutineScope(): CoroutineScope
 
