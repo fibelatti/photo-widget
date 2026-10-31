@@ -327,6 +327,8 @@
     <string name="photo_widget_configure_text_type_none">Нет</string>
     <string name="photo_widget_configure_text_type_label">Метка</string>
     <string name="photo_widget_configure_text_type_label_description">Имитирует название приложения, чтобы соответствовать эстетике главного экрана</string>
+    <string name="photo_widget_configure_text_type_file_name">Имя файла</string>
+    <string name="photo_widget_configure_text_type_file_name_description">Показывает имя файла текущей фотографии</string>
     <string name="photo_widget_configure_text_value">Значение</string>
     <string name="photo_widget_configure_text_size">Размер</string>
     <string name="photo_widget_configure_text_vertical_offset">Вертикальное положение и смещение</string>

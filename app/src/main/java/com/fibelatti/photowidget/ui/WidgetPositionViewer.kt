@@ -33,10 +33,10 @@ import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
-import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.PhotoWidgetTextColor
 import com.fibelatti.photowidget.model.PhotoWidgetTextFont
 import com.fibelatti.photowidget.model.PhotoWidgetTextPosition
+import com.fibelatti.photowidget.model.displayValue
 import com.fibelatti.photowidget.model.resolve
 import com.fibelatti.photowidget.model.textToBitmap
 import com.fibelatti.photowidget.model.verticalPadding
@@ -115,15 +115,22 @@ fun WidgetPositionViewer(
             }
         }
 
-        if (photoWidget.text is PhotoWidgetText.Label) {
+        val labelValue: String? = photoWidget.text.displayValue(photo = photoWidget.currentPhoto)
+
+        if (labelValue != null) {
             val labelTypeface: Typeface by rememberLabelTypeface(font = photoWidget.text.font)
             val labelColor: Int? = rememberLabelColor(color = photoWidget.text.color, photo = photoWidget.currentPhoto)
 
             if (labelColor != null) {
                 val localContext = LocalContext.current
-                val labelBitmap: ImageBitmap = remember(photoWidget.text, labelTypeface, labelColor) {
+                val labelBitmap: ImageBitmap = remember(photoWidget.text, labelValue, labelTypeface, labelColor) {
                     photoWidget.text
-                        .textToBitmap(context = localContext, typeface = labelTypeface, color = labelColor)
+                        .textToBitmap(
+                            context = localContext,
+                            value = labelValue,
+                            typeface = labelTypeface,
+                            color = labelColor,
+                        )
                         .asImageBitmap()
                 }
                 val (topPadding: Int, bottomPadding: Int) = photoWidget.text.verticalPadding

@@ -313,6 +313,8 @@
     <string name="photo_widget_configure_text_type_none">Keiner</string>
     <string name="photo_widget_configure_text_type_label">Beschriftung</string>
     <string name="photo_widget_configure_text_type_label_description">Imitiert einen App-Namen, um zur Ästhetik deines Startbildschirms zu passen</string>
+    <string name="photo_widget_configure_text_type_file_name">Dateiname</string>
+    <string name="photo_widget_configure_text_type_file_name_description">Zeigt den Namen der aktuellen Fotodatei an</string>
     <string name="photo_widget_configure_text_value">Text</string>
     <string name="photo_widget_configure_text_size">Größe</string>
     <string name="photo_widget_configure_text_vertical_offset">Vertikale Position und Versatz</string>

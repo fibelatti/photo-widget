@@ -319,6 +319,8 @@
     <string name="photo_widget_configure_text_type_none">ללא</string>
     <string name="photo_widget_configure_text_type_label">תווית</string>
     <string name="photo_widget_configure_text_type_label_description">מדמה שם של אפליקציה כדי להתאים לאסתטיקה של מסך הבית שלך</string>
+    <string name="photo_widget_configure_text_type_file_name">שם הקובץ</string>
+    <string name="photo_widget_configure_text_type_file_name_description">מציג את שם הקובץ של התמונה הנוכחית</string>
     <string name="photo_widget_configure_text_value">טקסט</string>
     <string name="photo_widget_configure_text_size">גודל</string>
     <string name="photo_widget_configure_text_vertical_offset">מיקום והיסט אנכי</string>

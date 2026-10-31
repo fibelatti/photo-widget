@@ -11,6 +11,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PreparedCurrentPhoto
 import com.fibelatti.photowidget.model.bitmapByteCount
 import com.fibelatti.photowidget.model.borderPercent
+import com.fibelatti.photowidget.model.displayValue
 import com.fibelatti.photowidget.model.getPhotoPath
 import com.fibelatti.photowidget.model.resolve
 import com.fibelatti.photowidget.model.resolveColor
@@ -66,7 +67,11 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
 
         // The label bitmap travels in the same update as the photo, so its bytes come out of the
         // render budget before the photo is sized against what is left.
-        val labelBytes: Long = photoWidget.text.bitmapByteCount(context = context, typeface = labelTypeface)
+        val labelBytes: Long = photoWidget.text.bitmapByteCount(
+            context = context,
+            value = photoWidget.text.displayValue(photo = currentPhoto),
+            typeface = labelTypeface,
+        )
 
         // Every aspect ratio but FILL_WIDGET draws the photo fitted inside the widget, so the
         // widget's own size is all the resolution it can show. FILL_WIDGET crops the photo to

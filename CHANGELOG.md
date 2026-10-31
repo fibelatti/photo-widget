@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Support for user provided custom fonts
+* Show the current file name as a widget label (folder widgets)
 
 ### Fixed
 

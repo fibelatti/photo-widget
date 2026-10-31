@@ -303,6 +303,8 @@
     <string name="photo_widget_configure_text_type_none">无</string>
     <string name="photo_widget_configure_text_type_label">标签</string>
     <string name="photo_widget_configure_text_type_label_description">模拟应用名称，以匹配您的桌面美化</string>
+    <string name="photo_widget_configure_text_type_file_name">文件名</string>
+    <string name="photo_widget_configure_text_type_file_name_description">显示当前照片的文件名</string>
     <string name="photo_widget_configure_text_value">文本</string>
     <string name="photo_widget_configure_text_size">尺寸</string>
     <string name="photo_widget_configure_text_vertical_offset">垂直位置和偏移</string>

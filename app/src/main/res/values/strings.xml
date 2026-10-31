@@ -364,6 +364,8 @@
     <string name="photo_widget_configure_text_type_none">None</string>
     <string name="photo_widget_configure_text_type_label">Label</string>
     <string name="photo_widget_configure_text_type_label_description">Mimics an app name to match your home screen aesthetic</string>
+    <string name="photo_widget_configure_text_type_file_name">File name</string>
+    <string name="photo_widget_configure_text_type_file_name_description">Shows the name of the current photo file</string>
 
     <string name="photo_widget_configure_text_value">Text</string>
     <string name="photo_widget_configure_text_size">Size</string>

@@ -15,6 +15,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.PhotoWidgetTextPosition
 import com.fibelatti.photowidget.model.PreparedCurrentPhoto
+import com.fibelatti.photowidget.model.displayValue
 import com.fibelatti.photowidget.model.textToBitmap
 import com.fibelatti.photowidget.model.verticalPadding
 import kotlin.math.abs
@@ -159,6 +160,7 @@ object PhotoWidgetRemoteViewsBuilder {
                 remoteViews = this,
                 context = context,
                 photoWidgetText = photoWidget.text,
+                value = photoWidget.text.displayValue(photo = photoWidget.currentPhoto),
                 typeface = state.labelTypeface,
                 color = preparedCurrentPhoto.labelColor,
             )
@@ -206,17 +208,19 @@ object PhotoWidgetRemoteViewsBuilder {
         remoteViews: RemoteViews,
         context: Context,
         photoWidgetText: PhotoWidgetText,
+        value: String?,
         typeface: Typeface,
         @ColorInt color: Int,
     ) {
-        when (photoWidgetText) {
-            is PhotoWidgetText.None -> {
+        when {
+            value == null -> {
                 remoteViews.setViewVisibility(R.id.layout_label, View.GONE)
             }
 
-            is PhotoWidgetText.Label -> {
+            else -> {
                 val bitmap: Bitmap = photoWidgetText.textToBitmap(
                     context = context,
+                    value = value,
                     typeface = typeface,
                     color = color,
                 )

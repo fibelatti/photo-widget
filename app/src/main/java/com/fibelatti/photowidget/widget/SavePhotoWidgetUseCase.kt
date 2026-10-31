@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.widget
 
+import android.content.Context
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
@@ -8,18 +9,25 @@ import com.fibelatti.photowidget.model.PhotoWidgetShapeBuilder
 import com.fibelatti.photowidget.model.PhotoWidgetShapeRotation
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetTapActions
+import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.TapActionArea
 import com.fibelatti.photowidget.model.canShuffle
 import com.fibelatti.photowidget.model.coerceTapActions
+import com.fibelatti.photowidget.model.coerceText
 import com.fibelatti.photowidget.model.photoCycleEnabled
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlin.reflect.KClass
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class SavePhotoWidgetUseCase @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val photoWidgetStorage: PhotoWidgetStorage,
     private val photoWidgetAlarmManager: PhotoWidgetAlarmManager,
+    private val coroutineScope: CoroutineScope,
 ) {
 
     suspend operator fun invoke(
@@ -33,9 +41,15 @@ class SavePhotoWidgetUseCase @Inject constructor(
         saveWidgetAppearance(appWidgetId = appWidgetId, photoWidget = photoWidget)
         saveWidgetBehavior(appWidgetId = appWidgetId, photoWidget = photoWidget)
 
-        photoWidgetStorage.saveWidgetText(appWidgetId = appWidgetId, text = photoWidget.text)
+        photoWidgetStorage.saveWidgetText(
+            appWidgetId = appWidgetId,
+            text = photoWidget.text.coerceText(source = photoWidget.source),
+        )
 
         photoWidgetStorage.saveWidgetGifInterval(appWidgetId = appWidgetId, interval = photoWidget.gifInterval)
+
+        // Last, so the sync reads everything that was just saved, such as the directory sorting
+        syncMissingDisplayNames(appWidgetId = appWidgetId, photoWidget = photoWidget)
 
         // Draft widgets won't have alarms yet...
         if (PhotoWidget.isDraftWidgetId(appWidgetId)) return
@@ -129,6 +143,31 @@ class SavePhotoWidgetUseCase @Inject constructor(
                     .plus(removedPhotoIds)
                     .toSet(),
             )
+        }
+    }
+
+    /**
+     * Photos listed before file names were persisted don't have one, so the file name text would be
+     * missing until the next periodic sync. Syncing reads them from the source, which can take a
+     * while for large directories, so it runs in the background and the widget updates once done.
+     *
+     * Drafts are skipped since their photos are moved to the new widget ID once it is placed, which
+     * a background sync could race against. Saving the placed widget triggers the sync instead.
+     */
+    private fun syncMissingDisplayNames(appWidgetId: Int, photoWidget: PhotoWidget) {
+        val needsDisplayNames: Boolean = photoWidget.text is PhotoWidgetText.FileName &&
+            photoWidget.source == PhotoWidgetSource.DIRECTORY &&
+            !PhotoWidget.isDraftWidgetId(appWidgetId) &&
+            (photoWidget.photos + photoWidget.removedPhotos).any { it.displayName == null }
+
+        if (!needsDisplayNames) return
+
+        Timber.i("Syncing photos to retrieve their file names %s", mapOf("appWidgetId" to appWidgetId))
+
+        coroutineScope.launch {
+            if (photoWidgetStorage.syncWidgetPhotos(appWidgetId = appWidgetId)) {
+                PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+            }
         }
     }
 

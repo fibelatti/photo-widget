@@ -313,6 +313,8 @@
     <string name="photo_widget_configure_text_type_none">Nessuno</string>
     <string name="photo_widget_configure_text_type_label">Etichetta</string>
     <string name="photo_widget_configure_text_type_label_description">Imita il nome di un\'app per adattarsi all\'estetica della schermata Home</string>
+    <string name="photo_widget_configure_text_type_file_name">Nome del file</string>
+    <string name="photo_widget_configure_text_type_file_name_description">Mostra il nome del file della foto attuale</string>
     <string name="photo_widget_configure_text_value">Testo</string>
     <string name="photo_widget_configure_text_size">Dimensione</string>
     <string name="photo_widget_configure_text_vertical_offset">Posizione e offset verticali</string>

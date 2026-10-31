@@ -22,6 +22,8 @@ import com.fibelatti.photowidget.model.PhotoWidgetTextFont
 import com.fibelatti.photowidget.model.SyncDir
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.coerceTapActions
+import com.fibelatti.photowidget.model.coerceText
+import com.fibelatti.photowidget.model.copyStyle
 import com.fibelatti.photowidget.model.orderedPhotosForDisplay
 import com.fibelatti.photowidget.platform.savedState
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
@@ -252,6 +254,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                                 photos = widgetPhotos.current,
                                 currentPhoto = widgetPhotos.current.firstOrNull(),
                                 tapActions = current.photoWidget.tapActions.coerceTapActions(source = newSource),
+                                text = current.photoWidget.text.coerceText(source = newSource),
                                 removedPhotos = widgetPhotos.excluded,
                             ),
                             selectedPhoto = widgetPhotos.current.firstOrNull(),
@@ -869,9 +872,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                         )
                     }
 
-                    text is PhotoWidgetText.Label -> {
+                    text !is PhotoWidgetText.None -> {
                         current.copy(
-                            photoWidget = current.photoWidget.copy(text = text.copy(font = font)),
+                            photoWidget = current.photoWidget.copy(text = text.copyStyle(font = font)),
                             isProcessing = false,
                         )
                     }

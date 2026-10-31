@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.Flow
         WidgetDirectoryDto::class,
         AdvancedScheduleTimeDto::class,
     ],
-    version = 6,
+    version = 7,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.Flow
         AutoMigration(from = 3, to = 4),
         AutoMigration(from = 4, to = 5),
         AutoMigration(from = 5, to = 6),
+        AutoMigration(from = 6, to = 7),
     ],
 )
 abstract class PhotoWidgetDatabase : RoomDatabase() {
@@ -59,6 +60,7 @@ data class LocalPhotoDto(
     val originalPhotoPath: String? = null,
     val externalUri: String? = null,
     val timestamp: Long = System.currentTimeMillis(),
+    val displayName: String? = null,
 )
 
 @Dao

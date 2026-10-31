@@ -311,6 +311,8 @@
     <string name="photo_widget_configure_text_type_none">Nenhum</string>
     <string name="photo_widget_configure_text_type_label">Rótulo</string>
     <string name="photo_widget_configure_text_type_label_description">Imita o nome de um app para combinar com a estética da tela inicial</string>
+    <string name="photo_widget_configure_text_type_file_name">Nome do arquivo</string>
+    <string name="photo_widget_configure_text_type_file_name_description">Mostra o nome do arquivo da foto atual</string>
     <string name="photo_widget_configure_text_value">Texto</string>
     <string name="photo_widget_configure_text_size">Tamanho</string>
     <string name="photo_widget_configure_text_vertical_offset">Posição e deslocamento vertical</string>

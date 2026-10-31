@@ -5,6 +5,10 @@ import android.os.Parcelable
 import androidx.compose.runtime.Immutable
 import kotlinx.parcelize.Parcelize
 
+/**
+ * @property displayName the name of the original file, including its extension. Only known for
+ * [PhotoWidgetSource.DIRECTORY] photos, and only once they have been listed from their source.
+ */
 @Parcelize
 @Immutable
 data class LocalPhoto(
@@ -15,6 +19,7 @@ data class LocalPhoto(
     val launcherUri: Uri? = null,
     val cropping: Boolean = false,
     val timestamp: Long = System.currentTimeMillis(),
+    val displayName: String? = null,
 ) : Parcelable
 
 /**

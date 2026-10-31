@@ -14,6 +14,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetTextColor
 import com.fibelatti.photowidget.model.PhotoWidgetTextFont
 import com.fibelatti.photowidget.model.PhotoWidgetTextPosition
 import com.fibelatti.photowidget.model.coerceTapActions
+import com.fibelatti.photowidget.model.coerceText
 import com.fibelatti.photowidget.platform.enumValueOfOrNull
 import kotlinx.serialization.Serializable
 
@@ -84,6 +85,21 @@ fun PhotoWidgetExport.toPhotoWidget(
         }
     }
 
+    val photoWidgetTextFont: PhotoWidgetTextFont = when {
+        textCustomFont != null -> PhotoWidgetTextFont.Custom(
+            fileName = textCustomFont,
+            path = customFontPath(textCustomFont),
+        )
+
+        textFontFamily != null -> PhotoWidgetTextFont.GoogleFont(family = textFontFamily)
+
+        else -> PhotoWidgetTextFont.Default
+    }
+    val photoWidgetTextColor: PhotoWidgetTextColor = PhotoWidgetTextColor.fromSerialized(
+        serializedName = textColor,
+        serializedValue = textColorValue,
+    )
+
     val photoWidgetText: PhotoWidgetText = when (
         val widgetText = PhotoWidgetText.fromSerializedName(text)
     ) {
@@ -96,23 +112,22 @@ fun PhotoWidgetExport.toPhotoWidget(
                 position = enumValueOfOrNull<PhotoWidgetTextPosition>(textPosition) ?: widgetText.position,
                 verticalOffset = textVerticalOffset ?: widgetText.verticalOffset,
                 hasShadow = textHasShadow ?: widgetText.hasShadow,
-                font = when {
-                    textCustomFont != null -> PhotoWidgetTextFont.Custom(
-                        fileName = textCustomFont,
-                        path = customFontPath(textCustomFont),
-                    )
-
-                    textFontFamily != null -> PhotoWidgetTextFont.GoogleFont(family = textFontFamily)
-
-                    else -> PhotoWidgetTextFont.Default
-                },
-                color = PhotoWidgetTextColor.fromSerialized(
-                    serializedName = textColor,
-                    serializedValue = textColorValue,
-                ),
+                font = photoWidgetTextFont,
+                color = photoWidgetTextColor,
             )
         }
-    }
+
+        is PhotoWidgetText.FileName -> {
+            PhotoWidgetText.FileName(
+                size = textSize ?: widgetText.size,
+                position = enumValueOfOrNull<PhotoWidgetTextPosition>(textPosition) ?: widgetText.position,
+                verticalOffset = textVerticalOffset ?: widgetText.verticalOffset,
+                hasShadow = textHasShadow ?: widgetText.hasShadow,
+                font = photoWidgetTextFont,
+                color = photoWidgetTextColor,
+            )
+        }
+    }.coerceText(source = source)
 
     return PhotoWidget(
         source = source,
@@ -174,8 +189,8 @@ fun PhotoWidget.toPhotoWidgetExport(id: Int): PhotoWidgetExport {
         // Nothing else to export
         is PhotoWidgetText.None -> Unit
 
-        is PhotoWidgetText.Label -> {
-            textValue = text.value
+        is PhotoWidgetText.Label, is PhotoWidgetText.FileName -> {
+            textValue = (text as? PhotoWidgetText.Label)?.value
             textSize = text.size
             textPosition = text.position.name
             textVerticalOffset = text.verticalOffset

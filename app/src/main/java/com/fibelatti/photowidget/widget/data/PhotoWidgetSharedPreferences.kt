@@ -664,7 +664,11 @@ class PhotoWidgetSharedPreferences @Inject constructor(
                 remove("${PreferencePrefix.TEXT_COLOR}$appWidgetId")
                 remove("${PreferencePrefix.TEXT_COLOR_VALUE}$appWidgetId")
             } else {
-                putString("${PreferencePrefix.TEXT_VALUE}$appWidgetId", text.value)
+                if (text is PhotoWidgetText.Label) {
+                    putString("${PreferencePrefix.TEXT_VALUE}$appWidgetId", text.value)
+                } else {
+                    remove("${PreferencePrefix.TEXT_VALUE}$appWidgetId")
+                }
                 putInt("${PreferencePrefix.TEXT_SIZE}$appWidgetId", text.size)
                 putString("${PreferencePrefix.TEXT_POSITION}$appWidgetId", text.position.name)
                 putInt("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId", text.verticalOffset)
@@ -692,23 +696,39 @@ class PhotoWidgetSharedPreferences @Inject constructor(
     ): PhotoWidgetText = with(sharedPreferences) {
         val name = getString("${PreferencePrefix.TEXT_TYPE}$appWidgetId", null)
 
+        val size = getInt("${PreferencePrefix.TEXT_SIZE}$appWidgetId", 12)
+        val position = enumValueOfOrNull<PhotoWidgetTextPosition>(
+            getString("${PreferencePrefix.TEXT_POSITION}$appWidgetId", null),
+        ) ?: PhotoWidgetTextPosition.BOTTOM
+        val verticalOffset = getInt("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId", 0)
+        val hasShadow = getBoolean("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId", true)
+        val font = getWidgetTextFont(appWidgetId = appWidgetId, customFontPath = customFontPath)
+        val color = PhotoWidgetTextColor.fromSerialized(
+            serializedName = getString("${PreferencePrefix.TEXT_COLOR}$appWidgetId", null),
+            serializedValue = getString("${PreferencePrefix.TEXT_COLOR_VALUE}$appWidgetId", null),
+        )
+
         return PhotoWidgetText.fromSerializedName(name).let { photoWidgetText ->
             when (photoWidgetText) {
                 is PhotoWidgetText.None -> photoWidgetText
 
                 is PhotoWidgetText.Label -> photoWidgetText.copy(
                     value = getString("${PreferencePrefix.TEXT_VALUE}$appWidgetId", "") ?: "",
-                    size = getInt("${PreferencePrefix.TEXT_SIZE}$appWidgetId", 12),
-                    position = enumValueOfOrNull<PhotoWidgetTextPosition>(
-                        getString("${PreferencePrefix.TEXT_POSITION}$appWidgetId", null),
-                    ) ?: PhotoWidgetTextPosition.BOTTOM,
-                    verticalOffset = getInt("${PreferencePrefix.TEXT_VERTICAL_OFFSET}$appWidgetId", 0),
-                    hasShadow = getBoolean("${PreferencePrefix.TEXT_HAS_SHADOW}$appWidgetId", true),
-                    font = getWidgetTextFont(appWidgetId = appWidgetId, customFontPath = customFontPath),
-                    color = PhotoWidgetTextColor.fromSerialized(
-                        serializedName = getString("${PreferencePrefix.TEXT_COLOR}$appWidgetId", null),
-                        serializedValue = getString("${PreferencePrefix.TEXT_COLOR_VALUE}$appWidgetId", null),
-                    ),
+                    size = size,
+                    position = position,
+                    verticalOffset = verticalOffset,
+                    hasShadow = hasShadow,
+                    font = font,
+                    color = color,
+                )
+
+                is PhotoWidgetText.FileName -> photoWidgetText.copy(
+                    size = size,
+                    position = position,
+                    verticalOffset = verticalOffset,
+                    hasShadow = hasShadow,
+                    font = font,
+                    color = color,
                 )
             }
         }

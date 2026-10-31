@@ -7,6 +7,7 @@ import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.PhotoWidgetTextFont
+import com.fibelatti.photowidget.model.copyStyle
 import com.fibelatti.photowidget.platform.isInside
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -72,8 +73,8 @@ class RestoreWidgetUseCase @Inject constructor(
      * a missing one.
      */
     private fun PhotoWidgetText.withFontInside(dir: File): PhotoWidgetText {
-        if (this !is PhotoWidgetText.Label || font !is PhotoWidgetTextFont.Custom) return this
+        val customFont: PhotoWidgetTextFont.Custom = font as? PhotoWidgetTextFont.Custom ?: return this
 
-        return if (File(font.path).isInside(dir)) this else copy(font = PhotoWidgetTextFont.Default)
+        return if (File(customFont.path).isInside(dir)) this else copyStyle(font = PhotoWidgetTextFont.Default)
     }
 }

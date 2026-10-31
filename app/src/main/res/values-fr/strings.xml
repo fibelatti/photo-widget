@@ -313,6 +313,8 @@
     <string name="photo_widget_configure_text_type_none">Aucun</string>
     <string name="photo_widget_configure_text_type_label">Libellé</string>
     <string name="photo_widget_configure_text_type_label_description">Imite le nom d\'une application pour s\'adapter à l\'esthétique de votre écran d\'accueil</string>
+    <string name="photo_widget_configure_text_type_file_name">Nom du fichier</string>
+    <string name="photo_widget_configure_text_type_file_name_description">Affiche le nom du fichier de la photo actuelle</string>
     <string name="photo_widget_configure_text_value">Texte</string>
     <string name="photo_widget_configure_text_size">Taille</string>
     <string name="photo_widget_configure_text_vertical_offset">Position et décalage verticaux</string>

@@ -19,6 +19,7 @@ import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.WidgetOffset
 import com.fibelatti.photowidget.model.WidgetPhotos
 import com.fibelatti.photowidget.model.allWidgetPhotos
+import com.fibelatti.photowidget.model.copyStyle
 import com.fibelatti.photowidget.model.resolveCurrentPhoto
 import com.fibelatti.photowidget.platform.UriPermissionGrantor
 import java.io.File
@@ -466,6 +467,7 @@ class PhotoWidgetStorage @Inject constructor(
                 null
             },
             timestamp = timestamp,
+            displayName = displayName,
         )
     }
 
@@ -522,6 +524,7 @@ class PhotoWidgetStorage @Inject constructor(
                     originalPhotoPath = localPhoto.originalPhotoPath,
                     externalUri = localPhoto.externalUri?.toString(),
                     timestamp = localPhoto.timestamp,
+                    displayName = localPhoto.displayName,
                 )
             }
 
@@ -885,8 +888,8 @@ class PhotoWidgetStorage @Inject constructor(
             sourcePath = customFont?.path,
         )
 
-        val savedText: PhotoWidgetText = if (text is PhotoWidgetText.Label && customFont != null) {
-            text.copy(font = savedFontPath?.let(::customFontAt) ?: PhotoWidgetTextFont.Default)
+        val savedText: PhotoWidgetText = if (customFont != null) {
+            text.copyStyle(font = savedFontPath?.let(::customFontAt) ?: PhotoWidgetTextFont.Default)
         } else {
             text
         }
@@ -919,14 +922,14 @@ class PhotoWidgetStorage @Inject constructor(
      * @return [text] pointing at the staged font
      */
     suspend fun stageWidgetFont(appWidgetId: Int, text: PhotoWidgetText): PhotoWidgetText {
-        if (text !is PhotoWidgetText.Label || text.font !is PhotoWidgetTextFont.Custom) return text
+        val customFont: PhotoWidgetTextFont.Custom = text.font as? PhotoWidgetTextFont.Custom ?: return text
 
         val path: String? = internalFileStorage.stageWidgetFont(
             directoryName = getOrCreateDirectoryName(appWidgetId),
-            sourcePath = text.font.path,
+            sourcePath = customFont.path,
         )
 
-        return text.copy(font = path?.let(::customFontAt) ?: PhotoWidgetTextFont.Default)
+        return text.copyStyle(font = path?.let(::customFontAt) ?: PhotoWidgetTextFont.Default)
     }
 
     /**

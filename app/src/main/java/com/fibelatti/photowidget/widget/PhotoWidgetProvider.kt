@@ -25,6 +25,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetLoadStage
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PreparedCurrentPhoto
 import com.fibelatti.photowidget.model.bitmapByteCount
+import com.fibelatti.photowidget.model.displayValue
 import com.fibelatti.photowidget.platform.ExceptionReporter
 import com.fibelatti.photowidget.platform.KeepAliveService
 import com.fibelatti.photowidget.platform.RemoteViewsBitmapMemoryCap
@@ -491,7 +492,11 @@ class PhotoWidgetProvider : AppWidgetProvider() {
 
             val combinedBitmapBytes: Long = fadeBitmap.allocationByteCount.toLong() +
                 previousBitmap.allocationByteCount.toLong() +
-                photoWidget.text.bitmapByteCount(context = context, typeface = labelTypeface)
+                photoWidget.text.bitmapByteCount(
+                    context = context,
+                    value = photoWidget.text.displayValue(photo = photoWidget.currentPhoto),
+                    typeface = labelTypeface,
+                )
 
             return combinedBitmapBytes <= context.getMaxCrossfadeBitmapMemory()
         }

@@ -151,6 +151,7 @@ class PhotoWidgetExternalFileStorage @Inject constructor(
                                 croppedPhotoPath = path,
                                 externalUri = fileUri,
                                 timestamp = documentLastModified,
+                                displayName = documentName,
                             )
 
                             result.add(localPhoto)

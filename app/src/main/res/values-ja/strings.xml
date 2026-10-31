@@ -303,6 +303,8 @@
     <string name="photo_widget_configure_text_type_none">なし</string>
     <string name="photo_widget_configure_text_type_label">ラベル</string>
     <string name="photo_widget_configure_text_type_label_description">ホーム画面の見た目に合わせてアプリ名を再現します</string>
+    <string name="photo_widget_configure_text_type_file_name">ファイル名</string>
+    <string name="photo_widget_configure_text_type_file_name_description">現在の写真のファイル名を表示します</string>
     <string name="photo_widget_configure_text_value">テキスト</string>
     <string name="photo_widget_configure_text_size">サイズ</string>
     <string name="photo_widget_configure_text_vertical_offset">垂直位置とオフセット</string>

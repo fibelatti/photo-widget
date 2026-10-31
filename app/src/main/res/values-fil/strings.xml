@@ -311,6 +311,8 @@
     <string name="photo_widget_configure_text_type_none">Wala</string>
     <string name="photo_widget_configure_text_type_label">Label</string>
     <string name="photo_widget_configure_text_type_label_description">Ginagaya ang pangalan ng app upang tumugma sa itsura ng home screen</string>
+    <string name="photo_widget_configure_text_type_file_name">Pangalan ng file</string>
+    <string name="photo_widget_configure_text_type_file_name_description">Ipinapakita ang pangalan ng file ng kasalukuyang larawan</string>
     <string name="photo_widget_configure_text_value">Teksto</string>
     <string name="photo_widget_configure_text_size">Laki</string>
     <string name="photo_widget_configure_text_vertical_offset">Patayong posisyon at offset</string>

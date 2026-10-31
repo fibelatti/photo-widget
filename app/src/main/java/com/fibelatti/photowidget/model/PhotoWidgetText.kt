@@ -22,7 +22,6 @@ import kotlinx.parcelize.Parcelize
 
 sealed interface PhotoWidgetText : Parcelable {
 
-    val value: String
     val size: Int
 
     val font: PhotoWidgetTextFont
@@ -37,9 +36,6 @@ sealed interface PhotoWidgetText : Parcelable {
 
     @Parcelize
     data object None : PhotoWidgetText {
-
-        @IgnoredOnParcel
-        override val value: String = ""
 
         @IgnoredOnParcel
         override val size: Int = 0
@@ -71,7 +67,7 @@ sealed interface PhotoWidgetText : Parcelable {
 
     @Parcelize
     data class Label(
-        override val value: String = "",
+        val value: String = "",
         override val size: Int = 12,
         override val position: PhotoWidgetTextPosition = PhotoWidgetTextPosition.BOTTOM,
         override val verticalOffset: Int = 0,
@@ -92,6 +88,32 @@ sealed interface PhotoWidgetText : Parcelable {
         override val serializedName: String = "LABEL"
     }
 
+    /**
+     * Displays the name of the current photo file, without its extension. Only available to
+     * [PhotoWidgetSource.DIRECTORY] widgets, since other sources don't keep the original file name.
+     */
+    @Parcelize
+    data class FileName(
+        override val size: Int = 12,
+        override val position: PhotoWidgetTextPosition = PhotoWidgetTextPosition.BOTTOM,
+        override val verticalOffset: Int = 0,
+        override val hasShadow: Boolean = true,
+        override val font: PhotoWidgetTextFont = PhotoWidgetTextFont.Default,
+        override val color: PhotoWidgetTextColor = PhotoWidgetTextColor.DEFAULT,
+    ) : PhotoWidgetText {
+
+        // Always centered
+        @IgnoredOnParcel
+        override val horizontalOffset: Int = 0
+
+        // Fixed max width since measuring the widget is unreliable
+        @IgnoredOnParcel
+        override val maxWidth: Int = 200
+
+        @IgnoredOnParcel
+        override val serializedName: String = "FILE_NAME"
+    }
+
     companion object {
 
         val DEFAULT: PhotoWidgetText = None
@@ -100,11 +122,76 @@ sealed interface PhotoWidgetText : Parcelable {
         val VERTICAL_OFFSET_RANGE: IntRange = -40..40
 
         val entries: List<PhotoWidgetText> by lazy {
-            listOf(None, Label())
+            listOf(None, Label(), FileName())
+        }
+
+        fun entries(source: PhotoWidgetSource): List<PhotoWidgetText> {
+            return entries.filter { it.isAvailable(source = source) }
         }
 
         fun fromSerializedName(serializedName: String?): PhotoWidgetText {
             return entries.firstOrNull { it.serializedName == serializedName } ?: DEFAULT
+        }
+    }
+}
+
+fun PhotoWidgetText.isAvailable(source: PhotoWidgetSource): Boolean {
+    return this !is PhotoWidgetText.FileName || source == PhotoWidgetSource.DIRECTORY
+}
+
+/**
+ * Returns this text, or [PhotoWidgetText.None] when it isn't available to [source].
+ */
+fun PhotoWidgetText.coerceText(source: PhotoWidgetSource): PhotoWidgetText {
+    return if (isAvailable(source = source)) this else PhotoWidgetText.None
+}
+
+/**
+ * Returns a copy of this text with the given style, or itself when it doesn't display any text.
+ */
+fun PhotoWidgetText.copyStyle(
+    size: Int = this.size,
+    position: PhotoWidgetTextPosition = this.position,
+    verticalOffset: Int = this.verticalOffset,
+    hasShadow: Boolean = this.hasShadow,
+    font: PhotoWidgetTextFont = this.font,
+    color: PhotoWidgetTextColor = this.color,
+): PhotoWidgetText {
+    return when (this) {
+        is PhotoWidgetText.None -> this
+
+        is PhotoWidgetText.Label -> copy(
+            size = size,
+            position = position,
+            verticalOffset = verticalOffset,
+            hasShadow = hasShadow,
+            font = font,
+            color = color,
+        )
+
+        is PhotoWidgetText.FileName -> copy(
+            size = size,
+            position = position,
+            verticalOffset = verticalOffset,
+            hasShadow = hasShadow,
+            font = font,
+            color = color,
+        )
+    }
+}
+
+/**
+ * The text to display alongside [photo], or null when there's nothing to display.
+ */
+fun PhotoWidgetText.displayValue(photo: LocalPhoto?): String? {
+    return when (this) {
+        is PhotoWidgetText.None -> null
+
+        is PhotoWidgetText.Label -> value
+
+        is PhotoWidgetText.FileName -> photo?.displayName?.let { name: String ->
+            // Keeps names that only have an extension, e.g. hidden files
+            name.substringBeforeLast(delimiter = ".").ifEmpty { name }
         }
     }
 }
@@ -145,10 +232,25 @@ val PhotoWidgetText.verticalPadding: Pair<Int, Int>
     }
 
 /**
- * [color] is the resolved value of [PhotoWidgetText.color], see [PhotoWidgetTextColor.resolve].
+ * Creates a [Bitmap] representation of this [PhotoWidgetText].
+ *
+ * @param context [Context] to create a [StaticLayout].
+ * @param value the text to draw, see [displayValue].
+ * @param typeface the [Typeface] to use.
+ * @param color the resolved value of [PhotoWidgetText.color], see [PhotoWidgetTextColor.resolve].
  */
-fun PhotoWidgetText.textToBitmap(context: Context, typeface: Typeface, @ColorInt color: Int): Bitmap {
-    val staticLayout: StaticLayout = staticLayout(context = context, typeface = typeface, color = color)
+fun PhotoWidgetText.textToBitmap(
+    context: Context,
+    value: String,
+    typeface: Typeface,
+    @ColorInt color: Int,
+): Bitmap {
+    val staticLayout: StaticLayout = staticLayout(
+        context = context,
+        value = value,
+        typeface = typeface,
+        color = color,
+    )
     val output: Bitmap = createBitmap(staticLayout.width, staticLayout.height)
 
     Canvas(output).apply {
@@ -161,6 +263,7 @@ fun PhotoWidgetText.textToBitmap(context: Context, typeface: Typeface, @ColorInt
 
 private fun PhotoWidgetText.staticLayout(
     context: Context,
+    value: String,
     typeface: Typeface,
     @ColorInt color: Int,
 ): StaticLayout {
@@ -196,15 +299,21 @@ private fun PhotoWidgetText.staticLayout(
 
 /**
  * Bytes the bitmap produced by [textToBitmap] will occupy in a `RemoteViews` update, so the render
- * budget can account for the label alongside the photo. Zero when the widget has no label.
+ * budget can account for the label alongside the photo. Zero when there's no text to display.
  *
- * [typeface] must be the same one given to [textToBitmap], since it determines the text bounds.
+ * [value] and [typeface] must be the same ones given to [textToBitmap], since they determine the
+ * text bounds.
  */
-fun PhotoWidgetText.bitmapByteCount(context: Context, typeface: Typeface): Long {
-    if (this is PhotoWidgetText.None) return 0
+fun PhotoWidgetText.bitmapByteCount(context: Context, value: String?, typeface: Typeface): Long {
+    if (value == null) return 0
 
     // The color doesn't affect the text bounds, so it can be hardcoded
-    val staticLayout: StaticLayout = staticLayout(context = context, typeface = typeface, color = Color.WHITE)
+    val staticLayout: StaticLayout = staticLayout(
+        context = context,
+        value = value,
+        typeface = typeface,
+        color = Color.WHITE,
+    )
 
     return staticLayout.width.toLong() * staticLayout.height * BYTES_PER_PIXEL
 }

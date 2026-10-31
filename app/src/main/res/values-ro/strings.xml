@@ -321,6 +321,8 @@
     <string name="photo_widget_configure_text_type_none">Niciunul</string>
     <string name="photo_widget_configure_text_type_label">Etichetă</string>
     <string name="photo_widget_configure_text_type_label_description">Imită numele unei aplicații pentru a se potrivi cu estetica ecranului principal</string>
+    <string name="photo_widget_configure_text_type_file_name">Numele fișierului</string>
+    <string name="photo_widget_configure_text_type_file_name_description">Afișează numele fișierului fotografiei curente</string>
     <string name="photo_widget_configure_text_value">Text</string>
     <string name="photo_widget_configure_text_size">Dimensiune</string>
     <string name="photo_widget_configure_text_vertical_offset">Poziție și deplasare verticală</string>

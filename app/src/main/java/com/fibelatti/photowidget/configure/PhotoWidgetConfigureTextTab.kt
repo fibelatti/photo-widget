@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
@@ -88,10 +89,12 @@ import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.DynamicColorType
 import com.fibelatti.photowidget.model.MatchPhotoColorType
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetText
 import com.fibelatti.photowidget.model.PhotoWidgetTextColor
 import com.fibelatti.photowidget.model.PhotoWidgetTextFont
 import com.fibelatti.photowidget.model.PhotoWidgetTextPosition
+import com.fibelatti.photowidget.model.copyStyle
 import com.fibelatti.photowidget.platform.GoogleFontsLoader
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.DefaultSheetFooterButtons
@@ -124,6 +127,7 @@ fun PhotoWidgetConfigureTextTab(
 
     PhotoWidgetConfigureTextTab(
         photoWidgetText = state.photoWidget.text,
+        source = state.photoWidget.source,
         onPhotoWidgetTextChange = viewModel::photoWidgetTextChanged,
         onCustomFontPick = viewModel::customFontPicked,
         modifier = modifier,
@@ -133,6 +137,7 @@ fun PhotoWidgetConfigureTextTab(
 @Composable
 fun PhotoWidgetConfigureTextTab(
     photoWidgetText: PhotoWidgetText,
+    source: PhotoWidgetSource,
     onPhotoWidgetTextChange: (PhotoWidgetText) -> Unit,
     onCustomFontPick: (Uri?) -> Unit,
     modifier: Modifier = Modifier,
@@ -159,12 +164,7 @@ fun PhotoWidgetConfigureTextTab(
     ) {
         PickerListItem(
             headlineText = stringResource(R.string.photo_widget_configure_text_type),
-            currentValue = stringResource(
-                when (photoWidgetText) {
-                    is PhotoWidgetText.None -> R.string.photo_widget_configure_text_type_none
-                    is PhotoWidgetText.Label -> R.string.photo_widget_configure_text_type_label
-                },
-            ),
+            currentValue = stringResource(photoWidgetText.typeLabel()),
             onClick = textTypeSheetState::showBottomSheet,
             shape = if (photoWidgetText is PhotoWidgetText.None) Shapes.StandaloneShape else Shapes.TopShape,
         )
@@ -172,30 +172,32 @@ fun PhotoWidgetConfigureTextTab(
         when (photoWidgetText) {
             is PhotoWidgetText.None -> Unit
 
-            is PhotoWidgetText.Label -> {
-                PickerListItem(
-                    headlineText = stringResource(R.string.photo_widget_configure_text_value),
-                    currentValue = photoWidgetText.value,
-                    onClick = textValueSheetState::showBottomSheet,
-                    shape = Shapes.MiddleShape,
-                )
+            is PhotoWidgetText.Label, is PhotoWidgetText.FileName -> {
+                if (photoWidgetText is PhotoWidgetText.Label) {
+                    PickerListItem(
+                        headlineText = stringResource(R.string.photo_widget_configure_text_value),
+                        currentValue = photoWidgetText.value,
+                        onClick = textValueSheetState::showBottomSheet,
+                        shape = Shapes.MiddleShape,
+                    )
+                }
 
                 PickerListItem(
                     headlineText = stringResource(R.string.photo_widget_configure_text_color),
                     currentValue = buildString {
                         append(stringResource(photoWidgetText.color.label))
 
-                        when (photoWidgetText.color) {
+                        when (val color: PhotoWidgetTextColor = photoWidgetText.color) {
                             is PhotoWidgetTextColor.Colored -> {
-                                append(" (#${photoWidgetText.color.colorHex.toUpperCase(LocalLocale.current)})")
+                                append(" (#${color.colorHex.toUpperCase(LocalLocale.current)})")
                             }
 
                             is PhotoWidgetTextColor.Dynamic -> {
-                                append(" (${stringResource(photoWidgetText.color.type.label)})")
+                                append(" (${stringResource(color.type.label)})")
                             }
 
                             is PhotoWidgetTextColor.Palette -> {
-                                append(" (${stringResource(photoWidgetText.color.type.label)})")
+                                append(" (${stringResource(color.type.label)})")
                             }
                         }
                     },
@@ -237,7 +239,7 @@ fun PhotoWidgetConfigureTextTab(
                     headlineText = stringResource(R.string.photo_widget_configure_text_apply_shadow),
                     currentValue = photoWidgetText.hasShadow,
                     onValueChange = { newValue ->
-                        onPhotoWidgetTextChange(photoWidgetText.copy(hasShadow = newValue))
+                        onPhotoWidgetTextChange(photoWidgetText.copyStyle(hasShadow = newValue))
                     },
                     shape = Shapes.BottomShape,
                 )
@@ -256,16 +258,16 @@ fun PhotoWidgetConfigureTextTab(
     PhotoWidgetTextTypePicker(
         appSheetState = textTypeSheetState,
         currentValue = photoWidgetText,
+        source = source,
         onOptionSelect = onPhotoWidgetTextChange,
     )
 
     PhotoWidgetTextValuePicker(
         appSheetState = textValueSheetState,
-        currentValue = photoWidgetText.value,
+        currentValue = (photoWidgetText as? PhotoWidgetText.Label)?.value.orEmpty(),
         onApplyClick = { newValue: String ->
-            when (photoWidgetText) {
-                is PhotoWidgetText.None -> Unit
-                is PhotoWidgetText.Label -> onPhotoWidgetTextChange(photoWidgetText.copy(value = newValue))
+            if (photoWidgetText is PhotoWidgetText.Label) {
+                onPhotoWidgetTextChange(photoWidgetText.copy(value = newValue))
             }
         },
     )
@@ -275,23 +277,17 @@ fun PhotoWidgetConfigureTextTab(
         currentValue = photoWidgetText.color,
         font = photoWidgetText.font,
         onApplyClick = { newValue: PhotoWidgetTextColor ->
-            when (photoWidgetText) {
-                is PhotoWidgetText.None -> Unit
-                is PhotoWidgetText.Label -> onPhotoWidgetTextChange(photoWidgetText.copy(color = newValue))
-            }
+            onPhotoWidgetTextChange(photoWidgetText.copyStyle(color = newValue))
         },
     )
 
     PhotoWidgetTextFontPicker(
         appSheetState = fontSheetState,
         currentValue = photoWidgetText.font,
-        text = photoWidgetText.value,
+        text = (photoWidgetText as? PhotoWidgetText.Label)?.value.orEmpty(),
         isGoogleFontsAvailable = isGoogleFontsAvailable,
         onOptionSelect = { newValue: PhotoWidgetTextFont ->
-            when (photoWidgetText) {
-                is PhotoWidgetText.None -> Unit
-                is PhotoWidgetText.Label -> onPhotoWidgetTextChange(photoWidgetText.copy(font = newValue))
-            }
+            onPhotoWidgetTextChange(photoWidgetText.copyStyle(font = newValue))
         },
         onChooseCustomFontClick = { customFontPickerLauncher.launch(FONT_MIME_TYPES) },
     )
@@ -302,10 +298,7 @@ fun PhotoWidgetConfigureTextTab(
         font = photoWidgetText.font,
         color = photoWidgetText.color,
         onApplyClick = { newValue: Int ->
-            when (photoWidgetText) {
-                is PhotoWidgetText.None -> Unit
-                is PhotoWidgetText.Label -> onPhotoWidgetTextChange(photoWidgetText.copy(size = newValue))
-            }
+            onPhotoWidgetTextChange(photoWidgetText.copyStyle(size = newValue))
         },
     )
 
@@ -316,13 +309,7 @@ fun PhotoWidgetConfigureTextTab(
         font = photoWidgetText.font,
         color = photoWidgetText.color,
         onApplyClick = { newPosition: PhotoWidgetTextPosition, newOffset: Int ->
-            when (photoWidgetText) {
-                is PhotoWidgetText.None -> Unit
-
-                is PhotoWidgetText.Label -> onPhotoWidgetTextChange(
-                    photoWidgetText.copy(position = newPosition, verticalOffset = newOffset),
-                )
-            }
+            onPhotoWidgetTextChange(photoWidgetText.copyStyle(position = newPosition, verticalOffset = newOffset))
         },
     )
     // endregion Sheets
@@ -333,6 +320,7 @@ fun PhotoWidgetConfigureTextTab(
 private fun PhotoWidgetTextTypePicker(
     appSheetState: AppSheetState,
     currentValue: PhotoWidgetText,
+    source: PhotoWidgetSource,
     onOptionSelect: (PhotoWidgetText) -> Unit,
 ) {
     AppBottomSheet(
@@ -344,7 +332,7 @@ private fun PhotoWidgetTextTypePicker(
             val localResources = LocalResources.current
 
             RadioGroup(
-                items = PhotoWidgetText.entries,
+                items = PhotoWidgetText.entries(source = source),
                 itemSelected = { item: PhotoWidgetText -> item::class == currentValue::class },
                 onItemClick = { item: PhotoWidgetText ->
                     if (item::class != currentValue::class) {
@@ -352,20 +340,17 @@ private fun PhotoWidgetTextTypePicker(
                     }
                     appSheetState.hideBottomSheet()
                 },
-                itemTitle = { item: PhotoWidgetText ->
-                    localResources.getString(
-                        when (item) {
-                            is PhotoWidgetText.None -> R.string.photo_widget_configure_text_type_none
-                            is PhotoWidgetText.Label -> R.string.photo_widget_configure_text_type_label
-                        },
-                    )
-                },
+                itemTitle = { item: PhotoWidgetText -> localResources.getString(item.typeLabel()) },
                 itemDescription = { item ->
                     when (item) {
                         is PhotoWidgetText.None -> null
 
                         is PhotoWidgetText.Label -> {
                             localResources.getString(R.string.photo_widget_configure_text_type_label_description)
+                        }
+
+                        is PhotoWidgetText.FileName -> {
+                            localResources.getString(R.string.photo_widget_configure_text_type_file_name_description)
                         }
                     }
                 },
@@ -1006,6 +991,13 @@ private val FONT_MIME_TYPES: Array<String> = arrayOf(
     "application/octet-stream",
 )
 
+@StringRes
+private fun PhotoWidgetText.typeLabel(): Int = when (this) {
+    is PhotoWidgetText.None -> R.string.photo_widget_configure_text_type_none
+    is PhotoWidgetText.Label -> R.string.photo_widget_configure_text_type_label
+    is PhotoWidgetText.FileName -> R.string.photo_widget_configure_text_type_file_name
+}
+
 // region Previews
 @PreviewAll
 @Composable
@@ -1013,6 +1005,7 @@ private fun PhotoWidgetConfigureTextTabPreview() {
     ExtendedTheme {
         PhotoWidgetConfigureTextTab(
             photoWidgetText = PhotoWidgetText.Label(value = "Sample text"),
+            source = PhotoWidgetSource.PHOTOS,
             onPhotoWidgetTextChange = {},
             onCustomFontPick = {},
             modifier = Modifier.safeDrawingPadding(),
