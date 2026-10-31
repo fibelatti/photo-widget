@@ -1,6 +1,7 @@
 package com.fibelatti.photowidget.configure
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideOutVertically
@@ -496,6 +497,7 @@ private fun PhotoGrid(
                                 role = Role.Image,
                                 onClick = { onPhotoClick(photo) },
                             ),
+                        enterTransition = EnterTransition.None,
                     )
 
                     if (isAdvancedSchedule) {

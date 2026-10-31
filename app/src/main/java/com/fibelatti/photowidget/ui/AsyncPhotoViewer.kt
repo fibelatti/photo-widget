@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.BitmapFactory
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -57,6 +58,8 @@ fun AsyncPhotoViewer(
     version: Long? = null,
     constraintMode: AsyncPhotoViewer.BitmapSizeConstraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.DISPLAY,
     transformations: List<Transformation> = emptyList(),
+    enterTransition: EnterTransition = fadeIn(animationSpec = tween(220, delayMillis = 90))
+        .plus(scaleIn(initialScale = 0.96f, animationSpec = tween(220, delayMillis = 90))),
 ) {
     val localInspectionMode: Boolean = LocalInspectionMode.current
     val localContext: Context = LocalContext.current
@@ -141,6 +144,7 @@ fun AsyncPhotoViewer(
         viewerState = viewerState,
         contentScale = contentScale,
         modifier = modifier.onSizeChanged { viewportSize = it },
+        enterTransition = enterTransition,
     )
 }
 
@@ -149,15 +153,13 @@ private fun AsyncPhotoViewer(
     viewerState: AsyncPhotoViewerState?,
     contentScale: ContentScale,
     modifier: Modifier = Modifier,
+    enterTransition: EnterTransition = fadeIn(animationSpec = tween(220, delayMillis = 90))
+        .plus(scaleIn(initialScale = 0.96f, animationSpec = tween(220, delayMillis = 90))),
 ) {
     AnimatedContent(
         targetState = viewerState,
         modifier = modifier.fillMaxSize(),
-        transitionSpec = {
-            fadeIn(animationSpec = tween(220, delayMillis = 90))
-                .plus(scaleIn(initialScale = 0.96f, animationSpec = tween(220, delayMillis = 90)))
-                .togetherWith(ExitTransition.None)
-        },
+        transitionSpec = { enterTransition.togetherWith(ExitTransition.None) },
         contentAlignment = Alignment.Center,
         contentKey = { state -> state?.let { state::class } },
     ) { state: AsyncPhotoViewerState? ->

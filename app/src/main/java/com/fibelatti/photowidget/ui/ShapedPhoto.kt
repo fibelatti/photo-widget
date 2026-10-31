@@ -1,5 +1,9 @@
 package com.fibelatti.photowidget.ui
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -28,6 +32,8 @@ fun ShapedPhoto(
     colors: PhotoWidgetColors = PhotoWidgetColors(),
     border: PhotoWidgetBorder = PhotoWidgetBorder.None,
     isLoading: Boolean = false,
+    enterTransition: EnterTransition = fadeIn(animationSpec = tween(220, delayMillis = 90))
+        .plus(scaleIn(initialScale = 0.96f, animationSpec = tween(220, delayMillis = 90))),
 ) {
     val localContext = LocalContext.current
     val localDensity = LocalDensity.current.density
@@ -73,5 +79,6 @@ fun ShapedPhoto(
         modifier = modifier.fillMaxSize(),
         constraintMode = AsyncPhotoViewer.BitmapSizeConstraintMode.DISPLAY,
         transformations = transformations,
+        enterTransition = enterTransition,
     )
 }
