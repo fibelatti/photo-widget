@@ -1,6 +1,5 @@
 package com.fibelatti.photowidget.widget
 
-import android.content.Context
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetBorder
@@ -16,7 +15,6 @@ import com.fibelatti.photowidget.model.coerceTapActions
 import com.fibelatti.photowidget.model.coerceText
 import com.fibelatti.photowidget.model.photoCycleEnabled
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlin.reflect.KClass
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +22,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class SavePhotoWidgetUseCase @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val widgetProviders: WidgetProviders,
     private val photoWidgetStorage: PhotoWidgetStorage,
     private val photoWidgetAlarmManager: PhotoWidgetAlarmManager,
     private val coroutineScope: CoroutineScope,
@@ -166,7 +164,7 @@ class SavePhotoWidgetUseCase @Inject constructor(
 
         coroutineScope.launch {
             if (photoWidgetStorage.syncWidgetPhotos(appWidgetId = appWidgetId)) {
-                PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+                widgetProviders.updatePhotoWidget(appWidgetId = appWidgetId)
             }
         }
     }

@@ -1,13 +1,11 @@
 package com.fibelatti.photowidget.widget
 
-import android.content.Context
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import timber.log.Timber
 
 class CyclePhotoUseCase @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val widgetProviders: WidgetProviders,
     private val photoWidgetStorage: PhotoWidgetStorage,
 ) {
 
@@ -151,7 +149,7 @@ class CyclePhotoUseCase @Inject constructor(
             photoWidgetStorage.saveDisplayedPhoto(appWidgetId = appWidgetId, photoId = photoId)
         }
 
-        PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId, allowCrossfade = true)
+        widgetProviders.updatePhotoWidget(appWidgetId = appWidgetId, allowCrossfade = true)
 
         return photoId
     }
@@ -159,7 +157,7 @@ class CyclePhotoUseCase @Inject constructor(
     private fun showSinglePhoto(appWidgetId: Int, photoId: String): String {
         Timber.i("The widget has a single photo, there is nothing to cycle through")
         // Cannot cycle, but if a photo was recently removed the widget still needs to be updated
-        PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+        widgetProviders.updatePhotoWidget(appWidgetId = appWidgetId)
         return photoId
     }
 

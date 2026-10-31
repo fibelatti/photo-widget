@@ -1,6 +1,5 @@
 package com.fibelatti.photowidget.home
 
-import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,11 +12,9 @@ import com.fibelatti.photowidget.platform.FileLoggingTree
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
-import com.fibelatti.photowidget.widget.PhotoWidgetProvider
-import com.fibelatti.photowidget.widget.TransparentWidgetProvider
+import com.fibelatti.photowidget.widget.WidgetProviders
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -43,10 +40,10 @@ import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val loadPhotoWidgetUseCase: LoadPhotoWidgetUseCase,
     private val photoWidgetStorage: PhotoWidgetStorage,
     private val photoWidgetAlarmManager: PhotoWidgetAlarmManager,
+    private val widgetProviders: WidgetProviders,
     private val userPreferencesStorage: UserPreferencesStorage,
     private val exceptionReporter: ExceptionReporter,
     private val fileLoggingTree: FileLoggingTree,
@@ -101,7 +98,7 @@ class HomeViewModel @Inject constructor(
                 }
             }
             .map { widgets: Map<Int, PhotoWidget> ->
-                val providerIds: List<Int> = PhotoWidgetProvider.ids(context) + TransparentWidgetProvider.ids(context)
+                val providerIds: List<Int> = widgetProviders.photoWidgetIds() + widgetProviders.transparentWidgetIds()
                 val persistedUris: List<Uri> = photoWidgetStorage.getPersistedUriPermissions()
 
                 widgets.mapValues { (widgetId: Int, widget: PhotoWidget) ->
@@ -144,7 +141,7 @@ class HomeViewModel @Inject constructor(
             withContext(NonCancellable) {
                 if (photoWidgetStorage.getWidgetSource(appWidgetId = appWidgetId) == PhotoWidgetSource.DIRECTORY) {
                     if (photoWidgetStorage.syncWidgetPhotos(appWidgetId = appWidgetId)) {
-                        PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+                        widgetProviders.updatePhotoWidget(appWidgetId = appWidgetId)
                     }
                 }
             }
@@ -155,7 +152,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             photoWidgetStorage.saveWidgetLockedInApp(appWidgetId = appWidgetId, value = true)
             photoWidgetAlarmManager.cancel(appWidgetId = appWidgetId)
-            PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+            widgetProviders.updatePhotoWidget(appWidgetId = appWidgetId)
 
             updateSignal.send(Unit)
         }
@@ -171,7 +168,7 @@ class HomeViewModel @Inject constructor(
                 photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
             }
 
-            PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+            widgetProviders.updatePhotoWidget(appWidgetId = appWidgetId)
 
             updateSignal.send(Unit)
         }
@@ -185,7 +182,7 @@ class HomeViewModel @Inject constructor(
                 photoWidgetAlarmManager.setup(appWidgetId = appWidgetId)
             }
 
-            PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+            widgetProviders.updatePhotoWidget(appWidgetId = appWidgetId)
 
             updateSignal.send(Unit)
         }
@@ -194,8 +191,8 @@ class HomeViewModel @Inject constructor(
     fun setHighlightTransparentWidgets(value: Boolean) {
         viewModelScope.launch {
             userPreferencesStorage.highlightTransparentWidgets = value
-            TransparentWidgetProvider.ids(context).forEach { id ->
-                TransparentWidgetProvider.update(context = context, appWidgetId = id)
+            widgetProviders.transparentWidgetIds().forEach { id ->
+                widgetProviders.updateTransparentWidget(appWidgetId = id)
             }
         }
     }
