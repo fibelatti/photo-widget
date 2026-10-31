@@ -34,6 +34,7 @@ import com.fibelatti.photowidget.platform.displayPixels
 import com.fibelatti.photowidget.platform.getMaxCrossfadeBitmapMemory
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CancellationException
@@ -177,7 +178,12 @@ class PhotoWidgetProvider : AppWidgetProvider() {
          */
         private val MAX_BITMAP_MEMORY_REGEX = Regex("max: (\\d+)")
 
-        private val updateJobMap: MutableMap<Int, Job> = mutableMapOf()
+        /**
+         * The latest render job of each widget, which the next render of the same widget waits
+         * for. Renders are requested from the multiple threads, and jobs remove themselves on
+         * completion from whichever thread completes them.
+         */
+        private val updateJobMap: ConcurrentHashMap<Int, Job> = ConcurrentHashMap()
 
         fun ids(context: Context): List<Int> = AppWidgetManager.getInstance(context)
             .getAppWidgetIds(ComponentName(context, PhotoWidgetProvider::class.java))
@@ -198,6 +204,37 @@ class PhotoWidgetProvider : AppWidgetProvider() {
         ): Job {
             Timber.i("Updating widget %s", mapOf("appWidgetId" to appWidgetId))
 
+            // Reading the previous job and registering the new one happen atomically, so
+            // concurrent requests for the same widget chain one after the other instead of both
+            // waiting on the same previous job. The job starts lazily, after `compute` returns
+            // since running any of it inside `compute` could request another render of the same
+            // widget, which the map rejects as a recursive update.
+            val newJob: Job? = updateJobMap.compute(appWidgetId) { _, currentJob: Job? ->
+                Timber.d("Evaluating current update job %s", mapOf("isActive" to currentJob?.isActive))
+
+                renderJob(
+                    context = context,
+                    appWidgetId = appWidgetId,
+                    allowCrossfade = allowCrossfade,
+                    recoveryAttempt = recoveryAttempt,
+                    currentJob = currentJob,
+                )
+            }
+            requireNotNull(newJob)
+
+            newJob.invokeOnCompletion { updateJobMap.remove(appWidgetId, newJob) }
+            newJob.start()
+
+            return newJob
+        }
+
+        private fun renderJob(
+            context: Context,
+            appWidgetId: Int,
+            allowCrossfade: Boolean,
+            recoveryAttempt: Int,
+            currentJob: Job?,
+        ): Job {
             val appWidgetManager: AppWidgetManager = AppWidgetManager.getInstance(context)
             val entryPoint: PhotoWidgetEntryPoint = entryPoint(context)
             val coroutineScope: CoroutineScope = entryPoint.coroutineScope()
@@ -209,10 +246,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             val exceptionReporter: ExceptionReporter = entryPoint.exceptionReporter()
             val crossfadeAnimator: PhotoWidgetCrossfadeAnimator = entryPoint.photoWidgetCrossfadeAnimator()
 
-            val currentJob: Job? = updateJobMap[appWidgetId]
-            Timber.d("Evaluating current update job %s", mapOf("isActive" to currentJob?.isActive))
-
-            val newJob: Job = coroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
+            return coroutineScope.launch(start = CoroutineStart.LAZY) {
                 // Cancel any in-flight crossfade from the previous render before joining it. Since
                 // runCrossfade suspends for the animation's duration, the previous job stays active
                 // until its fade settles; without this we'd block here waiting out a fade we're about
@@ -397,14 +431,6 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     }
                 }
             }
-
-            updateJobMap[appWidgetId] = newJob
-            newJob.invokeOnCompletion {
-                // Only remove if we're still the current job (avoid racing with a newer update)
-                if (updateJobMap[appWidgetId] === newJob) updateJobMap.remove(appWidgetId)
-            }
-
-            return newJob
         }
 
         /**
