@@ -70,7 +70,7 @@
     <string name="photo_widget_home_my_widget_action_lock">Заблокировать с текущим фото</string>
     <string name="photo_widget_home_my_widget_action_unlock">Разблокировать виджет</string>
     <string name="photo_widget_home_my_widget_action_resume">Возобновить фототаймер</string>
-    <string name="photo_widget_home_my_widget_lock_explainer">Фотографии не будут меняться автоматически или при нажатии, если виджет заблокирован</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">Фотографии не будут меняться автоматически или при нажатии в заблокированном состоянии</string>
     <string name="photo_widget_home_removed_widget_action_restore">Восстановить</string>
     <string name="photo_widget_home_removed_widget_action_keep">Держать</string>
     <string name="photo_widget_home_removed_widget_action_delete">Удалить навсегда</string>

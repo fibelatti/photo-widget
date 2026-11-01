@@ -32,6 +32,7 @@ fun <T> SelectionDialogBottomSheet(
     onOptionSelect: (T) -> Unit,
     modifier: Modifier = Modifier,
     optionKey: ((T) -> Any)? = null,
+    optionSupportingText: ((T) -> String?)? = null,
     header: @Composable () -> Unit = {},
     footer: @Composable () -> Unit = {},
     mode: SelectionDialogBottomSheetMode = SelectionDialogBottomSheetMode.Buttons,
@@ -44,6 +45,7 @@ fun <T> SelectionDialogBottomSheet(
             options = options,
             optionKey = optionKey,
             optionName = optionName,
+            optionSupportingText = optionSupportingText,
             onOptionSelect = { option ->
                 sheetState.hideBottomSheet(onHidden = { onOptionSelect(option) })
             },
@@ -63,6 +65,7 @@ fun <T : Any> SelectionDialogBottomSheet(
     onOptionSelect: (T) -> Unit,
     modifier: Modifier = Modifier,
     optionKey: ((T) -> Any)? = null,
+    optionSupportingText: ((T) -> String)? = null,
     footer: @Composable () -> Unit = {},
     mode: SelectionDialogBottomSheetMode = SelectionDialogBottomSheetMode.Buttons,
 ) {
@@ -74,6 +77,7 @@ fun <T : Any> SelectionDialogBottomSheet(
             options = options,
             optionKey = optionKey,
             optionName = optionName,
+            optionSupportingText = optionSupportingText,
             onOptionSelect = { option ->
                 sheetState.hideBottomSheet(onHidden = { onOptionSelect(option) })
             },
@@ -102,6 +106,7 @@ private fun <T> SelectionDialogContent(
     options: List<T>,
     optionKey: ((T) -> Any)?,
     optionName: (T) -> String,
+    optionSupportingText: ((T) -> String?)?,
     onOptionSelect: (T) -> Unit,
     header: @Composable () -> Unit,
     footer: @Composable () -> Unit,
@@ -113,6 +118,7 @@ private fun <T> SelectionDialogContent(
                 options = options,
                 optionKey = optionKey,
                 optionName = optionName,
+                optionSupportingText = optionSupportingText,
                 onOptionSelect = onOptionSelect,
                 header = header,
                 footer = footer,
@@ -134,6 +140,7 @@ private fun <T> SelectionDialogContent(
                     onItemClick = onOptionSelect,
                     itemTitle = optionName,
                     modifier = Modifier.fillMaxWidth(),
+                    itemDescription = { option -> optionSupportingText?.invoke(option) },
                 )
 
                 footer()
@@ -147,6 +154,7 @@ private fun <T> SelectionDialogLazyListContent(
     options: List<T>,
     optionKey: ((T) -> Any)?,
     optionName: (T) -> String,
+    optionSupportingText: ((T) -> String?)?,
     onOptionSelect: (T) -> Unit,
     header: @Composable () -> Unit,
     footer: @Composable () -> Unit,
@@ -185,6 +193,7 @@ private fun <T> SelectionDialogLazyListContent(
                     .fillMaxWidth()
                     .clip(shape)
                     .clickable(onClick = { onOptionSelect(option) }, role = Role.Button),
+                supportingText = optionSupportingText?.invoke(option),
                 shape = shape,
                 colors = ListItemDefaults.colors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,

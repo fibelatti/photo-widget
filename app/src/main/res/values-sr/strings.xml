@@ -69,7 +69,7 @@
     <string name="photo_widget_home_my_widget_action_lock">Закључај са тренутном фотографијом</string>
     <string name="photo_widget_home_my_widget_action_unlock">Откључај виџет</string>
     <string name="photo_widget_home_my_widget_action_resume">Настави тајмер за фотографије</string>
-    <string name="photo_widget_home_my_widget_lock_explainer">Фотографије се неће мењати аутоматски нити додиром када је виџет закључан</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">Фотографије се неће мењати аутоматски нити додиром у закључаном стању</string>
     <string name="photo_widget_home_removed_widget_action_restore">Поврати</string>
     <string name="photo_widget_home_removed_widget_action_keep">Задржи</string>
     <string name="photo_widget_home_removed_widget_action_delete">Избриши трајно</string>

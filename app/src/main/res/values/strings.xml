@@ -76,7 +76,7 @@
     <string name="photo_widget_home_my_widget_action_lock">Lock with current photo</string>
     <string name="photo_widget_home_my_widget_action_unlock">Unlock widget</string>
     <string name="photo_widget_home_my_widget_action_resume">Resume photo timer</string>
-    <string name="photo_widget_home_my_widget_lock_explainer">Photos will not change automatically or on tap when the widget is locked</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">Photos will not change automatically or on tap when locked</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restore</string>
     <string name="photo_widget_home_removed_widget_action_keep">Keep</string>
     <string name="photo_widget_home_removed_widget_action_delete">Delete permanently</string>

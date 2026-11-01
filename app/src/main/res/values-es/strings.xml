@@ -68,7 +68,7 @@
     <string name="photo_widget_home_my_widget_action_lock">Bloquear con la foto actual</string>
     <string name="photo_widget_home_my_widget_action_unlock">Desbloquear widget</string>
     <string name="photo_widget_home_my_widget_action_resume">Reanudar temporizador de fotos</string>
-    <string name="photo_widget_home_my_widget_lock_explainer">Las fotos no cambiarán automáticamente ni al tocar si el widget está bloqueado</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">Las fotos no cambiarán automáticamente ni al tocar mientras esté bloqueado</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restaurar</string>
     <string name="photo_widget_home_removed_widget_action_keep">Mantener</string>
     <string name="photo_widget_home_removed_widget_action_delete">Borrar permanentemente</string>

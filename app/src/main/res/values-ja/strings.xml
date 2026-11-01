@@ -67,7 +67,7 @@
     <string name="photo_widget_home_my_widget_action_lock">現在の写真でロック</string>
     <string name="photo_widget_home_my_widget_action_unlock">ウィジェットのロックを解除</string>
     <string name="photo_widget_home_my_widget_action_resume">写真タイマーを再開</string>
-    <string name="photo_widget_home_my_widget_lock_explainer">ウィジェットがロックされている場合、写真は自動的にまたはタップで変更されません</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">ロック中は、写真は自動的にまたはタップで変更されません</string>
     <string name="photo_widget_home_removed_widget_action_restore">復元</string>
     <string name="photo_widget_home_removed_widget_action_keep">保持</string>
     <string name="photo_widget_home_removed_widget_action_delete">完全に削除</string>

@@ -68,7 +68,7 @@
     <string name="photo_widget_home_my_widget_action_lock">Geçerli fotoğrafla kilitle</string>
     <string name="photo_widget_home_my_widget_action_unlock">Widget\'ın kilidini aç</string>
     <string name="photo_widget_home_my_widget_action_resume">Fotoğraf zamanlayıcıyı devam ettir</string>
-    <string name="photo_widget_home_my_widget_lock_explainer">Widget kilitliyken fotoğraflar otomatik olarak veya dokunulduğunda değişmez</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">Kilitliyken fotoğraflar otomatik olarak veya dokunulduğunda değişmez</string>
     <string name="photo_widget_home_removed_widget_action_restore">Eski haline getir</string>
     <string name="photo_widget_home_removed_widget_action_keep">Tut</string>
     <string name="photo_widget_home_removed_widget_action_delete">Kalıcı olarak sil</string>

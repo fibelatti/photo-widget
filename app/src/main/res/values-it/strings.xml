@@ -68,7 +68,7 @@
     <string name="photo_widget_home_my_widget_action_lock">Blocca con la foto attuale</string>
     <string name="photo_widget_home_my_widget_action_unlock">Sblocca widget</string>
     <string name="photo_widget_home_my_widget_action_resume">Riprendi timer foto</string>
-    <string name="photo_widget_home_my_widget_lock_explainer">Le foto non cambieranno automaticamente o al tocco quando il widget è bloccato</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">Le foto non cambieranno automaticamente o al tocco quando è bloccato</string>
     <string name="photo_widget_home_removed_widget_action_restore">Ripristina</string>
     <string name="photo_widget_home_removed_widget_action_keep">Mantieni</string>
     <string name="photo_widget_home_removed_widget_action_delete">Elimina definitivamente</string>

@@ -67,7 +67,7 @@
     <string name="photo_widget_home_my_widget_action_lock">I-lock kasama ang kasalukuyang larawan</string>
     <string name="photo_widget_home_my_widget_action_unlock">I-unlock ang widget</string>
     <string name="photo_widget_home_my_widget_action_resume">Ipagpatuloy ang timer sa paglipat ng larawan</string>
-    <string name="photo_widget_home_my_widget_lock_explainer">Hindi magbabago ang mga larawan nang awtomatiko o pag pinipindot habang naka-lock ang widget</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">Hindi magbabago ang mga larawan nang awtomatiko o pag pinipindot habang naka-lock</string>
     <string name="photo_widget_home_removed_widget_action_restore">Ibalik</string>
     <string name="photo_widget_home_removed_widget_action_keep">Panatilihin</string>
     <string name="photo_widget_home_removed_widget_action_delete">Permanenteng burahin</string>

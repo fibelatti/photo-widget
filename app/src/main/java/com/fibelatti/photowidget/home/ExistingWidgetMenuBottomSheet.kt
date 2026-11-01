@@ -4,16 +4,10 @@ import android.content.Context
 import android.os.Parcelable
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.configure.PhotoWidgetConfigureActivity
 import com.fibelatti.ui.component.AppSheetState
@@ -92,15 +86,11 @@ fun ExistingWidgetMenuBottomSheet(
             }
         },
         modifier = modifier,
-        footer = {
-            if (data.canLock) {
-                Text(
-                    text = stringResource(R.string.photo_widget_home_my_widget_lock_explainer),
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
+        optionSupportingText = { option ->
+            if (data.canLock && (option == MyWidgetOptions.LOCK || option == MyWidgetOptions.UNLOCK)) {
+                localResources.getString(R.string.photo_widget_home_my_widget_lock_explainer)
+            } else {
+                null
             }
         },
     )

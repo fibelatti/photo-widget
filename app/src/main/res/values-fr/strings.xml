@@ -68,7 +68,7 @@
     <string name="photo_widget_home_my_widget_action_lock">Verrouiller avec la photo actuelle</string>
     <string name="photo_widget_home_my_widget_action_unlock">Déverrouiller le widget</string>
     <string name="photo_widget_home_my_widget_action_resume">Reprendre le minuteur photo</string>
-    <string name="photo_widget_home_my_widget_lock_explainer">Les photos ne changeront pas automatiquement ni au toucher si le widget est verrouillé</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">Les photos ne changeront pas automatiquement ni au toucher une fois verrouillé</string>
     <string name="photo_widget_home_removed_widget_action_restore">Restaurer</string>
     <string name="photo_widget_home_removed_widget_action_keep">Garder</string>
     <string name="photo_widget_home_removed_widget_action_delete">Supprimer définitivement</string>

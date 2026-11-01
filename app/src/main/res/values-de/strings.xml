@@ -68,7 +68,7 @@
     <string name="photo_widget_home_my_widget_action_lock">Mit aktuellem Foto sperren</string>
     <string name="photo_widget_home_my_widget_action_unlock">Widget entsperren</string>
     <string name="photo_widget_home_my_widget_action_resume">Foto-Timer fortsetzen</string>
-    <string name="photo_widget_home_my_widget_lock_explainer">Fotos werden nicht automatisch oder durch Tippen geändert, wenn das Widget gesperrt ist</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">Im gesperrten Zustand werden Fotos nicht automatisch oder durch Tippen geändert</string>
     <string name="photo_widget_home_removed_widget_action_restore">Wiederherstellen</string>
     <string name="photo_widget_home_removed_widget_action_keep">Behalten</string>
     <string name="photo_widget_home_removed_widget_action_delete">Endgültig löschen</string>

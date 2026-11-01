@@ -67,7 +67,7 @@
     <string name="photo_widget_home_my_widget_action_lock">锁定</string>
     <string name="photo_widget_home_my_widget_action_unlock">解锁小组件</string>
     <string name="photo_widget_home_my_widget_action_resume">恢复照片定时器</string>
-    <string name="photo_widget_home_my_widget_lock_explainer">小组件被锁定后，照片将不会自动改变，也不会因为点击操作而改变</string>
+    <string name="photo_widget_home_my_widget_lock_explainer">锁定后，照片将不会自动改变，也不会因为点击操作而改变</string>
     <string name="photo_widget_home_removed_widget_action_restore">恢复</string>
     <string name="photo_widget_home_removed_widget_action_keep">保留</string>
     <string name="photo_widget_home_removed_widget_action_delete">永久删除</string>
