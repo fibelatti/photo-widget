@@ -90,6 +90,9 @@ jobs:
             touch app/emulator.log                    # create log file
             chmod 777 app/emulator.log                # allow writing to log file
             adb logcat >> app/emulator.log &          # pipe all logcat messages into log file as a background process
+            ./gradlew assembleDebug assembleDebugAndroidTest
+            # System UI can fail to start in time on the emulator, and its ANR dialog takes window focus from the app under test
+            adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS
             ./gradlew connectedDebugAndroidTest
 
       - name: Upload failing instrumented tests logs
