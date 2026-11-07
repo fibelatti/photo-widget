@@ -315,6 +315,7 @@
     <string name="photo_widget_directory_sort_oldest_first">Најстарије прво</string>
     <string name="photo_widget_directory_sort_explanation">Сортирање користи датум последње измене оригиналне датотеке слике и примењује се само на виџете синхронизоване са фасциклама.</string>
     <string name="photo_widget_crop_free_form">Слободна форма</string>
+    <string name="photo_widget_crop_confirm">Потврди опсецање</string>
     <string name="photo_widget_configure_text_type">Тип</string>
     <string name="photo_widget_configure_text_type_none">Ниједно</string>
     <string name="photo_widget_configure_text_type_label">Ознака</string>

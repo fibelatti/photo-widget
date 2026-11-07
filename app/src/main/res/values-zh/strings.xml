@@ -299,6 +299,7 @@
     <string name="photo_widget_directory_sort_oldest_first">优先最旧</string>
     <string name="photo_widget_directory_sort_explanation">排序使用原始图像文件的最后修改日期，仅适用于与文件夹同步的组件。</string>
     <string name="photo_widget_crop_free_form">自由形式</string>
+    <string name="photo_widget_crop_confirm">确认裁切</string>
     <string name="photo_widget_configure_text_type">类型</string>
     <string name="photo_widget_configure_text_type_none">无</string>
     <string name="photo_widget_configure_text_type_label">标签</string>

@@ -309,6 +309,7 @@
     <string name="photo_widget_directory_sort_oldest_first">Älteste zuerst</string>
     <string name="photo_widget_directory_sort_explanation">Die Sortierung verwendet das Datum der letzten Änderung der Originalbilddatei und gilt nur für Widgets, die mit Ordnern synchronisiert sind.</string>
     <string name="photo_widget_crop_free_form">Frei</string>
+    <string name="photo_widget_crop_confirm">Zuschnitt bestätigen</string>
     <string name="photo_widget_configure_text_type">Typ</string>
     <string name="photo_widget_configure_text_type_none">Keiner</string>
     <string name="photo_widget_configure_text_type_label">Beschriftung</string>

@@ -307,6 +307,7 @@
     <string name="photo_widget_directory_sort_oldest_first">En eskiler önce</string>
     <string name="photo_widget_directory_sort_explanation">Sıralama, orijinal görsel dosyasının son değiştirilme tarihine göre yapılır ve yalnızca klasörlerle senkronize edilen widget\'lara uygulanır.</string>
     <string name="photo_widget_crop_free_form">Serbest Biçim</string>
+    <string name="photo_widget_crop_confirm">Kırpmayı onayla</string>
     <string name="photo_widget_configure_text_type">Tür</string>
     <string name="photo_widget_configure_text_type_none">Yok</string>
     <string name="photo_widget_configure_text_type_label">Etiket</string>

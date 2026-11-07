@@ -307,6 +307,7 @@
     <string name="photo_widget_directory_sort_oldest_first">Pinakaluma muna</string>
     <string name="photo_widget_directory_sort_explanation">Batay ang pagbubukud-bukod sa huling petsa ng pagbabago sa orihinal na file ng larawan at nakakaapekto lamang ito sa mga widget na naka-sync sa mga folder.</string>
     <string name="photo_widget_crop_free_form">Free form</string>
+    <string name="photo_widget_crop_confirm">Kumpirmahin ang pag-krop</string>
     <string name="photo_widget_configure_text_type">Uri</string>
     <string name="photo_widget_configure_text_type_none">Wala</string>
     <string name="photo_widget_configure_text_type_label">Label</string>

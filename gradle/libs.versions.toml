@@ -5,6 +5,7 @@ composeMaterial3 = "1.5.0-rc01"
 composeRuntime = "1.13.0-rc01"
 composeUi = "1.13.0-rc01"
 coroutines = "1.11.0"
+espresso = "3.7.0"
 hilt = "2.60.1"
 hiltExtensions = "1.4.0"
 kotlin = "2.4.21"
@@ -50,6 +51,7 @@ hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltExtensions"
 
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 
 image-cropper = { module = "com.vanniktech:android-image-cropper", version = "4.7.0" }
 coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
@@ -62,6 +64,15 @@ about-libraries = { module = "com.mikepenz:aboutlibraries-compose-m3", version.r
 
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.14" }
+
+# Instrumented tests
+test-runner = { module = "androidx.test:runner", version = "1.7.0" }
+test-orchestrator = { module = "androidx.test:orchestrator", version = "1.6.1" }
+espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espresso" }
+uiautomator = { module = "androidx.test.uiautomator:uiautomator", version = "2.4.1" }
+compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "composeUi" }
+truth = { module = "com.google.truth:truth", version = "1.4.5" }
 
 # Dependencies of the included build-logic
 android-gradle-plugin = { module = "com.android.tools.build:gradle-api", version.ref = "agp" }

@@ -299,6 +299,7 @@
     <string name="photo_widget_directory_sort_oldest_first">古いものから順に</string>
     <string name="photo_widget_directory_sort_explanation">並べ替えは、元の画像ファイルの最終変更日を使用し、フォルダーと同期されたウィジェットにのみ適用されます。</string>
     <string name="photo_widget_crop_free_form">自由形式</string>
+    <string name="photo_widget_crop_confirm">切り抜きを確定</string>
     <string name="photo_widget_configure_text_type">種類</string>
     <string name="photo_widget_configure_text_type_none">なし</string>
     <string name="photo_widget_configure_text_type_label">ラベル</string>

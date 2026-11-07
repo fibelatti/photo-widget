@@ -61,6 +61,9 @@ android {
         base.archivesName = "$applicationId-v$versionName-$versionCode"
 
         vectorDrawables.useSupportLibrary = true
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
     }
 
     signingConfigs {
@@ -117,6 +120,11 @@ android {
         includeInApk = false
         // Disables dependency metadata when building Android App Bundles.
         includeInBundle = false
+    }
+
+    testOptions {
+        animationsDisabled = true
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
 
     lint {
@@ -217,6 +225,16 @@ dependencies {
 
     implementation(libs.timber)
     debugImplementation(libs.leakcanary)
+
+    // Instrumented tests
+    androidTestImplementation(libs.test.runner)
+    androidTestUtil(libs.test.orchestrator)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.espresso.intents)
+    androidTestImplementation(libs.uiautomator)
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.room.testing)
+    androidTestImplementation(libs.truth)
 }
 
 /**

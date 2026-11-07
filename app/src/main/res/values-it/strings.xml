@@ -309,6 +309,7 @@
     <string name="photo_widget_directory_sort_oldest_first">Meno recenti prima</string>
     <string name="photo_widget_directory_sort_explanation">L\'ordinamento utilizza la data dell\'ultima modifica del file immagine originale e si applica solo ai widget sincronizzati con le cartelle.</string>
     <string name="photo_widget_crop_free_form">Forma libera</string>
+    <string name="photo_widget_crop_confirm">Conferma ritaglio</string>
     <string name="photo_widget_configure_text_type">Tipo</string>
     <string name="photo_widget_configure_text_type_none">Nessuno</string>
     <string name="photo_widget_configure_text_type_label">Etichetta</string>

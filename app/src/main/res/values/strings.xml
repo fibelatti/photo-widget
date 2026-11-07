@@ -358,6 +358,7 @@
     <string name="photo_widget_directory_sort_explanation">Sorting uses the last modified date of the original image file and only applies to widgets synced with folders.</string>
 
     <string name="photo_widget_crop_free_form">Free form</string>
+    <string name="photo_widget_crop_confirm">Confirm crop</string>
 
     <string name="photo_widget_configure_text_type">Type</string>
 

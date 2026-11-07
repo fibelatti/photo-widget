@@ -176,7 +176,7 @@ private fun PhotoCropContent(
                     ) {
                         Icon(
                             imageVector = AppIcons.Check,
-                            contentDescription = null,
+                            contentDescription = stringResource(id = R.string.photo_widget_crop_confirm),
                             tint = MaterialTheme.colorScheme.onBackground,
                         )
                     }

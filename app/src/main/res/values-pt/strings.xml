@@ -307,6 +307,7 @@
     <string name="photo_widget_directory_sort_oldest_first">Mais antigas primeiro</string>
     <string name="photo_widget_directory_sort_explanation">A ordenação usa a data da última modificação do arquivo de imagem original e se aplica apenas a widgets sincronizados com pastas.</string>
     <string name="photo_widget_crop_free_form">Forma livre</string>
+    <string name="photo_widget_crop_confirm">Confirmar recorte</string>
     <string name="photo_widget_configure_text_type">Tipo</string>
     <string name="photo_widget_configure_text_type_none">Nenhum</string>
     <string name="photo_widget_configure_text_type_label">Rótulo</string>

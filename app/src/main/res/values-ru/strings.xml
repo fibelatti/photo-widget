@@ -323,6 +323,7 @@
     <string name="photo_widget_directory_sort_oldest_first">Сначала старые</string>
     <string name="photo_widget_directory_sort_explanation">Сортировка использует дату последнего изменения исходного файла изображения и применяется только к виджетам, синхронизированным с папками.</string>
     <string name="photo_widget_crop_free_form">Свободно</string>
+    <string name="photo_widget_crop_confirm">Подтвердить обрезку</string>
     <string name="photo_widget_configure_text_type">Тип</string>
     <string name="photo_widget_configure_text_type_none">Нет</string>
     <string name="photo_widget_configure_text_type_label">Метка</string>

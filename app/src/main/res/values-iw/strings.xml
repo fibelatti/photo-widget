@@ -315,6 +315,7 @@
     <string name="photo_widget_directory_sort_oldest_first">הישן ביותר קודם</string>
     <string name="photo_widget_directory_sort_explanation">מיין משתמש בתאריך השינוי האחרון של קובץ התמונה המקורי והחל רק על ווידג\'טים המסונכרנים עם תיקיות.</string>
     <string name="photo_widget_crop_free_form">חיתוך חופשי</string>
+    <string name="photo_widget_crop_confirm">אישור החיתוך</string>
     <string name="photo_widget_configure_text_type">סוג</string>
     <string name="photo_widget_configure_text_type_none">ללא</string>
     <string name="photo_widget_configure_text_type_label">תווית</string>

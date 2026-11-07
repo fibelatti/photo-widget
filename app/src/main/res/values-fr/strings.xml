@@ -309,6 +309,7 @@
     <string name="photo_widget_directory_sort_oldest_first">Les plus anciennes en premier</string>
     <string name="photo_widget_directory_sort_explanation">Le tri utilise la date de dernière modification du fichier image original et s\'applique uniquement aux widgets synchronisés avec des dossiers.</string>
     <string name="photo_widget_crop_free_form">Libre</string>
+    <string name="photo_widget_crop_confirm">Confirmer le rognage</string>
     <string name="photo_widget_configure_text_type">Type</string>
     <string name="photo_widget_configure_text_type_none">Aucun</string>
     <string name="photo_widget_configure_text_type_label">Libellé</string>

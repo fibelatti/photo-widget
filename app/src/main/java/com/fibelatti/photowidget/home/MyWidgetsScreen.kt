@@ -49,6 +49,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
@@ -139,7 +140,9 @@ fun MyWidgetsScreen(
                             widget = widget,
                             onClick = { onWidgetClick(id, widget) },
                             enforcedShape = enforcedShape,
-                            modifier = Modifier.animateItem(),
+                            modifier = Modifier
+                                .animateItem()
+                                .testTag("my-widget-$id"),
                         )
                     }
                 }
