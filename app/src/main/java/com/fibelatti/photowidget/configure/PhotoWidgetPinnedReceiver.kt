@@ -4,7 +4,6 @@ import android.appwidget.AppWidgetManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.platform.EntryPointBroadcastReceiver
@@ -63,9 +62,6 @@ class PhotoWidgetPinnedReceiver : EntryPointBroadcastReceiver() {
         }
 
         // Finally finish the configure activity since it's no longer needed
-        val finishIntent = Intent(PhotoWidgetConfigureActivity.ACTION_FINISH).apply {
-            this.appWidgetId = widgetId
-        }
-        LocalBroadcastManager.getInstance(context).sendBroadcast(finishIntent)
+        PhotoWidgetConfigureActivity.notifyWidgetPinned(appWidgetId = widgetId)
     }
 }

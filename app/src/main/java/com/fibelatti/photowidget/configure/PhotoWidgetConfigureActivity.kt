@@ -2,11 +2,9 @@ package com.fibelatti.photowidget.configure
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
-import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -21,7 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.lifecycle.lifecycleScope
 import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
@@ -34,29 +32,14 @@ import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.fibelatti.photowidget.widget.TransparentWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
 class PhotoWidgetConfigureActivity : AppCompatActivity() {
 
     private val viewModel: PhotoWidgetConfigureViewModel by viewModels()
-
-    private val finishReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-
-        override fun onReceive(context: Context, intent: Intent) {
-            Timber.i("Broadcast received %s", mapOf("action" to intent.action))
-
-            if (ACTION_FINISH == intent.action) {
-                Toast.makeText(
-                    /* context = */ context,
-                    /* resId = */ R.string.photo_widget_configure_widget_pinned,
-                    /* duration = */ Toast.LENGTH_SHORT,
-                ).show()
-
-                widgetAdded(appWidgetId = intent.appWidgetId)
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -100,16 +83,23 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
             }
         }
 
-        LocalBroadcastManager.getInstance(this)
-            .registerReceiver(/* receiver = */ finishReceiver, /* filter = */ IntentFilter(ACTION_FINISH))
+        // The pinned callback can arrive while the launcher is in front and this activity is stopped,
+        // so this must keep collecting until the activity is destroyed.
+        lifecycleScope.launch {
+            widgetPinned.collect { appWidgetId: Int ->
+                Timber.i("Widget pinned %s", mapOf("appWidgetId" to appWidgetId))
+
+                Toast.makeText(
+                    /* context = */ this@PhotoWidgetConfigureActivity,
+                    /* resId = */ R.string.photo_widget_configure_widget_pinned,
+                    /* duration = */ Toast.LENGTH_SHORT,
+                ).show()
+
+                widgetAdded(appWidgetId = appWidgetId)
+            }
+        }
 
         checkIntent()
-    }
-
-    override fun onDestroy() {
-        LocalBroadcastManager.getInstance(this)
-            .unregisterReceiver(/* receiver = */ finishReceiver)
-        super.onDestroy()
     }
 
     private fun checkIntent() {
@@ -295,7 +285,16 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     companion object {
 
         private const val PIN_REQUEST_CODE = 1001
-        const val ACTION_FINISH = "FINISH_PHOTO_WIDGET_CONFIGURE_ACTIVITY"
+
+        /**
+         * Emits the ID of a widget that was pinned. There is no replay so that a stale event can't
+         * finish an activity opened later.
+         */
+        private val widgetPinned: MutableSharedFlow<Int> = MutableSharedFlow()
+
+        suspend fun notifyWidgetPinned(appWidgetId: Int) {
+            widgetPinned.emit(appWidgetId)
+        }
 
         fun newWidgetIntent(
             context: Context,

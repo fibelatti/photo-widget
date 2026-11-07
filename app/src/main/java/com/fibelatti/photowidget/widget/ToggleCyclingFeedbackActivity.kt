@@ -65,11 +65,11 @@ class ToggleCyclingFeedbackActivity : AppCompatActivity() {
 
         when {
             source == PhotoWidgetSource.GIF && paused -> {
-                KeepAliveService.sendResumeGifBroadcast(context = this, appWidgetId = appWidgetId)
+                KeepAliveService.resumeGif(appWidgetId = appWidgetId)
             }
 
             source == PhotoWidgetSource.GIF -> {
-                KeepAliveService.sendPauseGifBroadcast(context = this, appWidgetId = appWidgetId)
+                KeepAliveService.pauseGif(appWidgetId = appWidgetId)
             }
 
             // While cycling is paused the alarm lapses: the receiver reads the flag when it

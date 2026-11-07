@@ -145,7 +145,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
             for (appWidgetId in appWidgetIds) {
                 storage.saveWidgetDeletionTimestamp(appWidgetId = appWidgetId, timestamp = System.currentTimeMillis())
                 alarmManager.cancel(appWidgetId = appWidgetId)
-                KeepAliveService.sendTearDownGifBroadcast(context = context, appWidgetId = appWidgetId)
+                KeepAliveService.tearDownGif(appWidgetId = appWidgetId)
             }
         }
     }
@@ -361,7 +361,7 @@ class PhotoWidgetProvider : AppWidgetProvider() {
                     when {
                         photoWidget.source == PhotoWidgetSource.GIF -> {
                             appWidgetManager.updateAppWidget(appWidgetId, initialViews)
-                            KeepAliveService.sendSetupGifBroadcast(context = context, appWidgetId = appWidgetId)
+                            KeepAliveService.setupGif(appWidgetId = appWidgetId)
                         }
 
                         canCrossfade -> {
