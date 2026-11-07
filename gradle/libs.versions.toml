@@ -1,9 +1,9 @@
 [versions]
 agp = "9.5.1"
 coil = "3.6.3"
-composeMaterial3 = "1.5.0-beta02"
-composeRuntime = "1.13.0-beta02"
-composeUi = "1.13.0-beta02"
+composeMaterial3 = "1.5.0-rc01"
+composeRuntime = "1.13.0-rc01"
+composeUi = "1.13.0-rc01"
 coroutines = "1.11.0"
 hilt = "2.60.1"
 hiltExtensions = "1.4.0"
