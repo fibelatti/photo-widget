@@ -8,6 +8,7 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 
 /**
  * Identifies discrepancies of declared permissions between a given `AndroidManifest.xml` file and a previously
@@ -19,6 +20,7 @@ import org.gradle.api.tasks.TaskAction
  * ./gradlew checkReleaseManifestPermissions
  * ```
  */
+@DisableCachingByDefault(because = "Verification task that produces no output to cache")
 abstract class CheckManifestPermissionsTask : DefaultTask() {
 
     /**

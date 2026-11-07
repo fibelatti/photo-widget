@@ -9,6 +9,7 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 
 /**
  * Generates a baseline containing all permissions declared in an `AndroidManifest.xml` file.
@@ -20,6 +21,7 @@ import org.gradle.api.tasks.TaskAction
  * ./gradlew generateReleaseManifestBaseline
  * ```
  */
+@DisableCachingByDefault(because = "The output carries over comments from the existing baseline, which is not a task input")
 abstract class GenerateManifestBaselineTask : DefaultTask() {
 
     /**
