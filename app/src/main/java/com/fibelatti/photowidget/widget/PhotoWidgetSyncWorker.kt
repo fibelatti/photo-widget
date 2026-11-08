@@ -29,12 +29,13 @@ class PhotoWidgetSyncWorker @AssistedInject constructor(
     @Assisted workerParams: WorkerParameters,
     private val photoWidgetStorage: PhotoWidgetStorage,
     private val coroutineScope: CoroutineScope,
+    private val widgetProviders: WidgetProviders,
 ) : CoroutineWorker(appContext = context, params = workerParams) {
 
     override suspend fun doWork(): Result {
         Timber.i("Working...")
 
-        val ids: List<Int> = PhotoWidgetProvider.ids(applicationContext).ifEmpty {
+        val ids: List<Int> = widgetProviders.photoWidgetIds().ifEmpty {
             Timber.d("There are no widgets.")
             return Result.success()
         }
@@ -50,7 +51,7 @@ class PhotoWidgetSyncWorker @AssistedInject constructor(
                                 // Joined so the worker stays alive until the render completes: it runs on the
                                 // application scope, and returning from `doWork` while it is ongoing lets the process
                                 // be killed mid-render.
-                                PhotoWidgetProvider.update(context = applicationContext, appWidgetId = id).join()
+                                widgetProviders.updatePhotoWidget(appWidgetId = id).join()
                             }
                         }
                     } catch (e: CancellationException) {

@@ -23,7 +23,7 @@ import timber.log.Timber
  * create/cancel site, so the backing map needs no synchronization.
  *
  * A single instance is shared across the whole process so that a render (see
- * [PhotoWidgetProvider.update]) can [cancel] an animation started by a previous render of the same
+ * [WidgetProviders.updatePhotoWidget]) can [cancel] an animation started by a previous render of the same
  * widget before pushing its own frames.
  */
 @Singleton

@@ -30,7 +30,7 @@ object PhotoWidgetRemoteViewsBuilder {
 
     /**
      * The values that fully describe a single widget render. Identical across the initial and the
-     * settle render of a crossfade, so [PhotoWidgetProvider.update] builds it once and reuses it.
+     * settle render of a crossfade, so [WidgetProviders.updatePhotoWidget] builds it once and reuses it.
      */
     data class RenderState(
         val photoWidget: PhotoWidget,

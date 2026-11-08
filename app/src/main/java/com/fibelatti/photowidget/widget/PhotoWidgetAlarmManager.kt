@@ -264,7 +264,7 @@ class RepeatingAlarmReceiver : EntryPointBroadcastReceiver() {
 
             if (nextPhotoId != null) {
                 storage.saveDisplayedPhoto(appWidgetId = appWidgetId, photoId = nextPhotoId)
-                PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId, allowCrossfade = true)
+                widgetProviders().updatePhotoWidget(appWidgetId = appWidgetId, allowCrossfade = true)
             } else {
                 cyclePhotoUseCase().invoke(appWidgetId = appWidgetId)
                 storage.saveWidgetNextCycleTime(appWidgetId = appWidgetId, nextCycleTime = null)

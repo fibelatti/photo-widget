@@ -30,6 +30,9 @@ class ToggleCyclingFeedbackActivity : AppCompatActivity() {
     @Inject
     lateinit var photoWidgetAlarmManager: PhotoWidgetAlarmManager
 
+    @Inject
+    lateinit var widgetProviders: WidgetProviders
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,7 +45,7 @@ class ToggleCyclingFeedbackActivity : AppCompatActivity() {
             }
 
             if (previouslyPaused != null) {
-                PhotoWidgetProvider.update(context = context, appWidgetId = appWidgetId)
+                widgetProviders.updatePhotoWidget(appWidgetId = appWidgetId)
 
                 val resId: Int = if (previouslyPaused) {
                     R.string.photo_widget_cycling_feedback_resumed

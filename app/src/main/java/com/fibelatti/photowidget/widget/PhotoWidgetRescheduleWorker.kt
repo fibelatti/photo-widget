@@ -36,6 +36,7 @@ class PhotoWidgetRescheduleWorker @AssistedInject constructor(
     @Assisted workerParams: WorkerParameters,
     private val photoWidgetAlarmManager: PhotoWidgetAlarmManager,
     private val userPreferencesStorage: UserPreferencesStorage,
+    private val widgetProviders: WidgetProviders,
 ) : CoroutineWorker(appContext = context, params = workerParams) {
 
     override suspend fun doWork(): Result {
@@ -45,7 +46,7 @@ class PhotoWidgetRescheduleWorker @AssistedInject constructor(
             KeepAliveService.tryStart(context = applicationContext)
         }
 
-        val ids: List<Int> = PhotoWidgetProvider.ids(applicationContext)
+        val ids: List<Int> = widgetProviders.photoWidgetIds()
 
         val success: Boolean = coroutineScope {
             ids.map { id ->
@@ -58,7 +59,7 @@ class PhotoWidgetRescheduleWorker @AssistedInject constructor(
                         // change when its alarm fires, making this a self-recovery call.
                         photoWidgetAlarmManager.setup(appWidgetId = id)
 
-                        PhotoWidgetProvider.update(context = applicationContext, appWidgetId = id)
+                        widgetProviders.updatePhotoWidget(appWidgetId = id)
                         true
                     } catch (e: CancellationException) {
                         throw e

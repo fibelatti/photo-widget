@@ -7,9 +7,8 @@ import android.content.Intent
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.platform.EntryPointBroadcastReceiver
-import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.fibelatti.photowidget.widget.SavePhotoWidgetUseCase
-import com.fibelatti.photowidget.widget.TransparentWidgetProvider
+import com.fibelatti.photowidget.widget.WidgetProviders
 import timber.log.Timber
 
 /**
@@ -21,6 +20,7 @@ class PhotoWidgetPinnedReceiver : EntryPointBroadcastReceiver() {
         Timber.i("Working... %s", mapOf("appWidgetId" to intent.appWidgetId))
 
         val pinningCache: PhotoWidgetPinningCache = entryPoint.photoWidgetPinningCache()
+        val widgetProviders: WidgetProviders = entryPoint.widgetProviders()
 
         // The widget data is missing, it's impossible to continue
         val (photoWidget: PhotoWidget, draftWidgetId: Int) = pinningCache.peek() ?: return
@@ -28,9 +28,9 @@ class PhotoWidgetPinnedReceiver : EntryPointBroadcastReceiver() {
         // A transparent widget is bound to its own provider, so the Samsung id-recovery workaround
         // and the final update below must target the matching provider.
         val providerIds: List<Int> = if (photoWidget.transparent) {
-            TransparentWidgetProvider.ids(context = context)
+            widgetProviders.transparentWidgetIds()
         } else {
-            PhotoWidgetProvider.ids(context = context)
+            widgetProviders.photoWidgetIds()
         }
 
         val widgetId: Int = intent.appWidgetId
@@ -45,7 +45,7 @@ class PhotoWidgetPinnedReceiver : EntryPointBroadcastReceiver() {
         val saveUseCase: SavePhotoWidgetUseCase = entryPoint.savePhotoWidgetUseCase()
 
         // Persist the widget data since it was placed on the home screen. The pinning cache stays
-        // populated throughout, so any racy `PhotoWidgetProvider#update` during the save keeps
+        // populated throughout, so any racy widget render during the save keeps
         // rendering from the in-memory data instead of triggering a `loadWidgetPhotos` that would
         // insert rows under the new widget ID and collide with the migration.
         try {
@@ -56,9 +56,9 @@ class PhotoWidgetPinnedReceiver : EntryPointBroadcastReceiver() {
 
         // Update the widget UI using the updated storage data
         if (photoWidget.transparent) {
-            TransparentWidgetProvider.update(context = context, appWidgetId = widgetId)
+            widgetProviders.updateTransparentWidget(appWidgetId = widgetId)
         } else {
-            PhotoWidgetProvider.update(context = context, appWidgetId = widgetId)
+            widgetProviders.updatePhotoWidget(appWidgetId = widgetId)
         }
 
         // Finally finish the configure activity since it's no longer needed

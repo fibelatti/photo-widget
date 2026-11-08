@@ -10,10 +10,9 @@ import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.CyclePhotoUseCase
 import com.fibelatti.photowidget.widget.LoadPhotoWidgetUseCase
 import com.fibelatti.photowidget.widget.PhotoWidgetAlarmManager
-import com.fibelatti.photowidget.widget.PhotoWidgetCrossfadeAnimator
 import com.fibelatti.photowidget.widget.PhotoWidgetProviderActionHandler
-import com.fibelatti.photowidget.widget.PrepareCurrentPhotoUseCase
 import com.fibelatti.photowidget.widget.SavePhotoWidgetUseCase
+import com.fibelatti.photowidget.widget.WidgetProviders
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
@@ -36,13 +35,9 @@ interface PhotoWidgetEntryPoint {
 
     fun photoWidgetProviderActionHandler(): PhotoWidgetProviderActionHandler
 
-    fun photoWidgetCrossfadeAnimator(): PhotoWidgetCrossfadeAnimator
-
     fun loadPhotoWidgetUseCase(): LoadPhotoWidgetUseCase
 
     fun savePhotoWidgetUseCase(): SavePhotoWidgetUseCase
-
-    fun prepareCurrentPhotoUseCase(): PrepareCurrentPhotoUseCase
 
     fun cyclePhotoUseCase(): CyclePhotoUseCase
 
@@ -55,4 +50,6 @@ interface PhotoWidgetEntryPoint {
     fun coroutineScope(): CoroutineScope
 
     fun exceptionReporter(): ExceptionReporter
+
+    fun widgetProviders(): WidgetProviders
 }

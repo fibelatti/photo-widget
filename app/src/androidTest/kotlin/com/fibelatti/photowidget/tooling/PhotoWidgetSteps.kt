@@ -28,7 +28,6 @@ import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
-import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import java.util.regex.Pattern
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.runBlocking
@@ -36,7 +35,7 @@ import kotlinx.coroutines.runBlocking
 private val entryPoint: PhotoWidgetEntryPoint
     get() = entryPoint(targetContext)
 
-fun widgetIds(): List<Int> = PhotoWidgetProvider.ids(context = targetContext)
+fun widgetIds(): List<Int> = entryPoint.widgetProviders().photoWidgetIds()
 
 fun loadWidget(widgetId: Int): PhotoWidget = runBlocking {
     entryPoint.loadPhotoWidgetUseCase().invoke(widgetId).last()

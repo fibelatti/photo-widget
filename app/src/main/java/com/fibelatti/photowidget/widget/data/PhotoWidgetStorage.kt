@@ -1113,7 +1113,7 @@ class PhotoWidgetStorage @Inject constructor(
             excludedPhotosDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
             advancedScheduleTimeDao.migrateWidgetId(oldWidgetId = draftWidgetId, newWidgetId = appWidgetId)
 
-            // `getKnownWidgetIds` reads from `widget_directories`. The `PhotoWidgetProvider.update`
+            // `getKnownWidgetIds` reads from `widget_directories`. The `WidgetProviders.updatePhotoWidget`
             // flow only falls back to `loadPhotoWidgetUseCase` (which can write to
             // `local_widget_photos` via `syncWidgetPhotos`) once the new ID is "known". The
             // transaction keeps this row absent until everything else is in place, which forces

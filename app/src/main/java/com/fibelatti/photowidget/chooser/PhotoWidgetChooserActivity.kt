@@ -49,18 +49,22 @@ import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.disableWindowNavigationBarContrastEnforced
 import com.fibelatti.photowidget.platform.enableEdgeToEdgeTransparent
 import com.fibelatti.photowidget.ui.ShapedPhoto
-import com.fibelatti.photowidget.widget.PhotoWidgetProvider
+import com.fibelatti.photowidget.widget.WidgetProviders
 import com.fibelatti.ui.component.LoadingIndicator
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class PhotoWidgetChooserActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var widgetProviders: WidgetProviders
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdgeTransparent()
@@ -81,10 +85,7 @@ class PhotoWidgetChooserActivity : AppCompatActivity() {
                             viewModel.setPhoto(photo = photo)
 
                             withContext(Dispatchers.Main) {
-                                PhotoWidgetProvider.update(
-                                    context = this@PhotoWidgetChooserActivity,
-                                    appWidgetId = intent.appWidgetId,
-                                )
+                                widgetProviders.updatePhotoWidget(appWidgetId = intent.appWidgetId)
                                 finish()
                             }
                         }

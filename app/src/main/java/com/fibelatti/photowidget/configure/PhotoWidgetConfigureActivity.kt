@@ -31,13 +31,18 @@ import com.fibelatti.photowidget.platform.setIdentifierCompat
 import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import com.fibelatti.photowidget.widget.TransparentWidgetProvider
+import com.fibelatti.photowidget.widget.WidgetProviders
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
 class PhotoWidgetConfigureActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var widgetProviders: WidgetProviders
 
     private val viewModel: PhotoWidgetConfigureViewModel by viewModels()
 
@@ -222,9 +227,9 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
     private fun addNewWidget(appWidgetId: Int, transparent: Boolean) {
         widgetAdded(appWidgetId = appWidgetId)
         if (transparent) {
-            TransparentWidgetProvider.update(context = this, appWidgetId = appWidgetId)
+            widgetProviders.updateTransparentWidget(appWidgetId = appWidgetId)
         } else {
-            PhotoWidgetProvider.update(context = this, appWidgetId = appWidgetId)
+            widgetProviders.updatePhotoWidget(appWidgetId = appWidgetId)
         }
     }
 

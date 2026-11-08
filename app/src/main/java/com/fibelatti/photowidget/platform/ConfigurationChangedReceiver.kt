@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
-import com.fibelatti.photowidget.widget.PhotoWidgetProvider
+import com.fibelatti.photowidget.widget.WidgetProviders
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
@@ -21,7 +21,8 @@ class ConfigurationChangedReceiver : EntryPointBroadcastReceiver() {
             return
         }
 
-        val ids = PhotoWidgetProvider.ids(context).ifEmpty {
+        val widgetProviders: WidgetProviders = entryPoint.widgetProviders()
+        val ids = widgetProviders.photoWidgetIds().ifEmpty {
             Timber.d("There are no widgets")
             return
         }
@@ -31,7 +32,7 @@ class ConfigurationChangedReceiver : EntryPointBroadcastReceiver() {
             try {
                 Timber.d("Processing widget %s", mapOf("id" to id))
 
-                PhotoWidgetProvider.update(context = context, appWidgetId = id)
+                widgetProviders.updatePhotoWidget(appWidgetId = id)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
