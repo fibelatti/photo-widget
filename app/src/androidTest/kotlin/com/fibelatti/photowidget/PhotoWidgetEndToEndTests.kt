@@ -4,11 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsSelected
-import androidx.compose.ui.test.hasContentDescription
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -21,10 +18,10 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
 import com.fibelatti.photowidget.model.PhotoWidgetLoopingInterval
 import com.fibelatti.photowidget.model.PhotoWidgetTapAction
-import com.fibelatti.photowidget.tooling.DEFAULT_TIMEOUT
 import com.fibelatti.photowidget.tooling.TestPhotosRule
 import com.fibelatti.photowidget.tooling.awaitAlarm
 import com.fibelatti.photowidget.tooling.awaitPinnedWidgetId
+import com.fibelatti.photowidget.tooling.clickNodeWithText
 import com.fibelatti.photowidget.tooling.confirmCrop
 import com.fibelatti.photowidget.tooling.confirmLauncherPinDialog
 import com.fibelatti.photowidget.tooling.loadWidget
@@ -36,6 +33,8 @@ import com.fibelatti.photowidget.tooling.setIntervalInDays
 import com.fibelatti.photowidget.tooling.string
 import com.fibelatti.photowidget.tooling.stubPhotoPicker
 import com.fibelatti.photowidget.tooling.targetContext
+import com.fibelatti.photowidget.tooling.waitUntilContentDescriptionExists
+import com.fibelatti.photowidget.tooling.waitUntilTextExists
 import com.fibelatti.photowidget.tooling.widgetIds
 import com.fibelatti.photowidget.tooling.widgetNextCycleTime
 import com.fibelatti.photowidget.widget.TapActionPendingIntentFactory
@@ -72,11 +71,11 @@ class PhotoWidgetEndToEndTests {
             onNodeWithText(string(R.string.photo_widget_home_new)).assertIsSelected()
             onNodeWithText(string(R.string.photo_widget_home_title)).assertIsDisplayed()
 
-            onNodeWithText(string(R.string.photo_widget_home_current)).performClick()
+            clickNodeWithText(R.string.photo_widget_home_current)
             onNodeWithText(string(R.string.photo_widget_home_current)).assertIsSelected()
             onNodeWithText(string(R.string.photo_widget_home_filter_all)).assertIsDisplayed()
 
-            onNodeWithText(string(R.string.photo_widget_home_settings)).performClick()
+            clickNodeWithText(R.string.photo_widget_home_settings)
             onNodeWithText(string(R.string.photo_widget_home_settings)).assertIsSelected()
             onNodeWithText(string(R.string.widget_defaults_title)).assertIsDisplayed()
         }
@@ -109,8 +108,8 @@ class PhotoWidgetEndToEndTests {
         with(composeRule) {
             openWidgetForEditing(widgetId = widgetId)
 
-            onNodeWithText(string(R.string.photo_widget_configure_tab_appearance)).performClick()
-            waitUntilAtLeastOneExists(hasText("$CORNER_RADIUS"), DEFAULT_TIMEOUT)
+            clickNodeWithText(R.string.photo_widget_configure_tab_appearance)
+            waitUntilTextExists("$CORNER_RADIUS")
 
             setCornerRadius(value = EDITED_CORNER_RADIUS)
 
@@ -199,13 +198,10 @@ class PhotoWidgetEndToEndTests {
         onView(withText(string(R.string.photo_widget_action_got_it))).inRoot(isDialog()).perform(click())
 
         with(composeRule) {
-            onNodeWithText(string(R.string.photo_widget_aspect_ratio_square)).performClick()
+            clickNodeWithText(R.string.photo_widget_aspect_ratio_square)
 
-            waitUntilAtLeastOneExists(
-                hasContentDescription(string(R.string.photo_widget_configure_menu_crop)),
-                DEFAULT_TIMEOUT,
-            )
-            onNodeWithText(string(R.string.photo_widget_configure_add_to_home)).performClick()
+            waitUntilContentDescriptionExists(string(R.string.photo_widget_configure_menu_crop))
+            clickNodeWithText(R.string.photo_widget_configure_add_to_home)
 
             confirmLauncherPinDialog()
         }
@@ -230,16 +226,13 @@ class PhotoWidgetEndToEndTests {
         stubPhotoPicker(*Array(size = SLIDESHOW_PHOTO_COUNT) { testPhotos.insert() })
 
         with(composeRule) {
-            onNodeWithText(string(R.string.photo_widget_aspect_ratio_square)).performClick()
+            clickNodeWithText(R.string.photo_widget_aspect_ratio_square)
 
-            waitUntilAtLeastOneExists(hasText(string(R.string.photo_widget_configure_pick_photo)), DEFAULT_TIMEOUT)
-            onNodeWithText(string(R.string.photo_widget_configure_pick_photo)).performClick()
+            waitUntilTextExists(string(R.string.photo_widget_configure_pick_photo))
+            clickNodeWithText(R.string.photo_widget_configure_pick_photo)
 
-            waitUntilAtLeastOneExists(
-                hasContentDescription(string(R.string.photo_widget_configure_menu_crop)),
-                DEFAULT_TIMEOUT,
-            )
-            onNodeWithText(string(R.string.photo_widget_configure_add_to_home)).performClick()
+            waitUntilContentDescriptionExists(string(R.string.photo_widget_configure_menu_crop))
+            clickNodeWithText(R.string.photo_widget_configure_add_to_home)
 
             confirmLauncherPinDialog()
         }
@@ -260,17 +253,17 @@ class PhotoWidgetEndToEndTests {
         stubPhotoPicker(testPhotos.insert())
 
         with(composeRule) {
-            onNodeWithText(string(R.string.photo_widget_aspect_ratio_square)).performClick()
+            clickNodeWithText(R.string.photo_widget_aspect_ratio_square)
 
-            waitUntilAtLeastOneExists(hasText(string(R.string.photo_widget_configure_pick_photo)), DEFAULT_TIMEOUT)
-            onNodeWithText(string(R.string.photo_widget_configure_pick_photo)).performClick()
+            waitUntilTextExists(string(R.string.photo_widget_configure_pick_photo))
+            clickNodeWithText(R.string.photo_widget_configure_pick_photo)
 
             confirmCrop()
 
-            waitUntilAtLeastOneExists(hasText(string(R.string.photo_widget_configure_add_to_home)), DEFAULT_TIMEOUT)
+            waitUntilTextExists(string(R.string.photo_widget_configure_add_to_home))
             setCornerRadius(value = cornerRadius)
 
-            onNodeWithText(string(R.string.photo_widget_configure_add_to_home)).performClick()
+            clickNodeWithText(R.string.photo_widget_configure_add_to_home)
 
             confirmLauncherPinDialog()
         }

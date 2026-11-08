@@ -4,29 +4,21 @@ import android.app.Activity
 import android.app.Instrumentation
 import android.appwidget.AppWidgetManager
 import android.content.ClipData
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.annotation.StringRes
-import androidx.compose.ui.semantics.SemanticsActions
-import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasScrollToNodeAction
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
-import androidx.compose.ui.test.performSemanticsAction
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.BySelector
 import androidx.test.uiautomator.UiDevice
@@ -41,20 +33,21 @@ import java.util.regex.Pattern
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.runBlocking
 
-const val DEFAULT_TIMEOUT: Long = 15_000L
-
-val targetContext: Context
-    get() = InstrumentationRegistry.getInstrumentation().targetContext
-
-private val device: UiDevice
-    get() = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-
 private val entryPoint: PhotoWidgetEntryPoint
     get() = entryPoint(targetContext)
 
-fun string(@StringRes id: Int): String = targetContext.getString(id)
-
 fun widgetIds(): List<Int> = PhotoWidgetProvider.ids(context = targetContext)
+
+fun loadWidget(widgetId: Int): PhotoWidget = runBlocking {
+    entryPoint.loadPhotoWidgetUseCase().invoke(widgetId).last()
+}
+
+/**
+ * Returns the time the interval alarm of [widgetId] is set to trigger at, or -1 if none was set.
+ */
+fun widgetNextCycleTime(widgetId: Int): Long {
+    return entryPoint.photoWidgetStorage().getWidgetNextCycleTime(appWidgetId = widgetId)
+}
 
 fun stubPhotoPicker(vararg photos: Uri) {
     val clipData: ClipData = ClipData.newRawUri(null, photos.first()).apply {
@@ -72,7 +65,7 @@ fun stubPhotoPicker(vararg photos: Uri) {
 fun ComposeTestRule.confirmCrop() {
     val confirmCrop: String = string(R.string.photo_widget_crop_confirm)
 
-    waitUntilAtLeastOneExists(matcher = hasContentDescription(confirmCrop), timeoutMillis = DEFAULT_TIMEOUT)
+    waitUntilContentDescriptionExists(confirmCrop)
     waitUntil(timeoutMillis = DEFAULT_TIMEOUT, condition = ::isCropImageLoaded)
     onNodeWithContentDescription(confirmCrop).performClick()
 }
@@ -92,35 +85,30 @@ private fun isCropImageLoaded(): Boolean {
 }
 
 fun ComposeTestRule.setCornerRadius(value: Int) {
-    onNodeWithText(string(R.string.photo_widget_configure_tab_appearance)).performClick()
-    onNodeWithText(string(R.string.widget_defaults_corner_radius)).performClick()
+    clickNodeWithText(R.string.photo_widget_configure_tab_appearance)
+    clickNodeWithText(R.string.widget_defaults_corner_radius)
 
-    onNode(SemanticsMatcher.keyIsDefined(SemanticsActions.SetProgress))
-        .performSemanticsAction(SemanticsActions.SetProgress) { setProgress -> setProgress(value.toFloat()) }
+    setSliderValue(value.toFloat())
 
-    onNodeWithText(string(R.string.photo_widget_action_apply)).performClick()
-    waitUntilAtLeastOneExists(matcher = hasText("$value"), timeoutMillis = DEFAULT_TIMEOUT)
+    clickNodeWithText(R.string.photo_widget_action_apply)
+    waitUntilTextExists("$value")
 }
 
 fun ComposeTestRule.setIntervalInDays(days: Int) {
-    onNodeWithText(string(R.string.photo_widget_configure_tab_behavior)).performClick()
-    onNodeWithText(string(R.string.widget_defaults_cycling)).performClick()
+    clickNodeWithText(R.string.photo_widget_configure_tab_behavior)
+    clickNodeWithText(R.string.widget_defaults_cycling)
 
     if (targetContext.isBackgroundRestricted(checkUnrestrictedBattery = true)) {
-        onNodeWithText(string(R.string.photo_widget_action_ignore)).performClick()
+        clickNodeWithText(R.string.photo_widget_action_ignore)
     }
 
-    waitUntilAtLeastOneExists(
-        matcher = hasText(string(R.string.photo_widget_configure_cycling_mode_interval)),
-        timeoutMillis = DEFAULT_TIMEOUT,
-    )
-    onNodeWithText(string(R.string.photo_widget_configure_cycling_mode_interval)).performClick()
-    onNodeWithText(string(R.string.photo_widget_configure_interval_days_label)).performClick()
+    waitUntilTextExists(string(R.string.photo_widget_configure_cycling_mode_interval))
+    clickNodeWithText(R.string.photo_widget_configure_cycling_mode_interval)
+    clickNodeWithText(R.string.photo_widget_configure_interval_days_label)
 
-    onNode(SemanticsMatcher.keyIsDefined(SemanticsActions.SetProgress))
-        .performSemanticsAction(SemanticsActions.SetProgress) { setProgress -> setProgress(days.toFloat()) }
+    setSliderValue(days.toFloat())
 
-    onNodeWithText(string(R.string.photo_widget_action_apply)).performClick()
+    clickNodeWithText(R.string.photo_widget_action_apply)
     waitUntilDoesNotExist(
         matcher = hasText(string(R.string.photo_widget_configure_cycling_mode_interval)),
         timeoutMillis = DEFAULT_TIMEOUT,
@@ -172,42 +160,16 @@ fun ComposeTestRule.openWidgetForEditing(widgetId: Int) {
     // The configure screen finishes once the widget is pinned, and the home screen is only found by
     // the test after it resumes.
     awaitScreenWith(matcher = hasText(string(R.string.photo_widget_home_current)))
-    onNodeWithText(string(R.string.photo_widget_home_current)).performClick()
+    clickNodeWithText(R.string.photo_widget_home_current)
     waitUntil(DEFAULT_TIMEOUT) {
         runCatching { onNode(hasScrollToNodeAction()).performScrollToNode(hasTestTag(widgetTag)) }.isSuccess
     }
     onNodeWithTag(widgetTag).performClick()
-    onNodeWithText(string(R.string.photo_widget_home_my_widget_action_edit)).performClick()
+    clickNodeWithText(R.string.photo_widget_home_my_widget_action_edit)
     awaitScreenWith(matcher = hasText(string(R.string.photo_widget_configure_save_changes)))
 }
 
-/**
- * Waits for a node matching [matcher] while switching between activities. Until the next activity
- * resumes there may be no Compose hierarchy at all, which the Compose test APIs report by throwing
- * instead of finding no nodes.
- */
-private fun ComposeTestRule.awaitScreenWith(matcher: SemanticsMatcher) {
-    waitUntil(DEFAULT_TIMEOUT) {
-        try {
-            onAllNodes(matcher).fetchSemanticsNodes().isNotEmpty()
-        } catch (_: IllegalStateException) {
-            false
-        }
-    }
-}
-
 fun ComposeTestRule.saveWidgetChanges() {
-    onNodeWithText(string(R.string.photo_widget_configure_save_changes)).performClick()
+    clickNodeWithText(R.string.photo_widget_configure_save_changes)
     waitUntilDoesNotExist(hasText(string(R.string.photo_widget_configure_save_changes)), DEFAULT_TIMEOUT)
-}
-
-fun loadWidget(widgetId: Int): PhotoWidget = runBlocking {
-    entryPoint.loadPhotoWidgetUseCase().invoke(widgetId).last()
-}
-
-/**
- * Returns the time the interval alarm of [widgetId] is set to trigger at, or -1 if none was set.
- */
-fun widgetNextCycleTime(widgetId: Int): Long {
-    return entryPoint.photoWidgetStorage().getWidgetNextCycleTime(appWidgetId = widgetId)
 }
