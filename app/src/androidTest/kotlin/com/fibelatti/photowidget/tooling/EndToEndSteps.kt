@@ -3,6 +3,7 @@ package com.fibelatti.photowidget.tooling
 import android.app.Activity
 import android.app.Instrumentation
 import android.appwidget.AppWidgetManager
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -10,11 +11,15 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasScrollToNodeAction
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.NoMatchingViewException
@@ -30,6 +35,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
+import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.photowidget.widget.PhotoWidgetProvider
 import java.util.regex.Pattern
 import kotlinx.coroutines.flow.last
@@ -50,9 +56,13 @@ fun string(@StringRes id: Int): String = targetContext.getString(id)
 
 fun widgetIds(): List<Int> = PhotoWidgetProvider.ids(context = targetContext)
 
-fun stubPhotoPicker(photo: Uri) {
+fun stubPhotoPicker(vararg photos: Uri) {
+    val clipData: ClipData = ClipData.newRawUri(null, photos.first()).apply {
+        photos.drop(1).forEach { photo: Uri -> addItem(ClipData.Item(photo)) }
+    }
+
     intending(hasAction(Intent.ACTION_GET_CONTENT))
-        .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, Intent().setData(photo)))
+        .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, Intent().apply { this.clipData = clipData }))
 }
 
 /**
@@ -92,6 +102,31 @@ fun ComposeTestRule.setCornerRadius(value: Int) {
     waitUntilAtLeastOneExists(matcher = hasText("$value"), timeoutMillis = DEFAULT_TIMEOUT)
 }
 
+fun ComposeTestRule.setIntervalInDays(days: Int) {
+    onNodeWithText(string(R.string.photo_widget_configure_tab_behavior)).performClick()
+    onNodeWithText(string(R.string.widget_defaults_cycling)).performClick()
+
+    if (targetContext.isBackgroundRestricted(checkUnrestrictedBattery = true)) {
+        onNodeWithText(string(R.string.photo_widget_action_ignore)).performClick()
+    }
+
+    waitUntilAtLeastOneExists(
+        matcher = hasText(string(R.string.photo_widget_configure_cycling_mode_interval)),
+        timeoutMillis = DEFAULT_TIMEOUT,
+    )
+    onNodeWithText(string(R.string.photo_widget_configure_cycling_mode_interval)).performClick()
+    onNodeWithText(string(R.string.photo_widget_configure_interval_days_label)).performClick()
+
+    onNode(SemanticsMatcher.keyIsDefined(SemanticsActions.SetProgress))
+        .performSemanticsAction(SemanticsActions.SetProgress) { setProgress -> setProgress(days.toFloat()) }
+
+    onNodeWithText(string(R.string.photo_widget_action_apply)).performClick()
+    waitUntilDoesNotExist(
+        matcher = hasText(string(R.string.photo_widget_configure_cycling_mode_interval)),
+        timeoutMillis = DEFAULT_TIMEOUT,
+    )
+}
+
 /**
  * The confirmation belongs to the launcher, so it's out of reach of the Compose test APIs. Its
  * button has no resource ID and its casing varies across launchers, so the selector relies on the
@@ -127,6 +162,52 @@ fun ComposeTestRule.awaitPinnedWidgetId(existingWidgetIds: List<Int>): Int {
     return (widgetIds() - existingWidgetIds.toSet()).single()
 }
 
+/**
+ * Opens [widgetId] for editing from the home screen, once the configure screen that pinned it has
+ * finished, and waits for the configure screen to show it.
+ */
+fun ComposeTestRule.openWidgetForEditing(widgetId: Int) {
+    val widgetTag = "my-widget-$widgetId"
+
+    // The configure screen finishes once the widget is pinned, and the home screen is only found by
+    // the test after it resumes.
+    awaitScreenWith(matcher = hasText(string(R.string.photo_widget_home_current)))
+    onNodeWithText(string(R.string.photo_widget_home_current)).performClick()
+    waitUntil(DEFAULT_TIMEOUT) {
+        runCatching { onNode(hasScrollToNodeAction()).performScrollToNode(hasTestTag(widgetTag)) }.isSuccess
+    }
+    onNodeWithTag(widgetTag).performClick()
+    onNodeWithText(string(R.string.photo_widget_home_my_widget_action_edit)).performClick()
+    awaitScreenWith(matcher = hasText(string(R.string.photo_widget_configure_save_changes)))
+}
+
+/**
+ * Waits for a node matching [matcher] while switching between activities. Until the next activity
+ * resumes there may be no Compose hierarchy at all, which the Compose test APIs report by throwing
+ * instead of finding no nodes.
+ */
+private fun ComposeTestRule.awaitScreenWith(matcher: SemanticsMatcher) {
+    waitUntil(DEFAULT_TIMEOUT) {
+        try {
+            onAllNodes(matcher).fetchSemanticsNodes().isNotEmpty()
+        } catch (_: IllegalStateException) {
+            false
+        }
+    }
+}
+
+fun ComposeTestRule.saveWidgetChanges() {
+    onNodeWithText(string(R.string.photo_widget_configure_save_changes)).performClick()
+    waitUntilDoesNotExist(hasText(string(R.string.photo_widget_configure_save_changes)), DEFAULT_TIMEOUT)
+}
+
 fun loadWidget(widgetId: Int): PhotoWidget = runBlocking {
     entryPoint.loadPhotoWidgetUseCase().invoke(widgetId).last()
+}
+
+/**
+ * Returns the time the interval alarm of [widgetId] is set to trigger at, or -1 if none was set.
+ */
+fun widgetNextCycleTime(widgetId: Int): Long {
+    return entryPoint.photoWidgetStorage().getWidgetNextCycleTime(appWidgetId = widgetId)
 }
