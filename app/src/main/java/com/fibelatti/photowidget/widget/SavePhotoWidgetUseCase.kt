@@ -16,7 +16,6 @@ import com.fibelatti.photowidget.model.coerceText
 import com.fibelatti.photowidget.model.photoCycleEnabled
 import com.fibelatti.photowidget.widget.data.PhotoWidgetStorage
 import javax.inject.Inject
-import kotlin.reflect.KClass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -256,10 +255,8 @@ class SavePhotoWidgetUseCase @Inject constructor(
             sorting = photoWidget.directorySorting,
         )
 
-        val currentCycleMode: KClass<out PhotoWidgetCycleMode> = photoWidgetStorage.getWidgetCycleModeType(
-            appWidgetId = appWidgetId,
-        )
-        if (photoWidget.cycleMode::class != currentCycleMode) {
+        val currentCycleMode: PhotoWidgetCycleMode = photoWidgetStorage.getWidgetCycleMode(appWidgetId = appWidgetId)
+        if (photoWidget.cycleMode != currentCycleMode) {
             photoWidgetStorage.saveWidgetNextCycleTime(appWidgetId = appWidgetId, nextCycleTime = null)
         }
 

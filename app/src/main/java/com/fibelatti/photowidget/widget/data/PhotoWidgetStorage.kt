@@ -26,7 +26,6 @@ import java.io.File
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.reflect.KClass
 import kotlin.time.Duration.Companion.days
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
@@ -712,10 +711,6 @@ class PhotoWidgetStorage @Inject constructor(
         } else {
             deleteAdvancedScheduleTimes(appWidgetId = appWidgetId)
         }
-    }
-
-    fun getWidgetCycleModeType(appWidgetId: Int): KClass<out PhotoWidgetCycleMode> {
-        return sharedPreferences.getWidgetCycleMode(appWidgetId = appWidgetId)::class
     }
 
     suspend fun getWidgetCycleMode(appWidgetId: Int): PhotoWidgetCycleMode {
