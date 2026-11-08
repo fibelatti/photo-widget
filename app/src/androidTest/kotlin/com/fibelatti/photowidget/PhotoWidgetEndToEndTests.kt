@@ -100,6 +100,9 @@ class PhotoWidgetEndToEndTests {
 
         // Act
         with(composeRule) {
+            // The configure screen finishes once the widget is pinned, and the home screen is only
+            // found by the test after it resumes.
+            waitUntilAtLeastOneExists(hasText(string(R.string.photo_widget_home_current)), DEFAULT_TIMEOUT)
             onNodeWithText(string(R.string.photo_widget_home_current)).performClick()
             waitUntil(DEFAULT_TIMEOUT) {
                 runCatching { onNode(hasScrollToNodeAction()).performScrollToNode(hasTestTag(widgetTag)) }.isSuccess
