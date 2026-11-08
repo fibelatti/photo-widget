@@ -7,14 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.49.0] - 2026-11-08
+[v1.49.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.49.0
+
 ### Added
 
 * Support for user provided custom fonts
 * Show the current file name as a widget label (folder widgets)
 
+### Changed
+
+* Improve performance when browsing and editing photos
+
 ### Fixed
 
 * Widget text handling of RTL languages
+* Fix interval changes not applying until the next scheduled photo change
 
 ## [v1.48.1] - 2026-10-24
 [v1.48.1]: https://github.com/fibelatti/photo-widget/releases/tag/v1.48.1

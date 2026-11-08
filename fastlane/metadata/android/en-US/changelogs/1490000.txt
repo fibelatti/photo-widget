@@ -1,0 +1,8 @@
+This version brings the following updates:
+
+* Widget labels can now use fonts provided by you
+* Folder widgets can now show the current file name as the label
+* Fix widget labels in right-to-left languages
+* Fix interval changes not applying until the next photo change
+
+Thanks for using the app!
