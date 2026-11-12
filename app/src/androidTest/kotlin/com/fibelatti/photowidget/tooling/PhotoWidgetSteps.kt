@@ -6,9 +6,13 @@ import android.appwidget.AppWidgetManager
 import android.content.ClipData
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assertIsOn
+import androidx.compose.ui.test.hasParent
 import androidx.compose.ui.test.hasScrollToNodeAction
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isToggleable
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -28,6 +32,7 @@ import com.fibelatti.photowidget.di.PhotoWidgetEntryPoint
 import com.fibelatti.photowidget.di.entryPoint
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.platform.isBackgroundRestricted
+import com.fibelatti.photowidget.widget.TapActionPendingIntentFactory
 import java.util.regex.Pattern
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.runBlocking
@@ -46,6 +51,35 @@ fun loadWidget(widgetId: Int): PhotoWidget = runBlocking {
  */
 fun widgetNextCycleTime(widgetId: Int): Long {
     return entryPoint.photoWidgetStorage().getWidgetNextCycleTime(appWidgetId = widgetId)
+}
+
+/**
+ * Returns the ID of the photo [widgetId] is displaying, or null if none was saved.
+ */
+fun currentPhotoId(widgetId: Int): String? = runBlocking {
+    entryPoint.photoWidgetStorage().getCurrentPhotoId(appWidgetId = widgetId)
+}
+
+/**
+ * Shows the next photo of [widgetId] and returns its ID once the widget has saved it.
+ *
+ * Sends the same broadcast as the right tap area, because the widget can't be told apart from the
+ * ones left on the launcher by earlier runs.
+ */
+fun ComposeTestRule.viewNextPhoto(widgetId: Int): String {
+    val previousPhotoId: String? = currentPhotoId(widgetId = widgetId)
+    var photoId: String? = previousPhotoId
+
+    TapActionPendingIntentFactory.getChangePhotoPendingIntent(context = targetContext, appWidgetId = widgetId)
+        .send()
+
+    waitUntil(DEFAULT_TIMEOUT) {
+        photoId = currentPhotoId(widgetId = widgetId)
+
+        photoId != null && photoId != previousPhotoId
+    }
+
+    return requireNotNull(photoId)
 }
 
 fun stubPhotoPicker(vararg photos: Uri) {
@@ -91,6 +125,17 @@ fun ComposeTestRule.setCornerRadius(value: Int) {
 
     clickNodeWithText(R.string.photo_widget_action_apply)
     waitUntilTextExists("$value")
+}
+
+fun ComposeTestRule.enableShuffle() {
+    val shuffle: String = string(R.string.widget_defaults_shuffle)
+    val shuffleSwitch: SemanticsMatcher = isToggleable() and hasParent(hasText(shuffle))
+
+    clickNodeWithText(R.string.photo_widget_configure_tab_behavior)
+    waitUntilTextExists(shuffle)
+
+    onNode(shuffleSwitch).performClick()
+    onNode(shuffleSwitch).assertIsOn()
 }
 
 fun ComposeTestRule.setIntervalInDays(days: Int) {

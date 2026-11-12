@@ -24,6 +24,8 @@ import com.fibelatti.photowidget.tooling.awaitPinnedWidgetId
 import com.fibelatti.photowidget.tooling.clickNodeWithText
 import com.fibelatti.photowidget.tooling.confirmCrop
 import com.fibelatti.photowidget.tooling.confirmLauncherPinDialog
+import com.fibelatti.photowidget.tooling.currentPhotoId
+import com.fibelatti.photowidget.tooling.enableShuffle
 import com.fibelatti.photowidget.tooling.loadWidget
 import com.fibelatti.photowidget.tooling.openWidgetForEditing
 import com.fibelatti.photowidget.tooling.saveWidgetChanges
@@ -33,11 +35,11 @@ import com.fibelatti.photowidget.tooling.setIntervalInDays
 import com.fibelatti.photowidget.tooling.string
 import com.fibelatti.photowidget.tooling.stubPhotoPicker
 import com.fibelatti.photowidget.tooling.targetContext
+import com.fibelatti.photowidget.tooling.viewNextPhoto
 import com.fibelatti.photowidget.tooling.waitUntilContentDescriptionExists
 import com.fibelatti.photowidget.tooling.waitUntilTextExists
 import com.fibelatti.photowidget.tooling.widgetIds
 import com.fibelatti.photowidget.tooling.widgetNextCycleTime
-import com.fibelatti.photowidget.widget.TapActionPendingIntentFactory
 import com.google.common.collect.Range
 import com.google.common.truth.Truth.assertThat
 import java.util.concurrent.TimeUnit
@@ -167,10 +169,7 @@ class PhotoWidgetEndToEndTests {
         // Act
         val tapStart: Long = System.currentTimeMillis()
 
-        // Sends the same broadcast as the right tap area, because the widget can't be told apart from
-        // the ones left on the launcher by earlier runs.
-        TapActionPendingIntentFactory.getChangePhotoPendingIntent(context = targetContext, appWidgetId = widgetId)
-            .send()
+        composeRule.viewNextPhoto(widgetId)
         val rescheduledAlarm: Long = composeRule.awaitAlarm(widgetId = widgetId, previous = initialAlarm)
         val tapEnd: Long = System.currentTimeMillis()
 
@@ -179,6 +178,45 @@ class PhotoWidgetEndToEndTests {
 
         assertThat(rescheduledAlarm).isIn(Range.closed(tapStart + intervalMillis, tapEnd + intervalMillis))
         assertThat(scheduledAlarms()).doesNotContain(initialAlarm)
+    }
+
+    @Test
+    fun viewingTheNextPhotoShowsEveryPhotoBeforeStartingOver() {
+        // Arrange
+        launchHomeActivity()
+
+        val widgetId: Int = createSlideshowWidget()
+        val widgetPhotoIds: List<String> = loadWidget(widgetId = widgetId).photos.map { it.photoId }
+        val firstPhotoId: String = requireNotNull(currentPhotoId(widgetId = widgetId))
+
+        // Act
+        val shownPhotoIds: List<String> = listOf(firstPhotoId) +
+            List(size = SLIDESHOW_PHOTO_COUNT - 1) { composeRule.viewNextPhoto(widgetId = widgetId) }
+        val photoIdAfterAllShown: String = composeRule.viewNextPhoto(widgetId = widgetId)
+
+        // Assert
+        assertThat(shownPhotoIds).containsExactlyElementsIn(widgetPhotoIds).inOrder()
+        assertThat(photoIdAfterAllShown).isEqualTo(firstPhotoId)
+    }
+
+    @Test
+    fun viewingTheNextPhotoWithShuffleShowsEveryPhotoBeforeRepeating() {
+        // Arrange
+        launchHomeActivity()
+
+        val widgetId: Int = createSlideshowWidget(shuffle = true)
+        val widget: PhotoWidget = loadWidget(widgetId = widgetId)
+        val widgetPhotoIds: List<String> = widget.photos.map { it.photoId }
+        val firstPhotoId: String = requireNotNull(currentPhotoId(widgetId = widgetId))
+
+        assertThat(widget.shuffle).isTrue()
+
+        // Act
+        val shownPhotoIds: List<String> = listOf(firstPhotoId) +
+            List(size = SLIDESHOW_PHOTO_COUNT - 1) { composeRule.viewNextPhoto(widgetId = widgetId) }
+
+        // Assert
+        assertThat(shownPhotoIds).containsExactlyElementsIn(widgetPhotoIds)
     }
 
     @Test
@@ -220,7 +258,7 @@ class PhotoWidgetEndToEndTests {
     /**
      * Creates a widget from [SLIDESHOW_PHOTO_COUNT] picked photos and adds it to the home screen.
      */
-    private fun createSlideshowWidget(): Int {
+    private fun createSlideshowWidget(shuffle: Boolean = false): Int {
         val existingWidgetIds: List<Int> = widgetIds()
 
         stubPhotoPicker(*Array(size = SLIDESHOW_PHOTO_COUNT) { testPhotos.insert() })
@@ -232,6 +270,11 @@ class PhotoWidgetEndToEndTests {
             clickNodeWithText(R.string.photo_widget_configure_pick_photo)
 
             waitUntilContentDescriptionExists(string(R.string.photo_widget_configure_menu_crop))
+
+            if (shuffle) {
+                enableShuffle()
+            }
+
             clickNodeWithText(R.string.photo_widget_configure_add_to_home)
 
             confirmLauncherPinDialog()
