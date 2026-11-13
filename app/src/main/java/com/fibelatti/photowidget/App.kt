@@ -12,6 +12,7 @@ import androidx.work.Configuration
 import com.fibelatti.photowidget.platform.ConfigurationChangedReceiver
 import com.fibelatti.photowidget.platform.ExceptionReporter
 import com.fibelatti.photowidget.platform.FileLoggingTree
+import com.fibelatti.photowidget.platform.skipReporting
 import com.fibelatti.photowidget.preferences.Appearance
 import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import com.fibelatti.photowidget.widget.DeleteStaleDataUseCase
@@ -21,7 +22,6 @@ import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
 import dagger.Lazy
 import dagger.hilt.android.HiltAndroidApp
-import java.util.concurrent.TimeoutException
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -87,7 +87,7 @@ class App : Application(), Configuration.Provider {
             // dies with the process. Guarded so a failure here still lets the crash through.
             runCatching {
                 Timber.e(throwable, "Uncaught exception")
-                if (!throwable.isAbandonedJobCleanupTimeout()) {
+                if (!throwable.skipReporting()) {
                     exceptionReporter.collectReportBlocking(throwable = throwable)
                 }
                 fileLoggingTree.flushPendingEntries()
@@ -95,19 +95,6 @@ class App : Application(), Configuration.Provider {
 
             defaultHandler?.uncaughtException(thread, throwable)
         }
-    }
-
-    /**
-     * Whether this is the finalizer watchdog killing the process because `JobScheduler` did not
-     * answer the abandoned-job check within its timeout.
-     *
-     * The platform runs that check when the parameters of a stopped job are garbage collected, and
-     * `WorkManager` drops them on stop as the `JobService` contract allows. The blocking call only
-     * times out when the system itself is unresponsive, typically while the device shuts down.
-     */
-    private fun Throwable.isAbandonedJobCleanupTimeout(): Boolean {
-        return this is TimeoutException &&
-            stackTrace.any { it.className == $$"android.app.job.JobParameters$JobCleanupCallback" }
     }
 
     @OptIn(ExperimentalComposeApi::class)
