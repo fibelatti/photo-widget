@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+* Fix lingering references to deleted photos which could cause widget errors
+
 ## [v1.49.0] - 2026-11-08
 [v1.49.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.49.0
 

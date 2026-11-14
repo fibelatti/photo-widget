@@ -237,30 +237,119 @@ class PhotoWidgetStorage @Inject constructor(
      * Resolves the photo [appWidgetId] is currently displaying, reading only that photo from the
      * local photo cache. Returns null when the cache has no photos to show, without reading the
      * widget source.
+     *
+     * A photo whose files are no longer on disk is repaired or dropped before it is returned, see
+     * [ensurePhotoFiles]. A dropped photo is tentatively replaced by the one after it.
      */
     suspend fun getCachedCurrentWidgetPhoto(appWidgetId: Int): LocalPhoto? {
         Timber.i("Retrieving current photo %s", mapOf("appWidgetId" to appWidgetId))
 
         val source: PhotoWidgetSource = getWidgetSource(appWidgetId = appWidgetId)
         val excludedPhotos: Set<String> = getExcludedPhotoIds(appWidgetId = appWidgetId)
+
+        // Each dropped photo is removed from the cache, ending the loop once a photo is available or none is left
+        while (true) {
+            val localPhoto: LocalPhotoDto = resolveCachedCurrentPhoto(
+                appWidgetId = appWidgetId,
+                excludedPhotos = excludedPhotos,
+            ) ?: return null
+
+            val availablePhoto: LocalPhotoDto = ensurePhotoFiles(
+                appWidgetId = appWidgetId,
+                source = source,
+                localPhoto = localPhoto,
+            ) ?: continue
+
+            return availablePhoto.toLocalPhoto(source = source)
+        }
+    }
+
+    private suspend fun resolveCachedCurrentPhoto(appWidgetId: Int, excludedPhotos: Set<String>): LocalPhotoDto? {
         val currentPhotoId: String? = getCurrentPhotoId(appWidgetId = appWidgetId)
             ?.takeUnless { photoId -> isExcluded(photoId = photoId, excludedPhotos = excludedPhotos) }
 
         val widgetIndex: Int = getWidgetIndex(appWidgetId = appWidgetId)
 
-        val localPhoto: LocalPhotoDto? = currentPhotoId
+        return currentPhotoId
             ?.let { photoId -> localPhotoDao.getLocalPhoto(widgetId = appWidgetId, photoId = photoId) }
             ?: run {
                 val photoId: String? = getSyncedWidgetPhotoIds(
                     appWidgetId = appWidgetId,
                     excludedPhotos = excludedPhotos,
-                )
-                    .resolveCurrentPhoto(currentPhotoId = currentPhotoId, currentIndex = widgetIndex) { it }
+                ).resolveCurrentPhoto(currentPhotoId = currentPhotoId, currentIndex = widgetIndex) { it }
 
-                photoId?.let { localPhotoDao.getLocalPhoto(widgetId = appWidgetId, photoId = it) }
+                photoId?.let { localPhotoDao.getLocalPhoto(widgetId = appWidgetId, photoId = photoId) }
             }
+    }
 
-        return localPhoto?.toLocalPhoto(source = source)
+    /**
+     * Makes sure the cropped photo of [localPhoto] is still on disk, since it is what the widget
+     * displays. When it is missing:
+     *
+     * - [PhotoWidgetSource.DIRECTORY]: the reference to it is cleared, so the photo falls back to
+     * its source file.
+     * - Other sources: it is restored from the original photo, as listing the source does. When that
+     * is missing too, the photo is dropped from the widget and the one after it becomes the current
+     * photo.
+     *
+     * @return the photo to display, or null if it was dropped
+     */
+    private suspend fun ensurePhotoFiles(
+        appWidgetId: Int,
+        source: PhotoWidgetSource,
+        localPhoto: LocalPhotoDto,
+    ): LocalPhotoDto? {
+        val croppedPhotoPath: String = localPhoto.croppedPhotoPath?.ifEmpty { null } ?: return localPhoto
+        if (internalFileStorage.isFile(path = croppedPhotoPath)) return localPhoto
+
+        val logData: Map<String, Any> = mapOf(
+            "appWidgetId" to appWidgetId,
+            "source" to source,
+            "photoId" to localPhoto.photoId,
+        )
+
+        if (source == PhotoWidgetSource.DIRECTORY) {
+            Timber.w("Cropped photo not found, falling back to the source file %s", logData)
+            localPhotoDao.clearCroppedPhotoPath(widgetId = appWidgetId, photoId = localPhoto.photoId)
+            return localPhoto.copy(croppedPhotoPath = null)
+        }
+
+        val originalPhotoPath: String? = localPhoto.originalPhotoPath
+        if (originalPhotoPath != null && internalFileStorage.isFile(path = originalPhotoPath)) {
+            // A failed restore keeps the photo, so the next render tries again
+            if (internalFileStorage.restoreCroppedPhoto(originalPhotoPath, croppedPhotoPath)) {
+                Timber.w("Cropped photo not found, restored from the original photo %s", logData)
+            }
+            return localPhoto
+        }
+
+        // A concurrent crop may have replaced it, so check again
+        if (internalFileStorage.isFile(path = croppedPhotoPath)) return localPhoto
+
+        Timber.w("Photo files not found, removing the photo from the widget %s", logData)
+
+        val nextPhotoId: String? = getAdjacentWidgetPhotoId(
+            appWidgetId = appWidgetId,
+            photoId = localPhoto.photoId,
+            forward = true,
+        )?.takeUnless { it == localPhoto.photoId }
+
+        database.withTransaction {
+            deletePhotoRows(appWidgetId = appWidgetId, photoIds = listOf(localPhoto.photoId))
+            nextPhotoId?.let { saveDisplayedPhoto(appWidgetId = appWidgetId, photoId = it) }
+        }
+
+        return null
+    }
+
+    /**
+     * Removes [photoIds] from the local photo cache, the order and the display history of
+     * [appWidgetId].
+     */
+    private suspend fun deletePhotoRows(appWidgetId: Int, photoIds: Collection<String>) {
+        localPhotoDao.deletePhotosByPhotoIds(widgetId = appWidgetId, photoIds = photoIds)
+        orderDao.deletePhotosByPhotoIds(widgetId = appWidgetId, photoIds = photoIds)
+        displayedPhotoDao.deletePhotosByPhotoIds(widgetId = appWidgetId, photoIds = photoIds)
     }
 
     fun getPersistedUriPermissions(): List<Uri> = externalFileStorage.getPersistedUriPermissions()
@@ -1026,16 +1115,37 @@ class PhotoWidgetStorage @Inject constructor(
             deleteWidgetData(appWidgetId = id)
         }
 
-        val photosToDelete = pendingDeletionPhotosDao.getPhotosToDelete(timestamp = currentTimestamp)
-        for ((widgetId: Int, photoId: String) in photosToDelete) {
+        val photosToDelete: Map<Int, List<String>> = pendingDeletionPhotosDao
+            .getPhotosToDelete(timestamp = currentTimestamp)
+            .groupBy(keySelector = { it.widgetId }, valueTransform = { it.photoId })
+
+        for ((widgetId: Int, photoIds: List<String>) in photosToDelete) {
             val directoryName: String? = widgetDirectoryDao.getDirectoryName(widgetId)
             if (directoryName != null) {
-                internalFileStorage.deleteWidgetPhoto(directoryName = directoryName, photoId = photoId)
+                for (photoId in photoIds) {
+                    internalFileStorage.deleteWidgetPhoto(directoryName = directoryName, photoId = photoId)
+                }
             }
         }
-        pendingDeletionPhotosDao.deletePhotosBeforeTimestamp(timestamp = currentTimestamp)
 
+        // Removed photos are kept in the database until purged (in case they're restored during
+        // the grace period). They're kept out of rotation by their reference in the pending
+        // deletion table. Rows must be deleted all together, otherwise the references would be
+        // added back to the rotation, but their backing files are already gone. Files are removed
+        // first in case this is interrupted, since the table would still reference them as pending
+        // deletion. That table is emptied last since it's the source of truth.
+        database.withTransaction {
+            localPhotoDao.deletePendingDeletionPhotos(timestamp = currentTimestamp)
+            orderDao.deletePendingDeletionPhotos(timestamp = currentTimestamp)
+            displayedPhotoDao.deletePendingDeletionPhotos(timestamp = currentTimestamp)
+            pendingDeletionPhotosDao.deletePhotosBeforeTimestamp(timestamp = currentTimestamp)
+        }
+
+        // Clean up any leftover data from widget configuration that didn't make it to the end
         internalFileStorage.deleteStagedFontsBefore(timestamp = currentTimestamp - STAGED_FONT_THRESHOLD_MILLIS)
+        internalFileStorage.deleteInterruptedWritesBefore(
+            timestamp = currentTimestamp - INTERRUPTED_WRITE_THRESHOLD_MILLIS,
+        )
     }
 
     /**
@@ -1156,6 +1266,12 @@ class PhotoWidgetStorage @Inject constructor(
          * widget that is being configured or placed may still use them.
          */
         private val STAGED_FONT_THRESHOLD_MILLIS: Long = 1.days.inWholeMilliseconds
+
+        /**
+         * Files left behind by a photo import or restore that was interrupted. Kept for a day, so a
+         * write operation still in progress isn't affected.
+         */
+        private val INTERRUPTED_WRITE_THRESHOLD_MILLIS: Long = 1.days.inWholeMilliseconds
 
         private const val LEGACY_DRAFT_WIDGET_ID: Int = 0
 

@@ -143,8 +143,20 @@ interface LocalPhotoDao {
     @Upsert
     suspend fun saveLocalPhotos(photos: Collection<LocalPhotoDto>)
 
+    @Query("update local_widget_photos set croppedPhotoPath = null where widgetId = :widgetId and photoId = :photoId")
+    suspend fun clearCroppedPhotoPath(widgetId: Int, photoId: String)
+
     @Query("delete from local_widget_photos where widgetId = :widgetId and photoId in (:photoIds)")
     suspend fun deletePhotosByPhotoIds(widgetId: Int, photoIds: Collection<String>)
+
+    @Query(
+        "delete from local_widget_photos where exists (" +
+            "select 1 from pending_deletion_widget_photos as pending " +
+            "where pending.widgetId = local_widget_photos.widgetId " +
+            "and pending.photoId = local_widget_photos.photoId " +
+            "and pending.deletionTimestamp <= :timestamp)",
+    )
+    suspend fun deletePendingDeletionPhotos(timestamp: Long)
 
     @Query("delete from local_widget_photos where widgetId = :widgetId")
     suspend fun deletePhotosByWidgetId(widgetId: Int)
@@ -196,6 +208,15 @@ interface DisplayedPhotoDao {
     @Query("delete from displayed_widget_photos where widgetId = :widgetId and photoId in (:photoIds)")
     suspend fun deletePhotosByPhotoIds(widgetId: Int, photoIds: Collection<String>)
 
+    @Query(
+        "delete from displayed_widget_photos where exists (" +
+            "select 1 from pending_deletion_widget_photos as pending " +
+            "where pending.widgetId = displayed_widget_photos.widgetId " +
+            "and pending.photoId = displayed_widget_photos.photoId " +
+            "and pending.deletionTimestamp <= :timestamp)",
+    )
+    suspend fun deletePendingDeletionPhotos(timestamp: Long)
+
     @Query("delete from displayed_widget_photos where widgetId = :widgetId")
     suspend fun deletePhotosByWidgetId(widgetId: Int)
 
@@ -241,6 +262,15 @@ interface PhotoWidgetOrderDao {
 
     @Query("delete from photo_widget_order where widgetId = :widgetId and photoId in (:photoIds)")
     suspend fun deletePhotosByPhotoIds(widgetId: Int, photoIds: Collection<String>)
+
+    @Query(
+        "delete from photo_widget_order where exists (" +
+            "select 1 from pending_deletion_widget_photos as pending " +
+            "where pending.widgetId = photo_widget_order.widgetId " +
+            "and pending.photoId = photo_widget_order.photoId " +
+            "and pending.deletionTimestamp <= :timestamp)",
+    )
+    suspend fun deletePendingDeletionPhotos(timestamp: Long)
 
     @Query("delete from photo_widget_order where widgetId = :widgetId")
     suspend fun deletePhotosByWidgetId(widgetId: Int)

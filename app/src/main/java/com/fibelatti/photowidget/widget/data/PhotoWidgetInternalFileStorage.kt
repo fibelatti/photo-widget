@@ -34,6 +34,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import pl.droidsonroids.gif.GifDrawable
 import timber.log.Timber
@@ -65,56 +66,45 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
     suspend fun newWidgetPhoto(directoryName: String, source: Uri): LocalPhoto? {
         return withContext(Dispatchers.IO) {
             runCatching {
-                Timber.d("New widget photo %s", mapOf("source" to source, "directoryName" to directoryName))
+                Timber.d("New widget photo %s", mapOf("directoryName" to directoryName, "source" to source))
 
                 val widgetDir: File = getWidgetDir(directoryName = directoryName)
-                val originalPhotosDir: File = File("$widgetDir/original").apply { mkdirs() }
-
                 val format: ImageFormat = imageFormatDetector.getImageFormat(context = context, imageUri = source)
                 val extension: String = if (format == ImageFormat.JPEG) "jpg" else "png"
                 val newPhotoName = "${UUID.randomUUID()}.$extension"
-
-                val originalPhoto = File("$originalPhotosDir/$newPhotoName")
-                val croppedPhoto = File("$widgetDir/$newPhotoName")
-
-                val newFiles: List<File> = listOf(originalPhoto, croppedPhoto)
                 val dataSaver: Boolean = userPreferencesStorage.dataSaver
 
                 Timber.d("Data saver: $dataSaver")
 
-                if (dataSaver) {
-                    decoder.decode(data = source, maxDimension = 2560)?.let { importedPhoto ->
-                        val compressFormat: Bitmap.CompressFormat = if (format == ImageFormat.JPEG) {
-                            Bitmap.CompressFormat.JPEG
-                        } else {
-                            Bitmap.CompressFormat.PNG
+                newLocalPhoto(widgetDir = widgetDir, photoName = newPhotoName) { files: List<File> ->
+                    if (dataSaver) {
+                        decoder.decode(data = source, maxDimension = 2560)?.let { importedPhoto: Bitmap ->
+                            val compressFormat: Bitmap.CompressFormat = if (format == ImageFormat.JPEG) {
+                                Bitmap.CompressFormat.JPEG
+                            } else {
+                                Bitmap.CompressFormat.PNG
+                            }
+                            coroutineScope {
+                                files.map { file ->
+                                    async {
+                                        file.runWithFileOutputStream { fos ->
+                                            importedPhoto.compress(compressFormat, 95, fos)
+                                        }
+                                    }
+                                }.awaitAll()
+                            }
                         }
-                        newFiles.map { file ->
-                            async {
-                                file.runWithFileOutputStream { fos ->
-                                    importedPhoto.compress(compressFormat, 95, fos)
+                    } else {
+                        coroutineScope {
+                            files.map { file ->
+                                async {
+                                    contentResolver.openInputStream(source)?.use { input ->
+                                        file.runWithFileOutputStream(input::copyTo)
+                                    }
                                 }
-                            }
-                        }.awaitAll()
-                    }
-                } else {
-                    newFiles.map { file ->
-                        async {
-                            contentResolver.openInputStream(source)?.use { input ->
-                                file.runWithFileOutputStream(input::copyTo)
-                            }
+                            }.awaitAll()
                         }
-                    }.awaitAll()
-                }
-
-                return@withContext if (newFiles.all { it.exists() }) {
-                    LocalPhoto(
-                        photoId = newPhotoName,
-                        croppedPhotoPath = croppedPhoto.path,
-                        originalPhotoPath = originalPhoto.path,
-                    )
-                } else {
-                    null
+                    }
                 }
             }.getOrNull()
         }
@@ -122,12 +112,12 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
     suspend fun newWidgetPhotosFromGif(directoryName: String, source: Uri): GifFrames {
         return withContext(Dispatchers.IO) {
+            Timber.d("New widget photos from GIF %s", mapOf("directoryName" to directoryName, "source" to source))
+
+            val widgetDir: File = getWidgetDir(directoryName = directoryName)
+            val photos: MutableList<LocalPhoto> = mutableListOf()
+
             runCatching {
-                Timber.d("New widget photos from GIF %s", mapOf("source" to source, "directoryName" to directoryName))
-
-                val widgetDir = getWidgetDir(directoryName = directoryName)
-                val originalPhotosDir: File = File("$widgetDir/original").apply { mkdirs() }
-
                 val gifDrawable: GifDrawable = contentResolver.openAssetFileDescriptor(source, "r")
                     ?.let(::GifDrawable)
                     ?: return@withContext GifFrames.EMPTY
@@ -136,43 +126,100 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
                 val duration: Long = gifDrawable.duration.toLong()
                 Timber.d("GIF has $frameCount frames, over $duration milliseconds")
 
-                val photos = mutableListOf<LocalPhoto>()
-
                 for (i in 0 until frameCount) {
                     val frameBitmap = gifDrawable.seekToFrameAndGet(i)
                     val newPhotoName = "${UUID.randomUUID()}.png"
 
-                    val originalPhoto = File("$originalPhotosDir/$newPhotoName")
-                    val croppedPhoto = File("$widgetDir/$newPhotoName")
-
-                    listOf(originalPhoto, croppedPhoto).forEach { file ->
-                        file.runWithFileOutputStream { fos ->
-                            frameBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                    val photo: LocalPhoto? = newLocalPhoto(widgetDir = widgetDir, photoName = newPhotoName) { files ->
+                        files.forEach { file ->
+                            file.runWithFileOutputStream { fos ->
+                                frameBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                            }
                         }
                     }
 
-                    if (originalPhoto.exists() && croppedPhoto.exists()) {
-                        photos.add(
-                            LocalPhoto(
-                                photoId = newPhotoName,
-                                croppedPhotoPath = croppedPhoto.path,
-                                originalPhotoPath = originalPhoto.path,
-                            ),
-                        )
+                    if (photo != null) {
+                        photos.add(photo)
                     }
                 }
 
                 gifDrawable.recycle()
 
-                return@withContext GifFrames(
+                GifFrames(
                     frames = photos,
                     interval = (duration / frameCount).coerceIn(GifFrames.MIN_INTERVAL_MS, GifFrames.MAX_INTERVAL_MS),
                 )
             }.getOrElse { throwable ->
                 Timber.e(throwable, "Failed to extract GIF frames")
+
+                for ((photoId: String) in photos) {
+                    File(getOriginalPhotosDir(widgetDir), photoId).delete()
+                    File(widgetDir, photoId).delete()
+                }
+
                 GifFrames.EMPTY
             }
         }
+    }
+
+    /**
+     * Creates the backing files for a photo named [photoName] under [widgetDir], with [write]
+     * writing its original and cropped photos. Both are written to temporary files and only moved
+     * into their final destination once both are complete. A failed or interrupted operation
+     * leaves no corrupted data behind.
+     *
+     * @return the new [photo][LocalPhoto], or null if [write] couldn't complete
+     */
+    private suspend fun newLocalPhoto(
+        widgetDir: File,
+        photoName: String,
+        write: suspend (files: List<File>) -> Unit,
+    ): LocalPhoto? {
+        val originalPhotosDir: File = getOriginalPhotosDir(widgetDir).apply { mkdirs() }
+        val originalPhoto = File(originalPhotosDir, photoName)
+        val croppedPhoto = File(widgetDir, photoName)
+
+        val tempOriginalPhoto: File = newInProgressFile(directory = widgetDir)
+        val tempCroppedPhoto: File = newInProgressFile(directory = widgetDir)
+
+        try {
+            write(listOf(tempOriginalPhoto, tempCroppedPhoto))
+
+            if (tempOriginalPhoto.length() == 0L || tempCroppedPhoto.length() == 0L) return null
+
+            // The cropped photo is moved first since without its original it is not listed or restored
+            check(tempCroppedPhoto.renameTo(croppedPhoto)) { "Failed to rename ${tempCroppedPhoto.name}" }
+            if (!tempOriginalPhoto.renameTo(originalPhoto)) {
+                croppedPhoto.delete()
+                error("Failed to rename ${tempOriginalPhoto.name}")
+            }
+
+            return LocalPhoto(
+                photoId = photoName,
+                croppedPhotoPath = croppedPhoto.path,
+                originalPhotoPath = originalPhoto.path,
+            )
+        } finally {
+            tempOriginalPhoto.delete()
+            tempCroppedPhoto.delete()
+        }
+    }
+
+    /**
+     * Creates a temporary file in [directory] for importing or restoring operations.
+     *
+     * Leftover files resulting from an interruption are handled by [deleteInterruptedWritesBefore].
+     */
+    private fun newInProgressFile(directory: File): File {
+        return File.createTempFile(
+            /* prefix = */ IN_PROGRESS_PREFIX,
+            /* suffix = */ TMP_SUFFIX,
+            /* directory = */ directory,
+        )
+    }
+
+    private fun isInProgressFile(name: String): Boolean {
+        return name.startsWith(IN_PROGRESS_PREFIX) && name.endsWith(TMP_SUFFIX)
     }
 
     suspend fun getCropSources(
@@ -185,14 +232,14 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         return@withContext if (localPhoto.externalUri != null) {
             localPhoto.externalUri to Uri.fromFile(croppedPhoto)
         } else {
-            val originalPhotosDir = File("$widgetDir/original")
-            val originalPhoto = File("$originalPhotosDir/${localPhoto.photoId}").apply { mkdirs() }
+            val originalPhotosDir = getOriginalPhotosDir(widgetDir).apply { mkdirs() }
+            val originalPhoto = File("$originalPhotosDir/${localPhoto.photoId}")
 
             if (!originalPhoto.exists()) {
                 originalPhoto.createNewFile()
 
                 FileInputStream(croppedPhoto).use { fileInputStream ->
-                    fileInputStream.copyTo(FileOutputStream(originalPhoto))
+                    FileOutputStream(originalPhoto).use(fileInputStream::copyTo)
                 }
             }
 
@@ -209,10 +256,72 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }.isSuccess
     }
 
+    suspend fun isFile(path: String): Boolean = withContext(Dispatchers.IO) {
+        File(path).isFile
+    }
+
+    /**
+     * Recreates the cropped photo at [croppedPhotoPath] as a copy of the original photo, as if it
+     * has been just imported. The copy is written to a file of its own and renamed into place, so
+     * neither an interrupted copy nor a concurrent restore of the same photo leaves a truncated
+     * photo behind.
+     *
+     * A photo can be deleted while it is being restored. Whatever deletes photo files must delete
+     * the original before listing or deleting the cropped sibling, and the restore checks the
+     * original again once the copy is in place, removing the copy if the original is gone. Either
+     * the copy is in place before the cropped photos are listed, and is deleted with them, or the
+     * original is already gone when it is checked again.
+     *
+     * @return true if the cropped photo was restored
+     */
+    suspend fun restoreCroppedPhoto(originalPhotoPath: String, croppedPhotoPath: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            restoreCroppedPhoto(originalPhoto = File(originalPhotoPath), croppedPhoto = File(croppedPhotoPath))
+        }
+    }
+
+    private fun restoreCroppedPhoto(originalPhoto: File, croppedPhoto: File): Boolean {
+        val restored: Boolean = runCatching {
+            val tempFile: File = newInProgressFile(directory = checkNotNull(croppedPhoto.parentFile))
+
+            runCatching {
+                originalPhoto.copyTo(target = tempFile, overwrite = true)
+                check(tempFile.renameTo(croppedPhoto)) {
+                    "Failed to rename ${tempFile.name} when restoring"
+                }
+            }.onFailure { tempFile.delete() }.getOrThrow()
+        }.onFailure {
+            Timber.e(it, "Failed to restore the cropped photo")
+        }.isSuccess
+
+        if (!restored) return false
+        if (originalPhoto.exists()) return true
+
+        Timber.d("Photo deleted while restoring its cropped photo %s", croppedPhoto.name)
+        croppedPhoto.delete()
+
+        return false
+    }
+
+    /**
+     * Deletes the files left in the widget directories by import and restore attempts that were
+     * interrupted before moving them into place, see [newInProgressFile], last modified before
+     * [timestamp].
+     */
+    suspend fun deleteInterruptedWritesBefore(timestamp: Long) {
+        withContext(Dispatchers.IO) {
+            for (widgetDir in rootDir.listFiles().orEmpty()) {
+                widgetDir.listFiles().orEmpty()
+                    .filter { file -> isInProgressFile(name = file.name) && file.lastModified() < timestamp }
+                    .forEach { it.delete() }
+            }
+        }
+    }
+
     suspend fun deleteWidgetPhoto(directoryName: String, photoId: String) {
         withContext(Dispatchers.IO) {
             val widgetDir = getWidgetDir(directoryName = directoryName)
-            val originalPhotosDir = File("$widgetDir/original")
+            val originalPhotosDir = getOriginalPhotosDir(widgetDir)
 
             with(File("$originalPhotosDir/$photoId")) {
                 if (exists()) delete()
@@ -231,7 +340,8 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         withContext(Dispatchers.IO) {
             val deleteOp: suspend () -> Boolean = {
                 val widgetDir: File = getWidgetDir(directoryName)
-                val widgetDirDeleted: Boolean = if (keepFonts) {
+                val originalPhotosDeleted: Boolean = getOriginalPhotosDir(widgetDir).deleteRecursively()
+                val widgetDirDeleted: Boolean = originalPhotosDeleted && if (keepFonts) {
                     widgetDir.listFiles().orEmpty()
                         .filterNot { it.name == FONTS_DIR_NAME }
                         .all { it.deleteRecursively() }
@@ -254,15 +364,20 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         source: PhotoWidgetSource,
     ): List<LocalPhoto> {
         return withContext(Dispatchers.IO) {
-            val widgetDir = getWidgetDir(directoryName = directoryName)
-            val originalPhotosDir = File("$widgetDir/original")
-            val originalPhotoNames = originalPhotosDir.list().orEmpty().toSet()
+            val widgetDir: File = getWidgetDir(directoryName = directoryName)
+            val originalPhotosDir: File = getOriginalPhotosDir(widgetDir)
+            val originalPhotoNames: Set<String> = originalPhotosDir.list().orEmpty().toSet()
 
-            // Decides what's listed: for photo widgets everything from the "original" dir, except the dir itself;
-            // or everything for directory widget since their original comes from user storage, except the fonts dir
+            if (source != PhotoWidgetSource.DIRECTORY) {
+                restoreMissingCroppedPhotos(
+                    widgetDir = widgetDir,
+                    originalPhotosDir = originalPhotosDir,
+                    originalPhotoNames = originalPhotoNames,
+                )
+            }
+
             val fileNameFilter = FilenameFilter { _, name ->
-                name != "original" &&
-                    name != FONTS_DIR_NAME &&
+                name != ORIGINAL_DIR_NAME && name != FONTS_DIR_NAME && !isInProgressFile(name = name) &&
                     (name in originalPhotoNames || source == PhotoWidgetSource.DIRECTORY)
             }
 
@@ -288,6 +403,24 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
                         },
                     )
                 }
+        }
+    }
+
+    /**
+     * Restores the cropped photos missing from [widgetDir] from their originals, so a photo that
+     * lost only its cropped file is still listed instead of dropped from the widget.
+     */
+    private fun restoreMissingCroppedPhotos(widgetDir: File, originalPhotosDir: File, originalPhotoNames: Set<String>) {
+        val missingPhotoNames: Set<String> = originalPhotoNames - widgetDir.list().orEmpty().toSet()
+
+        for (photoName in missingPhotoNames) {
+            val croppedPhoto = File(widgetDir, photoName)
+            val originalPhoto = File(originalPhotosDir, photoName)
+            if (!originalPhoto.isFile) continue
+
+            if (restoreCroppedPhoto(originalPhoto = originalPhoto, croppedPhoto = croppedPhoto)) {
+                Timber.w("Cropped photo not found, restored from the original photo %s", mapOf("photoId" to photoName))
+            }
         }
     }
 
@@ -570,6 +703,8 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         }
     }
 
+    private fun getOriginalPhotosDir(widgetDir: File): File = File(widgetDir, ORIGINAL_DIR_NAME)
+
     private suspend fun getCurrentPhotoDir(directoryName: String): File = withContext(Dispatchers.IO) {
         File("$rootDir/current_photos/$directoryName").apply {
             mkdirs()
@@ -625,8 +760,11 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
 
         private const val WEBP_SUFFIX: String = ".webp"
 
-        // Suffix for the in-progress atomic write; renamed to its `.webp` target once fully encoded.
         private const val TMP_SUFFIX: String = ".tmp"
+
+        private const val IN_PROGRESS_PREFIX: String = "writing"
+
+        private const val ORIGINAL_DIR_NAME: String = "original"
 
         /** The directory, inside the widget directory, that holds its custom font. */
         const val FONTS_DIR_NAME: String = "fonts"
