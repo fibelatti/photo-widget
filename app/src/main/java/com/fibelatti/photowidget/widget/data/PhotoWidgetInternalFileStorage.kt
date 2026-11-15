@@ -35,6 +35,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 import pl.droidsonroids.gif.GifDrawable
 import timber.log.Timber
@@ -122,40 +123,49 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
                     ?.let(::GifDrawable)
                     ?: return@withContext GifFrames.EMPTY
 
-                val frameCount: Int = gifDrawable.numberOfFrames
-                val duration: Long = gifDrawable.duration.toLong()
-                Timber.d("GIF has $frameCount frames, over $duration milliseconds")
+                try {
+                    val frameCount: Int = gifDrawable.numberOfFrames
+                    val duration: Long = gifDrawable.duration.toLong()
+                    Timber.d("GIF has $frameCount frames, over $duration milliseconds")
 
-                for (i in 0 until frameCount) {
-                    val frameBitmap = gifDrawable.seekToFrameAndGet(i)
-                    val newPhotoName = "${UUID.randomUUID()}.png"
+                    for (i in 0 until frameCount) {
+                        val frameBitmap: Bitmap = gifDrawable.seekToFrameAndGet(i)
 
-                    val photo: LocalPhoto? = newLocalPhoto(widgetDir = widgetDir, photoName = newPhotoName) { files ->
-                        files.forEach { file ->
-                            file.runWithFileOutputStream { fos ->
-                                frameBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                        val photo: LocalPhoto? = newLocalPhoto(
+                            widgetDir = widgetDir,
+                            photoName = "${UUID.randomUUID()}.png",
+                        ) { files ->
+                            files.forEach { file ->
+                                file.runWithFileOutputStream { fos ->
+                                    frameBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                                }
                             }
+                        }
+
+                        if (photo != null) {
+                            photos.add(photo)
                         }
                     }
 
-                    if (photo != null) {
-                        photos.add(photo)
-                    }
+                    GifFrames(
+                        frames = photos,
+                        interval = (duration / frameCount).coerceIn(
+                            GifFrames.MIN_INTERVAL_MS,
+                            GifFrames.MAX_INTERVAL_MS,
+                        ),
+                    )
+                } finally {
+                    gifDrawable.recycle()
                 }
-
-                gifDrawable.recycle()
-
-                GifFrames(
-                    frames = photos,
-                    interval = (duration / frameCount).coerceIn(GifFrames.MIN_INTERVAL_MS, GifFrames.MAX_INTERVAL_MS),
-                )
             }.getOrElse { throwable ->
-                Timber.e(throwable, "Failed to extract GIF frames")
-
                 for ((photoId: String) in photos) {
                     File(getOriginalPhotosDir(widgetDir), photoId).delete()
                     File(widgetDir, photoId).delete()
                 }
+
+                ensureActive()
+
+                Timber.e(throwable, "Failed to extract GIF frames")
 
                 GifFrames.EMPTY
             }
