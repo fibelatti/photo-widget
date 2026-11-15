@@ -152,9 +152,9 @@ fun MyWidgetsScreen(
             } else {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxSize()
                         .padding(start = 32.dp, top = 120.dp, end = 32.dp),
-                    verticalArrangement = Arrangement.spacedBy(32.dp),
+                    verticalArrangement = Arrangement.spacedBy(32.dp, alignment = Alignment.CenterVertically),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     ColoredShape(
