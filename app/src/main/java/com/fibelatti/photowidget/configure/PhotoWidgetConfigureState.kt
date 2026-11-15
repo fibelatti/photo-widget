@@ -7,6 +7,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.SyncDir
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -20,8 +21,11 @@ data class PhotoWidgetConfigureState(
     val hasEdits: Boolean = false,
     val isDraft: Boolean = false,
     val widgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,
-    val isImportAvailable: Boolean = false,
+    val knownWidgets: Map<Int, PhotoWidgetSource> = emptyMap(),
 ) {
+
+    val isImportAvailable: Boolean
+        get() = knownWidgets.any { (id, source) -> id != widgetId && source == photoWidget.source }
 
     sealed class Message {
 

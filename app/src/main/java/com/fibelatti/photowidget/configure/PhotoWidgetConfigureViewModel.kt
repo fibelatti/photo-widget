@@ -104,12 +104,12 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 Timber.d("Assigned draft ID: $effectiveWidgetId")
             }
 
-            // Importing a widget into itself copies its directory onto itself, deleting its photos.
-            val knownWidgetIds: List<Int> = photoWidgetStorage.getKnownWidgetIds().first()
+            val knownWidgets: Map<Int, PhotoWidgetSource> = photoWidgetStorage.getKnownWidgetIds().first()
+                .associateWith { photoWidgetStorage.getWidgetSource(it) }
             _state.update { current ->
                 current.copy(
                     widgetId = effectiveWidgetId,
-                    isImportAvailable = knownWidgetIds.any { it != effectiveWidgetId },
+                    knownWidgets = knownWidgets,
                 )
             }
 

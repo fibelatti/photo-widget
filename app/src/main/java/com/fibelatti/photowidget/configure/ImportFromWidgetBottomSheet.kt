@@ -36,6 +36,7 @@ import com.fibelatti.photowidget.home.HomeViewModel
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetLoadStage
+import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.model.isWidgetRemoved
 import com.fibelatti.photowidget.platform.letIf
@@ -51,6 +52,7 @@ import com.fibelatti.ui.icons.TrashClock
 fun ImportFromWidgetBottomSheet(
     sheetState: AppSheetState,
     excludedWidgetId: Int,
+    source: PhotoWidgetSource,
     onWidgetSelect: (appWidgetId: Int) -> Unit,
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
@@ -66,8 +68,8 @@ fun ImportFromWidgetBottomSheet(
         }
 
         ImportFromWidgetContent(
-            currentWidgets = remember(currentWidgets, excludedWidgetId) {
-                currentWidgets.filter { (id, _) -> id != excludedWidgetId }
+            currentWidgets = remember(currentWidgets, excludedWidgetId, source) {
+                currentWidgets.filter { (id, widget) -> id != excludedWidgetId && widget.source == source }
             },
             onWidgetSelect = { id ->
                 onWidgetSelect(id)

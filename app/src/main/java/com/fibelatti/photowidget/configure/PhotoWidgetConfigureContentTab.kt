@@ -162,6 +162,7 @@ fun PhotoWidgetConfigureContentTab(
     ImportFromWidgetBottomSheet(
         sheetState = importFromWidgetSheetState,
         excludedWidgetId = state.widgetId,
+        source = state.photoWidget.source,
         onWidgetSelect = viewModel::importFromWidget,
     )
 
