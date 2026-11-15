@@ -107,7 +107,7 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
                         }
                     }
                 }
-            }.getOrNull()
+            }.onFailure { ensureActive() }.getOrNull()
         }
     }
 
@@ -592,7 +592,10 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
             }
 
             PhotoWidgetTextFont.Custom(fileName = fileName, path = fontFile.path)
-        }.onFailure { Timber.e(it, "Failed to import the font") }.getOrNull()
+        }.onFailure {
+            ensureActive()
+            Timber.e(it, "Failed to import the font")
+        }.getOrNull()
     }
 
     /**

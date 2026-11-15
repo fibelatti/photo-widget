@@ -42,6 +42,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -191,6 +193,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 Timber.d("Restoring widget from backup %s", mapOf("backupWidget" to backupWidget))
                 runCatching { restoreWidgetUseCase(originalWidget = backupWidget, newAppWidgetId = effectiveWidgetId) }
                     .onFailure {
+                        currentCoroutineContext().ensureActive()
                         Timber.e(it, "Failed to restore widget from backup.")
                         _state += PhotoWidgetConfigureState.Message.UserPrompt(
                             textRes = R.string.backup_feedback_restore_error,

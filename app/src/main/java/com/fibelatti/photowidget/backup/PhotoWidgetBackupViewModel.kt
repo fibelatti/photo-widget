@@ -14,6 +14,7 @@ import java.io.File
 import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -45,21 +46,27 @@ class PhotoWidgetBackupViewModel @Inject constructor(
         val preparedBackupFile: File = state.preparedBackupFile ?: return
 
         viewModelScope.launch {
-            val message: State.Message = runCatching {
-                withContext(Dispatchers.IO) {
-                    context.contentResolver.openOutputStream(destinationUri)?.use { outputStream ->
-                        preparedBackupFile.inputStream().buffered().use { bufferedInputStream ->
-                            bufferedInputStream.copyTo(outputStream)
+            try {
+                val message: State.Message = runCatching {
+                    withContext(Dispatchers.IO) {
+                        context.contentResolver.openOutputStream(destinationUri)?.use { outputStream ->
+                            preparedBackupFile.inputStream().buffered().use { bufferedInputStream ->
+                                bufferedInputStream.copyTo(outputStream)
+                            }
                         }
                     }
-                }
-            }.fold(
-                onSuccess = { State.Message.BackupExportedSuccessfully },
-                onFailure = { State.Message.BackupFailed },
-            )
+                }.fold(
+                    onSuccess = { State.Message.BackupExportedSuccessfully },
+                    onFailure = {
+                        ensureActive()
+                        State.Message.BackupFailed
+                    },
+                )
 
-            state = state.copy(messages = state.messages + message)
-            deletePreparedBackup()
+                state = state.copy(messages = state.messages + message)
+            } finally {
+                deletePreparedBackup()
+            }
         }
     }
 

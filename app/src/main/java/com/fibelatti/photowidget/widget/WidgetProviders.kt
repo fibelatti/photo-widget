@@ -36,6 +36,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -215,7 +216,10 @@ class DefaultWidgetProviders @Inject constructor(
             preparedCurrentPhoto.pendingWrite?.let { write ->
                 launch(Dispatchers.IO) {
                     runCatching { write() }
-                        .onFailure { Timber.w(it, "Deferred widget photo write failed") }
+                        .onFailure {
+                            ensureActive()
+                            Timber.w(it, "Deferred widget photo write failed")
+                        }
                 }
             }
 

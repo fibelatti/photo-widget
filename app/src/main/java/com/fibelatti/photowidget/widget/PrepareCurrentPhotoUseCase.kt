@@ -25,6 +25,7 @@ import com.fibelatti.photowidget.widget.data.PhotoWidgetExternalFileStorage
 import com.fibelatti.photowidget.widget.data.PhotoWidgetInternalFileStorage
 import com.fibelatti.photowidget.widget.data.WidgetDirectoryDao
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
 import timber.log.Timber
 
 class PrepareCurrentPhotoUseCase @Inject constructor(
@@ -98,6 +99,8 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                     version = photoVersion,
                 ),
             )
+        } catch (cancellation: CancellationException) {
+            throw cancellation
         } catch (_: Exception) {
             return null
         }
