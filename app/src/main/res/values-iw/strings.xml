@@ -51,6 +51,7 @@
     <string name="photo_widget_home_crash_report_choose_title">שלח דוא\"ל</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">עדיין לא הוספת ווידג\'טים.\nווידג\'טים שתוסיף למסך הבית שלך יופיעו כאן.</string>
+    <string name="photo_widget_home_create_widget">צור ווידג\'ט</string>
     <string name="photo_widget_home_filter_all">הכל</string>
     <string name="photo_widget_home_transparent_label">שקוף</string>
     <string name="photo_widget_home_highlight_transparent_title">הצגת ווידג\'טים שקופים</string>

@@ -71,6 +71,7 @@ import com.fibelatti.photowidget.help.HelpBottomSheet
 import com.fibelatti.photowidget.licenses.OssLicensesScreen
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.PhotoWidgetStatus
 import com.fibelatti.photowidget.model.canLock
 import com.fibelatti.photowidget.model.canSync
@@ -100,7 +101,7 @@ fun HomeScreenNavDisplay(
     homeViewModel: HomeViewModel,
     preparedIntent: Intent?,
     onIntentConsume: () -> Unit,
-    onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
+    onCreateNewWidgetClick: (PhotoWidgetAspectRatio, PhotoWidgetSource?) -> Unit,
     onCreateTransparentWidgetClick: () -> Unit,
     onRestoreWidgetClick: (PhotoWidget) -> Unit,
     onAppLanguageClick: () -> Unit,
@@ -227,7 +228,7 @@ private fun HomeScreen(
     homeViewModel: HomeViewModel,
     preparedIntent: Intent?,
     onIntentConsume: () -> Unit,
-    onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
+    onCreateNewWidgetClick: (PhotoWidgetAspectRatio, PhotoWidgetSource?) -> Unit,
     onCreateTransparentWidgetClick: () -> Unit,
     onDefaultsClick: () -> Unit,
     onWidgetSettingsClick: () -> Unit,
@@ -259,6 +260,7 @@ private fun HomeScreen(
     HomeScreen(
         onCreateNewWidgetClick = onCreateNewWidgetClick,
         onCreateTransparentWidgetClick = onCreateTransparentWidgetClick,
+        showCreateWidgetFromSource = preparedIntent == null,
         currentWidgets = currentWidgets,
         highlightTransparentWidgets = highlightTransparentWidgets,
         onHighlightTransparentWidgetsChange = homeViewModel::setHighlightTransparentWidgets,
@@ -355,8 +357,9 @@ private fun HomeScreen(
 
 @Composable
 fun HomeScreen(
-    onCreateNewWidgetClick: (PhotoWidgetAspectRatio) -> Unit,
+    onCreateNewWidgetClick: (PhotoWidgetAspectRatio, PhotoWidgetSource?) -> Unit,
     onCreateTransparentWidgetClick: () -> Unit,
+    showCreateWidgetFromSource: Boolean,
     currentWidgets: List<Pair<Int, PhotoWidget>>,
     highlightTransparentWidgets: Boolean,
     onHighlightTransparentWidgetsChange: (Boolean) -> Unit,
@@ -411,7 +414,9 @@ fun HomeScreen(
             when (destination) {
                 HomeNavigationDestination.NEW_WIDGET -> {
                     NewWidgetScreen(
-                        onCreateNewWidgetClick = onCreateNewWidgetClick,
+                        onCreateNewWidgetClick = { aspectRatio ->
+                            onCreateNewWidgetClick(aspectRatio, null)
+                        },
                         onCreateTransparentWidgetClick = onCreateTransparentWidgetClick,
                         onHelpClick = helpSheetState::showBottomSheet,
                         showBackgroundRestrictionHint = showBackgroundRestrictionHint,
@@ -424,6 +429,10 @@ fun HomeScreen(
                     MyWidgetsScreen(
                         widgets = currentWidgets,
                         onWidgetClick = onWidgetClick,
+                        showCreateWidget = showCreateWidgetFromSource,
+                        onCreateWidgetClick = { source ->
+                            onCreateNewWidgetClick(PhotoWidgetAspectRatio.SQUARE, source)
+                        },
                         highlightTransparentWidgets = highlightTransparentWidgets,
                         onHighlightTransparentWidgetsChange = onHighlightTransparentWidgetsChange,
                     )
@@ -546,8 +555,9 @@ private enum class HomeNavigationDestination(
 private fun HomeScreenPreview() {
     ExtendedTheme {
         HomeScreen(
-            onCreateNewWidgetClick = {},
+            onCreateNewWidgetClick = { _, _ -> },
             onCreateTransparentWidgetClick = {},
+            showCreateWidgetFromSource = true,
             currentWidgets = emptyList(),
             highlightTransparentWidgets = false,
             onHighlightTransparentWidgetsChange = {},

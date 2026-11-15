@@ -49,6 +49,7 @@
     <string name="photo_widget_home_crash_report_choose_title">Magpadala ng email</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Wala ka pang nagawang na widget.\nDito mo mahahanap ang mga widget na nakalagay na sa iyong home screen.</string>
+    <string name="photo_widget_home_create_widget">Gumawa ng widget</string>
     <string name="photo_widget_home_filter_all">Lahat</string>
     <string name="photo_widget_home_transparent_label">Transparent</string>
     <string name="photo_widget_home_highlight_transparent_title">Ipakita ang mga transparent na widget</string>

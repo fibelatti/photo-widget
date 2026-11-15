@@ -55,6 +55,7 @@
 
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">You haven\'t added any widgets yet.\nWidgets added to your home screen will appear here.</string>
+    <string name="photo_widget_home_create_widget">Create a widget</string>
     <string name="photo_widget_home_filter_all">All</string>
 
     <string name="photo_widget_home_transparent_label">Transparent</string>

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.platform.intentExtras
 
 var Intent.appWidgetId: Int by intentExtras(
@@ -19,6 +20,8 @@ var Intent.duplicateFromId: Int? by intentExtras()
 var Intent.restoreFromId: Int? by intentExtras()
 
 var Intent.aspectRatio: PhotoWidgetAspectRatio by intentExtras()
+
+var Intent.widgetSource: PhotoWidgetSource by intentExtras()
 
 var Intent.sharedPhotos: List<Uri>? by intentExtras()
 

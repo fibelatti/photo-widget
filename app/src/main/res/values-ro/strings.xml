@@ -51,6 +51,7 @@
     <string name="photo_widget_home_crash_report_choose_title">Trimite email</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Nu ai adăugat încă nici un widget.\nWidget-urile adăugate pe ecranul de pornire vor apărea aici.</string>
+    <string name="photo_widget_home_create_widget">Creează un widget</string>
     <string name="photo_widget_home_filter_all">Toate</string>
     <string name="photo_widget_home_transparent_label">Transparent</string>
     <string name="photo_widget_home_highlight_transparent_title">Afișează widgeturile transparente</string>

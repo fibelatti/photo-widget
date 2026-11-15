@@ -79,6 +79,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
     private val restoreFromId: Int? by savedStateHandle.savedState()
     private val backupWidget: PhotoWidget? by savedStateHandle.savedState()
     private val aspectRatio: PhotoWidgetAspectRatio? by savedStateHandle.savedState()
+    private val widgetSource: PhotoWidgetSource? by savedStateHandle.savedState()
     private val transparent: Boolean by savedStateHandle.savedState(default = false)
 
     /**
@@ -127,6 +128,8 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
                 updateState(photoWidget = sanitized, hasEdits = true)
             } else {
+                applyRequestedSource()
+
                 loadPhotoWidgetUseCase(appWidgetId = effectiveWidgetId)
                     .onEach { photoWidget -> updateState(photoWidget = photoWidget, hasEdits = false) }
                     .onCompletion { throwable ->
@@ -237,8 +240,27 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Persists the source requested when the widget was created, so storage resolves photos for it
+     * while the draft is configured. GIF still requires the keep alive service, as in [changeSource].
+     */
+    private suspend fun applyRequestedSource() {
+        val requestedSource: PhotoWidgetSource = widgetSource ?: return
+
+        if (requiresKeepAlive(source = requestedSource)) {
+            _state += PhotoWidgetConfigureState.Message.KeepAliveRequired
+            return
+        }
+
+        photoWidgetStorage.saveWidgetSource(appWidgetId = effectiveWidgetId, source = requestedSource)
+    }
+
+    private fun requiresKeepAlive(source: PhotoWidgetSource): Boolean {
+        return source == PhotoWidgetSource.GIF && !userPreferencesStorage.keepAlive
+    }
+
     fun changeSource(newSource: PhotoWidgetSource) {
-        if (newSource == PhotoWidgetSource.GIF && !userPreferencesStorage.keepAlive) {
+        if (requiresKeepAlive(source = newSource)) {
             _state += PhotoWidgetConfigureState.Message.KeepAliveRequired
             return
         }

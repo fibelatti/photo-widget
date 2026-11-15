@@ -52,6 +52,7 @@
     <string name="photo_widget_home_crash_report_choose_title">Отправить письмо</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Вы ещё не добавили ни одного виджета.\nДобавленные на главный экран виджеты появятся здесь.</string>
+    <string name="photo_widget_home_create_widget">Создать виджет</string>
     <string name="photo_widget_home_filter_all">Все</string>
     <string name="photo_widget_home_transparent_label">Прозрачный</string>
     <string name="photo_widget_home_highlight_transparent_title">Показывать прозрачные виджеты</string>

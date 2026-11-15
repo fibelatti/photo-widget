@@ -24,6 +24,7 @@ import com.fibelatti.photowidget.R
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetCycleMode
+import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.KeepAliveService
 import com.fibelatti.photowidget.platform.isForeignContentUri
@@ -304,10 +305,12 @@ class PhotoWidgetConfigureActivity : AppCompatActivity() {
         fun newWidgetIntent(
             context: Context,
             aspectRatio: PhotoWidgetAspectRatio? = null,
+            source: PhotoWidgetSource? = null,
             sharedPhotos: List<Uri>? = null,
         ): Intent {
             return Intent(context, PhotoWidgetConfigureActivity::class.java).apply {
                 if (aspectRatio != null) this.aspectRatio = aspectRatio
+                if (source != null) this.widgetSource = source
                 if (sharedPhotos != null) this.sharedPhotos = sharedPhotos
             }
         }

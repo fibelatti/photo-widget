@@ -50,6 +50,7 @@
     <string name="photo_widget_home_crash_report_choose_title">Envoyer un e-mail</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Vous n\'avez pas encore ajouté de widgets.\nLes widgets ajoutés à votre écran d\'accueil apparaîtront ici.</string>
+    <string name="photo_widget_home_create_widget">Créer un widget</string>
     <string name="photo_widget_home_filter_all">Tous</string>
     <string name="photo_widget_home_transparent_label">Transparent</string>
     <string name="photo_widget_home_highlight_transparent_title">Afficher les widgets transparents</string>

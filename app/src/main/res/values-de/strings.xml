@@ -50,6 +50,7 @@
     <string name="photo_widget_home_crash_report_choose_title">E-Mail senden</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">Du hast noch keine Widgets hinzugefügt.\nHier erscheinen Widgets, die deinem Startbildschirm hinzugefügt wurden.</string>
+    <string name="photo_widget_home_create_widget">Widget erstellen</string>
     <string name="photo_widget_home_filter_all">Alle</string>
     <string name="photo_widget_home_transparent_label">Transparent</string>
     <string name="photo_widget_home_highlight_transparent_title">Transparente Widgets anzeigen</string>

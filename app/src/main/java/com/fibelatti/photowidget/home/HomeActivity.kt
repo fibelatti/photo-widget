@@ -23,6 +23,7 @@ import com.fibelatti.photowidget.configure.aspectRatio
 import com.fibelatti.photowidget.configure.sharedPhotos
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
+import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.platform.AppTheme
 import com.fibelatti.photowidget.platform.appLocaleSettingsIntent
 import com.fibelatti.photowidget.platform.isForeignContentUri
@@ -106,7 +107,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun createNewWidget(aspectRatio: PhotoWidgetAspectRatio) {
+    private fun createNewWidget(aspectRatio: PhotoWidgetAspectRatio, source: PhotoWidgetSource?) {
         if (widgetPinningNotAvailable()) {
             showMaterialAlertDialog {
                 setTitle(R.string.photo_widget_home_pinning_not_supported_title)
@@ -118,7 +119,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         val intent: Intent = preparedIntent?.apply { this.aspectRatio = aspectRatio }
-            ?: PhotoWidgetConfigureActivity.newWidgetIntent(context = this, aspectRatio = aspectRatio)
+            ?: PhotoWidgetConfigureActivity.newWidgetIntent(context = this, aspectRatio = aspectRatio, source = source)
 
         preparedIntent = null
 

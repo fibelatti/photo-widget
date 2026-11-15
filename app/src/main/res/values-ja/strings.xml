@@ -49,6 +49,7 @@
     <string name="photo_widget_home_crash_report_choose_title">メールを送信</string>
     <!-- My Widgets -->
     <string name="photo_widget_home_empty_widgets">ウィジェットはまだ追加されていません。\nホーム画面に追加されたウィジェットがここに表示されます。</string>
+    <string name="photo_widget_home_create_widget">ウィジェットを作成</string>
     <string name="photo_widget_home_filter_all">すべて</string>
     <string name="photo_widget_home_transparent_label">透明</string>
     <string name="photo_widget_home_highlight_transparent_title">透明なウィジェットを表示</string>

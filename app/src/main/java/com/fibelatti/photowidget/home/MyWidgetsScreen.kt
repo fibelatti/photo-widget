@@ -31,6 +31,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -86,6 +87,8 @@ import com.fibelatti.ui.theme.ExtendedTheme
 fun MyWidgetsScreen(
     widgets: List<Pair<Int, PhotoWidget>>,
     onWidgetClick: (id: Int, PhotoWidget) -> Unit,
+    showCreateWidget: Boolean,
+    onCreateWidgetClick: (PhotoWidgetSource) -> Unit,
     highlightTransparentWidgets: Boolean,
     onHighlightTransparentWidgetsChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -167,6 +170,15 @@ fun MyWidgetsScreen(
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyLarge,
                     )
+
+                    val currentSelection: PhotoWidgetSource? = selectedSource
+                    if (showCreateWidget && currentSelection != null) {
+                        Button(
+                            onClick = { onCreateWidgetClick(currentSelection) },
+                        ) {
+                            Text(text = stringResource(id = R.string.photo_widget_home_create_widget))
+                        }
+                    }
                 }
             }
         }
@@ -374,6 +386,8 @@ private fun MyWidgetsScreenPreview() {
                 )
             },
             onWidgetClick = { _, _ -> },
+            showCreateWidget = true,
+            onCreateWidgetClick = {},
             highlightTransparentWidgets = false,
             onHighlightTransparentWidgetsChange = {},
         )
@@ -387,6 +401,8 @@ private fun MyWidgetsScreenEmptyPreview() {
         MyWidgetsScreen(
             widgets = emptyList(),
             onWidgetClick = { _, _ -> },
+            showCreateWidget = true,
+            onCreateWidgetClick = {},
             highlightTransparentWidgets = false,
             onHighlightTransparentWidgetsChange = {},
         )
