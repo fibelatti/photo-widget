@@ -97,7 +97,6 @@ fun MyWidgetsScreen(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.TopCenter,
     ) {
-        val options: List<PhotoWidgetSource?> = listOf(null) + PhotoWidgetSource.entries
         var selectedSource: PhotoWidgetSource? by rememberSaveable { mutableStateOf(null) }
         val filteredWidgets: List<Pair<Int, PhotoWidget>> = remember(widgets, selectedSource) {
             widgets.filter { (_, widget) ->
@@ -107,11 +106,6 @@ fun MyWidgetsScreen(
         val hasTransparentWidgets: Boolean = remember(widgets) {
             widgets.any { (_, widget) -> widget.transparent && widget.status == PhotoWidgetStatus.ACTIVE }
         }
-
-        val enforcedShape: Shape = RoundedCornerShape(28.dp)
-
-        val isAtLeastMediumWidth: Boolean = currentWindowAdaptiveInfoV2().windowSizeClass
-            .isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
 
         AnimatedContent(
             targetState = filteredWidgets.isNotEmpty(),
@@ -126,99 +120,23 @@ fun MyWidgetsScreen(
             label = "MyWidgetsScreen_content",
         ) { hasContent: Boolean ->
             if (hasContent) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(count = if (isAtLeastMediumWidth) 4 else 2),
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(
-                        start = 16.dp,
-                        top = 80.dp,
-                        end = 16.dp,
-                        bottom = 220.dp,
-                    ),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    items(filteredWidgets, key = { (id, _) -> id }) { (id, widget) ->
-                        WidgetGridItem(
-                            widget = widget,
-                            onClick = { onWidgetClick(id, widget) },
-                            enforcedShape = enforcedShape,
-                            modifier = Modifier
-                                .animateItem()
-                                .testTag("my-widget-$id"),
-                        )
-                    }
-                }
-            } else {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(start = 32.dp, top = 120.dp, end = 32.dp),
-                    verticalArrangement = Arrangement.spacedBy(32.dp, alignment = Alignment.CenterVertically),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    ColoredShape(
-                        shapeId = remember { PhotoWidgetShapeBuilder.shapes.random().id },
-                        shapeRotation = PhotoWidgetShapeRotation.DEFAULT,
-                        color = MaterialTheme.colorScheme.primaryContainer,
-                        modifier = Modifier.size(120.dp),
-                    )
-
-                    Text(
-                        text = stringResource(id = R.string.photo_widget_home_empty_widgets),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyLarge,
-                    )
-
-                    val currentSelection: PhotoWidgetSource? = selectedSource
-                    if (showCreateWidget && currentSelection != null) {
-                        Button(
-                            onClick = { onCreateWidgetClick(currentSelection) },
-                        ) {
-                            Text(text = stringResource(id = R.string.photo_widget_home_create_widget))
-                        }
-                    }
-                }
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(IntrinsicSize.Max)
-                .padding(all = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
-        ) {
-            options.forEachIndexed { index, source ->
-                val weight by animateFloatAsState(
-                    targetValue = if (selectedSource == source) 1.2f else .8f,
+                MyWidgetsGrid(
+                    widgets = filteredWidgets,
+                    onWidgetClick = onWidgetClick,
                 )
-
-                ToggleButton(
-                    checked = selectedSource == source,
-                    onCheckedChange = { selectedSource = source },
-                    modifier = Modifier
-                        .weight(weight)
-                        .fillMaxHeight()
-                        .semantics { role = Role.RadioButton },
-                    shapes = when (index) {
-                        0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                        options.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
-                        else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
-                    },
-                    contentPadding = ConnectedButtonRowDefaults.ContentPadding,
-                ) {
-                    Text(
-                        text = stringResource(source?.label ?: R.string.photo_widget_home_filter_all),
-                        textAlign = TextAlign.Center,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                }
+            } else {
+                EmptyGridPlaceholder(
+                    selectedSource = selectedSource,
+                    showCreateWidget = showCreateWidget,
+                    onCreateWidgetClick = onCreateWidgetClick,
+                )
             }
         }
+
+        MyWidgetsSourceFilter(
+            selectedSource = selectedSource,
+            onSourceSelect = { selectedSource = it },
+        )
 
         AnimatedVisibility(
             visible = hasTransparentWidgets && selectedSource == null,
@@ -236,6 +154,41 @@ fun MyWidgetsScreen(
                     .padding(all = 16.dp)
                     .shadow(elevation = 2.dp, shape = ListItem.DefaultShape),
                 supportingText = stringResource(R.string.photo_widget_home_highlight_transparent_subtitle),
+            )
+        }
+    }
+}
+
+@Composable
+private fun MyWidgetsGrid(
+    widgets: List<Pair<Int, PhotoWidget>>,
+    onWidgetClick: (id: Int, PhotoWidget) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val isAtLeastMediumWidth: Boolean = currentWindowAdaptiveInfoV2().windowSizeClass
+        .isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
+    val enforcedShape = RoundedCornerShape(28.dp)
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(count = if (isAtLeastMediumWidth) 4 else 2),
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(
+            start = 16.dp,
+            top = 80.dp,
+            end = 16.dp,
+            bottom = 220.dp,
+        ),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        items(widgets, key = { (id, _) -> id }) { (id, widget) ->
+            WidgetGridItem(
+                widget = widget,
+                onClick = { onWidgetClick(id, widget) },
+                enforcedShape = enforcedShape,
+                modifier = Modifier
+                    .animateItem()
+                    .testTag("my-widget-$id"),
             )
         }
     }
@@ -350,6 +303,90 @@ private fun WidgetGridItem(
                 .clip(enforcedShape)
                 .indication(interactionSource, LocalIndication.current),
         )
+    }
+}
+
+@Composable
+private fun MyWidgetsSourceFilter(
+    selectedSource: PhotoWidgetSource?,
+    onSourceSelect: (PhotoWidgetSource?) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val options: List<PhotoWidgetSource?> = listOf(null) + PhotoWidgetSource.entries
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Max)
+            .padding(all = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
+    ) {
+        options.forEachIndexed { index, source ->
+            val weight by animateFloatAsState(
+                targetValue = if (selectedSource == source) 1.2f else .8f,
+            )
+
+            ToggleButton(
+                checked = selectedSource == source,
+                onCheckedChange = { onSourceSelect(source) },
+                modifier = Modifier
+                    .weight(weight)
+                    .fillMaxHeight()
+                    .semantics { role = Role.RadioButton },
+                shapes = when (index) {
+                    0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
+                    options.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
+                    else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
+                },
+                contentPadding = ConnectedButtonRowDefaults.ContentPadding,
+            ) {
+                Text(
+                    text = stringResource(source?.label ?: R.string.photo_widget_home_filter_all),
+                    textAlign = TextAlign.Center,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun EmptyGridPlaceholder(
+    selectedSource: PhotoWidgetSource?,
+    showCreateWidget: Boolean,
+    onCreateWidgetClick: (PhotoWidgetSource) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(start = 32.dp, top = 120.dp, end = 32.dp),
+        verticalArrangement = Arrangement.spacedBy(32.dp, alignment = Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        ColoredShape(
+            shapeId = remember { PhotoWidgetShapeBuilder.shapes.random().id },
+            shapeRotation = PhotoWidgetShapeRotation.DEFAULT,
+            color = MaterialTheme.colorScheme.primaryContainer,
+            modifier = Modifier.size(120.dp),
+        )
+
+        Text(
+            text = stringResource(id = R.string.photo_widget_home_empty_widgets),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyLarge,
+        )
+
+        if (showCreateWidget && selectedSource != null) {
+            Button(
+                onClick = { onCreateWidgetClick(selectedSource) },
+            ) {
+                Text(text = stringResource(id = R.string.photo_widget_home_create_widget))
+            }
+        }
     }
 }
 
