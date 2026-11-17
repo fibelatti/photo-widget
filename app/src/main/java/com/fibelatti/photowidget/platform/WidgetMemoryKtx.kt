@@ -154,6 +154,34 @@ private fun Context.coerceToWidgetSize(appWidgetId: Int, dimension: Int): Int {
 }
 
 /**
+ * Aspect ratio (width / height) the widget is currently displayed at, or null when the host reports
+ * no usable size.
+ *
+ * A fill widget's photo is drawn by the host with `centerCrop`, so anything outside the widget's own
+ * shape is trimmed away — including the edges that rounded corners and the border are drawn on.
+ * Cropping the photo to this ratio up front leaves the host nothing to trim.
+ */
+fun Context.getWidgetAspectRatio(appWidgetId: Int): Float? {
+    val options: Bundle = runCatching {
+        AppWidgetManager.getInstance(this).getAppWidgetOptions(appWidgetId)
+    }.getOrNull() ?: return null
+
+    // The lower bound is the size the widget is shown at right now; the upper bound describes
+    // another orientation, so it would crop away the corners on this one.
+    val widthDp: Int = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
+    val heightDp: Int = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
+
+    if (widthDp <= 0 || heightDp <= 0) return null
+
+    Timber.d(
+        "Widget aspect ratio reported by the host %s",
+        mapOf("appWidgetId" to appWidgetId, "widthDp" to widthDp, "heightDp" to heightDp),
+    )
+
+    return widthDp.toFloat() / heightDp.toFloat()
+}
+
+/**
  * The host's own cap, learned from an update it rejected, or null while none has been rejected on
  * this device.
  */

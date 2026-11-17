@@ -48,11 +48,13 @@ fun Bitmap.withRoundedCorners(
     colors: PhotoWidgetColors = PhotoWidgetColors(),
     @ColorInt borderColor: Int? = null,
     @FloatRange(from = 0.0) borderPercent: Float = .0F,
+    fillAspectRatio: Float? = null,
 ): Bitmap = withTransformation(
     aspectRatio = aspectRatio,
     colors = colors,
     borderColor = borderColor,
     borderPercent = borderPercent,
+    fillAspectRatio = fillAspectRatio,
 ) { canvas: Canvas, rect: Rect, paint: Paint ->
     canvas.drawRoundRect(rect.toRectF(), radius, radius, paint)
 }
@@ -104,9 +106,10 @@ private inline fun Bitmap.withTransformation(
     colors: PhotoWidgetColors,
     @ColorInt borderColor: Int?,
     @FloatRange(from = 0.0) borderPercent: Float,
+    fillAspectRatio: Float? = null,
     body: (Canvas, Rect, Paint) -> Unit,
 ): Bitmap {
-    val source: Rect = sourceRect(aspectRatio = aspectRatio)
+    val source: Rect = sourceRect(aspectRatio = aspectRatio, fillAspectRatio = fillAspectRatio)
     val destination = Rect(
         /* left = */ 0,
         /* top = */ 0,
@@ -160,7 +163,10 @@ private inline fun Bitmap.withTransformation(
     return output
 }
 
-private fun Bitmap.sourceRect(aspectRatio: PhotoWidgetAspectRatio): Rect {
+private fun Bitmap.sourceRect(
+    aspectRatio: PhotoWidgetAspectRatio,
+    fillAspectRatio: Float? = null,
+): Rect {
     Timber.d(
         "Calculating source rect for bitmap %s",
         mapOf("width" to width, "height" to height, "aspectRatio" to aspectRatio),
@@ -170,7 +176,11 @@ private fun Bitmap.sourceRect(aspectRatio: PhotoWidgetAspectRatio): Rect {
         bitmapWidth = width.toFloat(),
         bitmapHeight = height.toFloat(),
         aspectRatio = when (aspectRatio) {
-            PhotoWidgetAspectRatio.ORIGINAL, PhotoWidgetAspectRatio.FILL_WIDGET -> width / height.toFloat()
+            PhotoWidgetAspectRatio.ORIGINAL -> width / height.toFloat()
+            // A fill widget is drawn by the host with `centerCrop`, which trims whatever does not
+            // match the widget's own shape. Cropping to the widget ratio here keeps the rounded
+            // corners and the border — both drawn on the output edges — off that trim.
+            PhotoWidgetAspectRatio.FILL_WIDGET -> fillAspectRatio ?: width / height.toFloat()
             else -> aspectRatio.rawAspectRatio
         },
     ).toRect().also { Timber.d("Output rect: $it") }

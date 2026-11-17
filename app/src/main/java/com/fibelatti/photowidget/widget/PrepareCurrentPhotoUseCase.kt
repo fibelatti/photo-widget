@@ -19,6 +19,7 @@ import com.fibelatti.photowidget.platform.ColorPalette
 import com.fibelatti.photowidget.platform.PhotoDecoder
 import com.fibelatti.photowidget.platform.getColorPalette
 import com.fibelatti.photowidget.platform.getMaxWidgetPhotoDimension
+import com.fibelatti.photowidget.platform.getWidgetAspectRatio
 import com.fibelatti.photowidget.platform.withPolygonalShape
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.widget.data.PhotoWidgetExternalFileStorage
@@ -115,6 +116,16 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
         @ColorInt
         val labelColor: Int = photoWidget.text.color.resolve(context = context, colorPalette = { colorPalette })
 
+        // Fill widgets are drawn by the host with `centerCrop`, so the photo has to be cropped to
+        // the widget's own shape before the rounded corners and the border are drawn on it.
+        // Otherwise the host trims exactly the edges those are drawn on, and the widget shows square
+        // corners whenever the photo ratio differs from the widget's.
+        val fillAspectRatio: Float? = if (photoWidget.aspectRatio == PhotoWidgetAspectRatio.FILL_WIDGET) {
+            context.getWidgetAspectRatio(appWidgetId = appWidgetId)
+        } else {
+            null
+        }
+
         Timber.d("Transforming the bitmap")
         val transformedBitmap: Bitmap = if (photoWidget.aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
             sourceBitmap.withPolygonalShape(
@@ -132,6 +143,7 @@ class PrepareCurrentPhotoUseCase @Inject constructor(
                 colors = photoWidget.colors,
                 borderColor = borderColor,
                 borderPercent = borderPercent,
+                fillAspectRatio = fillAspectRatio,
             )
         }
 
