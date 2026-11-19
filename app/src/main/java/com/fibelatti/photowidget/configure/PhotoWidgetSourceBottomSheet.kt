@@ -15,13 +15,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.DropdownMenuGroup
+import androidx.compose.material3.DropdownMenuPopup
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedIconButton
+import androidx.compose.material3.SelectableDropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
@@ -304,33 +306,35 @@ private fun SyncScopeChip(
             )
         }
 
-        DropdownMenu(
+        DropdownMenuPopup(
             expanded = showMenu,
             onDismissRequest = { showMenu = false },
-            shape = MaterialTheme.shapes.medium,
         ) {
-            Text(
-                text = stringResource(R.string.photo_widget_configure_source_sync_scope),
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.labelMedium,
-            )
+            DropdownMenuGroup(
+                shapes = MenuDefaults.groupShape(index = 0, count = 1),
+            ) {
+                MenuDefaults.DropdownMenuGroupLabel {
+                    Text(text = stringResource(R.string.photo_widget_configure_source_sync_scope))
+                }
 
-            for (option in listOf(true, false)) {
-                DropdownMenuItem(
-                    text = { Text(text = stringResource(syncScopeLabel(subdirectories = option))) },
-                    onClick = {
-                        showMenu = false
-                        if (option != subdirectories) {
-                            onSubdirectoriesChange(option)
-                        }
-                    },
-                    trailingIcon = {
-                        if (option == subdirectories) {
+                val options: List<Boolean> = listOf(true, false)
+
+                options.forEachIndexed { index, option ->
+                    SelectableDropdownMenuItem(
+                        selected = option == subdirectories,
+                        onClick = {
+                            showMenu = false
+                            if (option != subdirectories) {
+                                onSubdirectoriesChange(option)
+                            }
+                        },
+                        text = { Text(text = stringResource(syncScopeLabel(subdirectories = option))) },
+                        shapes = MenuDefaults.itemShape(index = index, count = options.size),
+                        selectedLeadingIcon = {
                             Icon(imageVector = AppIcons.Check, contentDescription = null)
-                        }
-                    },
-                )
+                        },
+                    )
+                }
             }
         }
     }
