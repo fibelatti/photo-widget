@@ -12,7 +12,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -23,7 +22,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonGroupDefaults
@@ -32,11 +30,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SliderState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.TimePickerState
+import androidx.compose.material3.VibrantTimePickerDialog
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberSliderState
 import androidx.compose.material3.rememberTimePickerState
@@ -59,8 +58,6 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.getSystemService
 import com.fibelatti.photowidget.R
@@ -569,10 +566,10 @@ private fun PhotoCycleModeDisabledContent(
 }
 
 @Composable
-@Suppress("ComposeModifierMissing")
 fun TimePickerDialog(
     onConfirm: (TimePickerState) -> Unit,
     onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val currentTime = Calendar.getInstance()
 
@@ -582,64 +579,30 @@ fun TimePickerDialog(
         is24Hour = true,
     )
 
-    Dialog(
+    VibrantTimePickerDialog(
         onDismissRequest = onDismiss,
-        properties = DialogProperties(usePlatformDefaultWidth = false),
-    ) {
-        Surface(
-            shape = MaterialTheme.shapes.extraLarge,
-            tonalElevation = 6.dp,
-            modifier = Modifier
-                .width(IntrinsicSize.Min)
-                .height(IntrinsicSize.Min)
-                .background(
-                    shape = MaterialTheme.shapes.extraLarge,
-                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                ),
-        ) {
-            Column(
-                modifier = Modifier.padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier,
+        confirmButton = {
+            Button(
+                onClick = { onConfirm(timePickerState) },
+                shapes = ButtonDefaults.shapes(),
             ) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(R.string.photo_widget_time_picker_title),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-
-                TimePicker(state = timePickerState)
-
-                val interactionSources: Array<MutableInteractionSource> = remember {
-                    Array(size = 2) { MutableInteractionSource() }
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(40.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    TextButton(
-                        onClick = onDismiss,
-                        shapes = ButtonDefaults.shapes(),
-                        modifier = Modifier.weight(1f),
-                        interactionSource = interactionSources[0],
-                    ) {
-                        AutoSizeText(text = stringResource(R.string.photo_widget_action_cancel), maxLines = 1)
-                    }
-
-                    Button(
-                        onClick = { onConfirm(timePickerState) },
-                        shapes = ButtonDefaults.shapes(),
-                        modifier = Modifier.weight(1f),
-                        interactionSource = interactionSources[1],
-                    ) {
-                        AutoSizeText(text = stringResource(R.string.photo_widget_action_confirm), maxLines = 1)
-                    }
-                }
+                AutoSizeText(text = stringResource(R.string.photo_widget_action_confirm), maxLines = 1)
             }
-        }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = onDismiss,
+                shapes = ButtonDefaults.shapes(),
+            ) {
+                AutoSizeText(text = stringResource(R.string.photo_widget_action_cancel), maxLines = 1)
+            }
+        },
+    ) {
+        TimePicker(
+            state = timePickerState,
+            colors = TimePickerDefaults.vibrantColors(),
+        )
     }
 }
 

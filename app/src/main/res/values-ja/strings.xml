@@ -294,7 +294,6 @@
     <string name="photo_widget_configure_add_to_home">ホーム画面に追加</string>
     <string name="photo_widget_configure_save_changes">変更を保存</string>
     <string name="photo_widget_configure_widget_pinned">ウィジェットが追加されました！ホーム画面を確認してください…</string>
-    <string name="photo_widget_time_picker_title">時間を選択</string>
     <string name="photo_widget_directory_sort_title">写真の並べ替え</string>
     <string name="photo_widget_directory_sort_newest_first">新しいものから順に</string>
     <string name="photo_widget_directory_sort_oldest_first">古いものから順に</string>

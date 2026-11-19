@@ -294,7 +294,6 @@
     <string name="photo_widget_configure_add_to_home">添加到桌面</string>
     <string name="photo_widget_configure_save_changes">保存更改</string>
     <string name="photo_widget_configure_widget_pinned">已添加! 检查你的桌面…</string>
-    <string name="photo_widget_time_picker_title">选择时间</string>
     <string name="photo_widget_directory_sort_title">排序照片</string>
     <string name="photo_widget_directory_sort_newest_first">优先最新</string>
     <string name="photo_widget_directory_sort_oldest_first">优先最旧</string>

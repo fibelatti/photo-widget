@@ -302,7 +302,6 @@
     <string name="photo_widget_configure_add_to_home">Idagdag sa home screen</string>
     <string name="photo_widget_configure_save_changes">I-save ang mga pagbabago</string>
     <string name="photo_widget_configure_widget_pinned">Nadagdag ang widget! Tingnan ang iyong home screen…</string>
-    <string name="photo_widget_time_picker_title">Pumili ng oras</string>
     <string name="photo_widget_directory_sort_title">Pagbukud-bukurin ang mga larawan</string>
     <string name="photo_widget_directory_sort_newest_first">Pinakabago muna</string>
     <string name="photo_widget_directory_sort_oldest_first">Pinakaluma muna</string>

@@ -318,7 +318,6 @@
     <string name="photo_widget_configure_add_to_home">Добавить на главный экран</string>
     <string name="photo_widget_configure_save_changes">Сохранить изменения</string>
     <string name="photo_widget_configure_widget_pinned">Виджет добавлен! Проверьте домашний экран…</string>
-    <string name="photo_widget_time_picker_title">Выбрать время</string>
     <string name="photo_widget_directory_sort_title">Сортировать фото</string>
     <string name="photo_widget_directory_sort_newest_first">Сначала новые</string>
     <string name="photo_widget_directory_sort_oldest_first">Сначала старые</string>

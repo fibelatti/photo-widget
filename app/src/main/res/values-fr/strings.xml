@@ -304,7 +304,6 @@
     <string name="photo_widget_configure_add_to_home">Ajouter à l\'écran d\'accueil</string>
     <string name="photo_widget_configure_save_changes">Enregistrer les modifications</string>
     <string name="photo_widget_configure_widget_pinned">Widget ajouté ! Consultez votre écran d\'accueil…</string>
-    <string name="photo_widget_time_picker_title">Sélectionnez l\'heure</string>
     <string name="photo_widget_directory_sort_title">Trier les photos</string>
     <string name="photo_widget_directory_sort_newest_first">Les plus récentes en premier</string>
     <string name="photo_widget_directory_sort_oldest_first">Les plus anciennes en premier</string>

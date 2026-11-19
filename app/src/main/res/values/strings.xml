@@ -351,7 +351,6 @@
 
     <string name="photo_widget_configure_widget_pinned">Widget added! Check your home screen…</string>
 
-    <string name="photo_widget_time_picker_title">Select time</string>
 
     <string name="photo_widget_directory_sort_title">Sort photos</string>
     <string name="photo_widget_directory_sort_newest_first">Newest first</string>
