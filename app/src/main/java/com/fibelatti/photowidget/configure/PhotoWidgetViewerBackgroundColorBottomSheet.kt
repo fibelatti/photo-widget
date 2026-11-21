@@ -17,18 +17,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,6 +60,8 @@ import com.github.skydoves.colorpicker.compose.BrightnessSlider
 import com.github.skydoves.colorpicker.compose.ColorPickerController
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.filter
 
 private const val FALLBACK_COLOR_HEX = "000000"
 
@@ -90,13 +98,18 @@ private fun ViewerBackgroundColorContent(
 ) {
     val initialColorHex: String = currentColorHex ?: FALLBACK_COLOR_HEX
     val colorPickerController: ColorPickerController = rememberColorPickerController()
-    var colorHex: String by rememberSaveable { mutableStateOf(initialColorHex) }
-    val hexChars: CharArray = remember {
-        charArrayOf(
-            '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-            'a', 'b', 'c', 'd', 'e', 'f',
-            'A', 'B', 'C', 'D', 'E', 'F',
-        )
+    val colorHexTextState: TextFieldState = rememberTextFieldState(initialColorHex)
+    val colorHex: String = colorHexTextState.text.toString()
+    // The last hex reported by the picker, so that echoing it into the text field doesn't push it back
+    var pickerColorHex: String? by remember { mutableStateOf(null) }
+
+    LaunchedEffect(colorHexTextState, colorPickerController) {
+        snapshotFlow { colorHexTextState.text.toString() }
+            .drop(1)
+            .filter { hex -> hex.length == 6 && !hex.equals(pickerColorHex, ignoreCase = true) }
+            .collect { hex ->
+                colorPickerController.selectByColor(color = Color("#$hex".toColorInt()), fromUser = true)
+            }
     }
     val sampleBitmap: Bitmap = rememberSampleBitmap()
 
@@ -148,7 +161,9 @@ private fun ViewerBackgroundColorContent(
                         .aspectRatio(1f),
                     controller = colorPickerController,
                     onColorChanged = { colorEnvelope ->
-                        colorHex = colorEnvelope.hexCode.drop(2)
+                        val hex: String = colorEnvelope.hexCode.drop(2)
+                        pickerColorHex = hex
+                        colorHexTextState.setTextAndPlaceCursorAtEnd(hex)
                     },
                     initialColor = Color("#$initialColorHex".toColorInt()),
                 )
@@ -175,17 +190,7 @@ private fun ViewerBackgroundColorContent(
                 )
 
                 TextField(
-                    value = colorHex,
-                    onValueChange = { newValue ->
-                        if (newValue.length <= 6 && newValue.all { it in hexChars }) {
-                            colorHex = newValue
-
-                            if (colorHex.length == 6) {
-                                val androidColor = "#$colorHex".toColorInt()
-                                colorPickerController.selectByColor(color = Color(androidColor), fromUser = true)
-                            }
-                        }
-                    },
+                    state = colorHexTextState,
                     modifier = Modifier.width(100.dp),
                     textStyle = MaterialTheme.typography.labelMedium,
                     placeholder = {
@@ -200,12 +205,14 @@ private fun ViewerBackgroundColorContent(
                             style = MaterialTheme.typography.labelMedium,
                         )
                     },
+                    inputTransformation = HexColorInputTransformation,
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Characters,
                         imeAction = ImeAction.Done,
                     ),
-                    singleLine = true,
+                    lineLimits = TextFieldLineLimits.SingleLine,
                     shape = Shapes.StandaloneShape,
+                    colors = TextFieldDefaults.tonalColors(),
                 )
             }
 
