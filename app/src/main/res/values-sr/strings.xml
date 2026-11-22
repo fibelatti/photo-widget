@@ -392,6 +392,8 @@
     <!-- Notifications -->
     <string name="notification_channel_name_keep_alive">Позадински сервиси</string>
     <string name="notification_channel_description_keep_alive">Одржава апликацију активном, чак и ако је дуго у позадини. Обезбеђује да се виџети могу ажурирати како је очекивано.</string>
+    <!-- Common Errors -->
+    <string name="error_no_app_to_handle_action">Ниједна апликација на овом уређају не може да изврши ову радњу. Молимо вас да се уверите да је системска апликација Files омогућена у подешавањима уређаја, па покушајте поново.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Да</string>
     <string name="photo_widget_action_no">Не</string>

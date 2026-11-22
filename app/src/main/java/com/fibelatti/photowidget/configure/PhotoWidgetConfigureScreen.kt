@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.configure
 
+import android.content.Context
 import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
@@ -66,6 +67,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.blur.BlurRadiusSpec
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -89,6 +91,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetAspectRatio
 import com.fibelatti.photowidget.model.PhotoWidgetColors
 import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.canSort
+import com.fibelatti.photowidget.platform.launchOrNotify
 import com.fibelatti.photowidget.platform.popNavKey
 import com.fibelatti.photowidget.ui.LocalSamplePhoto
 import com.fibelatti.photowidget.ui.WidgetPositionViewer
@@ -130,6 +133,8 @@ fun PhotoWidgetConfigureScreen(
     val isLifecycleStateValid: () -> Boolean = {
         localLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)
     }
+
+    val localContext: Context = LocalContext.current
 
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents(),
@@ -178,9 +183,17 @@ fun PhotoWidgetConfigureScreen(
                     onPickFromSourceClick = {
                         if (isLifecycleStateValid()) {
                             when (state.photoWidget.source) {
-                                PhotoWidgetSource.PHOTOS -> photoPickerLauncher.launch(input = "image/*")
-                                PhotoWidgetSource.DIRECTORY -> dirPickerLauncher.launch(input = null)
-                                PhotoWidgetSource.GIF -> gifPickerLauncher.launch(input = "image/gif")
+                                PhotoWidgetSource.PHOTOS -> {
+                                    photoPickerLauncher.launchOrNotify(context = localContext, input = "image/*")
+                                }
+
+                                PhotoWidgetSource.DIRECTORY -> {
+                                    dirPickerLauncher.launchOrNotify(context = localContext, input = null)
+                                }
+
+                                PhotoWidgetSource.GIF -> {
+                                    gifPickerLauncher.launchOrNotify(context = localContext, input = "image/gif")
+                                }
                             }
                         }
                     },

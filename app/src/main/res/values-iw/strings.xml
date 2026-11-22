@@ -392,6 +392,8 @@
     <!-- Notifications -->
     <string name="notification_channel_name_keep_alive">שירות רקע</string>
     <string name="notification_channel_description_keep_alive">שומר את האפליקציה פעילה, גם אם היא פועלת ברקע לאורך זמן. מבטיח שהווידג\'טים יכולים להתעדכן כמצופה.</string>
+    <!-- Common Errors -->
+    <string name="error_no_app_to_handle_action">אין במכשיר זה אפליקציה שיכולה להשלים את הפעולה. אנא ודא שאפליקציית המערכת Files מופעלת בהגדרות המכשיר, ונסה שוב.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">כן</string>
     <string name="photo_widget_action_no">לא</string>

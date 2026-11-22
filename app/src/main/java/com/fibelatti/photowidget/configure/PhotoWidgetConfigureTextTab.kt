@@ -1,5 +1,6 @@
 package com.fibelatti.photowidget.configure
 
+import android.content.Context
 import android.graphics.Typeface
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -90,6 +91,7 @@ import com.fibelatti.photowidget.model.PhotoWidgetTextFont
 import com.fibelatti.photowidget.model.PhotoWidgetTextPosition
 import com.fibelatti.photowidget.model.copyStyle
 import com.fibelatti.photowidget.platform.GoogleFontsLoader
+import com.fibelatti.photowidget.platform.launchOrNotify
 import com.fibelatti.photowidget.ui.DefaultSheetContent
 import com.fibelatti.photowidget.ui.DefaultSheetFooterButtons
 import com.fibelatti.photowidget.ui.InformationalPanel
@@ -146,6 +148,8 @@ fun PhotoWidgetConfigureTextTab(
     val verticalOffsetSheetState: AppSheetState = rememberAppSheetState()
 
     val isGoogleFontsAvailable: Boolean = rememberIsGoogleFontsAvailable()
+
+    val localContext: Context = LocalContext.current
 
     val customFontPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
@@ -303,7 +307,9 @@ fun PhotoWidgetConfigureTextTab(
         onOptionSelect = { newValue: PhotoWidgetTextFont ->
             onPhotoWidgetTextChange(photoWidgetText.copyStyle(font = newValue))
         },
-        onChooseCustomFontClick = { customFontPickerLauncher.launch(FONT_MIME_TYPES) },
+        onChooseCustomFontClick = {
+            customFontPickerLauncher.launchOrNotify(context = localContext, input = FONT_MIME_TYPES)
+        },
     )
 
     PhotoWidgetTextSizePicker(

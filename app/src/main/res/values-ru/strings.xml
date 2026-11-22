@@ -400,6 +400,8 @@
     <!-- Notifications -->
     <string name="notification_channel_name_keep_alive">Фоновый сервис</string>
     <string name="notification_channel_description_keep_alive">Поддерживает работу приложения в фоновом режиме. Обеспечивает своевременное обновление виджетов.</string>
+    <!-- Common Errors -->
+    <string name="error_no_app_to_handle_action">На этом устройстве нет приложения, которое может выполнить это действие. Пожалуйста, убедитесь, что системное приложение Files включено в настройках устройства, и повторите попытку.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Да</string>
     <string name="photo_widget_action_no">Нет</string>

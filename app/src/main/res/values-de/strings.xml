@@ -386,6 +386,8 @@
     <!-- Notifications -->
     <string name="notification_channel_name_keep_alive">Hintergrunddienst</string>
     <string name="notification_channel_description_keep_alive">Hält die App am Leben, auch wenn sie lange im Hintergrund ist. Stellt sicher, dass Widgets wie erwartet aktualisiert werden können.</string>
+    <!-- Common Errors -->
+    <string name="error_no_app_to_handle_action">Keine App auf diesem Gerät kann diese Aktion ausführen. Stelle sicher, dass die System-App Files in deinen Geräteeinstellungen aktiviert ist, und versuche es erneut.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Ja</string>
     <string name="photo_widget_action_no">Nein</string>

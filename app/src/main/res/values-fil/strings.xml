@@ -384,6 +384,8 @@
     <!-- Notifications -->
     <string name="notification_channel_name_keep_alive">Serbisyo sa background</string>
     <string name="notification_channel_description_keep_alive">Pinapanatiling buhay ang app, kahit na matagal itong naka-background. Tinitiyak na maaaring ma-update ang mga widget gaya ng inaasahan.</string>
+    <!-- Common Errors -->
+    <string name="error_no_app_to_handle_action">Walang app sa device na ito ang makakatapos ng aksyong ito. Pakitiyak na naka-enable ang system app na Files sa mga setting ng iyong device, at subukang muli.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Oo</string>
     <string name="photo_widget_action_no">Hindi</string>

@@ -376,6 +376,8 @@
     <!-- Notifications -->
     <string name="notification_channel_name_keep_alive">バックグラウンドサービス</string>
     <string name="notification_channel_description_keep_alive">アプリを長時間バックグラウンドでも維持します。ウィジェットが期待通りに更新できることを保証します。</string>
+    <!-- Common Errors -->
+    <string name="error_no_app_to_handle_action">この操作を完了できるアプリがこのデバイスにありません。デバイスの設定でシステムアプリ「Files」が有効になっていることを確認して、もう一度お試しください。</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">はい</string>
     <string name="photo_widget_action_no">いいえ</string>

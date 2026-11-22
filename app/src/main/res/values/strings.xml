@@ -454,6 +454,9 @@
     <string name="notification_channel_name_keep_alive">Background Service</string>
     <string name="notification_channel_description_keep_alive">Keeps the app alive, even if backgrounded for a long time. Ensures that widgets can be updated as expected.</string>
 
+    <!-- Common Errors -->
+    <string name="error_no_app_to_handle_action">No app on this device can complete this action. Make sure the system Files app is enabled in your device settings, then try again.</string>
+
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Yes</string>
     <string name="photo_widget_action_no">No</string>

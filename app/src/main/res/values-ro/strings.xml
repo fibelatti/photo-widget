@@ -394,6 +394,8 @@
     <!-- Notifications -->
     <string name="notification_channel_name_keep_alive">Serviciu de fundal</string>
     <string name="notification_channel_description_keep_alive">Menține aplicația activă, chiar dacă este în fundal pentru o perioadă lungă de timp. Asigură că widget-urile pot fi actualizate după cum se așteaptă.</string>
+    <!-- Common Errors -->
+    <string name="error_no_app_to_handle_action">Nicio aplicație de pe acest dispozitiv nu poate finaliza această acțiune. Asigurați-vă că aplicația de sistem Files este activată în setările dispozitivului, apoi încercați din nou.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Da</string>
     <string name="photo_widget_action_no">Nu</string>

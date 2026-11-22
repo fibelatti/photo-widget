@@ -71,6 +71,7 @@ import com.fibelatti.photowidget.model.LocalPhoto
 import com.fibelatti.photowidget.model.PhotoWidget
 import com.fibelatti.photowidget.model.getPhotoPath
 import com.fibelatti.photowidget.model.getPhotoVersion
+import com.fibelatti.photowidget.platform.launchOrNotify
 import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.ui.component.ListItem
@@ -117,7 +118,9 @@ fun PhotoWidgetBackupScreen(
         onNavClick = onNavClick,
         isProcessing = state.isProcessing,
         onCreateBackupClick = backupViewModel::createBackup,
-        onRestoreFromBackupClick = { backupPickerLauncher.launch("application/zip") },
+        onRestoreFromBackupClick = {
+            backupPickerLauncher.launchOrNotify(context = localContext, input = "application/zip")
+        },
         widgets = state.restoredWidgets,
         onRestoreClick = onRestoreClick,
     )
@@ -129,7 +132,9 @@ fun PhotoWidgetBackupScreen(
                 type = "application/zip"
                 putExtra(Intent.EXTRA_TITLE, file.name)
             }
-            saveFileLauncher.launch(intent)
+            if (!saveFileLauncher.launchOrNotify(context = localContext, input = intent)) {
+                backupViewModel.deletePreparedBackup()
+            }
         }
     }
 

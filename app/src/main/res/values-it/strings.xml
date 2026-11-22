@@ -387,6 +387,8 @@
     <!-- Notifications -->
     <string name="notification_channel_name_keep_alive">Servizio in background</string>
     <string name="notification_channel_description_keep_alive">Mantiene l\'app attiva, anche se è rimasta in background per molto tempo. Garantisce che i widget possano essere aggiornati come previsto.</string>
+    <!-- Common Errors -->
+    <string name="error_no_app_to_handle_action">Nessuna app su questo dispositivo può completare questa azione. Assicurati che l\'app di sistema Files sia attivata nelle impostazioni del dispositivo, poi riprova.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Sì</string>
     <string name="photo_widget_action_no">No</string>

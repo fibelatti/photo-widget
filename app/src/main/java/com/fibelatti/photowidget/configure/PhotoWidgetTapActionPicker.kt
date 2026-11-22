@@ -114,6 +114,7 @@ import com.fibelatti.photowidget.model.contains
 import com.fibelatti.photowidget.platform.getAllInstalledApps
 import com.fibelatti.photowidget.platform.getAppShortcuts
 import com.fibelatti.photowidget.platform.getInstalledApp
+import com.fibelatti.photowidget.platform.launchOrNotify
 import com.fibelatti.photowidget.platform.resolveAppFolderEntries
 import com.fibelatti.photowidget.platform.withRoundedCorners
 import com.fibelatti.photowidget.ui.DefaultSheetContent
@@ -273,8 +274,8 @@ fun PhotoWidgetTapActionPicker(
         onChooseShortcutClick = { packageName -> pendingShortcutPackage = packageName },
         onAddAppToFolderClick = { addToFolderPickerSheetState.showBottomSheet() },
         onChooseGalleryAppClick = { galleryAppPickerSheetState.showBottomSheet() },
-        onChooseFileClick = { filePickerLauncher.launch(arrayOf("*/*")) },
-        onChooseFolderClick = { folderPickerLauncher.launch(null) },
+        onChooseFileClick = { filePickerLauncher.launchOrNotify(context = context, input = arrayOf("*/*")) },
+        onChooseFolderClick = { folderPickerLauncher.launchOrNotify(context = context, input = null) },
         onApplyClick = { onApplyClick(tapActions) },
     )
 

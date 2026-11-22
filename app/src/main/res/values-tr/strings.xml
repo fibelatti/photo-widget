@@ -384,6 +384,8 @@
     <!-- Notifications -->
     <string name="notification_channel_name_keep_alive">Arka plan hizmeti</string>
     <string name="notification_channel_description_keep_alive">Arka planda uzun süre olsa bile uygulamayı aktif tutar. Widget\'ların beklendiği gibi güncellenebilmesini sağlar.</string>
+    <!-- Common Errors -->
+    <string name="error_no_app_to_handle_action">Bu cihazda bu işlemi tamamlayabilecek bir uygulama yok. Lütfen Files sistem uygulamasının cihaz ayarlarınızda etkin olduğundan emin olun ve tekrar deneyin.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Evet</string>
     <string name="photo_widget_action_no">Hayır</string>

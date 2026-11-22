@@ -384,6 +384,8 @@
     <!-- Notifications -->
     <string name="notification_channel_name_keep_alive">Serviço em segundo plano</string>
     <string name="notification_channel_description_keep_alive">Mantém o app ativo, mesmo quando em segundo plano por muito tempo. Garante que os widgets possam ser atualizados conforme esperado.</string>
+    <!-- Common Errors -->
+    <string name="error_no_app_to_handle_action">Nenhum app neste dispositivo consegue concluir esta ação. Certifique-se de que o app do sistema Files esteja ativado nas configurações do dispositivo e tente novamente.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Sim</string>
     <string name="photo_widget_action_no">Não</string>

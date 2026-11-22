@@ -386,6 +386,8 @@
     <!-- Notifications -->
     <string name="notification_channel_name_keep_alive">Service en arrière-plan</string>
     <string name="notification_channel_description_keep_alive">Maintient l\'application active, même si elle est en arrière-plan pendant une longue période. Garantit que les widgets peuvent être mis à jour comme prévu.</string>
+    <!-- Common Errors -->
+    <string name="error_no_app_to_handle_action">Aucune application sur cet appareil ne peut effectuer cette action. Veuillez vous assurer que l\'application système Files est activée dans les paramètres de votre appareil, puis réessayez.</string>
     <!-- Common Actions -->
     <string name="photo_widget_action_yes">Oui</string>
     <string name="photo_widget_action_no">Non</string>
