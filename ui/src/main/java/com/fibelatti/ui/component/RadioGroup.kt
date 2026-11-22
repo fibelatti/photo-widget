@@ -1,7 +1,5 @@
 package com.fibelatti.ui.component
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.fibelatti.ui.foundation.Shapes
 
 @Composable
 fun <T> RadioGroup(
@@ -33,24 +30,19 @@ fun <T> RadioGroup(
     itemDescription: (T) -> String? = { null },
     itemFlag: @Composable RowScope.(T) -> Unit = {},
 ) {
-    Column(
-        modifier = modifier.selectableGroup(),
-        verticalArrangement = Arrangement.spacedBy(2.dp),
-    ) {
-        for ((index: Int, item: T) in items.withIndex()) {
-            RadioGroupItem(
-                selected = itemSelected(item),
-                onClick = { onItemClick(item) },
-                title = itemTitle(item),
-                description = itemDescription(item),
-                enabled = itemEnabled(item),
-                shape = when (index) {
-                    0 -> Shapes.TopShape
-                    items.lastIndex -> Shapes.BottomShape
-                    else -> Shapes.MiddleShape
-                },
-                flag = { itemFlag(item) },
-            )
+    SegmentedColumn(modifier = modifier.selectableGroup()) {
+        items.forEach { option: T ->
+            item { shape: Shape ->
+                RadioGroupItem(
+                    selected = itemSelected(option),
+                    onClick = { onItemClick(option) },
+                    title = itemTitle(option),
+                    description = itemDescription(option),
+                    enabled = itemEnabled(option),
+                    shape = shape,
+                    flag = { itemFlag(option) },
+                )
+            }
         }
     }
 }

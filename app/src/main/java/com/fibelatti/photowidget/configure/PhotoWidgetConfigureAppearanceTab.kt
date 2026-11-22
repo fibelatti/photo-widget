@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.toUpperCase
@@ -27,10 +28,10 @@ import com.fibelatti.photowidget.ui.ShapeListItem
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.PickerListItem
+import com.fibelatti.ui.component.SegmentedColumn
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
 import com.fibelatti.ui.component.SelectionDialogBottomSheetMode
 import com.fibelatti.ui.component.rememberAppSheetState
-import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 
@@ -182,125 +183,134 @@ fun PhotoWidgetConfigureAppearanceTab(
     onPaddingClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(2.dp),
+    SegmentedColumn(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
     ) {
-        PickerListItem(
-            headlineText = stringResource(id = R.string.photo_widget_aspect_ratio_title),
-            currentValue = stringResource(id = photoWidget.aspectRatio.label),
-            onClick = onAspectRatioClick,
-            modifier = Modifier.padding(horizontal = 16.dp),
-            shape = Shapes.TopShape,
-        )
+        item { shape: Shape ->
+            PickerListItem(
+                headlineText = stringResource(id = R.string.photo_widget_aspect_ratio_title),
+                currentValue = stringResource(id = photoWidget.aspectRatio.label),
+                onClick = onAspectRatioClick,
+                shape = shape,
+            )
+        }
 
         if (photoWidget.aspectRatio == PhotoWidgetAspectRatio.SQUARE) {
-            ShapeListItem(
-                headlineText = stringResource(id = R.string.widget_defaults_shape),
-                currentValue = photoWidget.shapeId,
-                shapeRotation = photoWidget.shapeRotation,
-                onClick = onShapeClick,
-                modifier = Modifier.padding(horizontal = 16.dp),
-                shape = Shapes.MiddleShape,
-            )
-
-            if (PhotoWidgetShapeBuilder.getShape(shapeId = photoWidget.shapeId).canRotate) {
-                PickerListItem(
-                    headlineText = stringResource(id = R.string.widget_defaults_shape_rotation),
-                    currentValue = PhotoWidgetShapeRotation.degreesLabel(photoWidget.shapeRotation),
-                    onClick = onShapeRotationClick,
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    shape = Shapes.MiddleShape,
+            item { shape: Shape ->
+                ShapeListItem(
+                    headlineText = stringResource(id = R.string.widget_defaults_shape),
+                    currentValue = photoWidget.shapeId,
+                    shapeRotation = photoWidget.shapeRotation,
+                    onClick = onShapeClick,
+                    shape = shape,
                 )
             }
-        } else if (photoWidget.aspectRatio != PhotoWidgetAspectRatio.FILL_WIDGET) {
-            PickerListItem(
-                headlineText = stringResource(id = R.string.widget_defaults_corner_radius),
-                currentValue = photoWidget.cornerRadius.toString(),
-                onClick = onCornerRadiusClick,
-                modifier = Modifier.padding(horizontal = 16.dp),
-                shape = Shapes.MiddleShape,
-            )
-        }
 
-        if (photoWidget.aspectRatio != PhotoWidgetAspectRatio.FILL_WIDGET) {
-            val currentValue: String = buildString {
-                append(stringResource(photoWidget.border.label))
-
-                when (photoWidget.border) {
-                    is PhotoWidgetBorder.None -> Unit
-
-                    is PhotoWidgetBorder.Color -> {
-                        append(" (#${photoWidget.border.colorHex.toUpperCase(LocalLocale.current)})")
-                    }
-
-                    is PhotoWidgetBorder.Dynamic -> {
-                        append(" (${stringResource(photoWidget.border.type.label)})")
-                    }
-
-                    is PhotoWidgetBorder.MatchPhoto -> {
-                        append(" (${stringResource(photoWidget.border.type.label)})")
-                    }
+            if (PhotoWidgetShapeBuilder.getShape(shapeId = photoWidget.shapeId).canRotate) {
+                item { shape: Shape ->
+                    PickerListItem(
+                        headlineText = stringResource(id = R.string.widget_defaults_shape_rotation),
+                        currentValue = PhotoWidgetShapeRotation.degreesLabel(photoWidget.shapeRotation),
+                        onClick = onShapeRotationClick,
+                        shape = shape,
+                    )
                 }
             }
+        } else if (photoWidget.aspectRatio != PhotoWidgetAspectRatio.FILL_WIDGET) {
+            item { shape: Shape ->
+                PickerListItem(
+                    headlineText = stringResource(id = R.string.widget_defaults_corner_radius),
+                    currentValue = photoWidget.cornerRadius.toString(),
+                    onClick = onCornerRadiusClick,
+                    shape = shape,
+                )
+            }
+        }
 
+        if (photoWidget.aspectRatio != PhotoWidgetAspectRatio.FILL_WIDGET) {
+            item { shape: Shape ->
+                val currentValue: String = buildString {
+                    append(stringResource(photoWidget.border.label))
+
+                    when (photoWidget.border) {
+                        is PhotoWidgetBorder.None -> Unit
+
+                        is PhotoWidgetBorder.Color -> {
+                            append(" (#${photoWidget.border.colorHex.toUpperCase(LocalLocale.current)})")
+                        }
+
+                        is PhotoWidgetBorder.Dynamic -> {
+                            append(" (${stringResource(photoWidget.border.type.label)})")
+                        }
+
+                        is PhotoWidgetBorder.MatchPhoto -> {
+                            append(" (${stringResource(photoWidget.border.type.label)})")
+                        }
+                    }
+                }
+
+                PickerListItem(
+                    headlineText = stringResource(R.string.photo_widget_configure_border),
+                    currentValue = currentValue,
+                    onClick = onBorderClick,
+                    shape = shape,
+                )
+            }
+        }
+
+        item { shape: Shape ->
             PickerListItem(
-                headlineText = stringResource(R.string.photo_widget_configure_border),
-                currentValue = currentValue,
-                onClick = onBorderClick,
-                modifier = Modifier.padding(horizontal = 16.dp),
-                shape = Shapes.MiddleShape,
+                headlineText = stringResource(id = R.string.widget_defaults_opacity),
+                currentValue = formatPercent(value = photoWidget.colors.opacity, fractionDigits = 0),
+                onClick = onOpacityClick,
+                shape = shape,
             )
         }
 
-        PickerListItem(
-            headlineText = stringResource(id = R.string.widget_defaults_opacity),
-            currentValue = formatPercent(value = photoWidget.colors.opacity, fractionDigits = 0),
-            onClick = onOpacityClick,
-            modifier = Modifier.padding(horizontal = 16.dp),
-            shape = Shapes.MiddleShape,
-        )
+        item { shape: Shape ->
+            PickerListItem(
+                headlineText = stringResource(R.string.widget_defaults_saturation),
+                currentValue = formatRangeValue(
+                    value = PhotoWidgetColors.pickerSaturation(photoWidget.colors.saturation),
+                ),
+                onClick = onSaturationClick,
+                shape = shape,
+            )
+        }
 
-        PickerListItem(
-            headlineText = stringResource(R.string.widget_defaults_saturation),
-            currentValue = formatRangeValue(value = PhotoWidgetColors.pickerSaturation(photoWidget.colors.saturation)),
-            onClick = onSaturationClick,
-            modifier = Modifier.padding(horizontal = 16.dp),
-            shape = Shapes.MiddleShape,
-        )
-
-        PickerListItem(
-            headlineText = stringResource(R.string.widget_defaults_brightness),
-            currentValue = formatRangeValue(value = photoWidget.colors.brightness),
-            onClick = onBrightnessClick,
-            modifier = Modifier.padding(horizontal = 16.dp),
-            shape = if (photoWidget.aspectRatio != PhotoWidgetAspectRatio.FILL_WIDGET) {
-                Shapes.MiddleShape
-            } else {
-                Shapes.BottomShape
-            },
-        )
+        item { shape: Shape ->
+            PickerListItem(
+                headlineText = stringResource(R.string.widget_defaults_brightness),
+                currentValue = formatRangeValue(value = photoWidget.colors.brightness),
+                onClick = onBrightnessClick,
+                shape = shape,
+            )
+        }
 
         if (photoWidget.aspectRatio != PhotoWidgetAspectRatio.FILL_WIDGET) {
-            PickerListItem(
-                headlineText = stringResource(id = R.string.photo_widget_configure_offset),
-                currentValue = stringResource(
-                    id = R.string.photo_widget_configure_offset_current_values,
-                    photoWidget.horizontalOffset,
-                    photoWidget.verticalOffset,
-                ),
-                onClick = onOffsetClick,
-                modifier = Modifier.padding(horizontal = 16.dp),
-                shape = Shapes.MiddleShape,
-            )
+            item { shape: Shape ->
+                PickerListItem(
+                    headlineText = stringResource(id = R.string.photo_widget_configure_offset),
+                    currentValue = stringResource(
+                        id = R.string.photo_widget_configure_offset_current_values,
+                        photoWidget.horizontalOffset,
+                        photoWidget.verticalOffset,
+                    ),
+                    onClick = onOffsetClick,
+                    shape = shape,
+                )
+            }
 
-            PickerListItem(
-                headlineText = stringResource(id = R.string.photo_widget_configure_padding),
-                currentValue = photoWidget.padding.toString(),
-                onClick = onPaddingClick,
-                modifier = Modifier.padding(horizontal = 16.dp),
-                shape = Shapes.BottomShape,
-            )
+            item { shape: Shape ->
+                PickerListItem(
+                    headlineText = stringResource(id = R.string.photo_widget_configure_padding),
+                    currentValue = photoWidget.padding.toString(),
+                    onClick = onPaddingClick,
+                    shape = shape,
+                )
+            }
         }
     }
 }

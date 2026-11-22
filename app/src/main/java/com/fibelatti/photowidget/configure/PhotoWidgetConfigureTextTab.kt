@@ -103,6 +103,7 @@ import com.fibelatti.ui.component.ListItem
 import com.fibelatti.ui.component.NumberSpinner
 import com.fibelatti.ui.component.PickerListItem
 import com.fibelatti.ui.component.RadioGroup
+import com.fibelatti.ui.component.SegmentedColumn
 import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.component.selectableListItemColors
 import com.fibelatti.ui.foundation.Shapes
@@ -157,95 +158,113 @@ fun PhotoWidgetConfigureTextTab(
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        PickerListItem(
-            headlineText = stringResource(R.string.photo_widget_configure_text_type),
-            currentValue = stringResource(photoWidgetText.typeLabel()),
-            onClick = textTypeSheetState::showBottomSheet,
-            shape = if (photoWidgetText is PhotoWidgetText.None) Shapes.StandaloneShape else Shapes.TopShape,
-        )
-
-        when (photoWidgetText) {
-            is PhotoWidgetText.None -> Unit
-
-            is PhotoWidgetText.Label, is PhotoWidgetText.FileName -> {
-                if (photoWidgetText is PhotoWidgetText.Label) {
-                    PickerListItem(
-                        headlineText = stringResource(R.string.photo_widget_configure_text_value),
-                        currentValue = photoWidgetText.value,
-                        onClick = textValueSheetState::showBottomSheet,
-                        shape = Shapes.MiddleShape,
-                    )
-                }
-
+        SegmentedColumn {
+            item { shape: Shape ->
                 PickerListItem(
-                    headlineText = stringResource(R.string.photo_widget_configure_text_color),
-                    currentValue = buildString {
-                        append(stringResource(photoWidgetText.color.label))
-
-                        when (val color: PhotoWidgetTextColor = photoWidgetText.color) {
-                            is PhotoWidgetTextColor.Colored -> {
-                                append(" (#${color.colorHex.toUpperCase(LocalLocale.current)})")
-                            }
-
-                            is PhotoWidgetTextColor.Dynamic -> {
-                                append(" (${stringResource(color.type.label)})")
-                            }
-
-                            is PhotoWidgetTextColor.Palette -> {
-                                append(" (${stringResource(color.type.label)})")
-                            }
-                        }
-                    },
-                    onClick = colorSheetState::showBottomSheet,
-                    shape = Shapes.MiddleShape,
-                )
-
-                PickerListItem(
-                    headlineText = stringResource(R.string.photo_widget_configure_text_font),
-                    currentValue = when (val font = photoWidgetText.font) {
-                        is PhotoWidgetTextFont.Default -> stringResource(
-                            R.string.photo_widget_configure_text_font_default,
-                        )
-
-                        is PhotoWidgetTextFont.GoogleFont -> font.family
-
-                        is PhotoWidgetTextFont.Custom -> font.fileName
-                    },
-                    onClick = fontSheetState::showBottomSheet,
-                    shape = Shapes.MiddleShape,
-                )
-
-                PickerListItem(
-                    headlineText = stringResource(R.string.photo_widget_configure_text_size),
-                    currentValue = photoWidgetText.size.toString(),
-                    onClick = textSizeSheetState::showBottomSheet,
-                    shape = Shapes.MiddleShape,
-                )
-
-                PickerListItem(
-                    headlineText = stringResource(R.string.photo_widget_configure_text_vertical_offset),
-                    currentValue = "${stringResource(photoWidgetText.position.label)} " +
-                        "(${photoWidgetText.verticalOffset})",
-                    onClick = verticalOffsetSheetState::showBottomSheet,
-                    shape = Shapes.MiddleShape,
-                )
-
-                BooleanListItem(
-                    headlineText = stringResource(R.string.photo_widget_configure_text_apply_shadow),
-                    currentValue = photoWidgetText.hasShadow,
-                    onValueChange = { newValue ->
-                        onPhotoWidgetTextChange(photoWidgetText.copyStyle(hasShadow = newValue))
-                    },
-                    shape = Shapes.BottomShape,
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                InformationalPanel(
-                    text = stringResource(R.string.photo_widget_configure_text_caveat),
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    headlineText = stringResource(R.string.photo_widget_configure_text_type),
+                    currentValue = stringResource(photoWidgetText.typeLabel()),
+                    onClick = textTypeSheetState::showBottomSheet,
+                    shape = shape,
                 )
             }
+
+            when (photoWidgetText) {
+                is PhotoWidgetText.None -> Unit
+
+                is PhotoWidgetText.Label, is PhotoWidgetText.FileName -> {
+                    if (photoWidgetText is PhotoWidgetText.Label) {
+                        item { shape: Shape ->
+                            PickerListItem(
+                                headlineText = stringResource(R.string.photo_widget_configure_text_value),
+                                currentValue = photoWidgetText.value,
+                                onClick = textValueSheetState::showBottomSheet,
+                                shape = shape,
+                            )
+                        }
+                    }
+
+                    item { shape: Shape ->
+                        PickerListItem(
+                            headlineText = stringResource(R.string.photo_widget_configure_text_color),
+                            currentValue = buildString {
+                                append(stringResource(photoWidgetText.color.label))
+
+                                when (val color: PhotoWidgetTextColor = photoWidgetText.color) {
+                                    is PhotoWidgetTextColor.Colored -> {
+                                        append(" (#${color.colorHex.toUpperCase(LocalLocale.current)})")
+                                    }
+
+                                    is PhotoWidgetTextColor.Dynamic -> {
+                                        append(" (${stringResource(color.type.label)})")
+                                    }
+
+                                    is PhotoWidgetTextColor.Palette -> {
+                                        append(" (${stringResource(color.type.label)})")
+                                    }
+                                }
+                            },
+                            onClick = colorSheetState::showBottomSheet,
+                            shape = shape,
+                        )
+                    }
+
+                    item { shape: Shape ->
+                        PickerListItem(
+                            headlineText = stringResource(R.string.photo_widget_configure_text_font),
+                            currentValue = when (val font = photoWidgetText.font) {
+                                is PhotoWidgetTextFont.Default -> stringResource(
+                                    R.string.photo_widget_configure_text_font_default,
+                                )
+
+                                is PhotoWidgetTextFont.GoogleFont -> font.family
+
+                                is PhotoWidgetTextFont.Custom -> font.fileName
+                            },
+                            onClick = fontSheetState::showBottomSheet,
+                            shape = shape,
+                        )
+                    }
+
+                    item { shape: Shape ->
+                        PickerListItem(
+                            headlineText = stringResource(R.string.photo_widget_configure_text_size),
+                            currentValue = photoWidgetText.size.toString(),
+                            onClick = textSizeSheetState::showBottomSheet,
+                            shape = shape,
+                        )
+                    }
+
+                    item { shape: Shape ->
+                        PickerListItem(
+                            headlineText = stringResource(R.string.photo_widget_configure_text_vertical_offset),
+                            currentValue = "${stringResource(photoWidgetText.position.label)} " +
+                                "(${photoWidgetText.verticalOffset})",
+                            onClick = verticalOffsetSheetState::showBottomSheet,
+                            shape = shape,
+                        )
+                    }
+
+                    item { shape: Shape ->
+                        BooleanListItem(
+                            headlineText = stringResource(R.string.photo_widget_configure_text_apply_shadow),
+                            currentValue = photoWidgetText.hasShadow,
+                            onValueChange = { newValue ->
+                                onPhotoWidgetTextChange(photoWidgetText.copyStyle(hasShadow = newValue))
+                            },
+                            shape = shape,
+                        )
+                    }
+                }
+            }
+        }
+
+        if (photoWidgetText !is PhotoWidgetText.None) {
+            Spacer(modifier = Modifier.height(8.dp))
+
+            InformationalPanel(
+                text = stringResource(R.string.photo_widget_configure_text_caveat),
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
         }
     }
 
@@ -713,7 +732,7 @@ private fun PhotoWidgetTextFontPicker(
                         }
                         appSheetState.hideBottomSheet()
                     },
-                    shape = if (index == 0) Shapes.TopShape else Shapes.MiddleShape,
+                    shape = Shapes.segment(index = index, count = fonts.size + 1),
                 )
             }
 
@@ -728,7 +747,7 @@ private fun PhotoWidgetTextFontPicker(
                         onChooseCustomFontClick()
                         appSheetState.hideBottomSheet()
                     },
-                    shape = Shapes.BottomShape,
+                    shape = Shapes.segment(index = fonts.size, count = fonts.size + 1),
                 )
             }
         }

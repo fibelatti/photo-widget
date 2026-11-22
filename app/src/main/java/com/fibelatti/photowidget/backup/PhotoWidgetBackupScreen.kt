@@ -55,6 +55,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.blur.BlurRadiusSpec
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -74,7 +75,7 @@ import com.fibelatti.photowidget.platform.showMaterialAlertDialog
 import com.fibelatti.photowidget.ui.AsyncPhotoViewer
 import com.fibelatti.ui.component.ListItem
 import com.fibelatti.ui.component.LoadingIndicator
-import com.fibelatti.ui.foundation.Shapes
+import com.fibelatti.ui.component.SegmentedColumn
 import com.fibelatti.ui.icons.AppIcons
 import com.fibelatti.ui.icons.Back
 import com.fibelatti.ui.icons.Export
@@ -271,21 +272,23 @@ private fun PhotoWidgetBackupContent(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        ListItem(
-            headlineText = stringResource(R.string.backup_create),
-            onClick = onCreateBackupClick,
-            modifier = Modifier.padding(horizontal = 16.dp),
-            shape = Shapes.TopShape,
-        )
+        SegmentedColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
+            item { shape: Shape ->
+                ListItem(
+                    headlineText = stringResource(R.string.backup_create),
+                    onClick = onCreateBackupClick,
+                    shape = shape,
+                )
+            }
 
-        Spacer(modifier = Modifier.height(2.dp))
-
-        ListItem(
-            headlineText = stringResource(R.string.backup_restore),
-            onClick = onRestoreFromBackupClick,
-            modifier = Modifier.padding(horizontal = 16.dp),
-            shape = Shapes.BottomShape,
-        )
+            item { shape: Shape ->
+                ListItem(
+                    headlineText = stringResource(R.string.backup_restore),
+                    onClick = onRestoreFromBackupClick,
+                    shape = shape,
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.height(32.dp))
 

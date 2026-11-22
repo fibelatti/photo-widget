@@ -1,8 +1,6 @@
 package com.fibelatti.photowidget.configure
 
 import android.content.Context
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
@@ -12,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -27,8 +26,8 @@ import com.fibelatti.photowidget.platform.isBackgroundRestricted
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.BooleanListItem
 import com.fibelatti.ui.component.PickerListItem
+import com.fibelatti.ui.component.SegmentedColumn
 import com.fibelatti.ui.component.rememberAppSheetState
-import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.preview.PreviewAll
 import com.fibelatti.ui.theme.ExtendedTheme
 import java.util.concurrent.TimeUnit
@@ -113,98 +112,98 @@ fun PhotoWidgetConfigureBehaviorTab(
     onTapActionPickerClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
+    val showTimerPicker: Boolean = photoWidget.photos.size > 1 && photoWidget.source != PhotoWidgetSource.GIF
+    val showGifIntervalPicker: Boolean = photoWidget.photos.size > 1 && photoWidget.source == PhotoWidgetSource.GIF
+    val showShufflePicker: Boolean = photoWidget.canShuffle
+    val showSortPicker: Boolean = photoWidget.source == PhotoWidgetSource.DIRECTORY && !photoWidget.shuffle
+
+    SegmentedColumn(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp),
     ) {
-        val showTimerPicker: Boolean = photoWidget.photos.size > 1 && photoWidget.source != PhotoWidgetSource.GIF
-        val showGifIntervalPicker: Boolean = photoWidget.photos.size > 1 && photoWidget.source == PhotoWidgetSource.GIF
-        val showShufflePicker: Boolean = photoWidget.canShuffle
-        val showSortPicker: Boolean = photoWidget.source == PhotoWidgetSource.DIRECTORY && !photoWidget.shuffle
-
-        PickerListItem(
-            headlineText = stringResource(id = R.string.widget_defaults_tap_action),
-            currentValue = buildString {
-                appendLine(stringResource(id = photoWidget.tapActions.left.label))
-                appendLine(stringResource(id = photoWidget.tapActions.center.label))
-                appendLine(stringResource(id = photoWidget.tapActions.right.label))
-            },
-            onClick = onTapActionPickerClick,
-            shape = if (showTimerPicker || showGifIntervalPicker || showShufflePicker || showSortPicker) {
-                Shapes.TopShape
-            } else {
-                Shapes.StandaloneShape
-            },
-        )
+        item { shape: Shape ->
+            PickerListItem(
+                headlineText = stringResource(id = R.string.widget_defaults_tap_action),
+                currentValue = buildString {
+                    appendLine(stringResource(id = photoWidget.tapActions.left.label))
+                    appendLine(stringResource(id = photoWidget.tapActions.center.label))
+                    appendLine(stringResource(id = photoWidget.tapActions.right.label))
+                },
+                onClick = onTapActionPickerClick,
+                shape = shape,
+            )
+        }
 
         if (showTimerPicker) {
-            PickerListItem(
-                headlineText = stringResource(id = R.string.widget_defaults_cycling),
-                currentValue = when (photoWidget.cycleMode) {
-                    is PhotoWidgetCycleMode.Interval -> {
-                        val intervalString = pluralStringResource(
-                            id = when (photoWidget.cycleMode.loopingInterval.timeUnit) {
-                                TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
-                                TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
-                                TimeUnit.HOURS -> R.plurals.photo_widget_configure_interval_current_hours
-                                else -> R.plurals.photo_widget_configure_interval_current_days
-                            },
-                            count = photoWidget.cycleMode.loopingInterval.repeatInterval.toInt(),
-                            photoWidget.cycleMode.loopingInterval.repeatInterval,
-                        )
-                        stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
-                    }
+            item(key = "cycling") { shape: Shape ->
+                PickerListItem(
+                    headlineText = stringResource(id = R.string.widget_defaults_cycling),
+                    currentValue = when (photoWidget.cycleMode) {
+                        is PhotoWidgetCycleMode.Interval -> {
+                            val intervalString = pluralStringResource(
+                                id = when (photoWidget.cycleMode.loopingInterval.timeUnit) {
+                                    TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
+                                    TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
+                                    TimeUnit.HOURS -> R.plurals.photo_widget_configure_interval_current_hours
+                                    else -> R.plurals.photo_widget_configure_interval_current_days
+                                },
+                                count = photoWidget.cycleMode.loopingInterval.repeatInterval.toInt(),
+                                photoWidget.cycleMode.loopingInterval.repeatInterval,
+                            )
+                            stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
+                        }
 
-                    is PhotoWidgetCycleMode.Schedule -> {
-                        pluralStringResource(
-                            id = R.plurals.photo_widget_configure_schedule_times,
-                            count = photoWidget.cycleMode.triggers.size,
-                            photoWidget.cycleMode.triggers.size,
-                        )
-                    }
+                        is PhotoWidgetCycleMode.Schedule -> {
+                            pluralStringResource(
+                                id = R.plurals.photo_widget_configure_schedule_times,
+                                count = photoWidget.cycleMode.triggers.size,
+                                photoWidget.cycleMode.triggers.size,
+                            )
+                        }
 
-                    is PhotoWidgetCycleMode.AdvancedSchedule -> {
-                        stringResource(id = R.string.photo_widget_configure_cycle_mode_advanced_schedule)
-                    }
+                        is PhotoWidgetCycleMode.AdvancedSchedule -> {
+                            stringResource(id = R.string.photo_widget_configure_cycle_mode_advanced_schedule)
+                        }
 
-                    is PhotoWidgetCycleMode.Disabled -> {
-                        stringResource(id = R.string.photo_widget_configure_cycling_mode_disabled)
-                    }
-                },
-                onClick = onCycleModePickerClick,
-                modifier = Modifier.padding(top = 2.dp),
-                shape = if (showShufflePicker || showSortPicker) Shapes.MiddleShape else Shapes.BottomShape,
-            )
+                        is PhotoWidgetCycleMode.Disabled -> {
+                            stringResource(id = R.string.photo_widget_configure_cycling_mode_disabled)
+                        }
+                    },
+                    onClick = onCycleModePickerClick,
+                    shape = shape,
+                )
+            }
         }
 
         if (showGifIntervalPicker) {
-            PickerListItem(
-                headlineText = stringResource(R.string.photo_widget_configure_gif_frame_interval),
-                currentValue = "${photoWidget.gifInterval} ms",
-                onClick = onGifIntervalPickerClick,
-                modifier = Modifier.padding(top = 2.dp),
-                shape = Shapes.BottomShape,
-            )
+            item(key = "gif_interval") { shape: Shape ->
+                PickerListItem(
+                    headlineText = stringResource(R.string.photo_widget_configure_gif_frame_interval),
+                    currentValue = "${photoWidget.gifInterval} ms",
+                    onClick = onGifIntervalPickerClick,
+                    shape = shape,
+                )
+            }
         }
 
         if (showShufflePicker) {
-            BooleanListItem(
-                headlineText = stringResource(R.string.widget_defaults_shuffle),
-                currentValue = photoWidget.shuffle,
-                onValueChange = onShuffleChange,
-                modifier = Modifier.padding(top = 2.dp),
-                shape = if (showSortPicker) Shapes.MiddleShape else Shapes.BottomShape,
-            )
+            item(key = "shuffle") { shape: Shape ->
+                BooleanListItem(
+                    headlineText = stringResource(R.string.widget_defaults_shuffle),
+                    currentValue = photoWidget.shuffle,
+                    onValueChange = onShuffleChange,
+                    shape = shape,
+                )
+            }
         }
 
-        AnimatedVisibility(visible = showSortPicker) {
+        item(key = "sort", visible = showSortPicker) { shape: Shape ->
             PickerListItem(
                 headlineText = stringResource(R.string.photo_widget_directory_sort_title),
                 currentValue = stringResource(id = photoWidget.directorySorting.label),
                 onClick = onSortClick,
-                modifier = Modifier.padding(top = 2.dp),
-                shape = Shapes.BottomShape,
+                shape = shape,
             )
         }
     }

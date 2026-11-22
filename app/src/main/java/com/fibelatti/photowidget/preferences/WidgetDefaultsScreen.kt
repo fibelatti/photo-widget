@@ -22,6 +22,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -51,10 +52,10 @@ import com.fibelatti.photowidget.widget.PhotoWidgetSyncWorker
 import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.BooleanListItem
 import com.fibelatti.ui.component.PickerListItem
+import com.fibelatti.ui.component.SegmentedColumn
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
 import com.fibelatti.ui.component.SelectionDialogBottomSheetMode
 import com.fibelatti.ui.component.rememberAppSheetState
-import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.icons.AppIcons
 import com.fibelatti.ui.icons.Back
 import com.fibelatti.ui.preview.PreviewAll
@@ -258,108 +259,130 @@ private fun WidgetDefaultsContent(
             .padding(start = 16.dp, end = 16.dp, bottom = 32.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        PickerListItem(
-            headlineText = stringResource(id = R.string.photo_widget_aspect_ratio_title),
-            currentValue = stringResource(id = userPreferences.defaultAspectRatio.label),
-            onClick = onAspectRatioClick,
-            shape = Shapes.TopShape,
-        )
+        SegmentedColumn {
+            item { shape: Shape ->
+                PickerListItem(
+                    headlineText = stringResource(id = R.string.photo_widget_aspect_ratio_title),
+                    currentValue = stringResource(id = userPreferences.defaultAspectRatio.label),
+                    onClick = onAspectRatioClick,
+                    shape = shape,
+                )
+            }
 
-        PickerListItem(
-            headlineText = stringResource(id = R.string.widget_defaults_source),
-            currentValue = stringResource(id = userPreferences.defaultSource.label),
-            onClick = onSourceClick,
-            shape = Shapes.MiddleShape,
-        )
+            item { shape: Shape ->
+                PickerListItem(
+                    headlineText = stringResource(id = R.string.widget_defaults_source),
+                    currentValue = stringResource(id = userPreferences.defaultSource.label),
+                    onClick = onSourceClick,
+                    shape = shape,
+                )
+            }
 
-        ShapeListItem(
-            headlineText = stringResource(id = R.string.widget_defaults_shape),
-            currentValue = userPreferences.defaultShape,
-            shapeRotation = PhotoWidgetShapeRotation.DEFAULT,
-            onClick = onShapeClick,
-            shape = Shapes.MiddleShape,
-        )
+            item { shape: Shape ->
+                ShapeListItem(
+                    headlineText = stringResource(id = R.string.widget_defaults_shape),
+                    currentValue = userPreferences.defaultShape,
+                    shapeRotation = PhotoWidgetShapeRotation.DEFAULT,
+                    onClick = onShapeClick,
+                    shape = shape,
+                )
+            }
 
-        PickerListItem(
-            headlineText = stringResource(id = R.string.widget_defaults_corner_radius),
-            currentValue = userPreferences.defaultCornerRadius.toString(),
-            onClick = onCornerRadiusClick,
-            shape = Shapes.MiddleShape,
-        )
+            item { shape: Shape ->
+                PickerListItem(
+                    headlineText = stringResource(id = R.string.widget_defaults_corner_radius),
+                    currentValue = userPreferences.defaultCornerRadius.toString(),
+                    onClick = onCornerRadiusClick,
+                    shape = shape,
+                )
+            }
 
-        PickerListItem(
-            headlineText = stringResource(id = R.string.widget_defaults_opacity),
-            currentValue = formatPercent(value = userPreferences.defaultOpacity, fractionDigits = 0),
-            onClick = onOpacityClick,
-            shape = Shapes.MiddleShape,
-        )
+            item { shape: Shape ->
+                PickerListItem(
+                    headlineText = stringResource(id = R.string.widget_defaults_opacity),
+                    currentValue = formatPercent(value = userPreferences.defaultOpacity, fractionDigits = 0),
+                    onClick = onOpacityClick,
+                    shape = shape,
+                )
+            }
 
-        PickerListItem(
-            headlineText = stringResource(R.string.widget_defaults_saturation),
-            currentValue = formatRangeValue(
-                value = PhotoWidgetColors.pickerSaturation(userPreferences.defaultSaturation),
-            ),
-            onClick = onSaturationClick,
-            shape = Shapes.MiddleShape,
-        )
+            item { shape: Shape ->
+                PickerListItem(
+                    headlineText = stringResource(R.string.widget_defaults_saturation),
+                    currentValue = formatRangeValue(
+                        value = PhotoWidgetColors.pickerSaturation(userPreferences.defaultSaturation),
+                    ),
+                    onClick = onSaturationClick,
+                    shape = shape,
+                )
+            }
 
-        PickerListItem(
-            headlineText = stringResource(R.string.widget_defaults_brightness),
-            currentValue = formatRangeValue(value = userPreferences.defaultBrightness),
-            onClick = onBrightnessClick,
-            shape = Shapes.MiddleShape,
-        )
+            item { shape: Shape ->
+                PickerListItem(
+                    headlineText = stringResource(R.string.widget_defaults_brightness),
+                    currentValue = formatRangeValue(value = userPreferences.defaultBrightness),
+                    onClick = onBrightnessClick,
+                    shape = shape,
+                )
+            }
 
-        PickerListItem(
-            headlineText = stringResource(id = R.string.widget_defaults_cycling),
-            currentValue = when (userPreferences.defaultCycleMode) {
-                is PhotoWidgetCycleMode.Interval -> {
-                    val intervalString = pluralStringResource(
-                        id = when (userPreferences.defaultCycleMode.loopingInterval.timeUnit) {
-                            TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
-                            TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
-                            TimeUnit.HOURS -> R.plurals.photo_widget_configure_interval_current_hours
-                            else -> R.plurals.photo_widget_configure_interval_current_days
-                        },
-                        count = userPreferences.defaultCycleMode.loopingInterval.repeatInterval.toInt(),
-                        userPreferences.defaultCycleMode.loopingInterval.repeatInterval,
-                    )
-                    stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
-                }
+            item { shape: Shape ->
+                PickerListItem(
+                    headlineText = stringResource(id = R.string.widget_defaults_cycling),
+                    currentValue = when (userPreferences.defaultCycleMode) {
+                        is PhotoWidgetCycleMode.Interval -> {
+                            val intervalString = pluralStringResource(
+                                id = when (userPreferences.defaultCycleMode.loopingInterval.timeUnit) {
+                                    TimeUnit.SECONDS -> R.plurals.photo_widget_configure_interval_current_seconds
+                                    TimeUnit.MINUTES -> R.plurals.photo_widget_configure_interval_current_minutes
+                                    TimeUnit.HOURS -> R.plurals.photo_widget_configure_interval_current_hours
+                                    else -> R.plurals.photo_widget_configure_interval_current_days
+                                },
+                                count = userPreferences.defaultCycleMode.loopingInterval.repeatInterval.toInt(),
+                                userPreferences.defaultCycleMode.loopingInterval.repeatInterval,
+                            )
+                            stringResource(id = R.string.photo_widget_configure_interval_current_label, intervalString)
+                        }
 
-                is PhotoWidgetCycleMode.Schedule -> {
-                    pluralStringResource(
-                        id = R.plurals.photo_widget_configure_schedule_times,
-                        count = userPreferences.defaultCycleMode.triggers.size,
-                        userPreferences.defaultCycleMode.triggers.size,
-                    )
-                }
+                        is PhotoWidgetCycleMode.Schedule -> {
+                            pluralStringResource(
+                                id = R.plurals.photo_widget_configure_schedule_times,
+                                count = userPreferences.defaultCycleMode.triggers.size,
+                                userPreferences.defaultCycleMode.triggers.size,
+                            )
+                        }
 
-                is PhotoWidgetCycleMode.AdvancedSchedule -> {
-                    stringResource(id = R.string.photo_widget_configure_cycle_mode_advanced_schedule)
-                }
+                        is PhotoWidgetCycleMode.AdvancedSchedule -> {
+                            stringResource(id = R.string.photo_widget_configure_cycle_mode_advanced_schedule)
+                        }
 
-                is PhotoWidgetCycleMode.Disabled -> {
-                    stringResource(id = R.string.photo_widget_configure_cycling_mode_disabled)
-                }
-            },
-            onClick = onIntervalClick,
-            shape = Shapes.MiddleShape,
-        )
+                        is PhotoWidgetCycleMode.Disabled -> {
+                            stringResource(id = R.string.photo_widget_configure_cycling_mode_disabled)
+                        }
+                    },
+                    onClick = onIntervalClick,
+                    shape = shape,
+                )
+            }
 
-        BooleanListItem(
-            headlineText = stringResource(id = R.string.widget_defaults_shuffle),
-            currentValue = userPreferences.defaultShuffle,
-            onValueChange = onShuffleChange,
-            shape = Shapes.MiddleShape,
-        )
+            item { shape: Shape ->
+                BooleanListItem(
+                    headlineText = stringResource(id = R.string.widget_defaults_shuffle),
+                    currentValue = userPreferences.defaultShuffle,
+                    onValueChange = onShuffleChange,
+                    shape = shape,
+                )
+            }
 
-        PickerListItem(
-            headlineText = stringResource(R.string.photo_widget_directory_sort_title),
-            currentValue = stringResource(id = userPreferences.defaultDirectorySorting.label),
-            onClick = onSortClick,
-            shape = Shapes.BottomShape,
-        )
+            item { shape: Shape ->
+                PickerListItem(
+                    headlineText = stringResource(R.string.photo_widget_directory_sort_title),
+                    currentValue = stringResource(id = userPreferences.defaultDirectorySorting.label),
+                    onClick = onSortClick,
+                    shape = shape,
+                )
+            }
+        }
 
         OutlinedButton(
             onClick = onClearDefaultsClick,

@@ -48,6 +48,7 @@ import com.fibelatti.photowidget.platform.requestScheduleExactAlarmIntent
 import com.fibelatti.photowidget.widget.PhotoWidgetRescheduleReceiver
 import com.fibelatti.ui.component.AutoSizeText
 import com.fibelatti.ui.component.ListItem
+import com.fibelatti.ui.component.SegmentedColumn
 import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.icons.Alarm
@@ -177,6 +178,8 @@ private fun SettingsScreen(
     onViewLicensesClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val showDynamicColors: Boolean = DynamicColors.isDynamicColorAvailable() || LocalInspectionMode.current
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -188,64 +191,73 @@ private fun SettingsScreen(
             text = R.string.photo_widget_home_section_widgets,
         )
 
-        SettingsListItem(
-            icon = rememberVectorPainter(AppIcons.Default),
-            label = R.string.widget_defaults_title,
-            onClick = onDefaultsClick,
-            description = R.string.widget_defaults_description,
-            shape = Shapes.TopShape,
-        )
+        SegmentedColumn {
+            item { shape: Shape ->
+                SettingsListItem(
+                    icon = rememberVectorPainter(AppIcons.Default),
+                    label = R.string.widget_defaults_title,
+                    onClick = onDefaultsClick,
+                    description = R.string.widget_defaults_description,
+                    shape = shape,
+                )
+            }
 
-        SettingsListItem(
-            icon = rememberVectorPainter(AppIcons.Settings),
-            label = R.string.widget_settings_title,
-            onClick = onWidgetSettingsClick,
-            description = R.string.widget_settings_description,
-        )
+            item { shape: Shape ->
+                SettingsListItem(
+                    icon = rememberVectorPainter(AppIcons.Settings),
+                    label = R.string.widget_settings_title,
+                    onClick = onWidgetSettingsClick,
+                    description = R.string.widget_settings_description,
+                    shape = shape,
+                )
+            }
 
-        SettingsListItem(
-            icon = rememberVectorPainter(AppIcons.HardDrive),
-            label = R.string.photo_widget_home_data_saver,
-            onClick = onDataSaverClick,
-            description = R.string.photo_widget_home_data_saver_description,
-            shape = Shapes.BottomShape,
-        )
+            item { shape: Shape ->
+                SettingsListItem(
+                    icon = rememberVectorPainter(AppIcons.HardDrive),
+                    label = R.string.photo_widget_home_data_saver,
+                    onClick = onDataSaverClick,
+                    description = R.string.photo_widget_home_data_saver_description,
+                    shape = shape,
+                )
+            }
+        }
 
         SettingsSectionHeader(
             text = R.string.photo_widget_home_section_background_activity,
         )
 
-        AnimatedVisibility(visible = !canScheduleExactAlarms) {
-            SettingsListItem(
-                icon = rememberVectorPainter(AppIcons.Alarm),
-                label = R.string.photo_widget_configure_interval_grant_permission,
-                onClick = onScheduleExactAlarmsClick,
-                description = R.string.photo_widget_configure_interval_grant_permission_description,
-                shape = Shapes.TopShape,
-            )
-        }
+        SegmentedColumn {
+            item(visible = !canScheduleExactAlarms) { shape: Shape ->
+                SettingsListItem(
+                    icon = rememberVectorPainter(AppIcons.Alarm),
+                    label = R.string.photo_widget_configure_interval_grant_permission,
+                    onClick = onScheduleExactAlarmsClick,
+                    description = R.string.photo_widget_configure_interval_grant_permission_description,
+                    shape = shape,
+                )
+            }
 
-        AnimatedVisibility(visible = isBatteryUsageRestricted) {
-            SettingsListItem(
-                icon = rememberVectorPainter(AppIcons.Battery),
-                label = R.string.photo_widget_configure_battery_optimization,
-                onClick = onBatteryOptimizationClick,
-                description = R.string.photo_widget_configure_battery_optimization_description,
-                shape = if (!canScheduleExactAlarms) Shapes.MiddleShape else Shapes.TopShape,
-            )
-        }
+            item(visible = isBatteryUsageRestricted) { shape: Shape ->
+                SettingsListItem(
+                    icon = rememberVectorPainter(AppIcons.Battery),
+                    label = R.string.photo_widget_configure_battery_optimization,
+                    onClick = onBatteryOptimizationClick,
+                    description = R.string.photo_widget_configure_battery_optimization_description,
+                    shape = shape,
+                )
+            }
 
-        SettingsListItem(
-            icon = rememberVectorPainter(AppIcons.KeepAlive),
-            label = R.string.photo_widget_keep_alive_service_dialog_title,
-            onClick = onKeepAliveClick,
-            description = R.string.photo_widget_home_background_service_description,
-            shape = if (!canScheduleExactAlarms || isBatteryUsageRestricted) {
-                Shapes.BottomShape
-            } else {
-                Shapes.StandaloneShape
-            },
-        )
+            item { shape: Shape ->
+                SettingsListItem(
+                    icon = rememberVectorPainter(AppIcons.KeepAlive),
+                    label = R.string.photo_widget_keep_alive_service_dialog_title,
+                    onClick = onKeepAliveClick,
+                    description = R.string.photo_widget_home_background_service_description,
+                    shape = shape,
+                )
+            }
+        }
 
         SettingsSectionHeader(
             text = R.string.photo_widget_home_section_data,
@@ -256,64 +268,84 @@ private fun SettingsScreen(
             label = R.string.photo_widget_home_backup,
             onClick = onBackupClick,
             description = R.string.photo_widget_home_backup_description,
-            shape = Shapes.StandaloneShape,
         )
 
         SettingsSectionHeader(
             text = R.string.photo_widget_home_section_appearance,
         )
 
-        SettingsListItem(
-            icon = rememberVectorPainter(AppIcons.Appearance),
-            label = R.string.photo_widget_home_appearance,
-            onClick = onAppearanceClick,
-            shape = Shapes.TopShape,
-        )
+        SegmentedColumn {
+            item { shape: Shape ->
+                SettingsListItem(
+                    icon = rememberVectorPainter(AppIcons.Appearance),
+                    label = R.string.photo_widget_home_appearance,
+                    onClick = onAppearanceClick,
+                    shape = shape,
+                )
+            }
 
-        if (DynamicColors.isDynamicColorAvailable() || LocalInspectionMode.current) {
-            SettingsListItem(
-                icon = rememberVectorPainter(AppIcons.DynamicColor),
-                label = R.string.photo_widget_home_dynamic_colors,
-                onClick = onColorsClick,
-            )
+            if (showDynamicColors) {
+                item { shape: Shape ->
+                    SettingsListItem(
+                        icon = rememberVectorPainter(AppIcons.DynamicColor),
+                        label = R.string.photo_widget_home_dynamic_colors,
+                        onClick = onColorsClick,
+                        shape = shape,
+                    )
+                }
+            }
+
+            item { shape: Shape ->
+                SettingsListItem(
+                    icon = rememberVectorPainter(AppIcons.Translation),
+                    label = R.string.photo_widget_home_translations,
+                    onClick = onAppLanguageClick,
+                    shape = shape,
+                )
+            }
         }
-
-        SettingsListItem(
-            icon = rememberVectorPainter(AppIcons.Translation),
-            label = R.string.photo_widget_home_translations,
-            onClick = onAppLanguageClick,
-            shape = Shapes.BottomShape,
-        )
 
         SettingsSectionHeader(
             text = R.string.photo_widget_home_section_about,
         )
 
-        SettingsListItem(
-            icon = rememberVectorPainter(AppIcons.Question),
-            label = R.string.photo_widget_home_help_settings,
-            onClick = onSendFeedbackClick,
-            shape = Shapes.TopShape,
-        )
+        SegmentedColumn {
+            item { shape: Shape ->
+                SettingsListItem(
+                    icon = rememberVectorPainter(AppIcons.Question),
+                    label = R.string.photo_widget_home_help_settings,
+                    onClick = onSendFeedbackClick,
+                    shape = shape,
+                )
+            }
 
-        SettingsListItem(
-            icon = rememberVectorPainter(AppIcons.Rate),
-            label = R.string.photo_widget_home_rate,
-            onClick = onRateClick,
-        )
+            item { shape: Shape ->
+                SettingsListItem(
+                    icon = rememberVectorPainter(AppIcons.Rate),
+                    label = R.string.photo_widget_home_rate,
+                    onClick = onRateClick,
+                    shape = shape,
+                )
+            }
 
-        SettingsListItem(
-            icon = rememberVectorPainter(AppIcons.Send),
-            label = R.string.photo_widget_home_share,
-            onClick = onShareClick,
-        )
+            item { shape: Shape ->
+                SettingsListItem(
+                    icon = rememberVectorPainter(AppIcons.Send),
+                    label = R.string.photo_widget_home_share,
+                    onClick = onShareClick,
+                    shape = shape,
+                )
+            }
 
-        SettingsListItem(
-            icon = rememberVectorPainter(AppIcons.PrivacyPolicy),
-            label = R.string.photo_widget_home_privacy_policy,
-            onClick = onPrivacyPolicyClick,
-            shape = Shapes.BottomShape,
-        )
+            item { shape: Shape ->
+                SettingsListItem(
+                    icon = rememberVectorPainter(AppIcons.PrivacyPolicy),
+                    label = R.string.photo_widget_home_privacy_policy,
+                    onClick = onPrivacyPolicyClick,
+                    shape = shape,
+                )
+            }
+        }
 
         SettingsFooter(
             onViewLicensesClick = onViewLicensesClick,
@@ -401,7 +433,7 @@ private fun SettingsListItem(
     @StringRes label: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    shape: Shape = Shapes.MiddleShape,
+    shape: Shape = Shapes.StandaloneShape,
     @StringRes description: Int? = null,
 ) {
     ListItem(

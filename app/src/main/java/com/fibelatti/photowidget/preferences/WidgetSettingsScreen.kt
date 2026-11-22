@@ -21,6 +21,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,8 +37,8 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.widget.PhotoWidgetSyncWorker
 import com.fibelatti.ui.component.BooleanListItem
 import com.fibelatti.ui.component.PickerListItem
+import com.fibelatti.ui.component.SegmentedColumn
 import com.fibelatti.ui.component.rememberAppSheetState
-import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.icons.AppIcons
 import com.fibelatti.ui.icons.Back
 import com.fibelatti.ui.preview.PreviewAll
@@ -124,36 +125,46 @@ private fun WidgetSettingsContent(
             .padding(start = 16.dp, end = 16.dp, bottom = 32.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        BooleanListItem(
-            headlineText = stringResource(id = R.string.widget_settings_crossfade),
-            currentValue = userPreferences.widgetEnableCrossfade,
-            onValueChange = onEnableCrossfadeChange,
-            supportingText = stringResource(id = R.string.widget_settings_crossfade_description),
-            shape = Shapes.TopShape,
-            headlineFlag = {
-                Text(
-                    text = stringResource(R.string.warning_experimental),
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.tertiaryContainer,
-                            shape = MaterialTheme.shapes.small,
+        SegmentedColumn {
+            item { shape: Shape ->
+                BooleanListItem(
+                    headlineText = stringResource(id = R.string.widget_settings_crossfade),
+                    currentValue = userPreferences.widgetEnableCrossfade,
+                    onValueChange = onEnableCrossfadeChange,
+                    supportingText = stringResource(id = R.string.widget_settings_crossfade_description),
+                    shape = shape,
+                    headlineFlag = {
+                        Text(
+                            text = stringResource(R.string.warning_experimental),
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp)
+                                .background(
+                                    color = MaterialTheme.colorScheme.tertiaryContainer,
+                                    shape = MaterialTheme.shapes.small,
+                                )
+                                .padding(horizontal = 8.dp, vertical = 4.dp),
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.labelSmall,
                         )
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.labelSmall,
+                    },
                 )
-            },
-        )
+            }
 
-        val resources = LocalResources.current
-        PickerListItem(
-            headlineText = stringResource(id = R.string.widget_settings_folder_sync_interval),
-            currentValue = folderSyncIntervalLabel(value = userPreferences.folderSyncInterval, resources = resources),
-            onClick = onFolderSyncIntervalClick,
-            shape = Shapes.BottomShape,
-        )
+            item { shape: Shape ->
+                val resources = LocalResources.current
+
+                PickerListItem(
+                    headlineText = stringResource(id = R.string.widget_settings_folder_sync_interval),
+                    currentValue = folderSyncIntervalLabel(
+                        value = userPreferences.folderSyncInterval,
+                        resources = resources,
+                    ),
+                    onClick = onFolderSyncIntervalClick,
+                    shape = shape,
+                )
+            }
+        }
 
         HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
 

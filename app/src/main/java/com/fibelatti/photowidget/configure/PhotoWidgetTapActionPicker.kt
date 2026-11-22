@@ -127,6 +127,7 @@ import com.fibelatti.ui.component.ConnectedButtonRowItem
 import com.fibelatti.ui.component.ListItem
 import com.fibelatti.ui.component.PickerListItem
 import com.fibelatti.ui.component.RadioGroup
+import com.fibelatti.ui.component.SegmentedColumn
 import com.fibelatti.ui.component.SelectionDialogBottomSheet
 import com.fibelatti.ui.component.rememberAppSheetState
 import com.fibelatti.ui.foundation.Shapes
@@ -1037,77 +1038,99 @@ private fun ViewFullScreenCustomizationContent(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        BooleanListItem(
-            headlineText = stringResource(id = R.string.photo_widget_configure_tap_action_increase_brightness),
-            currentValue = value.increaseBrightness,
-            onValueChange = { onValueChange(value.copy(increaseBrightness = it)) },
-            shape = Shapes.TopShape,
-        )
+        SegmentedColumn {
+            item { shape: Shape ->
+                BooleanListItem(
+                    headlineText = stringResource(id = R.string.photo_widget_configure_tap_action_increase_brightness),
+                    currentValue = value.increaseBrightness,
+                    onValueChange = { onValueChange(value.copy(increaseBrightness = it)) },
+                    shape = shape,
+                )
+            }
 
-        BooleanListItem(
-            headlineText = stringResource(R.string.photo_widget_configure_tap_action_view_original_photo),
-            currentValue = value.viewOriginalPhoto,
-            onValueChange = { onValueChange(value.copy(viewOriginalPhoto = it)) },
-            shape = Shapes.BottomShape,
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        BooleanListItem(
-            headlineText = stringResource(R.string.photo_widget_configure_tap_action_show_navigation_controls),
-            currentValue = value.showNavigationControls,
-            onValueChange = { onValueChange(value.copy(showNavigationControls = it)) },
-            supportingText = stringResource(
-                R.string.photo_widget_configure_tap_action_show_navigation_controls_description,
-            ),
-            shape = Shapes.TopShape,
-        )
-
-        BooleanListItem(
-            headlineText = stringResource(R.string.photo_widget_configure_tap_action_do_not_shuffle),
-            currentValue = value.noShuffle,
-            onValueChange = { onValueChange(value.copy(noShuffle = it)) },
-            shape = Shapes.MiddleShape,
-        )
-
-        BooleanListItem(
-            headlineText = stringResource(R.string.photo_widget_configure_tap_action_keep_current_photo),
-            currentValue = value.keepCurrentPhoto,
-            onValueChange = { onValueChange(value.copy(keepCurrentPhoto = it)) },
-            shape = Shapes.BottomShape,
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        BooleanListItem(
-            headlineText = stringResource(R.string.photo_widget_configure_tap_action_show_photo_picker),
-            currentValue = value.showPhotoPicker,
-            onValueChange = { onValueChange(value.copy(showPhotoPicker = it)) },
-            supportingText = stringResource(
-                R.string.photo_widget_configure_tap_action_show_photo_picker_description,
-            ),
-            shape = Shapes.TopShape,
-        )
-
-        if (source == PhotoWidgetSource.DIRECTORY) {
-            BooleanListItem(
-                headlineText = stringResource(R.string.photo_widget_configure_tap_action_show_photo_path),
-                currentValue = value.showPhotoPath,
-                onValueChange = { onValueChange(value.copy(showPhotoPath = it)) },
-                supportingText = stringResource(
-                    R.string.photo_widget_configure_tap_action_show_photo_path_description,
-                ),
-                shape = Shapes.MiddleShape,
-            )
+            item { shape: Shape ->
+                BooleanListItem(
+                    headlineText = stringResource(R.string.photo_widget_configure_tap_action_view_original_photo),
+                    currentValue = value.viewOriginalPhoto,
+                    onValueChange = { onValueChange(value.copy(viewOriginalPhoto = it)) },
+                    shape = shape,
+                )
+            }
         }
 
-        BooleanListItem(
-            headlineText = stringResource(R.string.photo_widget_configure_tap_action_show_share),
-            currentValue = value.showShare,
-            onValueChange = { onValueChange(value.copy(showShare = it)) },
-            supportingText = stringResource(R.string.photo_widget_configure_tap_action_show_share_description),
-            shape = Shapes.BottomShape,
-        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        SegmentedColumn {
+            item { shape: Shape ->
+                BooleanListItem(
+                    headlineText = stringResource(R.string.photo_widget_configure_tap_action_show_navigation_controls),
+                    currentValue = value.showNavigationControls,
+                    onValueChange = { onValueChange(value.copy(showNavigationControls = it)) },
+                    supportingText = stringResource(
+                        R.string.photo_widget_configure_tap_action_show_navigation_controls_description,
+                    ),
+                    shape = shape,
+                )
+            }
+
+            item { shape: Shape ->
+                BooleanListItem(
+                    headlineText = stringResource(R.string.photo_widget_configure_tap_action_do_not_shuffle),
+                    currentValue = value.noShuffle,
+                    onValueChange = { onValueChange(value.copy(noShuffle = it)) },
+                    shape = shape,
+                )
+            }
+
+            item { shape: Shape ->
+                BooleanListItem(
+                    headlineText = stringResource(R.string.photo_widget_configure_tap_action_keep_current_photo),
+                    currentValue = value.keepCurrentPhoto,
+                    onValueChange = { onValueChange(value.copy(keepCurrentPhoto = it)) },
+                    shape = shape,
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        SegmentedColumn {
+            item { shape: Shape ->
+                BooleanListItem(
+                    headlineText = stringResource(R.string.photo_widget_configure_tap_action_show_photo_picker),
+                    currentValue = value.showPhotoPicker,
+                    onValueChange = { onValueChange(value.copy(showPhotoPicker = it)) },
+                    supportingText = stringResource(
+                        R.string.photo_widget_configure_tap_action_show_photo_picker_description,
+                    ),
+                    shape = shape,
+                )
+            }
+
+            if (source == PhotoWidgetSource.DIRECTORY) {
+                item { shape: Shape ->
+                    BooleanListItem(
+                        headlineText = stringResource(R.string.photo_widget_configure_tap_action_show_photo_path),
+                        currentValue = value.showPhotoPath,
+                        onValueChange = { onValueChange(value.copy(showPhotoPath = it)) },
+                        supportingText = stringResource(
+                            R.string.photo_widget_configure_tap_action_show_photo_path_description,
+                        ),
+                        shape = shape,
+                    )
+                }
+            }
+
+            item { shape: Shape ->
+                BooleanListItem(
+                    headlineText = stringResource(R.string.photo_widget_configure_tap_action_show_share),
+                    currentValue = value.showShare,
+                    onValueChange = { onValueChange(value.copy(showShare = it)) },
+                    supportingText = stringResource(R.string.photo_widget_configure_tap_action_show_share_description),
+                    shape = shape,
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 

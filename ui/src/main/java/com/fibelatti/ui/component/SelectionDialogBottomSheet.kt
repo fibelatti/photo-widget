@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,7 +18,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.fibelatti.ui.foundation.Shapes
 
 @Composable
 fun <T> SelectionDialogBottomSheet(
@@ -156,12 +154,6 @@ private fun <T> SelectionDialogLazyListContent(
     header: @Composable () -> Unit,
     footer: @Composable () -> Unit,
 ) {
-    val keyProvider: ((Int, T) -> Any)? = if (optionKey != null) {
-        { _: Int, option: T -> optionKey(option) }
-    } else {
-        null
-    }
-
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -176,14 +168,7 @@ private fun <T> SelectionDialogLazyListContent(
             }
         }
 
-        itemsIndexed(items = options, key = keyProvider, contentType = { _, _ -> "option" }) { index: Int, option: T ->
-            val shape: Shape = when {
-                options.size == 1 -> Shapes.StandaloneShape
-                index == 0 -> Shapes.TopShape
-                index == options.lastIndex -> Shapes.BottomShape
-                else -> Shapes.MiddleShape
-            }
-
+        segmentedItems(items = options, key = optionKey, contentType = { "option" }) { option: T, shape: Shape ->
             ListItem(
                 headlineText = optionName(option),
                 onClick = { onOptionSelect(option) },

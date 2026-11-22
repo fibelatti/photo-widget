@@ -45,4 +45,15 @@ object Shapes {
     val MiddleShape: Shape = RoundedCornerShape(smallCornerSize)
 
     val StandaloneShape: Shape = RoundedCornerShape(mediumCornerSize)
+
+    /**
+     * The shape of the item at [index] in a vertical group of [count] items: the outer corners of the
+     * group are rounded with [GroupCornerRadius], and the seams between items with [SeamCornerRadius].
+     */
+    fun segment(index: Int, count: Int): Shape = when {
+        count == 1 -> StandaloneShape
+        index == 0 -> TopShape
+        index == count - 1 -> BottomShape
+        else -> MiddleShape
+    }
 }

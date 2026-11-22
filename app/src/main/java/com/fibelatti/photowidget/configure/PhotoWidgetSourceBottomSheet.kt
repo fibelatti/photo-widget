@@ -51,6 +51,7 @@ import com.fibelatti.ui.component.AppBottomSheet
 import com.fibelatti.ui.component.AppSheetState
 import com.fibelatti.ui.component.AutoSizeText
 import com.fibelatti.ui.component.RadioGroup
+import com.fibelatti.ui.component.SegmentedColumn
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.icons.AppIcons
 import com.fibelatti.ui.icons.Check
@@ -171,23 +172,22 @@ private fun SourcePickerContent(
                     style = MaterialTheme.typography.titleSmall,
                 )
 
-                dirList.forEachIndexed { index, syncDir ->
-                    DirListItem(
-                        syncDir = syncDir,
-                        onSubdirectoriesChange = { value ->
-                            onDirSubdirectoriesChange(syncDir.dir, value)
-                        },
-                        onRemoveClick = {
-                            onDirRemove(syncDir.dir)
-                            dirList = dirList - syncDir
-                        },
-                        backgroundShape = when (index) {
-                            0 if dirList.size == 1 -> Shapes.StandaloneShape
-                            0 if dirList.size > 1 -> Shapes.TopShape
-                            dirList.lastIndex if dirList.size > 1 -> Shapes.BottomShape
-                            else -> Shapes.MiddleShape
-                        },
-                    )
+                SegmentedColumn {
+                    dirList.forEach { syncDir: SyncDir ->
+                        item(key = syncDir.dir) { shape: Shape ->
+                            DirListItem(
+                                syncDir = syncDir,
+                                onSubdirectoriesChange = { value ->
+                                    onDirSubdirectoriesChange(syncDir.dir, value)
+                                },
+                                onRemoveClick = {
+                                    onDirRemove(syncDir.dir)
+                                    dirList = dirList - syncDir
+                                },
+                                backgroundShape = shape,
+                            )
+                        }
+                    }
                 }
             }
         }
