@@ -149,6 +149,8 @@
     <string name="photo_widget_configure_source_sync_scope">同期範囲</string>
     <string name="photo_widget_configure_source_sync_scope_subfolders">サブフォルダーを含む</string>
     <string name="photo_widget_configure_source_sync_scope_folder_only">このフォルダーのみ</string>
+    <string name="photo_widget_configure_source_directory_access_lost">アプリはこのフォルダーにアクセスできなくなりました。写真の同期を続けるにはフォルダーを再度選択するか、削除してください。</string>
+    <string name="photo_widget_configure_source_directory_pick_again">再度選択</string>
     <string name="photo_widget_configure_menu_crop">切り抜き</string>
     <string name="photo_widget_configure_menu_remove">削除</string>
     <string name="photo_widget_configure_menu_move_left">左へ移動</string>

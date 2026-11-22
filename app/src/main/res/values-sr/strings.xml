@@ -151,6 +151,8 @@
     <string name="photo_widget_configure_source_sync_scope">Опсег синхронизације</string>
     <string name="photo_widget_configure_source_sync_scope_subfolders">Укључује подфасцикле</string>
     <string name="photo_widget_configure_source_sync_scope_folder_only">Само ова фасцикла</string>
+    <string name="photo_widget_configure_source_directory_access_lost">Апликација више не може да приступи овој фасцикли. Поново је изаберите да бисте наставили синхронизацију њених фотографија или је уклоните.</string>
+    <string name="photo_widget_configure_source_directory_pick_again">Изабери поново</string>
     <string name="photo_widget_configure_menu_crop">Опсеци</string>
     <string name="photo_widget_configure_menu_remove">Уклони</string>
     <string name="photo_widget_configure_menu_move_left">Помери лево</string>

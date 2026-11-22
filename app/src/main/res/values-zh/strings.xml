@@ -149,6 +149,8 @@
     <string name="photo_widget_configure_source_sync_scope">同步范围</string>
     <string name="photo_widget_configure_source_sync_scope_subfolders">包含子文件夹</string>
     <string name="photo_widget_configure_source_sync_scope_folder_only">仅此文件夹</string>
+    <string name="photo_widget_configure_source_directory_access_lost">应用无法再访问此文件夹。请重新选择该文件夹以继续同步其中的照片，或将其移除。</string>
+    <string name="photo_widget_configure_source_directory_pick_again">重新选择</string>
     <string name="photo_widget_configure_menu_crop">裁切</string>
     <string name="photo_widget_configure_menu_remove">移除</string>
     <string name="photo_widget_configure_menu_move_left">左移</string>

@@ -150,6 +150,8 @@
     <string name="photo_widget_configure_source_sync_scope">Eşitleme kapsamı</string>
     <string name="photo_widget_configure_source_sync_scope_subfolders">Alt klasörler dahil</string>
     <string name="photo_widget_configure_source_sync_scope_folder_only">Yalnızca bu klasör</string>
+    <string name="photo_widget_configure_source_directory_access_lost">Uygulama artık bu klasöre erişemiyor. Fotoğraflarını senkronize etmeye devam etmek için klasörü yeniden seçin veya kaldırın.</string>
+    <string name="photo_widget_configure_source_directory_pick_again">Yeniden seç</string>
     <string name="photo_widget_configure_menu_crop">Kırp</string>
     <string name="photo_widget_configure_menu_remove">Kaldır</string>
     <string name="photo_widget_configure_menu_move_left">Sola taşı</string>

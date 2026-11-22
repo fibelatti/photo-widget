@@ -208,6 +208,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
 
     private fun updateState(photoWidget: PhotoWidget, hasEdits: Boolean) {
         val resolvedAspectRatio: PhotoWidgetAspectRatio = aspectRatio ?: photoWidget.aspectRatio
+        val inaccessibleDirs: Set<Uri> = photoWidgetStorage.getInaccessibleDirs(syncDirs = photoWidget.syncedDir)
         _state.update { current ->
             current.copy(
                 photoWidget = photoWidget.copy(
@@ -219,6 +220,7 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 isProcessing = photoWidget.loadStage < PhotoWidgetLoadStage.CACHED_PHOTOS,
                 hasEdits = hasEdits,
                 isDraft = PhotoWidget.isDraftWidgetId(effectiveWidgetId),
+                inaccessibleDirs = inaccessibleDirs,
             )
         }
     }
@@ -421,7 +423,9 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { current -> current.copy(isProcessing = true) }
 
-            val syncDir = SyncDir(dir = source)
+            // Picking a synced folder again, such as to restore access to it, keeps its subfolder setting
+            val syncDir: SyncDir = _state.value.photoWidget.syncedDir.firstOrNull { it.dir == source }
+                ?: SyncDir(dir = source)
             val newDirPhotos: List<LocalPhoto>? = photoWidgetStorage.getNewDirPhotos(
                 syncDir = syncDir,
                 sorting = _state.value.photoWidget.directorySorting,
@@ -452,8 +456,14 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
                 }
             }
 
+            photoWidgetStorage.takePersistableUriPermission(dirUri = source)
+
             val updatedState: PhotoWidgetConfigureState = _state.updateAndGet { current ->
-                current.copy(isProcessing = false, cropQueue = emptyList()) + syncDir + newDirPhotos
+                current.copy(
+                    isProcessing = false,
+                    cropQueue = emptyList(),
+                    inaccessibleDirs = current.inaccessibleDirs - source,
+                ) + syncDir + newDirPhotos
             }
             photoWidgetStorage.saveWidgetSyncedDir(
                 appWidgetId = effectiveWidgetId,

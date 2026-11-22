@@ -150,6 +150,8 @@
     <string name="photo_widget_configure_source_sync_scope">Synchronisierungsbereich</string>
     <string name="photo_widget_configure_source_sync_scope_subfolders">Inklusive Unterordner</string>
     <string name="photo_widget_configure_source_sync_scope_folder_only">Nur dieser Ordner</string>
+    <string name="photo_widget_configure_source_directory_access_lost">Die App kann nicht mehr auf diesen Ordner zugreifen. Wähle ihn erneut aus, um seine Fotos weiter zu synchronisieren, oder entferne ihn.</string>
+    <string name="photo_widget_configure_source_directory_pick_again">Erneut auswählen</string>
     <string name="photo_widget_configure_menu_crop">Zuschneiden</string>
     <string name="photo_widget_configure_menu_remove">Entfernen</string>
     <string name="photo_widget_configure_menu_move_left">Nach links verschieben</string>

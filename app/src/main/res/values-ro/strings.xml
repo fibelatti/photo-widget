@@ -151,6 +151,8 @@
     <string name="photo_widget_configure_source_sync_scope">Domeniu de sincronizare</string>
     <string name="photo_widget_configure_source_sync_scope_subfolders">Include subdosarele</string>
     <string name="photo_widget_configure_source_sync_scope_folder_only">Doar acest dosar</string>
+    <string name="photo_widget_configure_source_directory_access_lost">Aplicația nu mai poate accesa acest dosar. Selectează-l din nou pentru a continua sincronizarea fotografiilor sale sau șterge-l.</string>
+    <string name="photo_widget_configure_source_directory_pick_again">Selectează din nou</string>
     <string name="photo_widget_configure_menu_crop">Taie</string>
     <string name="photo_widget_configure_menu_remove">Șterge</string>
     <string name="photo_widget_configure_menu_move_left">Mută la stânga</string>

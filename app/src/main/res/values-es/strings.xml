@@ -150,6 +150,8 @@
     <string name="photo_widget_configure_source_sync_scope">Alcance de sincronización</string>
     <string name="photo_widget_configure_source_sync_scope_subfolders">Incluye subcarpetas</string>
     <string name="photo_widget_configure_source_sync_scope_folder_only">Solo esta carpeta</string>
+    <string name="photo_widget_configure_source_directory_access_lost">La aplicación ya no puede acceder a esta carpeta. Selecciónala de nuevo para seguir sincronizando sus fotos o elimínala.</string>
+    <string name="photo_widget_configure_source_directory_pick_again">Seleccionar de nuevo</string>
     <string name="photo_widget_configure_menu_crop">Recortar</string>
     <string name="photo_widget_configure_menu_remove">Eliminar</string>
     <string name="photo_widget_configure_menu_move_left">Mover a la izquierda</string>

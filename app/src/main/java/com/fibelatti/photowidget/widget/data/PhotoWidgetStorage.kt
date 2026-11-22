@@ -151,8 +151,11 @@ class PhotoWidgetStorage @Inject constructor(
         }
     }
 
+    fun takePersistableUriPermission(dirUri: Uri) {
+        externalFileStorage.takePersistableUriPermission(uri = dirUri)
+    }
+
     fun saveWidgetSyncedDir(appWidgetId: Int, syncDirs: Set<SyncDir>) {
-        externalFileStorage.takePersistableUriPermission(syncDirs = syncDirs)
         sharedPreferences.saveWidgetSyncedDir(appWidgetId = appWidgetId, syncDirs = syncDirs)
     }
 
@@ -166,6 +169,16 @@ class PhotoWidgetStorage @Inject constructor(
 
     fun getWidgetSyncDir(appWidgetId: Int): Set<SyncDir> {
         return sharedPreferences.getWidgetSyncDir(appWidgetId = appWidgetId)
+    }
+
+    /**
+     * Returns the directories in [syncDirs] whose read permission is no longer held, which happens
+     * when it is revoked outside the app, such as after the folder is deleted. Their photos cannot be
+     * listed until the user picks the folder again.
+     */
+    fun getInaccessibleDirs(syncDirs: Collection<SyncDir>): Set<Uri> {
+        val persistedUris: List<Uri> = getPersistedUriPermissions()
+        return syncDirs.map { it.dir }.filterNot { it in persistedUris }.toSet()
     }
 
     suspend fun newWidgetPhoto(appWidgetId: Int, source: Uri): LocalPhoto? {

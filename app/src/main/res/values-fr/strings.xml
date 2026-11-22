@@ -150,6 +150,8 @@
     <string name="photo_widget_configure_source_sync_scope">Portée de la synchronisation</string>
     <string name="photo_widget_configure_source_sync_scope_subfolders">Inclut les sous-dossiers</string>
     <string name="photo_widget_configure_source_sync_scope_folder_only">Ce dossier uniquement</string>
+    <string name="photo_widget_configure_source_directory_access_lost">L\'application ne peut plus accéder à ce dossier. Sélectionnez-le à nouveau pour continuer à synchroniser ses photos, ou supprimez-le.</string>
+    <string name="photo_widget_configure_source_directory_pick_again">Sélectionner à nouveau</string>
     <string name="photo_widget_configure_menu_crop">Rogner</string>
     <string name="photo_widget_configure_menu_remove">Supprimer</string>
     <string name="photo_widget_configure_menu_move_left">Déplacer vers la gauche</string>

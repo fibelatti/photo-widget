@@ -151,6 +151,8 @@
     <string name="photo_widget_configure_source_sync_scope">היקף הסנכרון</string>
     <string name="photo_widget_configure_source_sync_scope_subfolders">כולל תיקיות משנה</string>
     <string name="photo_widget_configure_source_sync_scope_folder_only">תיקייה זו בלבד</string>
+    <string name="photo_widget_configure_source_directory_access_lost">לאפליקציה אין עוד גישה לתיקייה זו. בחר אותה שוב כדי להמשיך לסנכרן את התמונות שלה, או הסר אותה.</string>
+    <string name="photo_widget_configure_source_directory_pick_again">בחר שוב</string>
     <string name="photo_widget_configure_menu_crop">חתוך</string>
     <string name="photo_widget_configure_menu_remove">הסר</string>
     <string name="photo_widget_configure_menu_move_left">הזז שמאלה</string>

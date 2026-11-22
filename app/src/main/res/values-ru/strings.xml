@@ -152,6 +152,8 @@
     <string name="photo_widget_configure_source_sync_scope">Область синхронизации</string>
     <string name="photo_widget_configure_source_sync_scope_subfolders">Включая подпапки</string>
     <string name="photo_widget_configure_source_sync_scope_folder_only">Только эта папка</string>
+    <string name="photo_widget_configure_source_directory_access_lost">Приложение больше не имеет доступа к этой папке. Выберите её снова, чтобы продолжить синхронизацию фотографий, или удалите её.</string>
+    <string name="photo_widget_configure_source_directory_pick_again">Выбрать снова</string>
     <string name="photo_widget_configure_menu_crop">Обрезать</string>
     <string name="photo_widget_configure_menu_remove">Удалить</string>
     <string name="photo_widget_configure_menu_move_left">Переместить влево</string>

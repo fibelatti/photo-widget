@@ -65,8 +65,10 @@ fun PhotoWidgetSourceBottomSheet(
     sheetState: AppSheetState,
     currentSource: PhotoWidgetSource,
     syncedDir: Set<SyncDir>,
+    inaccessibleDirs: Set<Uri>,
     onDirRemove: (Uri) -> Unit,
     onDirSubdirectoriesChange: (Uri, Boolean) -> Unit,
+    onDirPickAgain: (Uri) -> Unit,
     onChangeSource: (PhotoWidgetSource) -> Unit,
 ) {
     AppBottomSheet(
@@ -75,8 +77,10 @@ fun PhotoWidgetSourceBottomSheet(
         SourcePickerContent(
             currentSource = currentSource,
             syncedDir = syncedDir,
+            inaccessibleDirs = inaccessibleDirs,
             onDirRemove = onDirRemove,
             onDirSubdirectoriesChange = onDirSubdirectoriesChange,
+            onDirPickAgain = onDirPickAgain,
             onConfirm = { newSource ->
                 if (newSource != currentSource) {
                     onChangeSource(newSource)
@@ -92,8 +96,10 @@ fun PhotoWidgetSourceBottomSheet(
 private fun SourcePickerContent(
     currentSource: PhotoWidgetSource,
     syncedDir: Set<SyncDir>,
+    inaccessibleDirs: Set<Uri>,
     onDirRemove: (Uri) -> Unit,
     onDirSubdirectoriesChange: (Uri, Boolean) -> Unit,
+    onDirPickAgain: (Uri) -> Unit,
     onConfirm: (PhotoWidgetSource) -> Unit,
     onCancel: () -> Unit,
     modifier: Modifier = Modifier,
@@ -177,9 +183,11 @@ private fun SourcePickerContent(
                         item(key = syncDir.dir) { shape: Shape ->
                             DirListItem(
                                 syncDir = syncDir,
+                                hasAccess = syncDir.dir !in inaccessibleDirs,
                                 onSubdirectoriesChange = { value ->
                                     onDirSubdirectoriesChange(syncDir.dir, value)
                                 },
+                                onPickAgainClick = { onDirPickAgain(syncDir.dir) },
                                 onRemoveClick = {
                                     onDirRemove(syncDir.dir)
                                     dirList = dirList - syncDir
@@ -226,12 +234,18 @@ private fun SourcePickerContent(
 @Composable
 private fun DirListItem(
     syncDir: SyncDir,
+    hasAccess: Boolean,
     onSubdirectoriesChange: (Boolean) -> Unit,
+    onPickAgainClick: () -> Unit,
     onRemoveClick: () -> Unit,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     backgroundShape: Shape = Shapes.StandaloneShape,
 ) {
+    val backgroundColor: Color = if (hasAccess) {
+        MaterialTheme.colorScheme.primaryContainer
+    } else {
+        MaterialTheme.colorScheme.errorContainer
+    }
     val contentColor: Color = contentColorFor(backgroundColor)
 
     Row(
@@ -252,10 +266,29 @@ private fun DirListItem(
                 style = MaterialTheme.typography.bodyLarge,
             )
 
-            SyncScopeChip(
-                subdirectories = syncDir.subdirectories,
-                onSubdirectoriesChange = onSubdirectoriesChange,
-            )
+            if (hasAccess) {
+                SyncScopeChip(
+                    subdirectories = syncDir.subdirectories,
+                    onSubdirectoriesChange = onSubdirectoriesChange,
+                )
+            } else {
+                Text(
+                    text = stringResource(R.string.photo_widget_configure_source_directory_access_lost),
+                    color = contentColor,
+                    style = MaterialTheme.typography.bodySmall,
+                )
+
+                Button(
+                    onClick = onPickAgainClick,
+                    shapes = ButtonDefaults.shapes(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error,
+                        contentColor = MaterialTheme.colorScheme.onError,
+                    ),
+                ) {
+                    Text(text = stringResource(R.string.photo_widget_configure_source_directory_pick_again))
+                }
+            }
         }
 
         OutlinedIconButton(
@@ -357,8 +390,10 @@ private fun SourcePickerContentPhotosPreview() {
         SourcePickerContent(
             currentSource = PhotoWidgetSource.PHOTOS,
             syncedDir = emptySet(),
+            inaccessibleDirs = emptySet(),
             onDirRemove = {},
             onDirSubdirectoriesChange = { _, _ -> },
+            onDirPickAgain = {},
             onConfirm = {},
             onCancel = {},
         )
@@ -374,8 +409,10 @@ private fun SourcePickerContentDirectoryPreview() {
             syncedDir = List(10) { index ->
                 SyncDir(dir = "https://test/$index".toUri(), subdirectories = index % 2 == 0)
             }.toSet(),
+            inaccessibleDirs = setOf("https://test/1".toUri()),
             onDirRemove = {},
             onDirSubdirectoriesChange = { _, _ -> },
+            onDirPickAgain = {},
             onConfirm = {},
             onCancel = {},
         )

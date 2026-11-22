@@ -175,6 +175,8 @@
     <string name="photo_widget_configure_source_sync_scope">Sync scope</string>
     <string name="photo_widget_configure_source_sync_scope_subfolders">Includes subfolders</string>
     <string name="photo_widget_configure_source_sync_scope_folder_only">This folder only</string>
+    <string name="photo_widget_configure_source_directory_access_lost">The app can no longer access this folder. Pick it again to keep syncing its photos, or remove it.</string>
+    <string name="photo_widget_configure_source_directory_pick_again">Pick again</string>
 
     <string name="photo_widget_configure_menu_crop">Crop</string>
     <string name="photo_widget_configure_menu_remove">Remove</string>

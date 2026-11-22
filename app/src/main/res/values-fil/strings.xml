@@ -149,6 +149,8 @@
     <string name="photo_widget_configure_source_sync_scope">Saklaw ng pag-sync</string>
     <string name="photo_widget_configure_source_sync_scope_subfolders">Kasama ang mga subfolder</string>
     <string name="photo_widget_configure_source_sync_scope_folder_only">Ang folder na ito lang</string>
+    <string name="photo_widget_configure_source_directory_access_lost">Hindi na ma-access ng app ang folder na ito. Piliin ulit ito para patuloy na ma-sync ang mga larawan nito, o tanggalin ito.</string>
+    <string name="photo_widget_configure_source_directory_pick_again">Piliin ulit</string>
     <string name="photo_widget_configure_menu_crop">I-krop</string>
     <string name="photo_widget_configure_menu_remove">Tanggalin</string>
     <string name="photo_widget_configure_menu_move_left">Ilipat sa kaliwa</string>

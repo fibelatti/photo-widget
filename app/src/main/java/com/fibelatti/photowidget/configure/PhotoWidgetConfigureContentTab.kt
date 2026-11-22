@@ -1,5 +1,8 @@
 package com.fibelatti.photowidget.configure
 
+import android.content.Context
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.animateContentSize
@@ -53,6 +56,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -72,6 +76,8 @@ import com.fibelatti.photowidget.model.PhotoWidgetSource
 import com.fibelatti.photowidget.model.Time
 import com.fibelatti.photowidget.model.canSort
 import com.fibelatti.photowidget.model.orderedPhotosForDisplay
+import com.fibelatti.photowidget.platform.launchOrNotify
+import com.fibelatti.photowidget.platform.toFolderDocumentUri
 import com.fibelatti.photowidget.ui.InformationalPanel
 import com.fibelatti.photowidget.ui.ShapedPhoto
 import com.fibelatti.ui.component.AppSheetState
@@ -97,6 +103,12 @@ fun PhotoWidgetConfigureContentTab(
     val recentlyDeletedPhotoSheetState: AppSheetState = rememberAppSheetState()
 
     var showGifReplaceDialog: Boolean by rememberSaveable { mutableStateOf(false) }
+
+    val localContext: Context = LocalContext.current
+    val dirPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocumentTree(),
+        onResult = viewModel::dirPicked,
+    )
 
     PhotoWidgetConfigureContentTab(
         photoWidget = state.photoWidget,
@@ -154,8 +166,12 @@ fun PhotoWidgetConfigureContentTab(
         sheetState = sourceSheetState,
         currentSource = state.photoWidget.source,
         syncedDir = state.photoWidget.syncedDir,
+        inaccessibleDirs = state.inaccessibleDirs,
         onDirRemove = viewModel::removeDir,
         onDirSubdirectoriesChange = viewModel::changeSyncDirSubdirectories,
+        onDirPickAgain = { dir ->
+            dirPickerLauncher.launchOrNotify(context = localContext, input = dir.toFolderDocumentUri())
+        },
         onChangeSource = viewModel::changeSource,
     )
 

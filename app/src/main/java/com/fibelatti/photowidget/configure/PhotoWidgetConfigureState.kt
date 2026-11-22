@@ -22,6 +22,7 @@ data class PhotoWidgetConfigureState(
     val isDraft: Boolean = false,
     val widgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID,
     val knownWidgets: Map<Int, PhotoWidgetSource> = emptyMap(),
+    val inaccessibleDirs: Set<Uri> = emptySet(),
 ) {
 
     val isImportAvailable: Boolean
