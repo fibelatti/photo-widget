@@ -6,7 +6,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,9 +20,13 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.toggleableState
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,45 +49,48 @@ fun ListItem(
     supportingText: String? = null,
     leadingContent: @Composable (() -> Unit)? = null,
     trailingContent: @Composable (() -> Unit)? = null,
-    colors: ListItemColors = ListItemDefaults.colors(
-        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-        contentColor = MaterialTheme.colorScheme.onSurface,
-    ),
+    colors: ListItemColors = defaultListItemColors(),
     shape: Shape = ListItem.DefaultShape,
     headlineFlag: @Composable RowScope.() -> Unit = {},
 ) {
     androidx.compose.material3.ListItem(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = ListItem.MinHeight)
-            .clip(shape),
+            .heightIn(min = ListItem.MinHeight),
         leadingContent = leadingContent,
         trailingContent = trailingContent,
-        supportingContent = {
-            if (!supportingText.isNullOrEmpty()) {
-                AutoSizeText(
-                    text = supportingText,
-                    maxLines = 3,
-                    minFontSize = 8.sp,
-                )
-            }
-        },
+        supportingContent = { ListItemSupportingText(text = supportingText) },
         verticalAlignment = Alignment.CenterVertically,
+        shapes = ListItemDefaults.shapes(shape = shape),
         colors = colors,
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                AutoSizeText(
-                    text = headlineText,
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 2,
-                )
+        content = { ListItemHeadline(text = headlineText, flag = headlineFlag) },
+    )
+}
 
-                headlineFlag()
-            }
-        },
+@Composable
+fun ListItem(
+    headlineText: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    supportingText: String? = null,
+    leadingContent: @Composable (() -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null,
+    colors: ListItemColors = defaultListItemColors(),
+    shape: Shape = ListItem.DefaultShape,
+    headlineFlag: @Composable RowScope.() -> Unit = {},
+) {
+    androidx.compose.material3.ListItem(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = ListItem.MinHeight),
+        leadingContent = leadingContent,
+        trailingContent = trailingContent,
+        supportingContent = { ListItemSupportingText(text = supportingText) },
+        verticalAlignment = Alignment.CenterVertically,
+        shapes = ListItemDefaults.shapes(shape = shape),
+        colors = colors,
+        content = { ListItemHeadline(text = headlineText, flag = headlineFlag) },
     )
 }
 
@@ -100,10 +106,15 @@ fun BooleanListItem(
 ) {
     ListItem(
         headlineText = headlineText,
+        onClick = { onValueChange(!currentValue) },
+        modifier = modifier.semantics {
+            role = Role.Switch
+            toggleableState = ToggleableState(currentValue)
+        },
         trailingContent = {
             Switch(
                 checked = currentValue,
-                onCheckedChange = onValueChange,
+                onCheckedChange = null,
                 thumbContent = {
                     val icon: ImageVector = if (currentValue) AppIcons.Check else AppIcons.Xmark
 
@@ -120,7 +131,6 @@ fun BooleanListItem(
                 },
             )
         },
-        modifier = modifier,
         supportingText = supportingText,
         shape = shape,
         headlineFlag = headlineFlag,
@@ -138,11 +148,55 @@ fun PickerListItem(
 ) {
     ListItem(
         headlineText = headlineText,
-        modifier = modifier
-            .clip(shape)
-            .clickable(onClick = onClick),
+        onClick = onClick,
+        modifier = modifier,
         supportingText = currentValue,
         trailingContent = trailingContent,
         shape = shape,
     )
+}
+
+@Composable
+fun defaultListItemColors(): ListItemColors = ListItemDefaults.colors(
+    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    contentColor = MaterialTheme.colorScheme.onSurface,
+)
+
+@Composable
+fun selectableListItemColors(): ListItemColors = defaultListItemColors().copy(
+    supportingContentColor = MaterialTheme.colorScheme.onSurface,
+    disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+    selectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+    selectedSupportingContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+)
+
+@Composable
+private fun ListItemHeadline(
+    text: String,
+    flag: @Composable RowScope.() -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        AutoSizeText(
+            text = text,
+            style = MaterialTheme.typography.titleMedium,
+            maxLines = 2,
+        )
+
+        flag()
+    }
+}
+
+@Composable
+private fun ListItemSupportingText(text: String?) {
+    if (!text.isNullOrEmpty()) {
+        AutoSizeText(
+            text = text,
+            maxLines = 3,
+            minFontSize = 8.sp,
+        )
+    }
 }

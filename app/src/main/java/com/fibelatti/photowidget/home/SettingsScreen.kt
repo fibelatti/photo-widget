@@ -406,9 +406,8 @@ private fun SettingsListItem(
 ) {
     ListItem(
         headlineText = stringResource(id = label),
-        modifier = modifier
-            .clip(shape)
-            .clickable(onClick = onClick),
+        onClick = onClick,
+        modifier = modifier,
         supportingText = description?.let { stringResource(id = description) },
         leadingContent = {
             Icon(

@@ -5,7 +5,6 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +27,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
@@ -48,7 +46,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.computedStateOf
@@ -62,8 +59,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -73,7 +68,6 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -110,6 +104,7 @@ import com.fibelatti.ui.component.NumberSpinner
 import com.fibelatti.ui.component.PickerListItem
 import com.fibelatti.ui.component.RadioGroup
 import com.fibelatti.ui.component.rememberAppSheetState
+import com.fibelatti.ui.component.selectableListItemColors
 import com.fibelatti.ui.foundation.Shapes
 import com.fibelatti.ui.foundation.fadingEdges
 import com.fibelatti.ui.icons.AppIcons
@@ -769,25 +764,12 @@ private fun FontListItem(
     onClick: () -> Unit,
     shape: Shape,
 ) {
-    val backgroundColor: Color by animateColorAsState(
-        targetValue = if (selected) {
-            MaterialTheme.colorScheme.primaryContainer
-        } else {
-            MaterialTheme.colorScheme.surfaceContainerHigh
-        },
-    )
-    val contentColor: Color = contentColorFor(backgroundColor)
-
     androidx.compose.material3.ListItem(
+        selected = selected,
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = ListItem.MinHeight)
-            .clip(shape)
-            .selectable(
-                selected = selected,
-                role = Role.RadioButton,
-                onClick = onClick,
-            ),
+            .heightIn(min = ListItem.MinHeight),
         leadingContent = {
             RadioButton(
                 selected = selected,
@@ -808,16 +790,15 @@ private fun FontListItem(
             {
                 Text(
                     text = supportingText,
-                    color = contentColor,
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
         },
-        colors = ListItemDefaults.colors(containerColor = backgroundColor, contentColor = contentColor),
+        shapes = ListItemDefaults.shapes(shape = shape),
+        colors = selectableListItemColors(),
         content = {
             Text(
                 text = headlineText,
-                color = contentColor,
                 fontFamily = remember(typeface) { FontFamily(typeface) },
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,

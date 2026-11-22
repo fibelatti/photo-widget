@@ -1,6 +1,5 @@
 package com.fibelatti.ui.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,11 +14,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fibelatti.ui.foundation.Shapes
@@ -189,10 +186,7 @@ private fun <T> SelectionDialogLazyListContent(
 
             ListItem(
                 headlineText = optionName(option),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(shape)
-                    .clickable(onClick = { onOptionSelect(option) }, role = Role.Button),
+                onClick = { onOptionSelect(option) },
                 supportingText = optionSupportingText?.invoke(option),
                 shape = shape,
                 colors = ListItemDefaults.colors(

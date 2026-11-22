@@ -1,11 +1,9 @@
 package com.fibelatti.photowidget.ui
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.fibelatti.ui.component.ListItem
@@ -22,6 +20,8 @@ fun ShapeListItem(
 ) {
     ListItem(
         headlineText = headlineText,
+        onClick = onClick,
+        modifier = modifier,
         trailingContent = {
             ColoredShape(
                 shapeId = currentValue,
@@ -30,9 +30,6 @@ fun ShapeListItem(
                 modifier = Modifier.size(40.dp),
             )
         },
-        modifier = modifier
-            .clip(shape)
-            .clickable(onClick = onClick),
         shape = shape,
     )
 }

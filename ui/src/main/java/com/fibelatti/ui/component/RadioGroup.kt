@@ -1,6 +1,5 @@
 package com.fibelatti.ui.component
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
@@ -16,15 +14,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fibelatti.ui.foundation.Shapes
@@ -73,26 +66,13 @@ private fun RadioGroupItem(
     shape: Shape = MaterialTheme.shapes.small,
     flag: @Composable RowScope.() -> Unit = {},
 ) {
-    val backgroundColor: Color by animateColorAsState(
-        targetValue = if (selected) {
-            MaterialTheme.colorScheme.primaryContainer
-        } else {
-            MaterialTheme.colorScheme.surfaceContainerHigh
-        },
-    )
-    val contentColor: Color = contentColorFor(backgroundColor)
-
     ListItem(
+        selected = selected,
+        onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = ListItem.MinHeight)
-            .clip(shape)
-            .selectable(
-                selected = selected,
-                enabled = enabled,
-                role = Role.RadioButton,
-                onClick = onClick,
-            ),
+            .heightIn(min = ListItem.MinHeight),
+        enabled = enabled,
         leadingContent = {
             RadioButton(
                 selected = selected,
@@ -109,14 +89,14 @@ private fun RadioGroupItem(
             if (description != null) {
                 AutoSizeText(
                     text = description,
-                    color = contentColor,
                     minFontSize = 8.sp,
                     maxLines = 2,
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
         },
-        colors = ListItemDefaults.colors(containerColor = backgroundColor, contentColor = contentColor),
+        shapes = ListItemDefaults.shapes(shape = shape),
+        colors = selectableListItemColors(),
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -124,7 +104,6 @@ private fun RadioGroupItem(
             ) {
                 Text(
                     text = title,
-                    color = contentColor,
                     style = MaterialTheme.typography.titleMediumEmphasized,
                 )
 

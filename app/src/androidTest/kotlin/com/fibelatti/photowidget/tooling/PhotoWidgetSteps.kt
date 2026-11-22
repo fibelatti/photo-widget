@@ -8,7 +8,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsOn
-import androidx.compose.ui.test.hasParent
 import androidx.compose.ui.test.hasScrollToNodeAction
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
@@ -129,7 +128,7 @@ fun ComposeTestRule.setCornerRadius(value: Int) {
 
 fun ComposeTestRule.enableShuffle() {
     val shuffle: String = string(R.string.widget_defaults_shuffle)
-    val shuffleSwitch: SemanticsMatcher = isToggleable() and hasParent(hasText(shuffle))
+    val shuffleSwitch: SemanticsMatcher = isToggleable() and hasText(shuffle)
 
     clickNodeWithText(R.string.photo_widget_configure_tab_behavior)
     waitUntilTextExists(shuffle)

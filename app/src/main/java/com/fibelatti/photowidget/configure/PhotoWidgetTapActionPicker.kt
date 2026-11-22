@@ -49,6 +49,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemColors
 import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.ListItemShapes
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -998,11 +999,9 @@ private fun AppPicker(
     ListItem(
         headlineText = installedApp?.appLabel
             ?: stringResource(id = R.string.photo_widget_configure_tap_action_choose_app),
+        onClick = onChooseAppClick,
         supportingText = shortcut?.label ?: shortcutId,
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(ListItem.DefaultShape)
-            .clickable(onClick = onChooseAppClick, role = Role.Button),
+        modifier = modifier,
         trailingContent = trailingContent@{
             val icon: Drawable = shortcut?.icon ?: installedApp?.appIcon ?: return@trailingContent
 
@@ -1192,10 +1191,8 @@ private fun OpenWithPicker(
 
     ListItem(
         headlineText = stringResource(R.string.photo_widget_configure_tap_action_open_with),
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(ListItem.DefaultShape)
-            .clickable(onClick = onChooseAppClick, role = Role.Button),
+        onClick = onChooseAppClick,
+        modifier = modifier,
         supportingText = installedApp?.appLabel,
         trailingContent = trailingContent@{
             val icon: Drawable = installedApp?.appIcon ?: return@trailingContent
@@ -1251,10 +1248,8 @@ private fun FileShortcutCustomizationContent(
 ) {
     ListItem(
         headlineText = stringResource(id = R.string.photo_widget_configure_tap_action_choose_file),
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(ListItem.DefaultShape)
-            .clickable(onClick = onChooseFileClick, role = Role.Button),
+        onClick = onChooseFileClick,
+        modifier = modifier,
         // lastPathSegment only takes care of the URI structure, the file can be in a nested directory
         supportingText = value.fileUri?.toUri()?.lastPathSegment.orEmpty().substringAfterLast("/"),
     )
@@ -1272,10 +1267,7 @@ private fun FolderShortcutCustomizationContent(
     ) {
         ListItem(
             headlineText = stringResource(id = R.string.photo_widget_configure_tap_action_choose_folder),
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(Shapes.TopShape)
-                .clickable(onClick = onChooseFolderClick, role = Role.Button),
+            onClick = onChooseFolderClick,
             // lastPathSegment of a tree URI holds the document id (e.g. "primary:Pictures").
             supportingText = value.folderUri?.toUri()?.lastPathSegment.orEmpty(),
         )
@@ -1393,7 +1385,7 @@ private fun AppFolderCustomizationContent(
         if (value.shortcuts.size < 12) {
             AppFolderCustomizationItem(
                 title = stringResource(R.string.photo_widget_app_folder_add_app),
-                modifier = Modifier.clickable(onClick = onAddAppClick),
+                onClick = onAddAppClick,
                 backgroundShape = if (value.shortcuts.isEmpty()) Shapes.StandaloneShape else Shapes.BottomShape,
                 textAlign = TextAlign.Center,
             )
@@ -1405,6 +1397,7 @@ private fun AppFolderCustomizationContent(
 private fun AppFolderCustomizationItem(
     title: String,
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
     subtitle: String? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
@@ -1416,35 +1409,51 @@ private fun AppFolderCustomizationItem(
         contentColor = MaterialTheme.colorScheme.onSurface,
     )
 
-    CompositionLocalProvider(LocalContentColor provides colors.contentColor) {
-        ListItem(
-            modifier = modifier
-                .clip(backgroundShape)
-                .heightIn(min = ListItem.MinHeight),
-            leadingContent = leadingIcon,
-            trailingContent = trailingIcon,
-            supportingContent = {
-                if (subtitle != null) {
-                    AutoSizeText(
-                        text = subtitle,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                        textAlign = textAlign,
-                    )
-                }
-            },
-            colors = colors,
-            content = {
-                AutoSizeText(
-                    text = title,
-                    modifier = Modifier.fillMaxWidth(),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    textAlign = textAlign,
-                    style = MaterialTheme.typography.titleMedium,
-                )
-            },
+    val shapes: ListItemShapes = ListItemDefaults.shapes(shape = backgroundShape)
+    val supportingContent: @Composable () -> Unit = {
+        if (subtitle != null) {
+            AutoSizeText(
+                text = subtitle,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                textAlign = textAlign,
+            )
+        }
+    }
+    val content: @Composable () -> Unit = {
+        AutoSizeText(
+            text = title,
+            modifier = Modifier.fillMaxWidth(),
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
+            textAlign = textAlign,
+            style = MaterialTheme.typography.titleMedium,
         )
+    }
+
+    CompositionLocalProvider(LocalContentColor provides colors.contentColor) {
+        if (onClick != null) {
+            ListItem(
+                onClick = onClick,
+                modifier = modifier.heightIn(min = ListItem.MinHeight),
+                leadingContent = leadingIcon,
+                trailingContent = trailingIcon,
+                supportingContent = supportingContent,
+                shapes = shapes,
+                colors = colors,
+                content = content,
+            )
+        } else {
+            ListItem(
+                modifier = modifier.heightIn(min = ListItem.MinHeight),
+                leadingContent = leadingIcon,
+                trailingContent = trailingIcon,
+                supportingContent = supportingContent,
+                shapes = shapes,
+                colors = colors,
+                content = content,
+            )
+        }
     }
 }
 // endregion Customization Content

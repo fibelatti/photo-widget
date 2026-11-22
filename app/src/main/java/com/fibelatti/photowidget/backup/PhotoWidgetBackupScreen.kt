@@ -12,7 +12,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -62,7 +61,6 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.unit.dp
@@ -275,10 +273,8 @@ private fun PhotoWidgetBackupContent(
 
         ListItem(
             headlineText = stringResource(R.string.backup_create),
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(onClick = onCreateBackupClick, role = Role.Button)
-                .padding(horizontal = 16.dp),
+            onClick = onCreateBackupClick,
+            modifier = Modifier.padding(horizontal = 16.dp),
             shape = Shapes.TopShape,
         )
 
@@ -286,10 +282,8 @@ private fun PhotoWidgetBackupContent(
 
         ListItem(
             headlineText = stringResource(R.string.backup_restore),
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(onClick = onRestoreFromBackupClick, role = Role.Button)
-                .padding(horizontal = 16.dp),
+            onClick = onRestoreFromBackupClick,
+            modifier = Modifier.padding(horizontal = 16.dp),
             shape = Shapes.BottomShape,
         )
 
