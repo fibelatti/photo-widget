@@ -1,0 +1,6 @@
+This version brings the following updates:
+
+* Fix widget errors caused by references to deleted photos
+* Better handling of losing access to a previously synced folder
+
+Thanks for using the app!

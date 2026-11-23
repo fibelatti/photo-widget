@@ -7,9 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [v1.50.0] - 2026-11-23
+[v1.50.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.50.0
+
+### Added
+
+* Shortcut to create a widget from the empty widget list
+* Prompt to pick a synced folder again when the app loses access to it
+
 ### Fixed
 
 * Fix lingering references to deleted photos which could cause widget errors
+* Show an error when no app is available to pick files on the device
 
 ## [v1.49.0] - 2026-11-08
 [v1.49.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.49.0
