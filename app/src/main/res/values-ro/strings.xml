@@ -141,6 +141,7 @@
     <string name="photo_widget_configure_import_dialog_title">Alege widget-ul</string>
     <string name="photo_widget_configure_import_dialog_description">Toate fotografiile și configurațiile vor fi copiate în noul widget</string>
     <string name="photo_widget_configure_import_error">Nu s-au putut importa toate fotografiile selectate</string>
+    <string name="photo_widget_configure_copy_widget_error">Nu s-au putut copia fotografiile din celălalt widget. Încearcă din nou.</string>
     <string name="photo_widget_configure_too_many_photos_error">Fiecare dosar sincronizat poate conține maximum 3000 de fotografii. Puteți selecta mai mult de un subdosar și fiecare este numărat separat.\n\nNu pueți selecta albumul camerei. Fotografiile sunt procesate una câte una, iar dosarele cu multe mii duc la probleme grave de performanță în editorul widget-ului, precum și pe ecranul de pornire atunci când comutați fotografii.</string>
     <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">Widget-urile cu programare avansată pot avea cel mult 96 de fotografii.</string>
     <string name="photo_widget_configure_missing_photos_error">Widgetul trebuie să aibă cel puțin o fotografie. Widget-urile pot fi șterse doar direct de pe ecranul de pornire.</string>

@@ -141,6 +141,7 @@
     <string name="photo_widget_configure_import_dialog_title">Изабери виџет</string>
     <string name="photo_widget_configure_import_dialog_description">Све фотографије и конфигурације ће бити копиране у нови виџет</string>
     <string name="photo_widget_configure_import_error">Није могуће увести све изабране фотографије</string>
+    <string name="photo_widget_configure_copy_widget_error">Није могуће копирати фотографије из другог виџета. Покушајте поново.</string>
     <string name="photo_widget_configure_too_many_photos_error">Свака синхронизована фасцикла може да садржи највише 3000 фотографија. Можете да изаберете више од једне, а свака подфасцикла се броји засебно.\n\n Не можете да изаберете своју камеру. Фотографије се обрађују једна по једна, а фасцикле са више хиљада доводе до озбиљних проблема са перформансама у уређивачу виџета, као и на почетном екрану приликом пребацивања фотографија.</string>
     <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">Виџети који користе напредни распоред могу имати највише 96 фотографија.</string>
     <string name="photo_widget_configure_missing_photos_error">Виџет мора да има бар једну фотографију. Виџети се могу обрисати само директно са почетног екрана.</string>

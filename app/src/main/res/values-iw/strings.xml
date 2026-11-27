@@ -141,6 +141,7 @@
     <string name="photo_widget_configure_import_dialog_title">בחר ווידג\'ט</string>
     <string name="photo_widget_configure_import_dialog_description">כל התמונות והתצורות יועתקו לוידג\'ט החדש</string>
     <string name="photo_widget_configure_import_error">לא ניתן לייבא את כל התמונות שנבחרו</string>
+    <string name="photo_widget_configure_copy_widget_error">לא ניתן להעתיק את התמונות מהווידג\'ט האחר. נסו שוב.</string>
     <string name="photo_widget_configure_too_many_photos_error">כל תיקייה מסונכרנת יכולה להכיל עד 3000 תמונות. ניתן לבחור יותר מתיקייה אחת, וכל תת-תיקייה נספרת בנפרד.\n\nלא ניתן לבחור את סרט הצילום. התמונות מעובדות אחת אחת, ותיקיות עם המון (אלפים) תמונות גורמות לבעיות ביצועים רציניות בעורך הווידג\'טים, כמו גם במסך הבית בעת החלפת תמונות.</string>
     <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">ווידג\'טים עם תזמון מתקדם יכולים לכלול לכל היותר 96 תמונות.</string>
     <string name="photo_widget_configure_missing_photos_error">הווידג\'ט חייב לכלול לפחות תמונה אחת. ניתן למחוק ווידג\'טים ממסך הבית בלבד.</string>

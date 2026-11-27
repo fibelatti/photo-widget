@@ -140,6 +140,7 @@
     <string name="photo_widget_configure_import_dialog_title">Widget\'ı seçin</string>
     <string name="photo_widget_configure_import_dialog_description">Tüm fotoğraflar ve yapılandırmalar yeni widget\'a kopyalanacak</string>
     <string name="photo_widget_configure_import_error">Seçilen tüm fotoğraflar içe aktarılamadı</string>
+    <string name="photo_widget_configure_copy_widget_error">Fotoğraflar diğer widget\'tan kopyalanamadı. Lütfen tekrar deneyin.</string>
     <string name="photo_widget_configure_too_many_photos_error">Her senkronize klasör en fazla 3000 fotoğraf içerebilir. Birden fazla seçebilirsiniz ve her alt klasör ayrı ayrı sayılır.\n\nKamera rulosunu seçemezsiniz. Fotoğraflar tek tek işlenir ve binlerce fotoğraf içeren klasörler, widget düzenleyicide ve fotoğraflar arasında geçiş yaparken ana ekranda ciddi performans sorunlarına neden olur.</string>
     <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">Gelişmiş zamanlama kullanan widget\'lar en fazla 96 fotoğraf içerebilir.</string>
     <string name="photo_widget_configure_missing_photos_error">Widget\'ta en az bir fotoğraf bulunmalıdır. Widget\'lar yalnızca doğrudan ana ekrandan silinebilir.</string>

@@ -139,6 +139,7 @@
     <string name="photo_widget_configure_import_dialog_title">选择小组件</string>
     <string name="photo_widget_configure_import_dialog_description">所有照片和配置将被复制到新小组件</string>
     <string name="photo_widget_configure_import_error">无法导入所有选中的照片</string>
+    <string name="photo_widget_configure_copy_widget_error">无法从其他小组件复制照片，请重试。</string>
     <string name="photo_widget_configure_too_many_photos_error">每个同步文件夹最多可以包含 3000 张照片。您可以选择多个文件夹，每个子文件夹都单独计算。\n\n您无法选择相机胶卷。照片会逐张处理，包含成千上万张照片的文件夹会在小组件编辑器中，以及在桌面上切换照片时，导致严重的性能问题。</string>
     <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">使用高级调度的小组件最多可包含 96 张图片。</string>
     <string name="photo_widget_configure_missing_photos_error">小组件必须至少有一张照片。小组件只能从桌面上直接删除。</string>

@@ -139,6 +139,7 @@
     <string name="photo_widget_configure_import_dialog_title">ウィジェットを選択</string>
     <string name="photo_widget_configure_import_dialog_description">すべての写真と設定が新しいウィジェットにコピーされます</string>
     <string name="photo_widget_configure_import_error">選択した写真をすべてインポートできませんでした</string>
+    <string name="photo_widget_configure_copy_widget_error">もう一方のウィジェットから写真をコピーできませんでした。もう一度お試しください。</string>
     <string name="photo_widget_configure_too_many_photos_error">同期フォルダーには最大3000枚の写真を含めることができます。複数選択でき、各サブフォルダーは個別にカウントされます。\n\nカメラロールは選択できません。写真は1枚ずつ処理され、数千枚の写真を含むフォルダーは、ウィジェットエディターやホーム画面での写真切り替え時に深刻なパフォーマンスの問題を引き起こします。</string>
     <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">詳細スケジュールを使用するウィジェットの写真は最大96枚です。</string>
     <string name="photo_widget_configure_missing_photos_error">ウィジェットには少なくとも1枚の写真が必要です。ウィジェットはホーム画面からのみ直接削除できます。</string>

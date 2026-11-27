@@ -24,6 +24,7 @@ import com.fibelatti.photowidget.preferences.UserPreferencesStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileInputStream
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.FilenameFilter
 import java.nio.file.Files
@@ -701,13 +702,111 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         return File(fontStagingRootDir, "$directoryName/${UUID.randomUUID()}").apply { mkdirs() }
     }
 
+    /**
+     * Copies the photos of the widget in [sourceDirectoryName] to the widget in
+     * [targetDirectoryName], see [copyWidgetPhotos].
+     */
     suspend fun duplicateWidgetDir(sourceDirectoryName: String, targetDirectoryName: String) {
         withContext(Dispatchers.IO) {
-            val originalDir = getWidgetDir(directoryName = sourceDirectoryName)
-            val newDir = getWidgetDir(directoryName = targetDirectoryName)
-
-            originalDir.copyRecursivelyExceptFonts(target = newDir)
+            copyWidgetPhotos(
+                sourceDir = getWidgetDir(directoryName = sourceDirectoryName),
+                targetDir = getWidgetDir(directoryName = targetDirectoryName),
+            )
         }
+    }
+
+    /**
+     * Copies the photos of the widget in [sourceDir] (a widget directory or an extracted backup)
+     * to the widget directory [targetDir]. The font is left out, since the font of a widget only
+     * changes when the widget is saved, see [stageWidgetFont].
+     *
+     * Both widgets can be in use while this runs, with their photos being restored, imported or
+     * deleted. Each file is copied to an in-progress file and renamed into place, the same way
+     * photos are imported, so the target never has a partial photo. The cropped photos are copied
+     * before their originals, since without its original a photo is not listed or restored. A
+     * photo deleted from the source in the meantime is skipped.
+     *
+     * When the copy fails, the photos it added to [targetDir] are deleted, originals first, so the
+     * target is left with the photos it had. Photos that the target already had are kept, even if
+     * they were copied over.
+     */
+    private fun copyWidgetPhotos(sourceDir: File, targetDir: File) {
+        val targetOriginalPhotosDir: File = getOriginalPhotosDir(targetDir).apply { mkdirs() }
+        val addedFiles: MutableList<File> = mutableListOf()
+
+        try {
+            for (croppedPhoto in listPhotoFiles(dir = sourceDir)) {
+                copyWidgetFile(
+                    source = croppedPhoto,
+                    target = File(targetDir, croppedPhoto.name),
+                    tempDir = targetDir,
+                    addedFiles = addedFiles,
+                )
+            }
+
+            for (originalPhoto in listPhotoFiles(dir = getOriginalPhotosDir(sourceDir))) {
+                copyWidgetFile(
+                    source = originalPhoto,
+                    target = File(targetOriginalPhotosDir, originalPhoto.name),
+                    tempDir = targetDir,
+                    addedFiles = addedFiles,
+                )
+            }
+        } catch (throwable: Throwable) {
+            Timber.w("Deleting the photos of a failed copy %s", mapOf("targetDir" to targetDir.name))
+
+            addedFiles.forEach(File::delete)
+
+            throw throwable
+        }
+    }
+
+    /**
+     * Copies [source] to an in-progress file in [tempDir], which must be the widget directory of
+     * [target], then renames it to [target]. When [target] didn't exist yet, it is added to
+     * [addedFiles].
+     */
+    private fun copyWidgetFile(source: File, target: File, tempDir: File, addedFiles: MutableList<File>) {
+        val isNewFile: Boolean = !target.exists()
+        val tempFile: File = newInProgressFile(directory = tempDir)
+
+        try {
+            if (copyFileIfExists(source = source, target = tempFile)) {
+                check(tempFile.renameTo(target)) { "Failed to rename ${tempFile.name}" }
+                if (isNewFile) addedFiles.add(target)
+            }
+        } finally {
+            tempFile.delete()
+        }
+    }
+
+    /**
+     * Copies [source] to [target] through a single stream, so a concurrent rename over [source]
+     * doesn't mix two files, as checking its length afterward would.
+     *
+     * @return false if [source] was deleted before it could be read
+     */
+    private fun copyFileIfExists(source: File, target: File): Boolean {
+        val input: FileInputStream = try {
+            FileInputStream(source)
+        } catch (e: FileNotFoundException) {
+            if (source.exists()) throw e
+
+            Timber.d("File deleted before it could be copied %s", source.name)
+            return false
+        }
+
+        input.use { FileOutputStream(target).use(input::copyTo) }
+
+        return true
+    }
+
+    /**
+     * The photos in [dir], without the in-progress files of imports and restores, see
+     * [newInProgressFile].
+     */
+    private fun listPhotoFiles(dir: File): List<File> {
+        return dir.listFiles().orEmpty().filter { file -> file.isFile && !isInProgressFile(name = file.name) }
     }
 
     private suspend fun getWidgetDir(directoryName: String): File = withContext(Dispatchers.IO) {
@@ -731,27 +830,49 @@ class PhotoWidgetInternalFileStorage @Inject constructor(
         File("$rootDir/$directoryName/$FONTS_DIR_NAME")
     }
 
+    /**
+     * Copies the photos and the font of the widget in [directoryName] to a directory named after
+     * [appWidgetId] in [destinationDir], with the same layout.
+     *
+     * The widget can be in use while this runs, so the files that are still being written are left
+     * out, and the ones deleted in the meantime are skipped.
+     */
     suspend fun exportWidgetDir(directoryName: String, appWidgetId: Int, destinationDir: File) {
         withContext(Dispatchers.IO) {
-            getWidgetDir(directoryName = directoryName)
-                .copyRecursively(target = File("$destinationDir/$appWidgetId"))
-        }
-    }
+            val widgetDir: File = getWidgetDir(directoryName = directoryName)
+            val exportDir = File(destinationDir, "$appWidgetId")
+            val exportOriginalPhotosDir: File = getOriginalPhotosDir(exportDir).apply { mkdirs() }
 
-    suspend fun importWidgetDir(directoryName: String, sourceDir: File) {
-        withContext(Dispatchers.IO) {
-            sourceDir.copyRecursivelyExceptFonts(target = getWidgetDir(directoryName = directoryName))
+            for (croppedPhoto in listPhotoFiles(dir = widgetDir)) {
+                copyFileIfExists(source = croppedPhoto, target = File(exportDir, croppedPhoto.name))
+            }
+
+            for (originalPhoto in listPhotoFiles(dir = getOriginalPhotosDir(widgetDir))) {
+                copyFileIfExists(source = originalPhoto, target = File(exportOriginalPhotosDir, originalPhoto.name))
+            }
+
+            val fonts: List<File> = File(widgetDir, FONTS_DIR_NAME).listFiles().orEmpty()
+                // A font being saved is written to a temporary file first, see saveWidgetFont
+                .filter { file -> file.isFile && !file.name.endsWith(TMP_SUFFIX) }
+
+            if (fonts.isNotEmpty()) {
+                val exportFontDir: File = File(exportDir, FONTS_DIR_NAME).apply { mkdirs() }
+
+                for (font in fonts) {
+                    copyFileIfExists(source = font, target = File(exportFontDir, font.name))
+                }
+            }
         }
     }
 
     /**
-     * The font of a widget only changes when the widget is saved, so it is copied to a staging
-     * directory instead, see [stageWidgetFont].
+     * Copies the photos in the extracted backup [sourceDir] to the widget in [directoryName], see
+     * [copyWidgetPhotos].
      */
-    private fun File.copyRecursivelyExceptFonts(target: File) {
-        listFiles().orEmpty()
-            .filterNot { it.name == FONTS_DIR_NAME }
-            .forEach { it.copyRecursively(target = File(target, it.name), overwrite = true) }
+    suspend fun importWidgetDir(directoryName: String, sourceDir: File) {
+        withContext(Dispatchers.IO) {
+            copyWidgetPhotos(sourceDir = sourceDir, targetDir = getWidgetDir(directoryName = directoryName))
+        }
     }
 
     private fun webpLossyFormat(): Bitmap.CompressFormat {

@@ -139,6 +139,7 @@
     <string name="photo_widget_configure_import_dialog_title">Piliin ang widget</string>
     <string name="photo_widget_configure_import_dialog_description">Kokopyahin ang lahat ng mga larawan at setting sa bagong widget</string>
     <string name="photo_widget_configure_import_error">Hindi nakuha ang lahat ng mga piniling larawan</string>
+    <string name="photo_widget_configure_copy_widget_error">Hindi makopya ang mga larawan mula sa ibang widget. Pakisubukang muli.</string>
     <string name="photo_widget_configure_too_many_photos_error">Hindi lalampas sa 3000 larawan ang laman ng bawat folder na naka-sync. Maaaring pumili ng higit sa isa, at hiwalay ang bilangan sa mga subfolder.\n\nHindi maaaring piliin ang camera roll. Iniisa-isa ang pagproseso ng mga larawan, at nagiging sanhi ng lag sa widget editor at home screen ang mga folder na may libo-libong larawan.</string>
     <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">Ang mga widget na gumagamit ng advanced na iskedyul ay maaaring magkaroon ng hindi hihigit sa 96 larawan.</string>
     <string name="photo_widget_configure_missing_photos_error">Dapat may hindi bababa sa isang larawan ang widget. Maaari lamang burahin ang mga widget mula mismo sa home screen.</string>

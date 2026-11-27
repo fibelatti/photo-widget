@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+* A crash when duplicating, restoring or importing photos from another widget
+* Creating a backup could fail while widgets were updating
+
 ## [v1.50.0] - 2026-11-23
 [v1.50.0]: https://github.com/fibelatti/photo-widget/releases/tag/v1.50.0
 

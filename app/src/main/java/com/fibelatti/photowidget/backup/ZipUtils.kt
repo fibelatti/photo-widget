@@ -24,17 +24,22 @@ class ZipUtils @Inject constructor() {
                 createNewFile()
             }
 
-        val (count: Int, size: Long) = ZipOutputStream(zipFile.outputStream()).use { zipOutputStream ->
-            zipDirectory(sourceDir = sourceDir, parentPath = sourceDir.name, zipOutputStream = zipOutputStream)
+        try {
+            val (count: Int, size: Long) = ZipOutputStream(zipFile.outputStream()).use { zipOutputStream ->
+                zipDirectory(sourceDir = sourceDir, parentPath = sourceDir.name, zipOutputStream = zipOutputStream)
+            }
+
+            if (count == 0) {
+                error("No files found in $sourceDir.")
+            }
+
+            Timber.d("Successfully zipped $count files to $zipFile ($size bytes total)")
+
+            return@withContext zipFile
+        } catch (throwable: Throwable) {
+            zipFile.delete()
+            throw throwable
         }
-
-        if (count == 0) {
-            error("No files found in $sourceDir.")
-        }
-
-        Timber.d("Successfully zipped $count files to $zipFile ($size bytes total)")
-
-        return@withContext zipFile
     }
 
     private fun zipDirectory(sourceDir: File, parentPath: String, zipOutputStream: ZipOutputStream): Pair<Int, Long> {

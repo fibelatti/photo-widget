@@ -36,12 +36,11 @@ class CreateBackupUseCase @Inject constructor(
             .filterValues(PhotoWidget::supportsBackup)
 
         val backupDir: File = createBackupFiles()
-            .apply {
-                exportData(backupDir = this, widgets = widgetsToExport)
-                exportPhotos(backupDir = this, widgets = widgetsToExport)
-            }
 
         val zipFile: File = try {
+            exportData(backupDir = backupDir, widgets = widgetsToExport)
+            exportPhotos(backupDir = backupDir, widgets = widgetsToExport)
+
             zipUtils.writeToZip(sourceDir = backupDir, destinationDir = context.cacheDir)
         } finally {
             backupDir.deleteRecursively()

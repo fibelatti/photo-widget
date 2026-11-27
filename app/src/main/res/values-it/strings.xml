@@ -140,6 +140,7 @@
     <string name="photo_widget_configure_import_dialog_title">Scegli widget</string>
     <string name="photo_widget_configure_import_dialog_description">Tutte le foto e le configurazioni verranno copiate nel nuovo widget</string>
     <string name="photo_widget_configure_import_error">Impossibile importare tutte le foto selezionate</string>
+    <string name="photo_widget_configure_copy_widget_error">Impossibile copiare le foto dall\'altro widget. Riprova.</string>
     <string name="photo_widget_configure_too_many_photos_error">Ogni cartella sincronizzata può contenere un massimo di 3000 foto. Puoi selezionarne più di una, e ogni sottocartella viene conteggiata separatamente.\n\nNon puoi selezionare il rullino fotografico. Le foto vengono elaborate una per una, e le cartelle con molte migliaia di foto causano gravi problemi di prestazioni nell\'editor di widget, così come nella schermata iniziale durante il cambio delle foto.</string>
     <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">I widget con programma avanzato possono avere al massimo 96 foto.</string>
     <string name="photo_widget_configure_missing_photos_error">Il widget deve avere almeno una foto. I widget possono essere eliminati solo direttamente dalla schermata iniziale.</string>

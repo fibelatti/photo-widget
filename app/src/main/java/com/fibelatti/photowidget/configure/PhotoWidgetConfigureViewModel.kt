@@ -181,12 +181,12 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         return when {
             duplicateFromId != null -> {
                 Timber.d("Duplicating widget %s", mapOf("duplicateFromId" to duplicateFromId))
-                duplicatePhotoWidgetUseCase(originalAppWidgetId = duplicateFromId, newAppWidgetId = effectiveWidgetId)
+                duplicateWidget(originalAppWidgetId = duplicateFromId)
             }
 
             restoreFromId != null -> {
                 Timber.d("Restoring widget %s", mapOf("restoreFromId" to restoreFromId))
-                duplicatePhotoWidgetUseCase(originalAppWidgetId = restoreFromId, newAppWidgetId = effectiveWidgetId)
+                duplicateWidget(originalAppWidgetId = restoreFromId)
             }
 
             backupWidget != null -> {
@@ -236,13 +236,31 @@ class PhotoWidgetConfigureViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { current -> current.copy(isProcessing = true) }
 
-            val photoWidget = duplicatePhotoWidgetUseCase(
-                originalAppWidgetId = widgetId,
-                newAppWidgetId = effectiveWidgetId,
-            )
+            val photoWidget: PhotoWidget? = duplicateWidget(originalAppWidgetId = widgetId)
 
-            updateState(photoWidget = photoWidget, hasEdits = true)
+            if (photoWidget != null) {
+                updateState(photoWidget = photoWidget, hasEdits = true)
+            } else {
+                _state.update { current -> current.copy(isProcessing = false) }
+            }
         }
+    }
+
+    /**
+     * Copies the widget in [originalAppWidgetId] to the widget being configured.
+     *
+     * @return the copy, or null if it failed
+     */
+    private suspend fun duplicateWidget(originalAppWidgetId: Int): PhotoWidget? {
+        return runCatching {
+            duplicatePhotoWidgetUseCase(originalAppWidgetId = originalAppWidgetId, newAppWidgetId = effectiveWidgetId)
+        }.onFailure {
+            currentCoroutineContext().ensureActive()
+            Timber.e(it, "Failed to copy widget %s", mapOf("originalAppWidgetId" to originalAppWidgetId))
+            _state += PhotoWidgetConfigureState.Message.UserPrompt(
+                textRes = R.string.photo_widget_configure_copy_widget_error,
+            )
+        }.getOrNull()
     }
 
     /**

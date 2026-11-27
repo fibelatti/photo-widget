@@ -142,6 +142,7 @@
     <string name="photo_widget_configure_import_dialog_title">Выберите виджет</string>
     <string name="photo_widget_configure_import_dialog_description">Все фотографии и конфигурации будут скопированы в новый виджет</string>
     <string name="photo_widget_configure_import_error">Не удалось импортировать все выбранные фотографии</string>
+    <string name="photo_widget_configure_copy_widget_error">Не удалось скопировать фотографии из другого виджета. Попробуйте ещё раз.</string>
     <string name="photo_widget_configure_too_many_photos_error">Каждая синхронизированная папка может содержать не более 3000 фотографий. Вы можете выбрать больше одной, и каждая подпапка считается отдельно.\n\nВы не можете выбрать свою камеру. Фотографии обрабатываются по одной, и папки с несколькими тысячами приводят к серьезным проблемам с производительностью в редакторе виджетов, а также на главном экране при переключении фотографий.</string>
     <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">Виджеты с расширенным расписанием могут содержать не более 96 фотографий.</string>
     <string name="photo_widget_configure_missing_photos_error">Виджет должен содержать хотя бы одну фотографию. Виджеты можно удалять только прямо с главного экрана.</string>

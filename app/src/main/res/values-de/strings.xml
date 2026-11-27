@@ -140,6 +140,7 @@
     <string name="photo_widget_configure_import_dialog_title">Widget auswählen</string>
     <string name="photo_widget_configure_import_dialog_description">Alle Fotos und Konfigurationen werden in das neue Widget kopiert</string>
     <string name="photo_widget_configure_import_error">Alle ausgewählten Fotos konnten nicht importiert werden</string>
+    <string name="photo_widget_configure_copy_widget_error">Die Fotos konnten nicht aus dem anderen Widget kopiert werden. Bitte versuche es erneut.</string>
     <string name="photo_widget_configure_too_many_photos_error">Jeder synchronisierte Ordner kann maximal 3000 Fotos enthalten. Du kannst mehr als einen auswählen, und jeder Unterordner wird separat gezählt.\n\nDu kannst deine Kamerarolle nicht auswählen. Fotos werden einzeln verarbeitet, und Ordner mit vielen Tausend Fotos führen zu erheblichen Leistungsproblemen im Widget-Editor sowie auf dem Startbildschirm beim Wechseln der Fotos.</string>
     <string name="photo_widget_configure_too_many_photos_for_advanced_schedule_error">Widgets mit erweitertem Zeitplan können maximal 96 Fotos enthalten.</string>
     <string name="photo_widget_configure_missing_photos_error">Das Widget muss mindestens ein Foto enthalten. Widgets können nur direkt vom Startbildschirm gelöscht werden.</string>
